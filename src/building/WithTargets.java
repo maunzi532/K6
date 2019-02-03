@@ -11,5 +11,7 @@ public interface WithTargets
 
 	void removeTarget(DoubleInv target);
 
+	void toggleTarget(DoubleInv target);
+
 	List<DoubleInv> targets();
 }

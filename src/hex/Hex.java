@@ -63,7 +63,7 @@ public class Hex
 
 	public static Hex directionHex(int direction)
 	{
-		return directions[direction];
+		return directions[Math.floorMod(direction, 6)];
 	}
 
 	public Hex neighbor(int direction)
@@ -87,6 +87,24 @@ public class Hex
 			return new Hex(v[1], v[2], v[0]);
 		else
 			return new Hex(v[2], v[0], v[1]);
+	}
+
+	public List<Hex> range(int minRange, int maxRange)
+	{
+		List<Hex> re = new ArrayList<>();
+		if(minRange <= 0)
+			re.add(this);
+		for(int i = Math.max(minRange, 1); i <= maxRange; i++)
+		{
+			for(int j = 0; j < 6; j++)
+			{
+				for(int k = 0; k < i; k++)
+				{
+					re.add(add(directionHex(j).multiply(i)).add(directionHex(j + 2).multiply(k)));
+				}
+			}
+		}
+		return re;
 	}
 
 	@Override

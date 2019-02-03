@@ -90,4 +90,16 @@ public class InvStack
 	{
 		return limit < 0 && current == 0 && decrease == 0 && increase == 0;
 	}
+
+	@Override
+	public String toString()
+	{
+		return "InvStack{" +
+				"item=" + item +
+				", current=" + current +
+				", decrease=" + decrease +
+				", increase=" + increase +
+				", limit=" + limit +
+				'}';
+	}
 }

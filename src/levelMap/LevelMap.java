@@ -76,9 +76,9 @@ public class LevelMap implements CanAddArrows
 		floor.put(hex, floorTile);
 	}
 
-	public void addBuilding(Hex hex, Building building)
+	public void addBuilding(Building building)
 	{
-		buildings.put(hex, building);
+		buildings.put(building.location(), building);
 	}
 
 	public void addEntity(XEntity entity)
@@ -96,6 +96,21 @@ public class LevelMap implements CanAddArrows
 	public void addArrow(VisualArrow arrow)
 	{
 		arrows.add(arrow);
+	}
+
+	public FloorTile getFloor(Hex hex)
+	{
+		return floor.get(hex);
+	}
+
+	public Building getBuilding(Hex hex)
+	{
+		return buildings.get(hex);
+	}
+
+	public XEntity getEntity(Hex hex)
+	{
+		return entities.get(hex);
 	}
 
 	public Set<Hex> getMarked()

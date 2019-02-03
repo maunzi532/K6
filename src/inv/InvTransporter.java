@@ -23,10 +23,10 @@ public class InvTransporter
 		Map<Item, ItemTransportInfo> possibleItems = new HashMap<>();
 		for(DoubleInv inv : providingTargets)
 		{
-			Inv2 inputInv = inv.inputInv();
-			for(Item item : inputInv.getItemTypes())
+			Inv2 providingInv = inv.outputInv();
+			for(Item item : providingInv.getItemTypes())
 			{
-				if(inputInv.maxDecrease(item) >= amount)
+				if(providingInv.maxDecrease(item) >= amount)
 				{
 					if(!possibleItems.containsKey(item))
 					{
@@ -38,12 +38,12 @@ public class InvTransporter
 		}
 		for(DoubleInv inv : receivingTargets)
 		{
-			Inv2 outputInv = inv.outputInv();
-			if(outputInv.isSpecificLimits())
+			Inv2 receivingInv = inv.inputInv();
+			if(receivingInv.isSpecificLimits())
 			{
-				for(Item item : outputInv.getItemTypes())
+				for(Item item : receivingInv.getItemTypes())
 				{
-					if(possibleItems.containsKey(item) && outputInv.maxIncrease(item, amount) >= amount)
+					if(possibleItems.containsKey(item) && receivingInv.maxIncrease(item, amount) >= amount)
 					{
 						possibleItems.get(item).require.add(inv);
 					}
@@ -53,7 +53,7 @@ public class InvTransporter
 			{
 				for(Item item : possibleItems.keySet())
 				{
-					if(outputInv.maxIncrease(item, amount) >= amount)
+					if(receivingInv.maxIncrease(item, amount) >= amount)
 					{
 						possibleItems.get(item).require.add(inv);
 					}
@@ -70,7 +70,7 @@ public class InvTransporter
 	{
 		lastTransported.put(theTransport, transportNumber);
 		transportNumber++;
-		theTransport.from.decrease(theTransport.item, amount);
-		theTransport.to.increase(theTransport.item, amount);
+		theTransport.from.outputInv().decrease(theTransport.item, amount);
+		theTransport.to.inputInv().increase(theTransport.item, amount);
 	}
 }

@@ -67,6 +67,11 @@ public class Pathing
 		map.setMarked(endpoints);
 	}
 
+	public Set<Hex> getEndpoints()
+	{
+		return endpoints;
+	}
+
 	private PathLocation pathLocation(Hex hex, FullTile tile, int currentCost, int maxCost, XEntity entity)
 	{
 		if(!tile.exists())

@@ -20,7 +20,7 @@ public class ItemTransportInfo
 		{
 			for(DoubleInv required : require)
 			{
-				re.add(new PossibleTransport(item, provided.outputInv(), required.inputInv(),
+				re.add(new PossibleTransport(item, provided, required,
 						provided.outputPriority(), required.inputPriority(), lastTransported));
 			}
 		}

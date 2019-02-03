@@ -162,4 +162,17 @@ public class Inv2
 	{
 		itemList.items.forEach(e -> increase(e.item, e.count));
 	}
+
+	@Override
+	public String toString()
+	{
+		return "Inv2{" +
+				"specificLimits=" + specificLimits +
+				", items=" + items +
+				", current=" + current +
+				", decrease=" + decrease +
+				", increase=" + increase +
+				", limit=" + limit +
+				'}';
+	}
 }

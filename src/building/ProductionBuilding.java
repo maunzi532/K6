@@ -2,20 +2,29 @@ package building;
 
 import arrow.*;
 import building.blueprint.*;
+import hex.*;
 import inv.*;
 import java.util.*;
 
 public class ProductionBuilding implements Building, DoubleInv
 {
+	private Hex location;
 	private Inv2 inputInv;
 	private Inv2 outputInv;
 	private List<Recipe> recipes;
 
-	public ProductionBuilding(ProductionBlueprint blueprint)
+	public ProductionBuilding(Hex location, ProductionBlueprint blueprint)
 	{
+		this.location = location;
 		inputInv = new Inv2(blueprint.inputLimits);
 		outputInv = new Inv2(blueprint.outputLimits);
 		recipes = blueprint.recipes;
+	}
+
+	@Override
+	public Hex location()
+	{
+		return location;
 	}
 
 	@Override
@@ -61,7 +70,6 @@ public class ProductionBuilding implements Building, DoubleInv
 	{
 		inputInv.commit();
 		outputInv.commit();
-		System.out.println(outputInv.getCurrent());
 	}
 
 	@Override

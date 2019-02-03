@@ -32,13 +32,14 @@ public class XMenu
 		entries = switch(state)
 		{
 			case ENTITY -> List.of(XMenuEntry.CHARACTER_MOVEMENT);
-			case BUILDING -> List.of(XMenuEntry.BUILDING_VIEW, XMenuEntry.PRODUCTION_PHASE, XMenuEntry.TRANSPORT_PHASE);
+			case BUILDING -> List.of(XMenuEntry.BUILDING_VIEW, XMenuEntry.PRODUCTION_PHASE);
+			case TRANSPORTER -> List.of(XMenuEntry.BUILDING_VIEW, XMenuEntry.EDIT_TARGETS, XMenuEntry.TRANSPORT_PHASE);
 			default -> List.of();
 		};
 		current = switch(state)
 		{
 			case ENTITY -> XMenuEntry.CHARACTER_MOVEMENT;
-			case BUILDING -> XMenuEntry.BUILDING_VIEW;
+			case BUILDING, TRANSPORTER -> XMenuEntry.BUILDING_VIEW;
 			default -> XMenuEntry.DUMMY;
 		};
 	}

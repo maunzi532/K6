@@ -1,18 +1,27 @@
 package building;
 
 import arrow.*;
+import hex.*;
 import inv.*;
 import java.util.*;
 
 public class Transporter implements Building, WithTargets
 {
+	private Hex location;
 	private List<DoubleInv> targets;
 	private InvTransporter invTransporter;
 
-	public Transporter()
+	public Transporter(Hex location)
 	{
+		this.location = location;
 		targets = new ArrayList<>();
 		invTransporter = new InvTransporter(targets, targets);
+	}
+
+	@Override
+	public Hex location()
+	{
+		return location;
 	}
 
 	@Override
@@ -21,8 +30,10 @@ public class Transporter implements Building, WithTargets
 		Optional<PossibleTransport> transportOpt = invTransporter.transport();
 		if(transportOpt.isPresent())
 		{
-			invTransporter.doTheTransport(transportOpt.get());
-			//canAddArrows.addArrow(new VisualArrow());
+			PossibleTransport transport = transportOpt.get();
+			invTransporter.doTheTransport(transport);
+			canAddArrows.addArrow(new VisualArrow(transport.from.location(),
+					transport.to.location(), ArrowMode.TARROW, 60));
 		}
 	}
 
@@ -42,6 +53,15 @@ public class Transporter implements Building, WithTargets
 	public void removeTarget(DoubleInv target)
 	{
 		targets.remove(target);
+	}
+
+	@Override
+	public void toggleTarget(DoubleInv target)
+	{
+		if(targets.contains(target))
+			targets.remove(target);
+		else
+			targets.add(target);
 	}
 
 	@Override

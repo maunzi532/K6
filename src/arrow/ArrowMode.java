@@ -4,6 +4,7 @@ public enum ArrowMode
 {
 	FULL(true, true, true, true, true),
 	ARROW(false, true, true, true, true),
+	TARROW(false, true, true, true, false),
 	TRANSPORT(true, false, false, false, false);
 
 	ArrowMode(boolean showTransport, boolean showArrow, boolean showZero, boolean showShine, boolean loop)

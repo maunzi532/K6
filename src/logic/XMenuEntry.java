@@ -6,7 +6,8 @@ public enum XMenuEntry
 	PRODUCTION_PHASE("Production Phase", true),
 	TRANSPORT_PHASE("Transport Phase", true),
 	CHARACTER_MOVEMENT("Move", false),
-	BUILDING_VIEW("View", false);
+	BUILDING_VIEW("View", false),
+	EDIT_TARGETS("Targets", false);
 
 	XMenuEntry(String text, boolean direct)
 	{

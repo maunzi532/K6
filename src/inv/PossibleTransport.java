@@ -5,13 +5,14 @@ import java.util.*;
 public class PossibleTransport
 {
 	public final Item item;
-	public final Inv2 from;
-	public final Inv2 to;
+	public final DoubleInv from;
+	public final DoubleInv to;
 	public final int priorityFrom;
 	public final int priorityTo;
 	public final Map<PossibleTransport, Integer> lastTransported;
 
-	public PossibleTransport(Item item, Inv2 from, Inv2 to, int priorityFrom, int priorityTo,
+	public PossibleTransport(Item item, DoubleInv from, DoubleInv to,
+			int priorityFrom, int priorityTo,
 			Map<PossibleTransport, Integer> lastTransported)
 	{
 		this.item = item;
