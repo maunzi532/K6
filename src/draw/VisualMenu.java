@@ -11,26 +11,27 @@ public class VisualMenu
 {
 	private final GraphicsContext gd;
 	public final XCamera camera;
-	private final XMenu XMenu;
+	private final XMenu xMenu;
 
-	public VisualMenu(GraphicsContext gd, double xHalfWidth, double yHalfWidth, XMenu XMenu)
+	public VisualMenu(GraphicsContext gd, double xHalfWidth, double yHalfWidth, XMenu xMenu)
 	{
 		this.gd = gd;
-		camera = new XCamera(xHalfWidth * 3 / 2, yHalfWidth, yHalfWidth / 8, yHalfWidth / 8, 0,  0, MatrixH.LP);
-		this.XMenu = XMenu;
+		camera = new XCamera(xHalfWidth * 2, yHalfWidth,
+				yHalfWidth / 8, yHalfWidth / 8, 1.25 * MatrixH.Q3,  0, MatrixH.LP);
+		this.xMenu = xMenu;
 	}
 
-	private Hex optionToHex(int i, int optionCount)
+	private Hex optionToHex(int i)
 	{
-		return new Hex(optionCount / 4 - i / 2, i - optionCount / 2);
+		return new OffsetHex(0, i).toHex();
 	}
 
 	public int hexToOption(Hex hex)
 	{
-		int optionCount = XMenu.getEntries().size();
+		int optionCount = xMenu.getEntries().size();
 		for(int i = 0; i < optionCount; i++)
 		{
-			if(hex.equals(optionToHex(i, optionCount)))
+			if(hex.equals(optionToHex(i)))
 				return i;
 		}
 		return -1;
@@ -38,14 +39,12 @@ public class VisualMenu
 
 	public void draw()
 	{
-		List<XMenuEntry> menuEntries = this.XMenu.getEntries();
-		camera.yShift = menuEntries.size() % 2 == 0 ? -0.5 : 0d;
+		List<XMenuEntry> menuEntries = this.xMenu.getEntries();
+		camera.yShift = (menuEntries.size() - 1) * 1.5 / 2d;
 		for(int i = 0; i < menuEntries.size(); i++)
 		{
-			draw0(camera.layout(), optionToHex(i, menuEntries.size()), menuEntries.get(i).text, menuEntries.get(i) == this.XMenu
-					.getCurrent());
-			//draw0(camera.layout(), new Hex(0, i - menuEntries.size() / 2), menuEntries.get(i));
-			//draw0(camera.layout(), new Hex(menuEntries.size() / 2 - i, i * 2 - menuEntries.size()), menuEntries.get(i));
+			draw0(camera.layout(), optionToHex(i), menuEntries.get(i).text,
+					menuEntries.get(i) == this.xMenu.getCurrent());
 		}
 	}
 
@@ -65,9 +64,7 @@ public class VisualMenu
 		gd.fillPolygon(points[0], points[1], 6);
 		PointD midPoint = layout.hexToPixel(h1);
 		gd.setFill(Color.BLACK);
-		//gd.setStroke(Color.BLACK);
 		gd.setFont(new Font(layout.size.v[1] * 0.5));
-		//gd.strokeText(text, midPoint.v[0] - layout.size.v[0] * 0.7, midPoint.v[1] + layout.size.v[1] * 0.2, layout.size.v[0] * 1.4);
 		gd.fillText(text, midPoint.v[0] - layout.size.v[0] * 0.7, midPoint.v[1] + layout.size.v[1] * 0.2, layout.size.v[0] * 1.4);
 	}
 }

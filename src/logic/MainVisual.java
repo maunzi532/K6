@@ -11,6 +11,8 @@ public class MainVisual
 	private XCamera mapCamera;
 	private VisualMenu visualMenu;
 	private XCamera menuCamera;
+	private VisualGUI visualGUI;
+	private XCamera guiCamera;
 	private MainLogic mainLogic;
 
 	public MainVisual(GraphicsContext gd, int w, int h)
@@ -20,14 +22,29 @@ public class MainVisual
 		mapCamera = new XCamera(w / 2f, h / 2f, 40, 40, 0, 0, MatrixH.LP);
 		visualMenu = new VisualMenu(gd, w / 2f, h / 2f, mainLogic.getxMenu());
 		menuCamera = visualMenu.camera;
+		visualGUI = new VisualGUI(gd, w / 2f, h / 2f, mainLogic);
+		guiCamera = visualGUI.camera;
 		draw();
 	}
 
 	public void handleClick(double x, double y, boolean primary)
 	{
+		if(handleGUIClick(x, y))
+			return;
 		if(handleMenuClick(x, y))
 			return;
 		handleMapClick(x, y, primary);
+	}
+
+	private boolean handleGUIClick(double x, double y)
+	{
+		DoubleHex h1 = guiCamera.clickLocation(x, y);
+		if(visualGUI.inside(h1))
+		{
+			mainLogic.handleGUIClick(h1.cast());
+			return true;
+		}
+		return false;
 	}
 
 	private boolean handleMenuClick(double x, double y)
@@ -70,5 +87,6 @@ public class MainVisual
 	{
 		visualTile.draw(mapCamera);
 		visualMenu.draw();
+		visualGUI.draw();
 	}
 }

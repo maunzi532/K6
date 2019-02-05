@@ -121,4 +121,10 @@ public class Hex
 	{
 		return (v[0] << 16) + v[2];
 	}
+
+	@Override
+	public String toString()
+	{
+		return v[0] + ", " + v[1] + ", " + v[2];
+	}
 }

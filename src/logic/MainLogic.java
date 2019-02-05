@@ -20,11 +20,13 @@ public class MainLogic
 	private Building xb;
 	private FloorTile xf;
 	private XMenu xMenu;
+	private XGUI xgui;
 
 	public MainLogic()
 	{
 		levelMap = new LevelMap();
 		xMenu = new XMenu();
+		xgui = new XGUI();
 		xState = XState.PLAYERPHASE;
 		new TestImportSector(8).generate().importIntoMap(levelMap);
 		levelMap.addEntity(new XEntity(new Hex(2, 1)));
@@ -53,9 +55,23 @@ public class MainLogic
 		return xMenu;
 	}
 
+	public XGUI getXgui()
+	{
+		return xgui;
+	}
+
 	public void tick()
 	{
 		levelMap.tickArrows();
+	}
+
+	public void handleGUIClick(Hex h1)
+	{
+		OffsetHex offsetHex = new OffsetHex(h1);
+		int x = offsetHex.v[0];
+		int y = offsetHex.v[1];
+		if(x >= 0 && x < xgui.xw() && y >= 0 && y < xgui.yw())
+			xgui.click(x, y);
 	}
 
 	public void handleMenuClick(int option)

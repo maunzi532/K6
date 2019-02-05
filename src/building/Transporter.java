@@ -33,7 +33,7 @@ public class Transporter implements Building, WithTargets
 			PossibleTransport transport = transportOpt.get();
 			invTransporter.doTheTransport(transport);
 			canAddArrows.addArrow(new VisualArrow(transport.from.location(),
-					transport.to.location(), ArrowMode.TARROW, 60));
+					transport.to.location(), ArrowMode.TARROW, 60, transport.item.image()));
 		}
 	}
 

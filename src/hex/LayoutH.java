@@ -65,6 +65,19 @@ public class LayoutH
 		return corners;
 	}
 
+	public double[][] hexCorners(DoubleHex h1)
+	{
+		double[][] corners = new double[2][6];
+		PointD center = hexToPixel(h1);
+		for(int i = 0; i < 6; i++)
+		{
+			PointD corner = center.plus(cornerOffset(i));
+			corners[0][i] = corner.v[0];
+			corners[1][i] = corner.v[1];
+		}
+		return corners;
+	}
+
 	public double[][] multiHexToPixel(Hex... h1)
 	{
 		double[][] corners = new double[2][h1.length];
