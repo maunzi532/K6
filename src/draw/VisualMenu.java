@@ -39,12 +39,12 @@ public class VisualMenu
 
 	public void draw()
 	{
-		List<XMenuEntry> menuEntries = this.xMenu.getEntries();
+		List<XMenuEntry> menuEntries = xMenu.getEntries();
 		camera.yShift = (menuEntries.size() - 1) * 1.5 / 2d;
 		for(int i = 0; i < menuEntries.size(); i++)
 		{
 			draw0(camera.layout(), optionToHex(i), menuEntries.get(i).text,
-					menuEntries.get(i) == this.xMenu.getCurrent());
+					menuEntries.get(i) == xMenu.getCurrent());
 		}
 	}
 

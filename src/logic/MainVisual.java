@@ -20,9 +20,9 @@ public class MainVisual
 		mainLogic = new MainLogic();
 		visualTile = new VisualTile(mainLogic.getLevelMap(), gd);
 		mapCamera = new XCamera(w / 2f, h / 2f, 40, 40, 0, 0, MatrixH.LP);
-		visualMenu = new VisualMenu(gd, w / 2f, h / 2f, mainLogic.getxMenu());
+		visualMenu = new VisualMenu(gd, w / 2f, h / 2f, mainLogic.getMenuLogic().getxMenu());
 		menuCamera = visualMenu.camera;
-		visualGUI = new VisualGUI(gd, w / 2f, h / 2f, mainLogic);
+		visualGUI = new VisualGUI(gd, w / 2f, h / 2f, mainLogic.getMenuLogic());
 		guiCamera = visualGUI.camera;
 		draw();
 	}

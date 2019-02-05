@@ -2,6 +2,8 @@ package logic.gui;
 
 public class XGUI
 {
+	public static final XGUI NONE = new XGUI();
+
 	protected GuiTile[][] tiles;
 
 	public XGUI()
@@ -35,6 +37,8 @@ public class XGUI
 	{
 		return 0;
 	}
+
+	public void click(){}
 
 	public void click(int x, int y)
 	{

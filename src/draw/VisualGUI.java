@@ -15,18 +15,18 @@ public class VisualGUI
 	private static final DoubleHex RLS = new DoubleHex(4d / 6d, -8d / 6d, 4d / 6d);
 	private final GraphicsContext gd;
 	public final XCamera camera;
-	private final MainLogic mainLogic;
+	private final MenuLogic menuLogic;
 
-	public VisualGUI(GraphicsContext gd, double xHalfWidth, double yHalfWidth, MainLogic mainLogic)
+	public VisualGUI(GraphicsContext gd, double xHalfWidth, double yHalfWidth, MenuLogic menuLogic)
 	{
 		this.gd = gd;
 		camera = new XCamera(xHalfWidth, yHalfWidth, yHalfWidth / 8, yHalfWidth / 8, 0,  0, MatrixH.LP);
-		this.mainLogic = mainLogic;
+		this.menuLogic = menuLogic;
 	}
 
 	private XGUI xgui()
 	{
-		return mainLogic.getXgui();
+		return menuLogic.getXgui();
 	}
 
 	private DoubleHex rl()

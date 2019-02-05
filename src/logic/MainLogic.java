@@ -6,29 +6,22 @@ import building.blueprint.*;
 import entity.*;
 import hex.*;
 import inv.*;
-import java.util.*;
-import java.util.stream.*;
 import levelMap.*;
 import levelMap.importX.*;
-import logic.gui.*;
 
-public class MainLogic
+public class MainLogic implements MenuTargets
 {
 	private LevelMap levelMap;
-	private XState xState;
 	private Hex xh;
 	private XEntity xe;
 	private Building xb;
 	private FloorTile xf;
-	private XMenu xMenu;
-	private XGUI xgui;
+	private MenuLogic menuLogic;
 
 	public MainLogic()
 	{
 		levelMap = new LevelMap();
-		xMenu = new XMenu();
-		xgui = new XGUI();
-		xState = XState.PLAYERPHASE;
+		menuLogic = new MenuLogic(this, levelMap);
 		new TestImportSector(8).generate().importIntoMap(levelMap);
 		levelMap.addEntity(new XEntity(new Hex(2, 1)));
 		levelMap.addEntity(new XEntity(new Hex(0, 1)));
@@ -53,14 +46,27 @@ public class MainLogic
 		return levelMap;
 	}
 
-	public XMenu getxMenu()
+	public MenuLogic getMenuLogic()
 	{
-		return xMenu;
+		return menuLogic;
 	}
 
-	public XGUI getXgui()
+	@Override
+	public XEntity getEntity()
 	{
-		return xgui;
+		return xe;
+	}
+
+	@Override
+	public Building getBuilding()
+	{
+		return xb;
+	}
+
+	@Override
+	public FloorTile getFloorTile()
+	{
+		return xf;
 	}
 
 	public void tick()
@@ -70,30 +76,12 @@ public class MainLogic
 
 	public void handleGUIClick(Hex h1)
 	{
-		OffsetHex offsetHex = new OffsetHex(h1);
-		int x = offsetHex.v[0];
-		int y = offsetHex.v[1];
-		if(x >= 0 && x < xgui.xw() && y >= 0 && y < xgui.yw())
-			xgui.click(x, y);
+		menuLogic.handleGUIClick(h1);
 	}
 
 	public void handleMenuClick(int option)
 	{
-		XMenuEntry menuEntry = xMenu.getEntries().get(option);
-		if(menuEntry.direct)
-		{
-			clickDirectMenu(menuEntry);
-		}
-		else if(menuEntry.withGUI)
-		{
-			xMenu.setCurrent(menuEntry);
-		}
-		else
-		{
-			xMenu.setCurrent(menuEntry);
-			updateMarked();
-		}
-		updateGUI();
+		menuLogic.handleMenuClick(option);
 	}
 
 	public void handleMapClick(Hex clicked, boolean primary)
@@ -101,19 +89,12 @@ public class MainLogic
 		FullTile tile = levelMap.tile(clicked);
 		if(primary && levelMap.getMarked().contains(clicked))
 		{
-			clickMarked(clicked);
+			menuLogic.clickMarked(clicked);
 		}
 		else
 		{
-			chooseTile(clicked, tile, switch(xState)
-			{
-				case PLAYERPHASE, FLOOR -> 2;
-				case ENTITY -> 1;
-				case BUILDING, TRANSPORTER -> 0;
-			});
+			chooseTile(clicked, tile, menuLogic.getxState().nextTarget);
 		}
-		System.out.println(xState);
-		System.out.println(xMenu.getCurrent());
 	}
 
 	private void chooseTile(Hex hex, FullTile tile, int start)
@@ -126,74 +107,22 @@ public class MainLogic
 			if(start >= 2 && tile.entity != null)
 			{
 				xe = tile.entity;
-				setxState(XState.ENTITY);
+				menuLogic.setxState(XState.ENTITY);
 			}
 			else if(start >= 1 && tile.building != null)
 			{
 				xb = tile.building;
 				if(tile.building instanceof Transporter)
-					setxState(XState.TRANSPORTER);
+					menuLogic.setxState(XState.TRANSPORTER);
 				else
-					setxState(XState.BUILDING);
+					menuLogic.setxState(XState.BUILDING);
 			}
 			else
 			{
 				xf = tile.floorTile;
-				setxState(XState.FLOOR);
+				menuLogic.setxState(XState.FLOOR);
 			}
-			updateGUI();
+			menuLogic.updateGUI();
 		}
-	}
-
-	private void setxState(XState state)
-	{
-		levelMap.setMarked(Set.of());
-		xState = state;
-		xMenu.updateState(state);
-		updateMarked();
-	}
-
-	private void clickDirectMenu(XMenuEntry menuEntry)
-	{
-		switch(menuEntry)
-		{
-			case PRODUCTION_PHASE -> levelMap.buildingPhase();
-			case TRANSPORT_PHASE -> levelMap.transportPhase();
-		}
-	}
-
-	private void updateMarked()
-	{
-		levelMap.setMarked(switch(xMenu.getCurrent())
-		{
-			case DUMMY -> Set.of();
-			case CHARACTER_MOVEMENT -> new Pathing(xe, 4, levelMap).start().getEndpoints();
-			case PRODUCTION_VIEW, TRANSPORT_VIEW -> Set.of();
-			case EDIT_TARGETS -> xb.location().range(0, ((Transporter) xb).range()).stream()
-					.filter(e -> levelMap.getBuilding(e) instanceof DoubleInv).collect(Collectors.toSet());
-			default -> throw new RuntimeException();
-		});
-	}
-
-	private void clickMarked(Hex clicked)
-	{
-		switch(xMenu.getCurrent())
-		{
-			case CHARACTER_MOVEMENT ->
-			{
-				levelMap.moveEntity(xe, clicked);
-				setxState(XState.PLAYERPHASE);
-			}
-			case EDIT_TARGETS -> ((Transporter) xb).toggleTarget((DoubleInv) levelMap.getBuilding(clicked));
-		}
-	}
-
-	private void updateGUI()
-	{
-		xgui = switch(xMenu.getCurrent())
-		{
-			case PRODUCTION_VIEW -> new ProductionGUI((ProductionBuilding) xb, 0);
-			default -> new XGUI();
-		};
 	}
 }

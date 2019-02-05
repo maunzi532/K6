@@ -22,17 +22,17 @@ public class ProductionGUI extends XGUI
 		for(int i = 0; i < required.size(); i++)
 		{
 			Item item = required.get(i).item;
-			tiles[0][i + 1] = new GuiTile(inputInv.current(item) + " / " +
+			tiles[1][i + 1] = new GuiTile(inputInv.current(item) + " / " +
 					inputInv.limit(item), null, null);
-			tiles[1][i + 1] = new GuiTile(String.valueOf(required.get(i).count), item.image(), null);
+			tiles[2][i + 1] = new GuiTile(String.valueOf(required.get(i).count), item.image(), null);
 		}
 		List<ItemStack> results = recipe.results.items;
 		Inv2 outputInv = building.outputInv();
 		for(int i = 0; i < results.size(); i++)
 		{
 			Item item = results.get(i).item;
-			tiles[3][i + 1] = new GuiTile(String.valueOf(results.get(i).count), item.image(), null);
-			tiles[4][i + 1] = new GuiTile(outputInv.current(item) + " / " +
+			tiles[4][i + 1] = new GuiTile(String.valueOf(results.get(i).count), item.image(), null);
+			tiles[5][i + 1] = new GuiTile(outputInv.current(item) + " / " +
 					outputInv.limit(item), null, null);
 		}
 	}
@@ -47,6 +47,12 @@ public class ProductionGUI extends XGUI
 	public int yw()
 	{
 		return 5;
+	}
+
+	@Override
+	public void click()
+	{
+
 	}
 
 	@Override
