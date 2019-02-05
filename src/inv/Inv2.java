@@ -46,6 +46,24 @@ public class Inv2
 		return specificLimits;
 	}
 
+	public int current(Item item)
+	{
+		InvStack invStack = items.get(item);
+		if(invStack != null)
+			return invStack.getCurrent();
+		else
+			return 0;
+	}
+
+	public int limit(Item item)
+	{
+		InvStack invStack = items.get(item);
+		if(invStack != null)
+			return invStack.limit;
+		else
+			return 0;
+	}
+
 	public Set<Item> getItemTypes()
 	{
 		return items.keySet();

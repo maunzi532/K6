@@ -8,17 +8,29 @@ import java.util.*;
 
 public class ProductionBuilding implements Building, DoubleInv
 {
+	private BuildingBlueprint blueprint;
 	private Hex location;
 	private Inv2 inputInv;
 	private Inv2 outputInv;
 	private List<Recipe> recipes;
 
-	public ProductionBuilding(Hex location, ProductionBlueprint blueprint)
+	public ProductionBuilding(Hex location, BuildingBlueprint blueprint)
 	{
 		this.location = location;
-		inputInv = new Inv2(blueprint.inputLimits);
-		outputInv = new Inv2(blueprint.outputLimits);
-		recipes = blueprint.recipes;
+		this.blueprint = blueprint;
+		inputInv = new Inv2(blueprint.productionBlueprint.inputLimits);
+		outputInv = new Inv2(blueprint.productionBlueprint.outputLimits);
+		recipes = blueprint.productionBlueprint.recipes;
+	}
+
+	public String name()
+	{
+		return blueprint.name;
+	}
+
+	public List<Recipe> getRecipes()
+	{
+		return recipes;
 	}
 
 	@Override

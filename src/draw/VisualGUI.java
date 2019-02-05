@@ -6,6 +6,7 @@ import javafx.scene.canvas.*;
 import javafx.scene.paint.*;
 import javafx.scene.text.*;
 import logic.*;
+import logic.gui.*;
 
 public class VisualGUI
 {

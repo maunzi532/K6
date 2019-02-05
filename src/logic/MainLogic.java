@@ -10,6 +10,7 @@ import java.util.*;
 import java.util.stream.*;
 import levelMap.*;
 import levelMap.importX.*;
+import logic.gui.*;
 
 public class MainLogic
 {
@@ -36,12 +37,14 @@ public class MainLogic
 		levelMap.addArrow(new VisualArrow(new Hex(-2, 0), new Hex(4, -4), ArrowMode.ARROW, 120));
 		levelMap.addArrow(new VisualArrow(new Hex(-3, 0), new Hex(-3, 0), ArrowMode.ARROW, 120));
 		levelMap.addBuilding(new ProductionBuilding(new Hex(-2, -2),
-				new ProductionBlueprint(new ItemList(), new ItemList(new ItemStack(Items.BLUE, 5)),
-						new Recipe(new ItemList(), new ItemList(Items.BLUE)))));
+				new BuildingBlueprint("BLUE", null,
+						new ProductionBlueprint(new ItemList(), new ItemList(new ItemStack(Items.BLUE, 5)),
+						new Recipe(new ItemList(), new ItemList(Items.BLUE))) )));
 		levelMap.addBuilding(new ProductionBuilding(new Hex(-3, -3),
-				new ProductionBlueprint(new ItemList(new ItemStack(Items.BLUE, 5)),
+				new BuildingBlueprint("GSL", null,
+						new ProductionBlueprint(new ItemList(new ItemStack(Items.BLUE, 5)),
 						new ItemList(new ItemStack(Items.GSL, 5)),
-						new Recipe(new ItemList(Items.BLUE), new ItemList(Items.GSL)))));
+						new Recipe(new ItemList(Items.BLUE), new ItemList(Items.GSL))))));
 		levelMap.addBuilding(new Transporter(new Hex(-3, -2)));
 	}
 
@@ -81,11 +84,16 @@ public class MainLogic
 		{
 			clickDirectMenu(menuEntry);
 		}
+		else if(menuEntry.withGUI)
+		{
+			xMenu.setCurrent(menuEntry);
+		}
 		else
 		{
 			xMenu.setCurrent(menuEntry);
 			updateMarked();
 		}
+		updateGUI();
 	}
 
 	public void handleMapClick(Hex clicked, boolean primary)
@@ -133,6 +141,7 @@ public class MainLogic
 				xf = tile.floorTile;
 				setxState(XState.FLOOR);
 			}
+			updateGUI();
 		}
 	}
 
@@ -159,7 +168,7 @@ public class MainLogic
 		{
 			case DUMMY -> Set.of();
 			case CHARACTER_MOVEMENT -> new Pathing(xe, 4, levelMap).start().getEndpoints();
-			case BUILDING_VIEW -> Set.of();
+			case PRODUCTION_VIEW, TRANSPORT_VIEW -> Set.of();
 			case EDIT_TARGETS -> xb.location().range(0, ((Transporter) xb).range()).stream()
 					.filter(e -> levelMap.getBuilding(e) instanceof DoubleInv).collect(Collectors.toSet());
 			default -> throw new RuntimeException();
@@ -175,8 +184,16 @@ public class MainLogic
 				levelMap.moveEntity(xe, clicked);
 				setxState(XState.PLAYERPHASE);
 			}
-			case BUILDING_VIEW -> {}
 			case EDIT_TARGETS -> ((Transporter) xb).toggleTarget((DoubleInv) levelMap.getBuilding(clicked));
 		}
+	}
+
+	private void updateGUI()
+	{
+		xgui = switch(xMenu.getCurrent())
+		{
+			case PRODUCTION_VIEW -> new ProductionGUI((ProductionBuilding) xb, 0);
+			default -> new XGUI();
+		};
 	}
 }

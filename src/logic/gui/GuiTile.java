@@ -1,10 +1,12 @@
-package logic;
+package logic.gui;
 
 import javafx.scene.image.*;
 import javafx.scene.paint.*;
 
 public class GuiTile
 {
+	public static final GuiTile EMPTY = new GuiTile(null, null, null);
+
 	public final String text;
 	public final Image image;
 	public final Color color;
