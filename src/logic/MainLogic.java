@@ -5,7 +5,6 @@ import building.*;
 import building.blueprint.*;
 import entity.*;
 import hex.*;
-import inv.*;
 import levelMap.*;
 import levelMap.importX.*;
 
@@ -29,15 +28,8 @@ public class MainLogic implements MenuTargets
 		levelMap.addArrow(new VisualArrow(new Hex(2, 0), new Hex(4, 1), ArrowMode.ARROW, 120));
 		levelMap.addArrow(new VisualArrow(new Hex(-2, 0), new Hex(4, -4), ArrowMode.ARROW, 120));
 		levelMap.addArrow(new VisualArrow(new Hex(-3, 0), new Hex(-3, 0), ArrowMode.ARROW, 120));
-		levelMap.addBuilding(new ProductionBuilding(new Hex(-2, -2),
-				new BuildingBlueprint("BLUE", null,
-						new ProductionBlueprint(new ItemList(), new ItemList(new ItemStack(Items.BLUE, 5)),
-						new Recipe(new ItemList(), new ItemList(Items.BLUE))) )));
-		levelMap.addBuilding(new ProductionBuilding(new Hex(-3, -3),
-				new BuildingBlueprint("GSL", null,
-						new ProductionBlueprint(new ItemList(new ItemStack(Items.BLUE, 5)),
-						new ItemList(new ItemStack(Items.GSL, 5)),
-						new Recipe(new ItemList(Items.BLUE), new ItemList(Items.GSL))))));
+		levelMap.addBuilding(new ProductionBuilding(new Hex(-2, -2), new BuildingBlueprint("BLUE1")));
+		levelMap.addBuilding(new ProductionBuilding(new Hex(-3, -3), new BuildingBlueprint("GSL1")));
 		levelMap.addBuilding(new Transporter(new Hex(-3, -2)));
 	}
 

@@ -6,6 +6,7 @@ import javafx.scene.paint.*;
 public enum FloorTileType
 {
 	BLUE(Color.BLUE, Color.LIGHTBLUE, Color.PURPLE, Color.LIGHTBLUE),
+	GSL(Color.GREEN, Color.LIGHTBLUE, Color.PURPLE, Color.GREEN),
 	TECH(Color.BLACK, Color.LIGHTGRAY, Color.BLACK, Color.PALEVIOLETRED);
 
 	FloorTileType(Color normal0, Color normal1, Color marked0, Color marked1)

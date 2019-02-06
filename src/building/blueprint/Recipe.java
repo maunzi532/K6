@@ -1,5 +1,6 @@
 package building.blueprint;
 
+import file.*;
 import inv.*;
 
 public class Recipe
@@ -11,5 +12,13 @@ public class Recipe
 	{
 		this.required = required;
 		this.results = results;
+	}
+
+	public Recipe(BlueprintNode node)
+	{
+		if(!node.data.equals(getClass().getSimpleName()))
+			throw new RuntimeException(node.data + ", required: " + getClass().getSimpleName());
+		required = new ItemList(node.get(0));
+		results = new ItemList(node.get(1));
 	}
 }

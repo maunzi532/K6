@@ -1,5 +1,6 @@
 package inv;
 
+import file.*;
 import java.util.*;
 import java.util.stream.*;
 
@@ -32,4 +33,11 @@ public class ItemList
 		this.items = Arrays.stream(items).collect(Collectors.groupingBy(e -> e, Collectors.counting())).entrySet()
 				.stream().map(e -> new ItemStack(e.getKey(), e.getValue().intValue())).collect(Collectors.toList());
 	}*/
+
+	public ItemList(BlueprintNode node)
+	{
+		if(!node.data.equals(getClass().getSimpleName()))
+			throw new RuntimeException(node.data + ", required: " + getClass().getSimpleName());
+		items = node.inside.stream().map(ItemStack::new).collect(Collectors.toList());
+	}
 }
