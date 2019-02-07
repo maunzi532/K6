@@ -8,7 +8,7 @@ public class FileBlueprint
 {
 	public final BlueprintNode startNode;
 
-	public FileBlueprint(Class resultType, String resource)
+	public FileBlueprint(String resource)
 	{
 		String rawData;
 		try
@@ -18,9 +18,8 @@ public class FileBlueprint
 		{
 			throw new RuntimeException(e);
 		}
-		System.out.println(rawData);
 		ArrayDeque<BlueprintNode> deque = new ArrayDeque<>();
-		startNode = new BlueprintNode(resultType.getSimpleName());
+		startNode = new BlueprintNode("");
 		deque.add(startNode);
 		for(String line : rawData.lines().collect(Collectors.toList()))
 		{

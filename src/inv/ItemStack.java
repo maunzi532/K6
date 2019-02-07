@@ -22,10 +22,8 @@ public class ItemStack
 		}
 		else
 		{
-			if(!node.data.equals(getClass().getSimpleName()))
-				throw new RuntimeException(node.data + ", required: " + getClass().getSimpleName());
-			item = Items.valueOf(node.get(0).data);
-			count = node.get(1).dataInt();
+			item = Items.valueOf(node.data);
+			count = node.get(0).dataInt();
 		}
 	}
 }
