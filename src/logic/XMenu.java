@@ -32,6 +32,7 @@ public class XMenu
 		entries = switch(state)
 		{
 			case ENTITY -> List.of(XMenuEntry.CHARACTER_MOVEMENT);
+			case HERO -> List.of(XMenuEntry.CHARACTER_MOVEMENT, XMenuEntry.TAKE);
 			case BUILDING -> List.of(XMenuEntry.PRODUCTION_VIEW, XMenuEntry.PRODUCTION_PHASE);
 			case TRANSPORTER -> List.of(XMenuEntry.TRANSPORT_VIEW, XMenuEntry.EDIT_TARGETS, XMenuEntry.TRANSPORT_PHASE);
 			default -> List.of();
@@ -39,6 +40,7 @@ public class XMenu
 		current = switch(state)
 		{
 			case ENTITY -> XMenuEntry.CHARACTER_MOVEMENT;
+			case HERO -> XMenuEntry.CHARACTER_MOVEMENT;
 			case BUILDING -> XMenuEntry.PRODUCTION_VIEW;
 			case TRANSPORTER -> XMenuEntry.TRANSPORT_VIEW;
 			default -> XMenuEntry.DUMMY;

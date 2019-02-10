@@ -4,6 +4,7 @@ import arrow.*;
 import building.*;
 import building.blueprint.*;
 import entity.*;
+import entity.hero.*;
 import file.*;
 import hex.*;
 import levelMap.*;
@@ -23,7 +24,7 @@ public class MainLogic implements MenuTargets
 		levelMap = new LevelMap();
 		menuLogic = new MenuLogic(this, levelMap);
 		new TestImportSector(8).generate().importIntoMap(levelMap);
-		levelMap.addEntity(new XEntity(new Hex(2, 1)));
+		levelMap.addEntity(new XHero(new Hex(2, 1)));
 		levelMap.addEntity(new XEntity(new Hex(0, 1)));
 		levelMap.addEntity(new XEntity(new Hex(-2, -1)));
 		levelMap.addArrow(new VisualArrow(new Hex(2, 0), new Hex(4, 1), ArrowMode.ARROW, 120));
@@ -101,7 +102,10 @@ public class MainLogic implements MenuTargets
 			if(start >= 2 && tile.entity != null)
 			{
 				xe = tile.entity;
-				menuLogic.setxState(XState.ENTITY);
+				if(xe instanceof XHero)
+					menuLogic.setxState(XState.HERO);
+				else
+					menuLogic.setxState(XState.ENTITY);
 			}
 			else if(start >= 1 && tile.building != null)
 			{

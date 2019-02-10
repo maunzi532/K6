@@ -8,7 +8,10 @@ public enum XMenuEntry
 	CHARACTER_MOVEMENT("Move", false, false),
 	PRODUCTION_VIEW("View", false, true),
 	TRANSPORT_VIEW("View", false, false),
-	EDIT_TARGETS("Targets", false, false);
+	EDIT_TARGETS("Targets", false, false),
+	TAKE("Take Items", false, false),
+	GIVE("Give Items", false, false),
+	DIRECTED_TRADE("Move Items", false, true);
 
 	XMenuEntry(String text, boolean direct, boolean withGUI)
 	{

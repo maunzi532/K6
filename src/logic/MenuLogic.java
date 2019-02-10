@@ -47,6 +47,7 @@ public class MenuLogic
 		xState = state;
 		xMenu.updateState(state);
 		updateMarked();
+		updateGUI();
 	}
 
 	public void handleGUIClick(Hex h1)
@@ -67,15 +68,11 @@ public class MenuLogic
 		{
 			clickDirectMenu(menuEntry);
 		}
-		else if(menuEntry.withGUI)
-		{
-			xMenu.setCurrent(menuEntry);
-		}
 		else
 		{
 			xMenu.setCurrent(menuEntry);
-			updateMarked();
 		}
+		updateMarked();
 		updateGUI();
 	}
 
@@ -92,12 +89,12 @@ public class MenuLogic
 	{
 		levelMap.setMarked(switch(xMenu.getCurrent())
 		{
-			case DUMMY -> Set.of();
 			case CHARACTER_MOVEMENT -> new Pathing(menuTargets.getEntity(), 4, levelMap).start().getEndpoints();
-			case PRODUCTION_VIEW, TRANSPORT_VIEW -> Set.of();
 			case EDIT_TARGETS -> menuTargets.getBuilding().location().range(0, ((Transporter) menuTargets.getBuilding()).range()).stream()
 					.filter(e -> levelMap.getBuilding(e) instanceof DoubleInv).collect(Collectors.toSet());
-			default -> throw new RuntimeException();
+			case TAKE -> menuTargets.getEntity().location.range(0, 4).stream()
+					.filter(e -> levelMap.getBuilding(e) instanceof DoubleInv).collect(Collectors.toSet());
+			default -> Set.of();
 		});
 	}
 
@@ -111,6 +108,12 @@ public class MenuLogic
 				setxState(XState.PLAYERPHASE);
 			}
 			case EDIT_TARGETS -> ((Transporter) menuTargets.getBuilding()).toggleTarget((DoubleInv) levelMap.getBuilding(clicked));
+			case TAKE ->
+			{
+				xMenu.setCurrent(XMenuEntry.DIRECTED_TRADE);
+				updateMarked();
+				updateGUI();
+			}
 		}
 	}
 
