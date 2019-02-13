@@ -1,6 +1,6 @@
 package logic;
 
-public enum XState2
+public enum XState
 {
 	NONE(false, false, false),
 	CHARACTER_MOVEMENT(true, true, false),
@@ -11,7 +11,7 @@ public enum XState2
 	GIVE_TARGET(true, true, false),
 	DIRECTED_TRADE(false, false, false);
 
-	XState2(boolean set, boolean mark, boolean hasGUI)
+	XState(boolean set, boolean mark, boolean hasGUI)
 	{
 		this.set = set;
 		this.mark = mark;

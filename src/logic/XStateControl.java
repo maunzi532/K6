@@ -10,22 +10,37 @@ import java.util.stream.Collectors;
 import levelMap.*;
 import logic.gui.*;
 
-public class XMenu2
+public class XStateControl
 {
-	public XState2 state = XState2.NONE;
+	private XState state = XState.NONE;
 	private Object[] stateInfo = new Object[3];
-	public List<XState2> menu = List.of();
+	private List<XState> menu = List.of();
 	private LevelMap levelMap;
-	public XGUI xgui = XGUI.NONE;
+	private XGUI xgui = XGUI.NONE;
 
-	public XMenu2(LevelMap levelMap)
+	public XStateControl(LevelMap levelMap)
 	{
 		this.levelMap = levelMap;
 	}
 
+	public XState getState()
+	{
+		return state;
+	}
+
+	public List<XState> getMenu()
+	{
+		return menu;
+	}
+
+	public XGUI getXgui()
+	{
+		return xgui;
+	}
+
 	public void handleMenuClick(int menuOption, int key)
 	{
-		XState2 newState = menu.get(menuOption);
+		XState newState = menu.get(menuOption);
 		onMenuClick(newState, key);
 		if(newState.set)
 		{
@@ -58,53 +73,53 @@ public class XMenu2
 		else
 		{
 			FullTile tile = levelMap.tile(mapHex);
-			if(key == 0)
+			if(key == 1)
 			{
 				if(tile.entity != null)
 				{
-					clearAddAndSetState(tile.entity);
+					setTileState(tile.entity);
 				}
 				else if(tile.building != null)
 				{
-					clearAddAndSetState(tile.building);
+					setTileState(tile.building);
 				}
 			}
-			else if(key == 1)
+			else if(key == 3)
 			{
 				if(tile.building != null)
 				{
-					clearAddAndSetState(tile.building);
+					setTileState(tile.building);
 				}
 				else if(tile.entity != null)
 				{
-					clearAddAndSetState(tile.entity);
+					setTileState(tile.entity);
 				}
 			}
 		}
 	}
 
-	private void clearAddAndSetState(Object object)
+	private void setTileState(Object object)
 	{
 		if(object instanceof XEntity)
 		{
 			if(object instanceof XHero)
 			{
-				state = XState2.CHARACTER_MOVEMENT;
+				state = XState.CHARACTER_MOVEMENT;
 			}
 			else
 			{
-				state = XState2.CHARACTER_MOVEMENT;
+				state = XState.CHARACTER_MOVEMENT;
 			}
 		}
 		else if(object instanceof Building)
 		{
 			if(object instanceof Transporter)
 			{
-				state = XState2.TRANSPORT_VIEW;
+				state = XState.TRANSPORT_VIEW;
 			}
 			else if(object instanceof ProductionBuilding)
 			{
-				state = XState2.PRODUCTION_VIEW;
+				state = XState.PRODUCTION_VIEW;
 			}
 			else
 			{
@@ -115,7 +130,7 @@ public class XMenu2
 		update();
 	}
 
-	private void onMenuClick(XState2 clicked, int key)
+	private void onMenuClick(XState clicked, int key)
 	{
 
 	}
@@ -127,20 +142,20 @@ public class XMenu2
 			case CHARACTER_MOVEMENT ->
 					{
 						levelMap.moveEntity((XEntity) stateInfo[0], mapHex);
-						state = XState2.NONE;
+						state = XState.NONE;
 					}
 			case TRANSPORT_TARGETS -> ((Transporter) stateInfo[0]).toggleTarget((DoubleInv) levelMap.getBuilding(mapHex));
 			case TAKE_TARGET ->
 					{
 						stateInfo[1] = levelMap.getBuilding(mapHex);
 						stateInfo[2] = stateInfo[0];
-						state = XState2.DIRECTED_TRADE;
+						state = XState.DIRECTED_TRADE;
 					}
 			case GIVE_TARGET ->
 					{
 						stateInfo[1] = stateInfo[0];
 						stateInfo[2] = levelMap.getBuilding(mapHex);
-						state = XState2.DIRECTED_TRADE;
+						state = XState.DIRECTED_TRADE;
 					}
 		}
 	}
@@ -164,9 +179,9 @@ public class XMenu2
 		menu = switch(state)
 				{
 					case CHARACTER_MOVEMENT, GIVE_TARGET, TAKE_TARGET, DIRECTED_TRADE ->
-							List.of(XState2.CHARACTER_MOVEMENT, XState2.GIVE_TARGET, XState2.TAKE_TARGET);
-					case TRANSPORT_VIEW, TRANSPORT_TARGETS -> List.of(XState2.TRANSPORT_VIEW, XState2.TRANSPORT_TARGETS);
-					case PRODUCTION_VIEW -> List.of(XState2.PRODUCTION_VIEW);
+							List.of(XState.CHARACTER_MOVEMENT, XState.GIVE_TARGET, XState.TAKE_TARGET);
+					case TRANSPORT_VIEW, TRANSPORT_TARGETS -> List.of(XState.TRANSPORT_VIEW, XState.TRANSPORT_TARGETS);
+					case PRODUCTION_VIEW -> List.of(XState.PRODUCTION_VIEW);
 					default -> List.of();
 				};
 		xgui = switch(state)
