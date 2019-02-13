@@ -57,8 +57,8 @@ public class MenuLogic
 		int y = offsetHex.v[1];
 		if(x >= 0 && x < xgui.xw() && y >= 0 && y < xgui.yw())
 			xgui.click(x, y);
-		else
-			xgui.click();
+		/*else
+			xgui.click();*/
 	}
 
 	public void handleMenuClick(int option)

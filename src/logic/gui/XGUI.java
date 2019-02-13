@@ -38,8 +38,6 @@ public class XGUI
 		return 0;
 	}
 
-	public void click(){}
-
 	public void click(int x, int y)
 	{
 		/*System.out.println("x = " + x);

@@ -32,12 +32,6 @@ public class DirectedTradeGUI extends XGUI
 	}
 
 	@Override
-	public void click()
-	{
-
-	}
-
-	@Override
 	public void click(int x, int y)
 	{
 
