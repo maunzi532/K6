@@ -11,9 +11,9 @@ public class VisualMenu
 {
 	private final GraphicsContext gd;
 	public final XCamera camera;
-	private final XMenu xMenu;
+	private final XMenu2 xMenu;
 
-	public VisualMenu(GraphicsContext gd, double xHalfWidth, double yHalfWidth, XMenu xMenu)
+	public VisualMenu(GraphicsContext gd, double xHalfWidth, double yHalfWidth, XMenu2 xMenu)
 	{
 		this.gd = gd;
 		camera = new XCamera(xHalfWidth * 2, yHalfWidth,
@@ -28,7 +28,7 @@ public class VisualMenu
 
 	public int hexToOption(Hex hex)
 	{
-		int optionCount = xMenu.getEntries().size();
+		int optionCount = xMenu.menu.size();
 		for(int i = 0; i < optionCount; i++)
 		{
 			if(hex.equals(optionToHex(i)))
@@ -39,12 +39,12 @@ public class VisualMenu
 
 	public void draw()
 	{
-		List<XMenuEntry> menuEntries = xMenu.getEntries();
+		List<XState2> menuEntries = xMenu.menu;
 		camera.yShift = (menuEntries.size() - 1) * 1.5 / 2d;
 		for(int i = 0; i < menuEntries.size(); i++)
 		{
-			draw0(camera.layout(), optionToHex(i), menuEntries.get(i).text,
-					menuEntries.get(i) == xMenu.getCurrent());
+			draw0(camera.layout(), optionToHex(i), menuEntries.get(i).name(),
+					menuEntries.get(i) == xMenu.state);
 		}
 	}
 

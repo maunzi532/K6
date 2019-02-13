@@ -15,9 +15,9 @@ public class VisualGUI
 	private static final DoubleHex RLS = new DoubleHex(4d / 6d, -8d / 6d, 4d / 6d);
 	private final GraphicsContext gd;
 	public final XCamera camera;
-	private final MenuLogic menuLogic;
+	private final XMenu2 menuLogic;
 
-	public VisualGUI(GraphicsContext gd, double xHalfWidth, double yHalfWidth, MenuLogic menuLogic)
+	public VisualGUI(GraphicsContext gd, double xHalfWidth, double yHalfWidth, XMenu2 menuLogic)
 	{
 		this.gd = gd;
 		camera = new XCamera(xHalfWidth, yHalfWidth, yHalfWidth / 8, yHalfWidth / 8, 0,  0, MatrixH.LP);
@@ -26,7 +26,7 @@ public class VisualGUI
 
 	private XGUI xgui()
 	{
-		return menuLogic.getXgui();
+		return menuLogic.xgui;
 	}
 
 	private DoubleHex rl()

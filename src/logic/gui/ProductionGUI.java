@@ -50,7 +50,7 @@ public class ProductionGUI extends XGUI
 	}
 
 	@Override
-	public void click(int x, int y)
+	public void click(int x, int y, int key)
 	{
 
 	}

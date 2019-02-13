@@ -20,47 +20,47 @@ public class MainVisual
 		mainLogic = new MainLogic();
 		visualTile = new VisualTile(mainLogic.getLevelMap(), gd);
 		mapCamera = new XCamera(w / 2f, h / 2f, 40, 40, 0, 0, MatrixH.LP);
-		visualMenu = new VisualMenu(gd, w / 2f, h / 2f, mainLogic.getMenuLogic().getxMenu());
+		visualMenu = new VisualMenu(gd, w / 2f, h / 2f, mainLogic.getMenu());
 		menuCamera = visualMenu.camera;
-		visualGUI = new VisualGUI(gd, w / 2f, h / 2f, mainLogic.getMenuLogic());
+		visualGUI = new VisualGUI(gd, w / 2f, h / 2f, mainLogic.getMenu());
 		guiCamera = visualGUI.camera;
 		draw();
 	}
 
-	public void handleClick(double x, double y, boolean primary)
+	public void handleClick(double x, double y, int mouseKey)
 	{
-		if(handleGUIClick(x, y))
+		if(handleGUIClick(x, y, mouseKey))
 			return;
-		if(handleMenuClick(x, y))
+		if(handleMenuClick(x, y, mouseKey))
 			return;
-		handleMapClick(x, y, primary);
+		handleMapClick(x, y, mouseKey);
 	}
 
-	private boolean handleGUIClick(double x, double y)
+	private boolean handleGUIClick(double x, double y, int mouseKey)
 	{
 		DoubleHex h1 = guiCamera.clickLocation(x, y);
 		if(visualGUI.inside(h1))
 		{
-			mainLogic.handleGUIClick(h1.cast());
+			mainLogic.handleGUIClick(h1.cast(), mouseKey);
 			return true;
 		}
 		return false;
 	}
 
-	private boolean handleMenuClick(double x, double y)
+	private boolean handleMenuClick(double x, double y, int mouseKey)
 	{
 		int option = visualMenu.hexToOption(menuCamera.clickLocation(x, y).cast());
 		if(option >= 0)
 		{
-			mainLogic.handleMenuClick(option);
+			mainLogic.handleMenuClick(option, mouseKey);
 			return true;
 		}
 		return false;
 	}
 
-	private void handleMapClick(double x, double y, boolean primary)
+	private void handleMapClick(double x, double y, int mouseKey)
 	{
-		mainLogic.handleMapClick(mapCamera.clickLocation(x, y).cast(), primary);
+		mainLogic.handleMapClick(mapCamera.clickLocation(x, y).cast(), mouseKey);
 	}
 
 	public void handleKey(KeyCode keyCode)

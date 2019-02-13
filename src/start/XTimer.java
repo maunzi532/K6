@@ -11,7 +11,7 @@ public class XTimer extends AnimationTimer
 	private MainVisual mainVisual;
 	private boolean clicked;
 	private double xClicked, yClicked;
-	private boolean primary;
+	private MouseButton mouseKey;
 	private KeyCode keyCode;
 
 	public XTimer(GraphicsContext gd, int w, int h)
@@ -24,7 +24,7 @@ public class XTimer extends AnimationTimer
 		clicked = true;
 		xClicked = mouseEvent.getSceneX();
 		yClicked = mouseEvent.getSceneY();
-		primary = mouseEvent.getButton() == MouseButton.PRIMARY;
+		mouseKey = mouseEvent.getButton();
 	}
 
 	public void onKeyEvent(KeyEvent keyEvent)
@@ -39,7 +39,7 @@ public class XTimer extends AnimationTimer
 		//last = currentNanoTime;
 		if(clicked)
 		{
-			mainVisual.handleClick(xClicked, yClicked, primary);
+			mainVisual.handleClick(xClicked, yClicked, mouseKey.ordinal());
 			clicked = false;
 		}
 		else if(keyCode != null)

@@ -10,19 +10,15 @@ import hex.*;
 import levelMap.*;
 import levelMap.importX.*;
 
-public class MainLogic implements MenuTargets
+public class MainLogic
 {
 	private LevelMap levelMap;
-	private Hex xh;
-	private XEntity xe;
-	private Building xb;
-	private FloorTile xf;
-	private MenuLogic menuLogic;
+	private XMenu2 menu2;
 
 	public MainLogic()
 	{
 		levelMap = new LevelMap();
-		menuLogic = new MenuLogic(this, levelMap);
+		menu2 = new XMenu2(levelMap);
 		new TestImportSector(8).generate().importIntoMap(levelMap);
 		levelMap.addEntity(new XHero(new Hex(2, 1)));
 		levelMap.addEntity(new XEntity(new Hex(0, 1)));
@@ -41,27 +37,9 @@ public class MainLogic implements MenuTargets
 		return levelMap;
 	}
 
-	public MenuLogic getMenuLogic()
+	public XMenu2 getMenu()
 	{
-		return menuLogic;
-	}
-
-	@Override
-	public XEntity getEntity()
-	{
-		return xe;
-	}
-
-	@Override
-	public Building getBuilding()
-	{
-		return xb;
-	}
-
-	@Override
-	public FloorTile getFloorTile()
-	{
-		return xf;
+		return menu2;
 	}
 
 	public void tick()
@@ -69,58 +47,18 @@ public class MainLogic implements MenuTargets
 		levelMap.tickArrows();
 	}
 
-	public void handleGUIClick(Hex h1)
+	public void handleGUIClick(Hex h1, int mouseKey)
 	{
-		menuLogic.handleGUIClick(h1);
+		menu2.handleGUIClick(h1, mouseKey);
 	}
 
-	public void handleMenuClick(int option)
+	public void handleMenuClick(int option, int mouseKey)
 	{
-		menuLogic.handleMenuClick(option);
+		menu2.handleMenuClick(option, mouseKey);
 	}
 
-	public void handleMapClick(Hex clicked, boolean primary)
+	public void handleMapClick(Hex clicked, int mouseKey)
 	{
-		FullTile tile = levelMap.tile(clicked);
-		if(primary && levelMap.getMarked().contains(clicked))
-		{
-			menuLogic.clickMarked(clicked);
-		}
-		else
-		{
-			chooseTile(clicked, tile, menuLogic.getxState().nextTarget);
-		}
-	}
-
-	private void chooseTile(Hex hex, FullTile tile, int start)
-	{
-		if(!hex.equals(xh))
-			start = 2;
-		if(tile.exists())
-		{
-			xh = hex;
-			if(start >= 2 && tile.entity != null)
-			{
-				xe = tile.entity;
-				if(xe instanceof XHero)
-					menuLogic.setxState(XState.HERO);
-				else
-					menuLogic.setxState(XState.ENTITY);
-			}
-			else if(start >= 1 && tile.building != null)
-			{
-				xb = tile.building;
-				if(tile.building instanceof Transporter)
-					menuLogic.setxState(XState.TRANSPORTER);
-				else
-					menuLogic.setxState(XState.BUILDING);
-			}
-			else
-			{
-				xf = tile.floorTile;
-				menuLogic.setxState(XState.FLOOR);
-			}
-			menuLogic.updateGUI();
-		}
+		menu2.handleMapClick(clicked, mouseKey);
 	}
 }
