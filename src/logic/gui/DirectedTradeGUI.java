@@ -1,6 +1,7 @@
 package logic.gui;
 
-import inv.*;
+import inv.DoubleInv;
+import logic.*;
 
 public class DirectedTradeGUI extends XGUI
 {
@@ -9,6 +10,7 @@ public class DirectedTradeGUI extends XGUI
 
 	public DirectedTradeGUI(DoubleInv provide, DoubleInv receive)
 	{
+		super();
 		this.provide = provide;
 		this.receive = receive;
 		update();
@@ -32,8 +34,16 @@ public class DirectedTradeGUI extends XGUI
 	}
 
 	@Override
-	public void click(int x, int y, int key)
+	public void click(int x, int y, int key, XStateControl stateControl)
 	{
 
+	}
+
+	@Override
+	public void close(XStateControl stateControl)
+	{
+		provide.outputInv().rollback();
+		receive.inputInv().rollback();
+		stateControl.setState(XState.NONE);
 	}
 }

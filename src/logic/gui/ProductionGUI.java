@@ -4,6 +4,7 @@ import building.*;
 import building.blueprint.*;
 import inv.*;
 import java.util.*;
+import logic.*;
 
 public class ProductionGUI extends XGUI
 {
@@ -50,8 +51,14 @@ public class ProductionGUI extends XGUI
 	}
 
 	@Override
-	public void click(int x, int y, int key)
+	public void click(int x, int y, int key, XStateControl stateControl)
 	{
 
+	}
+
+	@Override
+	public void close(XStateControl stateControl)
+	{
+		stateControl.setState(XState.NONE);
 	}
 }

@@ -2,22 +2,26 @@ package logic;
 
 public enum XState
 {
-	NONE(false, false, false),
-	CHARACTER_MOVEMENT(true, true, false),
-	PRODUCTION_VIEW(true, false, true),
-	TRANSPORT_VIEW(true, false, false),
-	TRANSPORT_TARGETS(true, true, false),
-	TAKE_TARGET(true, true, false),
-	GIVE_TARGET(true, true, false),
-	DIRECTED_TRADE(false, false, false);
+	NONE("Error", false, false, false),
+	CHARACTER_MOVEMENT("Move", true, true, false),
+	PRODUCTION_VIEW("View", true, false, true),
+	TRANSPORT_VIEW("View", true, false, false),
+	TRANSPORT_TARGETS("Targets", true, true, false),
+	TAKE_TARGET("Take", true, true, false),
+	GIVE_TARGET("Give", true, true, false),
+	DIRECTED_TRADE("Error", false, false, true),
+	PRODUCTION_PHASE("Production", false, false, false),
+	TRANSPORT_PHASE("Transport", false, false, false);
 
-	XState(boolean set, boolean mark, boolean hasGUI)
+	XState(String text, boolean set, boolean mark, boolean hasGUI)
 	{
+		this.text = text;
 		this.set = set;
 		this.mark = mark;
 		this.hasGUI = hasGUI;
 	}
 
+	public final String text;
 	public final boolean set;
 	public final boolean mark;
 	public final boolean hasGUI;

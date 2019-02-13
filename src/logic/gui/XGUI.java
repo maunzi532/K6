@@ -1,9 +1,9 @@
 package logic.gui;
 
-public class XGUI
-{
-	public static final XGUI NONE = new XGUI();
+import logic.*;
 
+public abstract class XGUI
+{
 	protected GuiTile[][] tiles;
 
 	public XGUI()
@@ -28,19 +28,16 @@ public class XGUI
 		return tiles;
 	}
 
-	public int xw()
+	public abstract int xw();
+
+	public abstract int yw();
+
+	public abstract void click(int x, int y, int key, XStateControl stateControl);
+
+	public void clickOutside(int key, XStateControl stateControl)
 	{
-		return 0;
+		close(stateControl);
 	}
 
-	public int yw()
-	{
-		return 0;
-	}
-
-	public void click(int x, int y, int key)
-	{
-		/*System.out.println("x = " + x);
-		System.out.println("y = " + y);*/
-	}
+	public abstract void close(XStateControl stateControl);
 }

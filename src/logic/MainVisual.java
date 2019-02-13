@@ -33,38 +33,20 @@ public class MainVisual
 
 	public void handleClick(double x, double y, int mouseKey)
 	{
-		if(handleGUIClick(x, y, mouseKey))
-			return;
-		if(handleMenuClick(x, y, mouseKey))
-			return;
-		handleMapClick(x, y, mouseKey);
-	}
-
-	private boolean handleGUIClick(double x, double y, int mouseKey)
-	{
-		DoubleHex h1 = guiCamera.clickLocation(x, y);
-		if(visualGUI.inside(h1))
+		int menuOption = visualMenu.hexToOption(menuCamera.clickLocation(x, y).cast());
+		if(menuOption >= 0)
 		{
-			stateControl.handleGUIClick(h1.cast(), mouseKey);
-			return true;
+			stateControl.handleMenuClick(menuOption, mouseKey);
 		}
-		return false;
-	}
-
-	private boolean handleMenuClick(double x, double y, int mouseKey)
-	{
-		int option = visualMenu.hexToOption(menuCamera.clickLocation(x, y).cast());
-		if(option >= 0)
+		else if(stateControl.getState().hasGUI)
 		{
-			stateControl.handleMenuClick(option, mouseKey);
-			return true;
+			DoubleHex h1 = guiCamera.clickLocation(x, y);
+			stateControl.handleGUIClick(h1.cast(), visualGUI.inside(h1), mouseKey);
 		}
-		return false;
-	}
-
-	private void handleMapClick(double x, double y, int mouseKey)
-	{
-		stateControl.handleMapClick(mapCamera.clickLocation(x, y).cast(), mouseKey);
+		else
+		{
+			stateControl.handleMapClick(mapCamera.clickLocation(x, y).cast(), mouseKey);
+		}
 	}
 
 	public void handleKey(KeyCode keyCode)

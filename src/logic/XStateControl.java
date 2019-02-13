@@ -12,20 +12,27 @@ import logic.gui.*;
 
 public class XStateControl
 {
-	private XState state = XState.NONE;
-	private Object[] stateInfo = new Object[3];
-	private List<XState> menu = List.of();
 	private LevelMap levelMap;
-	private XGUI xgui = XGUI.NONE;
+	private XState state;
+	private List<XState> menu;
+	private XGUI xgui;
+	private Object[] stateInfo = new Object[3];
 
 	public XStateControl(LevelMap levelMap)
 	{
 		this.levelMap = levelMap;
+		state = XState.NONE;
+		update();
 	}
 
 	public XState getState()
 	{
 		return state;
+	}
+
+	public void setState(XState state)
+	{
+		this.state = state;
 	}
 
 	public List<XState> getMenu()
@@ -41,6 +48,9 @@ public class XStateControl
 	public void handleMenuClick(int menuOption, int key)
 	{
 		XState newState = menu.get(menuOption);
+		if(newState == state && state.set)
+			return;
+		xgui.close(this);
 		onMenuClick(newState, key);
 		if(newState.set)
 		{
@@ -49,10 +59,17 @@ public class XStateControl
 		update();
 	}
 
-	public void handleGUIClick(Hex guiHex, int key)
+	public void handleGUIClick(Hex guiHex, boolean inside, int key)
 	{
 		OffsetHex coordinates = new OffsetHex(guiHex);
-		xgui.click(coordinates.v[0], coordinates.v[1], key);
+		if(inside)
+		{
+			xgui.click(coordinates.v[0], coordinates.v[1], key, this);
+		}
+		else
+		{
+			xgui.clickOutside(key, this);
+		}
 		update();
 	}
 
@@ -108,7 +125,7 @@ public class XStateControl
 			}
 			else
 			{
-				state = XState.CHARACTER_MOVEMENT;
+				return;
 			}
 		}
 		else if(object instanceof Building)
@@ -132,7 +149,11 @@ public class XStateControl
 
 	private void onMenuClick(XState clicked, int key)
 	{
-
+		switch(clicked)
+		{
+			case PRODUCTION_PHASE -> levelMap.productionPhase();
+			case TRANSPORT_PHASE -> levelMap.transportPhase();
+		}
 	}
 
 	private void onClickMarked(Hex mapHex, int key)
@@ -162,7 +183,7 @@ public class XStateControl
 
 	private void onClickUnmarked(Hex mapHex, int key)
 	{
-
+		state = XState.NONE;
 	}
 
 	private void update()
@@ -180,14 +201,15 @@ public class XStateControl
 				{
 					case CHARACTER_MOVEMENT, GIVE_TARGET, TAKE_TARGET, DIRECTED_TRADE ->
 							List.of(XState.CHARACTER_MOVEMENT, XState.GIVE_TARGET, XState.TAKE_TARGET);
-					case TRANSPORT_VIEW, TRANSPORT_TARGETS -> List.of(XState.TRANSPORT_VIEW, XState.TRANSPORT_TARGETS);
-					case PRODUCTION_VIEW -> List.of(XState.PRODUCTION_VIEW);
+					case PRODUCTION_VIEW -> List.of(XState.PRODUCTION_VIEW, XState.PRODUCTION_PHASE, XState.TRANSPORT_PHASE);
+					case TRANSPORT_VIEW, TRANSPORT_TARGETS -> List.of(XState.TRANSPORT_VIEW, XState.TRANSPORT_TARGETS, XState.PRODUCTION_PHASE, XState.TRANSPORT_PHASE);
 					default -> List.of();
 				};
 		xgui = switch(state)
 				{
 					case PRODUCTION_VIEW -> new ProductionGUI((ProductionBuilding) stateInfo[0], 0);
-					default -> XGUI.NONE;
+					case DIRECTED_TRADE -> new DirectedTradeGUI((DoubleInv) stateInfo[1], (DoubleInv) stateInfo[2]);
+					default -> NoGUI.NONE;
 				};
 	}
 }

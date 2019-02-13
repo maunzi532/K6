@@ -11,6 +11,7 @@ public class XHero extends XEntity implements DoubleInv
 	public XHero(Hex location)
 	{
 		super(location);
+		inv = new Inv2(20);
 	}
 
 	@Override

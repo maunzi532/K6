@@ -43,7 +43,7 @@ public class VisualMenu
 		camera.yShift = (menuEntries.size() - 1) * 1.5 / 2d;
 		for(int i = 0; i < menuEntries.size(); i++)
 		{
-			draw0(camera.layout(), optionToHex(i), menuEntries.get(i).name(),
+			draw0(camera.layout(), optionToHex(i), menuEntries.get(i).text,
 					menuEntries.get(i) == stateControl.getState());
 		}
 	}

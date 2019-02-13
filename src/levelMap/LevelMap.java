@@ -47,7 +47,7 @@ public class LevelMap implements CanAddArrows
 		arrows.removeIf(VisualArrow::tick);
 	}
 
-	public void buildingPhase()
+	public void productionPhase()
 	{
 		for(Building building : buildings.values())
 		{
