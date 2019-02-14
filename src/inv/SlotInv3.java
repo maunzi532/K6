@@ -12,6 +12,11 @@ public class SlotInv3 implements Inv3
 		slots = limits.items.stream().map(InvSlot3::new).collect(Collectors.toList());
 	}
 
+	public InvSlot3 getSlot(Item type)
+	{
+		return slots.stream().filter(e -> e.getType().equals(type)).findFirst().orElseThrow();
+	}
+
 	@Override
 	public void commit()
 	{
@@ -27,7 +32,7 @@ public class SlotInv3 implements Inv3
 	@Override
 	public List<Item> providedItemTypes()
 	{
-		return slots.stream().filter(e -> e.doesStackExist() && e.canProvide()).map(InvSlot3::getType).collect(Collectors.toList());
+		return slots.stream().filter(e -> e.doesStackExist() && e.canProvide()).map(InvSlot3::getStackItem).collect(Collectors.toList());
 	}
 
 	@Override

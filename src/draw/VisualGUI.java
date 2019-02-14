@@ -1,11 +1,10 @@
 package draw;
 
-import building.*;
 import hex.*;
-import javafx.scene.canvas.*;
-import javafx.scene.paint.*;
-import javafx.scene.text.*;
-import logic.*;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import logic.XStateControl;
 import logic.gui.*;
 
 public class VisualGUI
@@ -75,15 +74,20 @@ public class VisualGUI
 		if(guiTile.image != null)
 		{
 			PointD midPoint = layout.hexToPixel(h1);
-			gd.drawImage(Building.IMAGE, midPoint.v[0] - layout.size.v[0], midPoint.v[1] - layout.size.v[1],
+			gd.drawImage(guiTile.image, midPoint.v[0] - layout.size.v[0], midPoint.v[1] - layout.size.v[1],
 					layout.size.v[0] * 2, layout.size.v[1] * 2);
 		}
 		if(guiTile.text != null)
 		{
 			PointD midPoint = layout.hexToPixel(h1);
-			gd.setFill(Color.BLACK);
 			gd.setFont(new Font(layout.size.v[1] * 0.5));
-			gd.fillText(guiTile.text, midPoint.v[0] - layout.size.v[0] * 0.7, midPoint.v[1] + layout.size.v[1] * 0.2, layout.size.v[0] * 1.4);
+			if(guiTile.image != null)
+			{
+				gd.setStroke(Color.WHITE);
+				gd.strokeText(guiTile.text, midPoint.v[0], midPoint.v[1], layout.size.v[0] * 1.4);
+			}
+			gd.setFill(Color.BLACK);
+			gd.fillText(guiTile.text, midPoint.v[0], midPoint.v[1], layout.size.v[0] * 1.4);
 		}
 	}
 }

@@ -18,9 +18,14 @@ public class InvSlot3
 		return stackExists;
 	}
 
-	public Item getType()
+	public Item getStackItem()
 	{
 		return stackExists ? stack.item : type;
+	}
+
+	public Item getType()
+	{
+		return type;
 	}
 
 	public ItemStack getStack()
@@ -33,9 +38,19 @@ public class InvSlot3
 		return stackExists ? stack.getWeight() : 0;
 	}
 
+	public int getWeightLimit()
+	{
+		return weightLimit;
+	}
+
 	public int getCurrent()
 	{
 		return stackExists ? stack.getCurrent() : 0;
+	}
+
+	public int getLimit()
+	{
+		return stackExists ? weightLimit / stack.item.weight() : weightLimit;
 	}
 
 	public int getDecrease()

@@ -65,6 +65,6 @@ public class VisualMenu
 		PointD midPoint = layout.hexToPixel(h1);
 		gd.setFill(Color.BLACK);
 		gd.setFont(new Font(layout.size.v[1] * 0.5));
-		gd.fillText(text, midPoint.v[0] - layout.size.v[0] * 0.7, midPoint.v[1] + layout.size.v[1] * 0.2, layout.size.v[0] * 1.4);
+		gd.fillText(text, midPoint.v[0], midPoint.v[1], layout.size.v[0] * 1.4);
 	}
 }

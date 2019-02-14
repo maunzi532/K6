@@ -2,8 +2,10 @@ package logic;
 
 import draw.*;
 import hex.*;
+import javafx.geometry.VPos;
 import javafx.scene.canvas.*;
 import javafx.scene.input.*;
+import javafx.scene.text.TextAlignment;
 import levelMap.LevelMap;
 
 public class MainVisual
@@ -22,6 +24,8 @@ public class MainVisual
 		levelMap = new LevelMap();
 		new InitializeMap(levelMap);
 		stateControl = new XStateControl(levelMap);
+		gd.setTextAlign(TextAlignment.CENTER);
+		gd.setTextBaseline(VPos.CENTER);
 		visualTile = new VisualTile(levelMap, gd);
 		mapCamera = new XCamera(w / 2f, h / 2f, 40, 40, 0, 0, MatrixH.LP);
 		visualMenu = new VisualMenu(gd, w / 2f, h / 2f, stateControl);

@@ -10,8 +10,8 @@ public class ProductionBuilding implements Building, DoubleInv
 {
 	private BuildingBlueprint blueprint;
 	private Hex location;
-	private Inv3 inputInv;
-	private Inv3 outputInv;
+	private SlotInv3 inputInv;
+	private SlotInv3 outputInv;
 	private List<Recipe> recipes;
 
 	public ProductionBuilding(Hex location, BuildingBlueprint blueprint)
@@ -26,6 +26,16 @@ public class ProductionBuilding implements Building, DoubleInv
 	public String name()
 	{
 		return blueprint.name;
+	}
+
+	public SlotInv3 getInputInv()
+	{
+		return inputInv;
+	}
+
+	public SlotInv3 getOutputInv()
+	{
+		return outputInv;
 	}
 
 	public List<Recipe> getRecipes()
