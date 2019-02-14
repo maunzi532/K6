@@ -80,15 +80,4 @@ public class InvStack3
 	{
 		return current == 0 && decrease == 0 && increase == 0;
 	}
-
-	@Override
-	public String toString()
-	{
-		return "InvStack3{" +
-				"item=" + item +
-				", current=" + current +
-				", decrease=" + decrease +
-				", increase=" + increase +
-				'}';
-	}
 }

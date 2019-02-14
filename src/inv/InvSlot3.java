@@ -7,6 +7,17 @@ public class InvSlot3
 	private Item type;
 	private int weightLimit;
 
+	public InvSlot3(ItemStack limits)
+	{
+		type = limits.item;
+		weightLimit = limits.count;
+	}
+
+	public Item getType()
+	{
+		return stackExists ? stack.item : type;
+	}
+
 	public ItemStack getStack()
 	{
 		return stackExists ? new ItemStack(stack.item, stack.getCurrent()) : new ItemStack(type, 0);
@@ -37,6 +48,16 @@ public class InvSlot3
 		return stack != null ? stack.getWeightX() : 0;
 	}
 
+	public Item getTypeX()
+	{
+		return stack != null ? stack.item : type;
+	}
+
+	public boolean fitsTypeX(Item item)
+	{
+		return stack != null ? stack.item.equals(item) : type.canContain(item);
+	}
+
 	public void commit()
 	{
 		if(stack != null)
@@ -60,7 +81,7 @@ public class InvSlot3
 
 	public int maxDecrease()
 	{
-		if(stackExists)
+		if(stack != null)
 			return stack.maxDecrease();
 		else
 			return 0;
@@ -86,7 +107,7 @@ public class InvSlot3
 
 	public ItemStack decrease(int by)
 	{
-		if(stackExists)
+		if(stack != null)
 		{
 			stack.decrease(by);
 			return new ItemStack(stack.item, by);
