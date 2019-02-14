@@ -10,16 +10,16 @@ public class ProductionBuilding implements Building, DoubleInv
 {
 	private BuildingBlueprint blueprint;
 	private Hex location;
-	private Inv2 inputInv;
-	private Inv2 outputInv;
+	private Inv3 inputInv;
+	private Inv3 outputInv;
 	private List<Recipe> recipes;
 
 	public ProductionBuilding(Hex location, BuildingBlueprint blueprint)
 	{
 		this.location = location;
 		this.blueprint = blueprint;
-		inputInv = new Inv2(blueprint.productionBlueprint.inputLimits);
-		outputInv = new Inv2(blueprint.productionBlueprint.outputLimits);
+		inputInv = new SlotInv3(blueprint.productionBlueprint.inputLimits);
+		outputInv = new SlotInv3(blueprint.productionBlueprint.outputLimits);
 		recipes = blueprint.productionBlueprint.recipes;
 	}
 
@@ -40,13 +40,13 @@ public class ProductionBuilding implements Building, DoubleInv
 	}
 
 	@Override
-	public Inv2 inputInv()
+	public Inv3 inputInv()
 	{
 		return inputInv;
 	}
 
 	@Override
-	public Inv2 outputInv()
+	public Inv3 outputInv()
 	{
 		return outputInv;
 	}
@@ -68,11 +68,18 @@ public class ProductionBuilding implements Building, DoubleInv
 	{
 		for(Recipe recipe : recipes)
 		{
-			if(inputInv.canDecrease(recipe.required) && outputInv.canIncrease(recipe.results))
+			if(inputInv.tryDecrease(recipe.required).isPresent())
 			{
-				inputInv.decrease(recipe.required);
-				outputInv.increase(recipe.results);
-				return;
+				if(outputInv.tryIncrease(recipe.results))
+				{
+					inputInv.commit();
+					outputInv.commit();
+					return;
+				}
+				else
+				{
+					inputInv.rollback();
+				}
 			}
 		}
 	}

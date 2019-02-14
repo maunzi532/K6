@@ -6,12 +6,12 @@ import inv.*;
 
 public class XHero extends XEntity implements DoubleInv
 {
-	private Inv2 inv;
+	private Inv3 inv;
 
 	public XHero(Hex location)
 	{
 		super(location);
-		inv = new Inv2(20);
+		inv = new WeightInv3(20);
 	}
 
 	@Override
@@ -21,13 +21,13 @@ public class XHero extends XEntity implements DoubleInv
 	}
 
 	@Override
-	public Inv2 inputInv()
+	public Inv3 inputInv()
 	{
 		return inv;
 	}
 
 	@Override
-	public Inv2 outputInv()
+	public Inv3 outputInv()
 	{
 		return inv;
 	}

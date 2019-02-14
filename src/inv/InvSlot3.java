@@ -13,6 +13,11 @@ public class InvSlot3
 		weightLimit = limits.count;
 	}
 
+	public boolean doesStackExist()
+	{
+		return stackExists;
+	}
+
 	public Item getType()
 	{
 		return stackExists ? stack.item : type;
@@ -51,6 +56,11 @@ public class InvSlot3
 	public Item getTypeX()
 	{
 		return stack != null ? stack.item : type;
+	}
+
+	public boolean canProvide()
+	{
+		return stack != null && stack.canProvide();
 	}
 
 	public boolean fitsTypeX(Item item)

@@ -25,15 +25,21 @@ public class SlotInv3 implements Inv3
 	}
 
 	@Override
+	public List<Item> providedItemTypes()
+	{
+		return slots.stream().filter(e -> e.doesStackExist() && e.canProvide()).map(InvSlot3::getType).collect(Collectors.toList());
+	}
+
+	@Override
 	public int maxDecrease(ItemStack items)
 	{
-		return slots.stream().mapToInt(e -> e.fitsTypeX(items.item) ? e.maxDecrease() : 0).max().orElseThrow();
+		return slots.stream().mapToInt(e -> e.fitsTypeX(items.item) ? e.maxDecrease() : 0).max().orElse(0);
 	}
 
 	@Override
 	public int maxIncrease(ItemStack items)
 	{
-		return slots.stream().mapToInt(e -> e.fitsTypeX(items.item) ? e.maxIncrease(items) : 0).max().orElseThrow();
+		return slots.stream().mapToInt(e -> e.fitsTypeX(items.item) ? e.maxIncrease(items) : 0).max().orElse(0);
 	}
 
 	@Override

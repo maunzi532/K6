@@ -6,9 +6,9 @@ public interface DoubleInv
 {
 	Hex location();
 
-	Inv2 inputInv();
+	Inv3 inputInv();
 
-	Inv2 outputInv();
+	Inv3 outputInv();
 
 	int inputPriority();
 

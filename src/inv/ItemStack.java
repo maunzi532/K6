@@ -26,4 +26,9 @@ public class ItemStack
 			count = node.get(0).dataInt();
 		}
 	}
+
+	public int weight()
+	{
+		return item.weight() * count;
+	}
 }

@@ -1,12 +1,14 @@
 package inv;
 
-import java.util.stream.Collectors;
+import java.util.*;
 
 public interface Inv3
 {
 	void commit();
 
 	void rollback();
+
+	List<Item> providedItemTypes();
 
 	int maxDecrease(ItemStack items);
 
@@ -26,24 +28,38 @@ public interface Inv3
 		return maxIncrease(items) >= items.count;
 	}
 
-	//unsafe
-	default boolean canDecrease(ItemList itemList)
+	default Optional<ItemList> tryDecrease(ItemList itemList)
 	{
-		return itemList.items.stream().allMatch(this::canDecrease);
+		List<ItemStack> stacks = new ArrayList<>();
+		for(ItemStack items : itemList.items)
+		{
+			if(canDecrease(items))
+			{
+				stacks.add(decrease(items));
+			}
+			else
+			{
+				rollback();
+				return Optional.empty();
+			}
+		}
+		return Optional.of(new ItemList(stacks));
 	}
 
-	default boolean canIncrease(ItemList itemList)
+	default boolean tryIncrease(ItemList itemList)
 	{
-		return itemList.items.stream().allMatch(this::canIncrease);
-	}
-
-	default ItemList decrease(ItemList itemList)
-	{
-		return new ItemList(itemList.items.stream().map(this::decrease).collect(Collectors.toList()));
-	}
-
-	default void increase(ItemList itemList)
-	{
-		itemList.items.forEach(this::increase);
+		for(ItemStack items : itemList.items)
+		{
+			if(canIncrease(items))
+			{
+				increase(items);
+			}
+			else
+			{
+				rollback();
+				return false;
+			}
+		}
+		return true;
 	}
 }

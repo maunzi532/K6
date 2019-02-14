@@ -43,6 +43,11 @@ public class InvStack3
 		return (current + increase - decrease) * item.weight();
 	}
 
+	public boolean canProvide()
+	{
+		return current -  decrease > 0;
+	}
+
 	public void commit()
 	{
 		current += increase - decrease;
