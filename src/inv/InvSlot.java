@@ -1,13 +1,13 @@
 package inv;
 
-public class InvSlot3
+public class InvSlot
 {
-	private InvStack3 stack;
+	private InvStack stack;
 	private boolean stackExists;
 	private Item type;
 	private int weightLimit;
 
-	public InvSlot3(ItemStack limits)
+	public InvSlot(ItemStack limits)
 	{
 		type = limits.item;
 		weightLimit = limits.count;
@@ -71,6 +71,11 @@ public class InvSlot3
 	public Item getTypeX()
 	{
 		return stack != null ? stack.item : type;
+	}
+
+	public int getCurrentX()
+	{
+		return stack != null ? stack.getCurrentX() : 0;
 	}
 
 	public boolean canProvide()
@@ -151,7 +156,7 @@ public class InvSlot3
 		}
 		else
 		{
-			stack = new InvStack3(items);
+			stack = new InvStack(items);
 		}
 	}
 }

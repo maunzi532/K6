@@ -7,6 +7,7 @@ import entity.*;
 import entity.hero.*;
 import file.*;
 import hex.*;
+import inv.*;
 import levelMap.*;
 import levelMap.importX.*;
 
@@ -17,7 +18,9 @@ public class InitializeMap
 		new TestImportSector(8).generate().importIntoMap(levelMap);
 		levelMap.addEntity(new XHero(new Hex(2, 1)));
 		levelMap.addEntity(new XEntity(new Hex(0, 1)));
-		levelMap.addEntity(new XHero(new Hex(-2, -1)));
+		XHero h1 = new XHero(new Hex(-2, -1));
+		h1.addItems(new ItemList(Items.BLUE, Items.GSL, Items.MATERIAL, Items.TECHNOLOGY));
+		levelMap.addEntity(h1);
 		levelMap.addArrow(new VisualArrow(new Hex(2, 0), new Hex(4, 1), ArrowMode.ARROW, 120));
 		levelMap.addArrow(new VisualArrow(new Hex(-2, 0), new Hex(4, -4), ArrowMode.ARROW, 120));
 		levelMap.addArrow(new VisualArrow(new Hex(-3, 0), new Hex(-3, 0), ArrowMode.ARROW, 120));

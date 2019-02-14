@@ -4,11 +4,13 @@ import hex.*;
 
 public interface DoubleInv
 {
+	String name();
+
 	Hex location();
 
-	Inv3 inputInv();
+	Inv inputInv();
 
-	Inv3 outputInv();
+	Inv outputInv();
 
 	int inputPriority();
 

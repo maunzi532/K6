@@ -10,16 +10,16 @@ public class ProductionBuilding implements Building, DoubleInv
 {
 	private BuildingBlueprint blueprint;
 	private Hex location;
-	private SlotInv3 inputInv;
-	private SlotInv3 outputInv;
+	private SlotInv inputInv;
+	private SlotInv outputInv;
 	private List<Recipe> recipes;
 
 	public ProductionBuilding(Hex location, BuildingBlueprint blueprint)
 	{
 		this.location = location;
 		this.blueprint = blueprint;
-		inputInv = new SlotInv3(blueprint.productionBlueprint.inputLimits);
-		outputInv = new SlotInv3(blueprint.productionBlueprint.outputLimits);
+		inputInv = new SlotInv(blueprint.productionBlueprint.inputLimits);
+		outputInv = new SlotInv(blueprint.productionBlueprint.outputLimits);
 		recipes = blueprint.productionBlueprint.recipes;
 	}
 
@@ -28,12 +28,12 @@ public class ProductionBuilding implements Building, DoubleInv
 		return blueprint.name;
 	}
 
-	public SlotInv3 getInputInv()
+	public SlotInv getInputInv()
 	{
 		return inputInv;
 	}
 
-	public SlotInv3 getOutputInv()
+	public SlotInv getOutputInv()
 	{
 		return outputInv;
 	}
@@ -50,13 +50,13 @@ public class ProductionBuilding implements Building, DoubleInv
 	}
 
 	@Override
-	public Inv3 inputInv()
+	public Inv inputInv()
 	{
 		return inputInv;
 	}
 
 	@Override
-	public Inv3 outputInv()
+	public Inv outputInv()
 	{
 		return outputInv;
 	}

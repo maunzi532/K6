@@ -3,10 +3,12 @@ package logic.gui;
 import inv.DoubleInv;
 import logic.*;
 
-public class DirectedTradeGUI extends XGUI
+public class DirectedTradeGUI extends XGUI implements InventoryView
 {
 	private DoubleInv provide;
 	private DoubleInv receive;
+	private int provideScroll;
+	private int receiveScroll;
 
 	public DirectedTradeGUI(DoubleInv provide, DoubleInv receive)
 	{
@@ -16,15 +18,19 @@ public class DirectedTradeGUI extends XGUI
 		update();
 	}
 
-	public void update()
+	private void update()
 	{
-
+		addInventoryView(tiles, 0, 0, yw(), provideScroll, provide.outputInv(), false, provide.name());
+		addInventoryView(tiles, 4, 0, yw(), receiveScroll, receive.inputInv(), true, receive.name());
+		tiles[2][1] = new GuiTile("More");
+		tiles[3][2] = new GuiTile("Arrow");
+		tiles[2][3] = new GuiTile("Less");
 	}
 
 	@Override
 	public int xw()
 	{
-		return 7;
+		return 6;
 	}
 
 	@Override

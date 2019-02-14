@@ -40,4 +40,11 @@ public abstract class XGUI
 	}
 
 	public abstract void close(XStateControl stateControl);
+
+	public static String except1(int num)
+	{
+		if(num == 1)
+			return null;
+		return String.valueOf(num);
+	}
 }

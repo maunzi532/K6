@@ -19,22 +19,22 @@ public class ProductionGUI extends XGUI
 		tiles[0][0] = new GuiTile(building.name(), null, null);
 		Recipe recipe = building.getRecipes().get(recipeNum);
 		List<ItemStack> required = recipe.required.items;
-		SlotInv3 inputInv = building.getInputInv();
+		SlotInv inputInv = building.getInputInv();
 		for(int i = 0; i < required.size(); i++)
 		{
 			Item item = required.get(i).item;
-			InvSlot3 slot = inputInv.getSlot(item);
+			InvSlot slot = inputInv.getSlot(item);
 			tiles[1][i + 1] = new GuiTile(slot.getCurrent() + " / " +
 					slot.getLimit(), null, null);
-			tiles[2][i + 1] = new GuiTile(String.valueOf(required.get(i).count), item.image(), null);
+			tiles[2][i + 1] = new GuiTile(except1(required.get(i).count), item.image(), null);
 		}
 		List<ItemStack> results = recipe.results.items;
-		SlotInv3 outputInv = building.getOutputInv();
+		SlotInv outputInv = building.getOutputInv();
 		for(int i = 0; i < results.size(); i++)
 		{
 			Item item = results.get(i).item;
-			InvSlot3 slot = outputInv.getSlot(item);
-			tiles[4][i + 1] = new GuiTile(String.valueOf(results.get(i).count), item.image(), null);
+			InvSlot slot = outputInv.getSlot(item);
+			tiles[4][i + 1] = new GuiTile(except1(results.get(i).count), item.image(), null);
 			tiles[5][i + 1] = new GuiTile(slot.getCurrent() + " / " +
 					slot.getLimit(), null, null);
 		}

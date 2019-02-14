@@ -23,7 +23,7 @@ public class InvTransporter
 		Map<Item, ItemTransportInfo> possibleItems = new HashMap<>();
 		for(DoubleInv inv : providingTargets)
 		{
-			Inv3 providingInv = inv.outputInv();
+			Inv providingInv = inv.outputInv();
 			for(Item item : providingInv.providedItemTypes())
 			{
 				if(providingInv.canDecrease(new ItemStack(item, amount)))
@@ -38,7 +38,7 @@ public class InvTransporter
 		}
 		for(DoubleInv inv : receivingTargets)
 		{
-			Inv3 receivingInv = inv.inputInv();
+			Inv receivingInv = inv.inputInv();
 			for(Item item : possibleItems.keySet())
 			{
 				if(receivingInv.canIncrease(new ItemStack(item, amount)))

@@ -1,20 +1,17 @@
 package inv;
 
-public class InvStack3
+public class InvStack
 {
 	public final Item item;
-	private int current = 0;
-	private int decrease = 0;
-	private int increase = 0;
+	private int current;
+	private int decrease;
+	private int increase;
 
-	public InvStack3(Item item)
-	{
-		this.item = item;
-	}
-
-	public InvStack3(ItemStack items)
+	public InvStack(ItemStack items)
 	{
 		item = items.item;
+		current = 0;
+		decrease = 0;
 		increase = items.count;
 	}
 
@@ -41,6 +38,11 @@ public class InvStack3
 	public int getWeightX()
 	{
 		return (current + increase - decrease) * item.weight();
+	}
+
+	public int getCurrentX()
+	{
+		return current + increase - decrease;
 	}
 
 	public boolean canProvide()

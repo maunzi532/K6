@@ -2,13 +2,22 @@ package inv;
 
 import java.util.*;
 
-public interface Inv3
+public interface Inv
 {
 	void commit();
 
 	void rollback();
 
 	List<Item> providedItemTypes();
+
+	int viewCount(boolean withEmpty);
+
+	List<ItemView> viewItems(int start, int amount, boolean withEmpty);
+
+	default List<ItemView> viewItems(boolean withEmpty)
+	{
+		return viewItems(0, viewCount(withEmpty), withEmpty);
+	}
 
 	int maxDecrease(ItemStack items);
 

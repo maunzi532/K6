@@ -17,4 +17,11 @@ public class GuiTile
 		this.image = image;
 		this.color = color;
 	}
+
+	public GuiTile(String text)
+	{
+		this.text = text;
+		image = null;
+		color = null;
+	}
 }
