@@ -17,7 +17,7 @@ public class ImportTile
 
 	protected FloorTile toTile(Sector sector)
 	{
-		return new FloorTile(sector, R.nextBoolean() ? FloorTileType.BLUE : FloorTileType.TECH);
+		return new FloorTile(sector, FloorTileType.values()[R.nextInt(3)]);
 	}
 
 	public void importIntoMap(LevelMap levelMap, Sector sector)

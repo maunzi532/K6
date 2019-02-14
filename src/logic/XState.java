@@ -10,6 +10,8 @@ public enum XState
 	TAKE_TARGET("Take", true, true, false),
 	GIVE_TARGET("Give", true, true, false),
 	DIRECTED_TRADE("Error", false, false, true),
+	BUILD("Build", true, false, true),
+	DISASSEMBLE("Remove", true, false, true),
 	PRODUCTION_PHASE("Production", false, false, false),
 	TRANSPORT_PHASE("Transport", false, false, false);
 

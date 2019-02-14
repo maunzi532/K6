@@ -199,16 +199,25 @@ public class XStateControl
 				});
 		menu = switch(state)
 				{
-					case CHARACTER_MOVEMENT, GIVE_TARGET, TAKE_TARGET, DIRECTED_TRADE ->
-							List.of(XState.CHARACTER_MOVEMENT, XState.GIVE_TARGET, XState.TAKE_TARGET);
+					case CHARACTER_MOVEMENT, GIVE_TARGET, TAKE_TARGET, DIRECTED_TRADE, BUILD, DISASSEMBLE ->
+							List.of(XState.CHARACTER_MOVEMENT, XState.GIVE_TARGET, XState.TAKE_TARGET, XState.BUILD, XState.DISASSEMBLE);
 					case PRODUCTION_VIEW -> List.of(XState.PRODUCTION_VIEW, XState.PRODUCTION_PHASE, XState.TRANSPORT_PHASE);
-					case TRANSPORT_VIEW, TRANSPORT_TARGETS -> List.of(XState.TRANSPORT_VIEW, XState.TRANSPORT_TARGETS, XState.PRODUCTION_PHASE, XState.TRANSPORT_PHASE);
+					case TRANSPORT_VIEW, TRANSPORT_TARGETS -> List.of(XState.TRANSPORT_VIEW, XState.TRANSPORT_TARGETS,
+							XState.PRODUCTION_PHASE, XState.TRANSPORT_PHASE);
 					default -> List.of();
 				};
+		menu = menu.stream().filter(e -> switch(e)
+				{
+					case BUILD -> levelMap.getBuilding(((XHero) stateInfo[0]).location()) == null;
+					case DISASSEMBLE -> levelMap.getBuilding(((XHero) stateInfo[0]).location()) != null;
+					default -> true;
+				}).collect(Collectors.toList());
 		xgui = switch(state)
 				{
 					case PRODUCTION_VIEW -> new ProductionGUI((ProductionBuilding) stateInfo[0], 0);
 					case DIRECTED_TRADE -> new DirectedTradeGUI((DoubleInv) stateInfo[1], (DoubleInv) stateInfo[2]);
+					case BUILD -> new BuildGUI((XHero) stateInfo[0]);
+					case DISASSEMBLE -> new DisassembleGUI((XHero) stateInfo[0]);
 					default -> NoGUI.NONE;
 				};
 	}
