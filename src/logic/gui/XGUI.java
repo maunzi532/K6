@@ -6,11 +6,6 @@ public abstract class XGUI
 {
 	protected GuiTile[][] tiles;
 
-	public XGUI()
-	{
-		initTiles();
-	}
-
 	protected void initTiles()
 	{
 		tiles = new GuiTile[xw()][yw()];
@@ -32,11 +27,12 @@ public abstract class XGUI
 
 	public abstract int yw();
 
-	public abstract void click(int x, int y, int key, XStateControl stateControl);
+	public abstract boolean click(int x, int y, int key, XStateControl stateControl);
 
-	public void clickOutside(int key, XStateControl stateControl)
+	public boolean clickOutside(int key, XStateControl stateControl)
 	{
 		close(stateControl);
+		return true;
 	}
 
 	public abstract void close(XStateControl stateControl);

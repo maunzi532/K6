@@ -13,9 +13,9 @@ public class ProductionGUI extends XGUI
 
 	public ProductionGUI(ProductionBuilding building, int recipeNum)
 	{
-		super();
 		this.building = building;
 		this.recipeNum = recipeNum;
+		initTiles();
 		tiles[0][0] = new GuiTile(building.name(), null, null);
 		Recipe recipe = building.getRecipes().get(recipeNum);
 		List<ItemStack> required = recipe.required.items;
@@ -53,9 +53,9 @@ public class ProductionGUI extends XGUI
 	}
 
 	@Override
-	public void click(int x, int y, int key, XStateControl stateControl)
+	public boolean click(int x, int y, int key, XStateControl stateControl)
 	{
-
+		return false;
 	}
 
 	@Override

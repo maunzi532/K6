@@ -64,13 +64,14 @@ public class XStateControl
 		OffsetHex coordinates = new OffsetHex(guiHex);
 		if(inside)
 		{
-			xgui.click(coordinates.v[0], coordinates.v[1], key, this);
+			if(xgui.click(coordinates.v[0], coordinates.v[1], key, this))
+				update();
 		}
 		else
 		{
-			xgui.clickOutside(key, this);
+			if(xgui.clickOutside(key, this))
+				update();
 		}
-		update();
 	}
 
 	public void handleMapClick(Hex mapHex, int key)

@@ -49,6 +49,12 @@ public class WeightInv implements Inv
 	}
 
 	@Override
+	public Optional<ItemView> viewItem(int num, boolean withEmpty)
+	{
+		return stacks.stream().skip(num).findFirst().map(e -> new ItemView(e.item, e.getCurrent(), e.getCurrentX()));
+	}
+
+	@Override
 	public List<ItemView> viewItems(int start, int amount, boolean withEmpty)
 	{
 		return stacks.stream().skip(start).limit(amount)

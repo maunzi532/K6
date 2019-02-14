@@ -1,6 +1,6 @@
 package inv;
 
-import java.util.List;
+import java.util.*;
 import java.util.stream.*;
 
 public class SlotInv implements Inv
@@ -39,6 +39,13 @@ public class SlotInv implements Inv
 	public int viewCount(boolean withEmpty)
 	{
 		return withEmpty ? slots.size() : (int) slots.stream().filter(e -> e.getCurrentX() > 0).count();
+	}
+
+	@Override
+	public Optional<ItemView> viewItem(int num, boolean withEmpty)
+	{
+		Stream<InvSlot> stream = withEmpty ? slots.stream() : slots.stream().filter(e -> e.getCurrentX() > 0);
+		return stream.skip(num).findFirst().map(e -> new ItemView(e.getStackItem(), e.getCurrent(), e.getCurrentX(), e.getLimit()));
 	}
 
 	@Override

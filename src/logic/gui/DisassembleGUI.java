@@ -10,6 +10,7 @@ public class DisassembleGUI extends XGUI
 	public DisassembleGUI(XHero character)
 	{
 		this.character = character;
+		initTiles();
 	}
 
 	@Override
@@ -25,9 +26,9 @@ public class DisassembleGUI extends XGUI
 	}
 
 	@Override
-	public void click(int x, int y, int key, XStateControl stateControl)
+	public boolean click(int x, int y, int key, XStateControl stateControl)
 	{
-
+		return false;
 	}
 
 	@Override

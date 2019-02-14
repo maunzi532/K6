@@ -12,7 +12,6 @@ public class DirectedTradeGUI extends XGUI implements InventoryView
 
 	public DirectedTradeGUI(DoubleInv provide, DoubleInv receive)
 	{
-		super();
 		this.provide = provide;
 		this.receive = receive;
 		update();
@@ -20,8 +19,9 @@ public class DirectedTradeGUI extends XGUI implements InventoryView
 
 	private void update()
 	{
-		addInventoryView(tiles, 0, 0, yw(), provideScroll, provide.outputInv(), false, provide.name());
-		addInventoryView(tiles, 4, 0, yw(), receiveScroll, receive.inputInv(), true, receive.name());
+		initTiles();
+		addInventoryView(tiles, 0, 0, 0, yw(), provideScroll, provide.outputInv(), false, provide.name());
+		addInventoryView(tiles, 1, 4, 0, yw(), receiveScroll, receive.inputInv(), true, receive.name());
 		tiles[2][1] = new GuiTile("More");
 		tiles[3][2] = new GuiTile("Arrow");
 		tiles[2][3] = new GuiTile("Less");
@@ -36,13 +36,15 @@ public class DirectedTradeGUI extends XGUI implements InventoryView
 	@Override
 	public int yw()
 	{
-		return 5;
+		return 4;
 	}
 
 	@Override
-	public void click(int x, int y, int key, XStateControl stateControl)
+	public boolean click(int x, int y, int key, XStateControl stateControl)
 	{
-
+		checkInventoryViewClick(x, y, 0, 0, 0, yw(), 2, provideScroll, provide.outputInv(), false);
+		checkInventoryViewClick(x, y, 1, 4, 0, yw(), 2, receiveScroll, receive.inputInv(), true);
+		return false;
 	}
 
 	@Override
@@ -51,5 +53,22 @@ public class DirectedTradeGUI extends XGUI implements InventoryView
 		provide.outputInv().rollback();
 		receive.inputInv().rollback();
 		stateControl.setState(XState.NONE);
+	}
+
+	@Override
+	public void changeScroll(int invID, int scrollChange)
+	{
+		if(invID == 0)
+			provideScroll += scrollChange;
+		else if(invID == 1)
+			receiveScroll += scrollChange;
+		update();
+	}
+
+	@Override
+	public void onClickItem(int invID, int num)
+	{
+		System.out.println("invID = " + invID);
+		System.out.println("num = " + num);
 	}
 }

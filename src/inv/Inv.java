@@ -12,6 +12,8 @@ public interface Inv
 
 	int viewCount(boolean withEmpty);
 
+	Optional<ItemView> viewItem(int num, boolean withEmpty);
+
 	List<ItemView> viewItems(int start, int amount, boolean withEmpty);
 
 	default List<ItemView> viewItems(boolean withEmpty)

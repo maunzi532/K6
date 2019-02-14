@@ -6,6 +6,11 @@ public class NoGUI extends XGUI
 {
 	public static final XGUI NONE = new NoGUI();
 
+	public NoGUI()
+	{
+		tiles = new GuiTile[0][0];
+	}
+
 	@Override
 	public int xw()
 	{
@@ -19,7 +24,7 @@ public class NoGUI extends XGUI
 	}
 
 	@Override
-	public void click(int x, int y, int key, XStateControl stateControl)
+	public boolean click(int x, int y, int key, XStateControl stateControl)
 	{
 		throw new RuntimeException();
 	}
