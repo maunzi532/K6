@@ -10,16 +10,7 @@ public interface Inv
 
 	List<Item> providedItemTypes();
 
-	int viewCount(boolean withEmpty);
-
-	Optional<ItemView> viewItem(int num, boolean withEmpty);
-
-	List<ItemView> viewItems(int start, int amount, boolean withEmpty);
-
-	default List<ItemView> viewItems(boolean withEmpty)
-	{
-		return viewItems(0, viewCount(withEmpty), withEmpty);
-	}
+	List<ItemView> viewItems(boolean withEmpty);
 
 	int maxDecrease(ItemStack items);
 

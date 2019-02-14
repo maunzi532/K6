@@ -36,24 +36,10 @@ public class SlotInv implements Inv
 	}
 
 	@Override
-	public int viewCount(boolean withEmpty)
-	{
-		return withEmpty ? slots.size() : (int) slots.stream().filter(e -> e.getCurrentX() > 0).count();
-	}
-
-	@Override
-	public Optional<ItemView> viewItem(int num, boolean withEmpty)
+	public List<ItemView> viewItems(boolean withEmpty)
 	{
 		Stream<InvSlot> stream = withEmpty ? slots.stream() : slots.stream().filter(e -> e.getCurrentX() > 0);
-		return stream.skip(num).findFirst().map(e -> new ItemView(e.getStackItem(), e.getCurrent(), e.getCurrentX(), e.getLimit()));
-	}
-
-	@Override
-	public List<ItemView> viewItems(int start, int amount, boolean withEmpty)
-	{
-		Stream<InvSlot> stream = withEmpty ? slots.stream() : slots.stream().filter(e -> e.getCurrentX() > 0);
-		return stream.skip(start).limit(amount)
-				.map(e -> new ItemView(e.getStackItem(), e.getCurrent(), e.getCurrentX(), e.getLimit()))
+		return stream.map(e -> new ItemView(e.getStackItem(), e.getCurrent(), e.getCurrentX(), e.getLimit()))
 				.collect(Collectors.toList());
 	}
 
