@@ -4,7 +4,7 @@ import inv.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class InvView
+public class InvGUIPart
 {
 	private int invID;
 	private int x, y;
@@ -15,7 +15,7 @@ public class InvView
 	private boolean updateGUI;
 	private boolean updateInvView;
 
-	public InvView(int invID, int x, int y, int xw, int yh, List<ItemView> invView, String name)
+	public InvGUIPart(int invID, int x, int y, int xw, int yh, List<ItemView> invView, String name)
 	{
 		this.invID = invID;
 		this.x = x;
@@ -46,6 +46,11 @@ public class InvView
 		return false;
 	}
 
+	public List<ItemView> getInvView()
+	{
+		return invView;
+	}
+
 	public void setInvView(List<ItemView> invView)
 	{
 		this.invView = invView;
@@ -68,7 +73,7 @@ public class InvView
 		List<ItemView> views = invView.stream().skip(scroll + yShift).limit(yh - yShift - (canScrollDown ? 2 : 1)).collect(Collectors.toList());
 		for(int i = 0; i < views.size(); i++)
 		{
-			invGUI.itemView(x, y + yShift + 1 + i, views.get(i));
+			invGUI.itemView(invID, x, y + yShift + 1 + i, scroll + yShift + i, views.get(i));
 		}
 	}
 

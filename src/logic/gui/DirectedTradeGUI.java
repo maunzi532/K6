@@ -1,21 +1,26 @@
 package logic.gui;
 
 import inv.*;
+import javafx.scene.paint.Color;
 import logic.*;
 
 public class DirectedTradeGUI extends XGUI implements InvGUI
 {
 	private DoubleInv provide;
 	private DoubleInv receive;
-	private InvView provideView;
-	private InvView receiveView;
+	private InvGUIPart provideView;
+	private InvGUIPart receiveView;
+	private int provideMarked;
+	private int amount;
 
 	public DirectedTradeGUI(DoubleInv provide, DoubleInv receive)
 	{
 		this.provide = provide;
 		this.receive = receive;
-		provideView = new InvView(0, 0, 0, 2, yw(), provide.outputInv().viewItems(false), provide.name());
-		receiveView = new InvView(1, 4, 0, 2, yw(), receive.inputInv().viewItems(true), receive.name());
+		provideView = new InvGUIPart(0, 0, 0, 2, yw(), provide.outputInv().viewItems(false), provide.name());
+		receiveView = new InvGUIPart(1, 4, 0, 2, yw(), receive.inputInv().viewItems(true), receive.name());
+		provideMarked = -1;
+		amount = 1;
 		update();
 	}
 
@@ -25,15 +30,17 @@ public class DirectedTradeGUI extends XGUI implements InvGUI
 		provideView.addToGUI(tiles, this);
 		receiveView.addToGUI(tiles, this);
 		tiles[2][1] = new GuiTile("More");
-		tiles[3][2] = new GuiTile("Arrow");
+		tiles[3][2] = new GuiTile("Transfer " + amount);
 		tiles[2][3] = new GuiTile("Less");
+		tiles[3][4] = new GuiTile("OK");
 	}
 
 	@Override
-	public void itemView(int x, int y1, ItemView view)
+	public void itemView(int invID, int x, int y1, int index, ItemView view)
 	{
-		tiles[x][y1] = new GuiTile(view.currentWithLimit());
-		tiles[x + 1][y1] = new GuiTile(null, view.item.image(), null);
+		Color color = invID == 0 && index == provideMarked ? Color.CYAN : null;
+		tiles[x][y1] = new GuiTile(view.currentWithLimit(), null, color);
+		tiles[x + 1][y1] = new GuiTile(null, view.item.image(), color);
 	}
 
 	@Override
@@ -45,7 +52,7 @@ public class DirectedTradeGUI extends XGUI implements InvGUI
 	@Override
 	public int yw()
 	{
-		return 4;
+		return 5;
 	}
 
 	@Override
@@ -59,6 +66,34 @@ public class DirectedTradeGUI extends XGUI implements InvGUI
 			receiveView.setInvView(receive.inputInv().viewItems(true));
 		if(provideView.updateGUIFlag() || receiveView.updateGUIFlag())
 			update();
+		if(x == 2 && y == 1)
+		{
+			amount++;
+			update();
+		}
+		if(amount > 1 && x == 2 && y == 3)
+		{
+			amount--;
+			update();
+		}
+		if(provideMarked >= 0 && x == 3 && y == 2)
+		{
+			ItemStack items = new ItemStack(provideView.getInvView().get(provideMarked).item, amount);
+			if(provide.outputInv().canDecrease(items) && receive.inputInv().canIncrease(items))
+			{
+				receive.inputInv().increase(provide.outputInv().decrease(items));
+				provideView.setInvView(provide.outputInv().viewItems(false));
+				receiveView.setInvView(receive.inputInv().viewItems(true));
+				update();
+			}
+		}
+		if(x == 3 && y == 4)
+		{
+			provide.outputInv().commit();
+			receive.inputInv().commit();
+			stateControl.setState(XState.NONE);
+			return true;
+		}
 		return false;
 	}
 
@@ -73,7 +108,10 @@ public class DirectedTradeGUI extends XGUI implements InvGUI
 	@Override
 	public void onClickItem(int invID, int num)
 	{
-		System.out.println("invID = " + invID);
-		System.out.println("num = " + num);
+		if(invID == 0)
+		{
+			provideMarked = num;
+			update();
+		}
 	}
 }
