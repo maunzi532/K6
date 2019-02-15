@@ -1,4 +1,4 @@
-package logic.gui;
+package gui;
 
 import javafx.scene.image.*;
 import javafx.scene.paint.*;

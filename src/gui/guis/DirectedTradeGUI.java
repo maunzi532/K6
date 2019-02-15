@@ -1,5 +1,6 @@
-package logic.gui;
+package gui.guis;
 
+import gui.*;
 import inv.*;
 import java.util.List;
 import javafx.scene.paint.Color;
@@ -109,7 +110,7 @@ public class DirectedTradeGUI extends XGUI implements InvGUI
 	}
 
 	@Override
-	public void onClickItem(int invID, int num)
+	public void onClickItem(int invID, int num, int xi, int yi)
 	{
 		if(invID == 0)
 		{

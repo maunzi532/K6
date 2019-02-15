@@ -6,7 +6,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import logic.XStateControl;
-import logic.gui.*;
+import gui.*;
 
 public class VisualGUIHex implements VisualGUI
 {
@@ -61,7 +61,7 @@ public class VisualGUIHex implements VisualGUI
 		camera.xShift = (xgui.xw() - (xgui.yw() > 1 ? 0.5 : 1d)) * HexMatrix.Q3 / 2d;
 		camera.yShift = (xgui.yw() - 1) * 1.5 / 2d;
 		HexLayout layout = camera.layout();
-		gd.setFill(Color.RED);
+		gd.setFill(xgui.background());
 		PointD p0 = layout.hexToPixel(LU);
 		PointD p1 = layout.hexToPixel(rl(xgui));
 		gd.fillRect(p0.v[0], p0.v[1], p1.v[0] - p0.v[0], p1.v[1] - p0.v[1]);

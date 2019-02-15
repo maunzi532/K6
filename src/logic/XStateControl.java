@@ -5,11 +5,12 @@ import entity.*;
 import entity.hero.XHero;
 import geom.XPoint;
 import geom.hex.Hex;
+import gui.guis.*;
 import inv.DoubleInv;
 import java.util.*;
 import java.util.stream.Collectors;
 import levelMap.*;
-import logic.gui.*;
+import gui.*;
 
 public class XStateControl
 {

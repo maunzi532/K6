@@ -1,4 +1,4 @@
-package logic.gui;
+package gui;
 
 public class CTile
 {

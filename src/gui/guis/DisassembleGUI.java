@@ -1,6 +1,7 @@
-package logic.gui;
+package gui.guis;
 
 import entity.hero.XHero;
+import gui.XGUI;
 import logic.*;
 
 public class DisassembleGUI extends XGUI

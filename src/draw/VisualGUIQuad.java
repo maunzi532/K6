@@ -6,7 +6,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import logic.XStateControl;
-import logic.gui.*;
+import gui.*;
 
 public class VisualGUIQuad implements VisualGUI
 {
@@ -58,7 +58,7 @@ public class VisualGUIQuad implements VisualGUI
 		camera.xShift = (xgui.xw() - 1) * QuadLayout.DQ2;
 		camera.yShift = (xgui.yw() - 1) * QuadLayout.DQ2;
 		QuadLayout layout = camera.layout();
-		gd.setFill(Color.RED);
+		gd.setFill(xgui.background());
 		PointD p0 = layout.quadToPixel(LU);
 		PointD p1 = layout.quadToPixel(rl(xgui));
 		gd.fillRect(p0.v[0], p0.v[1], p1.v[0] - p0.v[0], p1.v[1] - p0.v[1]);

@@ -1,9 +1,12 @@
-package logic.gui;
+package gui;
 
+import javafx.scene.paint.Color;
 import logic.*;
 
 public abstract class XGUI
 {
+	private static final Color BACKGROUND = Color.color(0.4, 0.4, 0.5);
+
 	protected GuiTile[][] tiles;
 
 	protected void initTiles()
@@ -36,6 +39,11 @@ public abstract class XGUI
 	public abstract int xw();
 
 	public abstract int yw();
+
+	public Color background()
+	{
+		return BACKGROUND;
+	}
 
 	public abstract boolean click(int x, int y, int key, XStateControl stateControl);
 

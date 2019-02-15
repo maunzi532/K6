@@ -1,4 +1,4 @@
-package logic.gui;
+package gui;
 
 public class InvGUIPart
 {
@@ -79,8 +79,10 @@ public class InvGUIPart
 			return;
 		if(yr1 < 0 || yr1 >= yc * ys)
 			return;
-		int xr2 = xr / xs;
-		int yr2 = yr1 / ys;
+		int xr2 = Math.floorDiv(xr, xs);
+		int xi = Math.floorMod(xr, xs);
+		int yr2 = Math.floorDiv(yr1, ys);
+		int yi = Math.floorMod(yr1, ys);
 		boolean canScrollUp = scroll > 0;
 		boolean canScrollDown = scroll + yc < size;
 		if(canScrollUp)
@@ -103,6 +105,6 @@ public class InvGUIPart
 		}
 		int num = (yr2 + scroll) * xc + xr2;
 		if(num >= 0 && num < size)
-			invGUI.onClickItem(invID, num);
+			invGUI.onClickItem(invID, num, xi, yi);
 	}
 }

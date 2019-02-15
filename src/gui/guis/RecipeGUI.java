@@ -1,7 +1,8 @@
-package logic.gui;
+package gui.guis;
 
 import building.ProductionBuilding;
 import building.blueprint.Recipe;
+import gui.*;
 import inv.*;
 import logic.*;
 
@@ -78,7 +79,7 @@ public class RecipeGUI extends XGUI implements InvGUI
 	}
 
 	@Override
-	public void onClickItem(int invID, int num){}
+	public void onClickItem(int invID, int num, int xi, int yi){}
 
 	@Override
 	public void close(XStateControl stateControl)
