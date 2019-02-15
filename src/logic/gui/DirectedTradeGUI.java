@@ -12,12 +12,12 @@ public class DirectedTradeGUI extends XGUI implements InvGUI
 	private static final CTile less = new CTile(4, 3);
 	private static final CTile ok = new CTile(4, 4);
 
-	private DoubleInv provide;
-	private DoubleInv receive;
+	private final DoubleInv provide;
+	private final DoubleInv receive;
 	private List<ItemView> provideItems;
 	private List<ItemView> receiveItems;
-	private InvGUIPart provideView;
-	private InvGUIPart receiveView;
+	private final InvGUIPart provideView;
+	private final InvGUIPart receiveView;
 	private int provideMarked;
 	private int amount;
 
@@ -32,6 +32,18 @@ public class DirectedTradeGUI extends XGUI implements InvGUI
 		provideMarked = -1;
 		amount = 1;
 		update();
+	}
+
+	@Override
+	public int xw()
+	{
+		return 9;
+	}
+
+	@Override
+	public int yw()
+	{
+		return 6;
 	}
 
 	private void update()
@@ -52,18 +64,6 @@ public class DirectedTradeGUI extends XGUI implements InvGUI
 		Color color = invID == 0 && index == provideMarked ? Color.CYAN : null;
 		tiles[x][y1] = new GuiTile(view.currentWithLimit(), null, color);
 		tiles[x + 1][y1] = new GuiTile(null, view.item.image(), color);
-	}
-
-	@Override
-	public int xw()
-	{
-		return 9;
-	}
-
-	@Override
-	public int yw()
-	{
-		return 6;
 	}
 
 	@Override
@@ -109,14 +109,6 @@ public class DirectedTradeGUI extends XGUI implements InvGUI
 	}
 
 	@Override
-	public void close(XStateControl stateControl)
-	{
-		provide.outputInv().rollback();
-		receive.inputInv().rollback();
-		stateControl.setState(XState.NONE);
-	}
-
-	@Override
 	public void onClickItem(int invID, int num)
 	{
 		if(invID == 0)
@@ -124,5 +116,13 @@ public class DirectedTradeGUI extends XGUI implements InvGUI
 			provideMarked = num;
 			update();
 		}
+	}
+
+	@Override
+	public void close(XStateControl stateControl)
+	{
+		provide.outputInv().rollback();
+		receive.inputInv().rollback();
+		stateControl.setState(XState.NONE);
 	}
 }

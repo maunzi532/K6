@@ -23,6 +23,22 @@ public class ItemView
 		limit = -1;
 	}
 
+	public ItemView(ItemStack items, int limit)
+	{
+		item = items.item;
+		base = items.count;
+		changed = items.count;
+		this.limit = limit;
+	}
+
+	public ItemView(ItemStack items)
+	{
+		item = items.item;
+		base = items.count;
+		changed = items.count;
+		limit = -1;
+	}
+
 	public int changeType()
 	{
 		return Integer.compare(changed, base);
@@ -34,5 +50,13 @@ public class ItemView
 			return String.valueOf(changed);
 		else
 			return changed + " / " + limit;
+	}
+
+	public static String except1(int num)
+	{
+		if(num == 1)
+			return null;
+		else
+			return String.valueOf(num);
 	}
 }

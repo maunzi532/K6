@@ -12,6 +12,8 @@ public interface Inv
 
 	List<ItemView> viewItems(boolean withEmpty);
 
+	ItemView viewItem(Item item);
+
 	int maxDecrease(ItemStack items);
 
 	int maxIncrease(ItemStack items);

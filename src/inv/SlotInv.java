@@ -44,6 +44,14 @@ public class SlotInv implements Inv
 	}
 
 	@Override
+	public ItemView viewItem(Item item)
+	{
+		return slots.stream().filter(e -> item.canContain(e.getStackItem())).findFirst()
+				.map(e -> new ItemView(e.getStackItem(), e.getCurrent(), e.getCurrentX(), e.getLimit()))
+				.orElse(new ItemView(item, 0, 0));
+	}
+
+	@Override
 	public int maxDecrease(ItemStack items)
 	{
 		return slots.stream().mapToInt(e -> e.fitsTypeX(items.item) ? e.maxDecrease() : 0).max().orElse(0);

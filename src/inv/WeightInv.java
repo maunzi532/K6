@@ -49,6 +49,13 @@ public class WeightInv implements Inv
 	}
 
 	@Override
+	public ItemView viewItem(Item item)
+	{
+		return stacks.stream().filter(e -> item.canContain(e.item)).findFirst()
+				.map(e -> new ItemView(e.item, e.getCurrent(), e.getCurrentX())).orElse(new ItemView(item, 0, 0));
+	}
+
+	@Override
 	public int maxDecrease(ItemStack items)
 	{
 		return stacks.stream().filter(e -> items.item.canContain(e.item)).mapToInt(InvStack::maxDecrease).findFirst().orElse(0);

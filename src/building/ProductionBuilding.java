@@ -13,6 +13,7 @@ public class ProductionBuilding implements Building, DoubleInv
 	private SlotInv inputInv;
 	private SlotInv outputInv;
 	private List<Recipe> recipes;
+	public int lastViewedRecipeNum = 0;
 
 	public ProductionBuilding(Hex location, BuildingBlueprint blueprint)
 	{
