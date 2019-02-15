@@ -5,10 +5,9 @@ import geom.quad.*;
 
 public class QuadCamera
 {
-	public double xHalfWidth, yHalfWidth;
-	public double xSize, ySize;
+	private double xHalfWidth, yHalfWidth;
+	private double xSize, ySize;
 	public double xShift, yShift;
-	public int range;
 
 	public QuadCamera(double xHalfWidth, double yHalfWidth, double xSize, double ySize, double xShift, double yShift)
 	{
@@ -18,14 +17,6 @@ public class QuadCamera
 		this.ySize = ySize;
 		this.xShift = xShift;
 		this.yShift = yShift;
-		determineRange();
-	}
-
-	public void determineRange()
-	{
-		double yDistance = yHalfWidth / ySize / 2;
-		double xDistance = xHalfWidth / xSize / 2;
-		range = (int) Math.max(yDistance, xDistance) + 1;
 	}
 
 	public QuadLayout layout()

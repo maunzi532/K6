@@ -5,11 +5,10 @@ import geom.hex.*;
 
 public class HexCamera
 {
-	public double xHalfWidth, yHalfWidth;
-	public double xSize, ySize;
+	private double xHalfWidth, yHalfWidth;
+	private double xSize, ySize;
 	public double xShift, yShift;
-	public HexMatrix matrix;
-	public int range;
+	private HexMatrix matrix;
 
 	public HexCamera(double xHalfWidth, double yHalfWidth, double xSize, double ySize, double xShift, double yShift, HexMatrix matrix)
 	{
@@ -20,14 +19,13 @@ public class HexCamera
 		this.xShift = xShift;
 		this.yShift = yShift;
 		this.matrix = matrix;
-		determineRange();
 	}
 
-	public void determineRange()
+	public int getRange()
 	{
 		double yDistance = yHalfWidth / ySize / 3;
 		double xDistance = xHalfWidth / xSize / HexMatrix.Q3;
-		range = (int)(yDistance + xDistance + 1);
+		return (int)(yDistance + xDistance + 1);
 	}
 
 	public HexLayout layout()

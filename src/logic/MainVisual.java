@@ -1,7 +1,6 @@
 package logic;
 
 import draw.*;
-import geom.XPoint;
 import geom.hex.HexMatrix;
 import javafx.geometry.VPos;
 import javafx.scene.canvas.GraphicsContext;
@@ -14,7 +13,6 @@ public class MainVisual
 	private VisualTile visualTile;
 	private HexCamera mapCamera;
 	private VisualMenu visualMenu;
-	private HexCamera menuCamera;
 	private VisualGUI visualGUI;
 	private LevelMap levelMap;
 	private XStateControl stateControl;
@@ -29,7 +27,6 @@ public class MainVisual
 		visualTile = new VisualTile(levelMap, gd);
 		mapCamera = new HexCamera(w / 2f, h / 2f, 40, 40, 0, 0, HexMatrix.LP);
 		visualMenu = new VisualMenu(gd, w / 2f, h / 2f, stateControl);
-		menuCamera = visualMenu.camera;
 		visualGUI = new VisualGUIQuad(gd, w / 2f, h / 2f, stateControl);
 		//visualGUI = new VisualGUIHex(gd, w / 2f, h / 2f, stateControl);
 		draw();
@@ -37,15 +34,14 @@ public class MainVisual
 
 	public void handleClick(double x, double y, int mouseKey)
 	{
-		int menuOption = visualMenu.hexToOption(menuCamera.clickLocation(x, y).cast());
+		int menuOption = visualMenu.coordinatesToOption(x, y);
 		if(menuOption >= 0)
 		{
 			stateControl.handleMenuClick(menuOption, mouseKey);
 		}
 		else if(stateControl.getState().hasGUI)
 		{
-			XPoint h1 = visualGUI.clickLocation(x, y);
-			stateControl.handleGUIClick(h1, visualGUI.inside(x, y), mouseKey);
+			stateControl.handleGUIClick(visualGUI.clickLocation(x, y), visualGUI.inside(x, y), mouseKey);
 		}
 		else
 		{

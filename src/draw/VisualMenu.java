@@ -11,7 +11,7 @@ import logic.*;
 public class VisualMenu
 {
 	private final GraphicsContext gd;
-	public final HexCamera camera;
+	private final HexCamera camera;
 	private final XStateControl stateControl;
 
 	public VisualMenu(GraphicsContext gd, double xHalfWidth, double yHalfWidth, XStateControl stateControl)
@@ -25,6 +25,11 @@ public class VisualMenu
 	private Hex optionToHex(int i)
 	{
 		return new XPoint(0, i).toHex();
+	}
+
+	public int coordinatesToOption(double x, double y)
+	{
+		return hexToOption(camera.clickLocation(x, y).cast());
 	}
 
 	public int hexToOption(Hex hex)

@@ -13,8 +13,9 @@ public class FileBlueprint
 		String rawData;
 		try
 		{
+			//noinspection ConstantConditions
 			rawData = new String(Thread.currentThread().getContextClassLoader().getResourceAsStream(resource).readAllBytes());
-		}catch(IOException e)
+		}catch(IOException | NullPointerException e)
 		{
 			throw new RuntimeException(e);
 		}

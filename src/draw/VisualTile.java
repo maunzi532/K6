@@ -22,7 +22,7 @@ public class VisualTile
 
 	public void draw(HexCamera camera)
 	{
-		int range = camera.range;
+		int range = camera.getRange();
 		HexLayout layout = camera.layout();
 		Hex mid = camera.mid(layout);
 		for(int i = -range; i <= range; i++)

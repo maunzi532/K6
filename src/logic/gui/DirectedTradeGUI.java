@@ -7,6 +7,11 @@ import logic.*;
 
 public class DirectedTradeGUI extends XGUI implements InvGUI
 {
+	private static final CTile more = new CTile(4, 1);
+	private static final CTile transfer = new CTile(4, 2);
+	private static final CTile less = new CTile(4, 3);
+	private static final CTile ok = new CTile(4, 4);
+
 	private DoubleInv provide;
 	private DoubleInv receive;
 	private List<ItemView> provideItems;
@@ -22,8 +27,8 @@ public class DirectedTradeGUI extends XGUI implements InvGUI
 		this.receive = receive;
 		provideItems = provide.outputInv().viewItems(false);
 		receiveItems = receive.inputInv().viewItems(true);
-		provideView = new InvGUIPart(0, 0, 0, 2, yw(), provide.name());
-		receiveView = new InvGUIPart(1, 4, 0, 2, yw(), receive.name());
+		provideView = new InvGUIPart(0, 0, 0, 2, 5, 2, 1, provide.name());
+		receiveView = new InvGUIPart(1, 5, 0, 2, 5, 2, 1, receive.name());
 		provideMarked = -1;
 		amount = 1;
 		update();
@@ -34,10 +39,10 @@ public class DirectedTradeGUI extends XGUI implements InvGUI
 		initTiles();
 		provideView.addToGUI(tiles, provideItems.size(), this);
 		receiveView.addToGUI(tiles, receiveItems.size(), this);
-		tiles[2][1] = new GuiTile("More");
-		tiles[3][2] = new GuiTile("Transfer " + amount);
-		tiles[2][3] = new GuiTile("Less");
-		tiles[3][4] = new GuiTile("OK");
+		setTile(more, new GuiTile("More"));
+		setTile(transfer, new GuiTile("Transfer " + amount));
+		setTile(less, new GuiTile("Less"));
+		setTile(ok, new GuiTile("OK"));
 	}
 
 	@Override
@@ -52,13 +57,13 @@ public class DirectedTradeGUI extends XGUI implements InvGUI
 	@Override
 	public int xw()
 	{
-		return 6;
+		return 9;
 	}
 
 	@Override
 	public int yw()
 	{
-		return 5;
+		return 6;
 	}
 
 	@Override
@@ -72,17 +77,17 @@ public class DirectedTradeGUI extends XGUI implements InvGUI
 			receiveItems = receive.inputInv().viewItems(true);
 		if(provideView.updateGUIFlag() || receiveView.updateGUIFlag())
 			update();
-		if(x == 2 && y == 1)
+		if(more.targeted(x, y))
 		{
 			amount++;
 			update();
 		}
-		if(amount > 1 && x == 2 && y == 3)
+		if(amount > 1 && less.targeted(x, y))
 		{
 			amount--;
 			update();
 		}
-		if(provideMarked >= 0 && x == 3 && y == 2)
+		if(provideMarked >= 0 && transfer.targeted(x, y))
 		{
 			ItemStack items = new ItemStack(provideItems.get(provideMarked).item, amount);
 			if(provide.outputInv().canDecrease(items) && receive.inputInv().canIncrease(items))
@@ -93,7 +98,7 @@ public class DirectedTradeGUI extends XGUI implements InvGUI
 				update();
 			}
 		}
-		if(x == 3 && y == 4)
+		if(ok.targeted(x, y))
 		{
 			provide.outputInv().commit();
 			receive.inputInv().commit();

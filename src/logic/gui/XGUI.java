@@ -23,6 +23,16 @@ public abstract class XGUI
 		return tiles;
 	}
 
+	public void setTile(CTile tile, GuiTile guiTile)
+	{
+		tiles[tile.x][tile.y] = guiTile;
+	}
+
+	public GuiTile tile(CTile tile)
+	{
+		return tiles[tile.x][tile.y];
+	}
+
 	public abstract int xw();
 
 	public abstract int yw();

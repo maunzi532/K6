@@ -13,7 +13,7 @@ public class VisualGUIQuad implements VisualGUI
 	private static final DoubleQuad LU = new DoubleQuad(-3d / 4d, -3d / 4d);
 	private static final DoubleQuad RL = new DoubleQuad(-1d / 4d, -1d / 4d);
 	private final GraphicsContext gd;
-	public final QuadCamera camera;
+	private final QuadCamera camera;
 	private final XStateControl stateControl;
 
 	public VisualGUIQuad(GraphicsContext gd, double xHalfWidth, double yHalfWidth, XStateControl stateControl)

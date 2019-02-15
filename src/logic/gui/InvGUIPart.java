@@ -3,20 +3,23 @@ package logic.gui;
 public class InvGUIPart
 {
 	private int invID;
-	private int x, y;
-	private int xw, yh;
+	private int xl, yl;
+	private int xc, yc;
+	private int xs, ys;
 	private int scroll = 0;
 	private String name;
 	private boolean updateGUI;
 	private boolean updateInvView;
 
-	public InvGUIPart(int invID, int x, int y, int xw, int yh, String name)
+	public InvGUIPart(int invID, int xl, int yl, int xc, int yc, int xs, int ys, String name)
 	{
 		this.invID = invID;
-		this.x = x;
-		this.y = y;
-		this.xw = xw;
-		this.yh = yh;
+		this.xl = xl;
+		this.yl = yl;
+		this.xc = xc;
+		this.yc = yc;
+		this.xs = xs;
+		this.ys = ys;
 		this.name = name;
 	}
 
@@ -42,50 +45,59 @@ public class InvGUIPart
 
 	public void addToGUI(GuiTile[][] tiles, int size, InvGUI invGUI)
 	{
-		tiles[x][y] = new GuiTile(name);
+		tiles[xl][yl] = new GuiTile(name);
+		int yl1 = yl + 1;
 		boolean canScrollUp = scroll > 0;
-		boolean canScrollDown = scroll + yh - 1 < size;
+		boolean canScrollDown = (scroll + yc) * xc < size;
 		if(canScrollUp)
 		{
-			tiles[x + 1][y + 1] = new GuiTile("Scroll");
+			tiles[xl + 1][yl1] = new GuiTile("Scroll");
 		}
 		if(canScrollDown)
 		{
-			tiles[x + 1][y + yh - 1] = new GuiTile("Scroll");
+			tiles[xl + 1][yl1 + (yc - 1) * ys] = new GuiTile("Scroll");
 		}
-		for(int i = scroll + (canScrollUp ? 1 : 0); i < scroll + yh - (canScrollDown ? 2 : 1) && i < size; i++)
+		for(int iy = scroll + (canScrollUp ? 1 : 0); iy < scroll + yc - (canScrollDown ? 1 : 0) && iy * xc < size; iy++)
 		{
-			invGUI.itemView(invID, x, y + 1 - scroll + i, i);
+			for(int ix = 0; ix < xc && iy * xc + ix < size; ix++)
+			{
+				invGUI.itemView(invID, xl + ix * xs, yl1 + (iy - scroll) * ys, iy * xc + ix);
+			}
 		}
 	}
 
-	public void checkClick(int xc, int yc, int size, InvGUI invGUI)
+	public void checkClick(int x, int y, int size, InvGUI invGUI)
 	{
-		if(xc < x || xc >= x + xw)
+		int xr = x - xl;
+		int yr1 = y - yl - 1;
+		if(xr < 0 || xr >= xc * xs)
 			return;
+		if(yr1 < 0 || yr1 >= yc * ys)
+			return;
+		int xr2 = xr / xs;
+		int yr2 = yr1 / ys;
 		boolean canScrollUp = scroll > 0;
-		boolean canScrollDown = scroll + yh - 1 < size;
+		boolean canScrollDown = scroll + yc < size;
 		if(canScrollUp)
 		{
-			if(yc == y + 1)
+			if(yr2 == 0)
 			{
 				scroll -= 1;
 				updateGUI = true;
+				return;
 			}
 		}
 		if(canScrollDown)
 		{
-			if(yc == y + yh - 1)
+			if(yr2 == yc - 1)
 			{
 				scroll += 1;
 				updateGUI = true;
+				return;
 			}
 		}
-		if(yc >= y + (canScrollUp ? 2 : 1) && yc < y + yh - (canScrollDown ? 1 : 0))
-		{
-			int num = yc - y - 1 + scroll;
-			if(num >= 0 && num < size)
-				invGUI.onClickItem(invID, yc - y - 1 + scroll);
-		}
+		int num = (yr2 + scroll) * xc + xr2;
+		if(num >= 0 && num < size)
+			invGUI.onClickItem(invID, num);
 	}
 }

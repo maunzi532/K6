@@ -14,7 +14,7 @@ public class VisualGUIHex implements VisualGUI
 	private static final DoubleHex RLE = new DoubleHex(1d / 6d, -5d / 6d, 4d / 6d);
 	private static final DoubleHex RLS = new DoubleHex(4d / 6d, -8d / 6d, 4d / 6d);
 	private final GraphicsContext gd;
-	public final HexCamera camera;
+	private final HexCamera camera;
 	private final XStateControl stateControl;
 
 	public VisualGUIHex(GraphicsContext gd, double xHalfWidth, double yHalfWidth, XStateControl stateControl)
