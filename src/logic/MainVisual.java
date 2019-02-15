@@ -1,8 +1,8 @@
 package logic;
 
 import draw.*;
+import geom.XPoint;
 import geom.hex.HexMatrix;
-import geom.quad.DoubleQuad;
 import javafx.geometry.VPos;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
@@ -16,7 +16,6 @@ public class MainVisual
 	private VisualMenu visualMenu;
 	private HexCamera menuCamera;
 	private VisualGUI visualGUI;
-	private QuadCamera guiCamera;
 	private LevelMap levelMap;
 	private XStateControl stateControl;
 
@@ -31,8 +30,8 @@ public class MainVisual
 		mapCamera = new HexCamera(w / 2f, h / 2f, 40, 40, 0, 0, HexMatrix.LP);
 		visualMenu = new VisualMenu(gd, w / 2f, h / 2f, stateControl);
 		menuCamera = visualMenu.camera;
-		visualGUI = new VisualGUI(gd, w / 2f, h / 2f, stateControl);
-		guiCamera = visualGUI.camera;
+		visualGUI = new VisualGUIQuad(gd, w / 2f, h / 2f, stateControl);
+		//visualGUI = new VisualGUIHex(gd, w / 2f, h / 2f, stateControl);
 		draw();
 	}
 
@@ -45,8 +44,8 @@ public class MainVisual
 		}
 		else if(stateControl.getState().hasGUI)
 		{
-			DoubleQuad h1 = guiCamera.clickLocation(x, y);
-			stateControl.handleGUIClick(h1.cast(), visualGUI.inside(h1), mouseKey);
+			XPoint h1 = visualGUI.clickLocation(x, y);
+			stateControl.handleGUIClick(h1, visualGUI.inside(x, y), mouseKey);
 		}
 		else
 		{

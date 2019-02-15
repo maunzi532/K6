@@ -1,6 +1,6 @@
 package draw;
 
-import geom.PointD;
+import geom.*;
 import geom.hex.*;
 import java.util.*;
 import javafx.scene.canvas.*;
@@ -24,7 +24,7 @@ public class VisualMenu
 
 	private Hex optionToHex(int i)
 	{
-		return new OffsetHex(0, i).toHex();
+		return new XPoint(0, i).toHex();
 	}
 
 	public int hexToOption(Hex hex)
