@@ -8,9 +8,11 @@ import logic.*;
 
 public class RecipeGUI extends XGUI implements InvGUI
 {
-	private static final CTile prev = new CTile(0, 1);
-	private static final CTile arrow = new CTile(3, 1);
-	private static final CTile next = new CTile(6, 1);
+	private static final CTile textRequires = new CTile(1, 0, new GuiTile("Requires"));
+	private static final CTile textResults = new CTile(4, 0, new GuiTile("Results"));
+	private static final CTile prev = new CTile(0, 1, new GuiTile("Previous"));
+	private static final CTile next = new CTile(6, 1, new GuiTile("Next"));
+	private static final CTile arrow = new CTile(3, 1, new GuiTile("Arrow"));
 
 	private final ProductionBuilding building;
 	private int recipeNum;
@@ -21,8 +23,8 @@ public class RecipeGUI extends XGUI implements InvGUI
 	{
 		this.building = building;
 		recipeNum = building.lastViewedRecipeNum;
-		requireView = new InvGUIPart(0, 1, 0, 1, 5, 2, 1, "Requires");
-		resultView = new InvGUIPart(1, 4, 0, 1, 5, 2, 1, "Results");
+		requireView = new InvGUIPart(0, 1, 1, 1, 5, 2, 1);
+		resultView = new InvGUIPart(1, 4, 1, 1, 5, 2, 1);
 		update();
 	}
 
@@ -44,11 +46,13 @@ public class RecipeGUI extends XGUI implements InvGUI
 		Recipe recipe = building.getRecipes().get(recipeNum);
 		requireView.addToGUI(tiles, recipe.required.items.size(), this);
 		resultView.addToGUI(tiles, recipe.results.items.size(), this);
+		setTile(textRequires);
+		setTile(textResults);
 		if(recipeNum > 0)
-			setTile(prev, new GuiTile("Previous"));
-		setTile(arrow, new GuiTile("Arrow"));
+			setTile(prev);
 		if(recipeNum < building.getRecipes().size() - 1)
-			setTile(next, new GuiTile("Next"));
+			setTile(next);
+		setTile(arrow);
 	}
 
 	@Override
@@ -65,6 +69,9 @@ public class RecipeGUI extends XGUI implements InvGUI
 	@Override
 	public boolean click(int x, int y, int key, XStateControl stateControl)
 	{
+		Recipe recipe = building.getRecipes().get(recipeNum);
+		requireView.checkClick(x, y, recipe.required.items.size(), this);
+		resultView.checkClick(x, y, recipe.results.items.size(), this);
 		if(prev.targeted(x, y) && recipeNum > 0)
 		{
 			recipeNum--;
@@ -77,9 +84,6 @@ public class RecipeGUI extends XGUI implements InvGUI
 		}
 		return false;
 	}
-
-	@Override
-	public void onClickItem(int invID, int num, int xi, int yi){}
 
 	@Override
 	public void close(XStateControl stateControl)

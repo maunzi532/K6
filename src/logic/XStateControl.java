@@ -218,7 +218,7 @@ public class XStateControl
 				{
 					case PRODUCTION_VIEW -> new RecipeGUI(((ProductionBuilding) stateInfo[0]));
 					case DIRECTED_TRADE -> new DirectedTradeGUI((DoubleInv) stateInfo[1], (DoubleInv) stateInfo[2]);
-					case BUILD -> new BuildGUI((XHero) stateInfo[0]);
+					case BUILD -> new BuildGUI((XHero) stateInfo[0], null);
 					case DISASSEMBLE -> new DisassembleGUI((XHero) stateInfo[0]);
 					default -> NoGUI.NONE;
 				};

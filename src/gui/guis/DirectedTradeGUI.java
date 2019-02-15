@@ -8,10 +8,12 @@ import logic.*;
 
 public class DirectedTradeGUI extends XGUI implements InvGUI
 {
-	private static final CTile more = new CTile(4, 1);
+	private static final CTile nameProvide = new CTile(1, 0);
+	private static final CTile nameReceive = new CTile(6, 0);
+	private static final CTile more = new CTile(4, 1, new GuiTile("More"));
+	private static final CTile less = new CTile(4, 3, new GuiTile("Less"));
 	private static final CTile transfer = new CTile(4, 2);
-	private static final CTile less = new CTile(4, 3);
-	private static final CTile ok = new CTile(4, 4);
+	private static final CTile ok = new CTile(4, 4, new GuiTile("OK"));
 
 	private final DoubleInv provide;
 	private final DoubleInv receive;
@@ -28,8 +30,8 @@ public class DirectedTradeGUI extends XGUI implements InvGUI
 		this.receive = receive;
 		provideItems = provide.outputInv().viewItems(false);
 		receiveItems = receive.inputInv().viewItems(true);
-		provideView = new InvGUIPart(0, 0, 0, 2, 5, 2, 1, provide.name());
-		receiveView = new InvGUIPart(1, 5, 0, 2, 5, 2, 1, receive.name());
+		provideView = new InvGUIPart(0, 0, 1, 2, 5, 2, 1);
+		receiveView = new InvGUIPart(1, 5, 1, 2, 5, 2, 1);
 		provideMarked = -1;
 		amount = 1;
 		update();
@@ -52,10 +54,12 @@ public class DirectedTradeGUI extends XGUI implements InvGUI
 		initTiles();
 		provideView.addToGUI(tiles, provideItems.size(), this);
 		receiveView.addToGUI(tiles, receiveItems.size(), this);
-		setTile(more, new GuiTile("More"));
+		setTile(nameProvide, new GuiTile(provide.name()));
+		setTile(nameReceive, new GuiTile(receive.name()));
+		setTile(more);
 		setTile(transfer, new GuiTile("Transfer " + amount));
-		setTile(less, new GuiTile("Less"));
-		setTile(ok, new GuiTile("OK"));
+		setTile(less);
+		setTile(ok);
 	}
 
 	@Override
@@ -71,11 +75,7 @@ public class DirectedTradeGUI extends XGUI implements InvGUI
 	public boolean click(int x, int y, int key, XStateControl stateControl)
 	{
 		provideView.checkClick(x, y, provideItems.size(), this);
-		if(provideView.updateInvViewFlag())
-			provideItems = provide.outputInv().viewItems(false);
 		receiveView.checkClick(x, y, receiveItems.size(), this);
-		if(receiveView.updateInvViewFlag())
-			receiveItems = receive.inputInv().viewItems(true);
 		if(provideView.updateGUIFlag() || receiveView.updateGUIFlag())
 			update();
 		if(more.targeted(x, y))

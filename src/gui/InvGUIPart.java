@@ -7,11 +7,10 @@ public class InvGUIPart
 	private int xc, yc;
 	private int xs, ys;
 	private int scroll = 0;
-	private String name;
 	private boolean updateGUI;
 	private boolean updateInvView;
 
-	public InvGUIPart(int invID, int xl, int yl, int xc, int yc, int xs, int ys, String name)
+	public InvGUIPart(int invID, int xl, int yl, int xc, int yc, int xs, int ys)
 	{
 		this.invID = invID;
 		this.xl = xl;
@@ -20,12 +19,6 @@ public class InvGUIPart
 		this.yc = yc;
 		this.xs = xs;
 		this.ys = ys;
-		this.name = name;
-	}
-
-	public void setName(String name)
-	{
-		this.name = name;
 	}
 
 	public boolean updateGUIFlag()
@@ -50,23 +43,21 @@ public class InvGUIPart
 
 	public void addToGUI(GuiTile[][] tiles, int size, InvGUI invGUI)
 	{
-		tiles[xl][yl] = new GuiTile(name);
-		int yl1 = yl + 1;
 		boolean canScrollUp = scroll > 0;
 		boolean canScrollDown = (scroll + yc) * xc < size;
 		if(canScrollUp)
 		{
-			tiles[xl + 1][yl1] = new GuiTile("Scroll");
+			tiles[xl + 1][yl] = new GuiTile("Scroll");
 		}
 		if(canScrollDown)
 		{
-			tiles[xl + 1][yl1 + (yc - 1) * ys] = new GuiTile("Scroll");
+			tiles[xl + 1][yl + (yc - 1) * ys] = new GuiTile("Scroll");
 		}
 		for(int iy = scroll + (canScrollUp ? 1 : 0); iy < scroll + yc - (canScrollDown ? 1 : 0) && iy * xc < size; iy++)
 		{
 			for(int ix = 0; ix < xc && iy * xc + ix < size; ix++)
 			{
-				invGUI.itemView(invID, xl + ix * xs, yl1 + (iy - scroll) * ys, iy * xc + ix);
+				invGUI.itemView(invID, xl + ix * xs, yl + (iy - scroll) * ys, iy * xc + ix);
 			}
 		}
 	}
@@ -74,15 +65,15 @@ public class InvGUIPart
 	public void checkClick(int x, int y, int size, InvGUI invGUI)
 	{
 		int xr = x - xl;
-		int yr1 = y - yl - 1;
+		int yr = y - yl;
 		if(xr < 0 || xr >= xc * xs)
 			return;
-		if(yr1 < 0 || yr1 >= yc * ys)
+		if(yr < 0 || yr >= yc * ys)
 			return;
 		int xr2 = Math.floorDiv(xr, xs);
 		int xi = Math.floorMod(xr, xs);
-		int yr2 = Math.floorDiv(yr1, ys);
-		int yi = Math.floorMod(yr1, ys);
+		int yr2 = Math.floorDiv(yr, ys);
+		int yi = Math.floorMod(yr, ys);
 		boolean canScrollUp = scroll > 0;
 		boolean canScrollDown = scroll + yc < size;
 		if(canScrollUp)

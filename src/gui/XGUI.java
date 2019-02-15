@@ -31,6 +31,11 @@ public abstract class XGUI
 		tiles[tile.x][tile.y] = guiTile;
 	}
 
+	public void setTile(CTile tile)
+	{
+		tiles[tile.x][tile.y] = tile.guiTile;
+	}
+
 	public GuiTile tile(CTile tile)
 	{
 		return tiles[tile.x][tile.y];
