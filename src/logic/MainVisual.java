@@ -1,21 +1,22 @@
 package logic;
 
 import draw.*;
-import hex.*;
+import geom.hex.HexMatrix;
+import geom.quad.DoubleQuad;
 import javafx.geometry.VPos;
-import javafx.scene.canvas.*;
-import javafx.scene.input.*;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.input.KeyCode;
 import javafx.scene.text.TextAlignment;
 import levelMap.LevelMap;
 
 public class MainVisual
 {
 	private VisualTile visualTile;
-	private XCamera mapCamera;
+	private HexCamera mapCamera;
 	private VisualMenu visualMenu;
-	private XCamera menuCamera;
+	private HexCamera menuCamera;
 	private VisualGUI visualGUI;
-	private XCamera guiCamera;
+	private QuadCamera guiCamera;
 	private LevelMap levelMap;
 	private XStateControl stateControl;
 
@@ -27,7 +28,7 @@ public class MainVisual
 		gd.setTextAlign(TextAlignment.CENTER);
 		gd.setTextBaseline(VPos.CENTER);
 		visualTile = new VisualTile(levelMap, gd);
-		mapCamera = new XCamera(w / 2f, h / 2f, 40, 40, 0, 0, MatrixH.LP);
+		mapCamera = new HexCamera(w / 2f, h / 2f, 40, 40, 0, 0, HexMatrix.LP);
 		visualMenu = new VisualMenu(gd, w / 2f, h / 2f, stateControl);
 		menuCamera = visualMenu.camera;
 		visualGUI = new VisualGUI(gd, w / 2f, h / 2f, stateControl);
@@ -44,7 +45,7 @@ public class MainVisual
 		}
 		else if(stateControl.getState().hasGUI)
 		{
-			DoubleHex h1 = guiCamera.clickLocation(x, y);
+			DoubleQuad h1 = guiCamera.clickLocation(x, y);
 			stateControl.handleGUIClick(h1.cast(), visualGUI.inside(h1), mouseKey);
 		}
 		else

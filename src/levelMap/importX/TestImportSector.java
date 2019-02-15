@@ -1,6 +1,6 @@
 package levelMap.importX;
 
-import hex.*;
+import geom.hex.*;
 import java.util.*;
 
 public class TestImportSector implements ImportSector

@@ -3,7 +3,8 @@ package logic;
 import building.*;
 import entity.*;
 import entity.hero.XHero;
-import hex.*;
+import geom.hex.*;
+import geom.quad.Quad;
 import inv.DoubleInv;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -59,12 +60,11 @@ public class XStateControl
 		update();
 	}
 
-	public void handleGUIClick(Hex guiHex, boolean inside, int key)
+	public void handleGUIClick(Quad guiQuad, boolean inside, int key)
 	{
-		OffsetHex coordinates = new OffsetHex(guiHex);
 		if(inside)
 		{
-			if(xgui.click(coordinates.v[0], coordinates.v[1], key, this))
+			if(xgui.click(guiQuad.v[0], guiQuad.v[1], key, this))
 				update();
 		}
 		else

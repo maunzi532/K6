@@ -1,7 +1,7 @@
 package entity.hero;
 
 import entity.*;
-import hex.*;
+import geom.hex.*;
 import inv.*;
 
 public class XHero extends XEntity implements DoubleInv

@@ -1,16 +1,17 @@
 package draw;
 
-import hex.*;
+import geom.PointD;
+import geom.hex.*;
 
-public class XCamera
+public class HexCamera
 {
 	public double xHalfWidth, yHalfWidth;
 	public double xSize, ySize;
 	public double xShift, yShift;
-	public MatrixH matrix;
+	public HexMatrix matrix;
 	public int range;
 
-	public XCamera(double xHalfWidth, double yHalfWidth, double xSize, double ySize, double xShift, double yShift, MatrixH matrix)
+	public HexCamera(double xHalfWidth, double yHalfWidth, double xSize, double ySize, double xShift, double yShift, HexMatrix matrix)
 	{
 		this.xHalfWidth = xHalfWidth;
 		this.yHalfWidth = yHalfWidth;
@@ -25,14 +26,14 @@ public class XCamera
 	public void determineRange()
 	{
 		double yDistance = yHalfWidth / ySize / 3;
-		double xDistance = xHalfWidth / xSize / MatrixH.Q3;
+		double xDistance = xHalfWidth / xSize / HexMatrix.Q3;
 		range = (int)(yDistance + xDistance + 1);
 	}
 
-	public LayoutH layout()
+	public HexLayout layout()
 	{
 		//MatrixH matrix = MatrixH.layoutLerp(MatrixH.layoutPointy(), MatrixH.layoutFlat(), Math.abs((timer % 100) - 50) / 50d);
-		return new LayoutH(matrix, new PointD(xSize, ySize),
+		return new HexLayout(matrix, new PointD(xSize, ySize),
 				new PointD(xHalfWidth - xShift * xSize, yHalfWidth - yShift * ySize));
 	}
 
@@ -41,7 +42,7 @@ public class XCamera
 		return layout().pixelToHex(new PointD(x, y));
 	}
 
-	public Hex mid(LayoutH layout)
+	public Hex mid(HexLayout layout)
 	{
 		return layout.pixelToHex(new PointD(xHalfWidth, yHalfWidth)).cast();
 	}

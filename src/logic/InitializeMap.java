@@ -6,7 +6,7 @@ import building.blueprint.*;
 import entity.*;
 import entity.hero.*;
 import file.*;
-import hex.*;
+import geom.hex.*;
 import inv.*;
 import levelMap.*;
 import levelMap.importX.*;

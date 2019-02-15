@@ -1,6 +1,6 @@
 package entity;
 
-import hex.*;
+import geom.hex.*;
 import java.util.*;
 import levelMap.*;
 

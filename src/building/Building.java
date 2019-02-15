@@ -1,7 +1,7 @@
 package building;
 
 import arrow.*;
-import hex.*;
+import geom.hex.*;
 import javafx.scene.image.*;
 
 public interface Building

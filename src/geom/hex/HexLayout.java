@@ -1,12 +1,14 @@
-package hex;
+package geom.hex;
 
-public class LayoutH
+import geom.PointD;
+
+public class HexLayout
 {
-	public final MatrixH mat;
+	public final HexMatrix mat;
 	public final PointD size;
 	public final PointD origin;
 
-	public LayoutH(MatrixH mat, PointD size, PointD origin)
+	public HexLayout(HexMatrix mat, PointD size, PointD origin)
 	{
 		this.mat = mat;
 		this.size = size;

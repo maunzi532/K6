@@ -3,7 +3,8 @@ package draw;
 import arrow.*;
 import building.*;
 import entity.*;
-import hex.*;
+import geom.PointD;
+import geom.hex.*;
 import javafx.scene.canvas.*;
 import javafx.scene.paint.*;
 import levelMap.*;
@@ -19,10 +20,10 @@ public class VisualTile
 		this.gd = gd;
 	}
 
-	public void draw(XCamera camera)
+	public void draw(HexCamera camera)
 	{
 		int range = camera.range;
-		LayoutH layout = camera.layout();
+		HexLayout layout = camera.layout();
 		Hex mid = camera.mid(layout);
 		for(int i = -range; i <= range; i++)
 		{
@@ -43,7 +44,7 @@ public class VisualTile
 	}
 
 	@SuppressWarnings("ConstantConditions")
-	public void draw0(LayoutH layout, Hex h1)
+	public void draw0(HexLayout layout, Hex h1)
 	{
 		FullTile fullTile = levelMap.tile(h1);
 		double[][] points = layout.hexCorners(h1);
@@ -68,7 +69,7 @@ public class VisualTile
 		}
 	}
 
-	public void drawArrows0(LayoutH layout, Hex mid, int range)
+	public void drawArrows0(HexLayout layout, Hex mid, int range)
 	{
 		for(VisualArrow arrow : levelMap.getArrows())
 		{
@@ -99,7 +100,7 @@ public class VisualTile
 		}
 	}
 
-	public void draw1(LayoutH layout, Hex h1)
+	public void draw1(HexLayout layout, Hex h1)
 	{
 		FullTile fullTile = levelMap.tile(h1);
 		if(fullTile.visible())
@@ -115,7 +116,7 @@ public class VisualTile
 		}
 	}
 
-	public void drawArrows1(LayoutH layout, Hex mid, int range)
+	public void drawArrows1(HexLayout layout, Hex mid, int range)
 	{
 		for(VisualArrow arrow : levelMap.getArrows())
 		{

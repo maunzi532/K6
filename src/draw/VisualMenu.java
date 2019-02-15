@@ -1,6 +1,7 @@
 package draw;
 
-import hex.*;
+import geom.PointD;
+import geom.hex.*;
 import java.util.*;
 import javafx.scene.canvas.*;
 import javafx.scene.paint.*;
@@ -10,14 +11,14 @@ import logic.*;
 public class VisualMenu
 {
 	private final GraphicsContext gd;
-	public final XCamera camera;
+	public final HexCamera camera;
 	private final XStateControl stateControl;
 
 	public VisualMenu(GraphicsContext gd, double xHalfWidth, double yHalfWidth, XStateControl stateControl)
 	{
 		this.gd = gd;
-		camera = new XCamera(xHalfWidth * 2, yHalfWidth,
-				yHalfWidth / 8, yHalfWidth / 8, 1.25 * MatrixH.Q3,  0, MatrixH.LP);
+		camera = new HexCamera(xHalfWidth * 2, yHalfWidth,
+				yHalfWidth / 8, yHalfWidth / 8, 1.25 * HexMatrix.Q3,  0, HexMatrix.LP);
 		this.stateControl = stateControl;
 	}
 
@@ -48,7 +49,7 @@ public class VisualMenu
 		}
 	}
 
-	public void draw0(LayoutH layout, Hex h1, String text, boolean active)
+	public void draw0(HexLayout layout, Hex h1, String text, boolean active)
 	{
 		double[][] points = layout.hexCorners(h1);
 		if(active)

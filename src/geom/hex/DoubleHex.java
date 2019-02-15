@@ -1,4 +1,4 @@
-package hex;
+package geom.hex;
 
 public class DoubleHex
 {

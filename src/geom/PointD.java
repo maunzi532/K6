@@ -1,4 +1,4 @@
-package hex;
+package geom;
 
 public class PointD
 {

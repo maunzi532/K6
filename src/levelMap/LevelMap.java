@@ -2,7 +2,7 @@ package levelMap;
 
 import arrow.*;
 import building.*;
-import hex.*;
+import geom.hex.*;
 import java.util.*;
 import entity.*;
 

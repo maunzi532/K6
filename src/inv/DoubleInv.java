@@ -1,6 +1,6 @@
 package inv;
 
-import hex.*;
+import geom.hex.*;
 
 public interface DoubleInv
 {

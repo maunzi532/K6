@@ -1,7 +1,7 @@
 package arrow;
 
 import entity.*;
-import hex.*;
+import geom.hex.*;
 import javafx.scene.image.*;
 
 public class VisualArrow implements VisibleReplace

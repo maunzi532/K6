@@ -2,7 +2,7 @@ package building;
 
 import arrow.*;
 import building.blueprint.*;
-import hex.*;
+import geom.hex.*;
 import inv.*;
 import java.util.*;
 

@@ -1,6 +1,6 @@
 package entity;
 
-import hex.*;
+import geom.hex.*;
 import javafx.scene.image.*;
 
 public class XEntity
