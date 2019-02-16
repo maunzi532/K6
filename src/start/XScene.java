@@ -29,7 +29,8 @@ public class XScene extends Application
 
 		XTimer xTimer = new XTimer(gd, WIDTH, HEIGHT);
 		xTimer.start();
-		s.setOnMouseClicked(xTimer::onMouseEvent);
+		s.setOnMouseClicked(xTimer::onMouseClick);
+		s.setOnMouseMoved(xTimer::onMouseMove);
 		s.setOnKeyPressed(xTimer::onKeyEvent);
 
 		stage.show();

@@ -55,9 +55,9 @@ public class BuildGUI extends XGUI implements InvGUI
 	{
 		initTiles();
 		CostBlueprint cost = blueprint.constructionBlueprint.blueprints.get(costNum).get(tileCostNum);
-		floorTiles.addToGUI(tiles, cost.requiredFloorTiles.size(), this);
-		required.addToGUI(tiles, cost.costs.items.size(), this);
-		returned.addToGUI(tiles, cost.refundable.items.size(), this);
+		floorTiles.addToGUI(cost.requiredFloorTiles.size(), this);
+		required.addToGUI(cost.costs.items.size(), this);
+		returned.addToGUI(cost.refundable.items.size(), this);
 		setTile(textTiles);
 		setTile(textRequired);
 		setTile(textReturned);
@@ -93,6 +93,18 @@ public class BuildGUI extends XGUI implements InvGUI
 			tiles[x][y1] = new GuiTile(String.valueOf(items.count));
 			tiles[x + 1][y1] = new GuiTile(null, items.item.image(), null);
 		}
+	}
+
+	@Override
+	public void target(int x, int y)
+	{
+
+	}
+
+	@Override
+	public void onTarget(int invID, int num, int xi, int yi, CTile cTile)
+	{
+
 	}
 
 	@Override

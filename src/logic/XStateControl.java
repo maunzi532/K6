@@ -61,6 +61,11 @@ public class XStateControl
 		update();
 	}
 
+	public void target(XPoint xPoint)
+	{
+		xgui.target(xPoint.v[0], xPoint.v[1]);
+	}
+
 	public void handleGUIClick(XPoint xPoint, boolean inside, int key)
 	{
 		if(inside)

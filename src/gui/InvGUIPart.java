@@ -7,8 +7,9 @@ public class InvGUIPart
 	private int xc, yc;
 	private int xs, ys;
 	private int scroll = 0;
+	private CTile scrollUp;
+	private CTile scrollDown;
 	private boolean updateGUI;
-	private boolean updateInvView;
 
 	public InvGUIPart(int invID, int xl, int yl, int xc, int yc, int xs, int ys)
 	{
@@ -19,6 +20,8 @@ public class InvGUIPart
 		this.yc = yc;
 		this.xs = xs;
 		this.ys = ys;
+		scrollUp = new CTile(xl, yl, new GuiTile("Scroll"), xs, ys);
+		scrollDown = new CTile(xl, yl + (yc - 1) * ys, new GuiTile("Scroll"), xs, ys);
 	}
 
 	public boolean updateGUIFlag()
@@ -31,27 +34,17 @@ public class InvGUIPart
 		return false;
 	}
 
-	public boolean updateInvViewFlag()
-	{
-		if(updateInvView)
-		{
-			updateInvView = false;
-			return true;
-		}
-		return false;
-	}
-
-	public void addToGUI(GuiTile[][] tiles, int size, InvGUI invGUI)
+	public void addToGUI(int size, InvGUI invGUI)
 	{
 		boolean canScrollUp = scroll > 0;
 		boolean canScrollDown = (scroll + yc) * xc < size;
 		if(canScrollUp)
 		{
-			tiles[xl + 1][yl] = new GuiTile("Scroll");
+			invGUI.setTile(scrollUp);
 		}
 		if(canScrollDown)
 		{
-			tiles[xl + 1][yl + (yc - 1) * ys] = new GuiTile("Scroll");
+			invGUI.setTile(scrollDown);
 		}
 		for(int iy = scroll + (canScrollUp ? 1 : 0); iy < scroll + yc - (canScrollDown ? 1 : 0) && iy * xc < size; iy++)
 		{
@@ -60,6 +53,36 @@ public class InvGUIPart
 				invGUI.itemView(invID, xl + ix * xs, yl + (iy - scroll) * ys, iy * xc + ix);
 			}
 		}
+	}
+
+	public boolean target(int x, int y, int size, InvGUI invGUI)
+	{
+		int xr = x - xl;
+		int yr = y - yl;
+		if(xr < 0 || xr >= xc * xs)
+			return false;
+		if(yr < 0 || yr >= yc * ys)
+			return false;
+		int xr2 = Math.floorDiv(xr, xs);
+		int xi = Math.floorMod(xr, xs);
+		int yr2 = Math.floorDiv(yr, ys);
+		int yi = Math.floorMod(yr, ys);
+		boolean canScrollUp = scroll > 0;
+		boolean canScrollDown = scroll + yc < size;
+		if(canScrollUp && yr2 == 0)
+		{
+			invGUI.setTargeted(scrollUp);
+			return true;
+		}
+		if(canScrollDown && yr2 == yc - 1)
+		{
+			invGUI.setTargeted(scrollDown);
+			return true;
+		}
+		int num = (yr2 + scroll) * xc + xr2;
+		if(num >= 0 && num < size)
+			invGUI.onTarget(invID, num, xi, yi, new CTile(xl + xr2 * xs, yl + yr2 * ys, xs, ys));
+		return true;
 	}
 
 	public void checkClick(int x, int y, int size, InvGUI invGUI)
@@ -76,23 +99,17 @@ public class InvGUIPart
 		int yi = Math.floorMod(yr, ys);
 		boolean canScrollUp = scroll > 0;
 		boolean canScrollDown = scroll + yc < size;
-		if(canScrollUp)
+		if(canScrollUp && yr2 == 0)
 		{
-			if(yr2 == 0)
-			{
-				scroll -= 1;
-				updateGUI = true;
-				return;
-			}
+			scroll -= 1;
+			updateGUI = true;
+			return;
 		}
-		if(canScrollDown)
+		if(canScrollDown && yr2 == yc - 1)
 		{
-			if(yr2 == yc - 1)
-			{
-				scroll += 1;
-				updateGUI = true;
-				return;
-			}
+			scroll += 1;
+			updateGUI = true;
+			return;
 		}
 		int num = (yr2 + scroll) * xc + xr2;
 		if(num >= 0 && num < size)

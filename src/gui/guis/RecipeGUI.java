@@ -44,8 +44,8 @@ public class RecipeGUI extends XGUI implements InvGUI
 	{
 		initTiles();
 		Recipe recipe = building.getRecipes().get(recipeNum);
-		requireView.addToGUI(tiles, recipe.required.items.size(), this);
-		resultView.addToGUI(tiles, recipe.results.items.size(), this);
+		requireView.addToGUI(recipe.required.items.size(), this);
+		resultView.addToGUI(recipe.results.items.size(), this);
 		setTile(textRequires);
 		setTile(textResults);
 		if(recipeNum > 0)
@@ -67,17 +67,29 @@ public class RecipeGUI extends XGUI implements InvGUI
 	}
 
 	@Override
+	public void target(int x, int y)
+	{
+
+	}
+
+	@Override
+	public void onTarget(int invID, int num, int xi, int yi, CTile cTile)
+	{
+
+	}
+
+	@Override
 	public boolean click(int x, int y, int key, XStateControl stateControl)
 	{
 		Recipe recipe = building.getRecipes().get(recipeNum);
 		requireView.checkClick(x, y, recipe.required.items.size(), this);
 		resultView.checkClick(x, y, recipe.results.items.size(), this);
-		if(prev.targeted(x, y) && recipeNum > 0)
+		if(prev.contains(x, y) && recipeNum > 0)
 		{
 			recipeNum--;
 			update();
 		}
-		if(next.targeted(x, y) && recipeNum < building.getRecipes().size() - 1)
+		if(next.contains(x, y) && recipeNum < building.getRecipes().size() - 1)
 		{
 			recipeNum++;
 			update();

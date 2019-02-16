@@ -27,6 +27,12 @@ public class DisassembleGUI extends XGUI
 	}
 
 	@Override
+	public void target(int x, int y)
+	{
+
+	}
+
+	@Override
 	public boolean click(int x, int y, int key, XStateControl stateControl)
 	{
 		return false;

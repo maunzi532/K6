@@ -24,6 +24,12 @@ public class NoGUI extends XGUI
 	}
 
 	@Override
+	public void target(int x, int y)
+	{
+		throw new RuntimeException();
+	}
+
+	@Override
 	public boolean click(int x, int y, int key, XStateControl stateControl)
 	{
 		throw new RuntimeException();

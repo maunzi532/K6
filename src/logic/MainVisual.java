@@ -63,6 +63,14 @@ public class MainVisual
 		}
 	}
 
+	public void handleMouseMove(double x, double y)
+	{
+		if(stateControl.getState().hasGUI && visualGUI.inside(x, y))
+		{
+			stateControl.target(visualGUI.clickLocation(x, y));
+		}
+	}
+
 	public void tick()
 	{
 		levelMap.tickArrows();

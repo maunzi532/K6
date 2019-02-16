@@ -8,8 +8,8 @@ import logic.*;
 
 public class DirectedTradeGUI extends XGUI implements InvGUI
 {
-	private static final CTile nameProvide = new CTile(1, 0);
-	private static final CTile nameReceive = new CTile(6, 0);
+	private static final CTile nameProvide = new CTile(0, 0, 4, 1);
+	private static final CTile nameReceive = new CTile(5, 0, 4, 1);
 	private static final CTile more = new CTile(4, 1, new GuiTile("More"));
 	private static final CTile less = new CTile(4, 3, new GuiTile("Less"));
 	private static final CTile transfer = new CTile(4, 2);
@@ -30,7 +30,7 @@ public class DirectedTradeGUI extends XGUI implements InvGUI
 		this.receive = receive;
 		provideItems = provide.outputInv().viewItems(false);
 		receiveItems = receive.inputInv().viewItems(true);
-		provideView = new InvGUIPart(0, 0, 1, 2, 5, 2, 1);
+		provideView = new InvGUIPart(0, 0, 1, 1, 3, 2, 1);
 		receiveView = new InvGUIPart(1, 5, 1, 2, 5, 2, 1);
 		provideMarked = -1;
 		amount = 1;
@@ -51,11 +51,12 @@ public class DirectedTradeGUI extends XGUI implements InvGUI
 
 	private void update()
 	{
+		setTargeted(CTile.NONE);
 		initTiles();
-		provideView.addToGUI(tiles, provideItems.size(), this);
-		receiveView.addToGUI(tiles, receiveItems.size(), this);
-		setTile(nameProvide, new GuiTile(provide.name()));
-		setTile(nameReceive, new GuiTile(receive.name()));
+		provideView.addToGUI(provideItems.size(), this);
+		receiveView.addToGUI(receiveItems.size(), this);
+		setTile(nameProvide, new GuiTile(provide.name(), null, Color.BLUE));
+		setTile(nameReceive, new GuiTile(receive.name(), null, Color.BLUE));
 		setTile(more);
 		setTile(transfer, new GuiTile("Transfer " + amount));
 		setTile(less);
@@ -72,23 +73,48 @@ public class DirectedTradeGUI extends XGUI implements InvGUI
 	}
 
 	@Override
+	public void target(int x, int y)
+	{
+		if(provideView.target(x, y, provideItems.size(), this))
+			return;
+		if(receiveView.target(x, y, receiveItems.size(), this))
+			return;
+		if(more.contains(x, y))
+			setTargeted(more);
+		else if(less.contains(x, y))
+			setTargeted(less);
+		else if(transfer.contains(x, y))
+			setTargeted(transfer);
+		else if(ok.contains(x, y))
+			setTargeted(ok);
+		else
+			setTargeted(CTile.NONE);
+	}
+
+	@Override
+	public void onTarget(int invID, int num, int xi, int yi, CTile cTile)
+	{
+		setTargeted(cTile);
+	}
+
+	@Override
 	public boolean click(int x, int y, int key, XStateControl stateControl)
 	{
 		provideView.checkClick(x, y, provideItems.size(), this);
 		receiveView.checkClick(x, y, receiveItems.size(), this);
 		if(provideView.updateGUIFlag() || receiveView.updateGUIFlag())
 			update();
-		if(more.targeted(x, y))
+		if(more.contains(x, y))
 		{
 			amount++;
 			update();
 		}
-		if(amount > 1 && less.targeted(x, y))
+		if(amount > 1 && less.contains(x, y))
 		{
 			amount--;
 			update();
 		}
-		if(provideMarked >= 0 && transfer.targeted(x, y))
+		if(provideMarked >= 0 && transfer.contains(x, y))
 		{
 			ItemStack items = new ItemStack(provideItems.get(provideMarked).item, amount);
 			if(provide.outputInv().canDecrease(items) && receive.inputInv().canIncrease(items))
@@ -99,7 +125,7 @@ public class DirectedTradeGUI extends XGUI implements InvGUI
 				update();
 			}
 		}
-		if(ok.targeted(x, y))
+		if(ok.contains(x, y))
 		{
 			provide.outputInv().commit();
 			receive.inputInv().commit();
