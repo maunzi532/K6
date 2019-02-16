@@ -102,19 +102,19 @@ public class DirectedTradeGUI extends XGUI implements InvGUI
 	{
 		provideView.checkClick(x, y, provideItems.size(), this);
 		receiveView.checkClick(x, y, receiveItems.size(), this);
-		if(provideView.updateGUIFlag() || receiveView.updateGUIFlag())
+		if(provideView.updateGUIFlag() | receiveView.updateGUIFlag())
 			update();
-		if(more.contains(x, y))
+		else if(more.contains(x, y))
 		{
 			amount++;
 			update();
 		}
-		if(amount > 1 && less.contains(x, y))
+		else if(amount > 1 && less.contains(x, y))
 		{
 			amount--;
 			update();
 		}
-		if(provideMarked >= 0 && transfer.contains(x, y))
+		else if(provideMarked >= 0 && transfer.contains(x, y))
 		{
 			ItemStack items = new ItemStack(provideItems.get(provideMarked).item, amount);
 			if(provide.outputInv().canDecrease(items) && receive.inputInv().canIncrease(items))
@@ -125,7 +125,7 @@ public class DirectedTradeGUI extends XGUI implements InvGUI
 				update();
 			}
 		}
-		if(ok.contains(x, y))
+		else if(ok.contains(x, y))
 		{
 			provide.outputInv().commit();
 			receive.inputInv().commit();

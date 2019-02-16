@@ -31,4 +31,9 @@ public class ItemStack
 	{
 		return item.weight() * count;
 	}
+
+	public ItemStack merge(ItemStack other)
+	{
+		return new ItemStack(item, count + other.count);
+	}
 }

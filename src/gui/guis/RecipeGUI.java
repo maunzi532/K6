@@ -8,8 +8,8 @@ import logic.*;
 
 public class RecipeGUI extends XGUI implements InvGUI
 {
-	private static final CTile textRequires = new CTile(1, 0, new GuiTile("Requires"));
-	private static final CTile textResults = new CTile(4, 0, new GuiTile("Results"));
+	private static final CTile textRequires = new CTile(1, 0, new GuiTile("Requires"), 2, 1);
+	private static final CTile textResults = new CTile(4, 0, new GuiTile("Results"), 2, 1);
 	private static final CTile prev = new CTile(0, 1, new GuiTile("Previous"));
 	private static final CTile next = new CTile(6, 1, new GuiTile("Next"));
 	private static final CTile arrow = new CTile(3, 1, new GuiTile("Arrow"));
@@ -69,13 +69,23 @@ public class RecipeGUI extends XGUI implements InvGUI
 	@Override
 	public void target(int x, int y)
 	{
-
+		Recipe recipe = building.getRecipes().get(recipeNum);
+		if(requireView.target(x, y, recipe.required.items.size(), this))
+			return;
+		if(resultView.target(x, y, recipe.results.items.size(), this))
+			return;
+		if(recipeNum > 0 && prev.contains(x, y))
+			setTargeted(prev);
+		else if(recipeNum < building.getRecipes().size() - 1 && next.contains(x, y))
+			setTargeted(next);
+		else
+			setTargeted(CTile.NONE);
 	}
 
 	@Override
 	public void onTarget(int invID, int num, int xi, int yi, CTile cTile)
 	{
-
+		setTargeted(cTile);
 	}
 
 	@Override
@@ -84,12 +94,14 @@ public class RecipeGUI extends XGUI implements InvGUI
 		Recipe recipe = building.getRecipes().get(recipeNum);
 		requireView.checkClick(x, y, recipe.required.items.size(), this);
 		resultView.checkClick(x, y, recipe.results.items.size(), this);
-		if(prev.contains(x, y) && recipeNum > 0)
+		if(requireView.updateGUIFlag() | resultView.updateGUIFlag())
+			update();
+		else if(recipeNum > 0 && prev.contains(x, y))
 		{
 			recipeNum--;
 			update();
 		}
-		if(next.contains(x, y) && recipeNum < building.getRecipes().size() - 1)
+		else if(recipeNum < building.getRecipes().size() - 1 && next.contains(x, y))
 		{
 			recipeNum++;
 			update();

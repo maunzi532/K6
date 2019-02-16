@@ -82,6 +82,8 @@ public class InvGUIPart
 		int num = (yr2 + scroll) * xc + xr2;
 		if(num >= 0 && num < size)
 			invGUI.onTarget(invID, num, xi, yi, new CTile(xl + xr2 * xs, yl + yr2 * ys, xs, ys));
+		else
+			invGUI.setTargeted(CTile.NONE);
 		return true;
 	}
 

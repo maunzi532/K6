@@ -1,16 +1,21 @@
 package entity.hero;
 
-import entity.*;
-import geom.hex.*;
+import building.ProductionBuilding;
+import building.blueprint.*;
+import entity.XEntity;
+import geom.hex.Hex;
 import inv.*;
+import levelMap.LevelMap;
 
 public class XHero extends XEntity implements DoubleInv
 {
+	private LevelMap levelMap;
 	private Inv inv;
 
-	public XHero(Hex location)
+	public XHero(Hex location, LevelMap levelMap)
 	{
 		super(location);
+		this.levelMap = levelMap;
 		inv = new WeightInv(20);
 	}
 
@@ -54,5 +59,22 @@ public class XHero extends XEntity implements DoubleInv
 	{
 		inv.tryIncrease(itemList);
 		inv.commit();
+	}
+
+	public boolean canBuildBuilding(CostBlueprint cost)
+	{
+		//check floor tiles
+		return inv.tryDecrease(cost.required).isPresent();
+	}
+
+	public void rollbackInv()
+	{
+		inv.rollback();;
+	}
+
+	public void buildBuilding(BuildingBlueprint blueprint, CostBlueprint cost)
+	{
+		inv.commit();
+		levelMap.addBuilding(new ProductionBuilding(location, blueprint));
 	}
 }

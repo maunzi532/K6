@@ -16,9 +16,9 @@ public class InitializeMap
 	public InitializeMap(LevelMap levelMap)
 	{
 		new TestImportSector(8).generate().importIntoMap(levelMap);
-		levelMap.addEntity(new XHero(new Hex(2, 1)));
+		levelMap.addEntity(new XHero(new Hex(2, 1), levelMap));
 		levelMap.addEntity(new XEntity(new Hex(0, 1)));
-		XHero h1 = new XHero(new Hex(-2, -1));
+		XHero h1 = new XHero(new Hex(-2, -1), levelMap);
 		h1.addItems(new ItemList(Items.BLUE, Items.GSL, Items.MATERIAL, Items.TECHNOLOGY));
 		levelMap.addEntity(h1);
 		levelMap.addArrow(new VisualArrow(new Hex(2, 0), new Hex(4, 1), ArrowMode.ARROW, 120));
