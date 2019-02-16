@@ -30,7 +30,7 @@ public class DirectedTradeGUI extends XGUI implements InvGUI
 		this.receive = receive;
 		provideItems = provide.outputInv().viewItems(false);
 		receiveItems = receive.inputInv().viewItems(true);
-		provideView = new InvGUIPart(0, 0, 1, 1, 3, 2, 1);
+		provideView = new InvGUIPart(0, 0, 1, 2, 5, 2, 1);
 		receiveView = new InvGUIPart(1, 5, 1, 2, 5, 2, 1);
 		provideMarked = -1;
 		amount = 1;

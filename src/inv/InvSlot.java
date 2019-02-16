@@ -5,92 +5,37 @@ public class InvSlot
 	private InvStack stack;
 	private boolean stackExists;
 	private Item type;
-	private int weightLimit;
+	private int limit;
 
 	public InvSlot(ItemStack limits)
 	{
 		type = limits.item;
-		weightLimit = limits.count;
+		limit = limits.count;
 	}
 
-	public boolean doesStackExist()
-	{
-		return stackExists;
-	}
-
-	public Item getStackItem()
+	public Item getStackItemC()
 	{
 		return stackExists ? stack.item : type;
 	}
 
-	public Item getType()
+	public boolean canProvideX()
 	{
-		return type;
-	}
-
-	public ItemStack getStack()
-	{
-		return stackExists ? new ItemStack(stack.item, stack.getCurrent()) : new ItemStack(type, 0);
-	}
-
-	public int getWeight()
-	{
-		return stackExists ? stack.getWeight() : 0;
-	}
-
-	public int getWeightLimit()
-	{
-		return weightLimit;
-	}
-
-	public int getCurrent()
-	{
-		return stackExists ? stack.getCurrent() : 0;
-	}
-
-	public int getLimit()
-	{
-		return stackExists ? weightLimit / stack.item.weight() : weightLimit;
-	}
-
-	public int getDecrease()
-	{
-		return stack != null ? stack.getDecrease() : 0;
-	}
-
-	public int getIncrease()
-	{
-		return stack != null ? stack.getIncrease() : 0;
-	}
-
-	public int getWeightX()
-	{
-		return stack != null ? stack.getWeightX() : 0;
-	}
-
-	public Item getTypeX()
-	{
-		return stack != null ? stack.item : type;
+		return stack != null && stack.canProvideX();
 	}
 
 	public int getCurrentX()
 	{
-		return stack != null ? stack.getCurrentX() : 0;
+		return stack != null ? stack.getCountX() : 0;
 	}
 
-	public boolean canProvide()
+	public int getCurrentC()
 	{
-		return stack != null && stack.canProvide();
+		return stackExists ? stack.getCountC() : 0;
 	}
 
-	public boolean fitsTypeX(Item item)
+	public int getLimit()
 	{
-		return stack != null ? stack.item.equals(item) : type.canContain(item);
-	}
-
-	public boolean canProvideX(Item item)
-	{
-		return stack != null && stack.getCurrentX() > 0 && item.canContain(stack.item);
+		return limit;
 	}
 
 	public void commit()
@@ -114,9 +59,9 @@ public class InvSlot
 		}
 	}
 
-	public int maxDecrease()
+	public int maxDecrease(ItemStack items)
 	{
-		if(stack != null)
+		if(stack != null && stack.getCountX() > 0 && items.item.canContain(stack.item))
 			return stack.maxDecrease();
 		else
 			return 0;
@@ -127,14 +72,14 @@ public class InvSlot
 		if(stack != null)
 		{
 			if(stack.item.equals(items.item))
-				return stack.maxIncrease(weightLimit / stack.item.weight());
+				return stack.maxIncrease(limit);
 			else
 				return 0;
 		}
 		else
 		{
 			if(type.canContain(items.item))
-				return weightLimit / items.item.weight();
+				return limit;
 			else
 				return 0;
 		}

@@ -15,37 +15,17 @@ public class InvStack
 		increase = items.count;
 	}
 
-	public int getCurrent()
+	public int getCountC()
 	{
 		return current;
 	}
 
-	public int getDecrease()
-	{
-		return decrease;
-	}
-
-	public int getIncrease()
-	{
-		return increase;
-	}
-
-	public int getWeight()
-	{
-		return current * item.weight();
-	}
-
-	public int getWeightX()
-	{
-		return (current + increase - decrease) * item.weight();
-	}
-
-	public int getCurrentX()
+	public int getCountX()
 	{
 		return current + increase - decrease;
 	}
 
-	public boolean canProvide()
+	public boolean canProvideX()
 	{
 		return current - decrease > 0;
 	}

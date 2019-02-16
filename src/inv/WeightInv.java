@@ -9,12 +9,12 @@ public class WeightInv implements Inv
 	private int currentW;
 	private int decreaseW;
 	private int increaseW;
-	private final int limitW;
+	private int limitW;
 
-	public WeightInv(int limitW)
+	public WeightInv(int weightLimit)
 	{
 		stacks = new ArrayList<>();
-		this.limitW = limitW;
+		limitW = weightLimit;
 	}
 
 	@Override
@@ -37,22 +37,28 @@ public class WeightInv implements Inv
 	}
 
 	@Override
-	public List<Item> providedItemTypes()
+	public List<Item> providedItemTypesX()
 	{
-		return stacks.stream().filter(InvStack::canProvide).map(e -> e.item).collect(Collectors.toList());
+		return stacks.stream().filter(InvStack::canProvideX).map(e -> e.item).collect(Collectors.toList());
 	}
 
 	@Override
 	public List<ItemView> viewItems(boolean withEmpty)
 	{
-		return stacks.stream().map(e -> new ItemView(e.item, e.getCurrent(), e.getCurrentX())).collect(Collectors.toList());
+		return stacks.stream().map(e -> new ItemView(e.item, e.getCountC(), e.getCountX())).collect(Collectors.toList());
 	}
 
 	@Override
-	public ItemView viewItem(Item item)
+	public ItemView viewRequiredItem(Item item)
 	{
 		return stacks.stream().filter(e -> item.canContain(e.item)).findFirst()
-				.map(e -> new ItemView(e.item, e.getCurrent(), e.getCurrentX())).orElse(new ItemView(item, 0, 0));
+				.map(e -> new ItemView(e.item, e.getCountC(), e.getCountX())).orElse(new ItemView(item, 0, 0));
+	}
+
+	@Override
+	public InvWeightView viewInvWeight()
+	{
+		return new InvWeightView(currentW, currentW + increaseW - decreaseW, limitW);
 	}
 
 	@Override

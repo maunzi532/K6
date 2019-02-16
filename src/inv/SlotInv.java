@@ -25,48 +25,55 @@ public class SlotInv implements Inv
 	}
 
 	@Override
-	public List<Item> providedItemTypes()
+	public List<Item> providedItemTypesX()
 	{
-		return slots.stream().filter(e -> e.doesStackExist() && e.canProvide()).map(InvSlot::getStackItem).collect(Collectors.toList());
+		return slots.stream().filter(InvSlot::canProvideX).map(InvSlot::getStackItemC).collect(Collectors.toList());
 	}
 
 	@Override
 	public List<ItemView> viewItems(boolean withEmpty)
 	{
 		Stream<InvSlot> stream = withEmpty ? slots.stream() : slots.stream().filter(e -> e.getCurrentX() > 0);
-		return stream.map(e -> new ItemView(e.getStackItem(), e.getCurrent(), e.getCurrentX(), e.getLimit()))
+		return stream.map(e -> new ItemView(e.getStackItemC(), e.getCurrentC(), e.getCurrentX(), e.getLimit()))
 				.collect(Collectors.toList());
 	}
 
 	@Override
-	public ItemView viewItem(Item item)
+	public ItemView viewRequiredItem(Item item)
 	{
-		return slots.stream().filter(e -> item.canContain(e.getStackItem())).findFirst()
-				.map(e -> new ItemView(e.getStackItem(), e.getCurrent(), e.getCurrentX(), e.getLimit()))
+		return slots.stream().filter(e -> e.canProvideX() && item.canContain(e.getStackItemC())).findFirst()
+				.map(e -> new ItemView(e.getStackItemC(), e.getCurrentC(), e.getCurrentX(), e.getLimit()))
 				.orElse(new ItemView(item, 0, 0));
+	}
+
+	@Override
+	public InvWeightView viewInvWeight()
+	{
+		return new InvWeightView(slots.stream().mapToInt(e -> e.getStackItemC().weight() * e.getCurrentC()).sum(),
+				slots.stream().mapToInt(e -> e.getStackItemC().weight() * e.getCurrentX()).sum());
 	}
 
 	@Override
 	public int maxDecrease(ItemStack items)
 	{
-		return slots.stream().mapToInt(e -> e.canProvideX(items.item) ? e.maxDecrease() : 0).max().orElse(0);
+		return slots.stream().mapToInt(e -> e.maxDecrease(items)).max().orElse(0);
 	}
 
 	@Override
 	public int maxIncrease(ItemStack items)
 	{
-		return slots.stream().mapToInt(e -> e.fitsTypeX(items.item) ? e.maxIncrease(items) : 0).max().orElse(0);
+		return slots.stream().mapToInt(e -> e.maxIncrease(items)).max().orElse(0);
 	}
 
 	@Override
 	public ItemStack decrease(ItemStack items)
 	{
-		return slots.stream().filter(e -> e.canProvideX(items.item) && e.maxDecrease() >= items.count).findFirst().orElseThrow().decrease(items.count);
+		return slots.stream().filter(e -> e.maxDecrease(items) >= items.count).findFirst().orElseThrow().decrease(items.count);
 	}
 
 	@Override
 	public void increase(ItemStack items)
 	{
-		slots.stream().filter(e -> e.fitsTypeX(items.item) && e.maxIncrease(items) >= items.count).findFirst().orElseThrow().increase(items);
+		slots.stream().filter(e -> e.maxIncrease(items) >= items.count).findFirst().orElseThrow().increase(items);
 	}
 }

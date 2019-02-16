@@ -24,7 +24,7 @@ public class InvTransporter
 		for(DoubleInv inv : providingTargets)
 		{
 			Inv providingInv = inv.outputInv();
-			for(Item item : providingInv.providedItemTypes())
+			for(Item item : providingInv.providedItemTypesX())
 			{
 				if(providingInv.canDecrease(new ItemStack(item, amount)))
 				{

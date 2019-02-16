@@ -8,11 +8,13 @@ public interface Inv
 
 	void rollback();
 
-	List<Item> providedItemTypes();
+	List<Item> providedItemTypesX();
 
 	List<ItemView> viewItems(boolean withEmpty);
 
-	ItemView viewItem(Item item);
+	ItemView viewRequiredItem(Item item);
+
+	InvWeightView viewInvWeight();
 
 	int maxDecrease(ItemStack items);
 
