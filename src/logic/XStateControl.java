@@ -1,6 +1,7 @@
 package logic;
 
 import building.*;
+import building.blueprint.BuildingBlueprint;
 import entity.*;
 import entity.hero.XHero;
 import geom.XPoint;
@@ -14,15 +15,15 @@ import gui.*;
 
 public class XStateControl
 {
-	private LevelMap levelMap;
+	private MainState mainState;
 	private XState state;
 	private List<XState> menu;
 	private XGUI xgui;
 	private Object[] stateInfo = new Object[3];
 
-	public XStateControl(LevelMap levelMap)
+	public XStateControl(MainState mainState)
 	{
-		this.levelMap = levelMap;
+		this.mainState = mainState;
 		state = XState.NONE;
 		update();
 	}
@@ -84,7 +85,7 @@ public class XStateControl
 	{
 		if(state.mark)
 		{
-			if(levelMap.getMarked().contains(mapHex))
+			if(mainState.levelMap.getMarked().contains(mapHex))
 			{
 				onClickMarked(mapHex, key);
 			}
@@ -96,7 +97,7 @@ public class XStateControl
 		}
 		else
 		{
-			FullTile tile = levelMap.tile(mapHex);
+			FullTile tile = mainState.levelMap.tile(mapHex);
 			if(key == 1)
 			{
 				if(tile.entity != null)
@@ -158,8 +159,8 @@ public class XStateControl
 	{
 		switch(clicked)
 		{
-			case PRODUCTION_PHASE -> levelMap.productionPhase();
-			case TRANSPORT_PHASE -> levelMap.transportPhase();
+			case PRODUCTION_PHASE -> mainState.levelMap.productionPhase();
+			case TRANSPORT_PHASE -> mainState.levelMap.transportPhase();
 		}
 	}
 
@@ -169,20 +170,20 @@ public class XStateControl
 		{
 			case CHARACTER_MOVEMENT ->
 					{
-						levelMap.moveEntity((XEntity) stateInfo[0], mapHex);
+						mainState.levelMap.moveEntity((XEntity) stateInfo[0], mapHex);
 						state = XState.NONE;
 					}
-			case TRANSPORT_TARGETS -> ((Transporter) stateInfo[0]).toggleTarget((DoubleInv) levelMap.getBuilding(mapHex));
+			case TRANSPORT_TARGETS -> ((Transporter) stateInfo[0]).toggleTarget((DoubleInv) mainState.levelMap.getBuilding(mapHex));
 			case TAKE_TARGET ->
 					{
-						stateInfo[1] = levelMap.getBuilding(mapHex);
+						stateInfo[1] = mainState.levelMap.getBuilding(mapHex);
 						stateInfo[2] = stateInfo[0];
 						state = XState.DIRECTED_TRADE;
 					}
 			case GIVE_TARGET ->
 					{
 						stateInfo[1] = stateInfo[0];
-						stateInfo[2] = levelMap.getBuilding(mapHex);
+						stateInfo[2] = mainState.levelMap.getBuilding(mapHex);
 						state = XState.DIRECTED_TRADE;
 					}
 		}
@@ -195,13 +196,13 @@ public class XStateControl
 
 	private void update()
 	{
-		levelMap.setMarked(switch(state)
+		mainState.levelMap.setMarked(switch(state)
 				{
-					case CHARACTER_MOVEMENT -> new Pathing((XEntity) stateInfo[0], 4, levelMap).start().getEndpoints();
+					case CHARACTER_MOVEMENT -> new Pathing((XEntity) stateInfo[0], 4, mainState.levelMap).start().getEndpoints();
 					case TRANSPORT_TARGETS -> ((Transporter) stateInfo[0]).location().range(0, ((Transporter) stateInfo[0]).range()).stream()
-							.filter(e -> levelMap.getBuilding(e) instanceof DoubleInv).collect(Collectors.toSet());
+							.filter(e -> mainState.levelMap.getBuilding(e) instanceof DoubleInv).collect(Collectors.toSet());
 					case TAKE_TARGET, GIVE_TARGET -> ((XEntity) stateInfo[0]).location.range(0, 4).stream()
-							.filter(e -> levelMap.getBuilding(e) instanceof DoubleInv).collect(Collectors.toSet());
+							.filter(e -> mainState.levelMap.getBuilding(e) instanceof DoubleInv).collect(Collectors.toSet());
 					default -> Set.of();
 				});
 		menu = switch(state)
@@ -215,15 +216,15 @@ public class XStateControl
 				};
 		menu = menu.stream().filter(e -> switch(e)
 				{
-					case BUILD -> levelMap.getBuilding(((XHero) stateInfo[0]).location()) == null;
-					case DISASSEMBLE -> levelMap.getBuilding(((XHero) stateInfo[0]).location()) != null;
+					case BUILD -> mainState.levelMap.getBuilding(((XHero) stateInfo[0]).location()) == null;
+					case DISASSEMBLE -> mainState.levelMap.getBuilding(((XHero) stateInfo[0]).location()) != null;
 					default -> true;
 				}).collect(Collectors.toList());
 		xgui = switch(state)
 				{
 					case PRODUCTION_VIEW -> new RecipeGUI(((ProductionBuilding) stateInfo[0]));
 					case DIRECTED_TRADE -> new DirectedTradeGUI((DoubleInv) stateInfo[1], (DoubleInv) stateInfo[2]);
-					case BUILD -> new BuildGUI((XHero) stateInfo[0], null);
+					case BUILD -> new BuildGUI((XHero) stateInfo[0], BuildingBlueprint.get(mainState.buildingBlueprintCache, "BLUE1"));
 					case DISASSEMBLE -> new DisassembleGUI((XHero) stateInfo[0]);
 					default -> NoGUI.NONE;
 				};

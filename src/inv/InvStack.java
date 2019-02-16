@@ -47,7 +47,7 @@ public class InvStack
 
 	public boolean canProvide()
 	{
-		return current -  decrease > 0;
+		return current - decrease > 0;
 	}
 
 	public void commit()

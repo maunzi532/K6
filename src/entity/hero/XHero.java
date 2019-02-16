@@ -5,17 +5,17 @@ import building.blueprint.*;
 import entity.XEntity;
 import geom.hex.Hex;
 import inv.*;
-import levelMap.LevelMap;
+import logic.MainState;
 
 public class XHero extends XEntity implements DoubleInv
 {
-	private LevelMap levelMap;
+	private MainState mainState;
 	private Inv inv;
 
-	public XHero(Hex location, LevelMap levelMap)
+	public XHero(Hex location, MainState mainState)
 	{
 		super(location);
-		this.levelMap = levelMap;
+		this.mainState = mainState;
 		inv = new WeightInv(20);
 	}
 
@@ -75,6 +75,6 @@ public class XHero extends XEntity implements DoubleInv
 	public void buildBuilding(BuildingBlueprint blueprint, CostBlueprint cost)
 	{
 		inv.commit();
-		levelMap.addBuilding(new ProductionBuilding(location, blueprint));
+		mainState.levelMap.addBuilding(new ProductionBuilding(location, blueprint));
 	}
 }

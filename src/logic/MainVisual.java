@@ -6,7 +6,6 @@ import javafx.geometry.VPos;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
 import javafx.scene.text.TextAlignment;
-import levelMap.LevelMap;
 
 public class MainVisual
 {
@@ -14,21 +13,19 @@ public class MainVisual
 	private HexCamera mapCamera;
 	private VisualMenu visualMenu;
 	private VisualGUI visualGUI;
-	private LevelMap levelMap;
-	private XStateControl stateControl;
+	private MainState mainState;
 
 	public MainVisual(GraphicsContext gd, int w, int h)
 	{
-		levelMap = new LevelMap();
-		new InitializeMap(levelMap);
-		stateControl = new XStateControl(levelMap);
+		mainState = new MainState();
+		mainState.initialize();
 		gd.setTextAlign(TextAlignment.CENTER);
 		gd.setTextBaseline(VPos.CENTER);
-		visualTile = new VisualTile(levelMap, gd);
+		visualTile = new VisualTile(mainState.levelMap, gd);
 		mapCamera = new HexCamera(w / 2f, h / 2f, 40, 40, 0, 0, HexMatrix.LP);
-		visualMenu = new VisualMenu(gd, w / 2f, h / 2f, stateControl);
-		visualGUI = new VisualGUIQuad(gd, w / 2f, h / 2f, stateControl);
-		//visualGUI = new VisualGUIHex(gd, w / 2f, h / 2f, stateControl);
+		visualMenu = new VisualMenu(gd, w / 2f, h / 2f, mainState.stateControl);
+		visualGUI = new VisualGUIQuad(gd, w / 2f, h / 2f, mainState.stateControl);
+		//visualGUI = new VisualGUIHex(gd, w / 2f, h / 2f, mainState.stateControl);
 		draw();
 	}
 
@@ -37,15 +34,15 @@ public class MainVisual
 		int menuOption = visualMenu.coordinatesToOption(x, y);
 		if(menuOption >= 0)
 		{
-			stateControl.handleMenuClick(menuOption, mouseKey);
+			mainState.stateControl.handleMenuClick(menuOption, mouseKey);
 		}
-		else if(stateControl.getState().hasGUI)
+		else if(mainState.stateControl.getState().hasGUI)
 		{
-			stateControl.handleGUIClick(visualGUI.clickLocation(x, y), visualGUI.inside(x, y), mouseKey);
+			mainState.stateControl.handleGUIClick(visualGUI.clickLocation(x, y), visualGUI.inside(x, y), mouseKey);
 		}
 		else
 		{
-			stateControl.handleMapClick(mapCamera.clickLocation(x, y).cast(), mouseKey);
+			mainState.stateControl.handleMapClick(mapCamera.clickLocation(x, y).cast(), mouseKey);
 		}
 	}
 
@@ -65,15 +62,15 @@ public class MainVisual
 
 	public void handleMouseMove(double x, double y)
 	{
-		if(stateControl.getState().hasGUI && visualGUI.inside(x, y))
+		if(mainState.stateControl.getState().hasGUI && visualGUI.inside(x, y))
 		{
-			stateControl.target(visualGUI.clickLocation(x, y));
+			mainState.stateControl.target(visualGUI.clickLocation(x, y));
 		}
 	}
 
 	public void tick()
 	{
-		levelMap.tickArrows();
+		mainState.levelMap.tickArrows();
 		draw();
 	}
 

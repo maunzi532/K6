@@ -88,6 +88,11 @@ public class InvSlot
 		return stack != null ? stack.item.equals(item) : type.canContain(item);
 	}
 
+	public boolean canProvideX(Item item)
+	{
+		return stack != null && stack.getCurrentX() > 0 && item.canContain(stack.item);
+	}
+
 	public void commit()
 	{
 		if(stack != null)

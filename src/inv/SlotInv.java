@@ -12,11 +12,6 @@ public class SlotInv implements Inv
 		slots = limits.items.stream().map(InvSlot::new).collect(Collectors.toList());
 	}
 
-	public InvSlot getSlot(Item type)
-	{
-		return slots.stream().filter(e -> e.getType().equals(type)).findFirst().orElseThrow();
-	}
-
 	@Override
 	public void commit()
 	{
@@ -54,7 +49,7 @@ public class SlotInv implements Inv
 	@Override
 	public int maxDecrease(ItemStack items)
 	{
-		return slots.stream().mapToInt(e -> e.fitsTypeX(items.item) ? e.maxDecrease() : 0).max().orElse(0);
+		return slots.stream().mapToInt(e -> e.canProvideX(items.item) ? e.maxDecrease() : 0).max().orElse(0);
 	}
 
 	@Override
@@ -66,7 +61,7 @@ public class SlotInv implements Inv
 	@Override
 	public ItemStack decrease(ItemStack items)
 	{
-		return slots.stream().filter(e -> e.fitsTypeX(items.item) && e.maxDecrease() >= items.count).findFirst().orElseThrow().decrease(items.count);
+		return slots.stream().filter(e -> e.canProvideX(items.item) && e.maxDecrease() >= items.count).findFirst().orElseThrow().decrease(items.count);
 	}
 
 	@Override

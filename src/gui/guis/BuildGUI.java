@@ -2,7 +2,6 @@ package gui.guis;
 
 import building.blueprint.*;
 import entity.hero.XHero;
-import file.BlueprintCache;
 import gui.*;
 import inv.*;
 import java.util.List;
@@ -31,9 +30,7 @@ public class BuildGUI extends XGUI implements InvGUI
 	public BuildGUI(XHero character, BuildingBlueprint blueprint)
 	{
 		this.character = character;
-		//this.blueprint = blueprint;
-		BlueprintCache<BuildingBlueprint> cache1 = new BlueprintCache<>("buildings");
-		this.blueprint = BuildingBlueprint.get(cache1, "BLUE1");
+		this.blueprint = blueprint;
 		floorTiles = new InvGUIPart(0, 0, 2, 1, 4, 2, 1);
 		required = new InvGUIPart(1, 3, 2, 1, 4, 2, 1);
 		returned = new InvGUIPart(2, 6, 2, 1, 4, 2, 1);
