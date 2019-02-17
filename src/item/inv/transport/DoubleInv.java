@@ -1,6 +1,7 @@
-package inv;
+package item.inv.transport;
 
 import geom.hex.*;
+import item.inv.Inv;
 
 public interface DoubleInv
 {

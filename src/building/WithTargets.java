@@ -1,6 +1,6 @@
 package building;
 
-import inv.*;
+import item.inv.transport.DoubleInv;
 import java.util.*;
 
 public interface WithTargets

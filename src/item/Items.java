@@ -1,4 +1,4 @@
-package inv;
+package item;
 
 import javafx.scene.image.*;
 

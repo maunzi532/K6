@@ -4,7 +4,9 @@ import building.ProductionBuilding;
 import building.blueprint.*;
 import entity.XEntity;
 import geom.hex.Hex;
-import inv.*;
+import item.*;
+import item.inv.*;
+import item.inv.transport.DoubleInv;
 import logic.MainState;
 
 public class XHero extends XEntity implements DoubleInv

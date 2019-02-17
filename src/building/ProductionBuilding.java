@@ -3,12 +3,13 @@ package building;
 import arrow.*;
 import building.blueprint.*;
 import geom.hex.*;
-import inv.*;
+import item.inv.*;
+import item.inv.transport.DoubleInv;
 import java.util.*;
 
 public class ProductionBuilding implements Building, DoubleInv
 {
-	private BuildingBlueprint blueprint;
+	public BuildingBlueprint blueprint;
 	private Hex location;
 	private SlotInv inputInv;
 	private SlotInv outputInv;

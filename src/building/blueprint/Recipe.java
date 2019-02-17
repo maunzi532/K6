@@ -1,7 +1,7 @@
 package building.blueprint;
 
 import file.*;
-import inv.*;
+import item.*;
 
 public class Recipe
 {

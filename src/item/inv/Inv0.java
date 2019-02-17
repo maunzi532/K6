@@ -1,5 +1,6 @@
-package inv;
+package item.inv;
 
+import item.ItemStack;
 import java.util.Optional;
 
 public interface Inv0

@@ -1,4 +1,4 @@
-package inv;
+package item.inv;
 
 public enum CommitType
 {

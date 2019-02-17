@@ -1,5 +1,6 @@
-package inv;
+package item.inv.transport;
 
+import item.Item;
 import java.util.*;
 
 public class PossibleTransport

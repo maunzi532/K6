@@ -1,7 +1,8 @@
 package gui.guis;
 
 import gui.*;
-import inv.*;
+import item.inv.transport.DoubleInv;
+import item.view.*;
 import java.util.List;
 import logic.*;
 
@@ -12,8 +13,8 @@ public class Inv2GUI extends XGUI implements InvGUI
 	private static final CTile weightInput = new CTile(3, 0);
 	private static final CTile weightOutput = new CTile(8, 0);
 
-	private final InvWeightView weightViewInput;
-	private final InvWeightView weightViewOutput;
+	private final InvNumView weightViewInput;
+	private final InvNumView weightViewOutput;
 	private final List<ItemView> itemsViewInput;
 	private final List<ItemView> itemsViewOutput;
 	private final InvGUIPart invViewInput;

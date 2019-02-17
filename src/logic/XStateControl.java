@@ -7,7 +7,7 @@ import entity.hero.XHero;
 import geom.XPoint;
 import geom.hex.Hex;
 import gui.guis.*;
-import inv.DoubleInv;
+import item.inv.transport.DoubleInv;
 import java.util.*;
 import java.util.stream.Collectors;
 import levelMap.*;
@@ -229,7 +229,8 @@ public class XStateControl
 					case PRODUCTION_INV -> new Inv2GUI((ProductionBuilding) stateInfo[0]);
 					case DIRECTED_TRADE -> new DirectedTradeGUI((DoubleInv) stateInfo[1], (DoubleInv) stateInfo[2]);
 					case BUILD -> new BuildGUI((XHero) stateInfo[0], BuildingBlueprint.get(mainState.buildingBlueprintCache, "BLUE1"));
-					case REMOVE -> new RemoveGUI((XHero) stateInfo[0], null);
+					case REMOVE -> new RemoveGUI((XHero) stateInfo[0],
+							((ProductionBuilding) mainState.levelMap.getBuilding(((XHero) stateInfo[0]).location)).blueprint.constructionBlueprint.blueprints.get(1).get(0));
 					default -> NoGUI.NONE;
 				};
 	}

@@ -1,5 +1,6 @@
-package inv;
+package item.inv;
 
+import item.*;
 import java.util.Optional;
 
 public class InvSlot implements Inv0

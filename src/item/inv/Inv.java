@@ -1,5 +1,7 @@
-package inv;
+package item.inv;
 
+import item.*;
+import item.view.*;
 import java.util.*;
 
 public interface Inv extends Inv0
@@ -12,7 +14,7 @@ public interface Inv extends Inv0
 
 	ItemView viewRequiredItem(Item item);
 
-	InvWeightView viewInvWeight();
+	InvNumView viewInvWeight();
 
 	default void useCommitType(CommitType type)
 	{

@@ -1,5 +1,6 @@
-package inv;
+package item.inv.transport;
 
+import item.*;
 import java.util.*;
 
 public class ItemTransportInfo

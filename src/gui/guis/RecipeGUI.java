@@ -3,7 +3,9 @@ package gui.guis;
 import building.ProductionBuilding;
 import building.blueprint.Recipe;
 import gui.*;
-import inv.*;
+import item.*;
+import item.inv.Inv;
+import item.view.*;
 import logic.*;
 
 public class RecipeGUI extends XGUI implements InvGUI
@@ -63,7 +65,7 @@ public class RecipeGUI extends XGUI implements InvGUI
 		Inv inv = invID == 0 ? building.getInputInv() : building.getOutputInv();
 		ItemView itemView = inv.viewRecipeItem(items.item);
 		tiles[x][y1] = new GuiTile(itemView.currentWithLimit());
-		tiles[x + 1][y1] = new GuiTile(ItemView.except1(items.count), itemView.item.image(), null);
+		tiles[x + 1][y1] = new GuiTile(InvNumView.except1(items.count), itemView.item.image(), null);
 	}
 
 	@Override

@@ -1,5 +1,8 @@
-package inv;
+package item.inv;
 
+import item.*;
+import item.inv.*;
+import item.view.*;
 import java.util.*;
 import java.util.stream.*;
 
@@ -45,9 +48,9 @@ public class SlotInv implements Inv
 	}
 
 	@Override
-	public InvWeightView viewInvWeight()
+	public InvNumView viewInvWeight()
 	{
-		return new InvWeightView(slots.stream().mapToInt(e -> e.getStackItemC().weight() * e.getCurrentC()).sum(),
+		return new InvNumView(slots.stream().mapToInt(e -> e.getStackItemC().weight() * e.getCurrentC()).sum(),
 				slots.stream().mapToInt(e -> e.getStackItemC().weight() * e.getCurrentX()).sum());
 	}
 

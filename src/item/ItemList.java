@@ -1,4 +1,4 @@
-package inv;
+package item;
 
 import file.*;
 import java.util.*;

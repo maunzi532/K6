@@ -1,5 +1,8 @@
-package inv;
+package item.inv;
 
+import item.*;
+import item.inv.*;
+import item.view.*;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -47,9 +50,9 @@ public class WeightInv implements Inv
 	}
 
 	@Override
-	public InvWeightView viewInvWeight()
+	public InvNumView viewInvWeight()
 	{
-		return new InvWeightView(currentW, currentW + increaseW - decreaseW, limitW);
+		return new InvNumView(currentW, currentW + increaseW - decreaseW, limitW);
 	}
 
 	@Override

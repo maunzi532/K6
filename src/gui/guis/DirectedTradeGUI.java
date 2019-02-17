@@ -1,7 +1,9 @@
 package gui.guis;
 
 import gui.*;
-import inv.*;
+import item.*;
+import item.inv.transport.DoubleInv;
+import item.view.ItemView;
 import java.util.List;
 import javafx.scene.paint.Color;
 import logic.*;

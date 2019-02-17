@@ -1,7 +1,8 @@
 package gui.guis;
 
 import gui.*;
-import inv.*;
+import item.inv.Inv;
+import item.view.*;
 import java.util.List;
 import logic.*;
 
@@ -10,7 +11,7 @@ public class Inv1GUI extends XGUI implements InvGUI
 	private static final CTile textInv = new CTile(2, 0, new GuiTile("Inventory"), 2, 1);
 	private static final CTile weight = new CTile(5, 0);
 
-	private final InvWeightView weightView;
+	private final InvNumView weightView;
 	private final List<ItemView> itemsView;
 	private final InvGUIPart invView;
 

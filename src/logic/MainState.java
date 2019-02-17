@@ -7,7 +7,7 @@ import entity.XEntity;
 import entity.hero.XHero;
 import file.BlueprintCache;
 import geom.hex.Hex;
-import inv.*;
+import item.*;
 import levelMap.LevelMap;
 import levelMap.importX.TestImportSector;
 

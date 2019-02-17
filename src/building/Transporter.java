@@ -2,7 +2,7 @@ package building;
 
 import arrow.*;
 import geom.hex.*;
-import inv.*;
+import item.inv.transport.*;
 import java.util.*;
 
 public class Transporter implements Building, WithTargets

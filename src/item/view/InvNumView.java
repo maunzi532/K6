@@ -1,41 +1,22 @@
-package inv;
+package item.view;
 
-public class ItemView
+public class InvNumView
 {
-	public final Item item;
 	public final int base;
 	public final int changed;
 	public final int limit;
 
-	public ItemView(Item item, int base, int changed, int limit)
+	public InvNumView(int base, int changed, int limit)
 	{
-		this.item = item;
 		this.base = base;
 		this.changed = changed;
 		this.limit = limit;
 	}
 
-	public ItemView(Item item, int base, int changed)
+	public InvNumView(int base, int changed)
 	{
-		this.item = item;
 		this.base = base;
 		this.changed = changed;
-		limit = -1;
-	}
-
-	public ItemView(ItemStack items, int limit)
-	{
-		item = items.item;
-		base = items.count;
-		changed = items.count;
-		this.limit = limit;
-	}
-
-	public ItemView(ItemStack items)
-	{
-		item = items.item;
-		base = items.count;
-		changed = items.count;
 		limit = -1;
 	}
 
@@ -50,6 +31,17 @@ public class ItemView
 			return String.valueOf(changed);
 		else
 			return changed + " / " + limit;
+	}
+
+	public String baseAndCurrentWithLimit()
+	{
+		StringBuilder sb = new StringBuilder();
+		sb.append(base);
+		if(changed != base)
+			sb.append(" -> ").append(changed);
+		if(limit >= 0)
+			sb.append(" / ").append(limit);
+		return sb.toString();
 	}
 
 	public static String except1(int num)

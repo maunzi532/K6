@@ -1,5 +1,7 @@
-package inv;
+package item.inv.transport;
 
+import item.*;
+import item.inv.*;
 import java.util.*;
 
 public class InvTransporter
