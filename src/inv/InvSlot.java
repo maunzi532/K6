@@ -40,11 +40,13 @@ public class InvSlot implements Inv0
 		return limit;
 	}
 
+	@Override
 	public boolean ok()
 	{
-		return stack == null || (stack.ok() && stack.getCountX() <= limit);
+		return stack == null || (stack.ok() && stack.getIncreasedX() <= limit);
 	}
 
+	@Override
 	public void commit()
 	{
 		if(stack != null)
@@ -56,6 +58,7 @@ public class InvSlot implements Inv0
 		stackExists = stack != null;
 	}
 
+	@Override
 	public void rollback()
 	{
 		if(stack != null)
@@ -63,57 +66,6 @@ public class InvSlot implements Inv0
 			stack.rollback();
 			if(stack.removable())
 				stack = null;
-		}
-	}
-
-	public int maxDecrease(ItemStack items)
-	{
-		if(stack != null && stack.getCountX() > 0 && items.item.canContain(stack.item))
-			return stack.maxDecrease();
-		else
-			return 0;
-	}
-
-	public int maxIncrease(ItemStack items)
-	{
-		if(stack != null)
-		{
-			if(stack.item.equals(items.item))
-				return stack.maxIncrease(limit);
-			else
-				return 0;
-		}
-		else
-		{
-			if(type.canContain(items.item))
-				return limit;
-			else
-				return 0;
-		}
-	}
-
-	public ItemStack decrease(ItemStack items)
-	{
-		if(stack != null)
-		{
-			stack.decrease(items.count);
-			return new ItemStack(stack.item, items.count);
-		}
-		else
-		{
-			return new ItemStack(type, 0);
-		}
-	}
-
-	public void increase(ItemStack items)
-	{
-		if(stack != null)
-		{
-			stack.increase(items.count);
-		}
-		else
-		{
-			stack = new InvStack(items);
 		}
 	}
 

@@ -2,72 +2,72 @@ package inv;
 
 import java.util.*;
 
-public interface Inv
+public interface Inv extends Inv0
 {
-	boolean ok();
-
-	void commit();
-
-	void rollback();
-
 	List<Item> providedItemTypesX();
 
 	List<ItemView> viewItems(boolean withEmpty);
+
+	ItemView viewRecipeItem(Item item);
 
 	ItemView viewRequiredItem(Item item);
 
 	InvWeightView viewInvWeight();
 
-	int maxDecrease(ItemStack items);
-
-	int maxIncrease(ItemStack items);
-
-	ItemStack decrease(ItemStack items);
-
-	void increase(ItemStack items);
-
-	default boolean canDecrease(ItemStack items)
+	default void useCommitType(CommitType type)
 	{
-		return maxDecrease(items) >= items.count;
+		if(type == CommitType.COMMIT)
+			commit();
+		else if(type == CommitType.ROLLBACK)
+			rollback();
 	}
 
-	default boolean canIncrease(ItemStack items)
+	default boolean tryGive(ItemList itemList, boolean unlimited, CommitType commitType)
 	{
-		return maxIncrease(items) >= items.count;
+		for(ItemStack itemStack : itemList.items)
+		{
+			if(!give(itemStack, unlimited))
+			{
+				rollback();
+				return false;
+			}
+		}
+		useCommitType(commitType);
+		return true;
 	}
 
-	default Optional<ItemList> tryDecrease(ItemList itemList)
+	default Optional<ItemList> tryProvide(ItemList itemList, boolean unlimited, CommitType commitType)
 	{
 		List<ItemStack> stacks = new ArrayList<>();
-		for(ItemStack items : itemList.items)
+		for(ItemStack itemStack : itemList.items)
 		{
-			if(canDecrease(items))
+			Optional<ItemStack> provided = provide(itemStack, unlimited);
+			if(provided.isPresent())
 			{
-				stacks.add(decrease(items));
+				stacks.add(provided.get());
 			}
 			else
 			{
 				rollback();
 				return Optional.empty();
 			}
+
 		}
+		useCommitType(commitType);
 		return Optional.of(new ItemList(stacks));
 	}
 
-	default boolean tryIncrease(ItemList itemList)
+	default boolean tryAdd(ItemList itemList, boolean unlimited, CommitType commitType)
 	{
-		for(ItemStack items : itemList.items)
+		for(ItemStack itemStack : itemList.items)
 		{
-			if(canIncrease(items))
-			{
-				increase(items);
-			}
-			else
+			if(!add(itemStack, unlimited))
 			{
 				rollback();
 				return false;
 			}
 		}
+		useCommitType(commitType);
 		return true;
 	}
 }

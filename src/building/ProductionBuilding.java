@@ -79,12 +79,11 @@ public class ProductionBuilding implements Building, DoubleInv
 	{
 		for(Recipe recipe : recipes)
 		{
-			if(inputInv.tryDecrease(recipe.required).isPresent())
+			if(inputInv.tryProvide(recipe.required, false, CommitType.LEAVE).isPresent())
 			{
-				if(outputInv.tryIncrease(recipe.results))
+				if(outputInv.tryAdd(recipe.results, false, CommitType.COMMIT))
 				{
 					inputInv.commit();
-					outputInv.commit();
 					return;
 				}
 				else

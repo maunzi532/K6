@@ -153,7 +153,7 @@ public class BuildGUI extends XGUI implements InvGUI
 			tileCostNum++;
 			update();
 		}
-		else if(build.contains(x, y) && character.canBuildBuilding(cost))
+		else if(build.contains(x, y) && character.canBuildBuilding(cost, CommitType.COMMIT))
 		{
 			character.buildBuilding(blueprint, cost);
 			stateControl.setState(XState.NONE);

@@ -37,11 +37,18 @@ public class InvStack implements Inv0
 		return current + increase;
 	}
 
-	public boolean ok()
+	public boolean removable()
 	{
-		return getCountX() >= 0;
+		return current == 0 && decrease == 0 && increase == 0;
 	}
 
+	@Override
+	public boolean ok()
+	{
+		return current - decrease >= 0;
+	}
+
+	@Override
 	public void commit()
 	{
 		current += increase - decrease;
@@ -49,35 +56,11 @@ public class InvStack implements Inv0
 		increase = 0;
 	}
 
+	@Override
 	public void rollback()
 	{
 		decrease = 0;
 		increase = 0;
-	}
-
-	public int maxDecrease()
-	{
-		return current - decrease;
-	}
-
-	public int maxIncrease(int limit)
-	{
-		return limit - current - increase;
-	}
-
-	public void decrease(int by)
-	{
-		decrease += by;
-	}
-
-	public void increase(int by)
-	{
-		increase += by;
-	}
-
-	public boolean removable()
-	{
-		return current == 0 && decrease == 0 && increase == 0;
 	}
 
 	@Override

@@ -61,7 +61,7 @@ public class RecipeGUI extends XGUI implements InvGUI
 		Recipe recipe = building.getRecipes().get(recipeNum);
 		ItemStack items = (invID == 0 ? recipe.required : recipe.results).items.get(index);
 		Inv inv = invID == 0 ? building.getInputInv() : building.getOutputInv();
-		ItemView itemView = inv.viewRequiredItem(items.item);
+		ItemView itemView = inv.viewRecipeItem(items.item);
 		tiles[x][y1] = new GuiTile(itemView.currentWithLimit());
 		tiles[x + 1][y1] = new GuiTile(ItemView.except1(items.count), itemView.item.image(), null);
 	}

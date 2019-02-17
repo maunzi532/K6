@@ -117,9 +117,10 @@ public class DirectedTradeGUI extends XGUI implements InvGUI
 		else if(provideMarked >= 0 && transfer.contains(x, y))
 		{
 			ItemStack items = new ItemStack(provideItems.get(provideMarked).item, amount);
-			if(provide.outputInv().canDecrease(items) && receive.inputInv().canIncrease(items))
+			if(provide.outputInv().canGive(items, false) && receive.inputInv().canAdd(items, false))
 			{
-				receive.inputInv().increase(provide.outputInv().decrease(items));
+				provide.outputInv().give(items, false);
+				receive.inputInv().add(items, false);
 				provideItems = provide.outputInv().viewItems(false);
 				receiveItems = receive.inputInv().viewItems(true);
 				update();

@@ -3,13 +3,52 @@ package inv;
 import java.util.*;
 import java.util.stream.*;
 
-public class SlotInv implements Inv0, Inv
+public class SlotInv implements Inv
 {
 	private final List<InvSlot> slots;
 
 	public SlotInv(ItemList limits)
 	{
 		slots = limits.items.stream().map(InvSlot::new).collect(Collectors.toList());
+	}
+
+	@Override
+	public List<Item> providedItemTypesX()
+	{
+		return slots.stream().filter(InvSlot::canProvideX).map(InvSlot::getStackItemC).collect(Collectors.toList());
+	}
+
+	@Override
+	public List<ItemView> viewItems(boolean withEmpty)
+	{
+		Stream<InvSlot> stream = withEmpty ? slots.stream() : slots.stream().filter(e -> e.getCurrentX() > 0);
+		return stream.map(e -> new ItemView(e.getStackItemC(), e.getCurrentC(), e.getCurrentX(), e.getLimit()))
+				.collect(Collectors.toList());
+	}
+
+	@Override
+	public ItemView viewRecipeItem(Item item)
+	{
+		return slots.stream().filter(e -> item.canContain(e.getStackItemC())).findFirst()
+				.map(e -> new ItemView(e.getStackItemC(), e.getCurrentC(), e.getCurrentX(), e.getLimit()))
+				.orElse(new ItemView(item, 0, 0));
+	}
+
+	@Override
+	public ItemView viewRequiredItem(Item item)
+	{
+		ItemStack itemStack = new ItemStack(item, 1);
+		return slots.stream().map(e -> e.wouldProvide(itemStack, true))
+				.filter(Optional::isPresent).map(Optional::get).findFirst()
+				.map(e -> new ItemView(e.item, e.count, e.count))
+				.orElse(new ItemView(item, 0, 0));
+	}
+
+	@Override
+	public InvWeightView viewInvWeight()
+	{
+		return new InvWeightView(slots.stream().mapToInt(e -> e.getStackItemC().weight() * e.getCurrentC()).sum(),
+				slots.stream().mapToInt(e -> e.getStackItemC().weight() * e.getCurrentX()).sum());
 	}
 
 	@Override
@@ -28,59 +67,6 @@ public class SlotInv implements Inv0, Inv
 	public void rollback()
 	{
 		slots.forEach(InvSlot::rollback);
-	}
-
-	@Override
-	public List<Item> providedItemTypesX()
-	{
-		return slots.stream().filter(InvSlot::canProvideX).map(InvSlot::getStackItemC).collect(Collectors.toList());
-	}
-
-	@Override
-	public List<ItemView> viewItems(boolean withEmpty)
-	{
-		Stream<InvSlot> stream = withEmpty ? slots.stream() : slots.stream().filter(e -> e.getCurrentX() > 0);
-		return stream.map(e -> new ItemView(e.getStackItemC(), e.getCurrentC(), e.getCurrentX(), e.getLimit()))
-				.collect(Collectors.toList());
-	}
-
-	@Override
-	public ItemView viewRequiredItem(Item item)
-	{
-		return slots.stream().filter(e -> e.canProvideX() && item.canContain(e.getStackItemC())).findFirst()
-				.map(e -> new ItemView(e.getStackItemC(), e.getCurrentC(), e.getCurrentX(), e.getLimit()))
-				.orElse(new ItemView(item, 0, 0));
-	}
-
-	@Override
-	public InvWeightView viewInvWeight()
-	{
-		return new InvWeightView(slots.stream().mapToInt(e -> e.getStackItemC().weight() * e.getCurrentC()).sum(),
-				slots.stream().mapToInt(e -> e.getStackItemC().weight() * e.getCurrentX()).sum());
-	}
-
-	@Override
-	public int maxDecrease(ItemStack items)
-	{
-		return slots.stream().mapToInt(e -> e.maxDecrease(items)).max().orElse(0);
-	}
-
-	@Override
-	public int maxIncrease(ItemStack items)
-	{
-		return slots.stream().mapToInt(e -> e.maxIncrease(items)).max().orElse(0);
-	}
-
-	@Override
-	public ItemStack decrease(ItemStack items)
-	{
-		return slots.stream().filter(e -> e.maxDecrease(items) >= items.count).findFirst().orElseThrow().decrease(items);
-	}
-
-	@Override
-	public void increase(ItemStack items)
-	{
-		slots.stream().filter(e -> e.maxIncrease(items) >= items.count).findFirst().orElseThrow().increase(items);
 	}
 
 	@Override

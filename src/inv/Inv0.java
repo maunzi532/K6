@@ -4,6 +4,12 @@ import java.util.Optional;
 
 public interface Inv0
 {
+	boolean ok();
+
+	void commit();
+
+	void rollback();
+
 	boolean canGive(ItemStack itemStack, boolean unlimited);
 
 	boolean give(ItemStack itemStack, boolean unlimited);

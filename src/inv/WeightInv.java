@@ -3,7 +3,7 @@ package inv;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class WeightInv implements Inv0, Inv
+public class WeightInv implements Inv
 {
 	private final List<InvStack> stacks;
 	private int currentW;
@@ -18,9 +18,44 @@ public class WeightInv implements Inv0, Inv
 	}
 
 	@Override
+	public List<Item> providedItemTypesX()
+	{
+		return stacks.stream().filter(InvStack::canProvideX).map(e -> e.item).collect(Collectors.toList());
+	}
+
+	@Override
+	public List<ItemView> viewItems(boolean withEmpty)
+	{
+		return stacks.stream().map(e -> new ItemView(e.item, e.getCountC(), e.getCountX())).collect(Collectors.toList());
+	}
+
+	@Override
+	public ItemView viewRecipeItem(Item item)
+	{
+		return stacks.stream().filter(e -> item.canContain(e.item)).findFirst()
+				.map(e -> new ItemView(e.item, e.getCountC(), e.getCountX())).orElse(new ItemView(item, 0, 0));
+	}
+
+	@Override
+	public ItemView viewRequiredItem(Item item)
+	{
+		ItemStack itemStack = new ItemStack(item, 1);
+		return stacks.stream().map(e -> e.wouldProvide(itemStack, true))
+				.filter(Optional::isPresent).map(Optional::get).findFirst()
+				.map(e -> new ItemView(e.item, e.count, e.count))
+				.orElse(new ItemView(item, 0, 0));
+	}
+
+	@Override
+	public InvWeightView viewInvWeight()
+	{
+		return new InvWeightView(currentW, currentW + increaseW - decreaseW, limitW);
+	}
+
+	@Override
 	public boolean ok()
 	{
-		return currentW + increaseW - decreaseW <= limitW && stacks.stream().allMatch(InvStack::ok);
+		return currentW + increaseW <= limitW && stacks.stream().allMatch(InvStack::ok);
 	}
 
 	@Override
@@ -40,67 +75,6 @@ public class WeightInv implements Inv0, Inv
 		stacks.removeIf(InvStack::removable);
 		decreaseW = 0;
 		increaseW = 0;
-	}
-
-	@Override
-	public List<Item> providedItemTypesX()
-	{
-		return stacks.stream().filter(InvStack::canProvideX).map(e -> e.item).collect(Collectors.toList());
-	}
-
-	@Override
-	public List<ItemView> viewItems(boolean withEmpty)
-	{
-		return stacks.stream().map(e -> new ItemView(e.item, e.getCountC(), e.getCountX())).collect(Collectors.toList());
-	}
-
-	@Override
-	public ItemView viewRequiredItem(Item item)
-	{
-		return stacks.stream().filter(e -> item.canContain(e.item)).findFirst()
-				.map(e -> new ItemView(e.item, e.getCountC(), e.getCountX())).orElse(new ItemView(item, 0, 0));
-	}
-
-	@Override
-	public InvWeightView viewInvWeight()
-	{
-		return new InvWeightView(currentW, currentW + increaseW - decreaseW, limitW);
-	}
-
-	@Override
-	public int maxDecrease(ItemStack items)
-	{
-		return stacks.stream().filter(e -> items.item.canContain(e.item)).mapToInt(InvStack::maxDecrease).findFirst().orElse(0);
-	}
-
-	@Override
-	public int maxIncrease(ItemStack items)
-	{
-		return (limitW - (currentW + increaseW)) / items.item.weight();
-	}
-
-	@Override
-	public ItemStack decrease(ItemStack items)
-	{
-		decreaseW += items.weight();
-		InvStack invStack = stacks.stream().filter(e -> items.item.canContain(e.item)).findFirst().orElseThrow();
-		invStack.decrease(items.count);
-		return new ItemStack(invStack.item, items.count);
-	}
-
-	@Override
-	public void increase(ItemStack items)
-	{
-		increaseW += items.weight();
-		Optional<InvStack> invStack = stacks.stream().filter(e -> e.item.equals(items.item)).findFirst();
-		if(invStack.isPresent())
-		{
-			invStack.get().increase(items.count);
-		}
-		else
-		{
-			stacks.add(new InvStack(items));
-		}
 	}
 
 	@Override

@@ -57,24 +57,17 @@ public class XHero extends XEntity implements DoubleInv
 
 	public void addItems(ItemList itemList)
 	{
-		inv.tryIncrease(itemList);
-		inv.commit();
+		inv.tryAdd(itemList, false, CommitType.COMMIT);
 	}
 
-	public boolean canBuildBuilding(CostBlueprint cost)
+	public boolean canBuildBuilding(CostBlueprint cost, CommitType buildIt)
 	{
 		//check floor tiles
-		return inv.tryDecrease(cost.required).isPresent();
-	}
-
-	public void rollbackInv()
-	{
-		inv.rollback();;
+		return inv.tryProvide(cost.required, false, buildIt).isPresent();
 	}
 
 	public void buildBuilding(BuildingBlueprint blueprint, CostBlueprint cost)
 	{
-		inv.commit();
 		mainState.levelMap.addBuilding(new ProductionBuilding(location, blueprint));
 	}
 }

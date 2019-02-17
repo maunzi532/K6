@@ -26,7 +26,7 @@ public class InvTransporter
 			Inv providingInv = inv.outputInv();
 			for(Item item : providingInv.providedItemTypesX())
 			{
-				if(providingInv.canDecrease(new ItemStack(item, amount)))
+				if(providingInv.canGive(new ItemStack(item, amount), false))
 				{
 					if(!possibleItems.containsKey(item))
 					{
@@ -41,7 +41,7 @@ public class InvTransporter
 			Inv receivingInv = inv.inputInv();
 			for(Item item : possibleItems.keySet())
 			{
-				if(receivingInv.canIncrease(new ItemStack(item, amount)))
+				if(receivingInv.canAdd(new ItemStack(item, amount), false))
 				{
 					possibleItems.get(item).require.add(inv);
 				}
@@ -57,7 +57,8 @@ public class InvTransporter
 	{
 		lastTransported.put(theTransport, transportNumber);
 		transportNumber++;
-		ItemStack items = theTransport.from.outputInv().decrease(new ItemStack(theTransport.item, amount));
-		theTransport.to.inputInv().increase(items);
+		ItemStack itemStack = new ItemStack(theTransport.item, amount);
+		theTransport.from.outputInv().give(itemStack, false);
+		theTransport.to.inputInv().add(itemStack, false);
 	}
 }
