@@ -1,6 +1,6 @@
 package entity.hero;
 
-import building.ProductionBuilding;
+import building.*;
 import building.blueprint.*;
 import entity.XEntity;
 import geom.hex.Hex;
@@ -70,6 +70,11 @@ public class XHero extends XEntity implements DoubleInv
 
 	public void buildBuilding(BuildingBlueprint blueprint, CostBlueprint cost)
 	{
-		mainState.levelMap.addBuilding(new ProductionBuilding(location, blueprint));
+		mainState.levelMap.addBuilding(new ProductionBuilding(location, blueprint, cost));
+	}
+
+	public void removeBuilding(Buildable building)
+	{
+		mainState.levelMap.removeBuilding(building);
 	}
 }

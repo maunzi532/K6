@@ -219,7 +219,7 @@ public class XStateControl
 		menu = menu.stream().filter(e -> switch(e)
 				{
 					case BUILD -> mainState.levelMap.getBuilding(((XHero) stateInfo[0]).location()) == null;
-					case REMOVE -> mainState.levelMap.getBuilding(((XHero) stateInfo[0]).location()) != null;
+					case REMOVE -> mainState.levelMap.getBuilding(((XHero) stateInfo[0]).location()) instanceof Buildable;
 					default -> true;
 				}).collect(Collectors.toList());
 		xgui = switch(state)
@@ -229,8 +229,7 @@ public class XStateControl
 					case PRODUCTION_INV -> new Inv2GUI((ProductionBuilding) stateInfo[0]);
 					case DIRECTED_TRADE -> new DirectedTradeGUI((DoubleInv) stateInfo[1], (DoubleInv) stateInfo[2]);
 					case BUILD -> new BuildGUI((XHero) stateInfo[0], BuildingBlueprint.get(mainState.buildingBlueprintCache, "BLUE1"));
-					case REMOVE -> new RemoveGUI((XHero) stateInfo[0],
-							((ProductionBuilding) mainState.levelMap.getBuilding(((XHero) stateInfo[0]).location)).blueprint.constructionBlueprint.blueprints.get(1).get(0));
+					case REMOVE -> new RemoveGUI((XHero) stateInfo[0], (Buildable) mainState.levelMap.getBuilding(((XHero) stateInfo[0]).location));
 					default -> NoGUI.NONE;
 				};
 	}

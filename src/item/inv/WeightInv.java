@@ -1,7 +1,6 @@
 package item.inv;
 
 import item.*;
-import item.inv.*;
 import item.view.*;
 import java.util.*;
 import java.util.stream.Collectors;

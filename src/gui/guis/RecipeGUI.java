@@ -14,7 +14,7 @@ public class RecipeGUI extends XGUI implements InvGUI
 	private static final CTile textResults = new CTile(4, 0, new GuiTile("Results"), 2, 1);
 	private static final CTile prev = new CTile(0, 1, new GuiTile("Previous"));
 	private static final CTile next = new CTile(6, 1, new GuiTile("Next"));
-	private static final CTile arrow = new CTile(3, 1, new GuiTile("Arrow"));
+	private static final CTile arrow = new CTile(3, 1, new GuiTile(null, ARROW, null));
 
 	private final ProductionBuilding building;
 	private int recipeNum;

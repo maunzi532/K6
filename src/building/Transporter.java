@@ -5,23 +5,16 @@ import geom.hex.*;
 import item.inv.transport.*;
 import java.util.*;
 
-public class Transporter implements Building, WithTargets
+public class Transporter extends Buildable implements WithTargets
 {
-	private Hex location;
 	private List<DoubleInv> targets;
 	private InvTransporter invTransporter;
 
 	public Transporter(Hex location)
 	{
-		this.location = location;
+		super(location, null);
 		targets = new ArrayList<>();
 		invTransporter = new InvTransporter(targets, targets);
-	}
-
-	@Override
-	public Hex location()
-	{
-		return location;
 	}
 
 	@Override

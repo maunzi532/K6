@@ -81,6 +81,11 @@ public class LevelMap implements CanAddArrows
 		buildings.put(building.location(), building);
 	}
 
+	public void removeBuilding(Building building)
+	{
+		buildings.remove(building.location());
+	}
+
 	public void addEntity(XEntity entity)
 	{
 		entities.put(entity.location, entity);

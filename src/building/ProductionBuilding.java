@@ -7,10 +7,9 @@ import item.inv.*;
 import item.inv.transport.DoubleInv;
 import java.util.*;
 
-public class ProductionBuilding implements Building, DoubleInv
+public class ProductionBuilding extends Buildable implements DoubleInv
 {
-	public BuildingBlueprint blueprint;
-	private Hex location;
+	public final BuildingBlueprint blueprint;
 	private SlotInv inputInv;
 	private SlotInv outputInv;
 	private List<Recipe> recipes;
@@ -18,7 +17,16 @@ public class ProductionBuilding implements Building, DoubleInv
 
 	public ProductionBuilding(Hex location, BuildingBlueprint blueprint)
 	{
-		this.location = location;
+		super(location, blueprint.constructionBlueprint.blueprints.get(0).get(0));
+		this.blueprint = blueprint;
+		inputInv = new SlotInv(blueprint.productionBlueprint.inputLimits);
+		outputInv = new SlotInv(blueprint.productionBlueprint.outputLimits);
+		recipes = blueprint.productionBlueprint.recipes;
+	}
+
+	public ProductionBuilding(Hex location, BuildingBlueprint blueprint, CostBlueprint costs)
+	{
+		super(location, costs);
 		this.blueprint = blueprint;
 		inputInv = new SlotInv(blueprint.productionBlueprint.inputLimits);
 		outputInv = new SlotInv(blueprint.productionBlueprint.outputLimits);
@@ -43,12 +51,6 @@ public class ProductionBuilding implements Building, DoubleInv
 	public List<Recipe> getRecipes()
 	{
 		return recipes;
-	}
-
-	@Override
-	public Hex location()
-	{
-		return location;
 	}
 
 	@Override

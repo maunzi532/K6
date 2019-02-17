@@ -1,5 +1,6 @@
 package gui.guis;
 
+import building.Buildable;
 import building.blueprint.CostBlueprint;
 import entity.hero.XHero;
 import gui.*;
@@ -15,15 +16,17 @@ public class RemoveGUI extends XGUI implements InvGUI
 	private static final CTile remove = new CTile(2, 5, new GuiTile("Remove"), 2, 1);
 
 	private final XHero character;
+	private final Buildable building;
 	private final CostBlueprint costs;
 	private final InvNumView weightView;
 	private final List<ItemView> itemsView;
 	private final InvGUIPart invView;
 
-	public RemoveGUI(XHero character, CostBlueprint costs)
+	public RemoveGUI(XHero character, Buildable building)
 	{
 		this.character = character;
-		this.costs = costs;
+		this.building = building;
+		costs = building.getCosts();
 		character.inputInv().tryAdd(costs.refundable, true, CommitType.LEAVE);
 		weightView = character.inputInv().viewInvWeight();
 		itemsView = character.inputInv().viewItems(true);
@@ -82,8 +85,8 @@ public class RemoveGUI extends XGUI implements InvGUI
 	{
 		if(remove.contains(x, y) && character.inputInv().ok())
 		{
-			//System.out.println("R");
 			character.inputInv().commit();
+			character.removeBuilding(building);
 			stateControl.setState(XState.NONE);
 			return true;
 		}

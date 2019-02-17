@@ -60,7 +60,7 @@ public class DirectedTradeGUI extends XGUI implements InvGUI
 		setTile(nameProvide, new GuiTile(provide.name(), null, Color.BLUE));
 		setTile(nameReceive, new GuiTile(receive.name(), null, Color.BLUE));
 		setTile(more);
-		setTile(transfer, new GuiTile("Transfer " + amount));
+		setTile(transfer, new GuiTile(String.valueOf(amount), ARROW, null));
 		setTile(less);
 		setTile(ok);
 	}

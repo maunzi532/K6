@@ -1,7 +1,11 @@
 package gui;
 
+import javafx.scene.image.Image;
+
 public interface InvGUI
 {
+	Image ARROW = new Image("Arrow.png");
+
 	void setTargeted(CTile targeted);
 
 	void itemView(int invID, int x, int y1, int index);
