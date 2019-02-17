@@ -32,4 +32,12 @@ public class InvWeightView
 		else
 			return changed + " / " + limit;
 	}
+
+	public String baseAndCurrentWithLimit()
+	{
+		if(limit < 0)
+			return base + " -> " + changed;
+		else
+			return base + " -> " + changed + " / " + limit;
+	}
 }

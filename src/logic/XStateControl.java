@@ -207,9 +207,11 @@ public class XStateControl
 				});
 		menu = switch(state)
 				{
-					case CHARACTER_MOVEMENT, GIVE_TARGET, TAKE_TARGET, DIRECTED_TRADE, BUILD, DISASSEMBLE ->
-							List.of(XState.CHARACTER_MOVEMENT, XState.GIVE_TARGET, XState.TAKE_TARGET, XState.BUILD, XState.DISASSEMBLE);
-					case PRODUCTION_VIEW -> List.of(XState.PRODUCTION_VIEW, XState.PRODUCTION_PHASE, XState.TRANSPORT_PHASE);
+					case CHARACTER_MOVEMENT, VIEW_INV, GIVE_TARGET, TAKE_TARGET, DIRECTED_TRADE, BUILD, REMOVE ->
+							List.of(XState.CHARACTER_MOVEMENT, XState.VIEW_INV, XState.GIVE_TARGET, XState.TAKE_TARGET,
+									XState.BUILD, XState.REMOVE);
+					case PRODUCTION_VIEW, PRODUCTION_INV -> List.of(XState.PRODUCTION_VIEW, XState.PRODUCTION_INV,
+							XState.PRODUCTION_PHASE, XState.TRANSPORT_PHASE);
 					case TRANSPORT_VIEW, TRANSPORT_TARGETS -> List.of(XState.TRANSPORT_VIEW, XState.TRANSPORT_TARGETS,
 							XState.PRODUCTION_PHASE, XState.TRANSPORT_PHASE);
 					default -> List.of();
@@ -217,15 +219,17 @@ public class XStateControl
 		menu = menu.stream().filter(e -> switch(e)
 				{
 					case BUILD -> mainState.levelMap.getBuilding(((XHero) stateInfo[0]).location()) == null;
-					case DISASSEMBLE -> mainState.levelMap.getBuilding(((XHero) stateInfo[0]).location()) != null;
+					case REMOVE -> mainState.levelMap.getBuilding(((XHero) stateInfo[0]).location()) != null;
 					default -> true;
 				}).collect(Collectors.toList());
 		xgui = switch(state)
 				{
+					case VIEW_INV -> new Inv1GUI(((XHero) stateInfo[0]).outputInv());
 					case PRODUCTION_VIEW -> new RecipeGUI(((ProductionBuilding) stateInfo[0]));
+					case PRODUCTION_INV -> new Inv2GUI((ProductionBuilding) stateInfo[0]);
 					case DIRECTED_TRADE -> new DirectedTradeGUI((DoubleInv) stateInfo[1], (DoubleInv) stateInfo[2]);
 					case BUILD -> new BuildGUI((XHero) stateInfo[0], BuildingBlueprint.get(mainState.buildingBlueprintCache, "BLUE1"));
-					case DISASSEMBLE -> new DisassembleGUI((XHero) stateInfo[0]);
+					case REMOVE -> new RemoveGUI((XHero) stateInfo[0], null);
 					default -> NoGUI.NONE;
 				};
 	}

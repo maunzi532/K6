@@ -4,6 +4,8 @@ import java.util.*;
 
 public interface Inv
 {
+	boolean ok();
+
 	void commit();
 
 	void rollback();

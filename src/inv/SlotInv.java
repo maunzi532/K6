@@ -3,13 +3,19 @@ package inv;
 import java.util.*;
 import java.util.stream.*;
 
-public class SlotInv implements Inv
+public class SlotInv implements Inv0, Inv
 {
 	private final List<InvSlot> slots;
 
 	public SlotInv(ItemList limits)
 	{
 		slots = limits.items.stream().map(InvSlot::new).collect(Collectors.toList());
+	}
+
+	@Override
+	public boolean ok()
+	{
+		return slots.stream().allMatch(InvSlot::ok);
 	}
 
 	@Override
@@ -68,12 +74,48 @@ public class SlotInv implements Inv
 	@Override
 	public ItemStack decrease(ItemStack items)
 	{
-		return slots.stream().filter(e -> e.maxDecrease(items) >= items.count).findFirst().orElseThrow().decrease(items.count);
+		return slots.stream().filter(e -> e.maxDecrease(items) >= items.count).findFirst().orElseThrow().decrease(items);
 	}
 
 	@Override
 	public void increase(ItemStack items)
 	{
 		slots.stream().filter(e -> e.maxIncrease(items) >= items.count).findFirst().orElseThrow().increase(items);
+	}
+
+	@Override
+	public boolean canGive(ItemStack itemStack, boolean unlimited)
+	{
+		return slots.stream().anyMatch(e -> e.canGive(itemStack, unlimited));
+	}
+
+	@Override
+	public boolean give(ItemStack itemStack, boolean unlimited)
+	{
+		return slots.stream().anyMatch(e -> e.give(itemStack, unlimited));
+	}
+
+	@Override
+	public Optional<ItemStack> wouldProvide(ItemStack itemStack, boolean unlimited)
+	{
+		return slots.stream().map(e -> e.wouldProvide(itemStack, unlimited)).filter(Optional::isPresent).findFirst().orElse(Optional.empty());
+	}
+
+	@Override
+	public Optional<ItemStack> provide(ItemStack itemStack, boolean unlimited)
+	{
+		return slots.stream().map(e -> e.provide(itemStack, unlimited)).filter(Optional::isPresent).findFirst().orElse(Optional.empty());
+	}
+
+	@Override
+	public boolean canAdd(ItemStack itemStack, boolean unlimited)
+	{
+		return slots.stream().anyMatch(e -> e.canAdd(itemStack, unlimited));
+	}
+
+	@Override
+	public boolean add(ItemStack itemStack, boolean unlimited)
+	{
+		return slots.stream().anyMatch(e -> e.add(itemStack, unlimited));
 	}
 }

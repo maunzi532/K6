@@ -5,13 +5,15 @@ public enum XState
 	NONE("Error", false, false, false),
 	CHARACTER_MOVEMENT("Move", true, true, false),
 	PRODUCTION_VIEW("View", true, false, true),
+	PRODUCTION_INV("Inv.", true, false, true),
 	TRANSPORT_VIEW("View", true, false, false),
 	TRANSPORT_TARGETS("Targets", true, true, false),
+	VIEW_INV("Inv.", true, false, true),
 	TAKE_TARGET("Take", true, true, false),
 	GIVE_TARGET("Give", true, true, false),
 	DIRECTED_TRADE("Error", false, false, true),
 	BUILD("Build", true, false, true),
-	DISASSEMBLE("Remove", true, false, true),
+	REMOVE("Remove", true, false, true),
 	PRODUCTION_PHASE("Production", false, false, false),
 	TRANSPORT_PHASE("Transport", false, false, false);
 

@@ -1,6 +1,8 @@
 package inv;
 
-public class InvSlot
+import java.util.Optional;
+
+public class InvSlot implements Inv0
 {
 	private InvStack stack;
 	private boolean stackExists;
@@ -36,6 +38,11 @@ public class InvSlot
 	public int getLimit()
 	{
 		return limit;
+	}
+
+	public boolean ok()
+	{
+		return stack == null || (stack.ok() && stack.getCountX() <= limit);
 	}
 
 	public void commit()
@@ -85,12 +92,12 @@ public class InvSlot
 		}
 	}
 
-	public ItemStack decrease(int by)
+	public ItemStack decrease(ItemStack items)
 	{
 		if(stack != null)
 		{
-			stack.decrease(by);
-			return new ItemStack(stack.item, by);
+			stack.decrease(items.count);
+			return new ItemStack(stack.item, items.count);
 		}
 		else
 		{
@@ -108,5 +115,60 @@ public class InvSlot
 		{
 			stack = new InvStack(items);
 		}
+	}
+
+	@Override
+	public boolean canGive(ItemStack itemStack, boolean unlimited)
+	{
+		return stack != null && stack.canGive(itemStack, unlimited);
+	}
+
+	@Override
+	public boolean give(ItemStack itemStack, boolean unlimited)
+	{
+		return stack != null && stack.give(itemStack, unlimited);
+	}
+
+	@Override
+	public Optional<ItemStack> wouldProvide(ItemStack itemStack, boolean unlimited)
+	{
+		return stack != null ? stack.wouldProvide(itemStack, unlimited) : Optional.empty();
+	}
+
+	@Override
+	public Optional<ItemStack> provide(ItemStack itemStack, boolean unlimited)
+	{
+		return stack != null ? stack.provide(itemStack, unlimited) : Optional.empty();
+	}
+
+	@Override
+	public boolean canAdd(ItemStack itemStack, boolean unlimited)
+	{
+		if(stack != null)
+		{
+			return stack.canAdd(itemStack, unlimited) && (unlimited || stack.getIncreasedX() + itemStack.count <= limit);
+		}
+		else
+		{
+			return type.canContain(itemStack.item) && (unlimited || itemStack.count <= limit);
+		}
+	}
+
+	@Override
+	public boolean add(ItemStack itemStack, boolean unlimited)
+	{
+		if(canAdd(itemStack, unlimited))
+		{
+			if(stack != null)
+			{
+				stack.add(itemStack, unlimited);
+			}
+			else
+			{
+				stack = new InvStack(itemStack);
+			}
+			return true;
+		}
+		return false;
 	}
 }
