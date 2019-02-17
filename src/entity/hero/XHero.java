@@ -7,6 +7,7 @@ import geom.hex.Hex;
 import item.*;
 import item.inv.*;
 import item.inv.transport.DoubleInv;
+import java.util.Optional;
 import logic.MainState;
 
 public class XHero extends XEntity implements DoubleInv
@@ -62,15 +63,17 @@ public class XHero extends XEntity implements DoubleInv
 		inv.tryAdd(itemList, false, CommitType.COMMIT);
 	}
 
-	public boolean canBuildBuilding(CostBlueprint cost, CommitType buildIt)
+	public Optional<ItemList> tryBuildingCosts(CostBlueprint cost)
 	{
 		//check floor tiles
-		return inv.tryProvide(cost.required, false, buildIt).isPresent();
+		if(inv.tryProvide(cost.costs, false, CommitType.LEAVE).isEmpty())
+			return Optional.empty();
+		return inv.tryProvide(cost.refundable, false, CommitType.COMMIT);
 	}
 
-	public void buildBuilding(BuildingBlueprint blueprint, CostBlueprint cost)
+	public void buildBuilding(CostBlueprint costs, ItemList refundable, BuildingBlueprint blueprint)
 	{
-		mainState.levelMap.addBuilding(new ProductionBuilding(location, blueprint, cost));
+		mainState.levelMap.addBuilding(new ProductionBuilding(location, costs, refundable, blueprint));
 	}
 
 	public void removeBuilding(Buildable building)

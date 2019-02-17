@@ -4,9 +4,8 @@ import building.blueprint.*;
 import entity.hero.XHero;
 import gui.*;
 import item.*;
-import item.inv.CommitType;
 import item.view.ItemView;
-import java.util.List;
+import java.util.*;
 import javafx.scene.paint.Color;
 import logic.*;
 
@@ -155,11 +154,15 @@ public class BuildGUI extends XGUI implements InvGUI
 			tileCostNum++;
 			update();
 		}
-		else if(build.contains(x, y) && character.canBuildBuilding(cost, CommitType.COMMIT))
+		else if(build.contains(x, y))
 		{
-			character.buildBuilding(blueprint, cost);
-			stateControl.setState(XState.NONE);
-			return true;
+			Optional<ItemList> refundable = character.tryBuildingCosts(cost);
+			if(refundable.isPresent())
+			{
+				character.buildBuilding(cost, refundable.get(), blueprint);
+				stateControl.setState(XState.NONE);
+				return true;
+			}
 		}
 		return false;
 	}

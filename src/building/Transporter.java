@@ -2,6 +2,7 @@ package building;
 
 import arrow.*;
 import geom.hex.*;
+import item.ItemList;
 import item.inv.transport.*;
 import java.util.*;
 
@@ -12,7 +13,7 @@ public class Transporter extends Buildable implements WithTargets
 
 	public Transporter(Hex location)
 	{
-		super(location, null);
+		super(location, null, new ItemList());
 		targets = new ArrayList<>();
 		invTransporter = new InvTransporter(targets, targets);
 	}

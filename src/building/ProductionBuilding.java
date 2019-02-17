@@ -3,6 +3,7 @@ package building;
 import arrow.*;
 import building.blueprint.*;
 import geom.hex.*;
+import item.ItemList;
 import item.inv.*;
 import item.inv.transport.DoubleInv;
 import java.util.*;
@@ -17,16 +18,17 @@ public class ProductionBuilding extends Buildable implements DoubleInv
 
 	public ProductionBuilding(Hex location, BuildingBlueprint blueprint)
 	{
-		super(location, blueprint.constructionBlueprint.blueprints.get(0).get(0));
+		super(location, blueprint.constructionBlueprint.blueprints.get(0).get(0),
+				blueprint.constructionBlueprint.blueprints.get(0).get(0).refundable);
 		this.blueprint = blueprint;
 		inputInv = new SlotInv(blueprint.productionBlueprint.inputLimits);
 		outputInv = new SlotInv(blueprint.productionBlueprint.outputLimits);
 		recipes = blueprint.productionBlueprint.recipes;
 	}
 
-	public ProductionBuilding(Hex location, BuildingBlueprint blueprint, CostBlueprint costs)
+	public ProductionBuilding(Hex location, CostBlueprint costs, ItemList refundable, BuildingBlueprint blueprint)
 	{
-		super(location, costs);
+		super(location, costs, refundable);
 		this.blueprint = blueprint;
 		inputInv = new SlotInv(blueprint.productionBlueprint.inputLimits);
 		outputInv = new SlotInv(blueprint.productionBlueprint.outputLimits);

@@ -1,9 +1,9 @@
 package gui.guis;
 
 import building.Buildable;
-import building.blueprint.CostBlueprint;
 import entity.hero.XHero;
 import gui.*;
+import item.ItemList;
 import item.inv.CommitType;
 import item.view.*;
 import java.util.List;
@@ -17,7 +17,7 @@ public class RemoveGUI extends XGUI implements InvGUI
 
 	private final XHero character;
 	private final Buildable building;
-	private final CostBlueprint costs;
+	private final ItemList refunds;
 	private final InvNumView weightView;
 	private final List<ItemView> itemsView;
 	private final InvGUIPart invView;
@@ -26,8 +26,8 @@ public class RemoveGUI extends XGUI implements InvGUI
 	{
 		this.character = character;
 		this.building = building;
-		costs = building.getCosts();
-		character.inputInv().tryAdd(costs.refundable, true, CommitType.LEAVE);
+		refunds = building.getRefundable();
+		character.inputInv().tryAdd(refunds, true, CommitType.LEAVE);
 		weightView = character.inputInv().viewInvWeight();
 		itemsView = character.inputInv().viewItems(true);
 		invView = new InvGUIPart(0, 0, 1, 3, 4, 2, 1);
