@@ -31,6 +31,7 @@ public class MainState
 		levelMap.addEntity(new XEntity(new Hex(0, 1)));
 		XHero h1 = new XHero(new Hex(-2, -1), this);
 		h1.addItems(new ItemList(Items.BLUE, Items.GSL, Items.MATERIAL, Items.TECHNOLOGY));
+		h1.addItems(new ItemList(Items.BLUE, Items.GSL, Items.MATERIAL, Items.TECHNOLOGY));
 		levelMap.addEntity(h1);
 		levelMap.addArrow(new VisualArrow(new Hex(2, 0), new Hex(4, 1), ArrowMode.ARROW, 120));
 		levelMap.addArrow(new VisualArrow(new Hex(-2, 0), new Hex(4, -4), ArrowMode.ARROW, 120));

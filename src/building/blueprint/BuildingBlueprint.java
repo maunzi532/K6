@@ -34,4 +34,10 @@ public class BuildingBlueprint implements FullBlueprint
 		cache.putCached(name, b2);
 		return b2;
 	}
+
+	@Override
+	public String name()
+	{
+		return name;
+	}
 }

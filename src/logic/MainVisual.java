@@ -52,10 +52,12 @@ public class MainVisual
 		{
 			switch(keyCode)
 			{
-				case RIGHT -> mapCamera.xShift += 0.5;
+				/*case RIGHT -> mapCamera.xShift += 0.5;
 				case LEFT -> mapCamera.xShift -= 0.5;
 				case UP -> mapCamera.yShift -= 0.5;
-				case DOWN -> mapCamera.yShift += 0.5;
+				case DOWN -> mapCamera.yShift += 0.5;*/
+				case UP -> mainState.stateControl.handleMenuChoose(-1);
+				case DOWN -> mainState.stateControl.handleMenuChoose(1);
 			}
 		}
 	}

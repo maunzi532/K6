@@ -32,4 +32,9 @@ public class BlueprintCache<T extends FullBlueprint>
 	{
 		cached.put(name, blueprint);
 	}
+
+	public Set<String> allNames()
+	{
+		return inputs.keySet();
+	}
 }
