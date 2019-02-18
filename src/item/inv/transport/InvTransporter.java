@@ -12,11 +12,11 @@ public class InvTransporter
 	private Map<PossibleTransport, Integer> lastTransported;
 	private int transportNumber;
 
-	public InvTransporter(List<DoubleInv> providingTargets, List<DoubleInv> receivingTargets)
+	public InvTransporter(List<DoubleInv> providingTargets, List<DoubleInv> receivingTargets, int amount)
 	{
 		this.providingTargets = providingTargets;
 		this.receivingTargets = receivingTargets;
-		amount = 1;
+		this.amount = amount;
 		lastTransported = new HashMap<>();
 	}
 

@@ -82,7 +82,7 @@ public class BuildGUI extends XGUI implements InvGUI
 		{
 			ItemStack items = cost.required.items.get(index);
 			Color color = false ? Color.CYAN : null;
-			ItemView itemView = character.outputInv().viewRequiredItem(items.item);
+			ItemView itemView = character.outputInv().viewRecipeItem(items.item);
 			tiles[x][y1] = new GuiTile(itemView.base + " / " + items.count, null, color);
 			tiles[x + 1][y1] = new GuiTile(null, itemView.item.image(), color);
 		}

@@ -70,3 +70,45 @@ BuildingBlueprint
      BLUE
     ItemList
      GSL
+BuildingBlueprint
+ Material1
+ ConstructionBlueprint
+   CostBlueprint
+    ItemList
+    ItemList
+     MATERIAL
+      2
+    Array
+  Array
+   CostBlueprint
+    ItemList
+     TECHNOLOGY
+    ItemList
+    Array
+ ProductionBlueprint
+  ItemList
+   GSL
+    5
+   BLUE
+    5
+  ItemList
+   MATERIAL
+    5
+  Array
+   Recipe
+    ItemList
+     GSL
+     BLUE
+    ItemList
+     MATERIAL
+BuildingBlueprint
+ Transporter1
+ ConstructionBlueprint
+   CostBlueprint
+    ItemList
+     TECHNOLOGY
+    ItemList
+    Array
+ TransporterBlueprint
+  2
+  1

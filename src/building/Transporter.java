@@ -1,7 +1,8 @@
 package building;
 
 import arrow.*;
-import geom.hex.*;
+import building.blueprint.*;
+import geom.hex.Hex;
 import item.ItemList;
 import item.inv.transport.*;
 import java.util.*;
@@ -9,13 +10,27 @@ import java.util.*;
 public class Transporter extends Buildable implements WithTargets
 {
 	private List<DoubleInv> targets;
+	private int range;
+	private int amount;
 	private InvTransporter invTransporter;
 
-	public Transporter(Hex location)
+	public Transporter(Hex location, BuildingBlueprint blueprint)
 	{
-		super(location, null, new ItemList());
+		super(location, blueprint.constructionBlueprint.blueprints.get(0).get(0),
+				blueprint.constructionBlueprint.blueprints.get(0).get(0).refundable, blueprint.name);
+		range = blueprint.transporterBlueprint.range;
+		amount = blueprint.transporterBlueprint.amount;
 		targets = new ArrayList<>();
-		invTransporter = new InvTransporter(targets, targets);
+		invTransporter = new InvTransporter(targets, targets, amount);
+	}
+
+	public Transporter(Hex location, CostBlueprint costs, ItemList refundable, BuildingBlueprint blueprint)
+	{
+		super(location, costs, refundable, blueprint.name);
+		range = blueprint.transporterBlueprint.range;
+		amount = blueprint.transporterBlueprint.amount;
+		targets = new ArrayList<>();
+		invTransporter = new InvTransporter(targets, targets, amount);
 	}
 
 	@Override
@@ -34,7 +49,7 @@ public class Transporter extends Buildable implements WithTargets
 	@Override
 	public int range()
 	{
-		return 2;
+		return range;
 	}
 
 	@Override

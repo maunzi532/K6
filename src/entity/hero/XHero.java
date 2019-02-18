@@ -73,7 +73,8 @@ public class XHero extends XEntity implements DoubleInv
 
 	public void buildBuilding(CostBlueprint costs, ItemList refundable, BuildingBlueprint blueprint)
 	{
-		mainState.levelMap.addBuilding(new ProductionBuilding(location, costs, refundable, blueprint));
+		mainState.levelMap.addBuilding(blueprint.type == 0 ? new ProductionBuilding(location, costs, refundable, blueprint)
+				: new Transporter(location, costs, refundable, blueprint));
 	}
 
 	public void removeBuilding(Buildable building)

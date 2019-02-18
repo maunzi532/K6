@@ -10,7 +10,6 @@ import java.util.*;
 
 public class ProductionBuilding extends Buildable implements DoubleInv
 {
-	public final BuildingBlueprint blueprint;
 	private SlotInv inputInv;
 	private SlotInv outputInv;
 	private List<Recipe> recipes;
@@ -19,8 +18,7 @@ public class ProductionBuilding extends Buildable implements DoubleInv
 	public ProductionBuilding(Hex location, BuildingBlueprint blueprint)
 	{
 		super(location, blueprint.constructionBlueprint.blueprints.get(0).get(0),
-				blueprint.constructionBlueprint.blueprints.get(0).get(0).refundable);
-		this.blueprint = blueprint;
+				blueprint.constructionBlueprint.blueprints.get(0).get(0).refundable, blueprint.name);
 		inputInv = new SlotInv(blueprint.productionBlueprint.inputLimits);
 		outputInv = new SlotInv(blueprint.productionBlueprint.outputLimits);
 		recipes = blueprint.productionBlueprint.recipes;
@@ -28,16 +26,10 @@ public class ProductionBuilding extends Buildable implements DoubleInv
 
 	public ProductionBuilding(Hex location, CostBlueprint costs, ItemList refundable, BuildingBlueprint blueprint)
 	{
-		super(location, costs, refundable);
-		this.blueprint = blueprint;
+		super(location, costs, refundable, blueprint.name);
 		inputInv = new SlotInv(blueprint.productionBlueprint.inputLimits);
 		outputInv = new SlotInv(blueprint.productionBlueprint.outputLimits);
 		recipes = blueprint.productionBlueprint.recipes;
-	}
-
-	public String name()
-	{
-		return blueprint.name;
 	}
 
 	public SlotInv getInputInv()

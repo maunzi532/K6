@@ -38,6 +38,6 @@ public class MainState
 		levelMap.addArrow(new VisualArrow(new Hex(-3, 0), new Hex(-3, 0), ArrowMode.ARROW, 120));
 		levelMap.addBuilding(new ProductionBuilding(new Hex(-2, -2), BuildingBlueprint.get(buildingBlueprintCache, "BLUE1")));
 		levelMap.addBuilding(new ProductionBuilding(new Hex(-3, -3), BuildingBlueprint.get(buildingBlueprintCache, "GSL1")));
-		levelMap.addBuilding(new Transporter(new Hex(-3, -2)));
+		levelMap.addBuilding(new Transporter(new Hex(-3, -2), BuildingBlueprint.get(buildingBlueprintCache, "Transporter1")));
 	}
 }
