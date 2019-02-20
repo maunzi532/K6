@@ -22,7 +22,7 @@ public class MainVisual
 		gd.setTextAlign(TextAlignment.CENTER);
 		gd.setTextBaseline(VPos.CENTER);
 		visualTile = new VisualTile(mainState.levelMap, gd);
-		mapCamera = new HexCamera(w / 2f, h / 2f, 40, 40, 0, 0, HexMatrix.LP);
+		mapCamera = new HexCamera(w / 2f, h / 2f, 40, 40, 0, 0, new HexMatrix(0));
 		visualMenu = new VisualMenu(gd, w / 2f, h / 2f, mainState.stateControl);
 		visualGUI = new VisualGUIQuad(gd, w / 2f, h / 2f, mainState.stateControl);
 		//visualGUI = new VisualGUIHex(gd, w / 2f, h / 2f, mainState.stateControl);

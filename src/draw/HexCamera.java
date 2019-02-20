@@ -5,6 +5,7 @@ import geom.hex.*;
 
 public class HexCamera
 {
+	//private static int c;
 	private double xHalfWidth, yHalfWidth;
 	private double xSize, ySize;
 	public double xShift, yShift;
@@ -30,7 +31,8 @@ public class HexCamera
 
 	public HexLayout layout()
 	{
-		//MatrixH matrix = MatrixH.layoutLerp(MatrixH.layoutPointy(), MatrixH.layoutFlat(), Math.abs((timer % 100) - 50) / 50d);
+		/*c++;
+		matrix = new HexMatrix((c % 6000) / 1000d);*/
 		return new HexLayout(matrix, new PointD(xSize, ySize),
 				new PointD(xHalfWidth - xShift * xSize, yHalfWidth - yShift * ySize));
 	}
