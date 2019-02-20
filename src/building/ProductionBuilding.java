@@ -81,6 +81,8 @@ public class ProductionBuilding extends Buildable implements DoubleInv
 				if(outputInv.tryAdd(recipe.results, false, CommitType.COMMIT))
 				{
 					inputInv.commit();
+					canAddArrows.addArrow(new VisualArrow(location(),
+							location(), ArrowMode.TARROW, 30, recipe.results.items.get(0).item.image()));
 					return;
 				}
 				else

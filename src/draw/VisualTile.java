@@ -79,7 +79,7 @@ public class VisualTile
 				{
 					if(arrow.arrowMode.showShine)
 					{
-						double[][] gradientPoints = layout.multiHexToPixel(arrow.start, arrow.end);
+						double[][] gradientPoints = layout.multiHexToPixel(arrow.visualStart(), arrow.visualEnd());
 						double[] shine = arrow.getShine();
 						Stop[] stops = new Stop[shine.length];
 						for(int i = 0; i < shine.length; i++)

@@ -81,7 +81,7 @@ public class DoubleHex
 		return a * (1 - t) + b * t;
 	}
 
-	public static DoubleHex hexLerp(Hex h1, Hex h2, double t)
+	public static DoubleHex hexLerp(DoubleHex h1, DoubleHex h2, double t)
 	{
 		return new DoubleHex(lerp(h1.v[0], h2.v[0], t), lerp(h1.v[1], h2.v[1], t), lerp(h1.v[2], h2.v[2], t));
 	}
@@ -92,7 +92,7 @@ public class DoubleHex
 		return new DoubleHex(h1.v[0] / length, h1.v[1] / length, h1.v[2] / length);
 	}
 
-	public static DoubleHex[] hexLine(Hex h1, Hex h2)
+	/*public static DoubleHex[] hexLine(Hex h1, Hex h2)
 	{
 		int n = h1.distance(h2);
 		DoubleHex[] line = new DoubleHex[n + 1];
@@ -102,5 +102,5 @@ public class DoubleHex
 			line[i] = hexLerp(h1, h2, step * i);
 		}
 		return line;
-	}
+	}*/
 }

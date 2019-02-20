@@ -1,15 +1,15 @@
 package arrow;
 
-import entity.*;
+import entity.VisibleReplace;
 import geom.hex.*;
-import javafx.scene.image.*;
+import javafx.scene.image.Image;
 
 public class VisualArrow implements VisibleReplace
 {
 	private static final double SHINE_WIDTH = 0.65;
 
-	public final Hex start;
-	public final Hex end;
+	private final Hex start;
+	private final Hex end;
 	public final ArrowMode arrowMode;
 	private final int timerEnd;
 	public final Image image;
@@ -31,10 +31,13 @@ public class VisualArrow implements VisibleReplace
 		this.arrowMode = arrowMode;
 		this.timerEnd = timerEnd;
 		this.image = image;
+		zero = end.equals(start);
 		if(hasArrow())
 			calculateArrowPoints();
-		zero = end.equals(start);
-		approxDistance = end.distance(start);
+		if(zero)
+			approxDistance = 1.5;
+		else
+			approxDistance = end.distance(start);
 	}
 
 	public boolean hasArrow()
@@ -63,44 +66,56 @@ public class VisualArrow implements VisibleReplace
 		return arrowPoints;
 	}
 
+	public DoubleHex visualStart()
+	{
+		return new DoubleHex(start);
+	}
+
+	public DoubleHex visualEnd()
+	{
+		if(zero)
+			return new DoubleHex(end).add(normalUp());
+		else
+			return new DoubleHex(end);
+	}
+
 	public DoubleHex normal()
 	{
 		return DoubleHex.normalizeHex(end.subtract(start));
 	}
 
+	public DoubleHex normalUp()
+	{
+		return DoubleHex.normalizeHex(new Hex(1, 1, -2));
+	}
+
 	public DoubleHex currentTLocation()
 	{
-		return DoubleHex.hexLerp(start, end, timer / (double) timerEnd);
+		return DoubleHex.hexLerp(visualStart(), visualEnd(), timer / (double) timerEnd);
 	}
 
 	public void calculateArrowPoints()
 	{
-		if(start.equals(end))
-		{
-			arrowPoints = new DoubleHex[0];
-		}
-		else
-		{
-			DoubleHex normal = normal();
-			DoubleHex sideNormalX2 = normal.rotate(false).subtract(normal.rotate(true));
-			DoubleHex side0 = sideNormalX2.multiply(0.15);
-			DoubleHex side1 = sideNormalX2.multiply(0.25);
-			DoubleHex end1 = new DoubleHex(end).subtract(normal.multiply(0.5));
-			arrowPoints = new DoubleHex[7];
-			arrowPoints[0] = new DoubleHex(start).add(side0);
-			arrowPoints[6] = new DoubleHex(start).subtract(side0);
-			arrowPoints[1] = end1.add(side0);
-			arrowPoints[5] = end1.subtract(side0);
-			arrowPoints[2] = end1.add(side1);
-			arrowPoints[4] = end1.subtract(side1);
-			arrowPoints[3] = new DoubleHex(end);
-		}
+		DoubleHex normal = zero ? normalUp() : normal();
+		DoubleHex sideNormalX2 = normal.rotate(false).subtract(normal.rotate(true));
+		DoubleHex side0 = sideNormalX2.multiply(0.15);
+		DoubleHex side1 = sideNormalX2.multiply(0.25);
+		DoubleHex end0 = visualEnd();
+		DoubleHex end1 = end0.subtract(normal.multiply(0.5));
+		arrowPoints = new DoubleHex[7];
+		arrowPoints[0] = visualStart().add(side0);
+		arrowPoints[6] = visualStart().subtract(side0);
+		arrowPoints[1] = end1.add(side0);
+		arrowPoints[5] = end1.subtract(side0);
+		arrowPoints[2] = end1.add(side1);
+		arrowPoints[4] = end1.subtract(side1);
+		arrowPoints[3] = end0;
 	}
 
 	public double[] getShine()
 	{
-		if(zero)
-			return new double[0];
+		/*if(zero)
+			return new double[]{0, 0.5, 1};*/
 		double dM = timer / (double) timerEnd;
 		double dL = dM - SHINE_WIDTH / approxDistance;
 		double dH = dM + SHINE_WIDTH / approxDistance;
