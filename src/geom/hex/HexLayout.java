@@ -7,6 +7,7 @@ public class HexLayout
 	public final HexMatrix mat;
 	public final PointD size;
 	public final PointD origin;
+	//public final PointD
 
 	public HexLayout(HexMatrix mat, PointD size, PointD origin)
 	{
@@ -43,6 +44,12 @@ public class HexLayout
 		return new PointD(size.v[0] * Math.cos(angle), size.v[1] * Math.sin(angle));
 	}
 
+	public PointD cornerOffset(int corner, double m)
+	{
+		double angle = Math.PI * (mat.startAngle + corner) / -3f;
+		return new PointD(size.v[0] * Math.cos(angle) * m, size.v[1] * Math.sin(angle) * m);
+	}
+
 	public PointD[] hexCornersPointD(Hex h1)
 	{
 		PointD[] corners = new PointD[6];
@@ -61,6 +68,19 @@ public class HexLayout
 		for(int i = 0; i < 6; i++)
 		{
 			PointD corner = center.plus(cornerOffset(i));
+			corners[0][i] = corner.v[0];
+			corners[1][i] = corner.v[1];
+		}
+		return corners;
+	}
+
+	public double[][] hexCorners(Hex h1, double m)
+	{
+		double[][] corners = new double[2][6];
+		PointD center = hexToPixel(h1);
+		for(int i = 0; i < 6; i++)
+		{
+			PointD corner = center.plus(cornerOffset(i, m));
 			corners[0][i] = corner.v[0];
 			corners[1][i] = corner.v[1];
 		}

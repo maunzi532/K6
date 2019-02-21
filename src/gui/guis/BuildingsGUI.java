@@ -1,6 +1,6 @@
 package gui.guis;
 
-import building.Building;
+import levelMap.MBuilding;
 import building.blueprint.BuildingBlueprint;
 import file.BlueprintCache;
 import gui.*;
@@ -50,7 +50,7 @@ public class BuildingsGUI extends XGUI implements InvGUI
 		tiles[x + 1][y1] = new GuiTile(null, itemView.item.image(), null);*/
 		BuildingBlueprint blueprint = BuildingBlueprint.get(blueprintCache, names[index]);
 		tiles[x][y1] = new GuiTile(blueprint.name);
-		tiles[x + 1][y1] = new GuiTile(null, Building.IMAGE, null);
+		tiles[x + 1][y1] = new GuiTile(null, MBuilding.IMAGE, null);
 	}
 
 	@Override

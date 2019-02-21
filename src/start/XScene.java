@@ -1,10 +1,10 @@
 package start;
 
-import javafx.application.*;
+import javafx.application.Application;
 import javafx.scene.*;
 import javafx.scene.canvas.*;
-import javafx.scene.paint.*;
-import javafx.stage.*;
+import javafx.scene.paint.Color;
+import javafx.stage.Stage;
 
 public class XScene extends Application
 {
@@ -24,15 +24,11 @@ public class XScene extends Application
 		root.getChildren().add(canvas);
 		stage.setScene(s);
 		stage.setTitle("K6");
-		//stage.initStyle(StageStyle.UNDECORATED);
-		GraphicsContext gd = canvas.getGraphicsContext2D();
-
-		XTimer xTimer = new XTimer(gd, WIDTH, HEIGHT);
+		XTimer xTimer = new XTimer(canvas.getGraphicsContext2D(), WIDTH, HEIGHT);
 		xTimer.start();
 		s.setOnMouseClicked(xTimer::onMouseClick);
 		s.setOnMouseMoved(xTimer::onMouseMove);
 		s.setOnKeyPressed(xTimer::onKeyEvent);
-
 		stage.show();
 	}
 }

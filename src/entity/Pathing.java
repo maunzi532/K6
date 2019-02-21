@@ -14,7 +14,7 @@ public class Pathing
 
 	public Pathing(XEntity entity, int maxMovementCost, LevelMap map)
 	{
-		this(entity, entity.location, maxMovementCost, map);
+		this(entity, entity.location(), maxMovementCost, map);
 	}
 
 	public Pathing(XEntity entity, Hex startLocation, int maxMovementCost, LevelMap map)
@@ -76,14 +76,13 @@ public class Pathing
 	{
 		if(!tile.exists())
 			return null;
-		//noinspection ConstantConditions
 		int cost = currentCost + tile.floorTile.moveCost();
 		if(cost > maxCost)
 			return null;
 		boolean canEnd = tile.floorTile.canMovementEnd();
 		if(tile.entity != null && tile.entity != entity)
 		{
-			if(tile.entity.isAllied(entity))
+			if(entity.isAllied(tile.entity))
 				canEnd = false;
 			else
 				return null;

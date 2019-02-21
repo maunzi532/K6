@@ -7,6 +7,7 @@ import item.ItemList;
 import item.inv.*;
 import item.inv.transport.DoubleInv;
 import java.util.*;
+import levelMap.LevelMap;
 
 public class ProductionBuilding extends Buildable implements DoubleInv
 {
@@ -72,7 +73,7 @@ public class ProductionBuilding extends Buildable implements DoubleInv
 	}
 
 	@Override
-	public void productionPhase(CanAddArrows canAddArrows)
+	public void productionPhase(LevelMap levelMap)
 	{
 		for(Recipe recipe : recipes)
 		{
@@ -81,7 +82,7 @@ public class ProductionBuilding extends Buildable implements DoubleInv
 				if(outputInv.tryAdd(recipe.results, false, CommitType.COMMIT))
 				{
 					inputInv.commit();
-					canAddArrows.addArrow(new VisualArrow(location(),
+					levelMap.addArrow(new VisualArrow(location(),
 							location(), ArrowMode.TARROW, 30, recipe.results.items.get(0).item.image()));
 					return;
 				}

@@ -1,13 +1,10 @@
 package levelMap;
 
-import building.*;
-import entity.*;
-
 public class FullTile
 {
 	public final FloorTile floorTile;
-	public final Building building;
-	public final XEntity entity;
+	public final MBuilding building;
+	public final MEntity entity;
 	public final boolean marked;
 
 	public FullTile()
@@ -18,7 +15,7 @@ public class FullTile
 		marked = false;
 	}
 
-	public FullTile(FloorTile floorTile, Building building, XEntity entity, boolean marked)
+	public FullTile(FloorTile floorTile, MBuilding building, MEntity entity, boolean marked)
 	{
 		assert floorTile != null;
 		this.floorTile = floorTile;

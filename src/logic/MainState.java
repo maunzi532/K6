@@ -1,14 +1,14 @@
 package logic;
 
 import building.*;
-import building.blueprint.BuildingBlueprint;
-import entity.XEntity;
-import entity.hero.XHero;
-import file.BlueprintCache;
-import geom.hex.Hex;
+import building.blueprint.*;
+import entity.*;
+import entity.hero.*;
+import file.*;
+import geom.hex.*;
 import item.*;
-import levelMap.LevelMap;
-import levelMap.importX.TestImportSector;
+import levelMap.*;
+import levelMap.importX.*;
 
 public class MainState
 {

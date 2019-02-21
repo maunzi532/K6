@@ -1,9 +1,6 @@
 package draw;
 
-import arrow.*;
-import building.*;
-import entity.*;
-import geom.PointD;
+import geom.*;
 import geom.hex.*;
 import javafx.scene.canvas.*;
 import javafx.scene.paint.*;
@@ -63,7 +60,7 @@ public class VisualTile
 			if(fullTile.building != null)
 			{
 				PointD midPoint = layout.hexToPixel(h1);
-				gd.drawImage(Building.IMAGE, midPoint.v[0] - layout.size.v[0], midPoint.v[1] - layout.size.v[1],
+				gd.drawImage(MBuilding.IMAGE, midPoint.v[0] - layout.size.v[0], midPoint.v[1] - layout.size.v[1],
 						layout.size.v[0] * 2, layout.size.v[1] * 2);
 			}
 		}
@@ -71,13 +68,13 @@ public class VisualTile
 
 	public void drawArrows0(HexLayout layout, Hex mid, int range)
 	{
-		for(VisualArrow arrow : levelMap.getArrows())
+		for(MArrow arrow : levelMap.getArrows())
 		{
 			if(arrow.isVisible(mid, range))
 			{
-				if(arrow.hasArrow())
+				if(arrow.showArrow())
 				{
-					if(arrow.arrowMode.showShine)
+					if(arrow.showShine())
 					{
 						double[][] gradientPoints = layout.multiHexToPixel(arrow.visualStart(), arrow.visualEnd());
 						double[] shine = arrow.getShine();
@@ -105,12 +102,12 @@ public class VisualTile
 		FullTile fullTile = levelMap.tile(h1);
 		if(fullTile.visible())
 		{
-			if(fullTile.entity != null && fullTile.entity.visible())
+			if(fullTile.entity != null && fullTile.entity.isVisible())
 			{
 				PointD midPoint = layout.hexToPixel(h1);
 				/*gd.setFill(new LinearGradient(points[0][0], points[1][0], points[0][3], points[1][3], false, null,
 						new Stop(0, Color.AZURE), new Stop(1, Color.BLACK)));*/
-				gd.drawImage(XEntity.IMAGE, midPoint.v[0] - layout.size.v[0], midPoint.v[1] - layout.size.v[1],
+				gd.drawImage(fullTile.entity.getImage(), midPoint.v[0] - layout.size.v[0], midPoint.v[1] - layout.size.v[1],
 						layout.size.v[0] * 2, layout.size.v[1] * 2);
 			}
 		}
@@ -118,14 +115,14 @@ public class VisualTile
 
 	public void drawArrows1(HexLayout layout, Hex mid, int range)
 	{
-		for(VisualArrow arrow : levelMap.getArrows())
+		for(MArrow arrow : levelMap.getArrows())
 		{
 			if(arrow.isVisible(mid, range))
 			{
-				if(arrow.arrowMode.showTransport)
+				if(arrow.showTransport())
 				{
 					PointD midPoint = layout.hexToPixel(arrow.currentTLocation());
-					gd.drawImage(arrow.image, midPoint.v[0] - layout.size.v[0], midPoint.v[1] - layout.size.v[1],
+					gd.drawImage(arrow.transported(), midPoint.v[0] - layout.size.v[0], midPoint.v[1] - layout.size.v[1],
 							layout.size.v[0] * 2, layout.size.v[1] * 2);
 				}
 			}

@@ -2,16 +2,19 @@ package entity.hero;
 
 import building.*;
 import building.blueprint.*;
-import entity.XEntity;
-import geom.hex.Hex;
+import entity.*;
+import geom.hex.*;
 import item.*;
 import item.inv.*;
-import item.inv.transport.DoubleInv;
-import java.util.Optional;
-import logic.MainState;
+import item.inv.transport.*;
+import java.util.*;
+import javafx.scene.image.*;
+import logic.*;
 
 public class XHero extends XEntity implements DoubleInv
 {
+	private static final Image CL3 = new Image("S.png");
+
 	private MainState mainState;
 	private Inv inv;
 
@@ -23,15 +26,15 @@ public class XHero extends XEntity implements DoubleInv
 	}
 
 	@Override
-	public String name()
+	public Image getImage()
 	{
-		return "XHero";
+		return CL3;
 	}
 
 	@Override
-	public Hex location()
+	public String name()
 	{
-		return location;
+		return "XHero";
 	}
 
 	@Override

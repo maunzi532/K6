@@ -3,8 +3,9 @@ package building;
 import building.blueprint.CostBlueprint;
 import geom.hex.Hex;
 import item.ItemList;
+import levelMap.MBuilding;
 
-public abstract class Buildable implements Building
+public abstract class Buildable implements MBuilding
 {
 	private Hex location;
 	private CostBlueprint costs;

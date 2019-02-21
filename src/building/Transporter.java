@@ -6,6 +6,7 @@ import geom.hex.Hex;
 import item.ItemList;
 import item.inv.transport.*;
 import java.util.*;
+import levelMap.LevelMap;
 
 public class Transporter extends Buildable implements WithTargets
 {
@@ -34,14 +35,14 @@ public class Transporter extends Buildable implements WithTargets
 	}
 
 	@Override
-	public void transportPhase(CanAddArrows canAddArrows)
+	public void transportPhase(LevelMap levelMap)
 	{
 		Optional<PossibleTransport> transportOpt = invTransporter.transport();
 		if(transportOpt.isPresent())
 		{
 			PossibleTransport transport = transportOpt.get();
 			invTransporter.doTheTransport(transport);
-			canAddArrows.addArrow(new VisualArrow(transport.from.location(),
+			levelMap.addArrow(new VisualArrow(transport.from.location(),
 					transport.to.location(), ArrowMode.TARROW, 60, transport.item.image()));
 		}
 	}

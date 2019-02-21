@@ -1,18 +1,16 @@
 package levelMap;
 
 import arrow.*;
-import building.*;
-import geom.hex.*;
+import geom.hex.Hex;
 import java.util.*;
-import entity.*;
 
-public class LevelMap implements CanAddArrows
+public class LevelMap
 {
 	private final HashMap<Hex, FloorTile> floor;
-	private final HashMap<Hex, Building> buildings;
-	private final HashMap<Hex, XEntity> entities;
+	private final HashMap<Hex, MBuilding> buildings;
+	private final HashMap<Hex, MEntity> entities;
 	private Set<Hex> marked;
-	private final ArrayList<VisualArrow> arrows;
+	private final ArrayList<MArrow> arrows;
 
 	public LevelMap()
 	{
@@ -23,13 +21,13 @@ public class LevelMap implements CanAddArrows
 		arrows = new ArrayList<>();
 	}
 
-	public void moveEntity(XEntity entity, Hex newLocation)
+	public void moveEntity(MEntity entity, Hex newLocation)
 	{
-		entities.remove(entity.location);
-		VisualArrow arrow = new VisualArrow(entity.location, newLocation, ArrowMode.TRANSPORT, newLocation.distance(entity.location) * 20, XEntity.IMAGE);
+		entities.remove(entity.location());
+		MArrow arrow = new VisualArrow(entity.location(), newLocation, ArrowMode.TRANSPORT, newLocation.distance(entity.location()) * 20, entity.getImage());
 		arrows.add(arrow);
-		entity.location = newLocation;
-		entity.replace = arrow;
+		entity.setLocation(newLocation);
+		entity.setReplacementArrow(arrow);
 		addEntity(entity);
 	}
 
@@ -44,16 +42,16 @@ public class LevelMap implements CanAddArrows
 
 	public void tickArrows()
 	{
-		arrows.removeIf(VisualArrow::tick);
+		arrows.removeIf(MArrow::tick);
 	}
 
 	public void productionPhase()
 	{
-		for(Building building : buildings.values())
+		for(MBuilding building : buildings.values())
 		{
 			building.productionPhase(this);
 		}
-		for(Building building : buildings.values())
+		for(MBuilding building : buildings.values())
 		{
 			building.afterProduction();
 		}
@@ -61,11 +59,11 @@ public class LevelMap implements CanAddArrows
 
 	public void transportPhase()
 	{
-		for(Building building : buildings.values())
+		for(MBuilding building : buildings.values())
 		{
 			building.transportPhase(this);
 		}
-		for(Building building : buildings.values())
+		for(MBuilding building : buildings.values())
 		{
 			building.afterTransport();
 		}
@@ -76,19 +74,19 @@ public class LevelMap implements CanAddArrows
 		floor.put(hex, floorTile);
 	}
 
-	public void addBuilding(Building building)
+	public void addBuilding(MBuilding building)
 	{
 		buildings.put(building.location(), building);
 	}
 
-	public void removeBuilding(Building building)
+	public void removeBuilding(MBuilding building)
 	{
 		buildings.remove(building.location());
 	}
 
-	public void addEntity(XEntity entity)
+	public void addEntity(MEntity entity)
 	{
-		entities.put(entity.location, entity);
+		entities.put(entity.location(), entity);
 	}
 
 	public void setMarked(Set<Hex> marked)
@@ -97,8 +95,7 @@ public class LevelMap implements CanAddArrows
 		this.marked = marked;
 	}
 
-	@Override
-	public void addArrow(VisualArrow arrow)
+	public void addArrow(MArrow arrow)
 	{
 		arrows.add(arrow);
 	}
@@ -108,12 +105,12 @@ public class LevelMap implements CanAddArrows
 		return floor.get(hex);
 	}
 
-	public Building getBuilding(Hex hex)
+	public MBuilding getBuilding(Hex hex)
 	{
 		return buildings.get(hex);
 	}
 
-	public XEntity getEntity(Hex hex)
+	public MEntity getEntity(Hex hex)
 	{
 		return entities.get(hex);
 	}
@@ -123,7 +120,7 @@ public class LevelMap implements CanAddArrows
 		return marked;
 	}
 
-	public List<VisualArrow> getArrows()
+	public List<MArrow> getArrows()
 	{
 		return arrows;
 	}

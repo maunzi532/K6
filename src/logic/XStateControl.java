@@ -11,7 +11,7 @@ import gui.guis.*;
 import item.inv.transport.DoubleInv;
 import java.util.*;
 import java.util.stream.Collectors;
-import levelMap.FullTile;
+import levelMap.*;
 
 public class XStateControl
 {
@@ -133,7 +133,7 @@ public class XStateControl
 
 	private void setTileState(Object object)
 	{
-		if(object instanceof XEntity)
+		if(object instanceof MEntity)
 		{
 			if(object instanceof XHero)
 			{
@@ -144,7 +144,7 @@ public class XStateControl
 				return;
 			}
 		}
-		else if(object instanceof Building)
+		else if(object instanceof MBuilding)
 		{
 			if(object instanceof Transporter)
 			{
@@ -178,7 +178,7 @@ public class XStateControl
 		{
 			case CHARACTER_MOVEMENT ->
 					{
-						mainState.levelMap.moveEntity((XEntity) stateInfo[0], mapHex);
+						mainState.levelMap.moveEntity((MEntity) stateInfo[0], mapHex);
 						state = XState.NONE;
 					}
 			case TRANSPORT_TARGETS -> ((Transporter) stateInfo[0]).toggleTarget((DoubleInv) mainState.levelMap.getBuilding(mapHex));
@@ -209,7 +209,7 @@ public class XStateControl
 					case CHARACTER_MOVEMENT -> new Pathing((XEntity) stateInfo[0], 4, mainState.levelMap).start().getEndpoints();
 					case TRANSPORT_TARGETS -> ((Transporter) stateInfo[0]).location().range(0, ((Transporter) stateInfo[0]).range()).stream()
 							.filter(e -> mainState.levelMap.getBuilding(e) instanceof DoubleInv).collect(Collectors.toSet());
-					case TAKE_TARGET, GIVE_TARGET -> ((XEntity) stateInfo[0]).location.range(0, 4).stream()
+					case TAKE_TARGET, GIVE_TARGET -> ((MEntity) stateInfo[0]).location().range(0, 4).stream()
 							.filter(e -> mainState.levelMap.getBuilding(e) instanceof DoubleInv).collect(Collectors.toSet());
 					default -> Set.of();
 				});
@@ -238,7 +238,7 @@ public class XStateControl
 					case DIRECTED_TRADE -> new DirectedTradeGUI((DoubleInv) stateInfo[1], (DoubleInv) stateInfo[2]);
 					case BUILDINGS -> new BuildingsGUI(mainState.buildingBlueprintCache);
 					case BUILD -> new BuildGUI((XHero) stateInfo[0], (BuildingBlueprint) stateInfo[3]);
-					case REMOVE -> new RemoveGUI((XHero) stateInfo[0], (Buildable) mainState.levelMap.getBuilding(((XHero) stateInfo[0]).location));
+					case REMOVE -> new RemoveGUI((XHero) stateInfo[0], (Buildable) mainState.levelMap.getBuilding(((XHero) stateInfo[0]).location()));
 					default -> NoGUI.NONE;
 				};
 	}

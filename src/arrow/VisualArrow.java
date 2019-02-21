@@ -1,28 +1,24 @@
 package arrow;
 
-import entity.VisibleReplace;
 import geom.hex.*;
-import javafx.scene.image.Image;
+import javafx.scene.image.*;
+import levelMap.*;
 
-public class VisualArrow implements VisibleReplace
+public class VisualArrow implements MArrow
 {
 	private static final double SHINE_WIDTH = 0.65;
+	private static final double ZERO_SHINE_MULTIPLIER = 1.5;
 
 	private final Hex start;
 	private final Hex end;
-	public final ArrowMode arrowMode;
+	private final ArrowMode arrowMode;
 	private final int timerEnd;
-	public final Image image;
+	private final Image image;
 	private int timer;
 	private boolean finished;
 	private DoubleHex[] arrowPoints;
 	private final boolean zero;
 	private final double approxDistance;
-
-	public VisualArrow(Hex start, Hex end, ArrowMode arrowMode, int timerEnd)
-	{
-		this(start, end, arrowMode, timerEnd, null);
-	}
 
 	public VisualArrow(Hex start, Hex end, ArrowMode arrowMode, int timerEnd, Image image)
 	{
@@ -32,24 +28,39 @@ public class VisualArrow implements VisibleReplace
 		this.timerEnd = timerEnd;
 		this.image = image;
 		zero = end.equals(start);
-		if(hasArrow())
+		if(showArrow())
 			calculateArrowPoints();
 		if(zero)
-			approxDistance = 1.5;
+			approxDistance = ZERO_SHINE_MULTIPLIER;
 		else
 			approxDistance = end.distance(start);
 	}
 
-	public boolean hasArrow()
-	{
-		return arrowMode.showArrow && (arrowMode.showZero || !zero);
-	}
-
+	@Override
 	public boolean isVisible(Hex mid, int range)
 	{
 		return start.distance(mid) <= range && end.distance(mid) <= range;
 	}
 
+	@Override
+	public boolean showArrow()
+	{
+		return arrowMode.showArrow && (arrowMode.showZero || !zero);
+	}
+
+	@Override
+	public boolean showShine()
+	{
+		return arrowMode.showShine;
+	}
+
+	@Override
+	public boolean showTransport()
+	{
+		return arrowMode.showTransport;
+	}
+
+	@Override
 	public boolean tick()
 	{
 		timer++;
@@ -61,16 +72,19 @@ public class VisualArrow implements VisibleReplace
 		return finished();
 	}
 
+	@Override
 	public DoubleHex[] getArrowPoints()
 	{
 		return arrowPoints;
 	}
 
+	@Override
 	public DoubleHex visualStart()
 	{
 		return new DoubleHex(start);
 	}
 
+	@Override
 	public DoubleHex visualEnd()
 	{
 		if(zero)
@@ -79,22 +93,29 @@ public class VisualArrow implements VisibleReplace
 			return new DoubleHex(end);
 	}
 
-	public DoubleHex normal()
+	private DoubleHex normal()
 	{
 		return DoubleHex.normalizeHex(end.subtract(start));
 	}
 
-	public DoubleHex normalUp()
+	private DoubleHex normalUp()
 	{
 		return DoubleHex.normalizeHex(new Hex(1, 1, -2));
 	}
 
+	@Override
 	public DoubleHex currentTLocation()
 	{
 		return DoubleHex.hexLerp(visualStart(), visualEnd(), timer / (double) timerEnd);
 	}
 
-	public void calculateArrowPoints()
+	@Override
+	public Image transported()
+	{
+		return image;
+	}
+
+	private void calculateArrowPoints()
 	{
 		DoubleHex normal = zero ? normalUp() : normal();
 		DoubleHex sideNormalX2 = normal.rotate(false).subtract(normal.rotate(true));
@@ -112,10 +133,9 @@ public class VisualArrow implements VisibleReplace
 		arrowPoints[3] = end0;
 	}
 
+	@Override
 	public double[] getShine()
 	{
-		/*if(zero)
-			return new double[]{0, 0.5, 1};*/
 		double dM = timer / (double) timerEnd;
 		double dL = dM - SHINE_WIDTH / approxDistance;
 		double dH = dM + SHINE_WIDTH / approxDistance;
