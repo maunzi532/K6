@@ -10,7 +10,7 @@ public class Pathing
 	private final Hex startLocation;
 	private final int maxMovementCost;
 	private final LevelMap map;
-	private final Set<Hex> endpoints;
+	private final Map<Hex, MarkType> endpoints;
 
 	public Pathing(XEntity entity, int maxMovementCost, LevelMap map)
 	{
@@ -23,14 +23,14 @@ public class Pathing
 		this.startLocation = startLocation;
 		this.maxMovementCost = maxMovementCost;
 		this.map = map;
-		endpoints = new HashSet<>();
+		endpoints = new HashMap<>();
 	}
 
 	public Pathing start()
 	{
 		List<PathLocation> lA = new ArrayList<>();
 		lA.add(new PathLocation(startLocation, 0, true));
-		endpoints.add(startLocation);
+		endpoints.put(startLocation, MarkType.TARGET);
 		for(int counter = 0; counter < lA.size(); counter++)
 		{
 			PathLocation first = lA.get(counter);
@@ -54,7 +54,7 @@ public class Pathing
 					{
 						lA.add(pl);
 						if(pl.canEnd)
-							endpoints.add(neighbor);
+							endpoints.put(neighbor, MarkType.TARGET);
 					}
 				}
 			}
@@ -67,7 +67,7 @@ public class Pathing
 		map.setMarked(endpoints);
 	}
 
-	public Set<Hex> getEndpoints()
+	public Map<Hex, MarkType> getEndpoints()
 	{
 		return endpoints;
 	}

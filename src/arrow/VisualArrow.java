@@ -2,7 +2,6 @@ package arrow;
 
 import geom.hex.*;
 import javafx.scene.image.*;
-import levelMap.*;
 
 public class VisualArrow implements MArrow
 {

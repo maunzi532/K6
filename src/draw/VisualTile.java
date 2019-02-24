@@ -1,7 +1,9 @@
 package draw;
 
+import arrow.*;
 import geom.*;
 import geom.hex.*;
+import java.util.stream.*;
 import javafx.scene.canvas.*;
 import javafx.scene.paint.*;
 import levelMap.*;
@@ -48,7 +50,8 @@ public class VisualTile
 		if(fullTile.visible())
 		{
 			gd.setFill(new LinearGradient(points[0][0], points[1][0], points[0][3], points[1][3],
-					false, null, fullTile.marked ? fullTile.floorTile.type.marked : fullTile.floorTile.type.normal));
+					false, null, fullTile.floorTile.type.normal.stream()
+					.map(e -> new Stop(e.getOffset(), mark(e.getColor(), fullTile.marked))).collect(Collectors.toList())));
 		}
 		else
 		{
@@ -64,6 +67,17 @@ public class VisualTile
 						layout.size.v[0] * 2, layout.size.v[1] * 2);
 			}
 		}
+	}
+
+	public Color mark(Color color, MarkType markType)
+	{
+		return switch(markType)
+				{
+					case NOT -> color;
+					case TARGET, OFF -> color.darker();
+					case ON -> color.interpolate(Color.YELLOW, 0.5);
+					case BLOCKED -> color.interpolate(Color.RED, 0.5);
+				};
 	}
 
 	public void drawArrows0(HexLayout layout, Hex mid, int range)

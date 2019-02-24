@@ -13,7 +13,7 @@ import logic.*;
 
 public class XHero extends XEntity implements DoubleInv
 {
-	private static final Image CL3 = new Image("S.png");
+	private static final Image IMAGE_S = new Image("S.png");
 
 	private MainState mainState;
 	private Inv inv;
@@ -28,7 +28,7 @@ public class XHero extends XEntity implements DoubleInv
 	@Override
 	public Image getImage()
 	{
-		return CL3;
+		return IMAGE_S;
 	}
 
 	@Override
@@ -76,8 +76,16 @@ public class XHero extends XEntity implements DoubleInv
 
 	public void buildBuilding(CostBlueprint costs, ItemList refundable, BuildingBlueprint blueprint)
 	{
-		mainState.levelMap.addBuilding(blueprint.type == 0 ? new ProductionBuilding(location, costs, refundable, blueprint)
-				: new Transporter(location, costs, refundable, blueprint));
+		if(blueprint.type == 0)
+		{
+			ProductionBuilding building = new ProductionBuilding(location, costs, refundable, blueprint);
+			mainState.levelMap.addBuilding(building);
+			building.claimFloor(mainState.levelMap);
+		}
+		else
+		{
+			mainState.levelMap.addBuilding(new Transporter(location, costs, refundable, blueprint));
+		}
 	}
 
 	public void removeBuilding(Buildable building)

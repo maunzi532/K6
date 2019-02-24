@@ -93,9 +93,9 @@ public class XStateControl
 	{
 		if(state.mark)
 		{
-			if(mainState.levelMap.getMarked().contains(mapHex))
+			if(mainState.levelMap.getMarked().containsKey(mapHex))
 			{
-				onClickMarked(mapHex, key);
+				onClickMarked(mapHex, mainState.levelMap.getMarked().get(mapHex), key);
 			}
 			else
 			{
@@ -148,11 +148,11 @@ public class XStateControl
 		{
 			if(object instanceof Transporter)
 			{
-				state = XState.TRANSPORT_VIEW;
+				state = XState.TRANSPORT_TARGETS;
 			}
 			else if(object instanceof ProductionBuilding)
 			{
-				state = XState.PRODUCTION_VIEW;
+				state = XState.PRODUCTION_FLOORS;
 			}
 			else
 			{
@@ -172,7 +172,7 @@ public class XStateControl
 		}
 	}
 
-	private void onClickMarked(Hex mapHex, int key)
+	private void onClickMarked(Hex mapHex, MarkType markType, int key)
 	{
 		switch(state)
 		{
@@ -181,6 +181,7 @@ public class XStateControl
 						mainState.levelMap.moveEntity((MEntity) stateInfo[0], mapHex);
 						state = XState.NONE;
 					}
+			case PRODUCTION_FLOORS -> ((ProductionBuilding) stateInfo[0]).toggleTarget(mapHex, mainState.levelMap);
 			case TRANSPORT_TARGETS -> ((Transporter) stateInfo[0]).toggleTarget((DoubleInv) mainState.levelMap.getBuilding(mapHex));
 			case TAKE_TARGET ->
 					{
@@ -207,20 +208,20 @@ public class XStateControl
 		mainState.levelMap.setMarked(switch(state)
 				{
 					case CHARACTER_MOVEMENT -> new Pathing((XEntity) stateInfo[0], 4, mainState.levelMap).start().getEndpoints();
-					case TRANSPORT_TARGETS -> ((Transporter) stateInfo[0]).location().range(0, ((Transporter) stateInfo[0]).range()).stream()
-							.filter(e -> mainState.levelMap.getBuilding(e) instanceof DoubleInv).collect(Collectors.toSet());
+					case PRODUCTION_FLOORS -> ((ProductionBuilding) stateInfo[0]).floors(mainState.levelMap);
+					case TRANSPORT_TARGETS -> ((Transporter) stateInfo[0]).targets(mainState.levelMap);
 					case TAKE_TARGET, GIVE_TARGET -> ((MEntity) stateInfo[0]).location().range(0, 4).stream()
-							.filter(e -> mainState.levelMap.getBuilding(e) instanceof DoubleInv).collect(Collectors.toSet());
-					default -> Set.of();
+							.filter(e -> mainState.levelMap.getBuilding(e) instanceof DoubleInv).collect(Collectors.toMap(e -> e, e -> MarkType.TARGET));
+					default -> Map.of();
 				});
 		menu = switch(state)
 				{
 					case CHARACTER_MOVEMENT, VIEW_INV, GIVE_TARGET, TAKE_TARGET, DIRECTED_TRADE, BUILDINGS, BUILD, REMOVE ->
 							List.of(XState.CHARACTER_MOVEMENT, XState.VIEW_INV, XState.GIVE_TARGET, XState.TAKE_TARGET,
 									XState.BUILDINGS, XState.REMOVE);
-					case PRODUCTION_VIEW, PRODUCTION_INV -> List.of(XState.PRODUCTION_VIEW, XState.PRODUCTION_INV,
-							XState.PRODUCTION_PHASE, XState.TRANSPORT_PHASE);
-					case TRANSPORT_VIEW, TRANSPORT_TARGETS -> List.of(XState.TRANSPORT_VIEW, XState.TRANSPORT_TARGETS,
+					case PRODUCTION_FLOORS, PRODUCTION_VIEW, PRODUCTION_INV -> List.of(XState.PRODUCTION_FLOORS, XState.PRODUCTION_VIEW,
+							XState.PRODUCTION_INV, XState.PRODUCTION_PHASE, XState.TRANSPORT_PHASE);
+					case TRANSPORT_TARGETS -> List.of(XState.TRANSPORT_TARGETS,
 							XState.PRODUCTION_PHASE, XState.TRANSPORT_PHASE);
 					default -> List.of();
 				};

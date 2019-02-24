@@ -1,5 +1,6 @@
-package levelMap;
+package entity;
 
+import arrow.*;
 import geom.hex.Hex;
 import javafx.scene.image.Image;
 

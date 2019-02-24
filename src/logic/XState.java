@@ -4,9 +4,9 @@ public enum XState
 {
 	NONE("Error", false, false, false),
 	CHARACTER_MOVEMENT("Move", true, true, false),
+	PRODUCTION_FLOORS("Floor", true, true, false),
 	PRODUCTION_VIEW("View", true, false, true),
 	PRODUCTION_INV("Inv.", true, false, true),
-	TRANSPORT_VIEW("View", true, false, false),
 	TRANSPORT_TARGETS("Targets", true, true, false),
 	VIEW_INV("Inv.", true, false, true),
 	TAKE_TARGET("Take", true, true, false),

@@ -2,13 +2,14 @@ package building;
 
 import arrow.*;
 import building.blueprint.*;
-import geom.hex.Hex;
-import item.ItemList;
+import geom.hex.*;
+import item.*;
 import item.inv.transport.*;
 import java.util.*;
-import levelMap.LevelMap;
+import java.util.stream.*;
+import levelMap.*;
 
-public class Transporter extends Buildable implements WithTargets
+public class Transporter extends Buildable
 {
 	private List<DoubleInv> targets;
 	private int range;
@@ -34,6 +35,21 @@ public class Transporter extends Buildable implements WithTargets
 		invTransporter = new InvTransporter(targets, targets, amount);
 	}
 
+	public Map<Hex, MarkType> targets(LevelMap levelMap)
+	{
+		//noinspection SuspiciousMethodCalls
+		return location().range(0, range).stream().filter(e -> levelMap.getBuilding(e) instanceof DoubleInv)
+				.collect(Collectors.toMap(e -> e, e -> targets.contains(levelMap.getBuilding(e)) ? MarkType.ON : MarkType.OFF));
+	}
+
+	public void toggleTarget(DoubleInv target)
+	{
+		if(targets.contains(target))
+			targets.remove(target);
+		else
+			targets.add(target);
+	}
+
 	@Override
 	public void transportPhase(LevelMap levelMap)
 	{
@@ -45,38 +61,5 @@ public class Transporter extends Buildable implements WithTargets
 			levelMap.addArrow(new VisualArrow(transport.from.location(),
 					transport.to.location(), ArrowMode.TARROW, 60, transport.item.image()));
 		}
-	}
-
-	@Override
-	public int range()
-	{
-		return range;
-	}
-
-	@Override
-	public void addTarget(DoubleInv target)
-	{
-		targets.add(target);
-	}
-
-	@Override
-	public void removeTarget(DoubleInv target)
-	{
-		targets.remove(target);
-	}
-
-	@Override
-	public void toggleTarget(DoubleInv target)
-	{
-		if(targets.contains(target))
-			targets.remove(target);
-		else
-			targets.add(target);
-	}
-
-	@Override
-	public List<DoubleInv> targets()
-	{
-		return targets;
 	}
 }

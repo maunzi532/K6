@@ -1,8 +1,8 @@
 package entity;
 
+import arrow.*;
 import geom.hex.Hex;
 import javafx.scene.image.Image;
-import levelMap.*;
 
 public class XEntity implements MEntity
 {

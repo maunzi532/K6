@@ -1,4 +1,4 @@
-package levelMap;
+package arrow;
 
 import geom.hex.*;
 import javafx.scene.image.*;
