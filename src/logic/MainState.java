@@ -35,8 +35,13 @@ public class MainState
 		/*levelMap.addArrow(new VisualArrow(new Hex(2, 0), new Hex(4, 1), ArrowMode.ARROW, 120));
 		levelMap.addArrow(new VisualArrow(new Hex(-2, 0), new Hex(4, -4), ArrowMode.ARROW, 120));
 		levelMap.addArrow(new VisualArrow(new Hex(-3, 0), new Hex(-3, 0), ArrowMode.ARROW, 120));*/
-		levelMap.addBuilding(new ProductionBuilding(new Hex(-2, -2), BuildingBlueprint.get(buildingBlueprintCache, "BLUE1")));
-		levelMap.addBuilding(new ProductionBuilding(new Hex(-3, -3), BuildingBlueprint.get(buildingBlueprintCache, "GSL1")));
-		levelMap.addBuilding(new Transporter(new Hex(-3, -2), BuildingBlueprint.get(buildingBlueprintCache, "Transporter1")));
+		ProductionBuilding blue1 = new ProductionBuilding(new Hex(-2, -2), BuildingBlueprint.get(buildingBlueprintCache, "BLUE1"));
+		levelMap.addBuilding(blue1);
+		blue1.claimFloor(levelMap);
+		ProductionBuilding gsl1 = new ProductionBuilding(new Hex(-3, -3), BuildingBlueprint.get(buildingBlueprintCache, "GSL1"));
+		levelMap.addBuilding(gsl1);
+		gsl1.claimFloor(levelMap);
+		Transporter transporter1 = new Transporter(new Hex(-3, -2), BuildingBlueprint.get(buildingBlueprintCache, "Transporter1"));
+		levelMap.addBuilding(transporter1);
 	}
 }

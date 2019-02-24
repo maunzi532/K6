@@ -1,6 +1,7 @@
 package levelMap;
 
 import arrow.*;
+import building.*;
 import entity.*;
 import geom.hex.*;
 import java.util.*;
@@ -79,6 +80,10 @@ public class LevelMap
 
 	public void removeBuilding(MBuilding building)
 	{
+		if(building instanceof ProductionBuilding)
+		{
+			ownedFloor.keySet().removeAll(((ProductionBuilding) building).getClaimed());
+		}
 		buildings.remove(building.location());
 	}
 

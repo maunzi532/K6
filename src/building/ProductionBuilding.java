@@ -15,6 +15,7 @@ public class ProductionBuilding extends Buildable implements DoubleInv
 	private SlotInv inputInv;
 	private SlotInv outputInv;
 	private List<Recipe> recipes;
+	private List<Hex> claimed;
 	public int lastViewedRecipeNum = 0;
 
 	public ProductionBuilding(Hex location, BuildingBlueprint blueprint)
@@ -24,6 +25,7 @@ public class ProductionBuilding extends Buildable implements DoubleInv
 		inputInv = new SlotInv(blueprint.productionBlueprint.inputLimits);
 		outputInv = new SlotInv(blueprint.productionBlueprint.outputLimits);
 		recipes = blueprint.productionBlueprint.recipes;
+		claimed = new ArrayList<>();
 	}
 
 	public ProductionBuilding(Hex location, CostBlueprint costs, ItemList refundable, BuildingBlueprint blueprint)
@@ -32,6 +34,7 @@ public class ProductionBuilding extends Buildable implements DoubleInv
 		inputInv = new SlotInv(blueprint.productionBlueprint.inputLimits);
 		outputInv = new SlotInv(blueprint.productionBlueprint.outputLimits);
 		recipes = blueprint.productionBlueprint.recipes;
+		claimed = new ArrayList<>();
 	}
 
 	public void claimFloor(LevelMap levelMap)
@@ -44,6 +47,7 @@ public class ProductionBuilding extends Buildable implements DoubleInv
 				if(okTile(hex, levelMap, rft, true))
 				{
 					levelMap.addOwner(hex, this);
+					claimed.add(hex);
 					count++;
 					if(count >= rft.amount)
 						break;
@@ -60,7 +64,7 @@ public class ProductionBuilding extends Buildable implements DoubleInv
 
 	private boolean okTile(Hex hex, LevelMap levelMap, RequiresFloorTiles rft, boolean unclaimed)
 	{
-		return levelMap.getFloor(hex).type == rft.floorTileType
+		return levelMap.getFloor(hex) != null && levelMap.getFloor(hex).type == rft.floorTileType
 				&& ((unclaimed && levelMap.getOwner(hex) == null) || levelMap.getOwner(hex) == this);
 	}
 
@@ -69,7 +73,8 @@ public class ProductionBuilding extends Buildable implements DoubleInv
 		Map<Hex, MarkType> floors = new HashMap<>();
 		for(RequiresFloorTiles rft : getCosts().requiredFloorTiles)
 		{
-			floors.putAll(location().range(rft.minRange, rft.maxRange).stream().filter(e -> levelMap.getFloor(e).type == rft.floorTileType)
+			floors.putAll(location().range(rft.minRange, rft.maxRange).stream()
+					.filter(e -> levelMap.getFloor(e) != null && levelMap.getFloor(e).type == rft.floorTileType)
 					.collect(Collectors.toMap(e -> e, e -> levelMap.getOwner(e) == this ? MarkType.ON
 							: levelMap.getOwner(e) != null ? MarkType.BLOCKED : MarkType.OFF)));
 		}
@@ -80,9 +85,20 @@ public class ProductionBuilding extends Buildable implements DoubleInv
 	{
 		MBuilding owner = levelMap.getOwner(target);
 		if(owner == this)
+		{
 			levelMap.removeOwner(target);
+			claimed.remove(target);
+		}
 		else if(owner == null)
+		{
 			levelMap.addOwner(target, this);
+			claimed.add(target);
+		}
+	}
+
+	public List<Hex> getClaimed()
+	{
+		return claimed;
 	}
 
 	public SlotInv getInputInv()
