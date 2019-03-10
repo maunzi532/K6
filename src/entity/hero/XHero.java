@@ -3,6 +3,7 @@ package entity.hero;
 import building.*;
 import building.blueprint.*;
 import entity.*;
+import entity.enemy.*;
 import geom.hex.*;
 import item.*;
 import item.inv.*;
@@ -50,15 +51,9 @@ public class XHero extends XEntity implements DoubleInv
 	}
 
 	@Override
-	public int inputPriority()
+	public boolean isEnemy(MEntity other)
 	{
-		return -1;
-	}
-
-	@Override
-	public int outputPriority()
-	{
-		return -1;
+		return other instanceof XEnemy;
 	}
 
 	public void addItems(ItemList itemList)

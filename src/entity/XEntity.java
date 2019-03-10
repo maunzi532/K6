@@ -16,7 +16,7 @@ public class XEntity implements MEntity
 		this.location = location;
 	}
 
-	public boolean isAllied(MEntity other)
+	public boolean isEnemy(MEntity other)
 	{
 		return true;
 	}

@@ -125,7 +125,7 @@ public class DirectedTradeGUI extends XGUI implements InvGUI
 				receive.inputInv().add(items, false);
 				provideItems = provide.outputInv().viewItems(false);
 				receiveItems = receive.inputInv().viewItems(true);
-				provideMarked = -1;
+				provideMarked = provideItems.stream().filter(e -> e.item.equals(items.item)).mapToInt(e -> provideItems.indexOf(e)).findFirst().orElse(-1);
 				update();
 			}
 		}

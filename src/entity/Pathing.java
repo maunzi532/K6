@@ -82,10 +82,10 @@ public class Pathing
 		boolean canEnd = tile.floorTile.canMovementEnd();
 		if(tile.entity != null && tile.entity != entity)
 		{
-			if(entity.isAllied(tile.entity))
-				canEnd = false;
-			else
+			if(entity.isEnemy(tile.entity))
 				return null;
+			else
+				canEnd = false;
 		}
 		return new PathLocation(hex, cost, canEnd);
 	}

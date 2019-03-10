@@ -129,18 +129,6 @@ public class ProductionBuilding extends Buildable implements DoubleInv
 	}
 
 	@Override
-	public int inputPriority()
-	{
-		return 0;//high
-	}
-
-	@Override
-	public int outputPriority()
-	{
-		return 0;//high
-	}
-
-	@Override
 	public void productionPhase(LevelMap levelMap)
 	{
 		if(canWork(levelMap, false))
