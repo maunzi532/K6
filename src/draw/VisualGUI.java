@@ -1,10 +1,10 @@
 package draw;
 
-import geom.XPoint;
+import geom.f1.*;
 
 public interface VisualGUI
 {
-	XPoint clickLocation(double x, double y);
+	Tile clickLocation(double x, double y);
 
 	boolean inside(double x, double y);
 

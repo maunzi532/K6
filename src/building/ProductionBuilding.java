@@ -2,7 +2,7 @@ package building;
 
 import arrow.*;
 import building.blueprint.*;
-import geom.hex.*;
+import geom.f1.*;
 import item.*;
 import item.inv.*;
 import item.inv.transport.*;
@@ -17,10 +17,10 @@ public class ProductionBuilding extends Buildable implements DoubleInv
 	private SlotInv inputInv;
 	private SlotInv outputInv;
 	private List<Recipe> recipes;
-	private List<Hex> claimed;
+	private List<Tile> claimed;
 	public int lastViewedRecipeNum = 0;
 
-	public ProductionBuilding(Hex location, BuildingBlueprint blueprint)
+	public ProductionBuilding(Tile location, BuildingBlueprint blueprint)
 	{
 		super(location, blueprint.constructionBlueprint.blueprints.get(0).get(0),
 				blueprint.constructionBlueprint.blueprints.get(0).get(0).refundable, blueprint.name);
@@ -30,7 +30,7 @@ public class ProductionBuilding extends Buildable implements DoubleInv
 		claimed = new ArrayList<>();
 	}
 
-	public ProductionBuilding(Hex location, CostBlueprint costs, ItemList refundable, BuildingBlueprint blueprint)
+	public ProductionBuilding(Tile location, CostBlueprint costs, ItemList refundable, BuildingBlueprint blueprint)
 	{
 		super(location, costs, refundable, blueprint.name);
 		inputInv = new SlotInv(blueprint.productionBlueprint.inputLimits);
@@ -44,12 +44,12 @@ public class ProductionBuilding extends Buildable implements DoubleInv
 		for(RequiresFloorTiles rft : getCosts().requiredFloorTiles)
 		{
 			int count = 0;
-			for(Hex hex : location().range(rft.minRange, rft.maxRange))
+			for(Tile t1 : levelMap.y1.range(location(), rft.minRange, rft.maxRange))
 			{
-				if(okTile(hex, levelMap, rft, true))
+				if(okTile(t1, levelMap, rft, true))
 				{
-					levelMap.addOwner(hex, this);
-					claimed.add(hex);
+					levelMap.addOwner(t1, this);
+					claimed.add(t1);
 					count++;
 					if(count >= rft.amount)
 						break;
@@ -60,22 +60,22 @@ public class ProductionBuilding extends Buildable implements DoubleInv
 
 	public boolean canWork(LevelMap levelMap, boolean unclaimed)
 	{
-		return getCosts().requiredFloorTiles.stream().noneMatch(rft -> location().range(rft.minRange, rft.maxRange).stream()
+		return getCosts().requiredFloorTiles.stream().noneMatch(rft -> levelMap.y1.range(location(), rft.minRange, rft.maxRange).stream()
 						.filter(e -> okTile(e, levelMap, rft, unclaimed)).count() < rft.amount);
 	}
 
-	private boolean okTile(Hex hex, LevelMap levelMap, RequiresFloorTiles rft, boolean unclaimed)
+	private boolean okTile(Tile t1, LevelMap levelMap, RequiresFloorTiles rft, boolean unclaimed)
 	{
-		return levelMap.getFloor(hex) != null && levelMap.getFloor(hex).type == rft.floorTileType
-				&& ((unclaimed && levelMap.getOwner(hex) == null) || levelMap.getOwner(hex) == this);
+		return levelMap.getFloor(t1) != null && levelMap.getFloor(t1).type == rft.floorTileType
+				&& ((unclaimed && levelMap.getOwner(t1) == null) || levelMap.getOwner(t1) == this);
 	}
 
-	public Map<Hex, MarkType> floors(LevelMap levelMap)
+	public Map<Tile, MarkType> floors(LevelMap levelMap)
 	{
-		Map<Hex, MarkType> floors = new HashMap<>();
+		Map<Tile, MarkType> floors = new HashMap<>();
 		for(RequiresFloorTiles rft : getCosts().requiredFloorTiles)
 		{
-			floors.putAll(location().range(rft.minRange, rft.maxRange).stream()
+			floors.putAll(levelMap.y1.range(location(), rft.minRange, rft.maxRange).stream()
 					.filter(e -> levelMap.getFloor(e) != null && levelMap.getFloor(e).type == rft.floorTileType)
 					.collect(Collectors.toMap(e -> e, e -> levelMap.getOwner(e) == this ? MarkType.ON
 							: levelMap.getOwner(e) != null ? MarkType.BLOCKED : MarkType.OFF)));
@@ -83,7 +83,7 @@ public class ProductionBuilding extends Buildable implements DoubleInv
 		return floors;
 	}
 
-	public void toggleTarget(Hex target, LevelMap levelMap)
+	public void toggleTarget(Tile target, LevelMap levelMap)
 	{
 		MBuilding owner = levelMap.getOwner(target);
 		if(owner == this)
@@ -98,7 +98,7 @@ public class ProductionBuilding extends Buildable implements DoubleInv
 		}
 	}
 
-	public List<Hex> getClaimed()
+	public List<Tile> getClaimed()
 	{
 		return claimed;
 	}
@@ -142,7 +142,7 @@ public class ProductionBuilding extends Buildable implements DoubleInv
 					if(outputInv.tryAdd(recipe.results, false, CommitType.COMMIT))
 					{
 						inputInv.commit();
-						levelMap.addArrow(new VisualArrow(location(), location(), ArrowMode.TARROW, ARROW_TIME,
+						levelMap.addArrow(new VisualArrow(levelMap.y1, levelMap.y2, location(), location(), ArrowMode.TARROW, ARROW_TIME,
 								recipe.results.items.get(0).item.image()));
 						return;
 					}

@@ -1,6 +1,7 @@
 package logic;
 
 import draw.*;
+import geom.d1.*;
 import geom.hex.HexMatrix;
 import javafx.geometry.VPos;
 import javafx.scene.canvas.GraphicsContext;
@@ -21,10 +22,10 @@ public class MainVisual
 		mainState.initialize();
 		gd.setTextAlign(TextAlignment.CENTER);
 		gd.setTextBaseline(VPos.CENTER);
-		visualTile = new VisualTile(mainState.levelMap, gd);
-		mapCamera = new HexCamera(w / 2f, h / 2f, 44, 44, 0, 0, new HexMatrix(0.5));
-		visualMenu = new VisualMenu(gd, w / 2f, h / 2f, mainState.stateControl);
-		visualGUI = new VisualGUIQuad(gd, w / 2f, h / 2f, mainState.stateControl);
+		visualTile = new VisualTile(mainState.y1, mainState.y2, mainState.levelMap, gd);
+		mapCamera = new HexCamera(mainState.y2, w / 2f, h / 2f, 44, 44, 0, 0, new HexMatrix(0.5));
+		visualMenu = new VisualMenu(mainState.y2, gd, w / 2f, h / 2f, mainState.stateControl);
+		visualGUI = new VisualGUIQuad(new QuadDoubleType(), gd, w / 2f, h / 2f, mainState.stateControl);
 		//visualGUI = new VisualGUIHex(gd, w / 2f, h / 2f, mainState.stateControl);
 		draw();
 	}
@@ -42,7 +43,7 @@ public class MainVisual
 		}
 		else
 		{
-			mainState.stateControl.handleMapClick(mapCamera.clickLocation(x, y).cast(), mouseKey);
+			mainState.stateControl.handleMapClick(mainState.y2.cast(mapCamera.clickLocation(x, y)), mouseKey);
 		}
 	}
 

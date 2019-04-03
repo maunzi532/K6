@@ -1,13 +1,13 @@
 package item.inv.transport;
 
-import geom.hex.*;
-import item.inv.Inv;
+import geom.f1.*;
+import item.inv.*;
 
 public interface DoubleInv
 {
 	String name();
 
-	Hex location();
+	Tile location();
 
 	Inv inputInv();
 

@@ -3,22 +3,27 @@ package levelMap;
 import arrow.*;
 import building.*;
 import entity.*;
-import geom.hex.*;
+import geom.d1.*;
+import geom.f1.*;
 import java.util.*;
 
 public class LevelMap
 {
 	private static final int TIME_PER_DISTANCE = 20;
 
-	private final HashMap<Hex, FloorTile> floor;
-	private final HashMap<Hex, MBuilding> buildings;
-	private final HashMap<Hex, MBuilding> ownedFloor;
-	private final HashMap<Hex, MEntity> entities;
-	private Map<Hex, MarkType> marked;
-	private final ArrayList<MArrow> arrows;
+	public final TileType y1;
+	public final DoubleType y2;
+	private final HashMap<Tile, FloorTile> floor;
+	private final HashMap<Tile, MBuilding> buildings;
+	private final HashMap<Tile, MBuilding> ownedFloor;
+	private final HashMap<Tile, XEntity> entities;
+	private Map<Tile, MarkType> marked;
+	private final ArrayList<VisualArrow> arrows;
 
-	public LevelMap()
+	public LevelMap(TileType y1, DoubleType y2)
 	{
+		this.y1 = y1;
+		this.y2 = y2;
 		floor = new HashMap<>();
 		buildings = new HashMap<>();
 		ownedFloor = new HashMap<>();
@@ -27,13 +32,13 @@ public class LevelMap
 		arrows = new ArrayList<>();
 	}
 
-	public FullTile tile(Hex h1)
+	public FullTile tile(Tile t1)
 	{
-		FloorTile floorTile = floor.get(h1);
+		FloorTile floorTile = floor.get(t1);
 		if(floorTile == null)
 			return new FullTile();
 		else
-			return new FullTile(floorTile, buildings.get(h1), entities.get(h1), marked.get(h1));
+			return new FullTile(floorTile, buildings.get(t1), entities.get(t1), marked.get(t1));
 	}
 
 	public void productionPhase()
@@ -60,19 +65,19 @@ public class LevelMap
 		}
 	}
 
-	public FloorTile getFloor(Hex hex)
+	public FloorTile getFloor(Tile t1)
 	{
-		return floor.get(hex);
+		return floor.get(t1);
 	}
 
-	public void addFloor(Hex hex, FloorTile floorTile)
+	public void addFloor(Tile t1, FloorTile floorTile)
 	{
-		floor.put(hex, floorTile);
+		floor.put(t1, floorTile);
 	}
 
-	public MBuilding getBuilding(Hex hex)
+	public MBuilding getBuilding(Tile t1)
 	{
-		return buildings.get(hex);
+		return buildings.get(t1);
 	}
 
 	public void addBuilding(MBuilding building)
@@ -89,70 +94,70 @@ public class LevelMap
 		buildings.remove(building.location());
 	}
 
-	public MBuilding getOwner(Hex hex)
+	public MBuilding getOwner(Tile t1)
 	{
-		return ownedFloor.get(hex);
+		return ownedFloor.get(t1);
 	}
 
-	public void addOwner(Hex hex, MBuilding building)
+	public void addOwner(Tile t1, MBuilding building)
 	{
-		ownedFloor.put(hex, building);
+		ownedFloor.put(t1, building);
 	}
 
-	public void removeOwner(Hex hex)
+	public void removeOwner(Tile t1)
 	{
-		ownedFloor.remove(hex);
+		ownedFloor.remove(t1);
 	}
 
-	public MEntity getEntity(Hex hex)
+	public XEntity getEntity(Tile t1)
 	{
-		return entities.get(hex);
+		return entities.get(t1);
 	}
 
-	public void addEntity(MEntity entity)
+	public void addEntity(XEntity entity)
 	{
 		entities.put(entity.location(), entity);
 	}
 
-	public void removeEntity(MEntity entity)
+	public void removeEntity(XEntity entity)
 	{
 		entities.remove(entity.location());
 	}
 
-	public void moveEntity(MEntity entity, Hex newLocation)
+	public void moveEntity(XEntity entity, Tile newLocation)
 	{
 		entities.remove(entity.location());
-		MArrow arrow = new VisualArrow(entity.location(), newLocation, ArrowMode.TRANSPORT,
-				newLocation.distance(entity.location()) * TIME_PER_DISTANCE, entity.getImage());
+		VisualArrow arrow = new VisualArrow(y1, y2, entity.location(), newLocation, ArrowMode.TRANSPORT,
+				y1.distance(newLocation, entity.location()) * TIME_PER_DISTANCE, entity.getImage());
 		arrows.add(arrow);
 		entity.setLocation(newLocation);
 		entity.setReplacementArrow(arrow);
 		addEntity(entity);
 	}
 
-	public Map<Hex, MarkType> getMarked()
+	public Map<Tile, MarkType> getMarked()
 	{
 		return marked;
 	}
 
-	public void setMarked(Map<Hex, MarkType> marked)
+	public void setMarked(Map<Tile, MarkType> marked)
 	{
 		Objects.requireNonNull(marked);
 		this.marked = marked;
 	}
 
-	public List<MArrow> getArrows()
+	public List<VisualArrow> getArrows()
 	{
 		return arrows;
 	}
 
-	public void addArrow(MArrow arrow)
+	public void addArrow(VisualArrow arrow)
 	{
 		arrows.add(arrow);
 	}
 
 	public void tickArrows()
 	{
-		arrows.removeIf(MArrow::tick);
+		arrows.removeIf(VisualArrow::tick);
 	}
 }

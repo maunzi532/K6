@@ -9,9 +9,13 @@ public interface DoubleType
 		return a * (1 - t) + b * t;
 	}
 
+	TileType y1();
+
+	DoubleTile create(double[] v);
+
 	DoubleTile fromTile(Tile t1);
 
-	Tile cast(DoubleTile t1, TileType y1);
+	Tile cast(DoubleTile t1);
 
 	DoubleTile add(DoubleTile t1, DoubleTile t2);
 

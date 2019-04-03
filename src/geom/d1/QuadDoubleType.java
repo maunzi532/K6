@@ -4,9 +4,23 @@ import geom.f1.*;
 
 public class QuadDoubleType implements DoubleType
 {
+	private QuadTileType tileType = new QuadTileType();
+
 	private DoubleTile create2(double n1, double n2)
 	{
 		return new DoubleTile(new double[]{n1, n2});
+	}
+
+	@Override
+	public TileType y1()
+	{
+		return tileType;
+	}
+
+	@Override
+	public DoubleTile create(double[] v)
+	{
+		return new DoubleTile(v);
 	}
 
 	@Override
@@ -16,9 +30,9 @@ public class QuadDoubleType implements DoubleType
 	}
 
 	@Override
-	public Tile cast(DoubleTile t1, TileType y1)
+	public Tile cast(DoubleTile t1)
 	{
-		return y1.create2((int) Math.round(t1.v[0]), (int) Math.round(t1.v[1]));
+		return y1().create2((int) Math.round(t1.v[0]), (int) Math.round(t1.v[1]));
 	}
 
 	@Override

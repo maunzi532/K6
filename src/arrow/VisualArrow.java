@@ -1,26 +1,31 @@
 package arrow;
 
-import geom.hex.*;
+import geom.d1.*;
+import geom.f1.*;
 import javafx.scene.image.*;
 
-public class VisualArrow implements MArrow
+public class VisualArrow
 {
 	private static final double SHINE_WIDTH = 0.65;
 	private static final double ZERO_SHINE_MULTIPLIER = 1.5;
 
-	private final Hex start;
-	private final Hex end;
+	public final TileType y1;
+	public final DoubleType y2;
+	private final Tile start;
+	private final Tile end;
 	private final ArrowMode arrowMode;
 	private final int timerEnd;
 	private final Image image;
 	private int timer;
 	private boolean finished;
-	private DoubleHex[] arrowPoints;
+	private DoubleTile[] arrowPoints;
 	private final boolean zero;
 	private final double approxDistance;
 
-	public VisualArrow(Hex start, Hex end, ArrowMode arrowMode, int timerEnd, Image image)
+	public VisualArrow(TileType y1, DoubleType y2, Tile start, Tile end, ArrowMode arrowMode, int timerEnd, Image image)
 	{
+		this.y1 = y1;
+		this.y2 = y2;
 		this.start = start;
 		this.end = end;
 		this.arrowMode = arrowMode;
@@ -32,34 +37,29 @@ public class VisualArrow implements MArrow
 		if(zero)
 			approxDistance = ZERO_SHINE_MULTIPLIER;
 		else
-			approxDistance = end.distance(start);
+			approxDistance = y1.distance(start, end);
 	}
 
-	@Override
-	public boolean isVisible(Hex mid, int range)
+	public boolean isVisible(Tile mid, int range)
 	{
-		return start.distance(mid) <= range && end.distance(mid) <= range;
+		return y1.distance(start, mid) <= range && y1.distance(end, mid) <= range;
 	}
 
-	@Override
 	public boolean showArrow()
 	{
 		return arrowMode.showArrow && (arrowMode.showZero || !zero);
 	}
 
-	@Override
 	public boolean showShine()
 	{
 		return arrowMode.showShine;
 	}
 
-	@Override
 	public boolean showTransport()
 	{
 		return arrowMode.showTransport;
 	}
 
-	@Override
 	public boolean tick()
 	{
 		timer++;
@@ -71,44 +71,39 @@ public class VisualArrow implements MArrow
 		return finished();
 	}
 
-	@Override
-	public DoubleHex[] getArrowPoints()
+	public DoubleTile[] getArrowPoints()
 	{
 		return arrowPoints;
 	}
 
-	@Override
-	public DoubleHex visualStart()
+	public DoubleTile visualStart()
 	{
-		return new DoubleHex(start);
+		return y2.fromTile(start);
 	}
 
-	@Override
-	public DoubleHex visualEnd()
+	public DoubleTile visualEnd()
 	{
 		if(zero)
-			return new DoubleHex(end).add(normalUp());
+			return y2.add(y2.fromTile(end), normalUp());
 		else
-			return new DoubleHex(end);
+			return y2.fromTile(end);
 	}
 
-	private DoubleHex normal()
+	private DoubleTile normal()
 	{
-		return DoubleHex.normalizeHex(end.subtract(start));
+		return y2.normalize(y1.subtract(end, start));
 	}
 
-	private DoubleHex normalUp()
+	private DoubleTile normalUp()
 	{
-		return DoubleHex.normalizeHex(new Hex(1, 1, -2));
+		return y2.normalize(y1.create3(1, 1, -2));
 	}
 
-	@Override
-	public DoubleHex currentTLocation()
+	public DoubleTile currentTLocation()
 	{
-		return DoubleHex.hexLerp(visualStart(), visualEnd(), timer / (double) timerEnd);
+		return y2.tileLerp(visualStart(), visualEnd(), timer / (double) timerEnd);
 	}
 
-	@Override
 	public Image transported()
 	{
 		return image;
@@ -116,23 +111,22 @@ public class VisualArrow implements MArrow
 
 	private void calculateArrowPoints()
 	{
-		DoubleHex normal = zero ? normalUp() : normal();
-		DoubleHex sideNormalX2 = normal.rotate(false).subtract(normal.rotate(true));
-		DoubleHex side0 = sideNormalX2.multiply(0.15);
-		DoubleHex side1 = sideNormalX2.multiply(0.25);
-		DoubleHex end0 = visualEnd();
-		DoubleHex end1 = end0.subtract(normal.multiply(0.5));
-		arrowPoints = new DoubleHex[7];
-		arrowPoints[0] = visualStart().add(side0);
-		arrowPoints[6] = visualStart().subtract(side0);
-		arrowPoints[1] = end1.add(side0);
-		arrowPoints[5] = end1.subtract(side0);
-		arrowPoints[2] = end1.add(side1);
-		arrowPoints[4] = end1.subtract(side1);
+		DoubleTile normal = zero ? normalUp() : normal();
+		DoubleTile sideNormalX2 = y2.subtract(y2.rotate(normal, false), y2.rotate(normal, false));
+		DoubleTile side0 = y2.multiply(sideNormalX2, 0.15);
+		DoubleTile side1 = y2.multiply(sideNormalX2, 0.25);
+		DoubleTile end0 = visualEnd();
+		DoubleTile end1 = y2.subtract(end0, y2.multiply(normal, 0.5));
+		arrowPoints = new DoubleTile[7];
+		arrowPoints[0] = y2.add(visualStart(), side0);
+		arrowPoints[6] = y2.subtract(visualStart(), side0);
+		arrowPoints[1] = y2.add(end1, side0);
+		arrowPoints[5] = y2.subtract(end1, side0);
+		arrowPoints[2] = y2.add(end1, side1);
+		arrowPoints[4] = y2.subtract(end1, side1);
 		arrowPoints[3] = end0;
 	}
 
-	@Override
 	public double[] getShine()
 	{
 		double dM = timer / (double) timerEnd;
@@ -155,7 +149,6 @@ public class VisualArrow implements MArrow
 		}
 	}
 
-	@Override
 	public boolean finished()
 	{
 		return !arrowMode.loop && finished;

@@ -1,53 +1,48 @@
 package entity;
 
 import arrow.*;
-import geom.hex.*;
+import geom.f1.*;
 import java.util.*;
 import javafx.scene.image.*;
 
-public class XEntity implements MEntity
+public class XEntity
 {
 	private static final Image IMAGE = new Image("GSL1_0.png");
 
-	protected Hex location;
-	private MArrow replace;
+	protected Tile location;
+	private VisualArrow replace;
 
-	public XEntity(Hex location)
+	public XEntity(Tile location)
 	{
 		this.location = location;
 	}
 
-	public boolean isEnemy(MEntity other)
+	public boolean isEnemy(XEntity other)
 	{
 		return true;
 	}
 
-	@Override
-	public Hex location()
+	public Tile location()
 	{
 		return location;
 	}
 
-	@Override
-	public void setLocation(Hex location)
+	public void setLocation(Tile location)
 	{
 		this.location = location;
 	}
 
-	@Override
 	public Image getImage()
 	{
 		return IMAGE;
 	}
 
-	@Override
 	public boolean isVisible()
 	{
 		return replace == null || replace.finished();
 	}
 
-	@Override
-	public void setReplacementArrow(MArrow arrow)
+	public void setReplacementArrow(VisualArrow arrow)
 	{
 		replace = arrow;
 	}

@@ -1,6 +1,6 @@
 package levelMap.importX;
 
-import geom.hex.*;
+import geom.f1.*;
 import java.util.*;
 import levelMap.*;
 
@@ -8,12 +8,12 @@ public class ImportTile
 {
 	private static final Random R = new Random();
 
-	public ImportTile(Hex hex)
-	{
-		this.hex = hex;
-	}
+	protected Tile t1;
 
-	protected Hex hex;
+	public ImportTile(Tile t1)
+	{
+		this.t1 = t1;
+	}
 
 	protected FloorTile toTile(Sector sector)
 	{
@@ -22,6 +22,6 @@ public class ImportTile
 
 	public void importIntoMap(LevelMap levelMap, Sector sector)
 	{
-		levelMap.addFloor(hex, toTile(sector));
+		levelMap.addFloor(t1, toTile(sector));
 	}
 }

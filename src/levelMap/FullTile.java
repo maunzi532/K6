@@ -6,7 +6,7 @@ public class FullTile
 {
 	public final FloorTile floorTile;
 	public final MBuilding building;
-	public final MEntity entity;
+	public final XEntity entity;
 	public final MarkType marked;
 
 	public FullTile()
@@ -17,7 +17,7 @@ public class FullTile
 		marked = MarkType.NOT;
 	}
 
-	public FullTile(FloorTile floorTile, MBuilding building, MEntity entity, MarkType marked)
+	public FullTile(FloorTile floorTile, MBuilding building, XEntity entity, MarkType marked)
 	{
 		assert floorTile != null;
 		this.floorTile = floorTile;

@@ -1,16 +1,15 @@
 package logic;
 
 import building.*;
-import building.blueprint.BuildingBlueprint;
+import building.blueprint.*;
 import entity.*;
-import entity.hero.XHero;
-import geom.XPoint;
-import geom.hex.Hex;
+import entity.hero.*;
+import geom.f1.*;
 import gui.*;
 import gui.guis.*;
-import item.inv.transport.DoubleInv;
+import item.inv.transport.*;
 import java.util.*;
-import java.util.stream.Collectors;
+import java.util.stream.*;
 import levelMap.*;
 
 public class XStateControl
@@ -70,16 +69,16 @@ public class XStateControl
 		update();
 	}
 
-	public void target(XPoint xPoint)
+	public void target(Tile t1)
 	{
-		xgui.target(xPoint.v[0], xPoint.v[1]);
+		xgui.target(t1.v[0], t1.v[1]);
 	}
 
-	public void handleGUIClick(XPoint xPoint, boolean inside, int key)
+	public void handleGUIClick(Tile t1, boolean inside, int key)
 	{
 		if(inside)
 		{
-			if(xgui.click(xPoint.v[0], xPoint.v[1], key, this))
+			if(xgui.click(t1.v[0], t1.v[1], key, this))
 				update();
 		}
 		else
@@ -89,23 +88,23 @@ public class XStateControl
 		}
 	}
 
-	public void handleMapClick(Hex mapHex, int key)
+	public void handleMapClick(Tile mapTile, int key)
 	{
 		if(state.mark)
 		{
-			if(mainState.levelMap.getMarked().containsKey(mapHex))
+			if(mainState.levelMap.getMarked().containsKey(mapTile))
 			{
-				onClickMarked(mapHex, mainState.levelMap.getMarked().get(mapHex), key);
+				onClickMarked(mapTile, mainState.levelMap.getMarked().get(mapTile), key);
 			}
 			else
 			{
-				onClickUnmarked(mapHex, key);
+				onClickUnmarked(mapTile, key);
 			}
 			update();
 		}
 		else
 		{
-			FullTile tile = mainState.levelMap.tile(mapHex);
+			FullTile tile = mainState.levelMap.tile(mapTile);
 			if(key == 1)
 			{
 				if(tile.entity != null)
@@ -133,7 +132,7 @@ public class XStateControl
 
 	private void setTileState(Object object)
 	{
-		if(object instanceof MEntity)
+		if(object instanceof XEntity)
 		{
 			if(object instanceof XHero)
 			{
@@ -172,39 +171,39 @@ public class XStateControl
 		}
 	}
 
-	private void onClickMarked(Hex mapHex, MarkType markType, int key)
+	private void onClickMarked(Tile mapTile, MarkType markType, int key)
 	{
 		switch(state)
 		{
 			case CHARACTER_MOVEMENT ->
 					{
-						mainState.levelMap.moveEntity((MEntity) stateInfo[0], mapHex);
+						mainState.levelMap.moveEntity((XEntity) stateInfo[0], mapTile);
 						state = XState.NONE;
 					}
-			case PRODUCTION_FLOORS -> ((ProductionBuilding) stateInfo[0]).toggleTarget(mapHex, mainState.levelMap);
-			case TRANSPORT_TARGETS -> ((Transporter) stateInfo[0]).toggleTarget((DoubleInv) mainState.levelMap.getBuilding(mapHex));
+			case PRODUCTION_FLOORS -> ((ProductionBuilding) stateInfo[0]).toggleTarget(mapTile, mainState.levelMap);
+			case TRANSPORT_TARGETS -> ((Transporter) stateInfo[0]).toggleTarget((DoubleInv) mainState.levelMap.getBuilding(mapTile));
 			case ATTACK ->
 					{
 						stateInfo[4] = stateInfo[0];
-						stateInfo[5] = mainState.levelMap.getEntity(mapHex);
+						stateInfo[5] = mainState.levelMap.getEntity(mapTile);
 						state = XState.ATTACK_INFO;
 					}
 			case TAKE_TARGET ->
 					{
-						stateInfo[1] = mainState.levelMap.getBuilding(mapHex);
+						stateInfo[1] = mainState.levelMap.getBuilding(mapTile);
 						stateInfo[2] = stateInfo[0];
 						state = XState.DIRECTED_TRADE;
 					}
 			case GIVE_TARGET ->
 					{
 						stateInfo[1] = stateInfo[0];
-						stateInfo[2] = mainState.levelMap.getBuilding(mapHex);
+						stateInfo[2] = mainState.levelMap.getBuilding(mapTile);
 						state = XState.DIRECTED_TRADE;
 					}
 		}
 	}
 
-	private void onClickUnmarked(Hex mapHex, int key)
+	private void onClickUnmarked(Tile mapTile, int key)
 	{
 		state = XState.NONE;
 	}
@@ -213,11 +212,11 @@ public class XStateControl
 	{
 		mainState.levelMap.setMarked(switch(state)
 				{
-					case CHARACTER_MOVEMENT -> new Pathing((XEntity) stateInfo[0], 4, mainState.levelMap).start().getEndpoints();
+					case CHARACTER_MOVEMENT -> new Pathing(mainState.levelMap.y1, (XEntity) stateInfo[0], 4, mainState.levelMap).start().getEndpoints();
 					case PRODUCTION_FLOORS -> ((ProductionBuilding) stateInfo[0]).floors(mainState.levelMap);
 					case TRANSPORT_TARGETS -> ((Transporter) stateInfo[0]).targets(mainState.levelMap);
 					//case ATTACK -> Map.of();
-					case TAKE_TARGET, GIVE_TARGET -> ((MEntity) stateInfo[0]).location().range(0, 4).stream()
+					case TAKE_TARGET, GIVE_TARGET -> mainState.levelMap.y1.range(((XEntity) stateInfo[0]).location(), 0, 4).stream()
 							.filter(e -> mainState.levelMap.getBuilding(e) instanceof DoubleInv).collect(Collectors.toMap(e -> e, e -> MarkType.TARGET));
 					default -> Map.of();
 				});

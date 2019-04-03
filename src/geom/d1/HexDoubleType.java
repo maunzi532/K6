@@ -4,9 +4,23 @@ import geom.f1.*;
 
 public class HexDoubleType implements DoubleType
 {
+	private HexTileType tileType = new HexTileType();
+
 	private DoubleTile create3(double n1, double n2, double n3)
 	{
 		return new DoubleTile(new double[]{n1, n2, n3});
+	}
+
+	@Override
+	public TileType y1()
+	{
+		return tileType;
+	}
+
+	@Override
+	public DoubleTile create(double[] v)
+	{
+		return new DoubleTile(v);
 	}
 
 	@Override
@@ -16,7 +30,7 @@ public class HexDoubleType implements DoubleType
 	}
 
 	@Override
-	public Tile cast(DoubleTile t1, TileType y1)
+	public Tile cast(DoubleTile t1)
 	{
 		int x = (int) Math.round(t1.v[0]);
 		int y = (int) Math.round(t1.v[1]);
@@ -36,7 +50,7 @@ public class HexDoubleType implements DoubleType
 		{
 			z = -x - y;
 		}
-		return y1.create3(x, y, z);
+		return y1().create3(x, y, z);
 	}
 
 	@Override

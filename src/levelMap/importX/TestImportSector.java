@@ -1,15 +1,17 @@
 package levelMap.importX;
 
-import geom.hex.*;
+import geom.f1.*;
 import java.util.*;
 
 public class TestImportSector implements ImportSector
 {
+	private final TileType y1;
 	public int range;
 	public List<ImportTile> tiles;
 
-	public TestImportSector(int range)
+	public TestImportSector(TileType y1, int range)
 	{
+		this.y1 = y1;
 		this.range = range;
 	}
 
@@ -26,7 +28,7 @@ public class TestImportSector implements ImportSector
 		{
 			for(int j = Math.min(0, -i) + range; j >= Math.max(0, -i) - range; j--)
 			{
-				tiles.add(new ImportTile(new Hex(j, i)));
+				tiles.add(new ImportTile(y1.create2(j, i)));
 			}
 		}
 		return this;

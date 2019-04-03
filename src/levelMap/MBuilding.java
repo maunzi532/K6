@@ -1,13 +1,13 @@
 package levelMap;
 
-import geom.hex.Hex;
-import javafx.scene.image.Image;
+import geom.f1.*;
+import javafx.scene.image.*;
 
 public interface MBuilding
 {
 	Image IMAGE = new Image("H.png");
 
-	Hex location();
+	Tile location();
 
 	default void productionPhase(LevelMap levelMap){}
 

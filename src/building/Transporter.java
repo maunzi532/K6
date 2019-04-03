@@ -2,6 +2,7 @@ package building;
 
 import arrow.*;
 import building.blueprint.*;
+import geom.f1.*;
 import geom.hex.*;
 import item.*;
 import item.inv.transport.*;
@@ -17,7 +18,7 @@ public class Transporter extends Buildable
 	private int amount;
 	private InvTransporter invTransporter;
 
-	public Transporter(Hex location, BuildingBlueprint blueprint)
+	public Transporter(Tile location, BuildingBlueprint blueprint)
 	{
 		super(location, blueprint.constructionBlueprint.blueprints.get(0).get(0),
 				blueprint.constructionBlueprint.blueprints.get(0).get(0).refundable, blueprint.name);
@@ -27,7 +28,7 @@ public class Transporter extends Buildable
 		invTransporter = new InvTransporter(targets, targets, amount);
 	}
 
-	public Transporter(Hex location, CostBlueprint costs, ItemList refundable, BuildingBlueprint blueprint)
+	public Transporter(Tile location, CostBlueprint costs, ItemList refundable, BuildingBlueprint blueprint)
 	{
 		super(location, costs, refundable, blueprint.name);
 		range = blueprint.transporterBlueprint.range;
@@ -36,10 +37,10 @@ public class Transporter extends Buildable
 		invTransporter = new InvTransporter(targets, targets, amount);
 	}
 
-	public Map<Hex, MarkType> targets(LevelMap levelMap)
+	public Map<Tile, MarkType> targets(LevelMap levelMap)
 	{
 		//noinspection SuspiciousMethodCalls
-		return location().range(0, range).stream().filter(e -> levelMap.getBuilding(e) instanceof DoubleInv)
+		return levelMap.y1.range(location(), 0, range).stream().filter(e -> levelMap.getBuilding(e) instanceof DoubleInv)
 				.collect(Collectors.toMap(e -> e, e -> targets.contains(levelMap.getBuilding(e)) ? MarkType.ON : MarkType.OFF));
 	}
 
@@ -59,7 +60,7 @@ public class Transporter extends Buildable
 		{
 			PossibleTransport transport = transportOpt.get();
 			invTransporter.doTheTransport(transport);
-			levelMap.addArrow(new VisualArrow(transport.from.location(),
+			levelMap.addArrow(new VisualArrow(levelMap.y1, levelMap.y2, transport.from.location(),
 					transport.to.location(), ArrowMode.TARROW, TRANSPORT_TIME, transport.item.image()));
 		}
 	}

@@ -4,7 +4,7 @@ import building.*;
 import building.blueprint.*;
 import entity.*;
 import entity.enemy.*;
-import geom.hex.*;
+import geom.f1.*;
 import item.*;
 import item.inv.*;
 import item.inv.transport.*;
@@ -20,7 +20,7 @@ public class XHero extends XEntity implements DoubleInv
 	private MainState mainState;
 	private Inv inv;
 
-	public XHero(Hex location, MainState mainState)
+	public XHero(Tile location, MainState mainState)
 	{
 		super(location);
 		this.mainState = mainState;
@@ -52,7 +52,7 @@ public class XHero extends XEntity implements DoubleInv
 	}
 
 	@Override
-	public boolean isEnemy(MEntity other)
+	public boolean isEnemy(XEntity other)
 	{
 		return other instanceof XEnemy;
 	}

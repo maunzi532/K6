@@ -1,18 +1,18 @@
 package building;
 
-import building.blueprint.CostBlueprint;
-import geom.hex.Hex;
-import item.ItemList;
-import levelMap.MBuilding;
+import building.blueprint.*;
+import geom.f1.*;
+import item.*;
+import levelMap.*;
 
 public abstract class Buildable implements MBuilding
 {
-	private Hex location;
+	private Tile location;
 	private CostBlueprint costs;
 	private ItemList refundable;
 	private String name;
 
-	public Buildable(Hex location, CostBlueprint costs, ItemList refundable, String name)
+	public Buildable(Tile location, CostBlueprint costs, ItemList refundable, String name)
 	{
 		this.location = location;
 		this.costs = costs;
@@ -21,7 +21,7 @@ public abstract class Buildable implements MBuilding
 	}
 
 	@Override
-	public Hex location()
+	public Tile location()
 	{
 		return location;
 	}
