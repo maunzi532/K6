@@ -70,6 +70,7 @@ public class BuildGUI extends XGUI implements InvGUI
 	@Override
 	public void itemView(int invID, int x, int y1, int index)
 	{
+		//TODO
 		CostBlueprint cost = blueprint.constructionBlueprint.blueprints.get(costNum).get(tileCostNum);
 		if(invID == 0)
 		{

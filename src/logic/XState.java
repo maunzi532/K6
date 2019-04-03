@@ -15,6 +15,8 @@ public enum XState
 	BUILDINGS("Build", true, false, true),
 	BUILD("Build", false, false, true),
 	REMOVE("Remove", true, false, true),
+	ATTACK("Attack", true, true, false),
+	ATTACK_INFO("Attack", true, false, true),
 	PRODUCTION_PHASE("Production", false, false, false),
 	TRANSPORT_PHASE("Transport", false, false, false);
 

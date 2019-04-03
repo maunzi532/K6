@@ -14,6 +14,7 @@ import logic.*;
 
 public class XHero extends XEntity implements DoubleInv
 {
+	private static final int BASE_WEIGHT_LIMIT = 20;
 	private static final Image IMAGE_S = new Image("S.png");
 
 	private MainState mainState;
@@ -23,7 +24,7 @@ public class XHero extends XEntity implements DoubleInv
 	{
 		super(location);
 		this.mainState = mainState;
-		inv = new WeightInv(20);
+		inv = new WeightInv(BASE_WEIGHT_LIMIT);
 	}
 
 	@Override

@@ -1,8 +1,9 @@
 package entity;
 
 import arrow.*;
-import geom.hex.Hex;
-import javafx.scene.image.Image;
+import geom.hex.*;
+import java.util.*;
+import javafx.scene.image.*;
 
 public class XEntity implements MEntity
 {
@@ -49,5 +50,20 @@ public class XEntity implements MEntity
 	public void setReplacementArrow(MArrow arrow)
 	{
 		replace = arrow;
+	}
+
+	public List<Integer> attackRanges()
+	{
+		return List.of();
+	}
+
+	public int minCounterRange()
+	{
+		return 1;
+	}
+
+	public int maxCounterRange()
+	{
+		return 0;
 	}
 }

@@ -30,12 +30,6 @@ public class Hex
 		this.v = v;
 	}
 
-	public Hex(Hex copy)
-	{
-		v = new int[3];
-		System.arraycopy(copy.v, 0, v, 0, 3);
-	}
-
 	public Hex add(Hex h2)
 	{
 		return new Hex(v[0] + h2.v[0], v[1] + h2.v[1], v[2] + h2.v[2]);

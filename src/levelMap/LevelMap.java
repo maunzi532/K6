@@ -8,6 +8,8 @@ import java.util.*;
 
 public class LevelMap
 {
+	private static final int TIME_PER_DISTANCE = 20;
+
 	private final HashMap<Hex, FloorTile> floor;
 	private final HashMap<Hex, MBuilding> buildings;
 	private final HashMap<Hex, MBuilding> ownedFloor;
@@ -120,7 +122,8 @@ public class LevelMap
 	public void moveEntity(MEntity entity, Hex newLocation)
 	{
 		entities.remove(entity.location());
-		MArrow arrow = new VisualArrow(entity.location(), newLocation, ArrowMode.TRANSPORT, newLocation.distance(entity.location()) * 20, entity.getImage());
+		MArrow arrow = new VisualArrow(entity.location(), newLocation, ArrowMode.TRANSPORT,
+				newLocation.distance(entity.location()) * TIME_PER_DISTANCE, entity.getImage());
 		arrows.add(arrow);
 		entity.setLocation(newLocation);
 		entity.setReplacementArrow(arrow);

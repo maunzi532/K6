@@ -1,5 +1,7 @@
 package geom.quad;
 
+import java.util.*;
+
 public class Quad
 {
 	public final int[] v;
@@ -13,12 +15,6 @@ public class Quad
 	{
 		assert v.length == 2;
 		this.v = v;
-	}
-
-	public Quad(Quad copy)
-	{
-		v = new int[2];
-		System.arraycopy(copy.v, 0, v, 0, 2);
 	}
 
 	public Quad add(Quad h2)
@@ -44,5 +40,26 @@ public class Quad
 	public int distance(Quad h2)
 	{
 		return subtract(h2).length();
+	}
+
+	@Override
+	public boolean equals(Object o)
+	{
+		if(this == o) return true;
+		if(!(o instanceof Quad)) return false;
+		Quad quad = (Quad) o;
+		return Arrays.equals(v, quad.v);
+	}
+
+	@Override
+	public int hashCode()
+	{
+		return (v[0] << 16) + v[1];
+	}
+
+	@Override
+	public String toString()
+	{
+		return v[0] + ", " + v[1];
 	}
 }

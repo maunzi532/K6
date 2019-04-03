@@ -19,7 +19,7 @@ public class XStateControl
 	private XState state;
 	private List<XState> menu;
 	private XGUI xgui;
-	public Object[] stateInfo = new Object[4];
+	public final Object[] stateInfo = new Object[6];
 
 	public XStateControl(MainState mainState)
 	{
@@ -183,6 +183,12 @@ public class XStateControl
 					}
 			case PRODUCTION_FLOORS -> ((ProductionBuilding) stateInfo[0]).toggleTarget(mapHex, mainState.levelMap);
 			case TRANSPORT_TARGETS -> ((Transporter) stateInfo[0]).toggleTarget((DoubleInv) mainState.levelMap.getBuilding(mapHex));
+			case ATTACK ->
+					{
+						stateInfo[4] = stateInfo[0];
+						stateInfo[5] = mainState.levelMap.getEntity(mapHex);
+						state = XState.ATTACK_INFO;
+					}
 			case TAKE_TARGET ->
 					{
 						stateInfo[1] = mainState.levelMap.getBuilding(mapHex);
@@ -210,23 +216,26 @@ public class XStateControl
 					case CHARACTER_MOVEMENT -> new Pathing((XEntity) stateInfo[0], 4, mainState.levelMap).start().getEndpoints();
 					case PRODUCTION_FLOORS -> ((ProductionBuilding) stateInfo[0]).floors(mainState.levelMap);
 					case TRANSPORT_TARGETS -> ((Transporter) stateInfo[0]).targets(mainState.levelMap);
+					//case ATTACK -> Map.of();
 					case TAKE_TARGET, GIVE_TARGET -> ((MEntity) stateInfo[0]).location().range(0, 4).stream()
 							.filter(e -> mainState.levelMap.getBuilding(e) instanceof DoubleInv).collect(Collectors.toMap(e -> e, e -> MarkType.TARGET));
 					default -> Map.of();
 				});
 		menu = switch(state)
 				{
-					case CHARACTER_MOVEMENT, VIEW_INV, GIVE_TARGET, TAKE_TARGET, DIRECTED_TRADE, BUILDINGS, BUILD, REMOVE ->
-							List.of(XState.CHARACTER_MOVEMENT, XState.VIEW_INV, XState.GIVE_TARGET, XState.TAKE_TARGET,
-									XState.BUILDINGS, XState.REMOVE);
+					case CHARACTER_MOVEMENT, VIEW_INV, ATTACK, GIVE_TARGET, TAKE_TARGET, DIRECTED_TRADE, BUILDINGS, BUILD, REMOVE ->
+							List.of(XState.CHARACTER_MOVEMENT, XState.VIEW_INV, XState.ATTACK,
+									XState.GIVE_TARGET, XState.TAKE_TARGET, XState.BUILDINGS, XState.REMOVE);
+					case ATTACK_INFO -> List.of(XState.CHARACTER_MOVEMENT, XState.VIEW_INV, XState.ATTACK_INFO,
+							XState.GIVE_TARGET, XState.TAKE_TARGET, XState.BUILDINGS, XState.REMOVE);
 					case PRODUCTION_FLOORS, PRODUCTION_VIEW, PRODUCTION_INV -> List.of(XState.PRODUCTION_FLOORS, XState.PRODUCTION_VIEW,
 							XState.PRODUCTION_INV, XState.PRODUCTION_PHASE, XState.TRANSPORT_PHASE);
-					case TRANSPORT_TARGETS -> List.of(XState.TRANSPORT_TARGETS,
-							XState.PRODUCTION_PHASE, XState.TRANSPORT_PHASE);
+					case TRANSPORT_TARGETS -> List.of(XState.TRANSPORT_TARGETS, XState.PRODUCTION_PHASE, XState.TRANSPORT_PHASE);
 					default -> List.of();
 				};
 		menu = menu.stream().filter(e -> switch(e)
 				{
+					//case ATTACK -> true;
 					case BUILDINGS -> mainState.levelMap.getBuilding(((XHero) stateInfo[0]).location()) == null;
 					case REMOVE -> mainState.levelMap.getBuilding(((XHero) stateInfo[0]).location()) instanceof Buildable;
 					default -> true;
@@ -236,6 +245,7 @@ public class XStateControl
 					case VIEW_INV -> new Inv1GUI(((XHero) stateInfo[0]).outputInv());
 					case PRODUCTION_VIEW -> new RecipeGUI(((ProductionBuilding) stateInfo[0]));
 					case PRODUCTION_INV -> new Inv2GUI((ProductionBuilding) stateInfo[0]);
+					//case ATTACK_INFO ->
 					case DIRECTED_TRADE -> new DirectedTradeGUI((DoubleInv) stateInfo[1], (DoubleInv) stateInfo[2]);
 					case BUILDINGS -> new BuildingsGUI(mainState.buildingBlueprintCache);
 					case BUILD -> new BuildGUI((XHero) stateInfo[0], (BuildingBlueprint) stateInfo[3]);

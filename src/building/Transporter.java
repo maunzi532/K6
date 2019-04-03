@@ -11,6 +11,7 @@ import levelMap.*;
 
 public class Transporter extends Buildable
 {
+	public static final int TRANSPORT_TIME = 60;
 	private List<DoubleInv> targets;
 	private int range;
 	private int amount;
@@ -59,7 +60,7 @@ public class Transporter extends Buildable
 			PossibleTransport transport = transportOpt.get();
 			invTransporter.doTheTransport(transport);
 			levelMap.addArrow(new VisualArrow(transport.from.location(),
-					transport.to.location(), ArrowMode.TARROW, 60, transport.item.image()));
+					transport.to.location(), ArrowMode.TARROW, TRANSPORT_TIME, transport.item.image()));
 		}
 	}
 }

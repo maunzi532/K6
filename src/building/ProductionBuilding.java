@@ -12,6 +12,8 @@ import levelMap.*;
 
 public class ProductionBuilding extends Buildable implements DoubleInv
 {
+	private static final int ARROW_TIME = 30;
+
 	private SlotInv inputInv;
 	private SlotInv outputInv;
 	private List<Recipe> recipes;
@@ -140,7 +142,7 @@ public class ProductionBuilding extends Buildable implements DoubleInv
 					if(outputInv.tryAdd(recipe.results, false, CommitType.COMMIT))
 					{
 						inputInv.commit();
-						levelMap.addArrow(new VisualArrow(location(), location(), ArrowMode.TARROW, 30,
+						levelMap.addArrow(new VisualArrow(location(), location(), ArrowMode.TARROW, ARROW_TIME,
 								recipe.results.items.get(0).item.image()));
 						return;
 					}
