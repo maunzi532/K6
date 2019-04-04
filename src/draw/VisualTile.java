@@ -94,7 +94,7 @@ public class VisualTile
 				{
 					if(arrow.showShine())
 					{
-						double[][] gradientPoints = layout.multiTileToPixel(arrow.visualStart(), arrow.visualEnd());
+						double[][] gradientPoints = layout.polygonCorners(arrow.visualStart(), arrow.visualEnd());
 						double[] shine = arrow.getShine();
 						Stop[] stops = new Stop[shine.length];
 						for(int i = 0; i < shine.length; i++)
@@ -108,7 +108,7 @@ public class VisualTile
 					{
 						gd.setFill(Color.BLUE);
 					}
-					double[][] points = layout.multiTileToPixel(arrow.getArrowPoints());
+					double[][] points = layout.polygonCorners(arrow.getArrowPoints());
 					gd.fillPolygon(points[0], points[1], points[0].length);
 				}
 			}

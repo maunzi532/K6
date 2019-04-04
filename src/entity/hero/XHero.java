@@ -62,12 +62,11 @@ public class XHero extends XEntity implements DoubleInv
 		inv.tryAdd(itemList, false, CommitType.COMMIT);
 	}
 
-	public Optional<ItemList> tryBuildingCosts(CostBlueprint cost)
+	public Optional<ItemList> tryBuildingCosts(CostBlueprint cost, CommitType commitType)
 	{
-		//check floor tiles
 		if(inv.tryProvide(cost.costs, false, CommitType.LEAVE).isEmpty())
 			return Optional.empty();
-		return inv.tryProvide(cost.refundable, false, CommitType.COMMIT);
+		return inv.tryProvide(cost.refundable, false, commitType);
 	}
 
 	public void buildBuilding(CostBlueprint costs, ItemList refundable, BuildingBlueprint blueprint)

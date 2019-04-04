@@ -8,7 +8,6 @@ public class HexLayout2 implements TileLayout
 	public final HexMatrix mat;
 	public final PointD size;
 	public final PointD origin;
-	//public final PointD
 
 	public HexLayout2(HexMatrix mat, PointD size, PointD origin)
 	{
@@ -56,89 +55,8 @@ public class HexLayout2 implements TileLayout
 	}
 
 	@Override
-	public PointD cornerOffset(int corner, double m)
+	public int directionCount()
 	{
-		double angle = Math.PI * (mat.startAngle + corner) / -3f;
-		return new PointD(size.v[0] * Math.cos(angle) * m, size.v[1] * Math.sin(angle) * m);
-	}
-
-	@Override
-	public PointD[] tileCornersPointD(Tile t1)
-	{
-		PointD[] corners = new PointD[6];
-		PointD center = tileToPixel(t1);
-		for(int i = 0; i < 6; i++)
-		{
-			corners[i] = center.plus(cornerOffset(i));
-		}
-		return corners;
-	}
-
-	@Override
-	public double[][] tileCorners(Tile t1)
-	{
-		double[][] corners = new double[2][6];
-		PointD center = tileToPixel(t1);
-		for(int i = 0; i < 6; i++)
-		{
-			PointD corner = center.plus(cornerOffset(i));
-			corners[0][i] = corner.v[0];
-			corners[1][i] = corner.v[1];
-		}
-		return corners;
-	}
-
-	@Override
-	public double[][] tileCorners(Tile t1, double m)
-	{
-		double[][] corners = new double[2][6];
-		PointD center = tileToPixel(t1);
-		for(int i = 0; i < 6; i++)
-		{
-			PointD corner = center.plus(cornerOffset(i, m));
-			corners[0][i] = corner.v[0];
-			corners[1][i] = corner.v[1];
-		}
-		return corners;
-	}
-
-	@Override
-	public double[][] tileCorners(DoubleTile t1)
-	{
-		double[][] corners = new double[2][6];
-		PointD center = tileToPixel(t1);
-		for(int i = 0; i < 6; i++)
-		{
-			PointD corner = center.plus(cornerOffset(i));
-			corners[0][i] = corner.v[0];
-			corners[1][i] = corner.v[1];
-		}
-		return corners;
-	}
-
-	@Override
-	public double[][] multiTileToPixel(Tile... tiles)
-	{
-		double[][] corners = new double[2][tiles.length];
-		for(int i = 0; i < tiles.length; i++)
-		{
-			PointD point = tileToPixel(tiles[i]);
-			corners[0][i] = point.v[0];
-			corners[1][i] = point.v[1];
-		}
-		return corners;
-	}
-
-	@Override
-	public double[][] multiTileToPixel(DoubleTile... tiles)
-	{
-		double[][] corners = new double[2][tiles.length];
-		for(int i = 0; i < tiles.length; i++)
-		{
-			PointD point = tileToPixel(tiles[i]);
-			corners[0][i] = point.v[0];
-			corners[1][i] = point.v[1];
-		}
-		return corners;
+		return 6;
 	}
 }

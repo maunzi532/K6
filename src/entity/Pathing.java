@@ -64,11 +64,6 @@ public class Pathing
 		return this;
 	}
 
-	public void copyIntoMap()
-	{
-		map.setMarked(endpoints);
-	}
-
 	public Map<Tile, MarkType> getEndpoints()
 	{
 		return endpoints;

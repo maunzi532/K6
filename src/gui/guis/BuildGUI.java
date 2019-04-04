@@ -4,6 +4,7 @@ import building.blueprint.*;
 import entity.hero.XHero;
 import gui.*;
 import item.*;
+import item.inv.*;
 import item.view.ItemView;
 import java.util.*;
 import javafx.scene.paint.Color;
@@ -19,6 +20,7 @@ public class BuildGUI extends XGUI implements InvGUI
 	private static final CTile lessTiles = new CTile(0, 0, new GuiTile("Less Tiles"));
 	private static final CTile moreTiles = new CTile(1, 0, new GuiTile("More Tiles"));
 	private static final CTile build = new CTile(6, 0, new GuiTile("Build"), 2, 1);
+	private static final CTile buildA = new CTile(6, 0, new GuiTile("Build", null, Color.CYAN), 2, 1);
 
 	private final XHero character;
 	private final BuildingBlueprint blueprint;
@@ -64,26 +66,27 @@ public class BuildGUI extends XGUI implements InvGUI
 		setTile(next);
 		setTile(lessTiles);
 		setTile(moreTiles);
-		setTile(build);
+		if(character.tryBuildingCosts(cost, CommitType.ROLLBACK).isPresent())
+			setTile(buildA);
+		else
+			setTile(build);
 	}
 
 	@Override
 	public void itemView(int invID, int x, int y1, int index)
 	{
-		//TODO
 		CostBlueprint cost = blueprint.constructionBlueprint.blueprints.get(costNum).get(tileCostNum);
 		if(invID == 0)
 		{
 			RequiresFloorTiles rft = cost.requiredFloorTiles.get(index);
-			Color color = false ? Color.CYAN : null;
-			tiles[x][y1] = new GuiTile("R " + rft.minRange + " - " + rft.maxRange, null, color);
-			tiles[x + 1][y1] = new GuiTile(rft.floorTileType.name() + " x" + rft.amount, null, color);
+			tiles[x][y1] = new GuiTile("R " + rft.minRange + " - " + rft.maxRange);
+			tiles[x + 1][y1] = new GuiTile(rft.floorTileType.name() + " x" + rft.amount);
 		}
 		else if(invID == 1)
 		{
 			ItemStack items = cost.required.items.get(index);
-			Color color = false ? Color.CYAN : null;
 			ItemView itemView = character.outputInv().viewRecipeItem(items.item);
+			Color color = itemView.base >= items.count ? Color.CYAN : null;
 			tiles[x][y1] = new GuiTile(itemView.base + " / " + items.count, null, color);
 			tiles[x + 1][y1] = new GuiTile(null, itemView.item.image(), color);
 		}
@@ -138,11 +141,13 @@ public class BuildGUI extends XGUI implements InvGUI
 		else if(costNum > 0 && prev.contains(x, y))
 		{
 			costNum--;
+			tileCostNum = 0;
 			update();
 		}
 		else if(costNum < costBlueprints.size() - 1 && next.contains(x, y))
 		{
 			costNum++;
+			tileCostNum = 0;
 			update();
 		}
 		else if(tileCostNum > 0 && lessTiles.contains(x, y))
@@ -157,7 +162,7 @@ public class BuildGUI extends XGUI implements InvGUI
 		}
 		else if(build.contains(x, y))
 		{
-			Optional<ItemList> refundable = character.tryBuildingCosts(cost);
+			Optional<ItemList> refundable = character.tryBuildingCosts(cost, CommitType.COMMIT);
 			if(refundable.isPresent())
 			{
 				character.buildBuilding(cost, refundable.get(), blueprint);

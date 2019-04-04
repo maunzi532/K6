@@ -36,16 +36,20 @@ public class Transporter extends Buildable
 		invTransporter = new InvTransporter(targets, targets, amount);
 	}
 
+	public boolean isTarget(Object target)
+	{
+		return target instanceof DoubleInv && ((DoubleInv) target).active() && targets.contains(target);
+	}
+
 	public Map<Tile, MarkType> targets(LevelMap levelMap)
 	{
-		//noinspection SuspiciousMethodCalls
 		return levelMap.y1.range(location(), 0, range).stream().filter(e -> levelMap.getBuilding(e) instanceof DoubleInv)
-				.collect(Collectors.toMap(e -> e, e -> targets.contains(levelMap.getBuilding(e)) ? MarkType.ON : MarkType.OFF));
+				.collect(Collectors.toMap(e -> e, e -> isTarget(levelMap.getBuilding(e)) ? MarkType.ON : MarkType.OFF));
 	}
 
 	public void toggleTarget(DoubleInv target)
 	{
-		if(targets.contains(target))
+		if(isTarget(target))
 			targets.remove(target);
 		else
 			targets.add(target);
@@ -54,6 +58,7 @@ public class Transporter extends Buildable
 	@Override
 	public void transportPhase(LevelMap levelMap)
 	{
+		targets.removeIf(e -> !e.active());
 		Optional<PossibleTransport> transportOpt = invTransporter.transport();
 		if(transportOpt.isPresent())
 		{

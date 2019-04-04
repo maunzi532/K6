@@ -13,6 +13,11 @@ public interface DoubleInv
 
 	Inv outputInv();
 
+	default boolean active()
+	{
+		return true;
+	}
+
 	default int inputPriority()
 	{
 		return 0;
