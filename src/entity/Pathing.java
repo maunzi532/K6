@@ -40,7 +40,7 @@ public class Pathing
 				continue;
 			for(Tile neighbor : y1.neighbors(first.t1))
 			{
-				PathLocation pl = pathLocation(neighbor, map.tile(neighbor), first.cost, maxMovementCost, entity);
+				PathLocation pl = pathLocation(neighbor, map.advTile(neighbor), first.cost, maxMovementCost, entity);
 				if(pl != null)
 				{
 					int prevIndex = lA.indexOf(pl);
@@ -74,17 +74,17 @@ public class Pathing
 		return endpoints;
 	}
 
-	private PathLocation pathLocation(Tile t1, FullTile tile, int currentCost, int maxCost, XEntity entity)
+	private PathLocation pathLocation(Tile t1, AdvTile advTile, int currentCost, int maxCost, XEntity entity)
 	{
-		if(!tile.exists())
+		if(advTile.getFloorTile() == null)
 			return null;
-		int cost = currentCost + tile.floorTile.moveCost();
+		int cost = currentCost + advTile.getFloorTile().moveCost();
 		if(cost > maxCost)
 			return null;
-		boolean canEnd = tile.floorTile.canMovementEnd();
-		if(tile.entity != null && tile.entity != entity)
+		boolean canEnd = advTile.getFloorTile().canMovementEnd();
+		if(advTile.getEntity() != null && advTile.getEntity() != entity)
 		{
-			if(entity.isEnemy(tile.entity))
+			if(entity.isEnemy(advTile.getEntity()))
 				return null;
 			else
 				canEnd = false;

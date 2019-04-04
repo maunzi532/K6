@@ -48,22 +48,22 @@ public class VisualTile
 	@SuppressWarnings("ConstantConditions")
 	public void draw0(TileLayout layout, Tile t1)
 	{
-		FullTile fullTile = levelMap.tile(t1);
+		AdvTile advTile = levelMap.advTile(t1);
 		double[][] points = layout.tileCorners(t1);
-		if(fullTile.visible())
+		if(advTile.visible())
 		{
 			gd.setFill(new LinearGradient(points[0][0], points[1][0], points[0][y1.directionCount() / 2], points[1][y1.directionCount() / 2],
-					false, null, fullTile.floorTile.type.normal.stream()
-					.map(e -> new Stop(e.getOffset(), mark(e.getColor(), fullTile.marked))).collect(Collectors.toList())));
+					false, null, advTile.getFloorTile().type.normal.stream()
+					.map(e -> new Stop(e.getOffset(), mark(e.getColor(), advTile.getMarked()))).collect(Collectors.toList())));
 		}
 		else
 		{
 			gd.setFill(Color.BLACK);
 		}
 		gd.fillPolygon(points[0], points[1], y1.directionCount());
-		if(fullTile.visible())
+		if(advTile.visible())
 		{
-			if(fullTile.building != null)
+			if(advTile.getBuilding() != null)
 			{
 				PointD midPoint = layout.tileToPixel(t1);
 				gd.drawImage(MBuilding.IMAGE, midPoint.v[0] - layout.size().v[0], midPoint.v[1] - layout.size().v[1],
@@ -116,15 +116,15 @@ public class VisualTile
 
 	public void draw1(TileLayout layout, Tile t1)
 	{
-		FullTile fullTile = levelMap.tile(t1);
-		if(fullTile.visible())
+		AdvTile advTile = levelMap.advTile(t1);
+		if(advTile.visible())
 		{
-			if(fullTile.entity != null && fullTile.entity.isVisible())
+			if(advTile.getEntity() != null && advTile.getEntity().isVisible())
 			{
 				PointD midPoint = layout.tileToPixel(t1);
 				/*gd.setFill(new LinearGradient(points[0][0], points[1][0], points[0][3], points[1][3], false, null,
 						new Stop(0, Color.AZURE), new Stop(1, Color.BLACK)));*/
-				gd.drawImage(fullTile.entity.getImage(), midPoint.v[0] - layout.size().v[0], midPoint.v[1] - layout.size().v[1],
+				gd.drawImage(advTile.getEntity().getImage(), midPoint.v[0] - layout.size().v[0], midPoint.v[1] - layout.size().v[1],
 						layout.size().v[0] * 2, layout.size().v[1] * 2);
 			}
 		}

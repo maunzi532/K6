@@ -1,7 +1,6 @@
 package levelMap;
 
 import arrow.*;
-import building.*;
 import entity.*;
 import geom.d1.*;
 import geom.f1.*;
@@ -13,10 +12,7 @@ public class LevelMap
 
 	public final TileType y1;
 	public final DoubleType y2;
-	private final HashMap<Tile, FloorTile> floor;
-	private final HashMap<Tile, MBuilding> buildings;
-	private final HashMap<Tile, MBuilding> ownedFloor;
-	private final HashMap<Tile, XEntity> entities;
+	private final HashMap<Tile, AdvTile> advTiles;
 	private Map<Tile, MarkType> marked;
 	private final ArrayList<VisualArrow> arrows;
 
@@ -24,112 +20,116 @@ public class LevelMap
 	{
 		this.y1 = y1;
 		this.y2 = y2;
-		floor = new HashMap<>();
-		buildings = new HashMap<>();
-		ownedFloor = new HashMap<>();
-		entities = new HashMap<>();
+		advTiles = new HashMap<>();
 		marked = Map.of();
 		arrows = new ArrayList<>();
 	}
 
-	public FullTile tile(Tile t1)
+	public AdvTile advTileX(Tile t1)
 	{
-		FloorTile floorTile = floor.get(t1);
-		if(floorTile == null)
-			return new FullTile();
-		else
-			return new FullTile(floorTile, buildings.get(t1), entities.get(t1), marked.get(t1));
+		return advTiles.get(t1);
+	}
+
+	public AdvTile advTile(Tile t1)
+	{
+		return advTiles.getOrDefault(t1, AdvTile.EMPTY);
 	}
 
 	public void productionPhase()
 	{
-		for(MBuilding building : buildings.values())
+		for(AdvTile advTile : advTiles.values())
 		{
-			building.productionPhase(this);
+			if(advTile.getBuilding() != null)
+				advTile.getBuilding().productionPhase(this);
 		}
-		for(MBuilding building : buildings.values())
+		for(AdvTile advTile : advTiles.values())
 		{
-			building.afterProduction();
+			if(advTile.getBuilding() != null)
+				advTile.getBuilding().afterProduction();
 		}
 	}
 
 	public void transportPhase()
 	{
-		for(MBuilding building : buildings.values())
+		for(AdvTile advTile : advTiles.values())
 		{
-			building.transportPhase(this);
+			if(advTile.getBuilding() != null)
+				advTile.getBuilding().transportPhase(this);
 		}
-		for(MBuilding building : buildings.values())
+		for(AdvTile advTile : advTiles.values())
 		{
-			building.afterTransport();
+			if(advTile.getBuilding() != null)
+				advTile.getBuilding().afterTransport();
 		}
 	}
 
 	public FloorTile getFloor(Tile t1)
 	{
-		return floor.get(t1);
+		return advTile(t1).getFloorTile();
 	}
 
 	public void addFloor(Tile t1, FloorTile floorTile)
 	{
-		floor.put(t1, floorTile);
+		advTiles.put(t1, new AdvTile(floorTile));
 	}
 
 	public MBuilding getBuilding(Tile t1)
 	{
-		return buildings.get(t1);
+		return advTile(t1).getBuilding();
 	}
 
 	public void addBuilding(MBuilding building)
 	{
-		buildings.put(building.location(), building);
+		advTile(building.location()).setBuilding(building);
 	}
 
 	public void removeBuilding(MBuilding building)
 	{
-		if(building instanceof ProductionBuilding)
+		//TODO
+		/*if(building instanceof ProductionBuilding)
 		{
 			ownedFloor.keySet().removeAll(((ProductionBuilding) building).getClaimed());
 		}
-		buildings.remove(building.location());
+		buildings.remove(building.location());*/
 	}
 
 	public MBuilding getOwner(Tile t1)
 	{
-		return ownedFloor.get(t1);
+		return advTile(t1).getOwned();
 	}
 
 	public void addOwner(Tile t1, MBuilding building)
 	{
-		ownedFloor.put(t1, building);
+		advTile(t1).setOwned(building);
 	}
 
 	public void removeOwner(Tile t1)
 	{
-		ownedFloor.remove(t1);
+		//TODO
+		//ownedFloor.remove(t1);
 	}
 
 	public XEntity getEntity(Tile t1)
 	{
-		return entities.get(t1);
+		return advTile(t1).getEntity();
 	}
 
 	public void addEntity(XEntity entity)
 	{
-		entities.put(entity.location(), entity);
+		advTile(entity.location()).setEntity(entity);
 	}
 
 	public void removeEntity(XEntity entity)
 	{
-		entities.remove(entity.location());
+		advTile(entity.location()).setEntity(null);
 	}
 
 	public void moveEntity(XEntity entity, Tile newLocation)
 	{
-		entities.remove(entity.location());
+		removeEntity(entity);
 		VisualArrow arrow = new VisualArrow(y2, entity.location(), newLocation, ArrowMode.TRANSPORT,
 				y1.distance(newLocation, entity.location()) * TIME_PER_DISTANCE, entity.getImage());
-		arrows.add(arrow);
+		addArrow(arrow);
 		entity.setLocation(newLocation);
 		entity.setReplacementArrow(arrow);
 		addEntity(entity);
@@ -144,6 +144,8 @@ public class LevelMap
 	{
 		Objects.requireNonNull(marked);
 		this.marked = marked;
+		advTiles.forEach((e, f) -> f.setMarked(MarkType.NOT));
+		marked.forEach((e, f) -> advTiles.getOrDefault(e, new AdvTile(null)).setMarked(f));
 	}
 
 	public List<VisualArrow> getArrows()

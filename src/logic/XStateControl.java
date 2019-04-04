@@ -104,27 +104,27 @@ public class XStateControl
 		}
 		else
 		{
-			FullTile tile = mainState.levelMap.tile(mapTile);
+			AdvTile advTile = mainState.levelMap.advTile(mapTile);
 			if(key == 1)
 			{
-				if(tile.entity != null)
+				if(advTile.getEntity() != null)
 				{
-					setTileState(tile.entity);
+					setTileState(advTile.getEntity());
 				}
-				else if(tile.building != null)
+				else if(advTile.getBuilding() != null)
 				{
-					setTileState(tile.building);
+					setTileState(advTile.getBuilding());
 				}
 			}
 			else if(key == 3)
 			{
-				if(tile.building != null)
+				if(advTile.getBuilding() != null)
 				{
-					setTileState(tile.building);
+					setTileState(advTile.getBuilding());
 				}
-				else if(tile.entity != null)
+				else if(advTile.getEntity() != null)
 				{
-					setTileState(tile.entity);
+					setTileState(advTile.getEntity());
 				}
 			}
 		}
