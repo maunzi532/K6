@@ -11,6 +11,7 @@ import item.inv.transport.*;
 import java.util.*;
 import java.util.stream.*;
 import levelMap.*;
+import logic.xstate.*;
 
 public class XStateControl
 {
@@ -35,6 +36,11 @@ public class XStateControl
 	public void setState(XState state)
 	{
 		this.state = state;
+	}
+
+	public void setNState(NState state)
+	{
+		System.out.println(state.getClass().getSimpleName());
 	}
 
 	public List<XState> getMenu()
