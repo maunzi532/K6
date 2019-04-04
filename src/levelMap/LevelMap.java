@@ -25,11 +25,6 @@ public class LevelMap
 		arrows = new ArrayList<>();
 	}
 
-	public AdvTile advTileX(Tile t1)
-	{
-		return advTiles.get(t1);
-	}
-
 	public AdvTile advTile(Tile t1)
 	{
 		return advTiles.getOrDefault(t1, AdvTile.EMPTY);
@@ -83,16 +78,6 @@ public class LevelMap
 		advTile(building.location()).setBuilding(building);
 	}
 
-	public void removeBuilding(MBuilding building)
-	{
-		//TODO
-		/*if(building instanceof ProductionBuilding)
-		{
-			ownedFloor.keySet().removeAll(((ProductionBuilding) building).getClaimed());
-		}
-		buildings.remove(building.location());*/
-	}
-
 	public MBuilding getOwner(Tile t1)
 	{
 		return advTile(t1).getOwned();
@@ -105,8 +90,7 @@ public class LevelMap
 
 	public void removeOwner(Tile t1)
 	{
-		//TODO
-		//ownedFloor.remove(t1);
+		advTile(t1).setOwned(null);
 	}
 
 	public XEntity getEntity(Tile t1)
@@ -144,8 +128,6 @@ public class LevelMap
 	{
 		Objects.requireNonNull(marked);
 		this.marked = marked;
-		advTiles.forEach((e, f) -> f.setMarked(MarkType.NOT));
-		marked.forEach((e, f) -> advTiles.getOrDefault(e, new AdvTile(null)).setMarked(f));
 	}
 
 	public List<VisualArrow> getArrows()

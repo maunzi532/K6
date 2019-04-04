@@ -86,7 +86,7 @@ public class RemoveGUI extends XGUI implements InvGUI
 		if(remove.contains(x, y) && character.inputInv().ok())
 		{
 			character.inputInv().commit();
-			character.removeBuilding(building);
+			building.remove();
 			stateControl.setState(XState.NONE);
 			return true;
 		}

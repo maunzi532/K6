@@ -83,9 +83,4 @@ public class XHero extends XEntity implements DoubleInv
 			mainState.levelMap.addBuilding(new Transporter(location, costs, refundable, blueprint));
 		}
 	}
-
-	public void removeBuilding(Buildable building)
-	{
-		mainState.levelMap.removeBuilding(building);
-	}
 }

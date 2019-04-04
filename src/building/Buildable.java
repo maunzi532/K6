@@ -7,6 +7,7 @@ import levelMap.*;
 
 public abstract class Buildable implements MBuilding
 {
+	private boolean active;
 	private Tile location;
 	private CostBlueprint costs;
 	private ItemList refundable;
@@ -14,10 +15,23 @@ public abstract class Buildable implements MBuilding
 
 	public Buildable(Tile location, CostBlueprint costs, ItemList refundable, String name)
 	{
+		active = true;
 		this.location = location;
 		this.costs = costs;
 		this.refundable = refundable;
 		this.name = name;
+	}
+
+	@Override
+	public boolean active()
+	{
+		return active;
+	}
+
+	@Override
+	public void remove()
+	{
+		active = false;
 	}
 
 	@Override

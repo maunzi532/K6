@@ -64,7 +64,7 @@ public class QuadDoubleType extends QuadTileType implements DoubleType
 		if(inverse)
 			return createD(t1.v[1], -t1.v[0]);
 		else
-			return createD(-t1.v[1], t1.v[0]); //TODO
+			return createD(-t1.v[1], t1.v[0]);
 	}
 
 	@Override

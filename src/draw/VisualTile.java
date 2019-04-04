@@ -29,7 +29,8 @@ public class VisualTile
 		Tile mid = camera.mid(layout);
 		for(int i = -range; i <= range; i++)
 		{
-			for(int j = Math.min(0, -i) + range; j >= Math.max(0, -i) - range; j--)
+			int i1 = camera instanceof HexCamera ? i : 0;
+			for(int j = Math.min(0, -i1) + range; j >= Math.max(0, -i1) - range; j--)
 			{
 				draw0(layout, y1.add(mid, y1.create2(j, i)));
 			}
@@ -37,7 +38,8 @@ public class VisualTile
 		drawArrows0(layout, mid, range);
 		for(int i = -range; i <= range; i++)
 		{
-			for(int j = Math.min(0, -i) + range; j >= Math.max(0, -i) - range; j--)
+			int i1 = camera instanceof HexCamera ? i : 0;
+			for(int j = Math.min(0, -i1) + range; j >= Math.max(0, -i1) - range; j--)
 			{
 				draw1(layout, y1.add(mid, y1.create2(j, i)));
 			}
@@ -45,7 +47,6 @@ public class VisualTile
 		drawArrows1(layout, mid, range);
 	}
 
-	@SuppressWarnings("ConstantConditions")
 	public void draw0(TileLayout layout, Tile t1)
 	{
 		AdvTile advTile = levelMap.advTile(t1);
@@ -54,7 +55,7 @@ public class VisualTile
 		{
 			gd.setFill(new LinearGradient(points[0][0], points[1][0], points[0][y1.directionCount() / 2], points[1][y1.directionCount() / 2],
 					false, null, advTile.getFloorTile().type.normal.stream()
-					.map(e -> new Stop(e.getOffset(), mark(e.getColor(), advTile.getMarked()))).collect(Collectors.toList())));
+					.map(e -> new Stop(e.getOffset(), mark(e.getColor(), levelMap.getMarked().getOrDefault(t1, MarkType.NOT)))).collect(Collectors.toList())));
 		}
 		else
 		{

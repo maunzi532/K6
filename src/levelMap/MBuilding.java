@@ -9,10 +9,9 @@ public interface MBuilding
 
 	Tile location();
 
-	default boolean active()
-	{
-		return true; //TODO
-	}
+	boolean active();
+
+	void remove();
 
 	default void productionPhase(LevelMap levelMap){}
 

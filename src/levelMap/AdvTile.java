@@ -10,12 +10,10 @@ public class AdvTile
 	private MBuilding building;
 	private XEntity entity;
 	private MBuilding owned;
-	private MarkType marked;
 
 	public AdvTile(FloorTile floorTile)
 	{
 		this.floorTile = floorTile;
-		marked = MarkType.NOT;
 	}
 
 	public FloorTile getFloorTile()
@@ -42,11 +40,6 @@ public class AdvTile
 		return null;
 	}
 
-	public MarkType getMarked()
-	{
-		return marked;
-	}
-
 	public void setFloorTile(FloorTile floorTile)
 	{
 		this.floorTile = floorTile;
@@ -65,11 +58,6 @@ public class AdvTile
 	public void setOwned(MBuilding owned)
 	{
 		this.owned = owned;
-	}
-
-	public void setMarked(MarkType marked)
-	{
-		this.marked = marked;
 	}
 
 	public boolean visible()
