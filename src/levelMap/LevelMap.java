@@ -127,7 +127,7 @@ public class LevelMap
 	public void moveEntity(XEntity entity, Tile newLocation)
 	{
 		entities.remove(entity.location());
-		VisualArrow arrow = new VisualArrow(y1, y2, entity.location(), newLocation, ArrowMode.TRANSPORT,
+		VisualArrow arrow = new VisualArrow(y2, entity.location(), newLocation, ArrowMode.TRANSPORT,
 				y1.distance(newLocation, entity.location()) * TIME_PER_DISTANCE, entity.getImage());
 		arrows.add(arrow);
 		entity.setLocation(newLocation);

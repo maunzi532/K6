@@ -91,4 +91,22 @@ public class HexTileType implements TileType
 		}
 		return re;
 	}
+
+	@Override
+	public Tile upwards()
+	{
+		return create3(1, 1, -2);
+	}
+
+	@Override
+	public Tile fromOffset(int x, int y)
+	{
+		return create2(x - y / 2, y);
+	}
+
+	@Override
+	public Tile toOffset(Tile t1)
+	{
+		return new Tile(new int[]{(t1.v[0] - t1.v[1]) / 2, t1.v[2]});
+	}
 }

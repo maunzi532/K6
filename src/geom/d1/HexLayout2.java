@@ -2,7 +2,6 @@ package geom.d1;
 
 import geom.*;
 import geom.f1.*;
-import geom.hex.*;
 
 public class HexLayout2 implements TileLayout
 {
@@ -46,7 +45,7 @@ public class HexLayout2 implements TileLayout
 		PointD p2 = new PointD((p1.v[0] - origin.v[0]) / size.v[0], (p1.v[1] - origin.v[1]) / size.v[1]);
 		double x = mat.matrix[1][0] * p2.v[0] + mat.matrix[1][1] * p2.v[1];
 		double z = mat.matrix[1][2] * p2.v[0] + mat.matrix[1][3] * p2.v[1];
-		return y2.create(new double[]{x, -x - z, z});
+		return y2.createD(x, -x - z, z);
 	}
 
 	@Override

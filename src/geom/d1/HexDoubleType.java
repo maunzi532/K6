@@ -2,23 +2,15 @@ package geom.d1;
 
 import geom.f1.*;
 
-public class HexDoubleType implements DoubleType
+public class HexDoubleType extends HexTileType implements DoubleType
 {
-	private HexTileType tileType = new HexTileType();
-
-	private DoubleTile create3(double n1, double n2, double n3)
+	private DoubleTile create3d(double n1, double n2, double n3)
 	{
 		return new DoubleTile(new double[]{n1, n2, n3});
 	}
 
 	@Override
-	public TileType y1()
-	{
-		return tileType;
-	}
-
-	@Override
-	public DoubleTile create(double[] v)
+	public DoubleTile createD(double... v)
 	{
 		return new DoubleTile(v);
 	}
@@ -26,7 +18,7 @@ public class HexDoubleType implements DoubleType
 	@Override
 	public DoubleTile fromTile(Tile t1)
 	{
-		return create3(t1.v[0], t1.v[1], t1.v[2]);
+		return create3d(t1.v[0], t1.v[1], t1.v[2]);
 	}
 
 	@Override
@@ -50,25 +42,25 @@ public class HexDoubleType implements DoubleType
 		{
 			z = -x - y;
 		}
-		return y1().create3(x, y, z);
+		return create3(x, y, z);
 	}
 
 	@Override
 	public DoubleTile add(DoubleTile t1, DoubleTile t2)
 	{
-		return create3(t1.v[0] + t2.v[0], t1.v[1] + t2.v[1], t1.v[2] + t2.v[2]);
+		return create3d(t1.v[0] + t2.v[0], t1.v[1] + t2.v[1], t1.v[2] + t2.v[2]);
 	}
 
 	@Override
 	public DoubleTile subtract(DoubleTile t1, DoubleTile minus)
 	{
-		return create3(t1.v[0] - minus.v[0], t1.v[1] - minus.v[1], t1.v[2] - minus.v[2]);
+		return create3d(t1.v[0] - minus.v[0], t1.v[1] - minus.v[1], t1.v[2] - minus.v[2]);
 	}
 
 	@Override
 	public DoubleTile multiply(DoubleTile t1, double scalar)
 	{
-		return create3(t1.v[0] * scalar, t1.v[1] * scalar, t1.v[2] * scalar);
+		return create3d(t1.v[0] * scalar, t1.v[1] * scalar, t1.v[2] * scalar);
 	}
 
 	@Override
@@ -81,22 +73,28 @@ public class HexDoubleType implements DoubleType
 	public DoubleTile normalize(DoubleTile t1)
 	{
 		double length = length(t1);
-		return create3(t1.v[0] / length, t1.v[1] / length, t1.v[2] / length);
+		return create3d(t1.v[0] / length, t1.v[1] / length, t1.v[2] / length);
 	}
 
 	@Override
 	public DoubleTile rotate(DoubleTile t1, boolean inverse)
 	{
 		if(inverse)
-			return create3(t1.v[1], t1.v[2], t1.v[0]);
+			return create3d(t1.v[1], t1.v[2], t1.v[0]);
 		else
-			return create3(t1.v[2], t1.v[0], t1.v[1]);
+			return create3d(t1.v[2], t1.v[0], t1.v[1]);
+	}
+
+	@Override
+	public DoubleTile rotateR(DoubleTile t1, boolean inverse)
+	{
+		return subtract(rotate(t1, false), rotate(t1, true));
 	}
 
 	@Override
 	public DoubleTile tileLerp(DoubleTile t1, DoubleTile t2, double t)
 	{
-		return create3(DoubleType.lerp(t1.v[0], t2.v[0], t),
+		return create3d(DoubleType.lerp(t1.v[0], t2.v[0], t),
 				DoubleType.lerp(t1.v[1], t2.v[1], t),
 				DoubleType.lerp(t1.v[2], t2.v[2], t));
 	}

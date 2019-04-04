@@ -9,7 +9,6 @@ public class VisualArrow
 	private static final double SHINE_WIDTH = 0.65;
 	private static final double ZERO_SHINE_MULTIPLIER = 1.5;
 
-	public final TileType y1;
 	public final DoubleType y2;
 	private final Tile start;
 	private final Tile end;
@@ -22,9 +21,8 @@ public class VisualArrow
 	private final boolean zero;
 	private final double approxDistance;
 
-	public VisualArrow(TileType y1, DoubleType y2, Tile start, Tile end, ArrowMode arrowMode, int timerEnd, Image image)
+	public VisualArrow(DoubleType y2, Tile start, Tile end, ArrowMode arrowMode, int timerEnd, Image image)
 	{
-		this.y1 = y1;
 		this.y2 = y2;
 		this.start = start;
 		this.end = end;
@@ -37,12 +35,12 @@ public class VisualArrow
 		if(zero)
 			approxDistance = ZERO_SHINE_MULTIPLIER;
 		else
-			approxDistance = y1.distance(start, end);
+			approxDistance = y2.distance(start, end);
 	}
 
 	public boolean isVisible(Tile mid, int range)
 	{
-		return y1.distance(start, mid) <= range && y1.distance(end, mid) <= range;
+		return y2.distance(start, mid) <= range && y2.distance(end, mid) <= range;
 	}
 
 	public boolean showArrow()
@@ -91,12 +89,12 @@ public class VisualArrow
 
 	private DoubleTile normal()
 	{
-		return y2.normalize(y1.subtract(end, start));
+		return y2.normalize(y2.subtract(end, start));
 	}
 
 	private DoubleTile normalUp()
 	{
-		return y2.normalize(y1.create3(1, 1, -2));
+		return y2.normalize(y2.upwards());
 	}
 
 	public DoubleTile currentTLocation()
@@ -112,7 +110,7 @@ public class VisualArrow
 	private void calculateArrowPoints()
 	{
 		DoubleTile normal = zero ? normalUp() : normal();
-		DoubleTile sideNormalX2 = y2.subtract(y2.rotate(normal, false), y2.rotate(normal, false));
+		DoubleTile sideNormalX2 = y2.rotateR(normal, false);
 		DoubleTile side0 = y2.multiply(sideNormalX2, 0.15);
 		DoubleTile side1 = y2.multiply(sideNormalX2, 0.25);
 		DoubleTile end0 = visualEnd();

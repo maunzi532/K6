@@ -3,7 +3,6 @@ package building;
 import arrow.*;
 import building.blueprint.*;
 import geom.f1.*;
-import geom.hex.*;
 import item.*;
 import item.inv.transport.*;
 import java.util.*;
@@ -60,7 +59,7 @@ public class Transporter extends Buildable
 		{
 			PossibleTransport transport = transportOpt.get();
 			invTransporter.doTheTransport(transport);
-			levelMap.addArrow(new VisualArrow(levelMap.y1, levelMap.y2, transport.from.location(),
+			levelMap.addArrow(new VisualArrow(levelMap.y2, transport.from.location(),
 					transport.to.location(), ArrowMode.TARROW, TRANSPORT_TIME, transport.item.image()));
 		}
 	}

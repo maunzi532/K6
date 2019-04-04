@@ -11,7 +11,7 @@ BuildingBlueprint
       BLUE
       6
       0
-      2
+      3
    CostBlueprint
     ItemList
     ItemList
@@ -22,7 +22,7 @@ BuildingBlueprint
       BLUE
       8
       0
-      2
+      3
    CostBlueprint
     ItemList
     ItemList
@@ -32,7 +32,7 @@ BuildingBlueprint
       BLUE
       10
       0
-      2
+      3
   Array
    CostBlueprint
     ItemList
@@ -43,7 +43,7 @@ BuildingBlueprint
       BLUE
       6
       0
-      2
+      3
  ProductionBlueprint
   ItemList
   ItemList

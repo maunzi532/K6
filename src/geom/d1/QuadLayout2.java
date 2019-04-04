@@ -45,7 +45,7 @@ public class QuadLayout2 implements TileLayout
 		PointD p2 = new PointD((p1.v[0] - origin.v[0]) / size.v[0], (p1.v[1] - origin.v[1]) / size.v[1]);
 		double x = p2.v[0] * DQ2;
 		double y = p2.v[1] * DQ2;
-		return y2.create(new double[]{x, y});
+		return y2.createD(x, y);
 	}
 
 	@Override

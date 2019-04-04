@@ -12,14 +12,12 @@ import levelMap.*;
 public class VisualTile
 {
 	private final TileType y1;
-	private final DoubleType y2;
 	private LevelMap levelMap;
 	private GraphicsContext gd;
 
-	public VisualTile(TileType y1, DoubleType y2, LevelMap levelMap, GraphicsContext gd)
+	public VisualTile(TileType y1, LevelMap levelMap, GraphicsContext gd)
 	{
 		this.y1 = y1;
-		this.y2 = y2;
 		this.levelMap = levelMap;
 		this.gd = gd;
 	}

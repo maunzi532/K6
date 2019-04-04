@@ -1,31 +1,34 @@
 package logic;
 
 import draw.*;
+import geom.*;
 import geom.d1.*;
-import geom.hex.HexMatrix;
-import javafx.geometry.VPos;
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.input.KeyCode;
-import javafx.scene.text.TextAlignment;
+import javafx.geometry.*;
+import javafx.scene.canvas.*;
+import javafx.scene.input.*;
+import javafx.scene.text.*;
 
 public class MainVisual
 {
+	private DoubleType y2;
 	private VisualTile visualTile;
-	private HexCamera mapCamera;
+	private TileCamera mapCamera;
 	private VisualMenu visualMenu;
 	private VisualGUI visualGUI;
 	private MainState mainState;
 
 	public MainVisual(GraphicsContext gd, int w, int h)
 	{
-		mainState = new MainState();
+		//mapCamera = new HexCamera(w / 2f, h / 2f, 44, 44, 0, 0, new HexMatrix(0.5));
+		mapCamera = new QuadCamera(w / 2f, h / 2f, 44, 44, 0, 0);
+		y2 = mapCamera.getDoubleType();
+		mainState = new MainState(y2);
 		mainState.initialize();
 		gd.setTextAlign(TextAlignment.CENTER);
 		gd.setTextBaseline(VPos.CENTER);
-		visualTile = new VisualTile(mainState.y1, mainState.y2, mainState.levelMap, gd);
-		mapCamera = new HexCamera(mainState.y2, w / 2f, h / 2f, 44, 44, 0, 0, new HexMatrix(0.5));
-		visualMenu = new VisualMenu(mainState.y2, gd, w / 2f, h / 2f, mainState.stateControl);
-		visualGUI = new VisualGUIQuad(new QuadDoubleType(), gd, w / 2f, h / 2f, mainState.stateControl);
+		visualTile = new VisualTile(y2, mainState.levelMap, gd);
+		visualMenu = new VisualMenu(gd, w / 2f, h / 2f, mainState.stateControl);
+		visualGUI = new VisualGUIQuad(gd, w / 2f, h / 2f, mainState.stateControl);
 		//visualGUI = new VisualGUIHex(gd, w / 2f, h / 2f, mainState.stateControl);
 		draw();
 	}
@@ -39,7 +42,7 @@ public class MainVisual
 		}
 		else if(mainState.stateControl.getState().hasGUI)
 		{
-			mainState.stateControl.handleGUIClick(visualGUI.clickLocation(x, y), visualGUI.inside(x, y), mouseKey);
+			mainState.stateControl.handleGUIClick(visualGUI.y2.toOffset(visualGUI.clickLocation(x, y)), visualGUI.inside(x, y), mouseKey);
 		}
 		else
 		{
@@ -67,7 +70,7 @@ public class MainVisual
 	{
 		if(mainState.stateControl.getState().hasGUI && visualGUI.inside(x, y))
 		{
-			mainState.stateControl.target(visualGUI.clickLocation(x, y));
+			mainState.stateControl.target(visualGUI.y2.toOffset(visualGUI.clickLocation(x, y)));
 		}
 	}
 

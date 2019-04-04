@@ -1,4 +1,4 @@
-package geom.hex;
+package geom.d1;
 
 public class HexMatrix
 {

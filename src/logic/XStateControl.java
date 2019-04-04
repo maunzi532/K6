@@ -69,16 +69,16 @@ public class XStateControl
 		update();
 	}
 
-	public void target(Tile t1)
+	public void target(Tile offset)
 	{
-		xgui.target(t1.v[0], t1.v[1]);
+		xgui.target(offset.v[0], offset.v[1]);
 	}
 
-	public void handleGUIClick(Tile t1, boolean inside, int key)
+	public void handleGUIClick(Tile offset, boolean inside, int key)
 	{
 		if(inside)
 		{
-			if(xgui.click(t1.v[0], t1.v[1], key, this))
+			if(xgui.click(offset.v[0], offset.v[1], key, this))
 				update();
 		}
 		else

@@ -3,14 +3,13 @@ package draw;
 import geom.*;
 import geom.d1.*;
 import geom.f1.*;
-import geom.hex.*;
 import gui.*;
 import javafx.scene.canvas.*;
 import javafx.scene.paint.*;
 import javafx.scene.text.*;
 import logic.*;
 
-public class VisualGUIHex implements VisualGUI
+public class VisualGUIHex extends VisualGUI
 {
 	private static final double TEXT_END = 1.4;
 	private static final double IMAGE_END = 1.8;
@@ -19,45 +18,21 @@ public class VisualGUIHex implements VisualGUI
 	private final DoubleTile RLE;
 	private final DoubleTile RLS;
 
-	private final DoubleType y2;
-	private final GraphicsContext gd;
-	private final TileCamera camera;
-	private final XStateControl stateControl;
-
-	public VisualGUIHex(DoubleType y2, GraphicsContext gd, double xHalfWidth, double yHalfWidth,
+	public VisualGUIHex(GraphicsContext gd, double xHalfWidth, double yHalfWidth,
 			XStateControl stateControl)
 	{
-		this.y2 = y2;
-		this.gd = gd;
-		camera = new HexCamera(this.y2, xHalfWidth, yHalfWidth, yHalfWidth / 8, yHalfWidth / 8, 0,  0, HexMatrix.LP);
-		this.stateControl = stateControl;
-		LU = y2.create(new double[]{-1d / 6d, 5d / 6d, -4d / 6d});
-		RLE = y2.create(new double[]{1d / 6d, -5d / 6d, 4d / 6d});
-		RLS = y2.create(new double[]{4d / 6d, -8d / 6d, 4d / 6d});
+		super(gd, new HexCamera(xHalfWidth, yHalfWidth, yHalfWidth / 8, yHalfWidth / 8, 0,  0, HexMatrix.LP), stateControl);
+		LU = y2.createD(-1d / 6d, 5d / 6d, -4d / 6d);
+		RLE = y2.createD(1d / 6d, -5d / 6d, 4d / 6d);
+		RLS = y2.createD(4d / 6d, -8d / 6d, 4d / 6d);
 	}
 
 	private DoubleTile rl(XGUI xgui)
 	{
-		return y2.add(y2.fromTile(asHex(xgui.xw() - 1, xgui.yw() - 1)), (xgui.yw() - 2) % 2 == 1 ? RLS : RLE);
-	}
-
-	private Tile asHex(int n1, int n2)
-	{
-		return y2.y1().create2(n1 - n2 / 2, n2);
+		return y2.add(y2.fromTile(y2.fromOffset(xgui.xw() - 1, xgui.yw() - 1)), (xgui.yw() - 2) % 2 == 1 ? RLS : RLE);
 	}
 
 	@Override
-	public Tile clickLocation(double x, double y)
-	{
-		return y2.cast(camera.clickLocation(x, y));
-	}
-
-	@Override
-	public boolean inside(double x, double y)
-	{
-		return inside(camera.clickLocation(x, y));
-	}
-
 	public boolean inside(DoubleTile h1)
 	{
 		XGUI xgui = stateControl.getXgui();
@@ -88,7 +63,7 @@ public class VisualGUIHex implements VisualGUI
 		{
 			for(int iy = 0; iy < xgui.yw(); iy++)
 			{
-				drawHex(layout, asHex(ix, iy), guiTiles[ix][iy], xgui.getTargeted().contains(ix, iy), bg2);
+				drawHex(layout, y2.fromOffset(ix, iy), guiTiles[ix][iy], xgui.getTargeted().contains(ix, iy), bg2);
 			}
 		}
 	}
@@ -115,8 +90,8 @@ public class VisualGUIHex implements VisualGUI
 		}
 		if(guiTile.text != null)
 		{
-			PointD midPoint = layout.tileToPixel(y2.add(y2.fromTile(t1), y2.create(new double[]{guiTile.l * -0.5 + guiTile.u * 0.25,
-					guiTile.l * 0.5 + guiTile.u * 0.25, guiTile.u * -0.5})));
+			PointD midPoint = layout.tileToPixel(y2.add(y2.fromTile(t1), y2.createD(guiTile.l * -0.5 + guiTile.u * 0.25,
+					guiTile.l * 0.5 + guiTile.u * 0.25, guiTile.u * -0.5)));
 			PointD rEnd = layout.tileToPixel(t1);
 			gd.setFont(new Font(layout.size().v[1] * FONT_SIZE));
 			if(guiTile.image != null)
