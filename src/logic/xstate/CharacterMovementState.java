@@ -32,7 +32,7 @@ public class CharacterMovementState implements NMarkState
 	public void onClickMarked(Tile mapTile, MarkType markType, int key, LevelMap levelMap, XStateControl stateControl)
 	{
 		levelMap.moveEntity(character, mapTile);
-		stateControl.setNState(NoneState.INSTANCE);
+		stateControl.setState(NoneState.INSTANCE);
 	}
 
 	@Override

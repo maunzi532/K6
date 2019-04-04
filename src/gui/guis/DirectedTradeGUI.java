@@ -7,6 +7,7 @@ import item.view.ItemView;
 import java.util.List;
 import javafx.scene.paint.Color;
 import logic.*;
+import logic.xstate.*;
 
 public class DirectedTradeGUI extends XGUI implements InvGUI
 {
@@ -133,7 +134,7 @@ public class DirectedTradeGUI extends XGUI implements InvGUI
 		{
 			provide.outputInv().commit();
 			receive.inputInv().commit();
-			stateControl.setState(XState.NONE);
+			stateControl.setState(NoneState.INSTANCE);
 			return true;
 		}
 		return false;
@@ -154,6 +155,6 @@ public class DirectedTradeGUI extends XGUI implements InvGUI
 	{
 		provide.outputInv().rollback();
 		receive.inputInv().rollback();
-		stateControl.setState(XState.NONE);
+		super.close(stateControl);
 	}
 }

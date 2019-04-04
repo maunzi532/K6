@@ -7,6 +7,7 @@ import javafx.geometry.*;
 import javafx.scene.canvas.*;
 import javafx.scene.input.*;
 import javafx.scene.text.*;
+import logic.xstate.*;
 
 public class MainVisual
 {
@@ -40,7 +41,7 @@ public class MainVisual
 		{
 			mainState.stateControl.handleMenuClick(menuOption, mouseKey);
 		}
-		else if(mainState.stateControl.getState().hasGUI)
+		else if(mainState.stateControl.getState() instanceof NGUIState)
 		{
 			mainState.stateControl.handleGUIClick(visualGUI.y2.toOffset(visualGUI.clickLocation(x, y)), visualGUI.inside(x, y), mouseKey);
 		}
@@ -68,7 +69,7 @@ public class MainVisual
 
 	public void handleMouseMove(double x, double y)
 	{
-		if(mainState.stateControl.getState().hasGUI && visualGUI.inside(x, y))
+		if(mainState.stateControl.getState() instanceof NGUIState && visualGUI.inside(x, y))
 		{
 			mainState.stateControl.target(visualGUI.y2.toOffset(visualGUI.clickLocation(x, y)));
 		}

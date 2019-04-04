@@ -35,6 +35,6 @@ public class BuildingChooseState implements NGUIState
 	@Override
 	public XGUI gui(MainState mainState)
 	{
-		return new BuildingsGUI(mainState.buildingBlueprintCache);
+		return new BuildingsGUI(builder, mainState.buildingBlueprintCache);
 	}
 }

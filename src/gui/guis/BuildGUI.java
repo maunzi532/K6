@@ -9,6 +9,7 @@ import item.view.ItemView;
 import java.util.*;
 import javafx.scene.paint.Color;
 import logic.*;
+import logic.xstate.*;
 
 public class BuildGUI extends XGUI implements InvGUI
 {
@@ -166,16 +167,10 @@ public class BuildGUI extends XGUI implements InvGUI
 			if(refundable.isPresent())
 			{
 				character.buildBuilding(cost, refundable.get(), blueprint);
-				stateControl.setState(XState.NONE);
+				stateControl.setState(NoneState.INSTANCE);
 				return true;
 			}
 		}
 		return false;
-	}
-
-	@Override
-	public void close(XStateControl stateControl)
-	{
-		stateControl.setState(XState.NONE);
 	}
 }

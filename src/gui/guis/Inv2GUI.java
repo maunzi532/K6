@@ -84,10 +84,4 @@ public class Inv2GUI extends XGUI implements InvGUI
 	{
 		return false;
 	}
-
-	@Override
-	public void close(XStateControl stateControl)
-	{
-		stateControl.setState(XState.NONE);
-	}
 }

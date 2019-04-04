@@ -1,7 +1,8 @@
 package gui;
 
-import javafx.scene.paint.Color;
+import javafx.scene.paint.*;
 import logic.*;
+import logic.xstate.*;
 
 public abstract class XGUI
 {
@@ -89,7 +90,10 @@ public abstract class XGUI
 		return true;
 	}
 
-	public abstract void close(XStateControl stateControl);
+	public void close(XStateControl stateControl)
+	{
+		stateControl.setState(NoneState.INSTANCE);
+	}
 
 	public static String except1(int num)
 	{

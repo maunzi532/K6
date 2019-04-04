@@ -115,6 +115,6 @@ public class RecipeGUI extends XGUI implements InvGUI
 	public void close(XStateControl stateControl)
 	{
 		building.lastViewedRecipeNum = recipeNum;
-		stateControl.setState(XState.NONE);
+		super.close(stateControl);
 	}
 }

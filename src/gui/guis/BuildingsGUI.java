@@ -1,22 +1,26 @@
 package gui.guis;
 
+import entity.hero.*;
 import levelMap.MBuilding;
 import building.blueprint.BuildingBlueprint;
 import file.BlueprintCache;
 import gui.*;
 import logic.*;
+import logic.xstate.*;
 
 public class BuildingsGUI extends XGUI implements InvGUI
 {
 	private static final CTile textInv = new CTile(2, 0, new GuiTile("Buildings"), 2, 1);
 
+	private final XHero builder;
 	private final BlueprintCache<BuildingBlueprint> blueprintCache;
 	private final String[] names;
 	private final InvGUIPart buildingsView;
 	private BuildingBlueprint chosen = null;
 
-	public BuildingsGUI(BlueprintCache<BuildingBlueprint> blueprintCache)
+	public BuildingsGUI(XHero builder, BlueprintCache<BuildingBlueprint> blueprintCache)
 	{
+		this.builder = builder;
 		this.blueprintCache = blueprintCache;
 		names = blueprintCache.allNames().toArray(String[]::new);
 		buildingsView = new InvGUIPart(0, 0, 1, 3, 5, 2, 1);
@@ -73,8 +77,8 @@ public class BuildingsGUI extends XGUI implements InvGUI
 		buildingsView.checkClick(x, y, names.length, this);
 		if(chosen != null)
 		{
-			stateControl.stateInfo[3] = chosen;
-			stateControl.setState(XState.BUILD);
+			//stateControl.stateInfo[3] = chosen;
+			stateControl.setState(new BuildState(builder, chosen));
 			return true;
 		}
 		if(buildingsView.updateGUIFlag())
@@ -86,11 +90,5 @@ public class BuildingsGUI extends XGUI implements InvGUI
 	public void onClickItem(int invID, int num, int xi, int yi)
 	{
 		chosen = BuildingBlueprint.get(blueprintCache, names[num]);
-	}
-
-	@Override
-	public void close(XStateControl stateControl)
-	{
-		stateControl.setState(XState.NONE);
 	}
 }

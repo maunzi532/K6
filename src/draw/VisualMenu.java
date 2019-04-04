@@ -8,6 +8,7 @@ import javafx.scene.canvas.*;
 import javafx.scene.paint.*;
 import javafx.scene.text.*;
 import logic.*;
+import logic.xstate.*;
 
 public class VisualMenu
 {
@@ -35,11 +36,11 @@ public class VisualMenu
 
 	public void draw()
 	{
-		List<XState> menuEntries = stateControl.getMenu();
+		List<NState> menuEntries = stateControl.getMenu();
 		camera.setYShift((menuEntries.size() - 1) * 1.5 / 2d);
 		for(int i = 0; i < menuEntries.size(); i++)
 		{
-			draw0(camera.layout(), y2.fromOffset(0, i), menuEntries.get(i).text, menuEntries.get(i) == stateControl.getState());
+			draw0(camera.layout(), y2.fromOffset(0, i), menuEntries.get(i).text(), menuEntries.get(i) == stateControl.getState());
 		}
 	}
 

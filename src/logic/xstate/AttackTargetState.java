@@ -36,7 +36,7 @@ public class AttackTargetState implements NMarkState
 	@Override
 	public void onClickMarked(Tile mapTile, MarkType markType, int key, LevelMap levelMap, XStateControl stateControl)
 	{
-		stateControl.setNState(new AttackInfoState(character, levelMap.getEntity(mapTile)));
+		stateControl.setState(new AttackInfoState(character, levelMap.getEntity(mapTile)));
 	}
 
 	@Override

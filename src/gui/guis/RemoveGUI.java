@@ -8,6 +8,7 @@ import item.inv.CommitType;
 import item.view.*;
 import java.util.List;
 import logic.*;
+import logic.xstate.*;
 
 public class RemoveGUI extends XGUI implements InvGUI
 {
@@ -87,7 +88,7 @@ public class RemoveGUI extends XGUI implements InvGUI
 		{
 			character.inputInv().commit();
 			building.remove();
-			stateControl.setState(XState.NONE);
+			stateControl.setState(NoneState.INSTANCE);
 			return true;
 		}
 		return false;
@@ -97,6 +98,6 @@ public class RemoveGUI extends XGUI implements InvGUI
 	public void close(XStateControl stateControl)
 	{
 		character.inputInv().rollback();
-		stateControl.setState(XState.NONE);
+		super.close(stateControl);
 	}
 }
