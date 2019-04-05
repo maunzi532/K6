@@ -17,13 +17,11 @@ public class XHero extends XEntity implements DoubleInv
 	private static final int BASE_WEIGHT_LIMIT = 20;
 	private static final Image IMAGE_S = new Image("S.png");
 
-	private MainState mainState;
 	private Inv inv;
 
-	public XHero(Tile location, MainState mainState)
+	public XHero(Tile location, MainState mainState, Stats1 stats)
 	{
-		super(location);
-		this.mainState = mainState;
+		super(location, mainState, stats);
 		inv = new WeightInv(BASE_WEIGHT_LIMIT);
 	}
 

@@ -4,6 +4,7 @@ import arrow.*;
 import geom.f1.*;
 import java.util.*;
 import javafx.scene.image.*;
+import logic.*;
 
 public class XEntity
 {
@@ -11,10 +12,14 @@ public class XEntity
 
 	protected Tile location;
 	private VisualArrow replace;
+	protected MainState mainState;
+	protected Stats1 stats;
 
-	public XEntity(Tile location)
+	public XEntity(Tile location, MainState mainState, Stats1 stats)
 	{
 		this.location = location;
+		this.mainState = mainState;
+		this.stats = stats;
 	}
 
 	public boolean isEnemy(XEntity other)
@@ -47,18 +52,23 @@ public class XEntity
 		replace = arrow;
 	}
 
-	public List<Integer> attackRanges()
+	public int movement()
 	{
-		return List.of();
+		return mainState.wugu1.movement(mainState, this, stats);
 	}
 
-	public int minCounterRange()
+	public int maxAccessRange()
 	{
-		return 1;
+		return mainState.wugu1.maxAccessRange(mainState, this, stats);
 	}
 
-	public int maxCounterRange()
+	public List<Integer> attackRanges(boolean counter)
 	{
-		return 0;
+		return mainState.wugu1.attackRanges(mainState, this, stats, counter);
+	}
+
+	public List<AttackInfo> attackInfo(XEntity target)
+	{
+		return mainState.wugu1.attackInfo(mainState, this, stats, target, target.stats);
 	}
 }

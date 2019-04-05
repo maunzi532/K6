@@ -98,4 +98,10 @@ public class HexDoubleType extends HexTileType implements DoubleType
 				DoubleType.lerp(t1.v[1], t2.v[1], t),
 				DoubleType.lerp(t1.v[2], t2.v[2], t));
 	}
+
+	@Override
+	public DoubleTile fromOffsetD(double x, double y)
+	{
+		return create3d(x - y / 2, -x - x / 2, y);
+	}
 }

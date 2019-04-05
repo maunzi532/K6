@@ -1,8 +1,10 @@
 package logic.xstate;
 
+import entity.*;
 import entity.hero.*;
 import geom.f1.*;
 import java.util.*;
+import java.util.stream.*;
 import levelMap.*;
 import logic.*;
 
@@ -30,7 +32,8 @@ public class AttackTargetState implements NMarkState
 	@Override
 	public boolean keepInMenu(MainState mainState)
 	{
-		return true; //TODO
+		return character.attackRanges(false).stream().map(e -> mainState.y2.range(character.location(), e, e))
+				.flatMap(Collection::stream).anyMatch(e -> character.isEnemy(mainState.levelMap.getEntity(e)));
 	}
 
 	@Override
@@ -42,6 +45,8 @@ public class AttackTargetState implements NMarkState
 	@Override
 	public Map<Tile, MarkType> marked(LevelMap levelMap)
 	{
-		return null; //TODO
+		return character.attackRanges(false).stream().map(e -> levelMap.y1.range(character.location(), e, e))
+				.flatMap(Collection::stream).map(levelMap::getEntity).filter(e -> character.isEnemy(e)).collect(
+				Collectors.toMap(XEntity::location, e -> MarkType.TARGET));
 	}
 }

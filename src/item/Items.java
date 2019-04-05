@@ -6,8 +6,8 @@ public enum Items implements Item
 {
 	BLUE("BLUE.png", 1),
 	GSL("GSL.png", 1),
-	TECHNOLOGY("H.png", 2),
-	MATERIAL("H.png", 1);
+	TECHNOLOGY("Tech.png", 2),
+	MATERIAL("X.png", 1);
 
 	Items(String imageName, int weight)
 	{

@@ -3,12 +3,13 @@ package entity.enemy;
 import entity.*;
 import entity.hero.*;
 import geom.f1.*;
+import logic.*;
 
 public class XEnemy extends XEntity
 {
-	public XEnemy(Tile location)
+	public XEnemy(Tile location, MainState mainState, Stats1 stats)
 	{
-		super(location);
+		super(location, mainState, stats);
 	}
 
 	@Override

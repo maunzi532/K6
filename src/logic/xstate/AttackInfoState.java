@@ -3,6 +3,7 @@ package logic.xstate;
 import entity.*;
 import entity.hero.*;
 import gui.*;
+import gui.guis.*;
 import logic.*;
 
 public class AttackInfoState implements NGUIState
@@ -31,6 +32,6 @@ public class AttackInfoState implements NGUIState
 	@Override
 	public XGUI gui(MainState mainState)
 	{
-		return null; //TODO
+		return new AttackInfoGUI(attacker, target);
 	}
 }

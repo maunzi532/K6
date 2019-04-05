@@ -78,4 +78,10 @@ public class QuadDoubleType extends QuadTileType implements DoubleType
 	{
 		return create2d(DoubleType.lerp(t1.v[0], t2.v[0], t), DoubleType.lerp(t1.v[1], t2.v[1], t));
 	}
+
+	@Override
+	public DoubleTile fromOffsetD(double x, double y)
+	{
+		return createD(x, y);
+	}
 }

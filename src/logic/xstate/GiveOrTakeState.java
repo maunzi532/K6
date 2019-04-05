@@ -43,7 +43,7 @@ public class GiveOrTakeState implements NMarkState
 	@Override
 	public Map<Tile, MarkType> marked(LevelMap levelMap)
 	{
-		return levelMap.y1.range(character.location(), 0, 4/*TODO*/).stream()
+		return levelMap.y1.range(character.location(), 0, character.maxAccessRange()).stream()
 				.filter(e -> levelMap.getBuilding(e) instanceof DoubleInv).collect(Collectors.toMap(e -> e, e -> MarkType.TARGET));
 	}
 }

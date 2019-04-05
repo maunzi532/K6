@@ -2,6 +2,7 @@ package logic;
 
 import building.*;
 import building.blueprint.*;
+import entity.*;
 import entity.enemy.*;
 import entity.hero.*;
 import file.*;
@@ -16,6 +17,7 @@ public class MainState
 	public final LevelMap levelMap;
 	public final BlueprintCache<BuildingBlueprint> buildingBlueprintCache;
 	public final XStateControl stateControl;
+	public final Wugu1 wugu1;
 
 	public MainState(DoubleType y2)
 	{
@@ -23,19 +25,20 @@ public class MainState
 		levelMap = new LevelMap(y2, y2);
 		buildingBlueprintCache = new BlueprintCache<>("buildings");
 		stateControl = new XStateControl(this);
+		wugu1 = new Wugu2();
 	}
 
 	public void initialize()
 	{
 		new TestImportSector(y2, 8).generate().importIntoMap(levelMap);
-		levelMap.addEntity(new XHero(y2.create2(-2, 1), this));
-		XHero h1 = new XHero(y2.create2(-2, -1), this);
+		levelMap.addEntity(new XHero(y2.create2(-2, 1), this, new Stats2()));
+		XHero h1 = new XHero(y2.create2(-2, -1), this, new Stats2());
 		h1.addItems(new ItemList(Items.BLUE, Items.GSL, Items.MATERIAL, Items.TECHNOLOGY));
 		h1.addItems(new ItemList(Items.BLUE, Items.GSL, Items.MATERIAL, Items.TECHNOLOGY));
 		levelMap.addEntity(h1);
-		levelMap.addEntity(new XEnemy(y2.create2(2, 1)));
-		levelMap.addEntity(new XEnemy(y2.create2(2, 0)));
-		levelMap.addEntity(new XEnemy(y2.create2(2, -1)));
+		levelMap.addEntity(new XEnemy(y2.create2(2, 1), this, new Stats2()));
+		levelMap.addEntity(new XEnemy(y2.create2(2, 0), this, new Stats2()));
+		levelMap.addEntity(new XEnemy(y2.create2(2, -1), this, new Stats2()));
 		/*levelMap.addArrow(new VisualArrow(y2.create2(2, 0), y1.create2(4, 1), ArrowMode.ARROW, 120, null));
 		levelMap.addArrow(new VisualArrow(y2.create2(-2, 0), y1.create2(4, -4), ArrowMode.ARROW, 120, null));
 		levelMap.addArrow(new VisualArrow(y2.create2(-3, 0), y1.create2(-3, 0), ArrowMode.ARROW, 120, null));*/

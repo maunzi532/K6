@@ -3,9 +3,9 @@ package gui;
 public class InvGUIPart
 {
 	private int invID;
-	private int xl, yl;
-	private int xc, yc;
-	private int xs, ys;
+	private int xl, yl; //position
+	private int xc, yc; //element count
+	private int xs, ys; //element size
 	private int scroll = 0;
 	private CTile scrollUp;
 	private CTile scrollDown;

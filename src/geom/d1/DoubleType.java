@@ -35,4 +35,6 @@ public interface DoubleType extends TileType
 	DoubleTile rotateR(DoubleTile t1, boolean inverse);
 
 	DoubleTile tileLerp(DoubleTile t1, DoubleTile t2, double t);
+
+	DoubleTile fromOffsetD(double x, double y);
 }
