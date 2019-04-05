@@ -3,7 +3,7 @@ package entity;
 import java.util.*;
 import logic.*;
 
-public interface Wugu1<T extends Stats1>
+public interface Wugu1<T extends Stats1, A extends AttackInfo>
 {
 	int movement(MainState mainState, XEntity entity, T stats);
 
@@ -11,5 +11,5 @@ public interface Wugu1<T extends Stats1>
 
 	List<Integer> attackRanges(MainState mainState, XEntity entity, T stats, boolean counter);
 
-	List<AttackInfo> attackInfo(MainState mainState, XEntity entity, T stats, XEntity entityT, T statsT);
+	List<A> attackInfo(MainState mainState, XEntity entity, T stats, XEntity entityT, T statsT);
 }

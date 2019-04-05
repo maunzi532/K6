@@ -55,9 +55,9 @@ public class AttackInfoGUI extends XGUI implements InvGUI
 		tiles[x][y1 + 1] = new GuiTile(read(info, 4));
 		tiles[x + 1][y1] = new GuiTile(read(info, 2));
 		tiles[x + 1][y1 + 1] = new GuiTile(read(info, 6));
-		tiles[x + 2][y1] = new GuiTile(read(info, 8), info.attackItem.image(), null);
+		tiles[x + 2][y1] = new GuiTile(read(info, 8), info.item.image(), null);
 		tiles[x + 2][y1 + 1] = new GuiTile(read(info, 10));
-		tiles[x + 3][y1] = new GuiTile(read(info, 9), info.counterItem.image(), null);
+		tiles[x + 3][y1] = new GuiTile(read(info, 9), info.itemT.image(), null);
 		tiles[x + 3][y1 + 1] = new GuiTile(read(info, 11));
 		tiles[x + 4][y1] = new GuiTile(read(info, 1));
 		tiles[x + 4][y1 + 1] = new GuiTile(read(info, 5));
