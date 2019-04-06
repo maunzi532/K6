@@ -1,6 +1,7 @@
 package item;
 
 import file.*;
+import item.items.*;
 
 public class ItemStack
 {

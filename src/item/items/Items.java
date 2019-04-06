@@ -1,5 +1,6 @@
-package item;
+package item.items;
 
+import item.*;
 import javafx.scene.image.*;
 
 public enum Items implements Item

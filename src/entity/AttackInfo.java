@@ -2,19 +2,19 @@ package entity;
 
 import item.*;
 
-public class AttackInfo<T extends Stats1>
+public class AttackInfo<T extends Stats1, I extends Item>
 {
 	public final XEntity entity;
 	public final T stats;
-	public final Item item;
+	public final I item;
 	public final XEntity entityT;
 	public final T statsT;
-	public final Item itemT;
+	public final I itemT;
 	public final int distance;
 	public final String[] infos;
 
-	public AttackInfo(XEntity entity, T stats, Item item,
-			XEntity entityT, T statsT, Item itemT, int distance, String... infos)
+	public AttackInfo(XEntity entity, T stats, I item,
+			XEntity entityT, T statsT, I itemT, int distance, String... infos)
 	{
 		this.entity = entity;
 		this.stats = stats;

@@ -1,26 +1,46 @@
 package entity;
 
-import item.*;
+import item.items.*;
 
-public class AttackInfo2 extends AttackInfo<Stats2>
+public class AttackInfo2 extends AttackInfo<Stats2, AttackItem2>
 {
-
-	public static AttackInfo2 create(XEntity entity, Stats2 stats, Item item,
-			XEntity entityT, Stats2 statsT, Item itemT, int distance)
+	public static AttackInfo2 create(Wugu2 wugu2, XEntity entity, Stats2 stats, AttackItem2 item,
+			XEntity entityT, Stats2 statsT, AttackItem2 itemT, int distance)
 	{
-		String[] infos = new String[8];
-		infos[0] = String.valueOf(Math.max(0, stats.getAttack() - statsT.getDefense()));
-		infos[2] = stats.getSpeed() - statsT.getSpeed() >= 5 ? "x2" : "";
-		infos[4] = String.valueOf(Math.min(100, Math.max(0, (stats.getAccuracy() - statsT.getAccuracy()) * 5 + 80)));
-		infos[6] = String.valueOf(Math.min(100, Math.max(0, (stats.getCrit() - statsT.getCrit()) * 2)));
-		infos[1] = String.valueOf(Math.max(0, statsT.getAttack() - stats.getDefense()));
-		infos[3] = statsT.getSpeed() - stats.getSpeed() >= 5 ? "x2" : "";
-		infos[5] = String.valueOf(Math.min(100, Math.max(0, (statsT.getAccuracy() - stats.getAccuracy()) * 5 + 80)));
-		infos[7] = String.valueOf(Math.min(100, Math.max(0, (statsT.getCrit() - stats.getCrit()) * 2)));
-		return new AttackInfo2(entity, stats, item, entityT, statsT, itemT, distance, infos);
+		int[][] info = wugu2.info(entity, stats, item, entityT, statsT, itemT, distance);
+		String[] infoV = new String[8];
+		if(info[0][1] > 0)
+		{
+			infoV[0] = String.valueOf(info[0][0]);
+			infoV[2] = String.valueOf(info[0][1]);
+			infoV[4] = String.valueOf(info[0][2]);
+			infoV[6] = String.valueOf(info[0][3]);
+		}
+		else
+		{
+			infoV[0] = "";
+			infoV[2] = "";
+			infoV[4] = "";
+			infoV[6] = "";
+		}
+		if(info[1][1] > 0)
+		{
+			infoV[1] = String.valueOf(info[1][0]);
+			infoV[3] = String.valueOf(info[1][1]);
+			infoV[5] = String.valueOf(info[1][2]);
+			infoV[7] = String.valueOf(info[1][3]);
+		}
+		else
+		{
+			infoV[1] = "";
+			infoV[3] = "";
+			infoV[5] = "";
+			infoV[7] = "";
+		}
+		return new AttackInfo2(entity, stats, item, entityT, statsT, itemT, distance, infoV);
 	}
 
-	private AttackInfo2(XEntity entity, Stats2 stats, Item item, XEntity entityT, Stats2 statsT, Item itemT,
+	private AttackInfo2(XEntity entity, Stats2 stats, AttackItem2 item, XEntity entityT, Stats2 statsT, AttackItem2 itemT,
 			int distance, String... infos)
 	{
 		super(entity, stats, item, entityT, statsT, itemT, distance, infos);

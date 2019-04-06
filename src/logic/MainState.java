@@ -8,6 +8,7 @@ import entity.hero.*;
 import file.*;
 import geom.d1.*;
 import item.*;
+import item.items.*;
 import levelMap.*;
 import levelMap.importX.*;
 
@@ -35,13 +36,14 @@ public class MainState
 		XHero h1 = new XHero(y2.create2(-2, -1), this, Stats2.create1());
 		h1.addItems(new ItemList(Items.BLUE, Items.GSL, Items.MATERIAL, Items.TECHNOLOGY));
 		h1.addItems(new ItemList(Items.BLUE, Items.GSL, Items.MATERIAL, Items.TECHNOLOGY));
+		h1.addItems(new ItemList(AttackItem2.item1()));
 		levelMap.addEntity(h1);
 		levelMap.addEntity(new XEnemy(y2.create2(2, 1), this, Stats2.create1()));
 		levelMap.addEntity(new XEnemy(y2.create2(2, 0), this, Stats2.create2()));
 		levelMap.addEntity(new XEnemy(y2.create2(2, -1), this, Stats2.create1()));
-		/*levelMap.addArrow(new VisualArrow(y2.create2(2, 0), y1.create2(4, 1), ArrowMode.ARROW, 120, null));
-		levelMap.addArrow(new VisualArrow(y2.create2(-2, 0), y1.create2(4, -4), ArrowMode.ARROW, 120, null));
-		levelMap.addArrow(new VisualArrow(y2.create2(-3, 0), y1.create2(-3, 0), ArrowMode.ARROW, 120, null));*/
+		/*levelMap.addArrow(new VisualArrow(y2, y2.create2(2, 0), y2.create2(4, 1), ArrowMode.ARROW, 120, null));
+		levelMap.addArrow(new VisualArrow(y2, y2.create2(-2, 0), y2.create2(4, -4), ArrowMode.ARROW, 120, null));
+		levelMap.addArrow(new VisualArrow(y2, y2.create2(-3, 0), y2.create2(-3, 0), ArrowMode.ARROW, 120, null));*/
 		ProductionBuilding blue1 = new ProductionBuilding(y2.create2(-2, -2), BuildingBlueprint.get(buildingBlueprintCache, "BLUE1"));
 		levelMap.addBuilding(blue1);
 		blue1.claimFloor(levelMap);
