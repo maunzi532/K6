@@ -70,6 +70,39 @@ public class Stats1 implements Stats
 		return currentHealth;
 	}
 
+	@Override
+	public int getStat(int num)
+	{
+		return currentHealth;
+	}
+
+	@Override
+	public int getMaxStat(int num)
+	{
+		return maxHealth;
+	}
+
+	@Override
+	public void change(boolean increase)
+	{
+		if(increase)
+		{
+			if(currentHealth < maxHealth)
+				currentHealth++;
+		}
+		else
+		{
+			if(currentHealth > 0)
+				currentHealth--;
+		}
+	}
+
+	@Override
+	public boolean removeEntity()
+	{
+		return currentHealth <= 0;
+	}
+
 	public static Stats1 create1()
 	{
 		return new Stats1(20, 10, 10, 5, 5, 5, 4);

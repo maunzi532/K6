@@ -8,10 +8,13 @@ import javafx.scene.paint.*;
 public class ArrowViewer
 {
 	private static final double SHINE_WIDTH = 0.65;
-	private static final double ZERO_SHINE_MULTIPLIER = 1.5;
+	private static final double ZERO_SHINE = 0.45;
 	public static final double WIDTH = 0.15;
 	public static final double HEAD_WIDTH = 0.25;
 	public static final double HEAD_IN = 0.5;
+	public static final double DATA_DISTANCE = 0.75;
+	public static final double DATA_WIDTH = 2;
+	public static final double DATA_HEIGHT = 0.3;
 
 	public ArrowViewer(DoubleType y2)
 	{
@@ -41,12 +44,27 @@ public class ArrowViewer
 	private DoubleTile visualEnd(XArrow arrow)
 	{
 		if(arrow.locations().size() < 2)
-			return y2.add(y2.fromTile(arrow.locations().get(0)), y2.normalize(y2.upwards()));
+		{
+			if(arrow.zeroUpwards())
+				return y2.add(y2.fromTile(arrow.locations().get(0)), y2.normalize(y2.upwards()));
+			else
+				return y2.fromTile(arrow.locations().get(0));
+		}
 		else
 			return y2.fromTile(arrow.locations().get(1));
 	}
 
-	private DoubleTile[] calculateArrowPoints(XArrow arrow)
+	private double distance(XArrow arrow)
+	{
+		return (arrow.counter() % arrow.duration()) / (double) arrow.duration();
+	}
+
+	public DoubleTile imageLocation(XArrow arrow)
+	{
+		return y2.tileLerp(visualStart(arrow), visualEnd(arrow), distance(arrow));
+	}
+
+	private DoubleTile[] calculateArrowPoints(ShineArrow arrow)
 	{
 		DoubleTile normal = normal(arrow);
 		DoubleTile sideNormalX2 = y2.rotateR2(normal, false);
@@ -65,7 +83,7 @@ public class ArrowViewer
 		return arrowPoints;
 	}
 
-	public DoubleTile[] arrowPoints(XArrow arrow)
+	public DoubleTile[] arrowPoints(ShineArrow arrow)
 	{
 		DoubleTile[] arrowPoints = arrow.storedArrowPoints();
 		if(arrowPoints == null)
@@ -76,25 +94,15 @@ public class ArrowViewer
 		return arrowPoints;
 	}
 
-	private double distance(XArrow arrow)
-	{
-		return (arrow.counter() % arrow.duration()) / (double) arrow.duration();
-	}
-
-	public DoubleTile imageLocation(XArrow arrow)
-	{
-		return y2.tileLerp(visualStart(arrow), visualEnd(arrow), distance(arrow));
-	}
-
-	private double shineW(XArrow arrow)
+	private double shineW(ShineArrow arrow)
 	{
 		if(arrow.locations().size() < 2)
-			return SHINE_WIDTH / ZERO_SHINE_MULTIPLIER;
+			return ZERO_SHINE;
 		else
 			return SHINE_WIDTH / y2.distance(arrow.locations().get(0), arrow.locations().get(1));
 	}
 
-	private double[] getShine(XArrow arrow, double dM, boolean loop)
+	private double[] getShine(ShineArrow arrow, double dM, boolean loop)
 	{
 		double shineW = shineW(arrow);
 		double dL = dM - shineW;
@@ -116,7 +124,7 @@ public class ArrowViewer
 		}
 	}
 
-	public Paint shineFill(XArrow arrow, TileLayout layout)
+	public Paint shineFill(ShineArrow arrow, TileLayout layout)
 	{
 		if(arrow.hasShine())
 		{
@@ -132,6 +140,19 @@ public class ArrowViewer
 		else
 		{
 			return Color.BLUE;
+		}
+	}
+
+	public DoubleTile dataLocation(InfoArrow arrow, TileLayout layout)
+	{
+		double[][] gp = layout.polygonCorners(visualStart(arrow), visualEnd(arrow));
+		if(gp[1][0] < gp[1][1] || (gp[1][0] == gp[1][1] && gp[0][0] > gp[0][1]))
+		{
+			return y2.add(visualStart(arrow), y2.multiply(y2.normalize(y2.upwards()), DATA_DISTANCE));
+		}
+		else
+		{
+			return y2.subtract(visualStart(arrow), y2.multiply(y2.normalize(y2.upwards()), DATA_DISTANCE));
 		}
 	}
 }

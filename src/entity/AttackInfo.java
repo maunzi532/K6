@@ -2,7 +2,7 @@ package entity;
 
 import item.*;
 
-public class AttackInfo<T extends Stats, I extends Item>
+public abstract class AttackInfo<T extends Stats, I extends Item>
 {
 	public final XEntity entity;
 	public final T stats;
@@ -25,4 +25,21 @@ public class AttackInfo<T extends Stats, I extends Item>
 		this.distance = distance;
 		this.infos = infos;
 	}
+
+	public XEntity getEntity(boolean inverse)
+	{
+		return inverse ? entityT : entity;
+	}
+
+	public T getStats(boolean inverse)
+	{
+		return inverse ? statsT : stats;
+	}
+
+	public I getItem(boolean inverse)
+	{
+		return inverse ? itemT : item;
+	}
+
+	public abstract int getChange(boolean inverse);
 }

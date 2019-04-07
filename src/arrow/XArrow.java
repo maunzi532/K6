@@ -1,6 +1,5 @@
 package arrow;
 
-import geom.d1.*;
 import geom.f1.*;
 import java.util.*;
 import javafx.scene.image.*;
@@ -57,21 +56,14 @@ public class XArrow
 		remove = true;
 	}
 
-	public Image transported()
+	public Image image()
 	{
 		return image;
 	}
 
-	public boolean hasShine()
+	public boolean zeroUpwards()
 	{
-		return false;
-	}
-
-	public void storeArrowPoints(DoubleTile[] store){}
-
-	public DoubleTile[] storedArrowPoints()
-	{
-		throw new RuntimeException();
+		return true;
 	}
 
 	public static XArrow factory(Tile start, Tile end, int duration, boolean loop, Image image, boolean shine)

@@ -90,12 +90,6 @@ public class QuadTileType implements TileType
 	}
 
 	@Override
-	public Tile upwards()
-	{
-		return create2(0, -1);
-	}
-
-	@Override
 	public Tile fromOffset(int x, int y)
 	{
 		return create2(x, y);

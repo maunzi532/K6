@@ -93,12 +93,6 @@ public class HexTileType implements TileType
 	}
 
 	@Override
-	public Tile upwards()
-	{
-		return create3(1, 1, -2);
-	}
-
-	@Override
 	public Tile fromOffset(int x, int y)
 	{
 		return create2(x - y / 2, y);

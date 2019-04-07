@@ -90,8 +90,9 @@ public class VisualTile
 	{
 		levelMap.getArrows().stream().filter(arrow -> arrow instanceof ShineArrow && av.isVisible(arrow, mid, range)).forEach(arrow ->
 				{
-					gd.setFill(av.shineFill(arrow, layout));
-					double[][] points = layout.polygonCorners(av.arrowPoints(arrow));
+					ShineArrow arrow1 = (ShineArrow) arrow;
+					gd.setFill(av.shineFill(arrow1, layout));
+					double[][] points = layout.polygonCorners(av.arrowPoints(arrow1));
 					gd.fillPolygon(points[0], points[1], points[0].length);
 				});
 	}
@@ -114,11 +115,26 @@ public class VisualTile
 
 	public void drawArrows1(TileLayout layout, Tile mid, int range)
 	{
-		levelMap.getArrows().stream().filter(arrow -> arrow.transported() != null && av.isVisible(arrow, mid, range)).forEach(arrow ->
+		levelMap.getArrows().stream().filter(arrow -> arrow.image() != null && av.isVisible(arrow, mid, range)).forEach(arrow ->
 				{
 					PointD midPoint = layout.tileToPixel(av.imageLocation(arrow));
-					gd.drawImage(arrow.transported(), midPoint.v[0] - layout.size().v[0], midPoint.v[1] - layout.size().v[1],
+					gd.drawImage(arrow.image(), midPoint.v[0] - layout.size().v[0], midPoint.v[1] - layout.size().v[1],
 							layout.size().v[0] * 2, layout.size().v[1] * 2);
 				});
+		levelMap.getArrows().stream().filter(arrow -> arrow instanceof InfoArrow && av.isVisible(arrow, mid, range)).forEach(arrow ->
+		{
+			InfoArrow arrow1 = (InfoArrow) arrow;
+			PointD midPoint = layout.tileToPixel(av.dataLocation(arrow1, layout));
+			double xw = layout.size().v[0] * ArrowViewer.DATA_WIDTH;
+			double yw = layout.size().v[1] * ArrowViewer.DATA_HEIGHT;
+			double xs = midPoint.v[0] - xw / 2;
+			double ys = midPoint.v[1] - yw / 2;
+			gd.setFill(arrow1.getBg());
+			gd.fillRect(xs, ys, xw, yw);
+			gd.setFill(arrow1.getFg());
+			gd.fillRect(xs, ys, xw * arrow1.getData() / arrow1.getMaxData(), yw);
+			gd.setStroke(arrow1.getBg());
+			gd.strokeRect(xs, ys, xw, yw);
+		});
 	}
 }

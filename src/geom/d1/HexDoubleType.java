@@ -92,6 +92,12 @@ public class HexDoubleType extends HexTileType implements DoubleType
 	}
 
 	@Override
+	public DoubleTile upwards()
+	{
+		return createD(1, 1, -2);
+	}
+
+	@Override
 	public DoubleTile tileLerp(DoubleTile t1, DoubleTile t2, double t)
 	{
 		return create3d(DoubleType.lerp(t1.v[0], t2.v[0], t),

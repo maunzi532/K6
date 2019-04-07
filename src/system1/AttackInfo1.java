@@ -37,12 +37,21 @@ public class AttackInfo1 extends AttackInfo<Stats1, AttackItem1>
 			infoV[5] = "";
 			infoV[7] = "";
 		}
-		return new AttackInfo1(entity, stats, item, entityT, statsT, itemT, distance, infoV);
+		return new AttackInfo1(entity, stats, item, entityT, statsT, itemT, distance, info, infoV);
 	}
 
+	private int[][] info;
+
 	private AttackInfo1(XEntity entity, Stats1 stats, AttackItem1 item, XEntity entityT, Stats1 statsT, AttackItem1 itemT,
-			int distance, String... infos)
+			int distance, int[][] info, String... infos)
 	{
 		super(entity, stats, item, entityT, statsT, itemT, distance, infos);
+		this.info = info;
+	}
+
+	@Override
+	public int getChange(boolean inverse)
+	{
+		return -info[inverse ? 0 : 1][0];
 	}
 }

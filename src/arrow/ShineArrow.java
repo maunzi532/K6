@@ -16,19 +16,16 @@ public class ShineArrow extends XArrow
 		this.hasShine = hasShine;
 	}
 
-	@Override
 	public boolean hasShine()
 	{
 		return hasShine;
 	}
 
-	@Override
 	public void storeArrowPoints(DoubleTile[] store)
 	{
 		stored = store;
 	}
 
-	@Override
 	public DoubleTile[] storedArrowPoints()
 	{
 		return stored;
