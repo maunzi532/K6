@@ -64,8 +64,8 @@ public class Transporter extends Buildable
 		{
 			PossibleTransport transport = transportOpt.get();
 			invTransporter.doTheTransport(transport);
-			levelMap.addArrow(new VisualArrow(levelMap.y2, transport.from.location(),
-					transport.to.location(), ArrowMode.TARROW, TRANSPORT_TIME, transport.item.image()));
+			levelMap.addArrow(XArrow.factory(transport.from.location(),
+					transport.to.location(), TRANSPORT_TIME, false, transport.item.image(), true));
 		}
 	}
 }

@@ -55,18 +55,18 @@ public class XStateControl
 	public void handleMenuClick(int menuOption, int key)
 	{
 		NState newState = menu.get(menuOption);
-		if(newState == state && !(state instanceof NClickState))
-			return;
-		xgui.close(this);
 		if(newState instanceof NClickState)
 		{
+			xgui.close(this);
 			((NClickState) newState).onMenuClick(key, mainState);
+			update();
 		}
-		else
+		else if(newState != state)
 		{
+			xgui.close(this);
 			state = newState;
+			update();
 		}
-		update();
 	}
 
 	public void target(Tile offset)

@@ -11,7 +11,7 @@ public class XEntity
 	private static final Image IMAGE = new Image("GSL1_0.png");
 
 	protected Tile location;
-	private VisualArrow replace;
+	private XArrow replace;
 	protected MainState mainState;
 	protected Stats1 stats;
 
@@ -47,7 +47,7 @@ public class XEntity
 		return replace == null || replace.finished();
 	}
 
-	public void setReplacementArrow(VisualArrow arrow)
+	public void setReplacementArrow(XArrow arrow)
 	{
 		replace = arrow;
 	}

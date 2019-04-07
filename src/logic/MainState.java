@@ -23,7 +23,7 @@ public class MainState
 	public MainState(DoubleType y2)
 	{
 		this.y2 = y2;
-		levelMap = new LevelMap(y2, y2);
+		levelMap = new LevelMap(y2);
 		buildingBlueprintCache = new BlueprintCache<>("buildings");
 		stateControl = new XStateControl(this);
 		wugu1 = new Wugu2();

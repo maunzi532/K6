@@ -86,7 +86,7 @@ public class HexDoubleType extends HexTileType implements DoubleType
 	}
 
 	@Override
-	public DoubleTile rotateR(DoubleTile t1, boolean inverse)
+	public DoubleTile rotateR2(DoubleTile t1, boolean inverse)
 	{
 		return subtract(rotate(t1, false), rotate(t1, true));
 	}

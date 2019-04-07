@@ -2,7 +2,6 @@ package levelMap;
 
 import arrow.*;
 import entity.*;
-import geom.d1.*;
 import geom.f1.*;
 import java.util.*;
 
@@ -11,15 +10,13 @@ public class LevelMap
 	private static final int TIME_PER_DISTANCE = 20;
 
 	public final TileType y1;
-	public final DoubleType y2;
 	private final HashMap<Tile, AdvTile> advTiles;
 	private Map<Tile, MarkType> marked;
-	private final ArrayList<VisualArrow> arrows;
+	private final ArrayList<XArrow> arrows;
 
-	public LevelMap(TileType y1, DoubleType y2)
+	public LevelMap(TileType y1)
 	{
 		this.y1 = y1;
-		this.y2 = y2;
 		advTiles = new HashMap<>();
 		marked = Map.of();
 		arrows = new ArrayList<>();
@@ -111,8 +108,8 @@ public class LevelMap
 	public void moveEntity(XEntity entity, Tile newLocation)
 	{
 		removeEntity(entity);
-		VisualArrow arrow = new VisualArrow(y2, entity.location(), newLocation, ArrowMode.TRANSPORT,
-				y1.distance(newLocation, entity.location()) * TIME_PER_DISTANCE, entity.getImage());
+		XArrow arrow = XArrow.factory(entity.location(), newLocation,
+				y1.distance(newLocation, entity.location()) * TIME_PER_DISTANCE, false, entity.getImage(), false);
 		addArrow(arrow);
 		entity.setLocation(newLocation);
 		entity.setReplacementArrow(arrow);
@@ -130,18 +127,19 @@ public class LevelMap
 		this.marked = marked;
 	}
 
-	public List<VisualArrow> getArrows()
+	public List<XArrow> getArrows()
 	{
 		return arrows;
 	}
 
-	public void addArrow(VisualArrow arrow)
+	public void addArrow(XArrow arrow)
 	{
 		arrows.add(arrow);
 	}
 
 	public void tickArrows()
 	{
-		arrows.removeIf(VisualArrow::tick);
+		arrows.forEach(XArrow::tick);
+		arrows.removeIf(XArrow::finished);
 	}
 }

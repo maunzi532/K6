@@ -27,7 +27,7 @@ public class MainVisual
 		mainState.initialize();
 		gd.setTextAlign(TextAlignment.CENTER);
 		gd.setTextBaseline(VPos.CENTER);
-		visualTile = new VisualTile(y2, mainState.levelMap, gd);
+		visualTile = new VisualTile(y2, new ArrowViewer(y2), mainState.levelMap, gd);
 		visualMenu = new VisualMenu(gd, w / 2f, h / 2f, mainState.stateControl);
 		visualGUI = new VisualGUIQuad(gd, w / 2f, h / 2f, mainState.stateControl);
 		//visualGUI = new VisualGUIHex(gd, w / 2f, h / 2f, mainState.stateControl);

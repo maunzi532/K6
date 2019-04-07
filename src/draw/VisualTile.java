@@ -12,12 +12,14 @@ import levelMap.*;
 public class VisualTile
 {
 	private final TileType y1;
+	private final ArrowViewer av;
 	private LevelMap levelMap;
 	private GraphicsContext gd;
 
-	public VisualTile(TileType y1, LevelMap levelMap, GraphicsContext gd)
+	public VisualTile(TileType y1, ArrowViewer av, LevelMap levelMap, GraphicsContext gd)
 	{
 		this.y1 = y1;
+		this.av = av;
 		this.levelMap = levelMap;
 		this.gd = gd;
 	}
@@ -86,33 +88,12 @@ public class VisualTile
 
 	public void drawArrows0(TileLayout layout, Tile mid, int range)
 	{
-		for(VisualArrow arrow : levelMap.getArrows())
-		{
-			if(arrow.isVisible(mid, range))
-			{
-				if(arrow.showArrow())
+		levelMap.getArrows().stream().filter(arrow -> arrow instanceof ShineArrow && av.isVisible(arrow, mid, range)).forEach(arrow ->
 				{
-					if(arrow.showShine())
-					{
-						double[][] gradientPoints = layout.polygonCorners(arrow.visualStart(), arrow.visualEnd());
-						double[] shine = arrow.getShine();
-						Stop[] stops = new Stop[shine.length];
-						for(int i = 0; i < shine.length; i++)
-						{
-							stops[i] = new Stop(shine[i], i % 3 == 1 ? Color.AZURE : Color.BLUE);
-						}
-						gd.setFill(new LinearGradient(gradientPoints[0][0], gradientPoints[1][0],
-								gradientPoints[0][1], gradientPoints[1][1], false, null, stops));
-					}
-					else
-					{
-						gd.setFill(Color.BLUE);
-					}
-					double[][] points = layout.polygonCorners(arrow.getArrowPoints());
+					gd.setFill(av.shineFill(arrow, layout));
+					double[][] points = layout.polygonCorners(av.arrowPoints(arrow));
 					gd.fillPolygon(points[0], points[1], points[0].length);
-				}
-			}
-		}
+				});
 	}
 
 	public void draw1(TileLayout layout, Tile t1)
@@ -133,17 +114,11 @@ public class VisualTile
 
 	public void drawArrows1(TileLayout layout, Tile mid, int range)
 	{
-		for(VisualArrow arrow : levelMap.getArrows())
-		{
-			if(arrow.isVisible(mid, range))
-			{
-				if(arrow.showTransport())
+		levelMap.getArrows().stream().filter(arrow -> arrow.transported() != null && av.isVisible(arrow, mid, range)).forEach(arrow ->
 				{
-					PointD midPoint = layout.tileToPixel(arrow.currentTLocation());
+					PointD midPoint = layout.tileToPixel(av.imageLocation(arrow));
 					gd.drawImage(arrow.transported(), midPoint.v[0] - layout.size().v[0], midPoint.v[1] - layout.size().v[1],
 							layout.size().v[0] * 2, layout.size().v[1] * 2);
-				}
-			}
-		}
+				});
 	}
 }
