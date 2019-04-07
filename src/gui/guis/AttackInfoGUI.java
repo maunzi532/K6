@@ -1,7 +1,6 @@
 package gui.guis;
 
 import entity.*;
-import entity.hero.*;
 import gui.*;
 import item.*;
 import java.util.*;

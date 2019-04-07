@@ -2,7 +2,6 @@ package logic.xstate;
 
 import arrow.*;
 import entity.*;
-import entity.hero.*;
 import javafx.scene.paint.*;
 import logic.*;
 
@@ -56,9 +55,9 @@ public class AttackAnimState implements NAutoState
 		}
 		if(counter >= 40 && counter % 3 == 0)
 		{
-			if(counter2 >= 0 && counter2 < Math.abs(aI.getChange(inverse)))
+			if(counter2 >= 0 && counter2 < Math.abs(aI.getChange(true, inverse)))
 			{
-				stats.change(aI.getChange(inverse) > 0);
+				stats.change(aI.getChange(true, inverse) > 0);
 				infoE.setData(stats.getStat(0));
 				counter2++;
 				if(stats.removeEntity())
@@ -73,9 +72,9 @@ public class AttackAnimState implements NAutoState
 			{
 				counter2 = -1;
 			}
-			if(counter2T >= 0 && counter2T < Math.abs(aI.getChange(!inverse)))
+			if(counter2T >= 0 && counter2T < Math.abs(aI.getChange(false, !inverse)))
 			{
-				statsT.change(aI.getChange(!inverse) > 0);
+				statsT.change(aI.getChange(false, !inverse) > 0);
 				infoET.setData(statsT.getStat(0));
 				counter2T++;
 				if(statsT.removeEntity())
@@ -105,6 +104,19 @@ public class AttackAnimState implements NAutoState
 	@Override
 	public NState nextState()
 	{
+		if(aI.getStats(inverse).removeEntity() || aI.getStats(!inverse).removeEntity())
+			return NoneState.INSTANCE;
+		int nextNum = inverse ? num + 1 : num;
+		if(nextNum < aI.attackCount(!inverse))
+		{
+			System.out.println(nextNum);
+			return new AttackAnimState(aI, nextNum, !inverse);
+		}
+		if(num + 1 < aI.attackCount(inverse))
+		{
+			System.out.println("A");
+			return new AttackAnimState(aI, num + 1, inverse);
+		}
 		return NoneState.INSTANCE;
 	}
 

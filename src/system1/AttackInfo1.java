@@ -50,8 +50,14 @@ public class AttackInfo1 extends AttackInfo<Stats1, AttackItem1>
 	}
 
 	@Override
-	public int getChange(boolean inverse)
+	public int getChange(boolean current, boolean inverse)
 	{
-		return -info[inverse ? 0 : 1][0];
+		return current ? 0 : -info[inverse ? 0 : 1][0];
+	}
+
+	@Override
+	public int attackCount(boolean inverse)
+	{
+		return info[inverse ? 1 : 0][1];
 	}
 }

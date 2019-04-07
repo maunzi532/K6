@@ -1,7 +1,6 @@
 package logic.xstate;
 
 import entity.*;
-import entity.hero.*;
 import geom.f1.*;
 import java.util.*;
 import java.util.stream.*;

@@ -1,7 +1,7 @@
 package gui.guis;
 
 import building.blueprint.*;
-import entity.hero.XHero;
+import entity.XHero;
 import gui.*;
 import item.*;
 import item.inv.*;

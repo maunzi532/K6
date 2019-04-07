@@ -1,7 +1,6 @@
 package logic.xstate;
 
 import entity.*;
-import entity.hero.*;
 import gui.*;
 import gui.guis.*;
 import logic.*;

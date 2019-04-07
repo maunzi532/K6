@@ -1,28 +1,21 @@
-package entity.hero;
+package entity;
 
 import building.*;
 import building.blueprint.*;
-import entity.*;
-import entity.enemy.*;
 import geom.f1.*;
 import item.*;
 import item.inv.*;
-import item.inv.transport.*;
 import java.util.*;
 import javafx.scene.image.*;
 import logic.*;
 
-public class XHero extends XEntity implements DoubleInv
+public class XHero extends InvEntity
 {
-	private static final int BASE_WEIGHT_LIMIT = 20;
 	private static final Image IMAGE_S = new Image("S.png");
 
-	private Inv inv;
-
-	public XHero(Tile location, MainState mainState, Stats stats)
+	public XHero(Tile location, MainState mainState, Stats stats, int weightLimit, ItemList itemList)
 	{
-		super(location, mainState, stats);
-		inv = new WeightInv(BASE_WEIGHT_LIMIT);
+		super(location, mainState, stats, weightLimit, itemList);
 	}
 
 	@Override
@@ -38,26 +31,9 @@ public class XHero extends XEntity implements DoubleInv
 	}
 
 	@Override
-	public Inv inputInv()
-	{
-		return inv;
-	}
-
-	@Override
-	public Inv outputInv()
-	{
-		return inv;
-	}
-
-	@Override
 	public boolean isEnemy(XEntity other)
 	{
 		return other instanceof XEnemy;
-	}
-
-	public void addItems(ItemList itemList)
-	{
-		inv.tryAdd(itemList, false, CommitType.COMMIT);
 	}
 
 	public Optional<ItemList> tryBuildingCosts(CostBlueprint cost, CommitType commitType)

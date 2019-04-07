@@ -24,7 +24,7 @@ public class XEntity
 
 	public boolean isEnemy(XEntity other)
 	{
-		return true;
+		return false;
 	}
 
 	public Tile location()

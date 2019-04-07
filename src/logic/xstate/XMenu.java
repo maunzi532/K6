@@ -1,7 +1,7 @@
 package logic.xstate;
 
 import building.*;
-import entity.hero.*;
+import entity.*;
 import java.util.*;
 
 public class XMenu

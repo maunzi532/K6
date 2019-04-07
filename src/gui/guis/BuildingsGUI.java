@@ -1,6 +1,6 @@
 package gui.guis;
 
-import entity.hero.*;
+import entity.*;
 import levelMap.MBuilding;
 import building.blueprint.BuildingBlueprint;
 import file.BlueprintCache;

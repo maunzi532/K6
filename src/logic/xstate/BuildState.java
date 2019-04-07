@@ -1,7 +1,7 @@
 package logic.xstate;
 
 import building.blueprint.*;
-import entity.hero.*;
+import entity.*;
 import gui.*;
 import gui.guis.*;
 import logic.*;

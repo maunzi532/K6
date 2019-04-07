@@ -2,7 +2,6 @@ package logic;
 
 import building.*;
 import entity.*;
-import entity.hero.*;
 import geom.f1.*;
 import gui.*;
 import java.util.*;

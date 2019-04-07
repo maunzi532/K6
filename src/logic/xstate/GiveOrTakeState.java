@@ -1,6 +1,6 @@
 package logic.xstate;
 
-import entity.hero.*;
+import entity.*;
 import geom.f1.*;
 import item.inv.transport.*;
 import java.util.*;

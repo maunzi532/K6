@@ -1,7 +1,6 @@
 package system1;
 
 import entity.*;
-import entity.hero.*;
 import java.util.*;
 import java.util.stream.*;
 import logic.*;
@@ -23,9 +22,9 @@ public class System1 implements CombatSystem<Stats1, AttackInfo1, AttackItem1>
 	@Override
 	public List<Integer> attackRanges(MainState mainState, XEntity entity, Stats1 stats, boolean counter)
 	{
-		if(entity instanceof XHero)
+		if(entity instanceof InvEntity)
 		{
-			List<int[]> v = ((XHero) entity).outputInv().viewItems(false)
+			List<int[]> v = ((InvEntity) entity).outputInv().viewItems(false)
 					.stream().filter(e -> AttackItem1Slot.INSTANCE.canContain(e.item))
 					.map(e -> ((AttackItem1) e.item).getRanges()).collect(Collectors.toList());
 			HashSet<Integer> ints2 = new HashSet<>();
@@ -55,9 +54,9 @@ public class System1 implements CombatSystem<Stats1, AttackInfo1, AttackItem1>
 	@Override
 	public List<AttackItem1> items(MainState mainState, XEntity entity, Stats1 stats, int distance)
 	{
-		if(entity instanceof XHero)
+		if(entity instanceof InvEntity)
 		{
-			return ((XHero) entity).outputInv().viewItems(false)
+			return ((InvEntity) entity).outputInv().viewItems(false)
 					.stream().filter(e -> AttackItem1Slot.INSTANCE.canContain(e.item))
 					.map(e -> (AttackItem1) e.item)
 					.filter(e -> Arrays.stream(e.getRanges()).anyMatch(f -> f == distance)).collect(Collectors.toList());
@@ -68,9 +67,9 @@ public class System1 implements CombatSystem<Stats1, AttackInfo1, AttackItem1>
 	@Override
 	public Optional<AttackItem1> equipItem(MainState mainState, XEntity entity, Stats1 stats, int distance)
 	{
-		if(entity instanceof XHero)
+		if(entity instanceof InvEntity)
 		{
-			AttackItem1 item = (AttackItem1) ((XHero) entity).outputInv().viewRecipeItem(AttackItem1Slot.INSTANCE).item;
+			AttackItem1 item = (AttackItem1) ((InvEntity) entity).outputInv().viewRecipeItem(AttackItem1Slot.INSTANCE).item;
 			if(Arrays.stream(item.getRanges()).anyMatch(e -> e == distance))
 				return Optional.of(item);
 			else

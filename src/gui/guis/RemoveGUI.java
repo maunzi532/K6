@@ -1,7 +1,7 @@
 package gui.guis;
 
 import building.Buildable;
-import entity.hero.XHero;
+import entity.XHero;
 import gui.*;
 import item.ItemList;
 import item.inv.CommitType;

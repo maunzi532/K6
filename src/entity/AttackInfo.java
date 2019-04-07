@@ -41,5 +41,7 @@ public abstract class AttackInfo<T extends Stats, I extends Item>
 		return inverse ? itemT : item;
 	}
 
-	public abstract int getChange(boolean inverse);
+	public abstract int getChange(boolean current, boolean inverse);
+
+	public abstract int attackCount(boolean inverse);
 }
