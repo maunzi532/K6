@@ -77,6 +77,7 @@ public class MainVisual
 
 	public void tick()
 	{
+		mainState.stateControl.tick();
 		mainState.levelMap.tickArrows();
 		draw();
 	}

@@ -4,7 +4,9 @@ import logic.*;
 
 public interface NAutoState extends NState
 {
-	boolean tickCheckFinished(MainState mainState);
+	void tick(MainState mainState);
+
+	boolean finished();
 
 	NState nextState();
 }

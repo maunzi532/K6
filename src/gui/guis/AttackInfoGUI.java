@@ -6,6 +6,7 @@ import gui.*;
 import item.*;
 import java.util.*;
 import logic.*;
+import logic.xstate.*;
 
 public class AttackInfoGUI extends XGUI implements InvGUI
 {
@@ -16,6 +17,7 @@ public class AttackInfoGUI extends XGUI implements InvGUI
 	private final XEntity target;
 	private final List<AttackInfo> infoList;
 	private final InvGUIPart attacksView;
+	private AttackInfo chosen;
 
 	public AttackInfoGUI(XHero attacker, XEntity target)
 	{
@@ -91,12 +93,11 @@ public class AttackInfoGUI extends XGUI implements InvGUI
 	public boolean click(int x, int y, int key, XStateControl stateControl)
 	{
 		attacksView.checkClick(x, y, infoList.size(), this);
-		/*if(chosen != null)
+		if(chosen != null)
 		{
-			//stateControl.stateInfo[3] = chosen;
-			stateControl.setState(new BuildState(attacker, chosen));
+			stateControl.setState(new AttackAnimState(chosen));
 			return true;
-		}*/
+		}
 		if(attacksView.updateGUIFlag())
 			update();
 		return false;
@@ -105,6 +106,6 @@ public class AttackInfoGUI extends XGUI implements InvGUI
 	@Override
 	public void onClickItem(int invID, int num, int xi, int yi)
 	{
-		//chosen = BuildingBlueprint.get(blueprintCache, names[num]);
+		chosen = infoList.get(num);
 	}
 }

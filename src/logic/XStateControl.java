@@ -54,6 +54,8 @@ public class XStateControl
 
 	public void handleMenuClick(int menuOption, int key)
 	{
+		if(state instanceof NAutoState)
+			return;
 		NState newState = menu.get(menuOption);
 		if(newState instanceof NClickState)
 		{
@@ -90,6 +92,8 @@ public class XStateControl
 
 	public void handleMapClick(Tile mapTile, int key)
 	{
+		if(state instanceof NAutoState)
+			return;
 		if(state instanceof NMarkState)
 		{
 			((NMarkState) state).onClick(mapTile, mainState.levelMap.getMarked().getOrDefault(mapTile, MarkType.NOT),
@@ -166,5 +170,16 @@ public class XStateControl
 			xgui = ((NGUIState) state).gui(mainState);
 		else
 			xgui = NoGUI.NONE;
+	}
+
+	public void tick()
+	{
+		if(state instanceof NAutoState)
+		{
+			NAutoState state1 = (NAutoState) state;
+			state1.tick(mainState);
+			if(state1.finished())
+				setState(state1.nextState());
+		}
 	}
 }
