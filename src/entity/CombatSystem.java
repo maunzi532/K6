@@ -4,7 +4,7 @@ import item.*;
 import java.util.*;
 import logic.*;
 
-public interface Wugu1<T extends Stats1, A extends AttackInfo, I extends Item>
+public interface CombatSystem<T extends Stats, A extends AttackInfo, I extends Item>
 {
 	int movement(MainState mainState, XEntity entity, T stats);
 

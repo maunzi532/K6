@@ -1,13 +1,13 @@
-package entity;
+package system1;
 
-import item.items.*;
+import entity.*;
 
-public class AttackInfo2 extends AttackInfo<Stats2, AttackItem2>
+public class AttackInfo1 extends AttackInfo<Stats1, AttackItem1>
 {
-	public static AttackInfo2 create(Wugu2 wugu2, XEntity entity, Stats2 stats, AttackItem2 item,
-			XEntity entityT, Stats2 statsT, AttackItem2 itemT, int distance)
+	public static AttackInfo1 create(System1 system1, XEntity entity, Stats1 stats, AttackItem1 item,
+			XEntity entityT, Stats1 statsT, AttackItem1 itemT, int distance)
 	{
-		int[][] info = wugu2.info(entity, stats, item, entityT, statsT, itemT, distance);
+		int[][] info = system1.info(entity, stats, item, entityT, statsT, itemT, distance);
 		String[] infoV = new String[8];
 		if(info[0][1] > 0)
 		{
@@ -37,10 +37,10 @@ public class AttackInfo2 extends AttackInfo<Stats2, AttackItem2>
 			infoV[5] = "";
 			infoV[7] = "";
 		}
-		return new AttackInfo2(entity, stats, item, entityT, statsT, itemT, distance, infoV);
+		return new AttackInfo1(entity, stats, item, entityT, statsT, itemT, distance, infoV);
 	}
 
-	private AttackInfo2(XEntity entity, Stats2 stats, AttackItem2 item, XEntity entityT, Stats2 statsT, AttackItem2 itemT,
+	private AttackInfo1(XEntity entity, Stats1 stats, AttackItem1 item, XEntity entityT, Stats1 statsT, AttackItem1 itemT,
 			int distance, String... infos)
 	{
 		super(entity, stats, item, entityT, statsT, itemT, distance, infos);

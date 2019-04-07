@@ -13,9 +13,9 @@ public class XEntity
 	protected Tile location;
 	private XArrow replace;
 	protected MainState mainState;
-	protected Stats1 stats;
+	protected Stats stats;
 
-	public XEntity(Tile location, MainState mainState, Stats1 stats)
+	public XEntity(Tile location, MainState mainState, Stats stats)
 	{
 		this.location = location;
 		this.mainState = mainState;
@@ -54,21 +54,21 @@ public class XEntity
 
 	public int movement()
 	{
-		return mainState.wugu1.movement(mainState, this, stats);
+		return mainState.combatSystem.movement(mainState, this, stats);
 	}
 
 	public int maxAccessRange()
 	{
-		return mainState.wugu1.maxAccessRange(mainState, this, stats);
+		return mainState.combatSystem.maxAccessRange(mainState, this, stats);
 	}
 
 	public List<Integer> attackRanges(boolean counter)
 	{
-		return mainState.wugu1.attackRanges(mainState, this, stats, counter);
+		return mainState.combatSystem.attackRanges(mainState, this, stats, counter);
 	}
 
 	public List<AttackInfo> attackInfo(XEntity target)
 	{
-		return mainState.wugu1.attackInfo(mainState, this, stats, target, target.stats);
+		return mainState.combatSystem.attackInfo(mainState, this, stats, target, target.stats);
 	}
 }

@@ -7,7 +7,7 @@ import logic.*;
 
 public class XEnemy extends XEntity
 {
-	public XEnemy(Tile location, MainState mainState, Stats1 stats)
+	public XEnemy(Tile location, MainState mainState, Stats stats)
 	{
 		super(location, mainState, stats);
 	}

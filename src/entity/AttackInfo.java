@@ -2,7 +2,7 @@ package entity;
 
 import item.*;
 
-public class AttackInfo<T extends Stats1, I extends Item>
+public class AttackInfo<T extends Stats, I extends Item>
 {
 	public final XEntity entity;
 	public final T stats;

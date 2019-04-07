@@ -1,33 +1,33 @@
-package entity;
+package system1;
 
+import entity.*;
 import entity.hero.*;
-import item.items.*;
 import java.util.*;
 import java.util.stream.*;
 import logic.*;
 
-public class Wugu2 implements Wugu1<Stats2, AttackInfo2, AttackItem2>
+public class System1 implements CombatSystem<Stats1, AttackInfo1, AttackItem1>
 {
 	@Override
-	public int movement(MainState mainState, XEntity entity, Stats2 stats)
+	public int movement(MainState mainState, XEntity entity, Stats1 stats)
 	{
 		return stats.getMovement();
 	}
 
 	@Override
-	public int maxAccessRange(MainState mainState, XEntity entity, Stats2 stats)
+	public int maxAccessRange(MainState mainState, XEntity entity, Stats1 stats)
 	{
 		return 4;
 	}
 
 	@Override
-	public List<Integer> attackRanges(MainState mainState, XEntity entity, Stats2 stats, boolean counter)
+	public List<Integer> attackRanges(MainState mainState, XEntity entity, Stats1 stats, boolean counter)
 	{
 		if(entity instanceof XHero)
 		{
 			List<int[]> v = ((XHero) entity).outputInv().viewItems(false)
-					.stream().filter(e -> AttackItem2Slot.INSTANCE.canContain(e.item))
-					.map(e -> ((AttackItem2) e.item).getRanges()).collect(Collectors.toList());
+					.stream().filter(e -> AttackItem1Slot.INSTANCE.canContain(e.item))
+					.map(e -> ((AttackItem1) e.item).getRanges()).collect(Collectors.toList());
 			HashSet<Integer> ints2 = new HashSet<>();
 			for(int[] ints : v)
 			{
@@ -42,35 +42,35 @@ public class Wugu2 implements Wugu1<Stats2, AttackInfo2, AttackItem2>
 	}
 
 	@Override
-	public List<AttackInfo2> attackInfo(MainState mainState, XEntity entity, Stats2 stats,
-			XEntity entityT, Stats2 statsT)
+	public List<AttackInfo1> attackInfo(MainState mainState, XEntity entity, Stats1 stats,
+			XEntity entityT, Stats1 statsT)
 	{
 		int distance = mainState.y2.distance(entity.location(), entityT.location());
-		Optional<AttackItem2> itemT = equipItem(mainState, entityT, statsT, distance);
+		Optional<AttackItem1> itemT = equipItem(mainState, entityT, statsT, distance);
 		return items(mainState, entity, stats, distance).stream()
-				.map(item -> AttackInfo2.create(this, entity, stats, item, entityT, statsT, itemT.orElse(null), distance))
+				.map(item -> AttackInfo1.create(this, entity, stats, item, entityT, statsT, itemT.orElse(null), distance))
 				.collect(Collectors.toList());
 	}
 
 	@Override
-	public List<AttackItem2> items(MainState mainState, XEntity entity, Stats2 stats, int distance)
+	public List<AttackItem1> items(MainState mainState, XEntity entity, Stats1 stats, int distance)
 	{
 		if(entity instanceof XHero)
 		{
 			return ((XHero) entity).outputInv().viewItems(false)
-					.stream().filter(e -> AttackItem2Slot.INSTANCE.canContain(e.item))
-					.map(e -> (AttackItem2) e.item)
+					.stream().filter(e -> AttackItem1Slot.INSTANCE.canContain(e.item))
+					.map(e -> (AttackItem1) e.item)
 					.filter(e -> Arrays.stream(e.getRanges()).anyMatch(f -> f == distance)).collect(Collectors.toList());
 		}
 		return List.of();
 	}
 
 	@Override
-	public Optional<AttackItem2> equipItem(MainState mainState, XEntity entity, Stats2 stats, int distance)
+	public Optional<AttackItem1> equipItem(MainState mainState, XEntity entity, Stats1 stats, int distance)
 	{
 		if(entity instanceof XHero)
 		{
-			AttackItem2 item = (AttackItem2) ((XHero) entity).outputInv().viewRecipeItem(AttackItem2Slot.INSTANCE).item;
+			AttackItem1 item = (AttackItem1) ((XHero) entity).outputInv().viewRecipeItem(AttackItem1Slot.INSTANCE).item;
 			if(Arrays.stream(item.getRanges()).anyMatch(e -> e == distance))
 				return Optional.of(item);
 			else
@@ -79,8 +79,8 @@ public class Wugu2 implements Wugu1<Stats2, AttackInfo2, AttackItem2>
 		return Optional.empty();
 	}
 
-	public int[][] info(XEntity entity, Stats2 stats, AttackItem2 item,
-			XEntity entityT, Stats2 statsT, AttackItem2 itemT, int distance)
+	public int[][] info(XEntity entity, Stats1 stats, AttackItem1 item,
+			XEntity entityT, Stats1 statsT, AttackItem1 itemT, int distance)
 	{
 		int speed = item != null ? stats.getSpeed() - item.getSlowdown() : stats.getSpeed();
 		int speedT = itemT != null ? statsT.getSpeed() - itemT.getSlowdown() : statsT.getSpeed();

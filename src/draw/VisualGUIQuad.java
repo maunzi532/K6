@@ -40,8 +40,8 @@ public class VisualGUIQuad extends VisualGUI
 	public void draw()
 	{
 		XGUI xgui = stateControl.getXgui();
-		double cxs = (xgui.xw() - 1) * QuadLayout2.DQ2;
-		double cys = (xgui.yw() - 1) * QuadLayout2.DQ2;
-		draw1(xgui, cxs, cys, LU, rl(xgui), QuadLayout2.DQ2, FONT_SIZE, TEXT_END);
+		double cxs = (xgui.xw() - 1) * QuadLayout.DQ2;
+		double cys = (xgui.yw() - 1) * QuadLayout.DQ2;
+		draw1(xgui, cxs, cys, LU, rl(xgui), QuadLayout.DQ2, FONT_SIZE, TEXT_END);
 	}
 }

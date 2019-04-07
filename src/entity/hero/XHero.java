@@ -19,7 +19,7 @@ public class XHero extends XEntity implements DoubleInv
 
 	private Inv inv;
 
-	public XHero(Tile location, MainState mainState, Stats1 stats)
+	public XHero(Tile location, MainState mainState, Stats stats)
 	{
 		super(location, mainState, stats);
 		inv = new WeightInv(BASE_WEIGHT_LIMIT);

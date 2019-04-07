@@ -1,6 +1,8 @@
-package entity;
+package system1;
 
-public class Stats2 implements Stats1
+import entity.*;
+
+public class Stats1 implements Stats
 {
 	private int maxHealth;
 	private int attack;
@@ -11,7 +13,7 @@ public class Stats2 implements Stats1
 	private int movement;
 	private int currentHealth;
 
-	public Stats2(int maxHealth, int attack, int accuracy, int speed, int crit, int defense, int movement)
+	public Stats1(int maxHealth, int attack, int accuracy, int speed, int crit, int defense, int movement)
 	{
 		this.maxHealth = maxHealth;
 		this.attack = attack;
@@ -68,13 +70,13 @@ public class Stats2 implements Stats1
 		return currentHealth;
 	}
 
-	public static Stats2 create1()
+	public static Stats1 create1()
 	{
-		return new Stats2(20, 10, 10, 5, 5, 5, 4);
+		return new Stats1(20, 10, 10, 5, 5, 5, 4);
 	}
 
-	public static Stats2 create2()
+	public static Stats1 create2()
 	{
-		return new Stats2(20, 7, 10, 10, 2, 4, 4);
+		return new Stats1(20, 7, 10, 10, 2, 4, 4);
 	}
 }

@@ -1,9 +1,9 @@
-package item.items;
+package system1;
 
 import item.*;
 import javafx.scene.image.*;
 
-public class AttackItem2 implements Item
+public class AttackItem1 implements Item
 {
 	private final int attack;
 	private final int slowdown;
@@ -11,12 +11,12 @@ public class AttackItem2 implements Item
 	private final int crit;
 	private final int[] ranges;
 
-	public static AttackItem2 item1()
+	public static AttackItem1 item1()
 	{
-		return new AttackItem2(5, 1, 70, 5, 1);
+		return new AttackItem1(5, 1, 70, 5, 1);
 	}
 
-	public AttackItem2(int attack, int slowdown, int accuracy, int crit, int... ranges)
+	public AttackItem1(int attack, int slowdown, int accuracy, int crit, int... ranges)
 	{
 		this.attack = attack;
 		this.slowdown = slowdown;
