@@ -19,12 +19,12 @@ public class XMenu
 	public static XMenu productionMenu(ProductionBuilding building)
 	{
 		return new XMenu(new ProductionFloorsState(building), new ProductionViewState(building),
-				new ProductionInvState(building), ProductionPhaseState.INSTANCE, TransportPhaseState.INSTANCE);
+				new ProductionInvState(building), new ProductionPhaseState());
 	}
 
 	public static XMenu transportMenu(Transporter transporter)
 	{
-		return new XMenu(new TransportTargetsState(transporter), ProductionPhaseState.INSTANCE, TransportPhaseState.INSTANCE);
+		return new XMenu(new TransportTargetsState(transporter), new ProductionPhaseState());
 	}
 
 	private List<NState> entries;

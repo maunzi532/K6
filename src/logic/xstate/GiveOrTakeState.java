@@ -35,9 +35,9 @@ public class GiveOrTakeState implements NMarkState
 	public void onClickMarked(Tile mapTile, MarkType markType, int key, LevelMap levelMap, XStateControl stateControl)
 	{
 		if(give)
-			stateControl.setState(new DirectedTradeState(character, (DoubleInv) levelMap.getBuilding(mapTile)));
+			stateControl.setState(new DirectedTradeState(character, (DoubleInv) levelMap.getBuilding(mapTile), character));
 		else
-			stateControl.setState(new DirectedTradeState((DoubleInv) levelMap.getBuilding(mapTile), character));
+			stateControl.setState(new DirectedTradeState((DoubleInv) levelMap.getBuilding(mapTile), character, character));
 	}
 
 	@Override
@@ -45,5 +45,11 @@ public class GiveOrTakeState implements NMarkState
 	{
 		return levelMap.y1.range(character.location(), 0, character.maxAccessRange()).stream()
 				.filter(e -> levelMap.getBuilding(e) instanceof DoubleInv).collect(Collectors.toMap(e -> e, e -> MarkType.TARGET));
+	}
+
+	@Override
+	public boolean keepInMenu(MainState mainState)
+	{
+		return !character.isFinished() && character.getAp() >= 1;
 	}
 }

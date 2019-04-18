@@ -166,6 +166,8 @@ public class BuildGUI extends XGUI implements InvGUI
 			Optional<ItemList> refundable = character.tryBuildingCosts(cost, CommitType.COMMIT);
 			if(refundable.isPresent())
 			{
+				character.takeAp(1);
+				character.setFinished();
 				character.buildBuilding(cost, refundable.get(), blueprint);
 				stateControl.setState(NoneState.INSTANCE);
 				return true;

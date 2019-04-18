@@ -12,6 +12,9 @@ public class Stats1 implements Stats
 	private int defense;
 	private int movement;
 	private int currentHealth;
+	private boolean moved;
+	private int ap;
+	private boolean finished;
 
 	public Stats1(int maxHealth, int attack, int accuracy, int speed, int crit, int defense, int movement)
 	{

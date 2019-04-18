@@ -8,10 +8,10 @@ import item.inv.transport.*;
 import java.util.*;
 import java.util.stream.*;
 import levelMap.*;
+import logic.xstate.*;
 
 public class Transporter extends Buildable
 {
-	public static final int TRANSPORT_TIME = 60;
 	private List<DoubleInv> targets;
 	private int range;
 	private int amount;
@@ -65,7 +65,7 @@ public class Transporter extends Buildable
 			PossibleTransport transport = transportOpt.get();
 			invTransporter.doTheTransport(transport);
 			levelMap.addArrow(XArrow.factory(transport.from.location(),
-					transport.to.location(), TRANSPORT_TIME, false, transport.item.image(), true));
+					transport.to.location(), TransportPhaseState.TRANSPORT_TIME, false, transport.item.image(), true));
 		}
 	}
 }

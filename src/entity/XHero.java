@@ -13,6 +13,10 @@ public class XHero extends InvEntity
 {
 	private static final Image IMAGE_S = new Image("S.png");
 
+	private boolean moved;
+	private int ap;
+	private boolean finished;
+
 	public XHero(Tile location, MainState mainState, Stats stats, int weightLimit, ItemList itemList)
 	{
 		super(location, mainState, stats, weightLimit, itemList);
@@ -55,5 +59,42 @@ public class XHero extends InvEntity
 		{
 			mainState.levelMap.addBuilding(new Transporter(location, costs, refundable, blueprint));
 		}
+	}
+
+	public void startTurn()
+	{
+		moved = false;
+		ap = 2;
+		finished = false;
+	}
+
+	public boolean isMoved()
+	{
+		return moved;
+	}
+
+	public int getAp()
+	{
+		return ap;
+	}
+
+	public boolean isFinished()
+	{
+		return finished;
+	}
+
+	public void setMoved()
+	{
+		moved = true;
+	}
+
+	public void takeAp(int take)
+	{
+		ap -= take;
+	}
+
+	public void setFinished()
+	{
+		finished = true;
 	}
 }

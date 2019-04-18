@@ -77,7 +77,6 @@ public class BuildingsGUI extends XGUI implements InvGUI
 		buildingsView.checkClick(x, y, names.length, this);
 		if(chosen != null)
 		{
-			//stateControl.stateInfo[3] = chosen;
 			stateControl.setState(new BuildState(builder, chosen));
 			return true;
 		}

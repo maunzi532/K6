@@ -7,6 +7,7 @@ import logic.*;
 
 public class AttackAnimState implements NAutoState
 {
+	private final NState nextState;
 	private final AttackInfo aI;
 	private final boolean inverse;
 	private final int num;
@@ -17,8 +18,14 @@ public class AttackAnimState implements NAutoState
 	private InfoArrow infoET;
 	private BlinkArrow blinkArrow;
 
-	public AttackAnimState(AttackInfo aI, int num, boolean inverse)
+	public AttackAnimState(NState nextState, AttackInfo aI)
 	{
+		this(nextState, aI, 0, false);
+	}
+
+	public AttackAnimState(NState nextState, AttackInfo aI, int num, boolean inverse)
+	{
+		this.nextState = nextState;
 		this.aI = aI;
 		this.num = num;
 		this.inverse = inverse;
@@ -105,19 +112,17 @@ public class AttackAnimState implements NAutoState
 	public NState nextState()
 	{
 		if(aI.getStats(inverse).removeEntity() || aI.getStats(!inverse).removeEntity())
-			return NoneState.INSTANCE;
+			return nextState;
 		int nextNum = inverse ? num + 1 : num;
 		if(nextNum < aI.attackCount(!inverse))
 		{
-			System.out.println(nextNum);
-			return new AttackAnimState(aI, nextNum, !inverse);
+			return new AttackAnimState(nextState, aI, nextNum, !inverse);
 		}
 		if(num + 1 < aI.attackCount(inverse))
 		{
-			System.out.println("A");
-			return new AttackAnimState(aI, num + 1, inverse);
+			return new AttackAnimState(nextState, aI, num + 1, inverse);
 		}
-		return NoneState.INSTANCE;
+		return nextState;
 	}
 
 	@Override

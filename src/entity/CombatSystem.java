@@ -1,7 +1,9 @@
 package entity;
 
+import geom.f1.*;
 import item.*;
 import java.util.*;
+import java.util.stream.*;
 import logic.*;
 
 public interface CombatSystem<T extends Stats, A extends AttackInfo, I extends Item>
@@ -12,7 +14,18 @@ public interface CombatSystem<T extends Stats, A extends AttackInfo, I extends I
 
 	List<Integer> attackRanges(MainState mainState, XEntity entity, T stats, boolean counter);
 
-	List<A> attackInfo(MainState mainState, XEntity entity, T stats, XEntity entityT, T statsT);
+	default List<A> attackInfo(MainState mainState, XEntity entity, Tile loc, T stats, List<XEntity> possibleTargets)
+	{
+		return possibleTargets.stream().flatMap(e -> attackInfo(mainState, entity, loc, stats, e, e.location(), (T) e.stats).stream())
+				.collect(Collectors.toList());
+	}
+
+	default List<A> attackInfo(MainState mainState, XEntity entity, T stats, XEntity entityT, T statsT)
+	{
+		return attackInfo(mainState, entity, entity.location, stats, entityT, entityT.location, statsT);
+	}
+
+	List<A> attackInfo(MainState mainState, XEntity entity, Tile loc, T stats, XEntity entityT, Tile locT, T statsT);
 
 	List<I> items(MainState mainState, XEntity entity, T stats, int distance);
 

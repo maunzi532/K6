@@ -94,7 +94,9 @@ public class AttackInfoGUI extends XGUI implements InvGUI
 		attacksView.checkClick(x, y, infoList.size(), this);
 		if(chosen != null)
 		{
-			stateControl.setState(new AttackAnimState(chosen, 0, false));
+			attacker.takeAp(2);
+			attacker.setFinished();
+			stateControl.setState(new AttackAnimState(NoneState.INSTANCE, chosen));
 			return true;
 		}
 		if(attacksView.updateGUIFlag())

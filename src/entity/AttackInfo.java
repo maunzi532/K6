@@ -1,25 +1,30 @@
 package entity;
 
+import geom.f1.*;
 import item.*;
 
 public abstract class AttackInfo<T extends Stats, I extends Item>
 {
 	public final XEntity entity;
+	public final Tile loc;
 	public final T stats;
 	public final I item;
 	public final XEntity entityT;
+	public final Tile locT;
 	public final T statsT;
 	public final I itemT;
 	public final int distance;
 	public final String[] infos;
 
-	public AttackInfo(XEntity entity, T stats, I item,
-			XEntity entityT, T statsT, I itemT, int distance, String... infos)
+	public AttackInfo(XEntity entity, Tile loc, T stats, I item,
+			XEntity entityT, Tile locT, T statsT, I itemT, int distance, String... infos)
 	{
 		this.entity = entity;
+		this.loc = loc;
 		this.stats = stats;
 		this.item = item;
 		this.entityT = entityT;
+		this.locT = locT;
 		this.statsT = statsT;
 		this.itemT = itemT;
 		this.distance = distance;

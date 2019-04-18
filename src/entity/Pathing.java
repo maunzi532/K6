@@ -11,7 +11,7 @@ public class Pathing
 	private final Tile startLocation;
 	private final int maxMovementCost;
 	private final LevelMap map;
-	private final Map<Tile, MarkType> endpoints;
+	private final List<Tile> endpoints;
 
 	public Pathing(TileType y1, XEntity entity, int maxMovementCost, LevelMap map)
 	{
@@ -25,14 +25,14 @@ public class Pathing
 		this.startLocation = startLocation;
 		this.maxMovementCost = maxMovementCost;
 		this.map = map;
-		endpoints = new HashMap<>();
+		endpoints = new ArrayList<>();
 	}
 
 	public Pathing start()
 	{
 		List<PathLocation> lA = new ArrayList<>();
 		lA.add(new PathLocation(startLocation, 0, true));
-		endpoints.put(startLocation, MarkType.TARGET);
+		endpoints.add(startLocation);
 		for(int counter = 0; counter < lA.size(); counter++)
 		{
 			PathLocation first = lA.get(counter);
@@ -56,7 +56,7 @@ public class Pathing
 					{
 						lA.add(pl);
 						if(pl.canEnd)
-							endpoints.put(neighbor, MarkType.TARGET);
+							endpoints.add(neighbor);
 					}
 				}
 			}
@@ -64,7 +64,7 @@ public class Pathing
 		return this;
 	}
 
-	public Map<Tile, MarkType> getEndpoints()
+	public List<Tile> getEndpoints()
 	{
 		return endpoints;
 	}

@@ -2,9 +2,12 @@ package logic.xstate;
 
 import logic.*;
 
-public class TransportPhaseState implements NClickState
+public class TransportPhaseState implements NAutoState
 {
-	public static final TransportPhaseState INSTANCE = new TransportPhaseState();
+	public static final int TRANSPORT_TIME = 60;
+	public static final int WAIT = 30;
+
+	private int counter;
 
 	@Override
 	public String text()
@@ -19,8 +22,24 @@ public class TransportPhaseState implements NClickState
 	}
 
 	@Override
-	public void onMenuClick(int key, MainState mainState)
+	public void tick(MainState mainState)
 	{
-		mainState.levelMap.transportPhase();
+		if(counter == 0)
+		{
+			mainState.levelMap.transportPhase();
+		}
+		counter++;
+	}
+
+	@Override
+	public boolean finished()
+	{
+		return counter >= TRANSPORT_TIME + WAIT;
+	}
+
+	@Override
+	public NState nextState()
+	{
+		return new StartTurnState();
 	}
 }

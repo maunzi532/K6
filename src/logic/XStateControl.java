@@ -19,7 +19,7 @@ public class XStateControl
 	public XStateControl(MainState mainState)
 	{
 		this.mainState = mainState;
-		state = NoneState.INSTANCE;
+		state = new StartTurnState();
 		update();
 	}
 
@@ -133,7 +133,12 @@ public class XStateControl
 		{
 			if(object instanceof XHero)
 			{
-				state = new CharacterMovementState((XHero) object);
+				if(!((XHero) object).isMoved())
+					state = new CharacterMovementState((XHero) object);
+				else if(!((XHero) object).isFinished())
+					state = new AttackTargetState((XHero) object);
+				else
+					state = new EnemyPhaseState(); //TODO wrong
 			}
 			else
 			{

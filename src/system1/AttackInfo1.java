@@ -1,11 +1,12 @@
 package system1;
 
 import entity.*;
+import geom.f1.*;
 
 public class AttackInfo1 extends AttackInfo<Stats1, AttackItem1>
 {
-	public static AttackInfo1 create(System1 system1, XEntity entity, Stats1 stats, AttackItem1 item,
-			XEntity entityT, Stats1 statsT, AttackItem1 itemT, int distance)
+	public static AttackInfo1 create(System1 system1, XEntity entity, Tile loc, Stats1 stats, AttackItem1 item,
+			XEntity entityT, Tile locT, Stats1 statsT, AttackItem1 itemT, int distance)
 	{
 		int[][] info = system1.info(entity, stats, item, entityT, statsT, itemT, distance);
 		String[] infoV = new String[8];
@@ -37,15 +38,15 @@ public class AttackInfo1 extends AttackInfo<Stats1, AttackItem1>
 			infoV[5] = "";
 			infoV[7] = "";
 		}
-		return new AttackInfo1(entity, stats, item, entityT, statsT, itemT, distance, info, infoV);
+		return new AttackInfo1(entity, loc, stats, item, entityT, locT, statsT, itemT, distance, info, infoV);
 	}
 
 	private int[][] info;
 
-	private AttackInfo1(XEntity entity, Stats1 stats, AttackItem1 item, XEntity entityT, Stats1 statsT, AttackItem1 itemT,
+	private AttackInfo1(XEntity entity, Tile loc, Stats1 stats, AttackItem1 item, XEntity entityT, Tile locT, Stats1 statsT, AttackItem1 itemT,
 			int distance, int[][] info, String... infos)
 	{
-		super(entity, stats, item, entityT, statsT, itemT, distance, infos);
+		super(entity, loc, stats, item, entityT, locT, statsT, itemT, distance, infos);
 		this.info = info;
 	}
 

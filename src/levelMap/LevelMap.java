@@ -7,10 +7,12 @@ import java.util.*;
 
 public class LevelMap
 {
-	private static final int TIME_PER_DISTANCE = 20;
+	public static final int TIME_PER_DISTANCE = 20;
 
 	public final TileType y1;
 	private final HashMap<Tile, AdvTile> advTiles;
+	private final ArrayList<XHero> entitiesH;
+	private final ArrayList<XEnemy> entitiesE;
 	private Map<Tile, MarkType> marked;
 	private final ArrayList<XArrow> arrows;
 
@@ -18,6 +20,8 @@ public class LevelMap
 	{
 		this.y1 = y1;
 		advTiles = new HashMap<>();
+		entitiesH = new ArrayList<>();
+		entitiesE = new ArrayList<>();
 		marked = Map.of();
 		arrows = new ArrayList<>();
 	}
@@ -98,22 +102,48 @@ public class LevelMap
 	public void addEntity(XEntity entity)
 	{
 		advTile(entity.location()).setEntity(entity);
+		if(entity instanceof XHero)
+		{
+			entitiesH.add((XHero) entity);
+		}
+		if(entity instanceof XEnemy)
+		{
+			entitiesE.add((XEnemy) entity);
+		}
 	}
 
 	public void removeEntity(XEntity entity)
 	{
 		advTile(entity.location()).setEntity(null);
+		if(entity instanceof XHero)
+		{
+			entitiesH.remove(entity);
+		}
+		if(entity instanceof XEnemy)
+		{
+			entitiesE.remove(entity);
+		}
 	}
 
 	public void moveEntity(XEntity entity, Tile newLocation)
 	{
-		removeEntity(entity);
 		XArrow arrow = XArrow.factory(entity.location(), newLocation,
 				y1.distance(newLocation, entity.location()) * TIME_PER_DISTANCE, false, entity.getImage(), false);
 		addArrow(arrow);
-		entity.setLocation(newLocation);
 		entity.setReplacementArrow(arrow);
-		addEntity(entity);
+		advTile(entity.location()).setEntity(null);
+		entity.setLocation(newLocation);
+		advTile(newLocation).setEntity(entity);
+	}
+
+	public ArrayList<XHero> getEntitiesH()
+	{
+		return entitiesH;
+	}
+
+	public ArrayList<XEnemy> getEntitiesE()
+	{
+		return entitiesE;
 	}
 
 	public Map<Tile, MarkType> getMarked()

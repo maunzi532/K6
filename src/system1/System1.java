@@ -1,6 +1,7 @@
 package system1;
 
 import entity.*;
+import geom.f1.*;
 import java.util.*;
 import java.util.stream.*;
 import logic.*;
@@ -41,13 +42,13 @@ public class System1 implements CombatSystem<Stats1, AttackInfo1, AttackItem1>
 	}
 
 	@Override
-	public List<AttackInfo1> attackInfo(MainState mainState, XEntity entity, Stats1 stats,
-			XEntity entityT, Stats1 statsT)
+	public List<AttackInfo1> attackInfo(MainState mainState, XEntity entity, Tile loc, Stats1 stats,
+			XEntity entityT, Tile locT, Stats1 statsT)
 	{
-		int distance = mainState.y2.distance(entity.location(), entityT.location());
+		int distance = mainState.y2.distance(loc, locT);
 		Optional<AttackItem1> itemT = equipItem(mainState, entityT, statsT, distance);
 		return items(mainState, entity, stats, distance).stream()
-				.map(item -> AttackInfo1.create(this, entity, stats, item, entityT, statsT, itemT.orElse(null), distance))
+				.map(item -> AttackInfo1.create(this, entity, loc, stats, item, entityT, locT, statsT, itemT.orElse(null), distance))
 				.collect(Collectors.toList());
 	}
 

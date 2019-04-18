@@ -20,8 +20,8 @@ public class MainVisual
 
 	public MainVisual(GraphicsContext gd, int w, int h)
 	{
-		//mapCamera = new HexCamera(w / 2f, h / 2f, 44, 44, 0, 0, new HexMatrix(0.5));
-		mapCamera = new QuadCamera(w / 2f, h / 2f, 44, 44, 0, 0);
+		mapCamera = new HexCamera(w / 2f, h / 2f, 44, 44, 0, 0, new HexMatrix(0.5));
+		//mapCamera = new QuadCamera(w / 2f, h / 2f, 44, 44, 0, 0);
 		y2 = mapCamera.getDoubleType();
 		mainState = new MainState(y2);
 		mainState.initialize();

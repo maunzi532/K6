@@ -9,11 +9,10 @@ import item.inv.transport.*;
 import java.util.*;
 import java.util.stream.*;
 import levelMap.*;
+import logic.xstate.*;
 
 public class ProductionBuilding extends Buildable implements DoubleInv
 {
-	private static final int ARROW_TIME = 30;
-
 	private SlotInv inputInv;
 	private SlotInv outputInv;
 	private List<Recipe> recipes;
@@ -142,7 +141,7 @@ public class ProductionBuilding extends Buildable implements DoubleInv
 					if(outputInv.tryAdd(recipe.results, false, CommitType.COMMIT))
 					{
 						inputInv.commit();
-						levelMap.addArrow(XArrow.factory(location(), null, ARROW_TIME, false,
+						levelMap.addArrow(XArrow.factory(location(), null, ProductionPhaseState.ARROW_TIME, false,
 								recipe.results.items.get(0).item.image(), true));
 						return;
 					}

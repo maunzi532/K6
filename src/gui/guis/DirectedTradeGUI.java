@@ -1,5 +1,6 @@
 package gui.guis;
 
+import entity.*;
 import gui.*;
 import item.*;
 import item.inv.transport.DoubleInv;
@@ -20,17 +21,20 @@ public class DirectedTradeGUI extends XGUI implements InvGUI
 
 	private final DoubleInv provide;
 	private final DoubleInv receive;
+	private final XHero takeAp;
 	private List<ItemView> provideItems;
 	private List<ItemView> receiveItems;
 	private final InvGUIPart provideView;
 	private final InvGUIPart receiveView;
 	private int provideMarked;
 	private int amount;
+	private boolean changed;
 
-	public DirectedTradeGUI(DoubleInv provide, DoubleInv receive)
+	public DirectedTradeGUI(DoubleInv provide, DoubleInv receive, XHero takeAp)
 	{
 		this.provide = provide;
 		this.receive = receive;
+		this.takeAp = takeAp;
 		provideItems = provide.outputInv().viewItems(false);
 		receiveItems = receive.inputInv().viewItems(true);
 		provideView = new InvGUIPart(0, 0, 1, 2, 5, 2, 1);
@@ -127,13 +131,18 @@ public class DirectedTradeGUI extends XGUI implements InvGUI
 				provideItems = provide.outputInv().viewItems(false);
 				receiveItems = receive.inputInv().viewItems(true);
 				provideMarked = provideItems.stream().filter(e -> e.item.equals(items.item)).mapToInt(e -> provideItems.indexOf(e)).findFirst().orElse(-1);
+				changed = true;
 				update();
 			}
 		}
 		else if(ok.contains(x, y))
 		{
-			provide.outputInv().commit();
-			receive.inputInv().commit();
+			if(changed)
+			{
+				provide.outputInv().commit();
+				receive.inputInv().commit();
+				takeAp.takeAp(1);
+			}
 			stateControl.setState(NoneState.INSTANCE);
 			return true;
 		}
