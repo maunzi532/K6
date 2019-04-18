@@ -13,13 +13,13 @@ public class XMenu
 		return new XMenu(new CharacterMovementState(character),
 				new CharacterInvState(character), new AttackTargetState(character),
 				new GiveOrTakeState(true, character), new GiveOrTakeState(false, character),
-				new BuildingChooseState(character), new RemoveBuildingState(character));
+				new BuildingChooseState(character), new RemoveBuildingState(character), new EnemyPhaseState());
 	}
 
 	public static XMenu productionMenu(ProductionBuilding building)
 	{
 		return new XMenu(new ProductionFloorsState(building), new ProductionViewState(building),
-				new ProductionInvState(building), new ProductionPhaseState());
+				new ProductionInvState(building));
 	}
 
 	public static XMenu transportMenu(Transporter transporter)

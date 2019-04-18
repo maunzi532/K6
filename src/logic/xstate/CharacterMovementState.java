@@ -46,6 +46,6 @@ public class CharacterMovementState implements NMarkState
 	@Override
 	public boolean keepInMenu(MainState mainState)
 	{
-		return !character.isFinished() && !character.isMoved();
+		return character.isReady() && character.canMove();
 	}
 }

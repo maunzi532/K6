@@ -13,9 +13,9 @@ public class XHero extends InvEntity
 {
 	private static final Image IMAGE_S = new Image("S.png");
 
-	private boolean moved;
+	private boolean canMove;
 	private int ap;
-	private boolean finished;
+	private boolean mainAction;
 
 	public XHero(Tile location, MainState mainState, Stats stats, int weightLimit, ItemList itemList)
 	{
@@ -63,14 +63,14 @@ public class XHero extends InvEntity
 
 	public void startTurn()
 	{
-		moved = false;
+		canMove = true;
 		ap = 2;
-		finished = false;
+		mainAction = true;
 	}
 
-	public boolean isMoved()
+	public boolean canMove()
 	{
-		return moved;
+		return canMove;
 	}
 
 	public int getAp()
@@ -78,14 +78,14 @@ public class XHero extends InvEntity
 		return ap;
 	}
 
-	public boolean isFinished()
+	public boolean isReady()
 	{
-		return finished;
+		return mainAction;
 	}
 
 	public void setMoved()
 	{
-		moved = true;
+		canMove = false;
 	}
 
 	public void takeAp(int take)
@@ -93,8 +93,8 @@ public class XHero extends InvEntity
 		ap -= take;
 	}
 
-	public void setFinished()
+	public void mainActionTaken()
 	{
-		finished = true;
+		mainAction = false;
 	}
 }

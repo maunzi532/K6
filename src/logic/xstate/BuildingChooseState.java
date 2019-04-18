@@ -29,7 +29,7 @@ public class BuildingChooseState implements NGUIState
 	@Override
 	public boolean keepInMenu(MainState mainState)
 	{
-		return !builder.isFinished() && builder.getAp() >= 1 && mainState.levelMap.getBuilding(builder.location()) == null;
+		return builder.isReady() && builder.getAp() >= 1 && mainState.levelMap.getBuilding(builder.location()) == null;
 	}
 
 	@Override

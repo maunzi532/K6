@@ -11,7 +11,6 @@ import logic.xstate.*;
 
 public class MainVisual
 {
-	private DoubleType y2;
 	private VisualTile visualTile;
 	private TileCamera mapCamera;
 	private VisualMenu visualMenu;
@@ -22,7 +21,7 @@ public class MainVisual
 	{
 		mapCamera = new HexCamera(w / 2f, h / 2f, 44, 44, 0, 0, new HexMatrix(0.5));
 		//mapCamera = new QuadCamera(w / 2f, h / 2f, 44, 44, 0, 0);
-		y2 = mapCamera.getDoubleType();
+		DoubleType y2 = mapCamera.getDoubleType();
 		mainState = new MainState(y2);
 		mainState.initialize();
 		gd.setTextAlign(TextAlignment.CENTER);

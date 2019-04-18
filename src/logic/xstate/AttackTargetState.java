@@ -31,7 +31,7 @@ public class AttackTargetState implements NMarkState
 	@Override
 	public boolean keepInMenu(MainState mainState)
 	{
-		return !character.isFinished() && character.getAp() >= 2 &&
+		return character.isReady() && character.getAp() >= 2 &&
 				character.attackRanges(false).stream().map(e -> mainState.y2.range(character.location(), e, e))
 				.flatMap(Collection::stream).anyMatch(e -> character.isEnemy(mainState.levelMap.getEntity(e)));
 	}

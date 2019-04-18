@@ -95,7 +95,7 @@ public class AttackInfoGUI extends XGUI implements InvGUI
 		if(chosen != null)
 		{
 			attacker.takeAp(2);
-			attacker.setFinished();
+			attacker.mainActionTaken();
 			stateControl.setState(new AttackAnimState(NoneState.INSTANCE, chosen));
 			return true;
 		}

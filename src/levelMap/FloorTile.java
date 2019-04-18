@@ -16,13 +16,18 @@ public class FloorTile
 		return sector.visible;
 	}
 
+	public boolean blocked()
+	{
+		return type.blocked;
+	}
+
 	public boolean canMovementEnd()
 	{
-		return true;
+		return type.canMovementEnd;
 	}
 
 	public int moveCost()
 	{
-		return 1;
+		return type.moveCost;
 	}
 }

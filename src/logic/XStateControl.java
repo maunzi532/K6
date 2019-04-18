@@ -133,12 +133,12 @@ public class XStateControl
 		{
 			if(object instanceof XHero)
 			{
-				if(!((XHero) object).isMoved())
+				if(((XHero) object).canMove())
 					state = new CharacterMovementState((XHero) object);
-				else if(!((XHero) object).isFinished())
+				else if(((XHero) object).isReady())
 					state = new AttackTargetState((XHero) object);
 				else
-					state = new EnemyPhaseState(); //TODO wrong
+					state = new CharacterInvState((XHero) object);
 			}
 			else
 			{

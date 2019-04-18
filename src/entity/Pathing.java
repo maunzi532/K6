@@ -71,10 +71,7 @@ public class Pathing
 
 	private PathLocation pathLocation(Tile t1, AdvTile advTile, int currentCost, int maxCost, XEntity entity)
 	{
-		if(advTile.getFloorTile() == null)
-			return null;
-		int cost = currentCost + advTile.getFloorTile().moveCost();
-		if(cost > maxCost)
+		if(advTile.getFloorTile() == null || advTile.getFloorTile().blocked())
 			return null;
 		boolean canEnd = advTile.getFloorTile().canMovementEnd();
 		if(advTile.getEntity() != null && advTile.getEntity() != entity)
@@ -84,6 +81,9 @@ public class Pathing
 			else
 				canEnd = false;
 		}
+		int cost = currentCost + advTile.getFloorTile().moveCost();
+		if(cost > maxCost)
+			return null;
 		return new PathLocation(t1, cost, canEnd);
 	}
 }

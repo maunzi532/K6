@@ -50,6 +50,6 @@ public class GiveOrTakeState implements NMarkState
 	@Override
 	public boolean keepInMenu(MainState mainState)
 	{
-		return !character.isFinished() && character.getAp() >= 1;
+		return character.isReady() && character.getAp() >= 1;
 	}
 }

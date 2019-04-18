@@ -167,7 +167,7 @@ public class BuildGUI extends XGUI implements InvGUI
 			if(refundable.isPresent())
 			{
 				character.takeAp(1);
-				character.setFinished();
+				character.mainActionTaken();
 				character.buildBuilding(cost, refundable.get(), blueprint);
 				stateControl.setState(NoneState.INSTANCE);
 				return true;
