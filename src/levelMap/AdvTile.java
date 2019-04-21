@@ -60,8 +60,8 @@ public class AdvTile
 		this.owned = owned;
 	}
 
-	public boolean visible()
+	public boolean visible(LevelMap levelMap)
 	{
-		return floorTile != null && floorTile.visible();
+		return floorTile != null && floorTile.visible(levelMap);
 	}
 }

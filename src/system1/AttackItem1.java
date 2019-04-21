@@ -1,9 +1,10 @@
 package system1;
 
+import entity.*;
 import item.*;
 import javafx.scene.image.*;
 
-public class AttackItem1 implements Item
+public class AttackItem1 implements Item, XMode
 {
 	private final int attack;
 	private final int slowdown;

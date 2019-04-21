@@ -2,7 +2,6 @@ package gui.guis;
 
 import entity.*;
 import gui.*;
-import item.*;
 import java.util.*;
 import logic.*;
 import logic.xstate.*;
@@ -57,9 +56,9 @@ public class AttackInfoGUI extends XGUI implements InvGUI
 		tiles[x][y1 + 1] = new GuiTile(read(info, 4));
 		tiles[x + 1][y1] = new GuiTile(read(info, 2));
 		tiles[x + 1][y1 + 1] = new GuiTile(read(info, 6));
-		tiles[x + 2][y1] = new GuiTile(read(info, 8), Optional.ofNullable(info.item).map(Item::image).orElse(null), null);
+		tiles[x + 2][y1] = new GuiTile(read(info, 8), Optional.ofNullable(info.mode).map(XMode::image).orElse(null), null);
 		tiles[x + 2][y1 + 1] = new GuiTile(read(info, 10));
-		tiles[x + 3][y1] = new GuiTile(read(info, 9), Optional.ofNullable(info.itemT).map(Item::image).orElse(null), null);
+		tiles[x + 3][y1] = new GuiTile(read(info, 9), Optional.ofNullable(info.modeT).map(XMode::image).orElse(null), null);
 		tiles[x + 3][y1 + 1] = new GuiTile(read(info, 11));
 		tiles[x + 4][y1] = new GuiTile(read(info, 1));
 		tiles[x + 4][y1 + 1] = new GuiTile(read(info, 5));

@@ -9,15 +9,10 @@ public interface ImportSector
 
 	default void importIntoMap(LevelMap levelMap)
 	{
-		Sector sector = sector();
+		int sector = levelMap.createSector(true);
 		for(ImportTile importTile : tiles())
 		{
 			importTile.importIntoMap(levelMap, sector);
 		}
-	}
-
-	default Sector sector()
-	{
-		return new Sector(true);
 	}
 }

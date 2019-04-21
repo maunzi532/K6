@@ -7,6 +7,7 @@ import javafx.geometry.*;
 import javafx.scene.canvas.*;
 import javafx.scene.input.*;
 import javafx.scene.text.*;
+import levelMap.*;
 import logic.xstate.*;
 
 public class MainVisual
@@ -15,6 +16,7 @@ public class MainVisual
 	private TileCamera mapCamera;
 	private VisualMenu visualMenu;
 	private VisualGUI visualGUI;
+	private LevelEditor levelEditor;
 	private MainState mainState;
 
 	public MainVisual(GraphicsContext gd, int w, int h)
@@ -28,8 +30,9 @@ public class MainVisual
 		gd.setTextBaseline(VPos.CENTER);
 		visualTile = new VisualTile(y2, new ArrowViewer(y2), mainState.levelMap, gd);
 		visualMenu = new VisualMenu(gd, w / 2f, h / 2f, mainState.stateControl);
-		visualGUI = new VisualGUIQuad(gd, w / 2f, h / 2f, mainState.stateControl);
+		visualGUI = new VisualGUIQuad(gd, w / 2f, h / 2f);
 		//visualGUI = new VisualGUIHex(gd, w / 2f, h / 2f, mainState.stateControl);
+		levelEditor = new LevelEditor(gd, w / 2f, h / 2f, mainState.levelMap);
 		draw();
 	}
 
@@ -42,7 +45,20 @@ public class MainVisual
 		}
 		else if(mainState.stateControl.getState() instanceof NGUIState)
 		{
-			mainState.stateControl.handleGUIClick(visualGUI.y2.toOffset(visualGUI.clickLocation(x, y)), visualGUI.inside(x, y), mouseKey);
+			mainState.stateControl.handleGUIClick(visualGUI.y2.toOffset(visualGUI.clickLocation(x, y)),
+					visualGUI.inside(x, y, mainState.stateControl.getXgui()), mouseKey);
+		}
+		else if(levelEditor.isActive())
+		{
+			int editorClick = levelEditor.editorClickNum(x, y);
+			if(editorClick >= 0)
+			{
+				levelEditor.onEditorClick(editorClick, mouseKey);
+			}
+			else
+			{
+				levelEditor.onMapClick(mainState.y2.cast(mapCamera.clickLocation(x, y)), mouseKey);
+			}
 		}
 		else
 		{
@@ -68,7 +84,7 @@ public class MainVisual
 
 	public void handleMouseMove(double x, double y)
 	{
-		if(mainState.stateControl.getState() instanceof NGUIState && visualGUI.inside(x, y))
+		if(mainState.stateControl.getState() instanceof NGUIState && visualGUI.inside(x, y, mainState.stateControl.getXgui()))
 		{
 			mainState.stateControl.target(visualGUI.y2.toOffset(visualGUI.clickLocation(x, y)));
 		}
@@ -84,7 +100,9 @@ public class MainVisual
 	private void draw()
 	{
 		visualTile.draw(mapCamera);
+		if(levelEditor.isActive())
+			levelEditor.draw();
+		visualGUI.draw(mainState.stateControl.getXgui());
 		visualMenu.draw();
-		visualGUI.draw();
 	}
 }

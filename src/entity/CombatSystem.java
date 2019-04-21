@@ -26,8 +26,4 @@ public interface CombatSystem<T extends Stats, A extends AttackInfo, I extends I
 	}
 
 	List<A> attackInfo(MainState mainState, XEntity entity, Tile loc, T stats, XEntity entityT, Tile locT, T statsT);
-
-	List<I> items(MainState mainState, XEntity entity, T stats, int distance);
-
-	Optional<I> equipItem(MainState mainState, XEntity entity, T stats, int distance);
 }

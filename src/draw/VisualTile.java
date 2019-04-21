@@ -53,7 +53,7 @@ public class VisualTile
 	{
 		AdvTile advTile = levelMap.advTile(t1);
 		double[][] points = layout.tileCorners(t1);
-		if(advTile.visible())
+		if(advTile.visible(levelMap))
 		{
 			gd.setFill(new LinearGradient(points[0][0], points[1][0], points[0][y1.directionCount() / 2], points[1][y1.directionCount() / 2],
 					false, null, advTile.getFloorTile().type.normal.stream()
@@ -64,7 +64,7 @@ public class VisualTile
 			gd.setFill(Color.BLACK);
 		}
 		gd.fillPolygon(points[0], points[1], y1.directionCount());
-		if(advTile.visible())
+		if(advTile.visible(levelMap))
 		{
 			if(advTile.getBuilding() != null)
 			{
@@ -100,7 +100,7 @@ public class VisualTile
 	public void draw1(TileLayout layout, Tile t1)
 	{
 		AdvTile advTile = levelMap.advTile(t1);
-		if(advTile.visible())
+		if(advTile.visible(levelMap))
 		{
 			if(advTile.getEntity() != null && advTile.getEntity().isVisible())
 			{

@@ -4,7 +4,6 @@ import geom.*;
 import geom.d1.*;
 import gui.*;
 import javafx.scene.canvas.*;
-import logic.*;
 
 public class VisualGUIHex extends VisualGUI
 {
@@ -15,10 +14,9 @@ public class VisualGUIHex extends VisualGUI
 	private final DoubleTile RLE;
 	private final DoubleTile RLS;
 
-	public VisualGUIHex(GraphicsContext gd, double xHalfWidth, double yHalfWidth,
-			XStateControl stateControl)
+	public VisualGUIHex(GraphicsContext gd, double xHalfWidth, double yHalfWidth)
 	{
-		super(gd, new HexCamera(xHalfWidth, yHalfWidth, yHalfWidth / 8, yHalfWidth / 8, 0,  0, HexMatrix.LP), stateControl);
+		super(gd, new HexCamera(xHalfWidth, yHalfWidth, yHalfWidth / 8, yHalfWidth / 8, 0,  0, HexMatrix.LP));
 		LU = y2.createD(-1d / 6d, 5d / 6d, -4d / 6d);
 		RLE = y2.createD(1d / 6d, -5d / 6d, 4d / 6d);
 		RLS = y2.createD(4d / 6d, -8d / 6d, 4d / 6d);
@@ -30,9 +28,8 @@ public class VisualGUIHex extends VisualGUI
 	}
 
 	@Override
-	public boolean inside(DoubleTile h1)
+	public boolean inside(DoubleTile h1, XGUI xgui)
 	{
-		XGUI xgui = stateControl.getXgui();
 		if(xgui.xw() <= 0 || xgui.yw() <= 0)
 			return false;
 		double xc = h1.v[0] - h1.v[1];
@@ -42,9 +39,8 @@ public class VisualGUIHex extends VisualGUI
 	}
 
 	@Override
-	public void draw()
+	public void draw(XGUI xgui)
 	{
-		XGUI xgui = stateControl.getXgui();
 		double cxs = xgui.xw() - (xgui.yw() > 1 ? 0.5 : 1d) * HexMatrix.Q3 / 2d;
 		double cys = (xgui.yw() - 1) * 1.5 / 2d;
 		draw1(xgui, cxs, cys, LU, rl(xgui), IMAGE_END, FONT_SIZE, TEXT_END);

@@ -11,6 +11,7 @@ public class LevelMap
 
 	public final TileType y1;
 	private final HashMap<Tile, AdvTile> advTiles;
+	private final List<Boolean> visibleSectors;
 	private final ArrayList<XHero> entitiesH;
 	private final ArrayList<XEnemy> entitiesE;
 	private Map<Tile, MarkType> marked;
@@ -20,6 +21,7 @@ public class LevelMap
 	{
 		this.y1 = y1;
 		advTiles = new HashMap<>();
+		visibleSectors = new ArrayList<>();
 		entitiesH = new ArrayList<>();
 		entitiesE = new ArrayList<>();
 		marked = Map.of();
@@ -134,6 +136,17 @@ public class LevelMap
 		advTile(entity.location()).setEntity(null);
 		entity.setLocation(newLocation);
 		advTile(newLocation).setEntity(entity);
+	}
+
+	public int createSector(boolean visible)
+	{
+		visibleSectors.add(visible);
+		return visibleSectors.size() - 1;
+	}
+
+	public boolean sectorVisible(int sector)
+	{
+		return visibleSectors.get(sector);
 	}
 
 	public ArrayList<XHero> getEntitiesH()

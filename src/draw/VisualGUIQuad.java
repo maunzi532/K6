@@ -4,7 +4,6 @@ import geom.*;
 import geom.d1.*;
 import gui.*;
 import javafx.scene.canvas.*;
-import logic.*;
 
 public class VisualGUIQuad extends VisualGUI
 {
@@ -13,10 +12,9 @@ public class VisualGUIQuad extends VisualGUI
 	private final DoubleTile LU;
 	private final DoubleTile RL;
 
-	public VisualGUIQuad(GraphicsContext gd, double xHalfWidth, double yHalfWidth,
-			XStateControl stateControl)
+	public VisualGUIQuad(GraphicsContext gd, double xHalfWidth, double yHalfWidth)
 	{
-		super(gd, new QuadCamera(xHalfWidth, yHalfWidth, yHalfWidth / 8, yHalfWidth / 8, 0,  0), stateControl);
+		super(gd, new QuadCamera(xHalfWidth, yHalfWidth, yHalfWidth / 8, yHalfWidth / 8, 0,  0));
 		LU = this.y2.createD(-3d / 4d, -3d / 4d);
 		RL = this.y2.createD(-1d / 4d, -1d / 4d);
 	}
@@ -27,9 +25,8 @@ public class VisualGUIQuad extends VisualGUI
 	}
 
 	@Override
-	public boolean inside(DoubleTile h1)
+	public boolean inside(DoubleTile h1, XGUI xgui)
 	{
-		XGUI xgui = stateControl.getXgui();
 		if(xgui.xw() <= 0 || xgui.yw() <= 0)
 			return false;
 		DoubleTile rl = rl(xgui);
@@ -37,9 +34,8 @@ public class VisualGUIQuad extends VisualGUI
 	}
 
 	@Override
-	public void draw()
+	public void draw(XGUI xgui)
 	{
-		XGUI xgui = stateControl.getXgui();
 		double cxs = (xgui.xw() - 1) * QuadLayout.DQ2;
 		double cys = (xgui.yw() - 1) * QuadLayout.DQ2;
 		draw1(xgui, cxs, cys, LU, rl(xgui), QuadLayout.DQ2, FONT_SIZE, TEXT_END);

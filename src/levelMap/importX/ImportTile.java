@@ -15,12 +15,12 @@ public class ImportTile
 		this.t1 = t1;
 	}
 
-	protected FloorTile toTile(Sector sector)
+	protected FloorTile toTile(int sector)
 	{
 		return new FloorTile(sector, FloorTileType.values()[R.nextInt(3)]);
 	}
 
-	public void importIntoMap(LevelMap levelMap, Sector sector)
+	public void importIntoMap(LevelMap levelMap, int sector)
 	{
 		levelMap.addFloor(t1, toTile(sector));
 	}

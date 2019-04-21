@@ -46,14 +46,13 @@ public class System1 implements CombatSystem<Stats1, AttackInfo1, AttackItem1>
 			XEntity entityT, Tile locT, Stats1 statsT)
 	{
 		int distance = mainState.y2.distance(loc, locT);
-		Optional<AttackItem1> itemT = equipItem(mainState, entityT, statsT, distance);
-		return items(mainState, entity, stats, distance).stream()
+		Optional<AttackItem1> itemT = counterItem(mainState, entityT, statsT, distance);
+		return distanceAttackItems(mainState, entity, stats, distance).stream()
 				.map(item -> AttackInfo1.create(this, entity, loc, stats, item, entityT, locT, statsT, itemT.orElse(null), distance))
 				.collect(Collectors.toList());
 	}
 
-	@Override
-	public List<AttackItem1> items(MainState mainState, XEntity entity, Stats1 stats, int distance)
+	public List<AttackItem1> distanceAttackItems(MainState mainState, XEntity entity, Stats1 stats, int distance)
 	{
 		if(entity instanceof InvEntity)
 		{
@@ -65,8 +64,7 @@ public class System1 implements CombatSystem<Stats1, AttackInfo1, AttackItem1>
 		return List.of();
 	}
 
-	@Override
-	public Optional<AttackItem1> equipItem(MainState mainState, XEntity entity, Stats1 stats, int distance)
+	public Optional<AttackItem1> counterItem(MainState mainState, XEntity entity, Stats1 stats, int distance)
 	{
 		if(entity instanceof InvEntity)
 		{

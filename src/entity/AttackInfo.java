@@ -1,32 +1,31 @@
 package entity;
 
 import geom.f1.*;
-import item.*;
 
-public abstract class AttackInfo<T extends Stats, I extends Item>
+public abstract class AttackInfo<T extends Stats, I extends XMode>
 {
 	public final XEntity entity;
 	public final Tile loc;
 	public final T stats;
-	public final I item;
+	public final I mode;
 	public final XEntity entityT;
 	public final Tile locT;
 	public final T statsT;
-	public final I itemT;
+	public final I modeT;
 	public final int distance;
 	public final String[] infos;
 
-	public AttackInfo(XEntity entity, Tile loc, T stats, I item,
-			XEntity entityT, Tile locT, T statsT, I itemT, int distance, String... infos)
+	public AttackInfo(XEntity entity, Tile loc, T stats, I mode,
+			XEntity entityT, Tile locT, T statsT, I modeT, int distance, String... infos)
 	{
 		this.entity = entity;
 		this.loc = loc;
 		this.stats = stats;
-		this.item = item;
+		this.mode = mode;
 		this.entityT = entityT;
 		this.locT = locT;
 		this.statsT = statsT;
-		this.itemT = itemT;
+		this.modeT = modeT;
 		this.distance = distance;
 		this.infos = infos;
 	}
@@ -43,7 +42,7 @@ public abstract class AttackInfo<T extends Stats, I extends Item>
 
 	public I getItem(boolean inverse)
 	{
-		return inverse ? itemT : item;
+		return inverse ? modeT : mode;
 	}
 
 	public abstract int getChange(boolean current, boolean inverse);

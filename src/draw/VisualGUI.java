@@ -7,21 +7,18 @@ import gui.*;
 import javafx.scene.canvas.*;
 import javafx.scene.paint.*;
 import javafx.scene.text.*;
-import logic.*;
 
 public abstract class VisualGUI
 {
 	public final DoubleType y2;
 	protected final GraphicsContext gd;
 	protected final TileCamera camera;
-	protected final XStateControl stateControl;
 
-	public VisualGUI(GraphicsContext gd, TileCamera camera, XStateControl stateControl)
+	public VisualGUI(GraphicsContext gd, TileCamera camera)
 	{
 		this.gd = gd;
 		this.camera = camera;
 		y2 = camera.getDoubleType();
-		this.stateControl = stateControl;
 	}
 
 	public Tile clickLocation(double x, double y)
@@ -29,14 +26,14 @@ public abstract class VisualGUI
 		return y2.cast(camera.clickLocation(x, y));
 	}
 
-	public boolean inside(double x, double y)
+	public boolean inside(double x, double y, XGUI xgui)
 	{
-		return inside(camera.clickLocation(x, y));
+		return inside(camera.clickLocation(x, y), xgui);
 	}
 
-	public abstract boolean inside(DoubleTile h1);
+	public abstract boolean inside(DoubleTile h1, XGUI xgui);
 
-	public abstract void draw();
+	public abstract void draw(XGUI xgui);
 
 	public void draw1(XGUI xgui, double cxs, double cys, DoubleTile lu, DoubleTile rl, double imgSize, double fontSize, double textWidth)
 	{

@@ -2,18 +2,18 @@ package levelMap;
 
 public class FloorTile
 {
-	public FloorTile(Sector sector, FloorTileType type)
+	public FloorTile(int sector, FloorTileType type)
 	{
 		this.sector = sector;
 		this.type = type;
 	}
 
-	public final Sector sector;
+	public final int sector;
 	public final FloorTileType type;
 
-	public boolean visible()
+	public boolean visible(LevelMap levelMap)
 	{
-		return sector.visible;
+		return levelMap.sectorVisible(sector);
 	}
 
 	public boolean blocked()
