@@ -9,6 +9,8 @@ public class AttackAnimState extends AttackState
 {
 	private final boolean inverse;
 	private final int num;
+	private int change;
+	private int changeT;
 	private int counter;
 	private int counter2;
 	private int counter2T;
@@ -21,12 +23,6 @@ public class AttackAnimState extends AttackState
 		this(nextState, aI, 0, false);
 	}
 
-	@Override
-	protected boolean inverse()
-	{
-		return inverse;
-	}
-
 	public AttackAnimState(NState nextState, AttackInfo aI, int num, boolean inverse)
 	{
 		super(nextState, aI);
@@ -35,26 +31,34 @@ public class AttackAnimState extends AttackState
 	}
 
 	@Override
+	protected boolean inverse()
+	{
+		return inverse;
+	}
+
+	@Override
 	public void onEnter(MainState mainState)
 	{
 		infoE = new InfoArrow(entity().location(), entityT().location(),
 				80, entity() instanceof XHero ? Color.GREEN : Color.GRAY, Color.BLACK,
-				stats().getStat(0), stats().getMaxStat(0));
+				Color.WHITE, stats().getStat(0), stats().getMaxStat(0));
 		mainState.levelMap.addArrow(infoE);
 		infoET = new InfoArrow(entityT().location(), entity().location(),
 				80, entityT() instanceof XHero ? Color.GREEN : Color.GRAY, Color.BLACK,
-				statsT().getStat(0), statsT().getMaxStat(0));
+				Color.WHITE, statsT().getStat(0), statsT().getMaxStat(0));
 		mainState.levelMap.addArrow(infoET);
 		XArrow arrow = XArrow.factory(entity().location(), entityT().location(),
 				60, false, entity().getImage(), false);
 		mainState.levelMap.addArrow(arrow);
 		entity().setReplacementArrow(arrow);
+		change = aI.getChange(true, inverse, num);
+		changeT = aI.getChange(false, !inverse, num);
 	}
 
 	@Override
 	public void tick(MainState mainState)
 	{
-		if(counter == 40)
+		if(counter == 40 && changeT < 0)
 		{
 			blinkArrow = new BlinkArrow(entityT().location(),
 					40, false, entityT().getImage(), 10);
@@ -63,9 +67,9 @@ public class AttackAnimState extends AttackState
 		}
 		if(counter >= 40 && counter % 3 == 0)
 		{
-			if(counter2 >= 0 && counter2 < Math.abs(aI.getChange(true, inverse)))
+			if(counter2 >= 0 && counter2 < Math.abs(change))
 			{
-				stats().change(aI.getChange(true, inverse) > 0);
+				stats().change(change > 0);
 				infoE.setData(stats().getStat(0));
 				counter2++;
 				if(stats().removeEntity())
@@ -80,9 +84,9 @@ public class AttackAnimState extends AttackState
 			{
 				counter2 = -1;
 			}
-			if(counter2T >= 0 && counter2T < Math.abs(aI.getChange(false, !inverse)))
+			if(counter2T >= 0 && counter2T < Math.abs(changeT))
 			{
-				statsT().change(aI.getChange(false, !inverse) > 0);
+				statsT().change(changeT > 0);
 				infoET.setData(statsT().getStat(0));
 				counter2T++;
 				if(statsT().removeEntity())

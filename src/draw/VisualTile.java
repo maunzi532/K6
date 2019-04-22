@@ -7,6 +7,7 @@ import geom.f1.*;
 import java.util.stream.*;
 import javafx.scene.canvas.*;
 import javafx.scene.paint.*;
+import javafx.scene.text.*;
 import levelMap.*;
 
 public class VisualTile
@@ -135,6 +136,9 @@ public class VisualTile
 			gd.fillRect(xs, ys, xw * arrow1.getData() / arrow1.getMaxData(), yw);
 			gd.setStroke(arrow1.getBg());
 			gd.strokeRect(xs, ys, xw, yw);
+			gd.setFont(new Font(null, yw * 0.8));
+			gd.setFill(arrow1.getTc());
+			gd.fillText(arrow1.getData() + "/" + arrow1.getMaxData(), xs + xw / 2, ys + yw / 2, xw);
 		});
 	}
 }

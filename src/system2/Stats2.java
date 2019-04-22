@@ -138,11 +138,11 @@ public class Stats2 implements Stats
 
 	public static Stats2 create1()
 	{
-		return new Stats2(8, 5, 8, 7, 5, 9, 30, 20, 4);
+		return new Stats2(8, 5, 8, 7, 5, 9, 30, 30, 4);
 	}
 
 	public static Stats2 create2()
 	{
-		return new Stats2(6, 7, 10, 10, 2, 5, 25, 15, 4);
+		return new Stats2(6, 7, 10, 10, 2, 7, 25, 25, 4);
 	}
 }
