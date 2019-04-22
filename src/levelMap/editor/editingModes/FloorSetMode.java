@@ -4,6 +4,7 @@ import geom.f1.*;
 import gui.*;
 import levelMap.*;
 import levelMap.editor.*;
+import logic.*;
 
 public class FloorSetMode implements EditingMode
 {
@@ -23,11 +24,9 @@ public class FloorSetMode implements EditingMode
 	}
 
 	@Override
-	public void onClick(int mouseKey){}
-
-	@Override
-	public void onMapClick(Tile tile, LevelMap levelMap, int mouseKey)
+	public boolean onMapClick(MainState mainState, Tile tile, int mouseKey)
 	{
-		levelMap.setFloorTile(tile, new FloorTile(0, tileType));
+		mainState.levelMap.setFloorTile(tile, new FloorTile(0, tileType));
+		return false;
 	}
 }

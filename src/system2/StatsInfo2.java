@@ -26,7 +26,7 @@ public class StatsInfo2
 		skill = Math.max(0, stats.getSkill() - exhausted);
 		speed = Math.max(0, stats.getSpeed() - exhausted - weighedDown);
 		luck = stats.getLuck();
-		defense = Math.max(0, stats.getFinesse() - exhausted);
+		defense = Math.max(0, stats.getDefense() - exhausted);
 		toughness = stats.getToughness();
 		endurance = stats.getEndurance();
 	}

@@ -25,6 +25,7 @@ public class LevelEditor
 		this.mainState = mainState;
 		currentSlot = -1;
 		modes = new ArrayList<>();
+		modes.add(BCEditMode.INSTANCE);
 		for(int i = 0; i < FloorTileType.values().length; i++)
 		{
 			modes.add(new FloorSetMode(FloorTileType.values()[i]));
@@ -61,7 +62,7 @@ public class LevelEditor
 	public boolean onEditorClick(int num, int mouseKey)
 	{
 		if(mouseKey == 1 && num == currentSlot)
-			editorSlots.get(currentSlot).onClick(mouseKey);
+			editorSlots.get(currentSlot).onClick(mainState, mouseKey);
 		currentSlot = num;
 		if(mouseKey == 3)
 		{
@@ -71,10 +72,13 @@ public class LevelEditor
 		return false;
 	}
 
-	public void onMapClick(Tile tile, int mouseKey)
+	public boolean onMapClick(Tile tile, int mouseKey)
 	{
 		if(currentSlot >= 0)
-			editorSlots.get(currentSlot).onMapClick(tile, mainState.levelMap, mouseKey);
+		{
+			return editorSlots.get(currentSlot).onMapClick(mainState, tile, mouseKey);
+		}
+		return false;
 	}
 
 	public void setCurrentSlot(EditingMode mode)

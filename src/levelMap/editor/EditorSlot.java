@@ -3,7 +3,7 @@ package levelMap.editor;
 import draw.*;
 import geom.f1.*;
 import gui.guis.*;
-import levelMap.*;
+import logic.*;
 
 public class EditorSlot
 {
@@ -34,13 +34,13 @@ public class EditorSlot
 		visualGUI.draw(gui);
 	}
 
-	public void onClick(int mouseKey)
+	public void onClick(MainState mainState, int mouseKey)
 	{
-		mode.onClick(mouseKey);
+		mode.onClick(mainState, mouseKey);
 	}
 
-	public void onMapClick(Tile tile, LevelMap levelMap, int mouseKey)
+	public boolean onMapClick(MainState mainState, Tile tile, int mouseKey)
 	{
-		mode.onMapClick(tile, levelMap, mouseKey);
+		return mode.onMapClick(mainState, tile, mouseKey);
 	}
 }

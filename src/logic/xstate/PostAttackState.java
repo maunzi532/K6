@@ -17,7 +17,10 @@ public class PostAttackState extends AttackState
 	}
 
 	@Override
-	public void onEnter(MainState mainState){}
+	public void onEnter(MainState mainState)
+	{
+		mainState.combatSystem.postAttack(aI);
+	}
 
 	@Override
 	public void tick(MainState mainState){}

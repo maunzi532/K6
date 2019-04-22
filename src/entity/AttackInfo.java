@@ -13,10 +13,9 @@ public abstract class AttackInfo<T extends Stats, I extends XMode>
 	public final T statsT;
 	public final I modeT;
 	public final int distance;
-	public final String[] infos;
 
 	public AttackInfo(XEntity entity, Tile loc, T stats, I mode,
-			XEntity entityT, Tile locT, T statsT, I modeT, int distance, String... infos)
+			XEntity entityT, Tile locT, T statsT, I modeT, int distance)
 	{
 		this.entity = entity;
 		this.loc = loc;
@@ -27,7 +26,6 @@ public abstract class AttackInfo<T extends Stats, I extends XMode>
 		this.statsT = statsT;
 		this.modeT = modeT;
 		this.distance = distance;
-		this.infos = infos;
 	}
 
 	public XEntity getEntity(boolean inverse)
@@ -40,7 +38,7 @@ public abstract class AttackInfo<T extends Stats, I extends XMode>
 		return inverse ? statsT : stats;
 	}
 
-	public I getItem(boolean inverse)
+	public I getMode(boolean inverse)
 	{
 		return inverse ? modeT : mode;
 	}
@@ -48,4 +46,6 @@ public abstract class AttackInfo<T extends Stats, I extends XMode>
 	public abstract int getChange(boolean current, boolean inverse);
 
 	public abstract int attackCount(boolean inverse);
+
+	public abstract String[] getInfos();
 }

@@ -73,10 +73,14 @@ public class XEnemy extends InvEntity
 			Collections.shuffle(attackInfo);
 			return new EnemyMove(this, 0x100 + RANDOM.nextInt(0x100), attackInfo.get(0).loc, attackInfo.get(0));
 		}
-		else
+		else if(canMove)
 		{
 			Collections.shuffle(v);
 			return new EnemyMove(this, RANDOM.nextInt(0x100), v.get(0), null);
+		}
+		else
+		{
+			return new EnemyMove(this, -1, null, null);
 		}
 	}
 }

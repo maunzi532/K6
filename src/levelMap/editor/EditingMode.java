@@ -2,13 +2,13 @@ package levelMap.editor;
 
 import geom.f1.*;
 import gui.*;
-import levelMap.*;
+import logic.*;
 
 public interface EditingMode
 {
 	GuiTile guiTile();
 
-	void onClick(int mouseKey);
+	default void onClick(MainState mainState, int mouseKey){}
 
-	void onMapClick(Tile tile, LevelMap levelMap, int mouseKey);
+	boolean onMapClick(MainState mainState, Tile tile, int mouseKey);
 }

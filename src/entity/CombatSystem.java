@@ -26,4 +26,8 @@ public interface CombatSystem<T extends Stats, A extends AttackInfo, I extends I
 	}
 
 	List<A> attackInfo(MainState mainState, XEntity entity, Tile loc, T stats, XEntity entityT, Tile locT, T statsT);
+
+	void preAttack(A attackInfo);
+
+	void postAttack(A attackInfo);
 }

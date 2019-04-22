@@ -68,9 +68,9 @@ public class AttackInfoGUI extends XGUI implements InvGUI
 
 	private String read(AttackInfo info, int n)
 	{
-		if(n >= info.infos.length)
+		if(n >= info.getInfos().length)
 			return "";
-		return info.infos[n];
+		return info.getInfos()[n];
 	}
 
 	@Override

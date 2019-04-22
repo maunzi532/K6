@@ -24,8 +24,7 @@ public class XStateControl
 
 	public void start()
 	{
-		//setState(new StartTurnState());
-		setState(EditingState.INSTANCE);
+		setState(new StartTurnState());
 		update();
 	}
 
@@ -58,7 +57,21 @@ public class XStateControl
 			handleMenuClick(Math.floorMod(newIndex, menu.size()), 1);
 	}
 
-	public void handleMenuClick(int menuOption, int key)
+	public void toggleEditMode()
+	{
+		if(state instanceof NoneState)
+		{
+			setState(EditingState.INSTANCE);
+			update();
+		}
+		else if(state instanceof EditingState)
+		{
+			setState(NoneState.INSTANCE);
+			update();
+		}
+	}
+
+	public void handleMenuClick(int menuOption, int mouseKey)
 	{
 		if(state instanceof NAutoState)
 			return;
@@ -66,7 +79,7 @@ public class XStateControl
 		if(newState instanceof NClickState)
 		{
 			xgui.close(this);
-			((NClickState) newState).onMenuClick(key, mainState);
+			((NClickState) newState).onMenuClick(mouseKey, mainState);
 			update();
 		}
 		else if(newState != state)
@@ -82,34 +95,34 @@ public class XStateControl
 		xgui.target(offset.v[0], offset.v[1]);
 	}
 
-	public void handleGUIClick(Tile offset, boolean inside, int key)
+	public void handleGUIClick(Tile offset, boolean inside, int mouseKey)
 	{
 		if(inside)
 		{
-			if(xgui.click(offset.v[0], offset.v[1], key, this))
+			if(xgui.click(offset.v[0], offset.v[1], mouseKey, this))
 				update();
 		}
 		else
 		{
-			if(xgui.clickOutside(key, this))
+			if(xgui.clickOutside(mouseKey, this))
 				update();
 		}
 	}
 
-	public void handleMapClick(Tile mapTile, int key)
+	public void handleMapClick(Tile mapTile, int mouseKey)
 	{
 		if(state instanceof NAutoState)
 			return;
 		if(state instanceof NMarkState)
 		{
 			((NMarkState) state).onClick(mapTile, mainState.levelMap.getMarked().getOrDefault(mapTile, MarkType.NOT),
-					key, mainState.levelMap, this);
+					mouseKey, mainState.levelMap, this);
 			update();
 		}
 		else
 		{
 			AdvTile advTile = mainState.levelMap.advTile(mapTile);
-			if(key == 1)
+			if(mouseKey == 1)
 			{
 				if(advTile.getEntity() != null)
 				{
@@ -120,7 +133,7 @@ public class XStateControl
 					setTileState(advTile.getBuilding());
 				}
 			}
-			else if(key == 3)
+			else if(mouseKey == 3)
 			{
 				if(advTile.getBuilding() != null)
 				{
@@ -134,38 +147,37 @@ public class XStateControl
 		}
 	}
 
-	private void setTileState(Object object)
+	private void setTileState(XEntity entity)
 	{
-		if(object instanceof XEntity)
+		if(entity instanceof XHero)
 		{
-			if(object instanceof XHero)
-			{
-				if(((XHero) object).canMove())
-					setState(new CharacterMovementState((XHero) object));
-				else if(((XHero) object).isReady())
-					setState(new AttackTargetState((XHero) object));
-				else
-					setState(new CharacterInvState((XHero) object));
-			}
+			if(((XHero) entity).canMove())
+				setState(new CharacterMovementState((XHero) entity));
+			else if(((XHero) entity).isReady())
+				setState(new AttackTargetState((XHero) entity));
 			else
-			{
-				return;
-			}
+				setState(new CharacterInvState((XHero) entity));
 		}
-		else if(object instanceof MBuilding)
+		else
 		{
-			if(object instanceof Transporter)
-			{
-				setState(new TransportTargetsState((Transporter) object));
-			}
-			else if(object instanceof ProductionBuilding)
-			{
-				setState(new ProductionFloorsState((ProductionBuilding) object));
-			}
-			else
-			{
-				return;
-			}
+			return;
+		}
+		update();
+	}
+
+	private void setTileState(MBuilding object)
+	{
+		if(object instanceof Transporter)
+		{
+			setState(new TransportTargetsState((Transporter) object));
+		}
+		else if(object instanceof ProductionBuilding)
+		{
+			setState(new ProductionFloorsState((ProductionBuilding) object));
+		}
+		else
+		{
+			return;
 		}
 		update();
 	}
@@ -180,7 +192,8 @@ public class XStateControl
 		}
 		else
 		{
-			levelEditor.onMapClick(mapTile, mouseKey);
+			if(levelEditor.onMapClick(mapTile, mouseKey))
+				update();
 		}
 	}
 

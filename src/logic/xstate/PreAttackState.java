@@ -17,7 +17,10 @@ public class PreAttackState extends AttackState
 	}
 
 	@Override
-	public void onEnter(MainState mainState){}
+	public void onEnter(MainState mainState)
+	{
+		mainState.combatSystem.preAttack(aI);
+	}
 
 	@Override
 	public void tick(MainState mainState){}

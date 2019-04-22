@@ -15,7 +15,7 @@ public class AttackItem2 implements Item
 
 	public static AttackItem2 item2()
 	{
-		return new AttackItem2(5, 1, 70, 5, 1);
+		return new AttackItem2(14, 7, 70, 5, 1);
 	}
 
 	public AttackItem2(int damage, int heavy, int accuracy, int crit, int... ranges)
@@ -35,7 +35,7 @@ public class AttackItem2 implements Item
 
 	public List<AttackMode2> attackModes()
 	{
-		return List.of();
+		return List.of(new AttackMode2<>(this));
 	}
 
 	@Override
