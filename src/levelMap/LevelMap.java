@@ -66,9 +66,14 @@ public class LevelMap
 		return advTile(t1).getFloorTile();
 	}
 
-	public void addFloor(Tile t1, FloorTile floorTile)
+	public void setFloorTile(Tile t1, FloorTile floorTile)
 	{
-		advTiles.put(t1, new AdvTile(floorTile));
+		if(advTiles.containsKey(t1))
+		{
+			advTile(t1).setFloorTile(floorTile);
+		}
+		else
+			advTiles.put(t1, new AdvTile(floorTile));
 	}
 
 	public MBuilding getBuilding(Tile t1)

@@ -23,7 +23,8 @@ public class XStateControl
 
 	public void start()
 	{
-		setState(new StartTurnState());
+		//setState(new StartTurnState());
+		setState(new EditingState());
 		update();
 	}
 

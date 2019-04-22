@@ -4,6 +4,7 @@ import geom.*;
 import javafx.application.Application;
 import javafx.scene.*;
 import javafx.scene.canvas.*;
+import javafx.scene.image.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
@@ -25,6 +26,7 @@ public class XScene extends Application
 		root.getChildren().add(canvas);
 		stage.setScene(s);
 		stage.setTitle("K6");
+		stage.getIcons().add(new Image("Tech.png"));
 		XGraphics graphics = new XGraphics(canvas.getGraphicsContext2D(), WIDTH, HEIGHT);
 		XTimer xTimer = new XTimer(graphics);
 		xTimer.start();

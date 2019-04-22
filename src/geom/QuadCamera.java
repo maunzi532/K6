@@ -4,10 +4,10 @@ import geom.d1.*;
 
 public class QuadCamera extends TileCamera
 {
-	public QuadCamera(XDimension dimension, double xSize, double ySize,
+	public QuadCamera(XDimension dimension, double xMid, double yMid, double xSize, double ySize,
 			double xShift, double yShift)
 	{
-		super(new QuadDoubleType(), dimension, xSize, ySize, xShift, yShift);
+		super(new QuadDoubleType(), dimension, xMid, yMid, xSize, ySize, xShift, yShift);
 	}
 
 	@Override
@@ -21,6 +21,6 @@ public class QuadCamera extends TileCamera
 	@Override
 	public TileLayout layout()
 	{
-		return new QuadLayout(new PointD(xSize, ySize), new PointD(dimension.xHW() - xShift * xSize, dimension.yHW() - yShift * ySize));
+		return new QuadLayout(new PointD(xSize, ySize), new PointD(dimension.xHW() * xMid - xShift * xSize, dimension.yHW() * yMid - yShift * ySize));
 	}
 }

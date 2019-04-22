@@ -22,6 +22,6 @@ public class ImportTile
 
 	public void importIntoMap(LevelMap levelMap, int sector)
 	{
-		levelMap.addFloor(t1, toTile(sector));
+		levelMap.setFloorTile(t1, toTile(sector));
 	}
 }

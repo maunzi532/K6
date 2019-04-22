@@ -6,10 +6,10 @@ public class HexCamera extends TileCamera
 {
 	private HexMatrix matrix;
 
-	public HexCamera(XDimension dimension, double xSize, double ySize,
+	public HexCamera(XDimension dimension, double xMid, double yMid, double xSize, double ySize,
 			double xShift, double yShift, HexMatrix matrix)
 	{
-		super(new HexDoubleType(), dimension, xSize, ySize, xShift, yShift);
+		super(new HexDoubleType(), dimension, xMid, yMid, xSize, ySize, xShift, yShift);
 		this.matrix = matrix;
 	}
 
@@ -25,6 +25,6 @@ public class HexCamera extends TileCamera
 	public TileLayout layout()
 	{
 		return new HexLayout(matrix, new PointD(xSize, ySize),
-				new PointD(dimension.xHW() - xShift * xSize, dimension.yHW() - yShift * ySize));
+				new PointD(dimension.xHW() * xMid - xShift * xSize, dimension.yHW() * yMid - yShift * ySize));
 	}
 }

@@ -8,7 +8,12 @@ public class EditingGUI extends XGUI
 	public EditingGUI()
 	{
 		initTiles();
-		tiles[0][0] = new GuiTile("T");
+		setTile(new GuiTile("T"));
+	}
+
+	public void setTile(GuiTile guiTile)
+	{
+		tiles[0][0] = guiTile;
 	}
 
 	@Override
@@ -24,15 +29,11 @@ public class EditingGUI extends XGUI
 	}
 
 	@Override
-	public void target(int x, int y)
-	{
-
-	}
+	public void target(int x, int y){}
 
 	@Override
 	public boolean click(int x, int y, int key, XStateControl stateControl)
 	{
-		System.out.println("W");
 		return false;
 	}
 }

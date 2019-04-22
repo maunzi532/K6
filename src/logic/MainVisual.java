@@ -6,7 +6,7 @@ import geom.d1.*;
 import javafx.geometry.*;
 import javafx.scene.input.*;
 import javafx.scene.text.*;
-import levelMap.*;
+import levelMap.editor.*;
 import logic.xstate.*;
 
 public class MainVisual
@@ -20,7 +20,7 @@ public class MainVisual
 
 	public MainVisual(XGraphics graphics)
 	{
-		mapCamera = new HexCamera(graphics, 44, 44, 0, 0, new HexMatrix(0.5));
+		mapCamera = new HexCamera(graphics, 1, 1, 44, 44, 0, 0, new HexMatrix(0.5));
 		//mapCamera = new QuadCamera(graphics, 44, 44, 0, 0);
 		DoubleType y2 = mapCamera.getDoubleType();
 		mainState = new MainState(y2);
@@ -30,8 +30,8 @@ public class MainVisual
 		graphics.gd().setTextBaseline(VPos.CENTER);
 		visualTile = new VisualTile(y2, new ArrowViewer(y2), mainState.levelMap, graphics.gd());
 		visualMenu = new VisualMenu(graphics, mainState.stateControl);
-		visualGUI = new VisualGUIQuad(graphics);
-		//visualGUI = new VisualGUIHex(graphics, mainState.stateControl);
+		visualGUI = new VisualGUIQuad(graphics, new QuadCamera(graphics, 1, 1, graphics.yHW() / 8, graphics.yHW() / 8, 0,  0));
+		//visualGUI = new VisualGUIHex(graphics, new HexCamera(graphics, 1, 1, graphics.yHW() / 8, graphics.yHW() / 8, 0,  0, HexMatrix.LP));
 		levelEditor = new LevelEditor(graphics, mainState.levelMap);
 		draw();
 	}

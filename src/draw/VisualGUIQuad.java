@@ -11,9 +11,9 @@ public class VisualGUIQuad extends VisualGUI
 	private final DoubleTile LU;
 	private final DoubleTile RL;
 
-	public VisualGUIQuad(XGraphics graphics)
+	public VisualGUIQuad(XGraphics graphics, QuadCamera camera)
 	{
-		super(graphics.gd(), new QuadCamera(graphics, graphics.xHW() / 8, graphics.yHW() / 8, 0,  0));
+		super(graphics.gd(), camera);
 		LU = this.y2.createD(-3d / 4d, -3d / 4d);
 		RL = this.y2.createD(-1d / 4d, -1d / 4d);
 	}

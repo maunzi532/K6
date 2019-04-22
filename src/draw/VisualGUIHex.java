@@ -13,9 +13,9 @@ public class VisualGUIHex extends VisualGUI
 	private final DoubleTile RLE;
 	private final DoubleTile RLS;
 
-	public VisualGUIHex(XGraphics graphics)
+	public VisualGUIHex(XGraphics graphics, HexCamera camera)
 	{
-		super(graphics.gd(), new HexCamera(graphics, graphics.xHW() / 8, graphics.yHW() / 8, 0,  0, HexMatrix.LP));
+		super(graphics.gd(), camera);
 		LU = y2.createD(-1d / 6d, 5d / 6d, -4d / 6d);
 		RLE = y2.createD(1d / 6d, -5d / 6d, 4d / 6d);
 		RLS = y2.createD(4d / 6d, -8d / 6d, 4d / 6d);

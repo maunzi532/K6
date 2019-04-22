@@ -20,8 +20,8 @@ public class VisualMenu
 	public VisualMenu(XGraphics graphics, XStateControl stateControl)
 	{
 		gd = graphics.gd();
-		camera = new HexCamera(graphics, graphics.xHW() / 8, graphics.yHW() / 8, -3.5 * HexMatrix.Q3,  0, HexMatrix.LP);
-		//camera = new QuadCamera(graphics, graphics.xHW() / 8, graphics.yHW() / 8, -3.5 * HexMatrix.Q3,  0);
+		camera = new HexCamera(graphics, 2, 1, graphics.yHW() / 8, graphics.yHW() / 8, 1.25 * HexMatrix.Q3,  0, HexMatrix.LP);
+		//camera = new QuadCamera(graphics, 2, 1, graphics.yHW() / 8, graphics.yHW() / 8, 1.25 * HexMatrix.Q3,  0);
 		y2 = camera.getDoubleType();
 		this.stateControl = stateControl;
 	}
