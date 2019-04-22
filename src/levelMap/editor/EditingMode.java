@@ -8,7 +8,7 @@ public interface EditingMode
 {
 	GuiTile guiTile();
 
-	void onClick(int mouseKey, boolean active);
+	void onClick(int mouseKey);
 
 	void onMapClick(Tile tile, LevelMap levelMap, int mouseKey);
 }

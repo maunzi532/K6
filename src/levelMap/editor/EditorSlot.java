@@ -34,9 +34,9 @@ public class EditorSlot
 		visualGUI.draw(gui);
 	}
 
-	public void onClick(int mouseKey, boolean active)
+	public void onClick(int mouseKey)
 	{
-		mode.onClick(mouseKey, active);
+		mode.onClick(mouseKey);
 	}
 
 	public void onMapClick(Tile tile, LevelMap levelMap, int mouseKey)

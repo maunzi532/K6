@@ -32,7 +32,7 @@ public class MainVisual
 		visualMenu = new VisualMenu(graphics, mainState.stateControl);
 		visualGUI = new VisualGUIQuad(graphics, new QuadCamera(graphics, 1, 1, graphics.yHW() / 8, graphics.yHW() / 8, 0,  0));
 		//visualGUI = new VisualGUIHex(graphics, new HexCamera(graphics, 1, 1, graphics.yHW() / 8, graphics.yHW() / 8, 0,  0, HexMatrix.LP));
-		levelEditor = new LevelEditor(graphics, mainState.levelMap);
+		levelEditor = new LevelEditor(graphics, mainState);
 		draw();
 	}
 
@@ -50,15 +50,7 @@ public class MainVisual
 		}
 		else if(mainState.stateControl.getState().editMode())
 		{
-			int editorClick = levelEditor.editorClickNum(x, y);
-			if(editorClick >= 0)
-			{
-				levelEditor.onEditorClick(editorClick, mouseKey);
-			}
-			else
-			{
-				levelEditor.onMapClick(mainState.y2.cast(mapCamera.clickLocation(x, y)), mouseKey);
-			}
+			mainState.stateControl.handleEditMode(levelEditor, x, y, mainState.y2.cast(mapCamera.clickLocation(x, y)), mouseKey);
 		}
 		else
 		{

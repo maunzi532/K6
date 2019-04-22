@@ -23,7 +23,7 @@ public class FloorSetMode implements EditingMode
 	}
 
 	@Override
-	public void onClick(int mouseKey, boolean active){}
+	public void onClick(int mouseKey){}
 
 	@Override
 	public void onMapClick(Tile tile, LevelMap levelMap, int mouseKey)

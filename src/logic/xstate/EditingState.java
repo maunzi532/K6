@@ -2,6 +2,8 @@ package logic.xstate;
 
 public class EditingState implements NState
 {
+	public static final EditingState INSTANCE = new EditingState();
+
 	@Override
 	public String text()
 	{

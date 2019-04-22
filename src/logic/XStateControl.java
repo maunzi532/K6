@@ -7,6 +7,7 @@ import gui.*;
 import java.util.*;
 import java.util.stream.*;
 import levelMap.*;
+import levelMap.editor.*;
 import logic.xstate.*;
 
 public class XStateControl
@@ -24,7 +25,7 @@ public class XStateControl
 	public void start()
 	{
 		//setState(new StartTurnState());
-		setState(new EditingState());
+		setState(EditingState.INSTANCE);
 		update();
 	}
 
@@ -167,6 +168,20 @@ public class XStateControl
 			}
 		}
 		update();
+	}
+
+	public void handleEditMode(LevelEditor levelEditor, double x, double y, Tile mapTile, int mouseKey)
+	{
+		int editorClick = levelEditor.editorClickNum(x, y);
+		if(editorClick >= 0)
+		{
+			if(levelEditor.onEditorClick(editorClick, mouseKey))
+				update();
+		}
+		else
+		{
+			levelEditor.onMapClick(mapTile, mouseKey);
+		}
 	}
 
 	private void update()

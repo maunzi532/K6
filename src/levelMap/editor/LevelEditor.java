@@ -7,26 +7,40 @@ import geom.f1.*;
 import java.util.*;
 import levelMap.*;
 import levelMap.editor.editingModes.*;
+import logic.*;
+import logic.xstate.*;
 
 public class LevelEditor
 {
 	private static final int SLOT_COUNT = 5;
 
-	private LevelMap levelMap;
+	private MainState mainState;
 	private int currentSlot;
+	private List<EditingMode> modes;
 	private List<EditorSlot> editorSlots;
+	private EditingModeState editingModeState;
 
-	public LevelEditor(XGraphics graphics, LevelMap levelMap)
+	public LevelEditor(XGraphics graphics, MainState mainState)
 	{
-		this.levelMap = levelMap;
+		this.mainState = mainState;
 		currentSlot = -1;
+		modes = new ArrayList<>();
+		for(int i = 0; i < FloorTileType.values().length; i++)
+		{
+			modes.add(new FloorSetMode(FloorTileType.values()[i]));
+		}
 		editorSlots = new ArrayList<>();
 		for(int i = 0; i < SLOT_COUNT; i++)
 		{
 			editorSlots.add(new EditorSlot(new VisualGUIHex(graphics, new HexCamera(graphics, (i + 0.5) / SLOT_COUNT * 2, 1.75,
-					graphics.xHW() / 8, graphics.yHW() / 8, 0,  0, HexMatrix.LP)),
-					new FloorSetMode(FloorTileType.values()[i % FloorTileType.values().length])));
+					graphics.xHW() / 8, graphics.yHW() / 8, 0,  0, HexMatrix.LP)), modes.get(i % modes.size())));
 		}
+		editingModeState = new EditingModeState(this);
+	}
+
+	public List<EditingMode> getModes()
+	{
+		return modes;
 	}
 
 	public int editorClickNum(double x, double y)
@@ -44,15 +58,28 @@ public class LevelEditor
 		editorSlots.forEach(EditorSlot::draw);
 	}
 
-	public void onEditorClick(int num, int mouseKey)
+	public boolean onEditorClick(int num, int mouseKey)
 	{
-		editorSlots.get(num).onClick(mouseKey, num == currentSlot);
+		if(mouseKey == 1 && num == currentSlot)
+			editorSlots.get(currentSlot).onClick(mouseKey);
 		currentSlot = num;
+		if(mouseKey == 3)
+		{
+			mainState.stateControl.setState(editingModeState);
+			return true;
+		}
+		return false;
 	}
 
 	public void onMapClick(Tile tile, int mouseKey)
 	{
 		if(currentSlot >= 0)
-			editorSlots.get(currentSlot).onMapClick(tile, levelMap, mouseKey);
+			editorSlots.get(currentSlot).onMapClick(tile, mainState.levelMap, mouseKey);
+	}
+
+	public void setCurrentSlot(EditingMode mode)
+	{
+		if(currentSlot >= 0)
+			editorSlots.get(currentSlot).setMode(mode);
 	}
 }
