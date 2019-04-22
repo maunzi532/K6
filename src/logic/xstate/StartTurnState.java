@@ -8,12 +8,14 @@ public class StartTurnState implements NAutoState
 	private int counter;
 
 	@Override
+	public void onEnter(MainState mainState)
+	{
+		mainState.levelMap.getEntitiesH().forEach(XHero::startTurn);
+	}
+
+	@Override
 	public void tick(MainState mainState)
 	{
-		if(counter == 0)
-		{
-			mainState.levelMap.getEntitiesH().forEach(XHero::startTurn);
-		}
 		counter++;
 	}
 

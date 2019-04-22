@@ -19,7 +19,11 @@ public class XStateControl
 	public XStateControl(MainState mainState)
 	{
 		this.mainState = mainState;
-		state = new StartTurnState();
+	}
+
+	public void start()
+	{
+		setState(new StartTurnState());
 		update();
 	}
 
@@ -31,6 +35,7 @@ public class XStateControl
 	public void setState(NState state)
 	{
 		this.state = state;
+		state.onEnter(mainState);
 	}
 
 	public List<NState> getMenu()
@@ -65,7 +70,7 @@ public class XStateControl
 		else if(newState != state)
 		{
 			xgui.close(this);
-			state = newState;
+			setState(newState);
 			update();
 		}
 	}
@@ -134,11 +139,11 @@ public class XStateControl
 			if(object instanceof XHero)
 			{
 				if(((XHero) object).canMove())
-					state = new CharacterMovementState((XHero) object);
+					setState(new CharacterMovementState((XHero) object));
 				else if(((XHero) object).isReady())
-					state = new AttackTargetState((XHero) object);
+					setState(new AttackTargetState((XHero) object));
 				else
-					state = new CharacterInvState((XHero) object);
+					setState(new CharacterInvState((XHero) object));
 			}
 			else
 			{
@@ -149,11 +154,11 @@ public class XStateControl
 		{
 			if(object instanceof Transporter)
 			{
-				state = new TransportTargetsState((Transporter) object);
+				setState(new TransportTargetsState((Transporter) object));
 			}
 			else if(object instanceof ProductionBuilding)
 			{
-				state = new ProductionFloorsState((ProductionBuilding) object);
+				setState(new ProductionFloorsState((ProductionBuilding) object));
 			}
 			else
 			{

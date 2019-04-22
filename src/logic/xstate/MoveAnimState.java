@@ -21,13 +21,15 @@ public class MoveAnimState implements NAutoState
 	}
 
 	@Override
+	public void onEnter(MainState mainState)
+	{
+		finish = (mainState.y2.distance(newLocation, entity.location()) + 1) * LevelMap.TIME_PER_DISTANCE;
+		mainState.levelMap.moveEntity(entity, newLocation);
+	}
+
+	@Override
 	public void tick(MainState mainState)
 	{
-		if(counter == 0)
-		{
-			finish = (mainState.y2.distance(newLocation, entity.location()) + 1) * LevelMap.TIME_PER_DISTANCE;
-			mainState.levelMap.moveEntity(entity, newLocation);
-		}
 		counter++;
 	}
 

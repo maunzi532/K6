@@ -1,7 +1,7 @@
 package start;
 
+import geom.*;
 import javafx.animation.*;
-import javafx.scene.canvas.*;
 import javafx.scene.input.*;
 import logic.*;
 
@@ -16,9 +16,9 @@ public class XTimer extends AnimationTimer
 	private MouseButton mouseKey;
 	private KeyCode keyCode;
 
-	public XTimer(GraphicsContext gd, int w, int h)
+	public XTimer(XGraphics graphics)
 	{
-		mainVisual = new MainVisual(gd, w, h);
+		mainVisual = new MainVisual(graphics);
 	}
 
 	public void onMouseClick(MouseEvent mouseEvent)

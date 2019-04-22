@@ -6,16 +6,15 @@ import geom.f1.*;
 public abstract class TileCamera
 {
 	protected DoubleType y2;
-	protected double xHalfWidth, yHalfWidth;
+	protected XDimension dimension;
 	protected double xSize, ySize;
 	protected double xShift, yShift;
 
-	public TileCamera(DoubleType y2, double xHalfWidth, double yHalfWidth, double xSize, double ySize,
+	public TileCamera(DoubleType y2, XDimension dimension, double xSize, double ySize,
 			double xShift, double yShift)
 	{
 		this.y2 = y2;
-		this.xHalfWidth = xHalfWidth;
-		this.yHalfWidth = yHalfWidth;
+		this.dimension = dimension;
 		this.xSize = xSize;
 		this.ySize = ySize;
 		this.xShift = xShift;
@@ -48,6 +47,6 @@ public abstract class TileCamera
 
 	public Tile mid(TileLayout layout)
 	{
-		return y2.cast(layout.pixelToTile(new PointD(xHalfWidth, yHalfWidth), y2));
+		return y2.cast(layout.pixelToTile(new PointD(dimension.xHW(), dimension.yHW()), y2));
 	}
 }

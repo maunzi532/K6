@@ -3,7 +3,6 @@ package draw;
 import geom.*;
 import geom.d1.*;
 import gui.*;
-import javafx.scene.canvas.*;
 
 public class VisualGUIQuad extends VisualGUI
 {
@@ -12,9 +11,9 @@ public class VisualGUIQuad extends VisualGUI
 	private final DoubleTile LU;
 	private final DoubleTile RL;
 
-	public VisualGUIQuad(GraphicsContext gd, double xHalfWidth, double yHalfWidth)
+	public VisualGUIQuad(XGraphics graphics)
 	{
-		super(gd, new QuadCamera(xHalfWidth, yHalfWidth, yHalfWidth / 8, yHalfWidth / 8, 0,  0));
+		super(graphics.gd(), new QuadCamera(graphics, graphics.xHW() / 8, graphics.yHW() / 8, 0,  0));
 		LU = this.y2.createD(-3d / 4d, -3d / 4d);
 		RL = this.y2.createD(-1d / 4d, -1d / 4d);
 	}

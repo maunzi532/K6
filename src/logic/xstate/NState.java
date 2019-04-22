@@ -12,4 +12,11 @@ public interface NState
 	{
 		return true;
 	}
+
+	default void onEnter(MainState mainState){}
+
+	default boolean editMode()
+	{
+		return false;
+	}
 }

@@ -1,5 +1,6 @@
 package start;
 
+import geom.*;
 import javafx.application.Application;
 import javafx.scene.*;
 import javafx.scene.canvas.*;
@@ -24,11 +25,22 @@ public class XScene extends Application
 		root.getChildren().add(canvas);
 		stage.setScene(s);
 		stage.setTitle("K6");
-		XTimer xTimer = new XTimer(canvas.getGraphicsContext2D(), WIDTH, HEIGHT);
+		XGraphics graphics = new XGraphics(canvas.getGraphicsContext2D(), WIDTH, HEIGHT);
+		XTimer xTimer = new XTimer(graphics);
 		xTimer.start();
 		s.setOnMouseClicked(xTimer::onMouseClick);
 		s.setOnMouseMoved(xTimer::onMouseMove);
 		s.setOnKeyPressed(xTimer::onKeyEvent);
+		stage.widthProperty().addListener((e, f, g) ->
+		{
+			canvas.setWidth(g.doubleValue());
+			graphics.setxW(g.doubleValue());
+		});
+		stage.heightProperty().addListener((e, f, g) ->
+		{
+			canvas.setHeight(g.doubleValue());
+			graphics.setyW(g.doubleValue());
+		});
 		stage.show();
 	}
 }

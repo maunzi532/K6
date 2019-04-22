@@ -1,18 +1,22 @@
 package logic.xstate;
 
-public class NoneState implements NState
+public class EditingState implements NState
 {
-	public static final NoneState INSTANCE = new NoneState();
-
 	@Override
 	public String text()
 	{
-		return "Error";
+		return "Edit";
 	}
 
 	@Override
 	public XMenu menu()
 	{
 		return XMenu.NOMENU;
+	}
+
+	@Override
+	public boolean editMode()
+	{
+		return true;
 	}
 }

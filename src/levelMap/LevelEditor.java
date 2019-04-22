@@ -1,34 +1,28 @@
 package levelMap;
 
 import draw.*;
+import geom.*;
 import geom.f1.*;
 import gui.guis.*;
 import java.util.*;
-import javafx.scene.canvas.*;
 
 public class LevelEditor
 {
-	private boolean active;
 	private LevelMap levelMap;
 	private int currentSector;
 	private List<FloorTileType> slots;
+	private int currentSlot;
 	private List<VisualGUI> visualGUIs;
 	private List<EditingGUI> editingGUIs;
 
-	public LevelEditor(GraphicsContext gd, double xHalfWidth, double yHalfWidth, LevelMap levelMap)
+	public LevelEditor(XGraphics graphics, LevelMap levelMap)
 	{
-		active = false;
 		this.levelMap = levelMap;
 		slots = new ArrayList<>();
 		visualGUIs = new ArrayList<>();
-		visualGUIs.add(new VisualGUIHex(gd, xHalfWidth, yHalfWidth));
+		visualGUIs.add(new VisualGUIHex(graphics));
 		editingGUIs = new ArrayList<>();
 		editingGUIs.add(new EditingGUI());
-	}
-
-	public boolean isActive()
-	{
-		return active;
 	}
 
 	public int editorClickNum(double x, double y)

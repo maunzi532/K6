@@ -10,24 +10,14 @@ public class TransportPhaseState implements NAutoState
 	private int counter;
 
 	@Override
-	public String text()
+	public void onEnter(MainState mainState)
 	{
-		return "Transport";
-	}
-
-	@Override
-	public XMenu menu()
-	{
-		return XMenu.NOMENU;
+		mainState.levelMap.transportPhase();
 	}
 
 	@Override
 	public void tick(MainState mainState)
 	{
-		if(counter == 0)
-		{
-			mainState.levelMap.transportPhase();
-		}
 		counter++;
 	}
 
@@ -41,5 +31,17 @@ public class TransportPhaseState implements NAutoState
 	public NState nextState()
 	{
 		return new StartTurnState();
+	}
+
+	@Override
+	public String text()
+	{
+		return "Transport";
+	}
+
+	@Override
+	public XMenu menu()
+	{
+		return XMenu.NOMENU;
 	}
 }

@@ -5,10 +5,8 @@ import entity.*;
 import javafx.scene.paint.*;
 import logic.*;
 
-public class AttackAnimState implements NAutoState
+public class AttackAnimState extends AttackState
 {
-	private final NState nextState;
-	private final AttackInfo aI;
 	private final boolean inverse;
 	private final int num;
 	private int counter;
@@ -23,55 +21,58 @@ public class AttackAnimState implements NAutoState
 		this(nextState, aI, 0, false);
 	}
 
+	@Override
+	protected boolean inverse()
+	{
+		return inverse;
+	}
+
 	public AttackAnimState(NState nextState, AttackInfo aI, int num, boolean inverse)
 	{
-		this.nextState = nextState;
-		this.aI = aI;
+		super(nextState, aI);
 		this.num = num;
 		this.inverse = inverse;
 	}
 
 	@Override
+	public void onEnter(MainState mainState)
+	{
+		infoE = new InfoArrow(entity().location(), entityT().location(),
+				80, entity() instanceof XHero ? Color.GREEN : Color.GRAY, Color.BLACK,
+				stats().getStat(0), stats().getMaxStat(0));
+		mainState.levelMap.addArrow(infoE);
+		infoET = new InfoArrow(entityT().location(), entity().location(),
+				80, entityT() instanceof XHero ? Color.GREEN : Color.GRAY, Color.BLACK,
+				statsT().getStat(0), statsT().getMaxStat(0));
+		mainState.levelMap.addArrow(infoET);
+		XArrow arrow = XArrow.factory(entity().location(), entityT().location(),
+				60, false, entity().getImage(), false);
+		mainState.levelMap.addArrow(arrow);
+		entity().setReplacementArrow(arrow);
+	}
+
+	@Override
 	public void tick(MainState mainState)
 	{
-		XEntity entity = aI.getEntity(inverse);
-		XEntity entityT = aI.getEntity(!inverse);
-		Stats stats = aI.getStats(inverse);
-		Stats statsT = aI.getStats(!inverse);
-		if(counter == 0)
-		{
-			infoE = new InfoArrow(entity.location(), entityT.location(),
-					80, entity instanceof XHero ? Color.GREEN : Color.GRAY, Color.BLACK,
-					stats.getStat(0), stats.getMaxStat(0));
-			mainState.levelMap.addArrow(infoE);
-			infoET = new InfoArrow(entityT.location(), entity.location(),
-					80, entityT instanceof XHero ? Color.GREEN : Color.GRAY, Color.BLACK,
-					statsT.getStat(0), statsT.getMaxStat(0));
-			mainState.levelMap.addArrow(infoET);
-			XArrow arrow = XArrow.factory(entity.location(), entityT.location(),
-					60, false, entity.getImage(), false);
-			mainState.levelMap.addArrow(arrow);
-			entity.setReplacementArrow(arrow);
-		}
 		if(counter == 40)
 		{
-			blinkArrow = new BlinkArrow(entityT.location(),
-					40, false, entityT.getImage(), 10);
+			blinkArrow = new BlinkArrow(entityT().location(),
+					40, false, entityT().getImage(), 10);
 			mainState.levelMap.addArrow(blinkArrow);
-			entityT.setReplacementArrow(blinkArrow);
+			entityT().setReplacementArrow(blinkArrow);
 		}
 		if(counter >= 40 && counter % 3 == 0)
 		{
 			if(counter2 >= 0 && counter2 < Math.abs(aI.getChange(true, inverse)))
 			{
-				stats.change(aI.getChange(true, inverse) > 0);
-				infoE.setData(stats.getStat(0));
+				stats().change(aI.getChange(true, inverse) > 0);
+				infoE.setData(stats().getStat(0));
 				counter2++;
-				if(stats.removeEntity())
+				if(stats().removeEntity())
 				{
-					mainState.levelMap.removeEntity(entity);
-					mainState.levelMap.addArrow(new BlinkArrow(entity.location(),
-							40, false, entity.getImage(), 5));
+					mainState.levelMap.removeEntity(entity());
+					mainState.levelMap.addArrow(new BlinkArrow(entity().location(),
+							40, false, entity().getImage(), 5));
 					counter2 = -1;
 				}
 			}
@@ -81,16 +82,16 @@ public class AttackAnimState implements NAutoState
 			}
 			if(counter2T >= 0 && counter2T < Math.abs(aI.getChange(false, !inverse)))
 			{
-				statsT.change(aI.getChange(false, !inverse) > 0);
-				infoET.setData(statsT.getStat(0));
+				statsT().change(aI.getChange(false, !inverse) > 0);
+				infoET.setData(statsT().getStat(0));
 				counter2T++;
-				if(statsT.removeEntity())
+				if(statsT().removeEntity())
 				{
 					if(blinkArrow != null)
 						blinkArrow.remove();
-					mainState.levelMap.removeEntity(entityT);
-					mainState.levelMap.addArrow(new BlinkArrow(entityT.location(),
-							40, false, entityT.getImage(), 5));
+					mainState.levelMap.removeEntity(entityT());
+					mainState.levelMap.addArrow(new BlinkArrow(entityT().location(),
+							40, false, entityT().getImage(), 5));
 					counter2T = -1;
 				}
 			}
@@ -112,7 +113,7 @@ public class AttackAnimState implements NAutoState
 	public NState nextState()
 	{
 		if(aI.getStats(inverse).removeEntity() || aI.getStats(!inverse).removeEntity())
-			return nextState;
+			return new PostAttackState(nextState, aI);
 		int nextNum = inverse ? num + 1 : num;
 		if(nextNum < aI.attackCount(!inverse))
 		{
@@ -122,18 +123,6 @@ public class AttackAnimState implements NAutoState
 		{
 			return new AttackAnimState(nextState, aI, num + 1, inverse);
 		}
-		return nextState;
-	}
-
-	@Override
-	public String text()
-	{
-		return "Error";
-	}
-
-	@Override
-	public XMenu menu()
-	{
-		return XMenu.NOMENU;
+		return new PostAttackState(nextState, aI);
 	}
 }

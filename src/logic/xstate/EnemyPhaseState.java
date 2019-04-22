@@ -11,7 +11,7 @@ public class EnemyPhaseState implements NAutoState
 	private EnemyMove initiativeMove;
 
 	@Override
-	public void tick(MainState mainState)
+	public void onEnter(MainState mainState)
 	{
 		if(!started)
 		{
@@ -21,6 +21,9 @@ public class EnemyPhaseState implements NAutoState
 		initiativeMove = mainState.levelMap.getEntitiesE().stream().filter(XEnemy::canAttack).map(XEnemy::preferredMove)
 				.max(Comparator.comparingInt(EnemyMove::getInitiative)).filter(e -> e.getInitiative() >= 0).orElse(null);
 	}
+
+	@Override
+	public void tick(MainState mainState){}
 
 	@Override
 	public boolean finished()
@@ -41,9 +44,9 @@ public class EnemyPhaseState implements NAutoState
 			{
 				initiativeMove.getEntity().setAttacked();
 				if(moveTo != null)
-					return new MoveAnimState(new AttackAnimState(this, attackInfo), initiativeMove.getEntity(), moveTo);
+					return new MoveAnimState(new PreAttackState(this, attackInfo), initiativeMove.getEntity(), moveTo);
 				else
-					return new AttackAnimState(this, attackInfo);
+					return new PreAttackState(this, attackInfo);
 			}
 			else
 			{

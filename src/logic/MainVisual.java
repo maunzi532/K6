@@ -4,7 +4,6 @@ import draw.*;
 import geom.*;
 import geom.d1.*;
 import javafx.geometry.*;
-import javafx.scene.canvas.*;
 import javafx.scene.input.*;
 import javafx.scene.text.*;
 import levelMap.*;
@@ -19,20 +18,21 @@ public class MainVisual
 	private LevelEditor levelEditor;
 	private MainState mainState;
 
-	public MainVisual(GraphicsContext gd, int w, int h)
+	public MainVisual(XGraphics graphics)
 	{
-		mapCamera = new HexCamera(w / 2f, h / 2f, 44, 44, 0, 0, new HexMatrix(0.5));
-		//mapCamera = new QuadCamera(w / 2f, h / 2f, 44, 44, 0, 0);
+		mapCamera = new HexCamera(graphics, 44, 44, 0, 0, new HexMatrix(0.5));
+		//mapCamera = new QuadCamera(graphics, 44, 44, 0, 0);
 		DoubleType y2 = mapCamera.getDoubleType();
 		mainState = new MainState(y2);
 		mainState.initialize();
-		gd.setTextAlign(TextAlignment.CENTER);
-		gd.setTextBaseline(VPos.CENTER);
-		visualTile = new VisualTile(y2, new ArrowViewer(y2), mainState.levelMap, gd);
-		visualMenu = new VisualMenu(gd, w / 2f, h / 2f, mainState.stateControl);
-		visualGUI = new VisualGUIQuad(gd, w / 2f, h / 2f);
-		//visualGUI = new VisualGUIHex(gd, w / 2f, h / 2f, mainState.stateControl);
-		levelEditor = new LevelEditor(gd, w / 2f, h / 2f, mainState.levelMap);
+		mainState.stateControl.start();
+		graphics.gd().setTextAlign(TextAlignment.CENTER);
+		graphics.gd().setTextBaseline(VPos.CENTER);
+		visualTile = new VisualTile(y2, new ArrowViewer(y2), mainState.levelMap, graphics.gd());
+		visualMenu = new VisualMenu(graphics, mainState.stateControl);
+		visualGUI = new VisualGUIQuad(graphics);
+		//visualGUI = new VisualGUIHex(graphics, mainState.stateControl);
+		levelEditor = new LevelEditor(graphics, mainState.levelMap);
 		draw();
 	}
 
@@ -48,7 +48,7 @@ public class MainVisual
 			mainState.stateControl.handleGUIClick(visualGUI.y2.toOffset(visualGUI.clickLocation(x, y)),
 					visualGUI.inside(x, y, mainState.stateControl.getXgui()), mouseKey);
 		}
-		else if(levelEditor.isActive())
+		else if(mainState.stateControl.getState().editMode())
 		{
 			int editorClick = levelEditor.editorClickNum(x, y);
 			if(editorClick >= 0)
@@ -100,7 +100,7 @@ public class MainVisual
 	private void draw()
 	{
 		visualTile.draw(mapCamera);
-		if(levelEditor.isActive())
+		if(mainState.stateControl.getState().editMode())
 			levelEditor.draw();
 		visualGUI.draw(mainState.stateControl.getXgui());
 		visualMenu.draw();
