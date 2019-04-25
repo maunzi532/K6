@@ -8,5 +8,7 @@ public interface Stats
 
 	void change(boolean increase);
 
+	void change(int change);
+
 	boolean removeEntity();
 }

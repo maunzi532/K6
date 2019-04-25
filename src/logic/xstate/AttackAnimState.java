@@ -2,21 +2,14 @@ package logic.xstate;
 
 import arrow.*;
 import entity.*;
-import javafx.scene.paint.*;
 import logic.*;
 
 public class AttackAnimState extends AttackState
 {
 	private final boolean inverse;
 	private final int num;
-	private int change;
-	private int changeT;
-	private int counter;
-	private int counter2;
-	private int counter2T;
-	private InfoArrow infoE;
-	private InfoArrow infoET;
-	private BlinkArrow blinkArrow;
+	private EntityArrowC acE;
+	private EntityArrowC acT;
 
 	public AttackAnimState(NState nextState, AttackInfo aI)
 	{
@@ -39,78 +32,29 @@ public class AttackAnimState extends AttackState
 	@Override
 	public void onEnter(MainState mainState)
 	{
-		infoE = new InfoArrow(entity().location(), entityT().location(),
-				80, entity() instanceof XHero ? Color.GREEN : Color.GRAY, Color.BLACK,
-				Color.WHITE, stats().getStat(0), stats().getMaxStat(0));
-		mainState.levelMap.addArrow(infoE);
-		infoET = new InfoArrow(entityT().location(), entity().location(),
-				80, entityT() instanceof XHero ? Color.GREEN : Color.GRAY, Color.BLACK,
-				Color.WHITE, statsT().getStat(0), statsT().getMaxStat(0));
-		mainState.levelMap.addArrow(infoET);
-		XArrow arrow = XArrow.factory(entity().location(), entityT().location(),
-				60, false, entity().getImage(), false);
-		mainState.levelMap.addArrow(arrow);
-		entity().setReplacementArrow(arrow);
-		change = aI.getChange(true, inverse, num);
-		changeT = aI.getChange(false, !inverse, num);
+		int change = aI.getChange(true, inverse, num);
+		int changeT = aI.getChange(false, !inverse, num);
+		acE = new EntityArrowC(mainState, entity(), entityT(), 1, 0, 60,
+				40, 3, stats().getStat(0), stats().getMaxStat(0), change, 40);
+		acT = new EntityArrowC(mainState, entityT(), entity(), 2, 40, 40,
+				40, 3, statsT().getStat(0), statsT().getMaxStat(0), changeT, 40);
 	}
 
 	@Override
 	public void tick(MainState mainState)
 	{
-		if(counter == 40 && changeT < 0)
-		{
-			blinkArrow = new BlinkArrow(entityT().location(),
-					40, false, entityT().getImage(), 10);
-			mainState.levelMap.addArrow(blinkArrow);
-			entityT().setReplacementArrow(blinkArrow);
-		}
-		if(counter >= 40 && counter % 3 == 0)
-		{
-			if(counter2 >= 0 && counter2 < Math.abs(change))
-			{
-				stats().change(change > 0);
-				infoE.setData(stats().getStat(0));
-				counter2++;
-				if(stats().removeEntity())
-				{
-					mainState.levelMap.removeEntity(entity());
-					mainState.levelMap.addArrow(new BlinkArrow(entity().location(),
-							40, false, entity().getImage(), 5));
-					counter2 = -1;
-				}
-			}
-			else
-			{
-				counter2 = -1;
-			}
-			if(counter2T >= 0 && counter2T < Math.abs(changeT))
-			{
-				statsT().change(changeT > 0);
-				infoET.setData(statsT().getStat(0));
-				counter2T++;
-				if(statsT().removeEntity())
-				{
-					if(blinkArrow != null)
-						blinkArrow.remove();
-					mainState.levelMap.removeEntity(entityT());
-					mainState.levelMap.addArrow(new BlinkArrow(entityT().location(),
-							40, false, entityT().getImage(), 5));
-					counter2T = -1;
-				}
-			}
-			else
-			{
-				counter2T = -1;
-			}
-		}
-		counter++;
+		stats().change(acE.tick(mainState));
+		if(stats().removeEntity())
+			mainState.levelMap.removeEntity(entity());
+		statsT().change(acT.tick(mainState));
+		if(statsT().removeEntity())
+			mainState.levelMap.removeEntity(entityT());
 	}
 
 	@Override
 	public boolean finished()
 	{
-		return counter >= 80 && counter2 < 0 && counter2T < 0;
+		return Math.min(acE.finished(), acT.finished()) >= 0;
 	}
 
 	@Override

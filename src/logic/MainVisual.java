@@ -21,7 +21,7 @@ public class MainVisual
 	public MainVisual(XGraphics graphics)
 	{
 		mapCamera = new HexCamera(graphics, 1, 1, 44, 44, 0, 0, new HexMatrix(0.5));
-		//mapCamera = new QuadCamera(graphics, 44, 44, 0, 0);
+		//mapCamera = new QuadCamera(graphics, 1, 1, 44, 44, 0, 0);
 		DoubleType y2 = mapCamera.getDoubleType();
 		mainState = new MainState(y2);
 		mainState.initialize();

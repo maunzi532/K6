@@ -131,6 +131,14 @@ public class Stats2 implements Stats
 	}
 
 	@Override
+	public void change(int change)
+	{
+		currentHealth = Math.max(0, Math.min(toughness, currentHealth + change));
+		if(change < 0)
+			accumulatedDamage -= change;
+	}
+
+	@Override
 	public boolean removeEntity()
 	{
 		return currentHealth <= 0;
