@@ -7,17 +7,11 @@ import logic.*;
 
 public class EnemyPhaseState implements NAutoState
 {
-	private boolean started;
 	private EnemyMove initiativeMove;
 
 	@Override
 	public void onEnter(MainState mainState)
 	{
-		if(!started)
-		{
-			mainState.levelMap.getEntitiesE().forEach(XEnemy::startTurn);
-			started = true;
-		}
 		initiativeMove = mainState.levelMap.getEntitiesE().stream().filter(XEnemy::canAttack).map(XEnemy::preferredMove)
 				.max(Comparator.comparingInt(EnemyMove::getInitiative)).filter(e -> e.getInitiative() >= 0).orElse(null);
 	}

@@ -13,7 +13,7 @@ public class XMenu
 		return new XMenu(new CharacterMovementState(character),
 				new CharacterInvState(character), new AttackTargetState(character),
 				new GiveOrTakeState(true, character), new GiveOrTakeState(false, character),
-				new BuildingChooseState(character), new RemoveBuildingState(character), new EnemyPhaseState());
+				new BuildingChooseState(character), new RemoveBuildingState(character), new EnemyStartState());
 	}
 
 	public static XMenu productionMenu(ProductionBuilding building)

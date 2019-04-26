@@ -1,13 +1,15 @@
 package arrow;
 
 import entity.*;
+import geom.f1.*;
+import java.util.*;
 import javafx.scene.paint.*;
 import logic.*;
 
 public class EntityArrowC
 {
 	private XEntity entity;
-	private XEntity other;
+	private Tile target;
 	private int effect;
 	private int startingTick;
 	private int effectLength;
@@ -20,12 +22,12 @@ public class EntityArrowC
 	private int counter2;
 	private InfoArrow infoArrow;
 
-	public EntityArrowC(MainState mainState, XEntity entity, XEntity other,
+	public EntityArrowC(MainState mainState, XEntity entity, Tile target1,
 			int effect, int startingTick, int effectLength,
 			int startingTickC, int changingTicks, int start, int max, int change1, int blinkOnZero)
 	{
 		this.entity = entity;
-		this.other = other;
+		this.target = target1 != null ? target1 : mainState.y2.subtract(entity.location(), mainState.y2.upwardsT());
 		this.effect = effect;
 		this.startingTick = startingTick;
 		this.effectLength = effectLength;
@@ -34,40 +36,34 @@ public class EntityArrowC
 		this.start = start;
 		this.blinkOnZero = blinkOnZero;
 		change = Math.max(-start, Math.min(max - start, change1));
-		infoArrow = new InfoArrow(entity.location(), other.location(),
+		infoArrow = new InfoArrow(entity.location(), target,
 				80, entity instanceof XHero ? Color.GREEN : Color.GRAY, Color.BLACK,
 				Color.WHITE, start, max);
 		mainState.levelMap.addArrow(infoArrow);
+	}
+
+	public XEntity getEntity()
+	{
+		return entity;
 	}
 
 	public int tick(MainState mainState)
 	{
 		if(counter == startingTick)
 		{
-			XArrow arrow = switch(effect)
+			Optional<XArrow> arrow = switch(effect)
 					{
-						case 1 -> XArrow.factory(entity.location(), other.location(),
-								effectLength, false, entity.getImage(), false);
-						case 2 -> new BlinkArrow(entity.location(),
-								effectLength, false, entity.getImage(), effectLength / 4);
-						default -> throw new RuntimeException();
+						case 1 -> Optional.of(XArrow.factory(entity.location(), target,
+								effectLength, false, entity.getImage(), false));
+						case 2 -> Optional.of(new BlinkArrow(entity.location(),
+								effectLength, false, entity.getImage(), effectLength / 4));
+						default -> Optional.empty();
 					};
-			mainState.levelMap.addArrow(arrow);
-			entity.setReplacementArrow(arrow);
-			/*if(effect == 1)
+			if(arrow.isPresent())
 			{
-				XArrow arrow = XArrow.factory(entity.location(), other.location(),
-						effectLength, false, entity.getImage(), false);
-				mainState.levelMap.addArrow(arrow);
-				entity.setReplacementArrow(arrow);
+				mainState.levelMap.addArrow(arrow.get());
+				entity.setReplacementArrow(arrow.get());
 			}
-			if(effect == 2)
-			{
-				XArrow arrow = new BlinkArrow(entity.location(),
-						effectLength, false, entity.getImage(), effectLength / 4);
-				mainState.levelMap.addArrow(arrow);
-				entity.setReplacementArrow(arrow);
-			}*/
 		}
 		int cht = 0;
 		if(counter >= startingTickC && (counter - startingTickC) % changingTicks == 0)
@@ -92,6 +88,6 @@ public class EntityArrowC
 	public int finished()
 	{
 		return Math.min(counter - startingTick - effectLength,
-				counter - startingTickC - counter2 * changingTicks - (start + change <= 0 ? blinkOnZero : 0));
+				counter - startingTickC - Math.abs(change) * changingTicks - (start + change <= 0 ? blinkOnZero : 0));
 	}
 }

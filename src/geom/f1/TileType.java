@@ -42,6 +42,8 @@ public interface TileType
 
 	List<Tile> range(Tile t1, int minRange, int maxRange);
 
+	Tile upwardsT();
+
 	Tile fromOffset(int x, int y);
 
 	Tile toOffset(Tile t1);

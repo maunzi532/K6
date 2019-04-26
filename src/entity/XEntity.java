@@ -71,4 +71,9 @@ public class XEntity
 	{
 		return mainState.combatSystem.attackInfo(mainState, this, stats, target, target.stats);
 	}
+
+	public Stats getStats()
+	{
+		return stats;
+	}
 }

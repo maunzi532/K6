@@ -5,7 +5,7 @@ import entity.*;
 import java.util.*;
 import logic.*;
 
-public class StartTurnState implements NAutoState
+public class EnemyStartState implements NAutoState
 {
 	private int counter;
 	private List<EntityArrowC> ac;
@@ -14,12 +14,12 @@ public class StartTurnState implements NAutoState
 	public void onEnter(MainState mainState)
 	{
 		ac = new ArrayList<>();
-		for(XHero xHero : mainState.levelMap.getEntitiesH())
+		for(XEnemy xEnemy : mainState.levelMap.getEntitiesE())
 		{
-			xHero.startTurn();
-			ac.add(new EntityArrowC(mainState, xHero, null, 0, 0, 0,
-					0, 3, xHero.getStats().getStat(0),
-					xHero.getStats().getMaxStat(0), xHero.getStats().getStartTurnChange(), 0));
+			xEnemy.startTurn();
+			ac.add(new EntityArrowC(mainState, xEnemy, null, 0, 0, 0,
+					0, 3, xEnemy.getStats().getStat(0),
+					xEnemy.getStats().getMaxStat(0), xEnemy.getStats().getStartTurnChange(), 0));
 		}
 	}
 
@@ -39,13 +39,13 @@ public class StartTurnState implements NAutoState
 	@Override
 	public NState nextState()
 	{
-		return NoneState.INSTANCE;
+		return new EnemyPhaseState();
 	}
 
 	@Override
 	public String text()
 	{
-		return "Start Turn";
+		return "Enemy Phase";
 	}
 
 	@Override

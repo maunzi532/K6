@@ -44,9 +44,9 @@ public class MainState
 		new Entity2Builder(this).setLocation(y2.create2(2, 1)).addItem(AttackItem2.item2()).setStats(Stats2.create1()).create(false);
 		new Entity2Builder(this).setLocation(y2.create2(2, 0)).addItem(AttackItem2.item2()).setStats(Stats2.create2()).create(false);
 		new Entity2Builder(this).setLocation(y2.create2(2, -1)).addItem(AttackItem2.item2()).setStats(Stats2.create1()).create(false);
-		/*levelMap.addArrow(new VisualArrow(y2, y2.create2(2, 0), y2.create2(4, 1), ArrowMode.ARROW, 120, null));
-		levelMap.addArrow(new VisualArrow(y2, y2.create2(-2, 0), y2.create2(4, -4), ArrowMode.ARROW, 120, null));
-		levelMap.addArrow(new VisualArrow(y2, y2.create2(-3, 0), y2.create2(-3, 0), ArrowMode.ARROW, 120, null));*/
+		/*levelMap.addArrow(new ShineArrow(List.of(y2.create2(2, 0), y2.create2(4, 1)), 120, true, null, true));
+		levelMap.addArrow(new ShineArrow(List.of(y2.create2(-2, 0), y2.create2(4, -4)), 120, true, null, true));
+		levelMap.addArrow(new ShineArrow(List.of(y2.create2(-3, 0)), 120, true, null, true));*/
 		/*ProductionBuilding blue1 = new ProductionBuilding(y2.create2(-2, -2), BuildingBlueprint.get(buildingBlueprintCache, "BLUE1"));
 		levelMap.addBuilding(blue1);
 		blue1.claimFloor(levelMap);

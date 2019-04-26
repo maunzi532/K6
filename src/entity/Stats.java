@@ -6,9 +6,9 @@ public interface Stats
 
 	int getMaxStat(int num);
 
-	void change(boolean increase);
-
 	void change(int change);
+
+	int getStartTurnChange();
 
 	boolean removeEntity();
 }

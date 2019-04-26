@@ -115,27 +115,17 @@ public class Stats2 implements Stats
 	}
 
 	@Override
-	public void change(boolean increase)
-	{
-		if(increase)
-		{
-			if(currentHealth < toughness)
-				currentHealth++;
-		}
-		else
-		{
-			if(currentHealth > 0)
-				currentHealth--;
-			accumulatedDamage++;
-		}
-	}
-
-	@Override
 	public void change(int change)
 	{
 		currentHealth = Math.max(0, Math.min(toughness, currentHealth + change));
 		if(change < 0)
 			accumulatedDamage -= change;
+	}
+
+	@Override
+	public int getStartTurnChange()
+	{
+		return toughness - currentHealth;
 	}
 
 	@Override
