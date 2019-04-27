@@ -14,14 +14,13 @@ public class Stats2 implements Stats
 	private int defense;
 	private int magicDef;
 	private int toughness;
-	private int endurance;
 	private int movement;
 	private int currentHealth;
-	private int accumulatedDamage;
+	private int exhaustion;
 	private AttackMode2 lastUsed;
 
 	public Stats2(XClass xClass, int level, int strength, int finesse, int skill, int speed, int luck, int defense, int magicDef, int toughness,
-			int endurance, int movement)
+			int movement)
 	{
 		this.xClass = xClass;
 		this.level = level;
@@ -33,7 +32,6 @@ public class Stats2 implements Stats
 		this.defense = defense;
 		this.magicDef = magicDef;
 		this.toughness = toughness;
-		this.endurance = endurance;
 		this.movement = movement;
 		currentHealth = toughness;
 	}
@@ -50,7 +48,6 @@ public class Stats2 implements Stats
 		defense = xClass.getStat(5, level);
 		magicDef = xClass.getStat(6, level);
 		toughness = xClass.getStat(7, level);
-		endurance = toughness;
 		currentHealth = toughness;
 		movement = xClass.movement;
 	}
@@ -105,11 +102,6 @@ public class Stats2 implements Stats
 		return magicDef;
 	}
 
-	public int getEndurance()
-	{
-		return endurance;
-	}
-
 	public int getMovement()
 	{
 		return movement;
@@ -125,9 +117,9 @@ public class Stats2 implements Stats
 		this.currentHealth = currentHealth;
 	}
 
-	public int getAccumulatedDamage()
+	public int getExhaustion()
 	{
-		return accumulatedDamage;
+		return exhaustion;
 	}
 
 	public AttackMode2 getLastUsed()
@@ -156,14 +148,18 @@ public class Stats2 implements Stats
 	public void change(int change)
 	{
 		currentHealth = Math.max(0, Math.min(toughness, currentHealth + change));
-		if(change < 0)
-			accumulatedDamage -= change;
 	}
 
 	@Override
-	public int getStartTurnChange()
+	public int getRegenerateChange()
 	{
 		return toughness - currentHealth;
+	}
+
+	@Override
+	public void regenerating()
+	{
+		exhaustion++;
 	}
 
 	@Override

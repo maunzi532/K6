@@ -76,13 +76,7 @@ public class XStateControl
 		if(state instanceof NAutoState)
 			return;
 		NState newState = menu.get(menuOption);
-		if(newState instanceof NClickState)
-		{
-			xgui.close(this);
-			((NClickState) newState).onMenuClick(mouseKey, mainState);
-			update();
-		}
-		else if(newState != state)
+		if(newState != state)
 		{
 			xgui.close(this);
 			setState(newState);
@@ -151,12 +145,7 @@ public class XStateControl
 	{
 		if(entity instanceof XHero)
 		{
-			if(((XHero) entity).canMove())
-				setState(new CharacterMovementState((XHero) entity));
-			else if(((XHero) entity).isReady())
-				setState(new AttackTargetState((XHero) entity));
-			else
-				setState(new CharacterInvState((XHero) entity));
+			setState(((XHero) entity).defaultState());
 		}
 		else
 		{
@@ -217,7 +206,10 @@ public class XStateControl
 			NAutoState state1 = (NAutoState) state;
 			state1.tick(mainState);
 			if(state1.finished())
+			{
 				setState(state1.nextState());
+				update();
+			}
 		}
 	}
 }

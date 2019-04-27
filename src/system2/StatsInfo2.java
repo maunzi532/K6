@@ -15,14 +15,13 @@ public class StatsInfo2
 	public final int luck;
 	public final int defense;
 	public final int toughness;
-	public final int endurance;
 	public final List<Ability2> abilities;
 
 	public StatsInfo2(Stats2 stats, AttackMode2 attackMode)
 	{
 		this.stats = stats;
 		this.attackMode = attackMode;
-		exhausted = Math.max(0, stats.getAccumulatedDamage() / stats.getEndurance());
+		exhausted = stats.getExhaustion();
 		strength = Math.max(0, stats.getStrength() - exhausted);
 		weighedDown = Math.max(0, attackMode.getHeavy() - strength);
 		finesse = Math.max(0, stats.getFinesse() - exhausted - weighedDown);
@@ -31,7 +30,6 @@ public class StatsInfo2
 		luck = stats.getLuck();
 		defense = Math.max(0, stats.getDefense() - exhausted);
 		toughness = stats.getToughness();
-		endurance = stats.getEndurance();
 		abilities = attackMode.getAllAbilities(stats);
 	}
 }

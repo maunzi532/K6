@@ -8,7 +8,9 @@ public interface Stats
 
 	void change(int change);
 
-	int getStartTurnChange();
+	int getRegenerateChange();
+
+	void regenerating();
 
 	boolean removeEntity();
 }

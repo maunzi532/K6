@@ -8,6 +8,7 @@ import item.inv.*;
 import java.util.*;
 import javafx.scene.image.*;
 import logic.*;
+import logic.xstate.*;
 
 public class XHero extends InvEntity
 {
@@ -66,6 +67,16 @@ public class XHero extends InvEntity
 		canMove = true;
 		ap = 2;
 		mainAction = true;
+	}
+
+	public NState defaultState()
+	{
+		if(canMove)
+			return new CharacterMovementState(this);
+		else if(mainAction)
+			return new AttackTargetState(this);
+		else
+			return new CharacterInvState(this);
 	}
 
 	public boolean canMove()
