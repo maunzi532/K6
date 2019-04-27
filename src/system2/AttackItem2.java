@@ -12,30 +12,34 @@ public class AttackItem2 implements Item
 	private final int crit;
 	private final int[] ranges;
 	private final int[] counterR;
+	private final List<Ability2> abilities;
 
 	public static AttackItem2 item2()
 	{
-		return new AttackItem2(11, 7, 70, 5, 1);
+		return new AttackItem2(11, 7, 70, 5, List.of(), 1);
 	}
 
-	public AttackItem2(int damage, int heavy, int accuracy, int crit, int... ranges)
+	public AttackItem2(int damage, int heavy, int accuracy, int crit, List<Ability2> abilities,
+			int... ranges)
 	{
-		this(damage, heavy, accuracy, crit, ranges, ranges);
+		this(damage, heavy, accuracy, crit, abilities, ranges, ranges);
 	}
 
-	public AttackItem2(int damage, int heavy, int accuracy, int crit, int[] ranges, int[] counterR)
+	public AttackItem2(int damage, int heavy, int accuracy, int crit, List<Ability2> abilities,
+			int[] ranges, int[] counterR)
 	{
 		this.damage = damage;
 		this.heavy = heavy;
 		this.accuracy = accuracy;
 		this.crit = crit;
+		this.abilities = abilities;
 		this.ranges = ranges;
 		this.counterR = counterR;
 	}
 
 	public List<AttackMode2> attackModes()
 	{
-		return List.of(new AttackMode2<>(this));
+		return List.of(new AttackMode2<>(this, abilities));
 	}
 
 	@Override
@@ -76,8 +80,18 @@ public class AttackItem2 implements Item
 		return crit;
 	}
 
+	public List<Ability2> getAbilities()
+	{
+		return abilities;
+	}
+
 	public int[] getRanges(boolean counter)
 	{
 		return counter ? counterR : ranges;
+	}
+
+	public int getAdvType()
+	{
+		return 0;
 	}
 }

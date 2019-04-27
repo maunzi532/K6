@@ -1,5 +1,7 @@
 package system2;
 
+import java.util.*;
+
 public class StatsInfo2
 {
 	private final Stats2 stats;
@@ -14,6 +16,7 @@ public class StatsInfo2
 	public final int defense;
 	public final int toughness;
 	public final int endurance;
+	public final List<Ability2> abilities;
 
 	public StatsInfo2(Stats2 stats, AttackMode2 attackMode)
 	{
@@ -29,5 +32,6 @@ public class StatsInfo2
 		defense = Math.max(0, stats.getDefense() - exhausted);
 		toughness = stats.getToughness();
 		endurance = stats.getEndurance();
+		abilities = attackMode.getAllAbilities(stats);
 	}
 }

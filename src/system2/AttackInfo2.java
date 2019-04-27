@@ -18,32 +18,13 @@ public class AttackInfo2 extends AttackInfo<Stats2, AttackMode2>
 		this.rng = rng;
 		calc = new AttackInfoPart2(stats, mode, statsT, modeT);
 		calcT = new AttackInfoPart2(statsT, modeT, stats, mode);
-		infos = new String[8];
-		this.infos[0] = stats.getCurrentHealth() + "/" + stats.getToughness();
-		if(calc.attackCount > 0)
+		String[] i1 = calc.infos();
+		String[] i2 = calcT.infos();
+		infos = new String[i1.length * 2];
+		for(int i = 0; i < i1.length; i++)
 		{
-			this.infos[2] = calc.damage + "x" + calc.attackCount;
-			this.infos[4] = String.valueOf(calc.hitrate);
-			this.infos[6] = String.valueOf(calc.critrate);
-		}
-		else
-		{
-			this.infos[2] = "";
-			this.infos[4] = "";
-			this.infos[6] = "";
-		}
-		this.infos[1] = statsT.getCurrentHealth() + "/" + statsT.getToughness();
-		if(calcT.attackCount > 0)
-		{
-			this.infos[3] = calcT.damage + "x" + calcT.attackCount;
-			this.infos[5] = String.valueOf(calcT.hitrate);
-			this.infos[7] = String.valueOf(calcT.critrate);
-		}
-		else
-		{
-			this.infos[3] = "";
-			this.infos[5] = "";
-			this.infos[7] = "";
+			infos[i * 2] = i1[i];
+			infos[i * 2 + 1] = i2[i];
 		}
 	}
 
@@ -58,9 +39,12 @@ public class AttackInfo2 extends AttackInfo<Stats2, AttackMode2>
 		if(current)
 			return 0;
 		AttackInfoPart2 calc1 = getCalc(!inverse);
-		int rn = rng.nextInt(100);
-		if(rn >= calc1.hitrate)
-			return 0;
+		if(num != 0 || !calc1.autohit1)
+		{
+			int rn = rng.nextInt(100);
+			if(rn >= calc1.hitrate)
+				return 0;
+		}
 		int rn2 = rng.nextInt(100);
 		if(rn2 >= calc1.critrate)
 			return -calc1.damage;

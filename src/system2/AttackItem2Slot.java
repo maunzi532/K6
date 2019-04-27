@@ -1,6 +1,7 @@
 package system2;
 
 import item.*;
+import java.util.*;
 
 public class AttackItem2Slot extends AttackItem2
 {
@@ -8,7 +9,7 @@ public class AttackItem2Slot extends AttackItem2
 
 	private AttackItem2Slot()
 	{
-		super(0, 0, 0, 0);
+		super(0, 0, 0, 0, List.of());
 	}
 
 	@Override
