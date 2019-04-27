@@ -8,28 +8,25 @@ public class AttackItem2 implements Item
 {
 	private final int damage;
 	private final int heavy;
+	private final int slow;
 	private final int accuracy;
 	private final int crit;
 	private final int[] ranges;
 	private final int[] counterR;
 	private final List<Ability2> abilities;
 
-	public static AttackItem2 item2()
-	{
-		return new AttackItem2(11, 7, 70, 5, List.of(), 1);
-	}
-
-	public AttackItem2(int damage, int heavy, int accuracy, int crit, List<Ability2> abilities,
+	public AttackItem2(int damage, int heavy, int slow, int accuracy, int crit, List<Ability2> abilities,
 			int... ranges)
 	{
-		this(damage, heavy, accuracy, crit, abilities, ranges, ranges);
+		this(damage, heavy, slow, accuracy, crit, abilities, ranges, ranges);
 	}
 
-	public AttackItem2(int damage, int heavy, int accuracy, int crit, List<Ability2> abilities,
+	public AttackItem2(int damage, int heavy, int slow, int accuracy, int crit, List<Ability2> abilities,
 			int[] ranges, int[] counterR)
 	{
 		this.damage = damage;
 		this.heavy = heavy;
+		this.slow = slow;
 		this.accuracy = accuracy;
 		this.crit = crit;
 		this.abilities = abilities;
@@ -70,6 +67,11 @@ public class AttackItem2 implements Item
 		return heavy;
 	}
 
+	public int getSlow()
+	{
+		return slow;
+	}
+
 	public int getAccuracy()
 	{
 		return accuracy;
@@ -93,5 +95,10 @@ public class AttackItem2 implements Item
 	public int getAdvType()
 	{
 		return 0;
+	}
+
+	public boolean magical()
+	{
+		return false;
 	}
 }

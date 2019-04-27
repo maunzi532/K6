@@ -1,6 +1,7 @@
 package system2;
 
 import entity.*;
+import item.*;
 
 public class Stats2 implements Stats
 {
@@ -18,6 +19,7 @@ public class Stats2 implements Stats
 	private int currentHealth;
 	private int exhaustion;
 	private AttackMode2 lastUsed;
+	private AttackItem2Slot slot;
 
 	public Stats2(XClass xClass, int level, int strength, int finesse, int skill, int speed, int luck, int defense, int magicDef, int toughness,
 			int movement)
@@ -32,8 +34,9 @@ public class Stats2 implements Stats
 		this.defense = defense;
 		this.magicDef = magicDef;
 		this.toughness = toughness;
-		this.movement = movement;
 		currentHealth = toughness;
+		this.movement = movement;
+		slot = new AttackItem2Slot(xClass.usableItems);
 	}
 
 	public Stats2(XClass xClass, int level)
@@ -50,6 +53,7 @@ public class Stats2 implements Stats
 		toughness = xClass.getStat(7, level);
 		currentHealth = toughness;
 		movement = xClass.movement;
+		slot = new AttackItem2Slot(xClass.usableItems);
 	}
 
 	public XClass getxClass()
@@ -133,6 +137,12 @@ public class Stats2 implements Stats
 	}
 
 	@Override
+	public Item getItemFilter()
+	{
+		return slot;
+	}
+
+	@Override
 	public int getStat(int num)
 	{
 		return currentHealth;
@@ -167,14 +177,4 @@ public class Stats2 implements Stats
 	{
 		return currentHealth <= 0;
 	}
-
-	/*public static Stats2 create1()
-	{
-		return new Stats2(8, 5, 8, 7, 5, 9, 44, 30, 30, 4);
-	}
-
-	public static Stats2 create2()
-	{
-		return new Stats2(6, 7, 10, 10, 2, 7, 4, 25, 25, 4);
-	}*/
 }

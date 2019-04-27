@@ -1,5 +1,7 @@
 package entity;
 
+import item.*;
+
 public interface Stats
 {
 	int getStat(int num);
@@ -11,6 +13,8 @@ public interface Stats
 	int getRegenerateChange();
 
 	void regenerating();
+
+	Item getItemFilter();
 
 	boolean removeEntity();
 }

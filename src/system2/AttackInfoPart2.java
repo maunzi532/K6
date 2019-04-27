@@ -10,6 +10,7 @@ public class AttackInfoPart2
 	private final AttackMode2 defendMode;
 	public final List<Ability2> abilities;
 	public final int advantage;
+	public final int cost;
 	public final int damage;
 	public final int critDamage;
 	public final int attackCount;
@@ -28,12 +29,24 @@ public class AttackInfoPart2
 		StatsInfo2 statsInfoT = new StatsInfo2(defendStats, defendMode);
 		abilities = statsInfo.abilities;
 		advantage = advantage(attackMode.getAdvType(), defendMode.getAdvType());
-		damage = Math.max(0, attackMode.getDamage() + statsInfo.finesse - statsInfoT.defense);
+		attackCount = attackMode instanceof NullMode2 ? 0 : attackMode.attackCount() +
+				(statsInfo.speed > statsInfoT.speed ? 1 : 0) + (abilities.contains(Ability2.FAST) ? 1 : 0);
+		if(attackMode.magical())
+		{
+			damage = Math.max(0, attackMode.getDamage() + statsInfo.skill - statsInfoT.magicDef);
+			cost = attackCount > 0 ? Math.max(0, attackMode.getHeavy() - statsInfo.strength) : 0;
+			hitrate = Math.max(0, Math.min(100, attackMode.getAccuracy() + statsInfo.finesse * 5 - statsInfoT.finesse * 4));
+			autohit1 = false;
+		}
+		else
+		{
+			damage = Math.max(0, attackMode.getDamage() + statsInfo.finesse - statsInfoT.defense);
+			cost = 0;
+			hitrate = Math.max(0, Math.min(100, attackMode.getAccuracy() + statsInfo.skill * 5 - statsInfoT.skill * 4));
+			autohit1 = advantage >= 0 && abilities.contains(Ability2.TWO_HANDED);
+		}
 		critDamage = damage * 2;
-		attackCount = attackMode instanceof NullMode2 ? 0 : statsInfo.speed > statsInfoT.speed ? attackMode.attackCount() + 1 : attackMode.attackCount();
-		hitrate = Math.max(0, Math.min(100, attackMode.getAccuracy() + statsInfo.skill * 10 - statsInfoT.skill * 10));
 		critrate = Math.max(0, Math.min(100, attackMode.getCrit() + statsInfo.luck * 5 - statsInfoT.luck * 5));
-		autohit1 = advantage >= 0 && abilities.contains(Ability2.TWO_HANDED);
 	}
 
 	private int advantage(int adv, int advT)
@@ -51,7 +64,10 @@ public class AttackInfoPart2
 	public String[] infos()
 	{
 		String[] infos = new String[5];
-		infos[0] = attackStats.getCurrentHealth() + "/" + attackStats.getToughness();
+		if(cost > 0)
+			infos[0] = attackStats.getCurrentHealth() + "(-" + cost + ")/" + attackStats.getToughness();
+		else
+			infos[0] = attackStats.getCurrentHealth() + "/" + attackStats.getToughness();
 		if(attackCount > 0)
 		{
 			infos[1] = damage + "x" + attackCount;

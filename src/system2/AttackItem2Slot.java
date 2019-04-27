@@ -5,16 +5,17 @@ import java.util.*;
 
 public class AttackItem2Slot extends AttackItem2
 {
-	public static final AttackItem2Slot INSTANCE = new AttackItem2Slot();
+	private List<Class> itemTypes;
 
-	private AttackItem2Slot()
+	public AttackItem2Slot(List<Class> itemTypes)
 	{
-		super(0, 0, 0, 0, List.of());
+		super(0, 0, 0, 0, 0, List.of());
+		this.itemTypes = itemTypes;
 	}
 
 	@Override
 	public boolean canContain(Item item)
 	{
-		return item instanceof AttackItem2;
+		return itemTypes.stream().anyMatch(e -> e.isInstance(item));
 	}
 }

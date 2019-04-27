@@ -145,7 +145,7 @@ public class XStateControl
 	{
 		if(entity instanceof XHero)
 		{
-			setState(((XHero) entity).defaultState());
+			setState(((XHero) entity).defaultState(true));
 		}
 		else
 		{

@@ -69,9 +69,9 @@ public class XHero extends InvEntity
 		mainAction = true;
 	}
 
-	public NState defaultState()
+	public NState defaultState(boolean withMove)
 	{
-		if(canMove)
+		if(withMove && canMove)
 			return new CharacterMovementState(this);
 		else if(mainAction)
 			return new AttackTargetState(this);

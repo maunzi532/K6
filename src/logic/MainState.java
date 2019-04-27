@@ -7,6 +7,7 @@ import geom.d1.*;
 import levelMap.*;
 import levelMap.importX.*;
 import system2.*;
+import system2.content.*;
 
 public class MainState
 {
@@ -39,11 +40,11 @@ public class MainState
 		levelMap.addEntity(new XEnemy(y2.create2(2, 1), this, Stats1.create1(), CL, a1));
 		levelMap.addEntity(new XEnemy(y2.create2(2, 0), this, Stats1.create2(), CL, a1));
 		levelMap.addEntity(new XEnemy(y2.create2(2, -1), this, Stats1.create1(), CL, a1));*/
-		new Entity2Builder(this).setLocation(y2.create2(-2, 1)).addItem(AttackItem2.item2()).setStats(new Stats2(XClass.soldierClass(), 0)).create(true);
-		new Entity2Builder(this).setLocation(y2.create2(-2, -1)).addItem(AttackItem2.item2()).setStats(new Stats2(XClass.soldierClass(), 0)).create(true);
-		new Entity2Builder(this).setLocation(y2.create2(2, 1)).addItem(AttackItem2.item2()).setStats(new Stats2(XClass.soldierClass(), 0)).create(false);
-		new Entity2Builder(this).setLocation(y2.create2(2, 0)).addItem(AttackItem2.item2()).setStats(new Stats2(XClass.soldierClass(), 0)).create(false);
-		new Entity2Builder(this).setLocation(y2.create2(2, -1)).addItem(AttackItem2.item2()).setStats(new Stats2(XClass.soldierClass(), 0)).create(false);
+		new Entity2Builder(this).setLocation(y2.create2(-2, 1)).addItem(SpearItem.standard()).setStats(new Stats2(XClass.soldierClass(), 0)).create(true);
+		new Entity2Builder(this).setLocation(y2.create2(-2, -1)).addItem(SpearItem.standard()).setStats(new Stats2(XClass.soldierClass(), 0)).create(true);
+		new Entity2Builder(this).setLocation(y2.create2(2, 1)).addItem(SpearItem.standard()).setStats(new Stats2(XClass.soldierClass(), 0)).create(false);
+		new Entity2Builder(this).setLocation(y2.create2(2, 0)).addItem(SpearItem.standard()).setStats(new Stats2(XClass.soldierClass(), 0)).create(false);
+		new Entity2Builder(this).setLocation(y2.create2(2, -1)).addItem(SpearItem.standard()).setStats(new Stats2(XClass.soldierClass(), 0)).create(false);
 		/*levelMap.addArrow(new ShineArrow(List.of(y2.create2(2, 0), y2.create2(4, 1)), 120, true, null, true));
 		levelMap.addArrow(new ShineArrow(List.of(y2.create2(-2, 0), y2.create2(4, -4)), 120, true, null, true));
 		levelMap.addArrow(new ShineArrow(List.of(y2.create2(-3, 0)), 120, true, null, true));*/

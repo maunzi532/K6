@@ -50,7 +50,7 @@ public class Entity2Builder
 
 	private void autoEquip(InvEntity entity, Stats2 stats)
 	{
-		stats.setLastUsed(((AttackItem2) entity.outputInv().viewRecipeItem(AttackItem2Slot.INSTANCE).item).attackModes().get(0));
+		stats.setLastUsed(((AttackItem2) entity.outputInv().viewRecipeItem(stats.getItemFilter()).item).attackModes().get(0));
 	}
 
 	public void create(boolean player)

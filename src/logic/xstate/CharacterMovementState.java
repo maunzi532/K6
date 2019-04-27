@@ -10,10 +10,12 @@ import logic.*;
 public class CharacterMovementState implements NMarkState
 {
 	private XHero character;
+	private NState nextState;
 
 	public CharacterMovementState(XHero character)
 	{
 		this.character = character;
+		nextState = character.defaultState(false);
 	}
 
 	@Override
@@ -33,7 +35,7 @@ public class CharacterMovementState implements NMarkState
 	{
 		character.setMoved();
 		levelMap.moveEntity(character, mapTile);
-		stateControl.setState(NoneState.INSTANCE);
+		stateControl.setState(nextState);
 	}
 
 	@Override

@@ -1,17 +1,18 @@
 package system2;
 
 import java.util.*;
+import system2.content.*;
 
 public class XClass
 {
 	public final int[] baseStats;
 	public final int[] increase;
 	public final int movement;
-	public final List<AttackItem2> usableItems;
+	public final List<Class> usableItems;
 	public final List<Ability2> abilities;
 
 	public XClass(int[] baseStats, int[] increase, int movement,
-			List<AttackItem2> usableItems, List<Ability2> abilities)
+			List<Class> usableItems, List<Ability2> abilities)
 	{
 		this.baseStats = baseStats;
 		this.increase = increase;
@@ -21,7 +22,7 @@ public class XClass
 	}
 
 	public XClass(int[] baseStats, int movement,
-			List<AttackItem2> usableItems, List<Ability2> abilities)
+			List<Class> usableItems, List<Ability2> abilities)
 	{
 		this.baseStats = baseStats;
 		increase = new int[baseStats.length];
@@ -41,31 +42,31 @@ public class XClass
 
 	public static XClass banditClass()
 	{
-		return new XClass(new int[]{9, 7, 6, 13, 5, 8, 5, 60}, 6, List.of(), List.of());
+		return new XClass(new int[]{9, 7, 6, 13, 5, 8, 5, 60}, 6, List.of(DaggerItem.class, AxeItem.class), List.of());
 	}
 
 	public static XClass soldierClass()
 	{
-		return new XClass(new int[]{11, 8, 10, 7, 6, 11, 7, 40}, 6, List.of(), List.of());
+		return new XClass(new int[]{11, 8, 10, 7, 6, 11, 7, 40}, 6, List.of(SpearItem.class, CrossbowItem.class), List.of());
 	}
 
 	public static XClass squireClass()
 	{
-		return new XClass(new int[]{7, 10, 11, 9, 10, 6, 9, 40}, 6, List.of(), List.of());
+		return new XClass(new int[]{7, 10, 11, 9, 10, 6, 9, 40}, 6, List.of(SpearItem.class, DaggerItem.class), List.of());
 	}
 
 	public static XClass hexerClass()
 	{
-		return new XClass(new int[]{6, 7, 12, 10, 9, 6, 11, 45}, 6, List.of(), List.of());
+		return new XClass(new int[]{6, 7, 12, 10, 9, 6, 11, 45}, 6, List.of(SpellItem.class), List.of());
 	}
 
 	public static XClass mageClass()
 	{
-		return new XClass(new int[]{7, 11, 9, 9, 11, 5, 8, 35}, 6, List.of(), List.of());
+		return new XClass(new int[]{7, 11, 9, 9, 11, 5, 8, 35}, 6, List.of(SpellItem.class, DaggerItem.class), List.of());
 	}
 
 	public static XClass pirateClass()
 	{
-		return new XClass(new int[]{11, 6, 8, 9, 7, 10, 8, 50}, 6, List.of(), List.of());
+		return new XClass(new int[]{11, 6, 8, 9, 7, 10, 8, 50}, 6, List.of(AxeItem.class, CrossbowItem.class), List.of());
 	}
 }

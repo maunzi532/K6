@@ -31,6 +31,11 @@ public class AttackMode2<T extends AttackItem2> implements XMode
 		return item.getHeavy();
 	}
 
+	public int getSlow()
+	{
+		return item.getSlow();
+	}
+
 	public int getAccuracy()
 	{
 		return item.getAccuracy();
@@ -63,5 +68,10 @@ public class AttackMode2<T extends AttackItem2> implements XMode
 	public int getAdvType()
 	{
 		return item.getAdvType();
+	}
+
+	public boolean magical()
+	{
+		return item.magical();
 	}
 }

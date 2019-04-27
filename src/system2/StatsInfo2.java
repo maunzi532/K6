@@ -14,6 +14,7 @@ public class StatsInfo2
 	public final int speed;
 	public final int luck;
 	public final int defense;
+	public final int magicDef;
 	public final int toughness;
 	public final List<Ability2> abilities;
 
@@ -23,12 +24,16 @@ public class StatsInfo2
 		this.attackMode = attackMode;
 		exhausted = stats.getExhaustion();
 		strength = Math.max(0, stats.getStrength() - exhausted);
-		weighedDown = Math.max(0, attackMode.getHeavy() - strength);
+		if(attackMode.magical())
+			weighedDown = attackMode.getSlow();
+		else
+			weighedDown = attackMode.getSlow() + Math.max(0, attackMode.getHeavy() - strength);
 		finesse = Math.max(0, stats.getFinesse() - exhausted - weighedDown);
 		skill = Math.max(0, stats.getSkill() - exhausted);
 		speed = Math.max(0, stats.getSpeed() - exhausted - weighedDown);
 		luck = stats.getLuck();
 		defense = Math.max(0, stats.getDefense() - exhausted);
+		magicDef = Math.max(0, stats.getMagicDef() - exhausted);
 		toughness = stats.getToughness();
 		abilities = attackMode.getAllAbilities(stats);
 	}
