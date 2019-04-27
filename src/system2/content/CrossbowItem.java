@@ -7,13 +7,14 @@ public class CrossbowItem extends AttackItem2
 {
 	private CrossbowItem(int damage, int heavy, int slow, int accuracy, int crit, List<Ability2> abilities)
 	{
-		super(damage, heavy, slow, accuracy, crit, abilities, new int[]{3, 4, 5, 6}, new int[]{3, 4, 5, 6});
+		this(damage, heavy, slow, accuracy, crit, abilities, new int[]{3, 4, 5, 6}, new int[]{3, 4, 5, 6});
 	}
 
-	public CrossbowItem(int damage, int heavy, int slow, int accuracy, int crit, List<Ability2> abilities, int[] ranges,
+	private CrossbowItem(int damage, int heavy, int slow, int accuracy, int crit, List<Ability2> abilities, int[] ranges,
 			int[] counterR)
 	{
 		super(damage, heavy, slow, accuracy, crit, abilities, ranges, counterR);
+		attackModes = List.of(new StandardMode(this));
 	}
 
 	@Override

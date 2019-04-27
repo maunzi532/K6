@@ -4,7 +4,7 @@ import item.*;
 import java.util.*;
 import javafx.scene.image.*;
 
-public class AttackItem2 implements Item
+public abstract class AttackItem2 implements Item
 {
 	private final int damage;
 	private final int heavy;
@@ -14,6 +14,7 @@ public class AttackItem2 implements Item
 	private final int[] ranges;
 	private final int[] counterR;
 	private final List<Ability2> abilities;
+	protected List<AttackMode2> attackModes;
 
 	public AttackItem2(int damage, int heavy, int slow, int accuracy, int crit, List<Ability2> abilities,
 			int... ranges)
@@ -36,7 +37,7 @@ public class AttackItem2 implements Item
 
 	public List<AttackMode2> attackModes()
 	{
-		return List.of(new AttackMode2<>(this, abilities));
+		return attackModes;
 	}
 
 	@Override

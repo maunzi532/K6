@@ -7,13 +7,14 @@ public class SpearItem extends AttackItem2
 {
 	private SpearItem(int damage, int heavy, int slow, int accuracy, int crit, List<Ability2> abilities)
 	{
-		super(damage, heavy, slow, accuracy, crit, abilities, new int[]{1, 2}, new int[]{1, 2});
+		this(damage, heavy, slow, accuracy, crit, abilities, new int[]{1, 2}, new int[]{1, 2});
 	}
 
-	public SpearItem(int damage, int heavy, int slow, int accuracy, int crit, List<Ability2> abilities, int[] ranges,
+	private SpearItem(int damage, int heavy, int slow, int accuracy, int crit, List<Ability2> abilities, int[] ranges,
 			int[] counterR)
 	{
 		super(damage, heavy, slow, accuracy, crit, abilities, ranges, counterR);
+		attackModes = List.of(new FinesseMode(this));
 	}
 
 	@Override

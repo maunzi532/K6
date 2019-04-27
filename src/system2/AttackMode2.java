@@ -4,15 +4,14 @@ import entity.*;
 import java.util.*;
 import javafx.scene.image.*;
 
-public class AttackMode2<T extends AttackItem2> implements XMode
+public abstract class AttackMode2 implements XMode
 {
-	private T item;
-	private List<Ability2> abilities;
+	protected AttackItem2 item;
+	protected List<Ability2> abilities;
 
-	public AttackMode2(T item, List<Ability2> abilities)
+	public AttackMode2(AttackItem2 item)
 	{
 		this.item = item;
-		this.abilities = abilities;
 	}
 
 	@Override
@@ -44,6 +43,16 @@ public class AttackMode2<T extends AttackItem2> implements XMode
 	public int getCrit()
 	{
 		return item.getCrit();
+	}
+
+	public int getDefense()
+	{
+		return 0;
+	}
+
+	public int getMagicDef()
+	{
+		return 0;
 	}
 
 	public int attackCount()

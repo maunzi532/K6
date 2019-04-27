@@ -12,14 +12,17 @@ public class AttackInfoPart2
 	public final int advantage;
 	public final int cost;
 	public final int damage;
+	public final int meltDamage;
 	public final int critDamage;
+	public final int meltCritDamage;
 	public final int attackCount;
 	public final int hitrate;
 	public final int critrate;
 	public final boolean autohit1;
+	public final boolean melting1;
 
-	public AttackInfoPart2(Stats2 attackStats, AttackMode2 attackMode, Stats2 defendStats,
-			AttackMode2 defendMode)
+	public AttackInfoPart2(Stats2 attackStats, AttackMode2 attackMode, boolean rangeOk,
+			Stats2 defendStats, AttackMode2 defendMode, boolean rangeOkD)
 	{
 		this.attackStats = attackStats;
 		this.attackMode = attackMode;
@@ -29,11 +32,12 @@ public class AttackInfoPart2
 		StatsInfo2 statsInfoT = new StatsInfo2(defendStats, defendMode);
 		abilities = statsInfo.abilities;
 		advantage = advantage(attackMode.getAdvType(), defendMode.getAdvType());
-		attackCount = attackMode instanceof NullMode2 ? 0 : attackMode.attackCount() +
-				(statsInfo.speed > statsInfoT.speed ? 1 : 0) + (abilities.contains(Ability2.FAST) ? 1 : 0);
+		attackCount = calcAttackCount(attackMode, rangeOk, statsInfo, statsInfoT);
+		melting1 = abilities.contains(Ability2.MELTING);
 		if(attackMode.magical())
 		{
 			damage = Math.max(0, attackMode.getDamage() + statsInfo.skill - statsInfoT.magicDef);
+			meltDamage = Math.max(0, attackMode.getDamage() + statsInfo.skill - statsInfoT.magicDef / 2);
 			cost = attackCount > 0 ? Math.max(0, attackMode.getHeavy() - statsInfo.strength) : 0;
 			hitrate = Math.max(0, Math.min(100, attackMode.getAccuracy() + statsInfo.finesse * 5 - statsInfoT.finesse * 4));
 			autohit1 = false;
@@ -41,12 +45,26 @@ public class AttackInfoPart2
 		else
 		{
 			damage = Math.max(0, attackMode.getDamage() + statsInfo.finesse - statsInfoT.defense);
+			meltDamage = Math.max(0, attackMode.getDamage() + statsInfo.finesse - statsInfoT.defense / 2);
 			cost = 0;
 			hitrate = Math.max(0, Math.min(100, attackMode.getAccuracy() + statsInfo.skill * 5 - statsInfoT.skill * 4));
 			autohit1 = advantage >= 0 && abilities.contains(Ability2.TWO_HANDED);
 		}
 		critDamage = damage * 2;
+		meltCritDamage = meltDamage * 2;
 		critrate = Math.max(0, Math.min(100, attackMode.getCrit() + statsInfo.luck * 5 - statsInfoT.luck * 5));
+	}
+
+	private int calcAttackCount(AttackMode2 attackMode, boolean rangeOk, StatsInfo2 statsInfo, StatsInfo2 statsInfoT)
+	{
+		if(!rangeOk)
+			return 0;
+		int atc = attackMode.attackCount();
+		if(abilities.contains(Ability2.FAST))
+			atc++;
+		if(statsInfo.speed > statsInfoT.speed)
+			atc++;
+		return atc;
 	}
 
 	private int advantage(int adv, int advT)
@@ -70,7 +88,10 @@ public class AttackInfoPart2
 			infos[0] = attackStats.getCurrentHealth() + "/" + attackStats.getToughness();
 		if(attackCount > 0)
 		{
-			infos[1] = damage + "x" + attackCount;
+			if(melting1)
+				infos[1] = meltDamage + "+" + damage + (attackCount > 2 ? "x" + (attackCount - 1) : "");
+			else
+				infos[1] = damage + (attackCount > 1 ? "x" + attackCount : "");
 			infos[2] = hitrate + (autohit1 ? "*" : "");
 			infos[3] = String.valueOf(critrate);
 			infos[4] = advantage > 0 ? "+" : "";
