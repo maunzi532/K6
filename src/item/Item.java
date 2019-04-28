@@ -1,5 +1,6 @@
 package item;
 
+import java.util.*;
 import javafx.scene.image.*;
 
 public interface Item
@@ -12,4 +13,6 @@ public interface Item
 	{
 		return equals(item);
 	}
+
+	List<String> info();
 }

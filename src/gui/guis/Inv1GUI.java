@@ -14,12 +14,18 @@ public class Inv1GUI extends XGUI implements InvGUI
 	private final InvNumView weightView;
 	private final List<ItemView> itemsView;
 	private final InvGUIPart invView;
+	private final InvGUIPart itemView;
+	private final List<String> baseInfo;
+	private ItemView viewing;
+	private boolean changed;
 
-	public Inv1GUI(Inv inv)
+	public Inv1GUI(Inv inv, List<String> baseInfo)
 	{
 		weightView = inv.viewInvWeight();
 		itemsView = inv.viewItems(true);
-		invView = new InvGUIPart(0, 0, 1, 3, 5, 2, 1);
+		invView = new InvGUIPart(0, 0, 1, 1, 5, 2, 1);
+		this.baseInfo = baseInfo;
+		itemView = new InvGUIPart(1, 3, 1, 3, 5, 1, 1);
 		update();
 	}
 
@@ -39,6 +45,7 @@ public class Inv1GUI extends XGUI implements InvGUI
 	{
 		initTiles();
 		invView.addToGUI(itemsView.size(), this);
+		itemView.addToGUI(info().size(), this);
 		setTile(textInv);
 		setTile(weight, new GuiTile(weightView.currentWithLimit()));
 	}
@@ -46,23 +53,56 @@ public class Inv1GUI extends XGUI implements InvGUI
 	@Override
 	public void itemView(int invID, int x, int y1, int index)
 	{
-		ItemView itemView = itemsView.get(index);
-		tiles[x][y1] = new GuiTile(itemView.currentWithLimit());
-		tiles[x + 1][y1] = new GuiTile(null, itemView.item.image(), false, null);
+		if(invID == 0)
+		{
+			ItemView itemView = itemsView.get(index);
+			tiles[x][y1] = new GuiTile(itemView.currentWithLimit());
+			tiles[x + 1][y1] = new GuiTile(null, itemView.item.image(), false, null);
+		}
+		else
+		{
+			if(index < info().size())
+				tiles[x][y1] = new GuiTile(info().get(index));
+		}
+	}
+
+	private List<String> info()
+	{
+		if(viewing != null)
+			return viewing.item.info();
+		else
+			return baseInfo;
 	}
 
 	@Override
 	public void target(int x, int y)
 	{
-		if(invView.target(x, y, itemsView.size(), this))
-			return;
-		setTargeted(CTile.NONE);
+		if(!invView.target(x, y, itemsView.size(), this))
+		{
+			setTargeted(CTile.NONE);
+			if(viewing != null)
+				changed = true;
+			viewing = null;
+		}
+		if(changed)
+		{
+			changed = false;
+			update();
+		}
 	}
 
 	@Override
 	public void onTarget(int invID, int num, int xi, int yi, CTile cTile)
 	{
 		setTargeted(cTile);
+		if(invID == 0)
+		{
+			if(viewing != itemsView.get(num))
+			{
+				changed = true;
+				viewing = itemsView.get(num);
+			}
+		}
 	}
 
 	@Override

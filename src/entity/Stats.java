@@ -1,6 +1,7 @@
 package entity;
 
 import item.*;
+import java.util.*;
 
 public interface Stats
 {
@@ -17,4 +18,6 @@ public interface Stats
 	Item getItemFilter();
 
 	boolean removeEntity();
+
+	List<String> info();
 }

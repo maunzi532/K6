@@ -2,6 +2,7 @@ package system2;
 
 import entity.*;
 import item.*;
+import java.util.*;
 
 public class Stats2 implements Stats
 {
@@ -176,5 +177,32 @@ public class Stats2 implements Stats
 	public boolean removeEntity()
 	{
 		return currentHealth <= 0;
+	}
+
+	@Override
+	public List<String> info()
+	{
+		List<String> info = new ArrayList<>();
+		info.add("Class\n" + xClass.className);
+		info.add("Level\n" + level);
+		info.add("Health\n" + currentHealth + "/" + toughness);
+		info.add("Strength\n" + strength);
+		info.add("Finesse\n" + finesse);
+		info.add("Skill\n" + skill);
+		info.add("Speed\n" + speed);
+		info.add("Luck\n" + luck);
+		info.add("Defense\n" + defense + " / " + magicDef);
+		info.add("Move\n" + movement);
+		info.add(exhaustion > 0 ? "Exhausted\n" + exhaustion : "");
+		info.add("Defend\n" + (lastUsed != null ? lastUsed.item.info().get(0).replace("Type\n", "") : "None"));
+		for(Class e : slot.getItemTypes())
+		{
+			info.add("ItemType\n" + e.getSimpleName().replace("Item", ""));
+		}
+		for(Ability2 ability : xClass.abilities)
+		{
+			info.add("Ability\n" + ability.name);
+		}
+		return info;
 	}
 }

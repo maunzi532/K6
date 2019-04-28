@@ -102,4 +102,24 @@ public abstract class AttackItem2 implements Item
 	{
 		return false;
 	}
+
+	@Override
+	public List<String> info()
+	{
+		List<String> info = new ArrayList<>();
+		info.add("Type\n" + getClass().getSimpleName().replace("Item", ""));
+		info.add("Damage\n" + damage);
+		info.add("Heavy\n" + heavy);
+		info.add(slow > 0 ? "Slow\n" + slow : "");
+		info.add("Acc%\n" + accuracy);
+		info.add("Crit%\n" + crit);
+		info.add("Range\n" + Arrays.toString(ranges));
+		info.add("Counter\n" + Arrays.toString(counterR));
+		info.add("");
+		for(Ability2 ability : abilities)
+		{
+			info.add("Ability\n" + ability.name);
+		}
+		return info;
+	}
 }

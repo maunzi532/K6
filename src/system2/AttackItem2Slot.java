@@ -19,4 +19,9 @@ public class AttackItem2Slot extends AttackItem2
 	{
 		return itemTypes.stream().anyMatch(e -> e.isInstance(item));
 	}
+
+	public List<Class> getItemTypes()
+	{
+		return itemTypes;
+	}
 }

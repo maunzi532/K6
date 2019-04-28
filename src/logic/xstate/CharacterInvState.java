@@ -29,6 +29,6 @@ public class CharacterInvState implements NGUIState
 	@Override
 	public XGUI gui(MainState mainState)
 	{
-		return new Inv1GUI(character.outputInv());
+		return new Inv1GUI(character.outputInv(), character.getStats().info());
 	}
 }
