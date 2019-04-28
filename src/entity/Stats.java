@@ -19,5 +19,7 @@ public interface Stats
 
 	boolean removeEntity();
 
+	String getName();
+
 	List<String> info();
 }

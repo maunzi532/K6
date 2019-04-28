@@ -8,6 +8,7 @@ public class Stats2 implements Stats
 {
 	private XClass xClass;
 	private int level;
+	private String customName;
 	private int strength;
 	private int finesse;
 	private int skill;
@@ -22,11 +23,12 @@ public class Stats2 implements Stats
 	private AttackMode2 lastUsed;
 	private AttackItem2Slot slot;
 
-	public Stats2(XClass xClass, int level, int strength, int finesse, int skill, int speed, int luck, int defense, int magicDef, int toughness,
+	public Stats2(XClass xClass, int level, String customName, int strength, int finesse, int skill, int speed, int luck, int defense, int magicDef, int toughness,
 			int movement)
 	{
 		this.xClass = xClass;
 		this.level = level;
+		this.customName = customName;
 		this.strength = strength;
 		this.finesse = finesse;
 		this.skill = skill;
@@ -177,6 +179,12 @@ public class Stats2 implements Stats
 	public boolean removeEntity()
 	{
 		return currentHealth <= 0;
+	}
+
+	@Override
+	public String getName()
+	{
+		return customName != null ? customName : xClass.className + " lv" + level;
 	}
 
 	@Override

@@ -11,6 +11,9 @@ import logic.xstate.*;
 
 public class MainVisual
 {
+	private static final double BORDER = 0.8;
+
+	private XGraphics graphics;
 	private VisualTile visualTile;
 	private TileCamera mapCamera;
 	private VisualMenu visualMenu;
@@ -20,6 +23,7 @@ public class MainVisual
 
 	public MainVisual(XGraphics graphics)
 	{
+		this.graphics = graphics;
 		mapCamera = new HexCamera(graphics, 1, 1, 44, 44, 0, 0, new HexMatrix(0.5));
 		//mapCamera = new QuadCamera(graphics, 1, 1, 44, 44, 0, 0);
 		DoubleType y2 = mapCamera.getDoubleType();
@@ -95,5 +99,19 @@ public class MainVisual
 			levelEditor.draw();
 		visualGUI.draw2(mainState.stateControl.getXgui());
 		visualMenu.draw();
+	}
+
+	public void mousePosition(double xMouse, double yMouse)
+	{
+		double xp = xMouse / graphics.xHW() - 1;
+		double yp = yMouse / graphics.yHW() - 1;
+		if(xp > BORDER)
+			mapCamera.setXShift(mapCamera.getXShift() + xp - BORDER);
+		else if(xp < -BORDER)
+			mapCamera.setXShift(mapCamera.getXShift() + xp + BORDER);
+		if(yp > BORDER)
+			mapCamera.setYShift(mapCamera.getYShift() + yp - BORDER);
+		else if(yp < -BORDER)
+			mapCamera.setYShift(mapCamera.getYShift() + yp + BORDER);
 	}
 }

@@ -12,6 +12,7 @@ public class XTimer extends AnimationTimer
 	private boolean clicked;
 	private double xClicked, yClicked;
 	private boolean moved;
+	private boolean inside;
 	private double xMoved, yMoved;
 	private MouseButton mouseKey;
 	private KeyCode keyCode;
@@ -34,6 +35,12 @@ public class XTimer extends AnimationTimer
 		moved = true;
 		xMoved = mouseEvent.getSceneX();
 		yMoved = mouseEvent.getSceneY();
+		inside = true;
+	}
+
+	public void onMouseExit(MouseEvent mouseEvent)
+	{
+		inside = false;
 	}
 
 	public void onKeyEvent(KeyEvent keyEvent)
@@ -44,8 +51,12 @@ public class XTimer extends AnimationTimer
 	@Override
 	public void handle(long currentNanoTime)
 	{
-		//System.out.println(1000000000d / (currentNanoTime - last));
+		//System.out.println(/*1000000000d / */(currentNanoTime - last) / 1000000);
 		//last = currentNanoTime;
+		if(inside)
+		{
+			mainVisual.mousePosition(xMoved, yMoved);
+		}
 		if(moved)
 		{
 			mainVisual.handleMouseMove(xMoved, yMoved);

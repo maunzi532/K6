@@ -32,6 +32,7 @@ public class XScene extends Application
 		xTimer.start();
 		s.setOnMouseClicked(xTimer::onMouseClick);
 		s.setOnMouseMoved(xTimer::onMouseMove);
+		s.setOnMouseExited(xTimer::onMouseExit);
 		s.setOnKeyPressed(xTimer::onKeyEvent);
 		stage.widthProperty().addListener((e, f, g) ->
 		{

@@ -18,12 +18,6 @@ public class XEnemy extends InvEntity
 	}
 
 	@Override
-	public String name()
-	{
-		return "XEnemy";
-	}
-
-	@Override
 	public boolean isEnemy(XEntity other)
 	{
 		return other instanceof XHero;

@@ -27,6 +27,11 @@ public class XEntity
 		return false;
 	}
 
+	public String name()
+	{
+		return stats.getName();
+	}
+
 	public Tile location()
 	{
 		return location;

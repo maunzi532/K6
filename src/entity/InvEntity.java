@@ -18,12 +18,6 @@ public class InvEntity extends XEntity implements DoubleInv
 	}
 
 	@Override
-	public String name()
-	{
-		return "InvEntity";
-	}
-
-	@Override
 	public Inv inputInv()
 	{
 		return inv;

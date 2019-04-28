@@ -8,22 +8,24 @@ import logic.*;
 
 public class Inv1GUI extends XGUI implements InvGUI
 {
-	private static final CTile textInv = new CTile(2, 0, new GuiTile("Inventory"), 2, 1);
-	private static final CTile weight = new CTile(5, 0);
+	private static final CTile textInv = new CTile(2, 0, 2, 1);
+	private static final CTile weight = new CTile(0, 0);
 
 	private final InvNumView weightView;
 	private final List<ItemView> itemsView;
 	private final InvGUIPart invView;
 	private final InvGUIPart itemView;
+	private final String name;
 	private final List<String> baseInfo;
 	private ItemView viewing;
 	private boolean changed;
 
-	public Inv1GUI(Inv inv, List<String> baseInfo)
+	public Inv1GUI(Inv inv, String name, List<String> baseInfo)
 	{
 		weightView = inv.viewInvWeight();
 		itemsView = inv.viewItems(true);
 		invView = new InvGUIPart(0, 0, 1, 1, 5, 2, 1);
+		this.name = name;
 		this.baseInfo = baseInfo;
 		itemView = new InvGUIPart(1, 3, 1, 3, 5, 1, 1);
 		update();
@@ -46,7 +48,7 @@ public class Inv1GUI extends XGUI implements InvGUI
 		initTiles();
 		invView.addToGUI(itemsView.size(), this);
 		itemView.addToGUI(info().size(), this);
-		setTile(textInv);
+		setTile(textInv, new GuiTile(name));
 		setTile(weight, new GuiTile(weightView.currentWithLimit()));
 	}
 

@@ -41,6 +41,16 @@ public abstract class TileCamera
 		this.yShift = yShift;
 	}
 
+	public double getXShift()
+	{
+		return xShift;
+	}
+
+	public double getYShift()
+	{
+		return yShift;
+	}
+
 	public double xSize()
 	{
 		return xSize * zoom;

@@ -18,7 +18,7 @@ public class BuildingEditState implements NGUIState
 	@Override
 	public XGUI gui(MainState mainState)
 	{
-		return new Inv1GUI(((ProductionBuilding) building).getOutputInv(), null);
+		return new Inv1GUI(((ProductionBuilding) building).getOutputInv(), ((ProductionBuilding) building).name(), null);
 	}
 
 	@Override

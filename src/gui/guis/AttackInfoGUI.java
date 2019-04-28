@@ -12,7 +12,6 @@ public class AttackInfoGUI extends XGUI implements InvGUI
 	private final CTile nameT;
 
 	private final XHero attacker;
-	private final XEntity target;
 	private final List<AttackInfo> infoList;
 	private final InvGUIPart attacksView;
 	private AttackInfo chosen;
@@ -20,9 +19,8 @@ public class AttackInfoGUI extends XGUI implements InvGUI
 	public AttackInfoGUI(XHero attacker, XEntity target)
 	{
 		this.attacker = attacker;
-		this.target = target;
 		nameA = new CTile(0, 0, new GuiTile(attacker.name()), 2, 1);
-		nameT = new CTile(4, 0, new GuiTile(target.getClass().getSimpleName()), 2, 1);
+		nameT = new CTile(4, 0, new GuiTile(target.name()), 2, 1);
 		infoList = attacker.attackInfo(target);
 		attacksView = new InvGUIPart(0, 0, 1, 1, 3, 6, 2);
 		update();
