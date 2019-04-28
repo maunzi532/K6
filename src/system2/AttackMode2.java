@@ -17,7 +17,7 @@ public abstract class AttackMode2 implements XMode
 	@Override
 	public Image image()
 	{
-		return new Image("BLUE.png");
+		return item.image();
 	}
 
 	public int getDamage()

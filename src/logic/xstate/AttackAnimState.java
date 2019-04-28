@@ -35,7 +35,7 @@ public class AttackAnimState extends AttackState
 		int change = aI.getChange(true, inverse, num);
 		int changeT = aI.getChange(false, !inverse, num);
 		acE = new EntityArrowC(mainState, entity(), entityT().location(), 1, 0, 60,
-				40, 3, stats().getStat(0), stats().getMaxStat(0), change, 40);
+				10, 3, stats().getStat(0), stats().getMaxStat(0), change, 40);
 		acT = new EntityArrowC(mainState, entityT(), entity().location(), changeT < 0 ? 2 : 0, 40, 40,
 				40, 3, statsT().getStat(0), statsT().getMaxStat(0), changeT, 40);
 	}

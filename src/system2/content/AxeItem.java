@@ -1,6 +1,7 @@
 package system2.content;
 
 import java.util.*;
+import javafx.scene.image.*;
 import system2.*;
 
 public class AxeItem extends AttackItem2
@@ -21,6 +22,12 @@ public class AxeItem extends AttackItem2
 	public int getAdvType()
 	{
 		return 3;
+	}
+
+	@Override
+	public Image image()
+	{
+		return new Image("AxeItem.png");
 	}
 
 	public static AxeItem create(int damage, int heavy, int slow, int accuracy, int crit, Ability2... extraAbilities)

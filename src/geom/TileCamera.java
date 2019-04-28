@@ -10,6 +10,7 @@ public abstract class TileCamera
 	protected double xMid, yMid;
 	protected double xSize, ySize;
 	protected double xShift, yShift;
+	private double zoom;
 
 	public TileCamera(DoubleType y2, XDimension dimension, double xMid, double yMid, double xSize, double ySize,
 			double xShift, double yShift)
@@ -22,6 +23,7 @@ public abstract class TileCamera
 		this.ySize = ySize;
 		this.xShift = xShift;
 		this.yShift = yShift;
+		zoom = 1;
 	}
 
 	public DoubleType getDoubleType()
@@ -39,6 +41,16 @@ public abstract class TileCamera
 		this.yShift = yShift;
 	}
 
+	public double xSize()
+	{
+		return xSize * zoom;
+	}
+
+	public double ySize()
+	{
+		return ySize * zoom;
+	}
+
 	public abstract int getRange();
 
 	public abstract TileLayout layout();
@@ -51,5 +63,10 @@ public abstract class TileCamera
 	public Tile mid(TileLayout layout)
 	{
 		return y2.cast(layout.pixelToTile(new PointD(dimension.xHW() * xMid, dimension.yHW() * yMid), y2));
+	}
+
+	public void setZoom(double zoom)
+	{
+		this.zoom = zoom;
 	}
 }

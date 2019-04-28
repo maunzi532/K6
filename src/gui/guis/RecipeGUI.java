@@ -14,7 +14,7 @@ public class RecipeGUI extends XGUI implements InvGUI
 	private static final CTile textResults = new CTile(4, 0, new GuiTile("Results"), 2, 1);
 	private static final CTile prev = new CTile(0, 1, new GuiTile("Previous"));
 	private static final CTile next = new CTile(6, 1, new GuiTile("Next"));
-	private static final CTile arrow = new CTile(3, 1, new GuiTile(null, ARROW, null));
+	private static final CTile arrow = new CTile(3, 1, new GuiTile(null, ARROW, false, null));
 
 	private final ProductionBuilding building;
 	private int recipeNum;
@@ -65,7 +65,7 @@ public class RecipeGUI extends XGUI implements InvGUI
 		Inv inv = invID == 0 ? building.getInputInv() : building.getOutputInv();
 		ItemView itemView = inv.viewRecipeItem(items.item);
 		tiles[x][y1] = new GuiTile(itemView.currentWithLimit());
-		tiles[x + 1][y1] = new GuiTile(InvNumView.except1(items.count), itemView.item.image(), null);
+		tiles[x + 1][y1] = new GuiTile(InvNumView.except1(items.count), itemView.item.image(), false, null);
 	}
 
 	@Override

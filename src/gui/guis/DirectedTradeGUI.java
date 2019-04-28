@@ -62,10 +62,10 @@ public class DirectedTradeGUI extends XGUI implements InvGUI
 		initTiles();
 		provideView.addToGUI(provideItems.size(), this);
 		receiveView.addToGUI(receiveItems.size(), this);
-		setTile(nameProvide, new GuiTile(provide.name(), null, Color.BLUE));
-		setTile(nameReceive, new GuiTile(receive.name(), null, Color.BLUE));
+		setTile(nameProvide, new GuiTile(provide.name(), null, false, Color.BLUE));
+		setTile(nameReceive, new GuiTile(receive.name(), null, false, Color.BLUE));
 		setTile(more);
-		setTile(transfer, new GuiTile(String.valueOf(amount), ARROW, null));
+		setTile(transfer, new GuiTile(String.valueOf(amount), ARROW, false, null));
 		setTile(less);
 		setTile(ok);
 	}
@@ -75,8 +75,8 @@ public class DirectedTradeGUI extends XGUI implements InvGUI
 	{
 		ItemView view = (invID == 0 ? provideItems : receiveItems).get(index);
 		Color color = invID == 0 && index == provideMarked ? Color.CYAN : null;
-		tiles[x][y1] = new GuiTile(view.currentWithLimit(), null, color);
-		tiles[x + 1][y1] = new GuiTile(null, view.item.image(), color);
+		tiles[x][y1] = new GuiTile(view.currentWithLimit(), null, false, color);
+		tiles[x + 1][y1] = new GuiTile(null, view.item.image(), false, color);
 	}
 
 	@Override

@@ -5,18 +5,20 @@ import javafx.scene.paint.*;
 
 public class GuiTile
 {
-	public static final GuiTile EMPTY = new GuiTile(null, null, null);
+	public static final GuiTile EMPTY = new GuiTile(null, null, false, null);
 
 	public final String text;
 	public final Image image;
+	public final boolean flipped;
 	public final Color color;
 	public final int l;
 	public final int u;
 
-	public GuiTile(String text, Image image, Color color)
+	public GuiTile(String text, Image image, boolean flipped, Color color)
 	{
 		this.text = text;
 		this.image = image;
+		this.flipped = flipped;
 		this.color = color;
 		l = 0;
 		u = 0;
@@ -26,15 +28,17 @@ public class GuiTile
 	{
 		this.text = text;
 		image = null;
+		flipped = false;
 		color = null;
 		l = 0;
 		u = 0;
 	}
 
-	public GuiTile(String text, Image image, Color color, int r, int d)
+	public GuiTile(String text, Image image, boolean flipped, Color color, int r, int d)
 	{
 		this.text = text;
 		this.image = image;
+		this.flipped = flipped;
 		this.color = color;
 		l = r - 1;
 		u = d - 1;
@@ -44,6 +48,7 @@ public class GuiTile
 	{
 		text = copy.text;
 		image = copy.image;
+		flipped = copy.flipped;
 		color = copy.color;
 		l = r - 1;
 		u = d - 1;

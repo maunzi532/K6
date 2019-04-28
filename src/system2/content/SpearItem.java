@@ -1,6 +1,7 @@
 package system2.content;
 
 import java.util.*;
+import javafx.scene.image.*;
 import system2.*;
 
 public class SpearItem extends AttackItem2
@@ -21,6 +22,12 @@ public class SpearItem extends AttackItem2
 	public int getAdvType()
 	{
 		return 2;
+	}
+
+	@Override
+	public Image image()
+	{
+		return new Image("SpearItem.png");
 	}
 
 	public static SpearItem create(int damage, int heavy, int slow, int accuracy, int crit, Ability2... extraAbilities)

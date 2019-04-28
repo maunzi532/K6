@@ -24,7 +24,7 @@ public class HexCamera extends TileCamera
 	@Override
 	public TileLayout layout()
 	{
-		return new HexLayout(matrix, new PointD(xSize, ySize),
-				new PointD(dimension.xHW() * xMid - xShift * xSize, dimension.yHW() * yMid - yShift * ySize));
+		return new HexLayout(matrix, new PointD(xSize(), ySize()),
+				new PointD(dimension.xHW() * xMid - xShift * xSize(), dimension.yHW() * yMid - yShift * ySize()));
 	}
 }

@@ -61,7 +61,7 @@ public class RemoveGUI extends XGUI implements InvGUI
 	{
 		ItemView itemView = itemsView.get(index);
 		tiles[x][y1] = new GuiTile(itemView.baseAndCurrentWithLimit());
-		tiles[x + 1][y1] = new GuiTile(null, itemView.item.image(), null);
+		tiles[x + 1][y1] = new GuiTile(null, itemView.item.image(), false, null);
 	}
 
 	@Override

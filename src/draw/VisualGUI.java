@@ -10,9 +10,15 @@ import javafx.scene.text.*;
 
 public abstract class VisualGUI
 {
+	private static final int FADEIN = 10;
+	private static final int FADEOUT = 5;
+
 	public final DoubleType y2;
 	protected final GraphicsContext gd;
 	protected final TileCamera camera;
+	private XGUI last;
+	private XGUI last2;
+	private int counter;
 
 	public VisualGUI(GraphicsContext gd, TileCamera camera)
 	{
@@ -32,6 +38,26 @@ public abstract class VisualGUI
 	}
 
 	public abstract boolean inside(DoubleTile h1, XGUI xgui);
+
+	public void draw2(XGUI xgui)
+	{
+		if(xgui != last)
+		{
+			last2 = last;
+			last = xgui;
+			counter = 0;
+		}
+		if(counter < FADEIN)
+			counter++;
+		if(counter < FADEOUT && last2 != null)
+		{
+			camera.setZoom((double) (FADEOUT - counter) / FADEOUT);
+			draw(last2);
+		}
+		camera.setZoom((double) counter / FADEIN);
+		draw(xgui);
+		camera.setZoom(1);
+	}
 
 	public abstract void draw(XGUI xgui);
 
@@ -80,8 +106,15 @@ public abstract class VisualGUI
 		if(guiTile.image != null)
 		{
 			PointD midPoint = layout.tileToPixel(t1);
-			gd.drawImage(guiTile.image, midPoint.v[0] - layout.size().v[0] * imgSize, midPoint.v[1] - layout.size().v[1] * imgSize,
-					layout.size().v[0] * 2 * imgSize, layout.size().v[1] * 2 * imgSize);
+			if(guiTile.flipped)
+				gd.drawImage(guiTile.image, guiTile.image.widthProperty().get(), 0,
+						-guiTile.image.widthProperty().get(), guiTile.image.heightProperty().get(),
+						midPoint.v[0] - layout.size().v[0] * imgSize, midPoint.v[1] - layout.size().v[1] * imgSize,
+						layout.size().v[0] * 2 * imgSize, layout.size().v[1] * 2 * imgSize);
+			else
+				gd.drawImage(guiTile.image, midPoint.v[0] - layout.size().v[0] * imgSize,
+						midPoint.v[1] - layout.size().v[1] * imgSize,
+						layout.size().v[0] * 2 * imgSize, layout.size().v[1] * 2 * imgSize);
 		}
 		if(guiTile.text != null)
 		{

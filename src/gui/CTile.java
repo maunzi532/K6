@@ -56,6 +56,6 @@ public class CTile
 
 	public static GuiTile getOther(GuiTile guiTile)
 	{
-		return new GuiTile(null, null, guiTile.color);
+		return new GuiTile(null, null, false, guiTile.color);
 	}
 }

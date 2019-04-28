@@ -1,6 +1,7 @@
 package system2.content;
 
 import java.util.*;
+import javafx.scene.image.*;
 import system2.*;
 
 public class SpellItem extends AttackItem2
@@ -27,6 +28,12 @@ public class SpellItem extends AttackItem2
 	public boolean magical()
 	{
 		return true;
+	}
+
+	@Override
+	public Image image()
+	{
+		return new Image("SpellItem.png");
 	}
 
 	public static SpellItem create(int damage, int heavy, int slow, int accuracy, int crit, Ability2... extraAbilities)

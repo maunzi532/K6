@@ -21,7 +21,7 @@ public class BuildGUI extends XGUI implements InvGUI
 	private static final CTile lessTiles = new CTile(0, 0, new GuiTile("Less Tiles"));
 	private static final CTile moreTiles = new CTile(1, 0, new GuiTile("More Tiles"));
 	private static final CTile build = new CTile(6, 0, new GuiTile("Build"), 2, 1);
-	private static final CTile buildA = new CTile(6, 0, new GuiTile("Build", null, Color.CYAN), 2, 1);
+	private static final CTile buildA = new CTile(6, 0, new GuiTile("Build", null, false, Color.CYAN), 2, 1);
 
 	private final XHero character;
 	private final BuildingBlueprint blueprint;
@@ -88,14 +88,14 @@ public class BuildGUI extends XGUI implements InvGUI
 			ItemStack items = cost.required.items.get(index);
 			ItemView itemView = character.outputInv().viewRecipeItem(items.item);
 			Color color = itemView.base >= items.count ? Color.CYAN : null;
-			tiles[x][y1] = new GuiTile(itemView.base + " / " + items.count, null, color);
-			tiles[x + 1][y1] = new GuiTile(null, itemView.item.image(), color);
+			tiles[x][y1] = new GuiTile(itemView.base + " / " + items.count, null, false, color);
+			tiles[x + 1][y1] = new GuiTile(null, itemView.item.image(), false, color);
 		}
 		else
 		{
 			ItemStack items = cost.refundable.items.get(index);
 			tiles[x][y1] = new GuiTile(String.valueOf(items.count));
-			tiles[x + 1][y1] = new GuiTile(null, items.item.image(), null);
+			tiles[x + 1][y1] = new GuiTile(null, items.item.image(), false, null);
 		}
 	}
 

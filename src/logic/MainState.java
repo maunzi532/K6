@@ -42,8 +42,8 @@ public class MainState
 		levelMap.addEntity(new XEnemy(y2.create2(2, -1), this, Stats1.create1(), CL, a1));*/
 		new Entity2Builder(this).setLocation(y2.create2(-2, 1)).addItem(DaggerItem.standard()).setStats(new Stats2(XClass.mageClass(), 0)).create(true);
 		new Entity2Builder(this).setLocation(y2.create2(-2, -1)).addItem(AxeItem.standard()).setStats(new Stats2(XClass.banditClass(), 0)).create(true);
-		new Entity2Builder(this).setLocation(y2.create2(2, 1)).addItem(CrossbowItem.standard()).setStats(new Stats2(XClass.soldierClass(), 0)).create(false);
-		new Entity2Builder(this).setLocation(y2.create2(2, 0)).addItem(AxeItem.standard()).setStats(new Stats2(XClass.pirateClass(), 0)).create(false);
+		new Entity2Builder(this).setLocation(y2.create2(2, 1)).addItem(SpearItem.standard()).setStats(new Stats2(XClass.soldierClass(), 0)).create(false);
+		new Entity2Builder(this).setLocation(y2.create2(2, 0)).addItem(CrossbowItem.standard()).setStats(new Stats2(XClass.pirateClass(), 0)).create(false);
 		new Entity2Builder(this).setLocation(y2.create2(2, -1)).addItem(SpellItem.standard()).setStats(new Stats2(XClass.hexerClass(), 0)).create(false);
 		/*levelMap.addArrow(new ShineArrow(List.of(y2.create2(2, 0), y2.create2(4, 1)), 120, true, null, true));
 		levelMap.addArrow(new ShineArrow(List.of(y2.create2(-2, 0), y2.create2(4, -4)), 120, true, null, true));

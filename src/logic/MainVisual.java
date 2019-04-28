@@ -26,6 +26,7 @@ public class MainVisual
 		mainState = new MainState(y2);
 		mainState.initialize();
 		mainState.stateControl.start();
+		graphics.gd().setImageSmoothing(false);
 		graphics.gd().setTextAlign(TextAlignment.CENTER);
 		graphics.gd().setTextBaseline(VPos.CENTER);
 		visualTile = new VisualTile(y2, new ArrowViewer(y2), mainState.levelMap, graphics.gd());
@@ -92,7 +93,7 @@ public class MainVisual
 		visualTile.draw(mapCamera);
 		if(mainState.stateControl.getState().editMode())
 			levelEditor.draw();
-		visualGUI.draw(mainState.stateControl.getXgui());
+		visualGUI.draw2(mainState.stateControl.getXgui());
 		visualMenu.draw();
 	}
 }
