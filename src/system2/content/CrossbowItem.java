@@ -38,6 +38,6 @@ public class CrossbowItem extends AttackItem2
 
 	public static CrossbowItem standard()
 	{
-		return create(8, 12, 0, 60, 0);
+		return create(8, 12, 0, 80, 0);
 	}
 }

@@ -14,7 +14,7 @@ public class ItemTransportInfo
 		require = new ArrayList<>();
 	}
 
-	public List<PossibleTransport> getTransports(Item item, Map<PossibleTransport, Integer> lastTransported)
+	public List<PossibleTransport> getTransports(Item item)
 	{
 		List<PossibleTransport> re = new ArrayList<>();
 		for(DoubleInv provided : provide)
@@ -22,7 +22,7 @@ public class ItemTransportInfo
 			for(DoubleInv required : require)
 			{
 				re.add(new PossibleTransport(item, provided, required,
-						provided.outputPriority(), required.inputPriority(), lastTransported));
+						provided.outputPriority(), required.inputPriority()));
 			}
 		}
 		return re;

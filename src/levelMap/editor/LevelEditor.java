@@ -25,6 +25,7 @@ public class LevelEditor
 		this.mainState = mainState;
 		currentSlot = -1;
 		modes = new ArrayList<>();
+		modes.add(new SaveMode());
 		modes.add(BCEditMode.INSTANCE);
 		for(int i = 0; i < FloorTileType.values().length; i++)
 		{
@@ -63,6 +64,8 @@ public class LevelEditor
 	{
 		if(mouseKey == 1 && num == currentSlot)
 			editorSlots.get(currentSlot).onClick(mainState, mouseKey);
+		if(currentSlot != num)
+			editorSlots.get(num).onEnter(mainState);
 		currentSlot = num;
 		if(mouseKey == 3)
 		{

@@ -10,18 +10,14 @@ public class PossibleTransport
 	public final DoubleInv to;
 	public final int priorityFrom;
 	public final int priorityTo;
-	public final Map<PossibleTransport, Integer> lastTransported;
 
-	public PossibleTransport(Item item, DoubleInv from, DoubleInv to,
-			int priorityFrom, int priorityTo,
-			Map<PossibleTransport, Integer> lastTransported)
+	public PossibleTransport(Item item, DoubleInv from, DoubleInv to, int priorityFrom, int priorityTo)
 	{
 		this.item = item;
 		this.from = from;
 		this.to = to;
 		this.priorityFrom = priorityFrom;
 		this.priorityTo = priorityTo;
-		this.lastTransported = lastTransported;
 	}
 
 	@Override

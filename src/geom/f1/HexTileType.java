@@ -101,12 +101,12 @@ public class HexTileType implements TileType
 	@Override
 	public Tile fromOffset(int x, int y)
 	{
-		return create2(x - y / 2, y);
+		return create2(x - Math.floorDiv(y, 2), y);
 	}
 
 	@Override
 	public Tile toOffset(Tile t1)
 	{
-		return new Tile(new int[]{(t1.v[0] - t1.v[1]) / 2, t1.v[2]});
+		return new Tile(new int[]{Math.floorDiv(t1.v[0] - t1.v[1], 2), t1.v[2]});
 	}
 }

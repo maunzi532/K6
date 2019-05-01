@@ -4,6 +4,7 @@ import building.blueprint.*;
 import entity.*;
 import file.*;
 import geom.d1.*;
+import java.io.*;
 import levelMap.*;
 import levelMap.importX.*;
 import system2.*;
@@ -30,7 +31,10 @@ public class MainState
 
 	public void initialize()
 	{
-		new TestImportSector(y2, 8).generate().importIntoMap(levelMap);
+		if(new File("W").exists())
+			new SavedImport().importIntoMap(levelMap);
+		else
+			new TestImportSector(y2, 8).generate().importIntoMap(levelMap);
 		/*ItemList a1 = new ItemList(AttackItem1.item1());
 		levelMap.addEntity(new XHero(y2.create2(-2, 1), this, Stats1.create2(), CL, a1));
 		XHero h1 = new XHero(y2.create2(-2, -1), this, Stats1.create1(), CL, a1);

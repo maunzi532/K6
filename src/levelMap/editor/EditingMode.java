@@ -8,6 +8,8 @@ public interface EditingMode
 {
 	GuiTile guiTile();
 
+	default void onEnter(MainState mainState){}
+
 	default void onClick(MainState mainState, int mouseKey){}
 
 	boolean onMapClick(MainState mainState, Tile tile, int mouseKey);

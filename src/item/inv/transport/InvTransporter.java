@@ -50,9 +50,9 @@ public class InvTransporter
 			}
 		}
 		List<PossibleTransport> transports = new ArrayList<>();
-		possibleItems.forEach((item, info) -> transports.addAll(info.getTransports(item, lastTransported)));
+		possibleItems.forEach((item, info) -> transports.addAll(info.getTransports(item)));
 		return transports.stream().max(Comparator.comparingInt((PossibleTransport e) -> e.priorityFrom + e.priorityTo)
-				.thenComparingInt((PossibleTransport e) -> -Optional.ofNullable(e.lastTransported.get(e)).orElse(-1)));
+				.thenComparingInt((PossibleTransport e) -> -lastTransported.getOrDefault(e, -1)));
 	}
 
 	public void doTheTransport(PossibleTransport theTransport)

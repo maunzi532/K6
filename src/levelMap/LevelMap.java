@@ -3,6 +3,7 @@ package levelMap;
 import arrow.*;
 import entity.*;
 import geom.f1.*;
+import java.nio.*;
 import java.util.*;
 
 public class LevelMap
@@ -189,5 +190,33 @@ public class LevelMap
 	{
 		arrows.forEach(XArrow::tick);
 		arrows.removeIf(XArrow::finished);
+	}
+
+	public byte[] saveData()
+	{
+		ByteBuffer sb = ByteBuffer.allocate(advTiles.size() * 4 + 4);
+		sb.put((byte) 0xA4);
+		sb.put((byte) 0xD2);
+		sb.put((byte) 0x83);
+		sb.put((byte) 0x9F);
+		advTiles.forEach((k, v) ->
+		{
+			if(v.getFloorTile() != null)
+			{
+				Tile offset = y1.toOffset(k);
+				sb.put((byte) offset.v[0]);
+				sb.put((byte) offset.v[1]);
+				sb.put((byte) v.getFloorTile().sector);
+				sb.put((byte) v.getFloorTile().type.ordinal());
+			}
+		});
+		return sb.array();
+	}
+
+	public void createTile(byte x, byte y, byte s, byte t)
+	{
+		while(s >= visibleSectors.size())
+			visibleSectors.add(true);
+		advTiles.put(y1.fromOffset(x, y), new AdvTile(new FloorTile(s, FloorTileType.values()[t])));
 	}
 }

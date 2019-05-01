@@ -34,6 +34,11 @@ public class EditorSlot
 		visualGUI.draw(gui);
 	}
 
+	public void onEnter(MainState mainState)
+	{
+		mode.onEnter(mainState);
+	}
+
 	public void onClick(MainState mainState, int mouseKey)
 	{
 		mode.onClick(mainState, mouseKey);

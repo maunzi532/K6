@@ -98,7 +98,7 @@ public class MainVisual
 
 	private void draw()
 	{
-		graphics.gd().clearRect(0, 0, graphics.xHW() * 2, graphics.yHW() * 2);
+		//graphics.gd().clearRect(0, 0, graphics.xHW() * 2, graphics.yHW() * 2);
 		visualTile.draw(mapCamera);
 		if(mainState.stateControl.getState().editMode())
 			levelEditor.draw();

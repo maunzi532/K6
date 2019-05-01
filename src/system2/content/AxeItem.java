@@ -40,6 +40,6 @@ public class AxeItem extends AttackItem2
 
 	public static AxeItem standard()
 	{
-		return create(13, 9, 0, 60, 0);
+		return create(11, 9, 0, 60, 0);
 	}
 }
