@@ -12,8 +12,11 @@ public class XScene extends Application
 {
 	private static final int WIDTH = 1000, HEIGHT = 800;
 
+	private static String[] args0;
+
 	public static void main(String[] args)
 	{
+		args0 = args;
 		launch(args);
 	}
 
@@ -28,7 +31,8 @@ public class XScene extends Application
 		stage.setTitle("K6");
 		stage.getIcons().add(new Image("Tech.png"));
 		XGraphics graphics = new XGraphics(canvas.getGraphicsContext2D(), WIDTH, HEIGHT);
-		XTimer xTimer = new XTimer(graphics);
+		XTimer xTimer = new XTimer(graphics, args0.length > 0 && args0[0].equals("H"),
+				args0.length > 1 && args0[1].equals("H"), args0.length > 2 && args0[2].equals("H"));
 		xTimer.start();
 		s.setOnMouseClicked(xTimer::onMouseClick);
 		s.setOnMouseMoved(xTimer::onMouseMove);

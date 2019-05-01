@@ -41,4 +41,6 @@ public interface TileLayout
 		}
 		return corners;
 	}
+
+	PointD imageOffset();
 }

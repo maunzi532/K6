@@ -60,4 +60,10 @@ public class QuadLayout implements TileLayout
 	{
 		return 4;
 	}
+
+	@Override
+	public PointD imageOffset()
+	{
+		return size;
+	}
 }

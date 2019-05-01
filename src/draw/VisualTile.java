@@ -59,12 +59,18 @@ public class VisualTile
 			gd.setFill(new LinearGradient(points[0][0], points[1][0], points[0][y1.directionCount() / 2], points[1][y1.directionCount() / 2],
 					false, null, advTile.getFloorTile().type.normal.stream()
 					.map(e -> new Stop(e.getOffset(), mark(e.getColor(), levelMap.getMarked().getOrDefault(t1, MarkType.NOT)))).collect(Collectors.toList())));
+			PointD mid = layout.tileToPixel(t1);
+			PointD offset = layout.imageOffset();
+			gd.setFill(new ImagePattern(advTile.getFloorTile().type.image,
+					mid.v[0] - offset.v[0], mid.v[1] - offset.v[1], offset.v[0] * 2, offset.v[1] * 2, false));
 		}
 		else
 		{
 			gd.setFill(Color.BLACK);
 		}
 		gd.fillPolygon(points[0], points[1], y1.directionCount());
+		/*if(advTile.visible(levelMap))
+			gd.drawImage(advTile.getFloorTile().type.image, layout.tileToPixel(t1).v[0], layout.tileToPixel(t1).v[1]);*/
 		if(advTile.visible(levelMap))
 		{
 			if(advTile.getBuilding() != null)

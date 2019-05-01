@@ -21,11 +21,13 @@ public class MainVisual
 	private LevelEditor levelEditor;
 	private MainState mainState;
 
-	public MainVisual(XGraphics graphics)
+	public MainVisual(XGraphics graphics, boolean hexTiles, boolean hexMenu, boolean hexGUI)
 	{
 		this.graphics = graphics;
-		mapCamera = new HexCamera(graphics, 1, 1, 44, 44, 0, 0, new HexMatrix(0.5));
-		//mapCamera = new QuadCamera(graphics, 1, 1, 44, 44, 0, 0);
+		if(hexTiles)
+			mapCamera = new HexCamera(graphics, 1, 1, 44, 44, 0, 0, new HexMatrix(0.5));
+		else
+			mapCamera = new QuadCamera(graphics, 1, 1, 44, 44, 0, 0);
 		DoubleType y2 = mapCamera.getDoubleType();
 		mainState = new MainState(y2);
 		mainState.initialize();
@@ -34,9 +36,11 @@ public class MainVisual
 		graphics.gd().setTextAlign(TextAlignment.CENTER);
 		graphics.gd().setTextBaseline(VPos.CENTER);
 		visualTile = new VisualTile(y2, new ArrowViewer(y2), mainState.levelMap, graphics.gd());
-		visualMenu = new VisualMenu(graphics, mainState.stateControl);
-		visualGUI = new VisualGUIQuad(graphics, new QuadCamera(graphics, 1, 1, graphics.yHW() / 8, graphics.yHW() / 8, 0,  0));
-		//visualGUI = new VisualGUIHex(graphics, new HexCamera(graphics, 1, 1, graphics.yHW() / 8, graphics.yHW() / 8, 0,  0, HexMatrix.LP));
+		visualMenu = new VisualMenu(graphics, mainState.stateControl, hexMenu);
+		if(hexGUI)
+			visualGUI = new VisualGUIHex(graphics, new HexCamera(graphics, 1, 1, graphics.yHW() / 8, graphics.yHW() / 8, 0, 0, HexMatrix.LP));
+		else
+			visualGUI = new VisualGUIQuad(graphics, new QuadCamera(graphics, 1, 1, graphics.yHW() / 8, graphics.yHW() / 8, 0, 0));
 		levelEditor = new LevelEditor(graphics, mainState);
 		draw();
 	}
@@ -94,6 +98,7 @@ public class MainVisual
 
 	private void draw()
 	{
+		graphics.gd().clearRect(0, 0, graphics.xHW() * 2, graphics.yHW() * 2);
 		visualTile.draw(mapCamera);
 		if(mainState.stateControl.getState().editMode())
 			levelEditor.draw();

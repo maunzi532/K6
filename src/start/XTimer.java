@@ -17,9 +17,9 @@ public class XTimer extends AnimationTimer
 	private MouseButton mouseKey;
 	private KeyCode keyCode;
 
-	XTimer(XGraphics graphics)
+	XTimer(XGraphics graphics, boolean hexTiles, boolean hexMenu, boolean hexGUI)
 	{
-		mainVisual = new MainVisual(graphics);
+		mainVisual = new MainVisual(graphics, hexTiles, hexMenu, hexGUI);
 	}
 
 	public void onMouseClick(MouseEvent mouseEvent)

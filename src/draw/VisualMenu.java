@@ -17,11 +17,13 @@ public class VisualMenu
 	private final TileCamera camera;
 	private final XStateControl stateControl;
 
-	public VisualMenu(XGraphics graphics, XStateControl stateControl)
+	public VisualMenu(XGraphics graphics, XStateControl stateControl, boolean hexMenu)
 	{
 		gd = graphics.gd();
-		camera = new HexCamera(graphics, 2, 1, graphics.yHW() / 8, graphics.yHW() / 8, 1.25 * HexMatrix.Q3,  0, HexMatrix.LP);
-		//camera = new QuadCamera(graphics, 2, 1, graphics.yHW() / 8, graphics.yHW() / 8, 1.25 * HexMatrix.Q3,  0);
+		if(hexMenu)
+			camera = new HexCamera(graphics, 2, 1, graphics.yHW() / 8, graphics.yHW() / 8, 1.25 * HexMatrix.Q3, 0, HexMatrix.LP);
+		else
+			camera = new QuadCamera(graphics, 2, 1, graphics.yHW() / 8, graphics.yHW() / 8, 1.25 * HexMatrix.Q3, 0);
 		y2 = camera.getDoubleType();
 		this.stateControl = stateControl;
 	}

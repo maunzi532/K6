@@ -59,4 +59,10 @@ public class HexLayout implements TileLayout
 	{
 		return 6;
 	}
+
+	@Override
+	public PointD imageOffset()
+	{
+		return size;
+	}
 }
