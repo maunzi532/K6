@@ -106,4 +106,16 @@ public class QuadTileType implements TileType
 	{
 		return t1;
 	}
+
+	@Override
+	public int sx(Tile t1)
+	{
+		return t1.v[0];
+	}
+
+	@Override
+	public int sy(Tile t1)
+	{
+		return t1.v[1];
+	}
 }

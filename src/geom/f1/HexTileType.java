@@ -109,4 +109,16 @@ public class HexTileType implements TileType
 	{
 		return new Tile(new int[]{Math.floorDiv(t1.v[0] - t1.v[1], 2), t1.v[2]});
 	}
+
+	@Override
+	public int sx(Tile t1)
+	{
+		return t1.v[0];
+	}
+
+	@Override
+	public int sy(Tile t1)
+	{
+		return t1.v[2];
+	}
 }

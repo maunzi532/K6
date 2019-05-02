@@ -47,4 +47,8 @@ public interface TileType
 	Tile fromOffset(int x, int y);
 
 	Tile toOffset(Tile t1);
+
+	int sx(Tile t1);
+
+	int sy(Tile t1);
 }

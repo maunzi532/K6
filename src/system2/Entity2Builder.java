@@ -3,6 +3,7 @@ package system2;
 import entity.*;
 import geom.f1.*;
 import item.*;
+import levelMap.*;
 import logic.*;
 
 public class Entity2Builder
@@ -55,17 +56,18 @@ public class Entity2Builder
 
 	public void create(boolean player)
 	{
+		InvEntity entity;
 		if(player)
 		{
-			XHero xHero = new XHero(location, mainState, stats, weightLimit, itemList);
-			autoEquip(xHero, stats);
-			mainState.levelMap.addEntity(xHero);
+			entity = new XHero(location, mainState, stats, weightLimit, itemList);
 		}
 		else
 		{
-			XEnemy xEnemy = new XEnemy(location, mainState, stats, weightLimit, itemList);
-			autoEquip(xEnemy, stats);
-			mainState.levelMap.addEntity(xEnemy);
+			entity = new XEnemy(location, mainState, stats, weightLimit, itemList);
 		}
+		autoEquip(entity, stats);
+		if(mainState.levelMap.getFloor(location) == null)
+			mainState.levelMap.setFloorTile(location, new FloorTile(0, FloorTileType.TECH));
+		mainState.levelMap.addEntity(entity);
 	}
 }

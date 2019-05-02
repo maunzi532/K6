@@ -69,6 +69,8 @@ public class LevelMap
 
 	public void setFloorTile(Tile t1, FloorTile floorTile)
 	{
+		while(floorTile.sector >= visibleSectors.size())
+			visibleSectors.add(true);
 		if(advTiles.containsKey(t1))
 		{
 			advTile(t1).setFloorTile(floorTile);
@@ -199,15 +201,14 @@ public class LevelMap
 		sb.put((byte) 0xD2);
 		sb.put((byte) 0x83);
 		sb.put((byte) 0x9F);
-		advTiles.forEach((k, v) ->
+		advTiles.forEach((t1, adv) ->
 		{
-			if(v.getFloorTile() != null)
+			if(adv.getFloorTile() != null)
 			{
-				Tile offset = y1.toOffset(k);
-				sb.put((byte) offset.v[0]);
-				sb.put((byte) offset.v[1]);
-				sb.put((byte) v.getFloorTile().sector);
-				sb.put((byte) v.getFloorTile().type.ordinal());
+				sb.put((byte) y1.sx(t1));
+				sb.put((byte) y1.sy(t1));
+				sb.put((byte) adv.getFloorTile().sector);
+				sb.put((byte) adv.getFloorTile().type.ordinal());
 			}
 		});
 		return sb.array();
@@ -217,6 +218,6 @@ public class LevelMap
 	{
 		while(s >= visibleSectors.size())
 			visibleSectors.add(true);
-		advTiles.put(y1.fromOffset(x, y), new AdvTile(new FloorTile(s, FloorTileType.values()[t])));
+		advTiles.put(y1.create2(x, y), new AdvTile(new FloorTile(s, FloorTileType.values()[t])));
 	}
 }
