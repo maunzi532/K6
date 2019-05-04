@@ -38,12 +38,12 @@ public class XScene extends Application
 		s.setOnMouseMoved(xTimer::onMouseMove);
 		s.setOnMouseExited(xTimer::onMouseExit);
 		s.setOnKeyPressed(xTimer::onKeyEvent);
-		stage.widthProperty().addListener((e, f, g) ->
+		s.widthProperty().addListener((e, f, g) ->
 		{
 			canvas.setWidth(g.doubleValue());
 			graphics.setxW(g.doubleValue());
 		});
-		stage.heightProperty().addListener((e, f, g) ->
+		s.heightProperty().addListener((e, f, g) ->
 		{
 			canvas.setHeight(g.doubleValue());
 			graphics.setyW(g.doubleValue());

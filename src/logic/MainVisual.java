@@ -18,6 +18,7 @@ public class MainVisual
 	private TileCamera mapCamera;
 	private VisualMenu visualMenu;
 	private VisualGUI visualGUI;
+	private VisualSideInfo visualSideInfo;
 	private LevelEditor levelEditor;
 	private MainState mainState;
 
@@ -41,6 +42,7 @@ public class MainVisual
 			visualGUI = new VisualGUIHex(graphics, new HexCamera(graphics, 1, 1, graphics.yHW() / 8, graphics.yHW() / 8, 0, 0, HexMatrix.LP));
 		else
 			visualGUI = new VisualGUIQuad(graphics, new QuadCamera(graphics, 1, 1, graphics.yHW() / 8, graphics.yHW() / 8, 0, 0));
+		visualSideInfo = new VisualSideInfo(graphics);
 		levelEditor = new LevelEditor(graphics, mainState);
 		draw();
 	}
@@ -93,6 +95,7 @@ public class MainVisual
 	{
 		mainState.stateControl.tick();
 		mainState.levelMap.tickArrows();
+		visualSideInfo.tick();
 		draw();
 	}
 
@@ -100,6 +103,7 @@ public class MainVisual
 	{
 		//graphics.gd().clearRect(0, 0, graphics.xHW() * 2, graphics.yHW() * 2);
 		visualTile.draw(mapCamera);
+		visualSideInfo.draw();
 		if(mainState.stateControl.getState().editMode())
 			levelEditor.draw();
 		visualGUI.draw2(mainState.stateControl.getXgui());
