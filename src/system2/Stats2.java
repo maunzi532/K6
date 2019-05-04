@@ -189,6 +189,49 @@ public class Stats2 implements Stats
 	}
 
 	@Override
+	public Image image()
+	{
+		return new Image("TA_3.png");
+	}
+
+	@Override
+	public List<Integer> save()
+	{
+		List<Integer> ints = new ArrayList<>();
+		ints.add(xClass.code);
+		ints.add(level);
+		char[] customNameChars = customName.toCharArray();
+		ints.add(customNameChars.length);
+		for(int i = 0; i < customNameChars.length; i++)
+		{
+			ints.add((int) customNameChars[i]);
+		}
+		ints.add(strength);
+		ints.add(finesse);
+		ints.add(skill);
+		ints.add(speed);
+		ints.add(luck);
+		ints.add(defense);
+		ints.add(magicDef);
+		ints.add(toughness);
+		ints.add(movement);
+		ints.add(currentHealth);
+		ints.add(exhaustion);
+		if(lastUsed != null)
+		{
+			ints.add(lastUsed.code);
+			List<Integer> lastUsedSave = lastUsed.item.save();
+			ints.add(lastUsedSave.size());
+			ints.addAll(lastUsedSave);
+		}
+		else
+		{
+			ints.add(-1);
+		}
+		return ints;
+	}
+
+	@Override
 	public List<String> info()
 	{
 		List<String> info = new ArrayList<>();
@@ -213,11 +256,5 @@ public class Stats2 implements Stats
 			info.add("Ability\n" + ability.name);
 		}
 		return info;
-	}
-
-	@Override
-	public Image image()
-	{
-		return new Image("Blue2.png");
 	}
 }

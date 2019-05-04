@@ -15,4 +15,6 @@ public interface Item
 	}
 
 	List<String> info();
+
+	List<Integer> save();
 }

@@ -42,4 +42,10 @@ public enum Items implements Item
 	{
 		return info;
 	}
+
+	@Override
+	public List<Integer> save()
+	{
+		return List.of(0, ordinal());
+	}
 }

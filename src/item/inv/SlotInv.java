@@ -1,7 +1,6 @@
 package item.inv;
 
 import item.*;
-import item.inv.*;
 import item.view.*;
 import java.util.*;
 import java.util.stream.*;
@@ -106,5 +105,31 @@ public class SlotInv implements Inv
 	public boolean add(ItemStack itemStack, boolean unlimited)
 	{
 		return slots.stream().anyMatch(e -> e.add(itemStack, unlimited));
+	}
+
+	@Override
+	public List<Integer> save()
+	{
+		List<Integer> ints = new ArrayList<>();
+		ints.add(slots.size());
+		for(InvSlot invSlot : slots)
+		{
+			ints.add(invSlot.getLimit());
+			List<Integer> typeSave = invSlot.getType().save();
+			ints.add(typeSave.size());
+			ints.addAll(typeSave);
+			if(invSlot.stackExists())
+			{
+				ints.add(invSlot.getCurrentC());
+				List<Integer> itemSave = invSlot.getStackItemC().save();
+				ints.add(itemSave.size());
+				ints.addAll(itemSave);
+			}
+			else
+			{
+				ints.add(-1);
+			}
+		}
+		return ints;
 	}
 }

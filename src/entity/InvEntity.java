@@ -4,6 +4,7 @@ import geom.f1.*;
 import item.*;
 import item.inv.*;
 import item.inv.transport.*;
+import java.util.*;
 import logic.*;
 
 public class InvEntity extends XEntity implements DoubleInv
@@ -32,5 +33,11 @@ public class InvEntity extends XEntity implements DoubleInv
 	public void addItems(ItemList itemList)
 	{
 		inv.tryAdd(itemList, false, CommitType.COMMIT);
+	}
+
+	@Override
+	public List<Integer> save2()
+	{
+		return inv.save();
 	}
 }

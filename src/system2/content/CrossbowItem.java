@@ -6,15 +6,15 @@ import system2.*;
 
 public class CrossbowItem extends AttackItem2
 {
-	private CrossbowItem(int damage, int heavy, int slow, int accuracy, int crit, List<Ability2> abilities)
+	private CrossbowItem(int code, int damage, int heavy, int slow, int accuracy, int crit, List<Ability2> abilities)
 	{
-		this(damage, heavy, slow, accuracy, crit, abilities, new int[]{3, 4, 5, 6}, new int[]{3, 4, 5, 6});
+		this(code, damage, heavy, slow, accuracy, crit, abilities, new int[]{3, 4, 5, 6}, new int[]{3, 4, 5, 6});
 	}
 
-	private CrossbowItem(int damage, int heavy, int slow, int accuracy, int crit, List<Ability2> abilities, int[] ranges,
+	private CrossbowItem(int code, int damage, int heavy, int slow, int accuracy, int crit, List<Ability2> abilities, int[] ranges,
 			int[] counterR)
 	{
-		super(damage, heavy, slow, accuracy, crit, abilities, ranges, counterR);
+		super(code, damage, heavy, slow, accuracy, crit, abilities, ranges, counterR);
 		attackModes = List.of(new StandardMode(this));
 	}
 
@@ -30,14 +30,14 @@ public class CrossbowItem extends AttackItem2
 		return new Image("CrossbowItem.png");
 	}
 
-	public static CrossbowItem create(int damage, int heavy, int slow, int accuracy, int crit, Ability2... extraAbilities)
+	public static CrossbowItem create(int code, int damage, int heavy, int slow, int accuracy, int crit, Ability2... extraAbilities)
 	{
 		ArrayList<Ability2> abilities = new ArrayList<>(Arrays.asList(extraAbilities));
-		return new CrossbowItem(damage, heavy, slow, accuracy, crit, abilities);
+		return new CrossbowItem(code, damage, heavy, slow, accuracy, crit, abilities);
 	}
 
 	public static CrossbowItem standard()
 	{
-		return create(8, 12, 0, 80, 0);
+		return create(500, 8, 12, 0, 80, 0);
 	}
 }

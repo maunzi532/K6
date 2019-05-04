@@ -6,15 +6,15 @@ import system2.*;
 
 public class AxeItem extends AttackItem2
 {
-	private AxeItem(int damage, int heavy, int slow, int accuracy, int crit, List<Ability2> abilities)
+	private AxeItem(int code, int damage, int heavy, int slow, int accuracy, int crit, List<Ability2> abilities)
 	{
-		this(damage, heavy, slow, accuracy, crit, abilities, new int[]{1}, new int[]{1, 2});
+		this(code, damage, heavy, slow, accuracy, crit, abilities, new int[]{1}, new int[]{1, 2});
 	}
 
-	private AxeItem(int damage, int heavy, int slow, int accuracy, int crit, List<Ability2> abilities, int[] ranges,
+	private AxeItem(int code, int damage, int heavy, int slow, int accuracy, int crit, List<Ability2> abilities, int[] ranges,
 			int[] counterR)
 	{
-		super(damage, heavy, slow, accuracy, crit, abilities, ranges, counterR);
+		super(code, damage, heavy, slow, accuracy, crit, abilities, ranges, counterR);
 		attackModes = List.of(new FinesseMode(this));
 	}
 
@@ -30,16 +30,16 @@ public class AxeItem extends AttackItem2
 		return new Image("AxeItem.png");
 	}
 
-	public static AxeItem create(int damage, int heavy, int slow, int accuracy, int crit, Ability2... extraAbilities)
+	public static AxeItem create(int code, int damage, int heavy, int slow, int accuracy, int crit, Ability2... extraAbilities)
 	{
 		ArrayList<Ability2> abilities = new ArrayList<>();
 		abilities.add(Ability2.MELTING);
 		abilities.addAll(Arrays.asList(extraAbilities));
-		return new AxeItem(damage, heavy, slow, accuracy, crit, abilities);
+		return new AxeItem(code, damage, heavy, slow, accuracy, crit, abilities);
 	}
 
 	public static AxeItem standard()
 	{
-		return create(11, 9, 0, 60, 0);
+		return create(300, 11, 9, 0, 60, 0);
 	}
 }

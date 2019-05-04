@@ -72,4 +72,6 @@ public interface Inv extends Inv0
 		useCommitType(commitType);
 		return true;
 	}
+
+	List<Integer> save();
 }

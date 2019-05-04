@@ -6,15 +6,15 @@ import system2.*;
 
 public class SpearItem extends AttackItem2
 {
-	private SpearItem(int damage, int heavy, int slow, int accuracy, int crit, List<Ability2> abilities)
+	private SpearItem(int code, int damage, int heavy, int slow, int accuracy, int crit, List<Ability2> abilities)
 	{
-		this(damage, heavy, slow, accuracy, crit, abilities, new int[]{1, 2}, new int[]{1, 2});
+		this(code, damage, heavy, slow, accuracy, crit, abilities, new int[]{1, 2}, new int[]{1, 2});
 	}
 
-	private SpearItem(int damage, int heavy, int slow, int accuracy, int crit, List<Ability2> abilities, int[] ranges,
+	private SpearItem(int code, int damage, int heavy, int slow, int accuracy, int crit, List<Ability2> abilities, int[] ranges,
 			int[] counterR)
 	{
-		super(damage, heavy, slow, accuracy, crit, abilities, ranges, counterR);
+		super(code, damage, heavy, slow, accuracy, crit, abilities, ranges, counterR);
 		attackModes = List.of(new FinesseMode(this));
 	}
 
@@ -30,14 +30,14 @@ public class SpearItem extends AttackItem2
 		return new Image("SpearItem.png");
 	}
 
-	public static SpearItem create(int damage, int heavy, int slow, int accuracy, int crit, Ability2... extraAbilities)
+	public static SpearItem create(int code, int damage, int heavy, int slow, int accuracy, int crit, Ability2... extraAbilities)
 	{
 		ArrayList<Ability2> abilities = new ArrayList<>(Arrays.asList(extraAbilities));
-		return new SpearItem(damage, heavy, slow, accuracy, crit, abilities);
+		return new SpearItem(code, damage, heavy, slow, accuracy, crit, abilities);
 	}
 
 	public static SpearItem standard()
 	{
-		return create(11, 10, 0, 90, 0);
+		return create(200, 11, 10, 0, 90, 0);
 	}
 }

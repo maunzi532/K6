@@ -16,6 +16,16 @@ public class InvSlot implements Inv0
 		limit = limits.count;
 	}
 
+	public Item getType()
+	{
+		return type;
+	}
+
+	public boolean stackExists()
+	{
+		return stackExists;
+	}
+
 	public Item getStackItemC()
 	{
 		return stackExists ? stack.item : type;

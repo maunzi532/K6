@@ -81,4 +81,23 @@ public class XEntity
 	{
 		return stats;
 	}
+
+	public int[] save(TileType y1)
+	{
+		List<Integer> ints = new ArrayList<>();
+		ints.add(y1.sx(location));
+		ints.add(y1.sy(location));
+		List<Integer> statsSave = stats.save();
+		ints.add(statsSave.size());
+		ints.addAll(statsSave);
+		List<Integer> save2 = save2();
+		ints.add(save2.size());
+		ints.addAll(save2);
+		return ints.stream().mapToInt(e -> e).toArray();
+	}
+
+	public List<Integer> save2()
+	{
+		return List.of();
+	}
 }

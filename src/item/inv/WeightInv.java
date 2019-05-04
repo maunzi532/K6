@@ -133,4 +133,21 @@ public class WeightInv implements Inv
 		}
 		return false;
 	}
+
+	@Override
+	public List<Integer> save()
+	{
+		List<Integer> ints = new ArrayList<>();
+		ints.add(currentW);
+		ints.add(limitW);
+		ints.add(stacks.size());
+		for(InvStack invStack : stacks)
+		{
+			ints.add(invStack.getCountC());
+			List<Integer> itemSave = invStack.item.save();
+			ints.add(itemSave.size());
+			ints.addAll(itemSave);
+		}
+		return ints;
+	}
 }

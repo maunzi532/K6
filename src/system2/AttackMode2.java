@@ -7,11 +7,13 @@ import javafx.scene.image.*;
 public abstract class AttackMode2 implements XMode
 {
 	protected AttackItem2 item;
+	public final int code;
 	protected List<Ability2> abilities;
 
-	public AttackMode2(AttackItem2 item)
+	public AttackMode2(AttackItem2 item, int code)
 	{
 		this.item = item;
+		this.code = code;
 	}
 
 	@Override

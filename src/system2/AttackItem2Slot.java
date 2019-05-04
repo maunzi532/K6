@@ -9,7 +9,7 @@ public class AttackItem2Slot extends AttackItem2
 
 	public AttackItem2Slot(List<Class> itemTypes)
 	{
-		super(0, 0, 0, 0, 0, List.of());
+		super(0, 0, 0, 0, 0, 0, List.of());
 		attackModes = List.of();
 		this.itemTypes = itemTypes;
 	}

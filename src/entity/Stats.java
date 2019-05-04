@@ -25,4 +25,6 @@ public interface Stats
 	List<String> info();
 
 	Image image();
+
+	List<Integer> save();
 }

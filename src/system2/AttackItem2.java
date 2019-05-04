@@ -6,6 +6,7 @@ import javafx.scene.image.*;
 
 public abstract class AttackItem2 implements Item
 {
+	private final int code;
 	private final int damage;
 	private final int heavy;
 	private final int slow;
@@ -16,15 +17,16 @@ public abstract class AttackItem2 implements Item
 	private final List<Ability2> abilities;
 	protected List<AttackMode2> attackModes;
 
-	public AttackItem2(int damage, int heavy, int slow, int accuracy, int crit, List<Ability2> abilities,
+	public AttackItem2(int code, int damage, int heavy, int slow, int accuracy, int crit, List<Ability2> abilities,
 			int... ranges)
 	{
-		this(damage, heavy, slow, accuracy, crit, abilities, ranges, ranges);
+		this(code, damage, heavy, slow, accuracy, crit, abilities, ranges, ranges);
 	}
 
-	public AttackItem2(int damage, int heavy, int slow, int accuracy, int crit, List<Ability2> abilities,
+	public AttackItem2(int code, int damage, int heavy, int slow, int accuracy, int crit, List<Ability2> abilities,
 			int[] ranges, int[] counterR)
 	{
+		this.code = code;
 		this.damage = damage;
 		this.heavy = heavy;
 		this.slow = slow;
@@ -101,6 +103,12 @@ public abstract class AttackItem2 implements Item
 	public boolean magical()
 	{
 		return false;
+	}
+
+	@Override
+	public List<Integer> save()
+	{
+		return List.of(1, code);
 	}
 
 	@Override
