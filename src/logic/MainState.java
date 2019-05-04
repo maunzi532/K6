@@ -1,6 +1,7 @@
 package logic;
 
 import building.blueprint.*;
+import draw.*;
 import entity.*;
 import file.*;
 import geom.d1.*;
@@ -18,8 +19,9 @@ public class MainState
 	public final BlueprintCache<BuildingBlueprint> buildingBlueprintCache;
 	public final XStateControl stateControl;
 	public final CombatSystem combatSystem;
+	public final VisualSideInfo visualSideInfo;
 
-	public MainState(DoubleType y2)
+	public MainState(DoubleType y2, VisualSideInfo visualSideInfo1)
 	{
 		this.y2 = y2;
 		levelMap = new LevelMap(y2);
@@ -27,6 +29,7 @@ public class MainState
 		stateControl = new XStateControl(this);
 		//combatSystem = new System1();
 		combatSystem = new System2();
+		visualSideInfo = visualSideInfo1;
 	}
 
 	public void initialize()

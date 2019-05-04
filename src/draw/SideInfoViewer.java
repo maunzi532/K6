@@ -42,20 +42,40 @@ public class SideInfoViewer
 
 	private void draw(SideInfo sideInfo, int shift)
 	{
-		double xlen = graphics.xHW() * (flipped ? -1 : 1);
-		double xend = graphics.xHW() + (xlen * (-1 - (double) shift / SHIFT_TIME));
-		double ylen = -graphics.yHW();
-		double yend = graphics.yHW() * 2;
-		System.out.println("xlen = " + xlen);
-		System.out.println("xend = " + xend);
-		System.out.println("ylen = " + ylen);
-		System.out.println("yend = " + yend);
-		graphics.gd().setFill(Color.GRAY);
-		minusrect(xend, xend + xlen, yend, yend + ylen);
+		if(flipped)
+			drawR(sideInfo, shift);
+		else
+			drawL(sideInfo, shift);
 	}
 
-	private void minusrect(double x0, double x1, double y0, double y1)
+	private void drawL(SideInfo sideInfo, int shift)
 	{
-		graphics.gd().fillRect(Math.min(x0, x1), Math.min(y0, y1), Math.abs(x0 - x1), Math.abs(y0 - y1));
+		double xlen = graphics.xHW();
+		double xstart = graphics.xHW() * shift / -SHIFT_TIME;
+		double ylen = xlen / 2;
+		double ystart = graphics.yHW() * 2 - ylen;
+		graphics.gd().setFill(Color.GRAY);
+		graphics.gd().drawImage(sideInfo.getCharImage(), xstart + xlen * 0.1, ystart, xlen * 0.3, xlen * 0.3);
+		graphics.gd().fillRect(xstart, ystart + xlen * 0.3, xlen * 0.7, ylen - xlen * 0.3);
+		graphics.gd().setStroke(Color.BLACK);
+		for(int i = 0; i < sideInfo.getTexts().length; i++)
+		{
+			graphics.gd().strokeText(sideInfo.getTexts()[i], xstart + xlen * 0.1 + xlen * 0.1 * i, ystart + xlen * 0.4);
+		}
+	}
+
+	private void drawR(SideInfo sideInfo, int shift)
+	{
+		double xlen = graphics.xHW();
+		double xstart = graphics.xHW() + graphics.xHW() * shift / SHIFT_TIME;
+		double ylen = xlen / 2;
+		double ystart = graphics.yHW() * 2 - ylen;
+		graphics.gd().setFill(Color.GRAY);
+		graphics.gd().drawImage(sideInfo.getCharImage(), xstart + xlen * 0.6, ystart, xlen * 0.3, xlen * 0.3);
+		graphics.gd().fillRect(xstart + xlen * 0.3, ystart + xlen * 0.3, xlen * 0.7, ylen - xlen * 0.3);
+		for(int i = 0; i < sideInfo.getTexts().length; i++)
+		{
+			graphics.gd().strokeText(sideInfo.getTexts()[i], xstart + xlen * 0.4 + xlen * 0.1 * i, ystart + xlen * 0.4);
+		}
 	}
 }

@@ -3,6 +3,7 @@ package system2;
 import entity.*;
 import item.*;
 import java.util.*;
+import javafx.scene.image.*;
 
 public class Stats2 implements Stats
 {
@@ -212,5 +213,11 @@ public class Stats2 implements Stats
 			info.add("Ability\n" + ability.name);
 		}
 		return info;
+	}
+
+	@Override
+	public Image image()
+	{
+		return new Image("Blue2.png");
 	}
 }

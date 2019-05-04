@@ -23,7 +23,13 @@ public class PostAttackState extends AttackState
 	}
 
 	@Override
-	public void tick(MainState mainState){}
+	public void tick(MainState mainState)
+	{
+		if(finished())
+		{
+			mainState.visualSideInfo.clearSideInfo();
+		}
+	}
 
 	@Override
 	public boolean finished()

@@ -48,4 +48,6 @@ public abstract class AttackInfo<T extends Stats, I extends XMode>
 	public abstract int attackCount(boolean inverse);
 
 	public abstract String[] getInfos();
+
+	public abstract String[] getInfos(boolean inverse);
 }

@@ -30,7 +30,8 @@ public class MainVisual
 		else
 			mapCamera = new QuadCamera(graphics, 1, 1, 44, 44, 0, 0);
 		DoubleType y2 = mapCamera.getDoubleType();
-		mainState = new MainState(y2);
+		visualSideInfo = new VisualSideInfo(graphics, mapCamera);
+		mainState = new MainState(y2, visualSideInfo);
 		mainState.initialize();
 		mainState.stateControl.start();
 		graphics.gd().setImageSmoothing(false);
@@ -42,7 +43,6 @@ public class MainVisual
 			visualGUI = new VisualGUIHex(graphics, new HexCamera(graphics, 1, 1, graphics.yHW() / 8, graphics.yHW() / 8, 0, 0, HexMatrix.LP));
 		else
 			visualGUI = new VisualGUIQuad(graphics, new QuadCamera(graphics, 1, 1, graphics.yHW() / 8, graphics.yHW() / 8, 0, 0));
-		visualSideInfo = new VisualSideInfo(graphics);
 		levelEditor = new LevelEditor(graphics, mainState);
 		draw();
 	}
