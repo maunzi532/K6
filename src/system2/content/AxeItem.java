@@ -37,9 +37,4 @@ public class AxeItem extends AttackItem2
 		abilities.addAll(Arrays.asList(extraAbilities));
 		return new AxeItem(code, damage, heavy, slow, accuracy, crit, abilities);
 	}
-
-	public static AxeItem standard()
-	{
-		return create(300, 11, 9, 0, 60, 0);
-	}
 }

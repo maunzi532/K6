@@ -35,9 +35,4 @@ public class SpearItem extends AttackItem2
 		ArrayList<Ability2> abilities = new ArrayList<>(Arrays.asList(extraAbilities));
 		return new SpearItem(code, damage, heavy, slow, accuracy, crit, abilities);
 	}
-
-	public static SpearItem standard()
-	{
-		return create(200, 11, 10, 0, 90, 0);
-	}
 }

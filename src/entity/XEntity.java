@@ -85,15 +85,17 @@ public class XEntity
 	public int[] save(TileType y1)
 	{
 		List<Integer> ints = new ArrayList<>();
+		ints.add(classSave());
 		ints.add(y1.sx(location));
 		ints.add(y1.sy(location));
-		List<Integer> statsSave = stats.save();
-		ints.add(statsSave.size());
-		ints.addAll(statsSave);
-		List<Integer> save2 = save2();
-		ints.add(save2.size());
-		ints.addAll(save2);
+		ints.addAll(stats.save());
+		ints.addAll(save2());
 		return ints.stream().mapToInt(e -> e).toArray();
+	}
+
+	public int classSave()
+	{
+		return 0;
 	}
 
 	public List<Integer> save2()

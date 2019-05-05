@@ -2,8 +2,10 @@ package system2;
 
 import entity.*;
 import item.*;
+import java.nio.*;
 import java.util.*;
 import javafx.scene.image.*;
+import system2.content.*;
 
 public class Stats2 implements Stats
 {
@@ -200,11 +202,18 @@ public class Stats2 implements Stats
 		List<Integer> ints = new ArrayList<>();
 		ints.add(xClass.code);
 		ints.add(level);
-		char[] customNameChars = customName.toCharArray();
-		ints.add(customNameChars.length);
-		for(int i = 0; i < customNameChars.length; i++)
+		if(customName != null)
 		{
-			ints.add((int) customNameChars[i]);
+			char[] customNameChars = customName.toCharArray();
+			ints.add(customNameChars.length);
+			for(int i = 0; i < customNameChars.length; i++)
+			{
+				ints.add((int) customNameChars[i]);
+			}
+		}
+		else
+		{
+			ints.add(-1);
 		}
 		ints.add(strength);
 		ints.add(finesse);
@@ -220,15 +229,46 @@ public class Stats2 implements Stats
 		if(lastUsed != null)
 		{
 			ints.add(lastUsed.code);
-			List<Integer> lastUsedSave = lastUsed.item.save();
-			ints.add(lastUsedSave.size());
-			ints.addAll(lastUsedSave);
+			ints.addAll(lastUsed.item.save());
 		}
 		else
 		{
 			ints.add(-1);
 		}
 		return ints;
+	}
+
+	public Stats2(IntBuffer intBuffer, CombatSystem s1)
+	{
+		xClass = XClasses.INSTANCE.xClasses[intBuffer.get()];
+		slot = new AttackItem2Slot(xClass.usableItems);
+		level = intBuffer.get();
+		int cncl = intBuffer.get();
+		if(cncl >= 0)
+		{
+			char[] customNameChars = new char[cncl];
+			for(int i = 0; i < customNameChars.length; i++)
+			{
+				customNameChars[i] = (char) intBuffer.get();
+			}
+			customName = new String(customNameChars);
+		}
+		strength = intBuffer.get();
+		finesse = intBuffer.get();
+		skill = intBuffer.get();
+		speed = intBuffer.get();
+		luck = intBuffer.get();
+		defense = intBuffer.get();
+		magicDef = intBuffer.get();
+		toughness = intBuffer.get();
+		movement = intBuffer.get();
+		currentHealth = intBuffer.get();
+		exhaustion = intBuffer.get();
+		int clu = intBuffer.get();
+		if(clu >= 0)
+		{
+			lastUsed = ((AttackItem2) s1.loadItem(intBuffer)).attackModes().stream().filter(e -> e.code == clu).findFirst().orElseThrow();
+		}
 	}
 
 	@Override

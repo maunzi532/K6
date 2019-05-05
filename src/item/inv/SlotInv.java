@@ -115,15 +115,11 @@ public class SlotInv implements Inv
 		for(InvSlot invSlot : slots)
 		{
 			ints.add(invSlot.getLimit());
-			List<Integer> typeSave = invSlot.getType().save();
-			ints.add(typeSave.size());
-			ints.addAll(typeSave);
+			ints.addAll(invSlot.getType().save());
 			if(invSlot.stackExists())
 			{
 				ints.add(invSlot.getCurrentC());
-				List<Integer> itemSave = invSlot.getStackItemC().save();
-				ints.add(itemSave.size());
-				ints.addAll(itemSave);
+				ints.addAll(invSlot.getStackItemC().save());
 			}
 			else
 			{

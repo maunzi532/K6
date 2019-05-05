@@ -18,6 +18,12 @@ public class InvEntity extends XEntity implements DoubleInv
 		addItems(itemList);
 	}
 
+	public InvEntity(Tile location, MainState mainState, Stats stats, Inv inv)
+	{
+		super(location, mainState, stats);
+		this.inv = inv;
+	}
+
 	@Override
 	public Inv inputInv()
 	{

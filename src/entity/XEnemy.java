@@ -2,6 +2,7 @@ package entity;
 
 import geom.f1.*;
 import item.*;
+import item.inv.*;
 import java.util.*;
 import logic.*;
 
@@ -15,6 +16,11 @@ public class XEnemy extends InvEntity
 	public XEnemy(Tile location, MainState mainState, Stats stats, int weightLimit, ItemList itemList)
 	{
 		super(location, mainState, stats, weightLimit, itemList);
+	}
+
+	public XEnemy(Tile location, MainState mainState, Stats stats, Inv inv)
+	{
+		super(location, mainState, stats, inv);
 	}
 
 	@Override
@@ -76,5 +82,11 @@ public class XEnemy extends InvEntity
 		{
 			return new EnemyMove(this, -1, null, null);
 		}
+	}
+
+	@Override
+	public int classSave()
+	{
+		return 2;
 	}
 }

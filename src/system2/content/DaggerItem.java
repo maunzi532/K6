@@ -37,9 +37,4 @@ public class DaggerItem extends AttackItem2
 		abilities.addAll(Arrays.asList(extraAbilities));
 		return new DaggerItem(code, damage, heavy, slow, accuracy, crit, abilities);
 	}
-
-	public static DaggerItem standard()
-	{
-		return create(100, 6, 6, 0, 80, 10);
-	}
 }

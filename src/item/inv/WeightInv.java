@@ -1,7 +1,9 @@
 package item.inv;
 
+import entity.*;
 import item.*;
 import item.view.*;
+import java.nio.*;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -144,10 +146,21 @@ public class WeightInv implements Inv
 		for(InvStack invStack : stacks)
 		{
 			ints.add(invStack.getCountC());
-			List<Integer> itemSave = invStack.item.save();
-			ints.add(itemSave.size());
-			ints.addAll(itemSave);
+			ints.addAll(invStack.item.save());
 		}
 		return ints;
+	}
+
+	public WeightInv(IntBuffer intBuffer, CombatSystem s1)
+	{
+		currentW = intBuffer.get();
+		limitW = intBuffer.get();
+		stacks = new ArrayList<>();
+		int stackCount = intBuffer.get();
+		for(int i = 0; i < stackCount; i++)
+		{
+			int itemCount = intBuffer.get();
+			stacks.add(new InvStack(new ItemStack(s1.loadItem(intBuffer), itemCount)));
+		}
 	}
 }

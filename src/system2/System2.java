@@ -2,9 +2,14 @@ package system2;
 
 import entity.*;
 import geom.f1.*;
+import item.*;
+import item.inv.*;
+import item.items.*;
+import java.nio.*;
 import java.util.*;
 import java.util.stream.*;
 import logic.*;
+import system2.content.*;
 
 public class System2 implements CombatSystem<Stats2, AttackInfo2, AttackItem2>
 {
@@ -73,8 +78,35 @@ public class System2 implements CombatSystem<Stats2, AttackInfo2, AttackItem2>
 	}
 
 	@Override
-	public void postAttack(AttackInfo2 attackInfo)
-	{
+	public void postAttack(AttackInfo2 attackInfo){}
 
+	@Override
+	public XEntity loadEntity(TileType y1, MainState mainState, IntBuffer intBuffer)
+	{
+		int classCode = intBuffer.get();
+		Tile location = y1.create2(intBuffer.get(), intBuffer.get());
+		Stats2 stats = new Stats2(intBuffer, this);
+		if(classCode > 0)
+		{
+			Inv inv = new WeightInv(intBuffer, this);
+			if(classCode == 1)
+				return new XHero(location, mainState, stats, inv);
+			else
+				return new XEnemy(location, mainState, stats, inv);
+		}
+		return new XEntity(location, mainState, stats);
+	}
+
+	@Override
+	public Item loadItem(IntBuffer intBuffer)
+	{
+		if(intBuffer.get() == 0)
+		{
+			return Items.values()[intBuffer.get()];
+		}
+		else
+		{
+			return AttackItems2.INSTANCE.items[intBuffer.get()];
+		}
 	}
 }

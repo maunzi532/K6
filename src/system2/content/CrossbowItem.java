@@ -35,9 +35,4 @@ public class CrossbowItem extends AttackItem2
 		ArrayList<Ability2> abilities = new ArrayList<>(Arrays.asList(extraAbilities));
 		return new CrossbowItem(code, damage, heavy, slow, accuracy, crit, abilities);
 	}
-
-	public static CrossbowItem standard()
-	{
-		return create(500, 8, 12, 0, 80, 0);
-	}
 }

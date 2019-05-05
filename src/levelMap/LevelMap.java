@@ -5,6 +5,7 @@ import entity.*;
 import geom.f1.*;
 import java.nio.*;
 import java.util.*;
+import java.util.stream.*;
 
 public class LevelMap
 {
@@ -196,22 +197,31 @@ public class LevelMap
 
 	public byte[] saveData()
 	{
-		ByteBuffer sb = ByteBuffer.allocate(advTiles.size() * 4 + 4);
-		sb.put((byte) 0xA4);
-		sb.put((byte) 0xD2);
-		sb.put((byte) 0x83);
-		sb.put((byte) 0x9F);
-		advTiles.forEach((t1, adv) ->
+		List<XEntity> entities = new ArrayList<>();
+		ByteBuffer sb = ByteBuffer.allocate(advTiles.size() * 4 + 12);
+		sb.putInt(0xA4D2839F);
+		sb.putInt(advTiles.size());
+		for(Map.Entry<Tile, AdvTile> entry : advTiles.entrySet())
 		{
+			Tile t1 = entry.getKey();
+			AdvTile adv = entry.getValue();
 			if(adv.getFloorTile() != null)
 			{
 				sb.put((byte) y1.sx(t1));
 				sb.put((byte) y1.sy(t1));
 				sb.put((byte) adv.getFloorTile().sector);
 				sb.put((byte) adv.getFloorTile().type.ordinal());
+				if(adv.getEntity() != null)
+					entities.add(adv.getEntity());
 			}
-		});
-		return sb.array();
+		}
+		sb.putInt(entities.size());
+		List<int[]> v = entities.stream().map(e -> e.save(y1)).collect(Collectors.toList());
+		ByteBuffer sb2 = ByteBuffer.allocate(sb.capacity() + v.stream().mapToInt(e -> e.length).sum() * 4);
+		sb2.put(sb.array());
+		IntBuffer sb3 = sb2.asIntBuffer();
+		v.forEach(sb3::put);
+		return sb2.array();
 	}
 
 	public void createTile(byte x, byte y, byte s, byte t)

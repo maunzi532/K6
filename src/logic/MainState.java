@@ -35,23 +35,23 @@ public class MainState
 	public void initialize()
 	{
 		if(new File("W").exists())
-			new SavedImport().importIntoMap(levelMap);
+		{
+			new SavedImport().importIntoMap(this);
+		}
 		else
+		{
 			new TestImportSector(y2, 8).generate().importIntoMap(levelMap);
-		/*ItemList a1 = new ItemList(AttackItem1.item1());
-		levelMap.addEntity(new XHero(y2.create2(-2, 1), this, Stats1.create2(), CL, a1));
-		XHero h1 = new XHero(y2.create2(-2, -1), this, Stats1.create1(), CL, a1);
-		h1.addItems(new ItemList(Items.BLUE, Items.GSL, Items.MATERIAL, Items.TECHNOLOGY));
-		h1.addItems(new ItemList(Items.BLUE, Items.GSL, Items.MATERIAL, Items.TECHNOLOGY));
-		levelMap.addEntity(h1);
-		levelMap.addEntity(new XEnemy(y2.create2(2, 1), this, Stats1.create1(), CL, a1));
-		levelMap.addEntity(new XEnemy(y2.create2(2, 0), this, Stats1.create2(), CL, a1));
-		levelMap.addEntity(new XEnemy(y2.create2(2, -1), this, Stats1.create1(), CL, a1));*/
-		new Entity2Builder(this).setLocation(y2.create2(-2, 1)).addItem(DaggerItem.standard()).setStats(new Stats2(XClass.mageClass(), 0)).create(true);
-		new Entity2Builder(this).setLocation(y2.create2(-2, -1)).addItem(AxeItem.standard()).setStats(new Stats2(XClass.banditClass(), 0)).create(true);
-		new Entity2Builder(this).setLocation(y2.create2(2, 1)).addItem(SpearItem.standard()).setStats(new Stats2(XClass.soldierClass(), 0)).create(false);
-		new Entity2Builder(this).setLocation(y2.create2(2, 0)).addItem(CrossbowItem.standard()).setStats(new Stats2(XClass.pirateClass(), 0)).create(false);
-		new Entity2Builder(this).setLocation(y2.create2(2, -1)).addItem(SpellItem.standard()).setStats(new Stats2(XClass.hexerClass(), 0)).create(false);
+			new Entity2Builder(this).setLocation(y2.create2(-2, 1)).setStats(new Stats2(XClasses.mageClass(), 0))
+					.addItem(AttackItems2.standardDagger()).create(true);
+			new Entity2Builder(this).setLocation(y2.create2(-2, -1)).setStats(new Stats2(XClasses.banditClass(), 0))
+					.addItem(AttackItems2.standardAxe()).create(true);
+			new Entity2Builder(this).setLocation(y2.create2(2, 1)).setStats(new Stats2(XClasses.soldierClass(), 0))
+					.addItem(AttackItems2.standardSpear()).create(false);
+			new Entity2Builder(this).setLocation(y2.create2(2, 0)).setStats(new Stats2(XClasses.pirateClass(), 0))
+					.addItem(AttackItems2.standardCrossbow()).create(false);
+			new Entity2Builder(this).setLocation(y2.create2(2, -1)).setStats(new Stats2(XClasses.hexerClass(), 0))
+					.addItem(AttackItems2.standardSpell()).create(false);
+		}
 		/*levelMap.addArrow(new ShineArrow(List.of(y2.create2(2, 0), y2.create2(4, 1)), 120, true, null, true));
 		levelMap.addArrow(new ShineArrow(List.of(y2.create2(-2, 0), y2.create2(4, -4)), 120, true, null, true));
 		levelMap.addArrow(new ShineArrow(List.of(y2.create2(-3, 0)), 120, true, null, true));*/

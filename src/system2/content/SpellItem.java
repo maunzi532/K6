@@ -41,9 +41,4 @@ public class SpellItem extends AttackItem2
 		ArrayList<Ability2> abilities = new ArrayList<>(Arrays.asList(extraAbilities));
 		return new SpellItem(code, damage, heavy, slow, accuracy, crit, abilities);
 	}
-
-	public static SpellItem standard()
-	{
-		return create(400, 9, 14, 2, 80, 0);
-	}
 }

@@ -23,6 +23,11 @@ public class XHero extends InvEntity
 		super(location, mainState, stats, weightLimit, itemList);
 	}
 
+	public XHero(Tile location, MainState mainState, Stats stats, Inv inv)
+	{
+		super(location, mainState, stats, inv);
+	}
+
 	@Override
 	public Image getImage()
 	{
@@ -101,5 +106,11 @@ public class XHero extends InvEntity
 	public void mainActionTaken()
 	{
 		mainAction = false;
+	}
+
+	@Override
+	public int classSave()
+	{
+		return 1;
 	}
 }

@@ -2,6 +2,7 @@ package entity;
 
 import geom.f1.*;
 import item.*;
+import java.nio.*;
 import java.util.*;
 import java.util.stream.*;
 import logic.*;
@@ -30,4 +31,8 @@ public interface CombatSystem<T extends Stats, A extends AttackInfo, I extends I
 	void preAttack(A attackInfo);
 
 	void postAttack(A attackInfo);
+
+	XEntity loadEntity(TileType y1, MainState mainState, IntBuffer intBuffer);
+
+	Item loadItem(IntBuffer intBuffer);
 }
