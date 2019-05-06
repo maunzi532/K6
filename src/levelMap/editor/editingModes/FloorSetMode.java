@@ -26,7 +26,14 @@ public class FloorSetMode implements EditingMode
 	@Override
 	public boolean onMapClick(MainState mainState, Tile tile, int mouseKey)
 	{
-		mainState.levelMap.setFloorTile(tile, new FloorTile(0, tileType));
+		if(mouseKey == 1)
+		{
+			mainState.levelMap.clearTile(tile);
+		}
+		if(mouseKey == 3)
+		{
+			mainState.levelMap.setFloorTile(tile, new FloorTile(0, tileType));
+		}
 		return false;
 	}
 }

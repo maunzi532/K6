@@ -112,15 +112,18 @@ public class MainVisual
 
 	public void mousePosition(double xMouse, double yMouse)
 	{
-		double xp = xMouse / graphics.xHW() - 1;
-		double yp = yMouse / graphics.yHW() - 1;
-		if(xp > BORDER)
-			mapCamera.setXShift(mapCamera.getXShift() + xp - BORDER);
-		else if(xp < -BORDER)
-			mapCamera.setXShift(mapCamera.getXShift() + xp + BORDER);
-		if(yp > BORDER)
-			mapCamera.setYShift(mapCamera.getYShift() + yp - BORDER);
-		else if(yp < -BORDER)
-			mapCamera.setYShift(mapCamera.getYShift() + yp + BORDER);
+		if(mainState.stateControl.getState() instanceof NoneState || mainState.stateControl.getState().editMode())
+		{
+			double xp = xMouse / graphics.xHW() - 1;
+			double yp = yMouse / graphics.yHW() - 1;
+			if(xp > BORDER)
+				mapCamera.setXShift(mapCamera.getXShift() + xp - BORDER);
+			else if(xp < -BORDER)
+				mapCamera.setXShift(mapCamera.getXShift() + xp + BORDER);
+			if(yp > BORDER)
+				mapCamera.setYShift(mapCamera.getYShift() + yp - BORDER);
+			else if(yp < -BORDER)
+				mapCamera.setYShift(mapCamera.getYShift() + yp + BORDER);
+		}
 	}
 }

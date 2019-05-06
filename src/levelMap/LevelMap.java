@@ -63,6 +63,19 @@ public class LevelMap
 		}
 	}
 
+	public void clearTile(Tile t1)
+	{
+		if(advTiles.containsKey(t1))
+		{
+			XEntity entity = advTiles.get(t1).getEntity();
+			if(entity instanceof XHero)
+				entitiesH.remove(entity);
+			if(entity instanceof XEnemy)
+				entitiesE.remove(entity);
+			advTiles.remove(t1);
+		}
+	}
+
 	public FloorTile getFloor(Tile t1)
 	{
 		return advTile(t1).getFloorTile();
