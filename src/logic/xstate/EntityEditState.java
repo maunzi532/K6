@@ -17,7 +17,10 @@ public class EntityEditState implements NGUIState
 	@Override
 	public XGUI gui(MainState mainState)
 	{
-		return new Inv1GUI(((InvEntity) entity).outputInv(), entity.name(), null);
+		if(entity instanceof InvEntity)
+			return new EntityEditGUI((InvEntity) entity);
+		else
+			return NoGUI.NONE;
 	}
 
 	@Override

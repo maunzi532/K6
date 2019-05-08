@@ -27,4 +27,10 @@ public interface Stats
 	Image image();
 
 	List<Integer> save();
+
+	List<String> infoEdit();
+
+	List<String> editOptions(int num);
+
+	void applyEditOption(int num, int option);
 }

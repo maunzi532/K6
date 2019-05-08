@@ -3,6 +3,7 @@ package logic.xstate;
 import building.*;
 import gui.*;
 import gui.guis.*;
+import java.util.*;
 import levelMap.*;
 import logic.*;
 
@@ -18,7 +19,7 @@ public class BuildingEditState implements NGUIState
 	@Override
 	public XGUI gui(MainState mainState)
 	{
-		return new Inv1GUI(((ProductionBuilding) building).getOutputInv(), ((ProductionBuilding) building).name(), null);
+		return new Inv1GUI(((ProductionBuilding) building).getOutputInv(), ((ProductionBuilding) building).name(), List.of());
 	}
 
 	@Override

@@ -4,6 +4,7 @@ import entity.*;
 import item.*;
 import java.nio.*;
 import java.util.*;
+import java.util.stream.*;
 import javafx.scene.image.*;
 import system2.content.*;
 
@@ -296,5 +297,53 @@ public class Stats2 implements Stats
 			info.add("Ability\n" + ability.name);
 		}
 		return info;
+	}
+
+	@Override
+	public List<String> infoEdit()
+	{
+		List<String> info = new ArrayList<>();
+		info.add("Class\n" + xClass.className);
+		info.add("Level\n" + level);
+		info.add("Strength\n" + strength);
+		info.add("Finesse\n" + finesse);
+		info.add("Skill\n" + skill);
+		info.add("Speed\n" + speed);
+		info.add("Luck\n" + luck);
+		info.add("Defense\n" + defense);
+		info.add("MagicDef\n" + magicDef);
+		info.add("Toughness\n" + toughness);
+		info.add("Health\n" + currentHealth);
+		info.add("Exhaustion\n" + exhaustion);
+		info.add("Move\n" + movement);
+		info.add("Defend\n" + (lastUsed != null ? lastUsed.item.info().get(0).replace("Type\n", "") : "None"));
+		info.add("ItemTypes\n" + slot.getItemTypes().stream().map(e -> e.getSimpleName().replace("Item", ""))
+				.collect(Collectors.joining("\n")));
+		return info;
+	}
+
+	@Override
+	public List<String> editOptions(int num)
+	{
+		if(num == 0)
+			return List.of("Prev", "Next");
+		if(num == 1)
+			return List.of("+", "-", "Reset\nstats");
+		if(num <= 12)
+			return List.of("+", "-", "Reset");
+		return List.of();
+	}
+
+	@Override
+	public void applyEditOption(int num, int option)
+	{
+		switch((num << 4) + option)
+		{
+			case 0x0 -> {}
+			case 0x1 -> {}
+			case 0x10 -> level++;
+			case 0x11 -> level--;
+			case 0x12 -> {}
+		}
 	}
 }

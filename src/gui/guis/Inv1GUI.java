@@ -79,7 +79,7 @@ public class Inv1GUI extends XGUI implements InvGUI
 	@Override
 	public void target(int x, int y)
 	{
-		if(!invView.target(x, y, itemsView.size(), this))
+		if(!invView.target(x, y, itemsView.size(), this) || getTargeted() == CTile.NONE)
 		{
 			setTargeted(CTile.NONE);
 			if(viewing != null)

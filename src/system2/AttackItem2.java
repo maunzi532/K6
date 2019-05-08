@@ -121,13 +121,42 @@ public abstract class AttackItem2 implements Item
 		info.add(slow > 0 ? "Slow\n" + slow : "");
 		info.add("Acc%\n" + accuracy);
 		info.add("Crit%\n" + crit);
-		info.add("Range\n" + Arrays.toString(ranges));
-		info.add("Counter\n" + Arrays.toString(counterR));
+		info.add("Range\n" + displayRange(ranges));
+		info.add("Counter\n" + displayRange(counterR));
 		info.add("");
 		for(Ability2 ability : abilities)
 		{
 			info.add("Ability\n" + ability.name);
 		}
 		return info;
+	}
+
+	private static String displayRange(int[] ranges)
+	{
+		if(ranges.length == 0)
+			return "-";
+		List<String> collected = new ArrayList<>();
+		int start = ranges[0];
+		int current = start;
+		for(int i = 1; i < ranges.length; i++)
+		{
+			if(ranges[i] == current + 1)
+			{
+				current++;
+			}
+			else
+			{
+				if(start == current)
+					collected.add(String.valueOf(start));
+				else
+					collected.add(start + "-" + current);
+				start = ranges[i];
+			}
+		}
+		if(start == current)
+			collected.add(String.valueOf(start));
+		else
+			collected.add(start + "-" + current);
+		return String.join(", ", collected);
 	}
 }
