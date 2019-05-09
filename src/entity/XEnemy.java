@@ -24,6 +24,14 @@ public class XEnemy extends InvEntity
 	}
 
 	@Override
+	public XEntity copy(Tile copyLocation)
+	{
+		XEnemy copy = new XEnemy(copyLocation, mainState, stats, inv.copy());
+		copy.stats.autoEquip(copy);
+		return copy;
+	}
+
+	@Override
 	public boolean isEnemy(XEntity other)
 	{
 		return other instanceof XHero;

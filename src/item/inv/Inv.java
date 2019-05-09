@@ -16,6 +16,8 @@ public interface Inv extends Inv0
 
 	InvNumView viewInvWeight();
 
+	Inv copy();
+
 	default void useCommitType(CommitType type)
 	{
 		if(type == CommitType.COMMIT)

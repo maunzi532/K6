@@ -82,6 +82,11 @@ public class XEntity
 		return stats;
 	}
 
+	public XEntity copy(Tile copyLocation)
+	{
+		return new XEntity(copyLocation, mainState, stats.copy());
+	}
+
 	public int[] save(TileType y1)
 	{
 		List<Integer> ints = new ArrayList<>();

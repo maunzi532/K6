@@ -18,6 +18,12 @@ public class InvStack implements Inv0
 		increase = items.count;
 	}
 
+	public InvStack(InvStack copy)
+	{
+		item = copy.item;
+		current = copy.current;
+	}
+
 	public int getCountC()
 	{
 		return current;

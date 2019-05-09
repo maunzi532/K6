@@ -42,6 +42,14 @@ public class InvEntity extends XEntity implements DoubleInv
 	}
 
 	@Override
+	public XEntity copy(Tile copyLocation)
+	{
+		InvEntity copy = new InvEntity(copyLocation, mainState, stats, inv.copy());
+		copy.stats.autoEquip(copy);
+		return copy;
+	}
+
+	@Override
 	public List<Integer> save2()
 	{
 		return inv.save();

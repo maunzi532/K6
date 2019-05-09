@@ -171,6 +171,11 @@ public class LevelMap
 		return visibleSectors.get(sector);
 	}
 
+	public List<Tile> noEntityTiles()
+	{
+		return advTiles.entrySet().stream().filter(e -> e.getValue().getEntity() == null).map(Map.Entry::getKey).collect(Collectors.toList());
+	}
+
 	public ArrayList<XHero> getEntitiesH()
 	{
 		return entitiesH;

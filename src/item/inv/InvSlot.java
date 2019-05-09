@@ -16,6 +16,15 @@ public class InvSlot implements Inv0
 		limit = limits.count;
 	}
 
+	public InvSlot(InvSlot copy)
+	{
+		stackExists = copy.stackExists;
+		if(stackExists)
+			stack = new InvStack(copy.stack);
+		type = copy.type;
+		limit = copy.limit;
+	}
+
 	public Item getType()
 	{
 		return type;

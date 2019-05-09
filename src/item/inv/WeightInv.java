@@ -57,6 +57,18 @@ public class WeightInv implements Inv
 	}
 
 	@Override
+	public Inv copy()
+	{
+		WeightInv copy = new WeightInv(limitW);
+		for(InvStack stack : stacks)
+		{
+			copy.stacks.add(new InvStack(stack));
+		}
+		copy.currentW = currentW;
+		return copy;
+	}
+
+	@Override
 	public boolean ok()
 	{
 		return currentW + increaseW <= limitW && stacks.stream().allMatch(InvStack::ok);

@@ -12,7 +12,7 @@ public interface NMarkState extends NState
 		if(markType != MarkType.NOT)
 			onClickMarked(mapTile, markType, key, levelMap, stateControl);
 		else
-			stateControl.setState(NoneState.INSTANCE);
+			stateControl.setState(editMode() ? EditingState.INSTANCE : NoneState.INSTANCE);
 	}
 
 	void onClickMarked(Tile mapTile, MarkType markType, int key, LevelMap levelMap, XStateControl stateControl);

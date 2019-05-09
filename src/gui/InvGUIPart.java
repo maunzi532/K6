@@ -46,11 +46,11 @@ public class InvGUIPart
 		{
 			invGUI.setTile(scrollDown);
 		}
-		for(int iy = scroll + (canScrollUp ? 1 : 0); iy < scroll + yc - (canScrollDown ? 1 : 0) && iy * xc < size; iy++)
+		for(int iy = (canScrollUp ? 1 : 0); iy < yc - (canScrollDown ? 1 : 0) && (iy + scroll) * xc < size; iy++)
 		{
 			for(int ix = 0; ix < xc && iy * xc + ix < size; ix++)
 			{
-				invGUI.itemView(invID, xl + ix * xs, yl + (iy - scroll) * ys, iy * xc + ix);
+				invGUI.itemView(invID, xl + ix * xs, yl + iy * ys, (iy + scroll) * xc + ix);
 			}
 		}
 	}
@@ -68,7 +68,7 @@ public class InvGUIPart
 		int yr2 = Math.floorDiv(yr, ys);
 		int yi = Math.floorMod(yr, ys);
 		boolean canScrollUp = scroll > 0;
-		boolean canScrollDown = scroll + yc < size;
+		boolean canScrollDown = (scroll + yc) * xc < size;
 		if(canScrollUp && yr2 == 0)
 		{
 			invGUI.setTargeted(scrollUp);
@@ -100,7 +100,7 @@ public class InvGUIPart
 		int yr2 = Math.floorDiv(yr, ys);
 		int yi = Math.floorMod(yr, ys);
 		boolean canScrollUp = scroll > 0;
-		boolean canScrollDown = scroll + yc < size;
+		boolean canScrollDown = (scroll + yc) * xc < size;
 		if(canScrollUp && yr2 == 0)
 		{
 			scroll -= 1;

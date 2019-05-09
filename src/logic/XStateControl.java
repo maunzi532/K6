@@ -181,7 +181,11 @@ public class XStateControl
 		}
 		else
 		{
-			if(levelEditor.onMapClick(mapTile, mouseKey))
+			if(state instanceof NMarkState)
+			{
+				handleMapClick(mapTile, mouseKey);
+			}
+			else if(levelEditor.onMapClick(mapTile, mouseKey))
 				update();
 		}
 	}

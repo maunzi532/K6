@@ -16,15 +16,19 @@ public interface Stats
 
 	void regenerating();
 
+	void autoEquip(InvEntity entity);
+
 	Item getItemFilter();
 
 	boolean removeEntity();
 
 	String getName();
 
-	List<String> info();
-
 	Image image();
+
+	Stats copy();
+
+	List<String> info();
 
 	List<Integer> save();
 

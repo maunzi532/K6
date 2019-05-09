@@ -63,13 +63,22 @@ public class LevelEditor
 	public boolean onEditorClick(int num, int mouseKey)
 	{
 		if(mouseKey == 1 && num == currentSlot)
+		{
 			editorSlots.get(currentSlot).onClick(mainState, mouseKey);
+		}
 		if(currentSlot != num)
+		{
 			editorSlots.get(num).onEnter(mainState);
+		}
 		currentSlot = num;
 		if(mouseKey == 3)
 		{
 			mainState.stateControl.setState(editingModeState);
+			return true;
+		}
+		if(!(mainState.stateControl.getState() instanceof EditingState))
+		{
+			mainState.stateControl.setState(EditingState.INSTANCE);
 			return true;
 		}
 		return false;

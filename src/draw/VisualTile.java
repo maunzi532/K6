@@ -5,7 +5,6 @@ import geom.*;
 import geom.d1.*;
 import geom.f1.*;
 import javafx.scene.canvas.*;
-import javafx.scene.effect.*;
 import javafx.scene.paint.*;
 import javafx.scene.text.*;
 import levelMap.*;
@@ -65,15 +64,15 @@ public class VisualTile
 		{
 			gd.setFill(Color.BLACK);
 		}
+		gd.fillPolygon(points[0], points[1], y1.directionCount());
 		if(levelMap.getMarked().containsKey(t1))
 		{
 			mark(levelMap.getMarked().get(t1));
-			gd.fillPolygon(points[0], points[1], y1.directionCount());
-			gd.setEffect(null);
-		}
-		else
-		{
-			gd.fillPolygon(points[0], points[1], y1.directionCount());
+			gd.strokePolygon(points[0], points[1], y1.directionCount());
+			/*for(int i = 0; i < y1.directionCount() / 2; i++)
+			{
+				gd.strokeLine(points[0][i], points[1][i], points[0][(i + 3) % y1.directionCount()], points[1][(i + 3) % y1.directionCount()]);
+			}*/
 		}
 		if(advTile.visible(levelMap))
 		{
@@ -90,9 +89,9 @@ public class VisualTile
 	{
 		switch(markType)
 		{
-			case TARGET, OFF -> gd.setEffect(new Lighting(new Light.Distant(180, 90, Color.WHITE)));
-			case ON -> gd.setEffect(new Bloom());
-			case BLOCKED -> gd.setEffect(new SepiaTone());
+			case TARGET, OFF -> gd.setStroke(Color.YELLOW);
+			case ON -> gd.setStroke(Color.RED);
+			case BLOCKED -> gd.setStroke(Color.BLACK);
 		}
 	}
 

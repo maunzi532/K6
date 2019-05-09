@@ -27,6 +27,11 @@ public class XMenu
 		return new XMenu(new TransportTargetsState(transporter), new ProductionPhaseState());
 	}
 
+	public static XMenu entityEditMenu(XEntity entity)
+	{
+		return new XMenu(new EntityEditState(entity), new EditMoveState(entity), new EditCopyState(entity), new EditDeleteState(entity));
+	}
+
 	private List<NState> entries;
 
 	public XMenu(NState... allEntries)

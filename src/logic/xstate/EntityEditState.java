@@ -26,13 +26,13 @@ public class EntityEditState implements NGUIState
 	@Override
 	public String text()
 	{
-		return "Error";
+		return "Edit";
 	}
 
 	@Override
 	public XMenu menu()
 	{
-		return XMenu.NOMENU;
+		return XMenu.entityEditMenu(entity);
 	}
 
 	@Override

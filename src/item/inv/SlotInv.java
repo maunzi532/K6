@@ -14,6 +14,11 @@ public class SlotInv implements Inv
 		slots = limits.items.stream().map(InvSlot::new).collect(Collectors.toList());
 	}
 
+	private SlotInv(List<InvSlot> limits)
+	{
+		slots = limits.stream().map(InvSlot::new).collect(Collectors.toList());
+	}
+
 	@Override
 	public List<Item> providedItemTypesX()
 	{
@@ -51,6 +56,12 @@ public class SlotInv implements Inv
 	{
 		return new InvNumView(slots.stream().mapToInt(e -> e.getStackItemC().weight() * e.getCurrentC()).sum(),
 				slots.stream().mapToInt(e -> e.getStackItemC().weight() * e.getCurrentX()).sum());
+	}
+
+	@Override
+	public Inv copy()
+	{
+		return new SlotInv(slots);
 	}
 
 	@Override

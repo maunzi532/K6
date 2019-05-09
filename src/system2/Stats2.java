@@ -148,6 +148,7 @@ public class Stats2 implements Stats
 		this.lastUsed = lastUsed;
 	}
 
+	@Override
 	public void autoEquip(InvEntity entity)
 	{
 		setLastUsed(((AttackItem2) entity.outputInv().viewRecipeItem(getItemFilter()).item).attackModes()
@@ -206,6 +207,15 @@ public class Stats2 implements Stats
 	public Image image()
 	{
 		return new Image("TA_3.png");
+	}
+
+	@Override
+	public Stats copy()
+	{
+		Stats2 copy = new Stats2(xClass, level, customName, strength, finesse, skill, speed, luck, defense, magicDef, toughness, movement);
+		copy.currentHealth = currentHealth;
+		copy.exhaustion = exhaustion;
+		return copy;
 	}
 
 	@Override

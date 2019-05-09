@@ -29,6 +29,14 @@ public class XHero extends InvEntity
 	}
 
 	@Override
+	public XEntity copy(Tile copyLocation)
+	{
+		XHero copy = new XHero(copyLocation, mainState, stats, inv.copy());
+		copy.stats.autoEquip(copy);
+		return copy;
+	}
+
+	@Override
 	public Image getImage()
 	{
 		return IMAGE_S;

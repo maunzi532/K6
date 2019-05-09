@@ -7,7 +7,7 @@ import logic.*;
 
 public class XTimer extends AnimationTimer
 {
-	//private long last;
+	private long last;
 	private MainVisual mainVisual;
 	private boolean clicked;
 	private double xClicked, yClicked;
@@ -51,8 +51,9 @@ public class XTimer extends AnimationTimer
 	@Override
 	public void handle(long currentNanoTime)
 	{
-		//System.out.println(/*1000000000d / */(currentNanoTime - last) / 1000000);
-		//last = currentNanoTime;
+		//System.out.println((currentNanoTime - last) / 1000000);
+		//System.out.println(1000000000d / (currentNanoTime - last));
+		last = currentNanoTime;
 		if(inside)
 		{
 			mainVisual.mousePosition(xMoved, yMoved);
