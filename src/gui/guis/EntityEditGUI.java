@@ -145,7 +145,7 @@ public class EntityEditGUI extends XGUI implements InvGUI
 		}
 		if(invID == 2)
 		{
-			entity.getStats().applyEditOption(changeStatNum, num);
+			entity.getStats().applyEditOption(changeStatNum, num, entity);
 			update();
 		}
 	}

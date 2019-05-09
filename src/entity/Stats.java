@@ -32,5 +32,5 @@ public interface Stats
 
 	List<String> editOptions(int num);
 
-	void applyEditOption(int num, int option);
+	void applyEditOption(int num, int option, XEntity entity);
 }

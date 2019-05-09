@@ -49,11 +49,6 @@ public class Entity2Builder
 		return this;
 	}
 
-	private void autoEquip(InvEntity entity, Stats2 stats)
-	{
-		stats.setLastUsed(((AttackItem2) entity.outputInv().viewRecipeItem(stats.getItemFilter()).item).attackModes().get(0));
-	}
-
 	public void create(boolean player)
 	{
 		InvEntity entity;
@@ -65,7 +60,7 @@ public class Entity2Builder
 		{
 			entity = new XEnemy(location, mainState, stats, weightLimit, itemList);
 		}
-		autoEquip(entity, stats);
+		stats.autoEquip(entity);
 		if(mainState.levelMap.getFloor(location) == null)
 			mainState.levelMap.setFloorTile(location, new FloorTile(0, FloorTileType.TECH));
 		mainState.levelMap.addEntity(entity);
