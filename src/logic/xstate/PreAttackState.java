@@ -19,8 +19,8 @@ public class PreAttackState extends AttackState
 	@Override
 	public void onEnter(MainState mainState)
 	{
-		mainState.combatSystem.preAttack(aI);
 		mainState.visualSideInfo.attackInfo(aI);
+		mainState.combatSystem.preAttack(aI);
 	}
 
 	@Override

@@ -1,15 +1,35 @@
 package draw;
 
+import entity.*;
+import java.util.*;
 import javafx.scene.image.*;
 
 public class SideInfo
 {
+	private XEntity character;
+	private int type;
 	private Image charImage;
+	private int barCurrent;
+	private int barMax;
 	private String[] texts;
 
-	public SideInfo(Image charImage, String... texts)
+	public SideInfo(XEntity character, int type, Image charImage, String... texts)
 	{
+		this.character = character;
+		this.type = type;
 		this.charImage = charImage;
+		barCurrent = -1;
+		barMax = -1;
+		this.texts = texts;
+	}
+
+	public SideInfo(XEntity character, int type, Image charImage, int barCurrent, int barMax, String... texts)
+	{
+		this.character = character;
+		this.type = type;
+		this.charImage = charImage;
+		this.barCurrent = barCurrent;
+		this.barMax = barMax;
 		this.texts = texts;
 	}
 
@@ -31,5 +51,21 @@ public class SideInfo
 	public void setTexts(String[] texts)
 	{
 		this.texts = texts;
+	}
+
+	@Override
+	public boolean equals(Object o)
+	{
+		if(this == o) return true;
+		if(!(o instanceof SideInfo)) return false;
+		SideInfo sideInfo = (SideInfo) o;
+		return type == sideInfo.type &&
+				Objects.equals(character, sideInfo.character);
+	}
+
+	@Override
+	public int hashCode()
+	{
+		return Objects.hash(character, type);
 	}
 }

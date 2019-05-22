@@ -6,6 +6,8 @@ import system2.*;
 
 public class DaggerItem extends AttackItem2
 {
+	private static final Image IMAGE = new Image("DaggerItem.png");
+
 	private DaggerItem(int code, int damage, int heavy, int slow, int accuracy, int crit, List<Ability2> abilities)
 	{
 		this(code, damage, heavy, slow, accuracy, crit, abilities, new int[]{1}, new int[]{1, 2});
@@ -27,7 +29,7 @@ public class DaggerItem extends AttackItem2
 	@Override
 	public Image image()
 	{
-		return new Image("DaggerItem.png");
+		return IMAGE;
 	}
 
 	public static DaggerItem create(int code, int damage, int heavy, int slow, int accuracy, int crit, Ability2... extraAbilities)

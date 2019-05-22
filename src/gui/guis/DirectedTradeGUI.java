@@ -160,10 +160,10 @@ public class DirectedTradeGUI extends XGUI implements InvGUI
 	}
 
 	@Override
-	public void close(XStateControl stateControl)
+	public void close(XStateControl stateControl, boolean setState)
 	{
 		provide.outputInv().rollback();
 		receive.inputInv().rollback();
-		super.close(stateControl);
+		super.close(stateControl, setState);
 	}
 }

@@ -1,5 +1,6 @@
 package gui.guis;
 
+import draw.*;
 import entity.*;
 import gui.*;
 import java.util.*;
@@ -11,18 +12,22 @@ public class AttackInfoGUI extends XGUI implements InvGUI
 	private final CTile nameA;
 	private final CTile nameT;
 
+	private final VisualSideInfo visualSideInfo;
 	private final XHero attacker;
 	private final List<AttackInfo> infoList;
 	private final InvGUIPart attacksView;
+	private int lastTargeted;
 	private AttackInfo chosen;
 
-	public AttackInfoGUI(XHero attacker, XEntity target)
+	public AttackInfoGUI(VisualSideInfo visualSideInfo, XHero attacker, XEntity target)
 	{
+		this.visualSideInfo = visualSideInfo;
 		this.attacker = attacker;
 		nameA = new CTile(0, 0, new GuiTile(attacker.name()), 2, 1);
 		nameT = new CTile(4, 0, new GuiTile(target.name()), 2, 1);
 		infoList = attacker.attackInfo(target);
 		attacksView = new InvGUIPart(0, 0, 1, 1, 3, 6, 2);
+		lastTargeted = -1;
 		update();
 	}
 
@@ -79,12 +84,33 @@ public class AttackInfoGUI extends XGUI implements InvGUI
 		if(attacksView.target(x, y, infoList.size(), this))
 			return;
 		setTargeted(CTile.NONE);
+		if(lastTargeted >= 0)
+		{
+			visualSideInfo.clearSideInfo();
+			lastTargeted = -1;
+		}
 	}
 
 	@Override
 	public void onTarget(int invID, int num, int xi, int yi, CTile cTile)
 	{
 		setTargeted(cTile);
+		if(lastTargeted != num)
+		{
+			visualSideInfo.attackInfo(infoList.get(num));
+			lastTargeted = num;
+		}
+	}
+
+	@Override
+	public void onMissedTarget(int invID)
+	{
+		setTargeted(CTile.NONE);
+		if(lastTargeted >= 0)
+		{
+			visualSideInfo.clearSideInfo();
+			lastTargeted = -1;
+		}
 	}
 
 	@Override

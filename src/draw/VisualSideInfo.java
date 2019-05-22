@@ -17,12 +17,20 @@ public class VisualSideInfo
 		this.tileCamera = tileCamera;
 	}
 
-	public void setSideInfo(SideInfo sideInfo, boolean r)
+	public void setSideInfo(SideInfo sideInfoL, SideInfo sideInfoR)
 	{
-		if(r)
-			r0.setSideInfo(sideInfo);
-		else
-			l0.setSideInfo(sideInfo);
+		l0.setSideInfo(sideInfoL);
+		r0.setSideInfo(sideInfoR);
+	}
+
+	public void setSideInfoL(SideInfo sideInfoL)
+	{
+		l0.setSideInfo(sideInfoL);
+	}
+
+	public void setSideInfoR(SideInfo sideInfoR)
+	{
+		r0.setSideInfo(sideInfoR);
 	}
 
 	public void clearSideInfo()
@@ -46,8 +54,8 @@ public class VisualSideInfo
 	public void attackInfo(AttackInfo aI)
 	{
 		boolean inverted = inverted(aI.entity.location(), aI.entityT.location());
-		l0.setSideInfo(new SideInfo(aI.getStats(inverted).image(), aI.getInfos(inverted)));
-		r0.setSideInfo(new SideInfo(aI.getStats(!inverted).image(), aI.getInfos(!inverted)));
+		l0.setSideInfo(new SideInfo(aI.getEntity(inverted), 0, aI.getStats(inverted).image(), aI.getInfos(inverted)));
+		r0.setSideInfo(new SideInfo(aI.getEntity(!inverted), 0, aI.getStats(!inverted).image(), aI.getInfos(!inverted)));
 	}
 
 	private boolean inverted(Tile loc0, Tile loc1)

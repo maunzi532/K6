@@ -1,7 +1,9 @@
 package draw;
 
 import geom.*;
+import java.util.*;
 import javafx.scene.paint.*;
+import javafx.scene.text.*;
 
 public class SideInfoViewer
 {
@@ -21,9 +23,12 @@ public class SideInfoViewer
 
 	public void setSideInfo(SideInfo sideInfo)
 	{
+		if(Objects.equals(current, sideInfo))
+			counter = 0;
+		else
+			counter = SHIFT_TIME;
 		last = current;
 		current = sideInfo;
-		counter = SHIFT_TIME;
 	}
 
 	public void tick()
@@ -57,10 +62,11 @@ public class SideInfoViewer
 		graphics.gd().setFill(Color.GRAY);
 		graphics.gd().drawImage(sideInfo.getCharImage(), xstart + xlen * 0.1, ystart, xlen * 0.3, xlen * 0.3);
 		graphics.gd().fillRect(xstart, ystart + xlen * 0.3, xlen * 0.7, ylen - xlen * 0.3);
-		graphics.gd().setStroke(Color.BLACK);
+		graphics.gd().setFill(Color.BLACK);
+		graphics.gd().setFont(new Font(xlen * 0.03));
 		for(int i = 0; i < sideInfo.getTexts().length; i++)
 		{
-			graphics.gd().strokeText(sideInfo.getTexts()[i], xstart + xlen * 0.1 + xlen * 0.1 * i, ystart + xlen * 0.4);
+			graphics.gd().fillText(sideInfo.getTexts()[i], xstart + xlen * 0.1 + xlen * 0.1 * i, ystart + xlen * 0.4);
 		}
 	}
 
@@ -71,11 +77,14 @@ public class SideInfoViewer
 		double ylen = xlen / 2;
 		double ystart = graphics.yHW() * 2 - ylen;
 		graphics.gd().setFill(Color.GRAY);
-		graphics.gd().drawImage(sideInfo.getCharImage(), xstart + xlen * 0.6, ystart, xlen * 0.3, xlen * 0.3);
+		graphics.gd().drawImage(sideInfo.getCharImage(), sideInfo.getCharImage().getWidth(), 0, -sideInfo.getCharImage().getWidth(), sideInfo.getCharImage().getHeight(),
+				xstart + xlen * 0.6, ystart, xlen * 0.3, xlen * 0.3);
 		graphics.gd().fillRect(xstart + xlen * 0.3, ystart + xlen * 0.3, xlen * 0.7, ylen - xlen * 0.3);
+		graphics.gd().setFill(Color.BLACK);
+		graphics.gd().setFont(new Font(xlen * 0.03));
 		for(int i = 0; i < sideInfo.getTexts().length; i++)
 		{
-			graphics.gd().strokeText(sideInfo.getTexts()[i], xstart + xlen * 0.4 + xlen * 0.1 * i, ystart + xlen * 0.4);
+			graphics.gd().fillText(sideInfo.getTexts()[i], xstart + xlen * 0.4 + xlen * 0.1 * i, ystart + xlen * 0.4);
 		}
 	}
 }

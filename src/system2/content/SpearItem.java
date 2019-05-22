@@ -6,6 +6,8 @@ import system2.*;
 
 public class SpearItem extends AttackItem2
 {
+	private static final Image IMAGE = new Image("SpearItem.png");
+
 	private SpearItem(int code, int damage, int heavy, int slow, int accuracy, int crit, List<Ability2> abilities)
 	{
 		this(code, damage, heavy, slow, accuracy, crit, abilities, new int[]{1, 2}, new int[]{1, 2});
@@ -27,7 +29,7 @@ public class SpearItem extends AttackItem2
 	@Override
 	public Image image()
 	{
-		return new Image("SpearItem.png");
+		return IMAGE;
 	}
 
 	public static SpearItem create(int code, int damage, int heavy, int slow, int accuracy, int crit, Ability2... extraAbilities)

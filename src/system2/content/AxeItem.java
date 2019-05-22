@@ -6,6 +6,8 @@ import system2.*;
 
 public class AxeItem extends AttackItem2
 {
+	private static final Image IMAGE = new Image("AxeItem.png");
+
 	private AxeItem(int code, int damage, int heavy, int slow, int accuracy, int crit, List<Ability2> abilities)
 	{
 		this(code, damage, heavy, slow, accuracy, crit, abilities, new int[]{1}, new int[]{1, 2});
@@ -27,7 +29,7 @@ public class AxeItem extends AttackItem2
 	@Override
 	public Image image()
 	{
-		return new Image("AxeItem.png");
+		return IMAGE;
 	}
 
 	public static AxeItem create(int code, int damage, int heavy, int slow, int accuracy, int crit, Ability2... extraAbilities)

@@ -96,9 +96,9 @@ public class RemoveGUI extends XGUI implements InvGUI
 	}
 
 	@Override
-	public void close(XStateControl stateControl)
+	public void close(XStateControl stateControl, boolean setState)
 	{
 		character.inputInv().rollback();
-		super.close(stateControl);
+		super.close(stateControl, setState);
 	}
 }

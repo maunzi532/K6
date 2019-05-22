@@ -36,5 +36,5 @@ public class NoGUI extends XGUI
 	}
 
 	@Override
-	public void close(XStateControl stateControl){}
+	public void close(XStateControl stateControl, boolean setState){}
 }

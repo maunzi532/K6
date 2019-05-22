@@ -86,13 +86,14 @@ public abstract class XGUI
 
 	public boolean clickOutside(int key, XStateControl stateControl)
 	{
-		close(stateControl);
+		close(stateControl, true);
 		return true;
 	}
 
-	public void close(XStateControl stateControl)
+	public void close(XStateControl stateControl, boolean setState)
 	{
-		stateControl.setState(NoneState.INSTANCE);
+		if(setState)
+			stateControl.setState(NoneState.INSTANCE);
 	}
 
 	public static String except1(int num)

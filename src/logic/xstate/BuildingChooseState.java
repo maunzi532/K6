@@ -33,6 +33,12 @@ public class BuildingChooseState implements NGUIState
 	}
 
 	@Override
+	public void onEnter(MainState mainState)
+	{
+		mainState.visualSideInfo.setSideInfo(builder.standardSideInfo(), null);
+	}
+
+	@Override
 	public XGUI gui(MainState mainState)
 	{
 		return new BuildingsGUI(builder, mainState.buildingBlueprintCache);

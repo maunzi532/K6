@@ -3,15 +3,28 @@ package levelMap.importX;
 import java.io.*;
 import java.nio.*;
 import java.nio.file.*;
+import javafx.stage.*;
 import logic.*;
 
 public class SavedImport
 {
+	private File file;
+
+	public SavedImport()
+	{
+		file = new FileChooser().showOpenDialog(null);
+	}
+
+	public boolean hasFile()
+	{
+		return file != null && file.exists();
+	}
+
 	public void importIntoMap(MainState mainState)
 	{
 		try
 		{
-			byte[] bytes = Files.readAllBytes(new File("W").toPath());
+			byte[] bytes = Files.readAllBytes(file.toPath());
 			ByteBuffer sb = ByteBuffer.wrap(bytes);
 			if(sb.getInt() != 0xA4D2839F)
 				throw new RuntimeException("Wrong file");

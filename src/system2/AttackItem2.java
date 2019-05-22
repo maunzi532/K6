@@ -6,6 +6,8 @@ import javafx.scene.image.*;
 
 public abstract class AttackItem2 implements Item
 {
+	private static final Image IMAGE = new Image("BLUE.png");
+
 	private final int code;
 	private final int damage;
 	private final int heavy;
@@ -45,7 +47,7 @@ public abstract class AttackItem2 implements Item
 	@Override
 	public Image image()
 	{
-		return new Image("BLUE.png");
+		return IMAGE;
 	}
 
 	@Override

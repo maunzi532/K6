@@ -13,7 +13,10 @@ public interface NState
 		return true;
 	}
 
-	default void onEnter(MainState mainState){}
+	default void onEnter(MainState mainState)
+	{
+		mainState.visualSideInfo.clearSideInfo();
+	}
 
 	default boolean editMode()
 	{

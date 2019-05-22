@@ -7,9 +7,9 @@ import logic.*;
 
 public class CharacterInvState implements NGUIState
 {
-	private XHero character;
+	private InvEntity character;
 
-	public CharacterInvState(XHero character)
+	public CharacterInvState(InvEntity character)
 	{
 		this.character = character;
 	}
@@ -23,7 +23,16 @@ public class CharacterInvState implements NGUIState
 	@Override
 	public XMenu menu()
 	{
-		return XMenu.characterMenu(character);
+		if(character instanceof XHero)
+			return XMenu.characterMenu((XHero) character);
+		else
+			return XMenu.enemyMenu(character);
+	}
+
+	@Override
+	public void onEnter(MainState mainState)
+	{
+		mainState.visualSideInfo.setSideInfo(character.standardSideInfo(), null);
 	}
 
 	@Override

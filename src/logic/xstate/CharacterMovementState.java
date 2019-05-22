@@ -46,6 +46,12 @@ public class CharacterMovementState implements NMarkState
 	}
 
 	@Override
+	public void onEnter(MainState mainState)
+	{
+		mainState.visualSideInfo.setSideInfo(character.standardSideInfo(), null);
+	}
+
+	@Override
 	public boolean keepInMenu(MainState mainState)
 	{
 		return character.isReady() && character.canMove();

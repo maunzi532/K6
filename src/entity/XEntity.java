@@ -1,6 +1,7 @@
 package entity;
 
 import arrow.*;
+import draw.*;
 import geom.f1.*;
 import java.util.*;
 import javafx.scene.image.*;
@@ -80,6 +81,11 @@ public class XEntity
 	public Stats getStats()
 	{
 		return stats;
+	}
+
+	public SideInfo standardSideInfo()
+	{
+		return new SideInfo(this, 1, stats.image(), stats.info().toArray(String[]::new));
 	}
 
 	public XEntity copy(Tile copyLocation)

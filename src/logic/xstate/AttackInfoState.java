@@ -31,6 +31,6 @@ public class AttackInfoState implements NGUIState
 	@Override
 	public XGUI gui(MainState mainState)
 	{
-		return new AttackInfoGUI(attacker, target);
+		return new AttackInfoGUI(mainState.visualSideInfo, attacker, target);
 	}
 }

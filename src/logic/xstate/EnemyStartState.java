@@ -10,6 +10,7 @@ public class EnemyStartState implements NAutoState
 	@Override
 	public void onEnter(MainState mainState)
 	{
+		mainState.visualSideInfo.clearSideInfo();
 		for(XEnemy xEnemy : mainState.levelMap.getEntitiesE())
 		{
 			xEnemy.startTurn();

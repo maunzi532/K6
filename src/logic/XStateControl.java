@@ -78,7 +78,7 @@ public class XStateControl
 		NState newState = menu.get(menuOption);
 		if(newState != state)
 		{
-			xgui.close(this);
+			xgui.close(this, false);
 			setState(newState);
 			update();
 		}
@@ -146,6 +146,10 @@ public class XStateControl
 		if(entity instanceof XHero)
 		{
 			setState(((XHero) entity).defaultState(true));
+		}
+		else if(entity instanceof XEnemy)
+		{
+			setState(new CharacterInvState((InvEntity) entity));
 		}
 		else
 		{

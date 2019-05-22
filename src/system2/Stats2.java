@@ -10,6 +10,10 @@ import system2.content.*;
 
 public class Stats2 implements Stats
 {
+	private static final Image IMAGE_TEMP = new Image("TA_3.png");
+	private static final Image IMAGE_TEAM = new Image("AN_3.png");
+	private static final Image IMAGE_ENEMY = new Image("Enemy_0.png");
+
 	private XClass xClass;
 	private int level;
 	private String customName;
@@ -27,7 +31,9 @@ public class Stats2 implements Stats
 	private AttackMode2 lastUsed;
 	private AttackItem2Slot slot;
 
-	public Stats2(XClass xClass, int level, String customName, int strength, int finesse, int skill, int speed, int luck, int defense, int magicDef, int toughness,
+	public Stats2(XClass xClass, int level, String customName,
+			int strength, int finesse, int skill, int speed,
+			int luck, int defense, int magicDef, int toughness,
 			int movement)
 	{
 		this.xClass = xClass;
@@ -206,7 +212,11 @@ public class Stats2 implements Stats
 	@Override
 	public Image image()
 	{
-		return new Image("TA_3.png");
+		if(customName != null)
+			return IMAGE_TEAM;
+		else
+			return IMAGE_ENEMY;
+		//return IMAGE_TEMP;
 	}
 
 	@Override

@@ -16,5 +16,10 @@ public interface InvGUI
 
 	void onTarget(int invID, int num, int xi, int yi, CTile cTile);
 
+	default void onMissedTarget(int invID)
+	{
+		setTargeted(CTile.NONE);
+	}
+
 	default void onClickItem(int invID, int num, int xi, int yi){}
 }

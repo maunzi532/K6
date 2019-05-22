@@ -84,7 +84,7 @@ public class EditingModeGUI extends XGUI implements InvGUI
 	}
 
 	@Override
-	public void close(XStateControl stateControl)
+	public void close(XStateControl stateControl, boolean setState)
 	{
 		stateControl.setState(EditingState.INSTANCE);
 	}

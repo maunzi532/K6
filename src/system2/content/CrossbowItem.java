@@ -6,6 +6,8 @@ import system2.*;
 
 public class CrossbowItem extends AttackItem2
 {
+	private static final Image IMAGE = new Image("CrossbowItem.png");
+
 	private CrossbowItem(int code, int damage, int heavy, int slow, int accuracy, int crit, List<Ability2> abilities)
 	{
 		this(code, damage, heavy, slow, accuracy, crit, abilities, new int[]{3, 4, 5, 6}, new int[]{3, 4, 5, 6});
@@ -27,7 +29,7 @@ public class CrossbowItem extends AttackItem2
 	@Override
 	public Image image()
 	{
-		return new Image("CrossbowItem.png");
+		return IMAGE;
 	}
 
 	public static CrossbowItem create(int code, int damage, int heavy, int slow, int accuracy, int crit, Ability2... extraAbilities)

@@ -4,6 +4,7 @@ import geom.f1.*;
 import gui.*;
 import java.io.*;
 import java.nio.file.*;
+import javafx.stage.*;
 import levelMap.editor.*;
 import logic.*;
 
@@ -30,7 +31,7 @@ public class SaveMode implements EditingMode
 	{
 		try
 		{
-			Files.write(new File("W").toPath(), mainState.levelMap.saveData());
+			Files.write(new FileChooser().showSaveDialog(null).toPath(), mainState.levelMap.saveData());
 			state = 1;
 		}catch(IOException e)
 		{

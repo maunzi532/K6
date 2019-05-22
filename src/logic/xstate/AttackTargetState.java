@@ -49,4 +49,10 @@ public class AttackTargetState implements NMarkState
 				.flatMap(Collection::stream).map(levelMap::getEntity).filter(e -> character.isEnemy(e)).collect(
 				Collectors.toMap(XEntity::location, e -> MarkType.TARGET));
 	}
+
+	@Override
+	public void onEnter(MainState mainState)
+	{
+		mainState.visualSideInfo.setSideInfo(character.standardSideInfo(), null);
+	}
 }

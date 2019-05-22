@@ -34,6 +34,12 @@ public class RemoveBuildingState implements NGUIState
 	}
 
 	@Override
+	public void onEnter(MainState mainState)
+	{
+		mainState.visualSideInfo.setSideInfo(builder.standardSideInfo(), null);
+	}
+
+	@Override
 	public XGUI gui(MainState mainState)
 	{
 		return new RemoveGUI(builder, (Buildable) mainState.levelMap.getBuilding(builder.location()));
