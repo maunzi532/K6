@@ -18,7 +18,6 @@ public class EntityEditGUI extends XGUI implements InvGUI
 	private final InvGUIPart invView;
 	private final InvGUIPart infoView;
 	private final InvGUIPart changeView;
-	private final String name;
 	private List<String> info;
 	private ItemView viewing;
 	private boolean targetChanged;
@@ -31,7 +30,6 @@ public class EntityEditGUI extends XGUI implements InvGUI
 		weightView = entity.inputInv().viewInvWeight();
 		items = entity.inputInv().viewItems(true);
 		invView = new InvGUIPart(0, 0, 1, 1, 5, 2, 1);
-		name = entity.name();
 		info = entity.getStats().infoEdit();
 		infoView = new InvGUIPart(1, 3, 1, 3, 5, 1, 1);
 		changeStatNum = -1;
@@ -62,7 +60,7 @@ public class EntityEditGUI extends XGUI implements InvGUI
 		invView.addToGUI(items.size(), this);
 		infoView.addToGUI(info.size(), this);
 		changeView.addToGUI(changeOptions.size(), this);
-		setTile(textInv, new GuiTile(name));
+		setTile(textInv, new GuiTile(entity.name()));
 		setTile(weight, new GuiTile(weightView.currentWithLimit()));
 	}
 

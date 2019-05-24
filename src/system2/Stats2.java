@@ -2,9 +2,12 @@ package system2;
 
 import entity.*;
 import item.*;
+import java.io.*;
 import java.nio.*;
 import java.util.*;
 import java.util.stream.*;
+import javafx.scene.control.*;
+import javafx.stage.*;
 import system2.content.*;
 
 public class Stats2 implements Stats
@@ -357,6 +360,7 @@ public class Stats2 implements Stats
 	public List<String> infoEdit()
 	{
 		List<String> info = new ArrayList<>();
+		info.add(customName != null ? "Name\n" + customName : "Generic\nName");
 		info.add("Class\n" + xClass.className);
 		info.add("Level\n" + level);
 		info.add("Strength\n" + strength);
@@ -380,12 +384,14 @@ public class Stats2 implements Stats
 	public List<String> editOptions(int num)
 	{
 		if(num == 0)
-			return List.of("Prev", "Next");
+			return List.of("Name", "Image");
 		if(num == 1)
+			return List.of("Prev", "Next");
+		if(num == 2)
 			return List.of("+", "-", "Reset\nstats");
-		if(num <= 12)
+		if(num <= 13)
 			return List.of("+", "-", "Reset");
-		if(num == 13)
+		if(num == 14)
 			return List.of("Auto");
 		return List.of();
 	}
@@ -395,53 +401,70 @@ public class Stats2 implements Stats
 	{
 		switch((num << 4) + option)
 		{
-			case 0x0 ->
+			case 0x00 ->
+			{
+				TextInputDialog td = new TextInputDialog(customName != null ? customName : "");
+				td.setTitle("Edit name");
+				td.setGraphic(null);
+				td.setHeaderText(null);
+				td.show();
+				td.setOnHidden(e -> customName = td.getResult());
+			}
+			case 0x01 ->
+			{
+				File f = new FileChooser().showOpenDialog(null);
+				if(f != null)
+					customImage = f.getName();
+				else
+					customImage = null;
+			}
+			case 0x10 ->
 			{
 				xClass = XClasses.INSTANCE.xClasses[xClass.code - 1];
 				slot = new AttackItem2Slot(xClass.usableItems);
 			}
-			case 0x1 ->
+			case 0x11 ->
 			{
 				xClass = XClasses.INSTANCE.xClasses[xClass.code + 1];
 				slot = new AttackItem2Slot(xClass.usableItems);
 			}
-			case 0x10 -> level++;
-			case 0x11 -> level--;
-			case 0x12 -> autoStats();
-			case 0x20 -> strength++;
-			case 0x21 -> strength--;
-			case 0x22 -> strength = xClass.getStat(0, level);
-			case 0x30 -> finesse++;
-			case 0x31 -> finesse--;
-			case 0x32 -> finesse = xClass.getStat(1, level);
-			case 0x40 -> skill++;
-			case 0x41 -> skill--;
-			case 0x42 -> skill = xClass.getStat(2, level);
-			case 0x50 -> speed++;
-			case 0x51 -> speed--;
-			case 0x52 -> speed = xClass.getStat(3, level);
-			case 0x60 -> luck++;
-			case 0x61 -> luck--;
-			case 0x62 -> luck = xClass.getStat(4, level);
-			case 0x70 -> defense++;
-			case 0x71 -> defense--;
-			case 0x72 -> defense = xClass.getStat(5, level);
-			case 0x80 -> magicDef++;
-			case 0x81 -> magicDef--;
-			case 0x82 -> magicDef = xClass.getStat(6, level);
-			case 0x90 -> toughness++;
-			case 0x91 -> toughness--;
-			case 0x92 -> toughness = xClass.getStat(7, level);
-			case 0xa0 -> currentHealth++;
-			case 0xa1 -> currentHealth--;
-			case 0xa2 -> currentHealth = toughness;
-			case 0xb0 -> exhaustion++;
-			case 0xb1 -> exhaustion--;
-			case 0xb2 -> exhaustion = 0;
-			case 0xc0 -> movement++;
-			case 0xc1 -> movement--;
-			case 0xc2 -> movement = xClass.movement;
-			case 0xd0 -> autoEquip((InvEntity) entity);
+			case 0x20 -> level++;
+			case 0x21 -> level--;
+			case 0x22 -> autoStats();
+			case 0x30 -> strength++;
+			case 0x31 -> strength--;
+			case 0x32 -> strength = xClass.getStat(0, level);
+			case 0x40 -> finesse++;
+			case 0x41 -> finesse--;
+			case 0x42 -> finesse = xClass.getStat(1, level);
+			case 0x50 -> skill++;
+			case 0x51 -> skill--;
+			case 0x52 -> skill = xClass.getStat(2, level);
+			case 0x60 -> speed++;
+			case 0x61 -> speed--;
+			case 0x62 -> speed = xClass.getStat(3, level);
+			case 0x70 -> luck++;
+			case 0x71 -> luck--;
+			case 0x72 -> luck = xClass.getStat(4, level);
+			case 0x80 -> defense++;
+			case 0x81 -> defense--;
+			case 0x82 -> defense = xClass.getStat(5, level);
+			case 0x90 -> magicDef++;
+			case 0x91 -> magicDef--;
+			case 0x92 -> magicDef = xClass.getStat(6, level);
+			case 0xa0 -> toughness++;
+			case 0xa1 -> toughness--;
+			case 0xa2 -> toughness = xClass.getStat(7, level);
+			case 0xb0 -> currentHealth++;
+			case 0xb1 -> currentHealth--;
+			case 0xb2 -> currentHealth = toughness;
+			case 0xc0 -> exhaustion++;
+			case 0xc1 -> exhaustion--;
+			case 0xc2 -> exhaustion = 0;
+			case 0xd0 -> movement++;
+			case 0xd1 -> movement--;
+			case 0xd2 -> movement = xClass.movement;
+			case 0xe0 -> autoEquip((InvEntity) entity);
 		}
 	}
 }
