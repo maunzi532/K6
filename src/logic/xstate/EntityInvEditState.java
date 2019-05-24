@@ -5,12 +5,12 @@ import gui.*;
 import gui.guis.*;
 import logic.*;
 
-public class EntityEditState implements NGUIState
+public class EntityInvEditState implements NGUIState
 {
 	private XEntity entity;
 	private MainState mainState;
 
-	public EntityEditState(XEntity entity, MainState mainState)
+	public EntityInvEditState(XEntity entity, MainState mainState)
 	{
 		this.entity = entity;
 		this.mainState = mainState;
@@ -20,7 +20,7 @@ public class EntityEditState implements NGUIState
 	public XGUI gui(MainState mainState)
 	{
 		if(entity instanceof InvEntity)
-			return new EntityEditGUI((InvEntity) entity);
+			return new EntityInvEditGUI((InvEntity) entity, mainState.combatSystem.allItems());
 		else
 			return NoGUI.NONE;
 	}
@@ -28,7 +28,7 @@ public class EntityEditState implements NGUIState
 	@Override
 	public String text()
 	{
-		return "Edit";
+		return "Edit Inv.";
 	}
 
 	@Override

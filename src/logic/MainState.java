@@ -51,8 +51,8 @@ public class MainState
 					.addItem(AttackItems2.standardCrossbow()).create(false);*/
 			new Entity2Builder(this).setLocation(y2.create2(2, -1)).setStats(new Stats2(XClasses.hexerClass(), 0))
 					.addItem(AttackItems2.standardSpell()).create(false);
-			Chapter1.createCharacters(this, y2.create2(-2, 1), y2.create2(-2, -1), y2.create2(-4, 1),
-					y2.create2(-3, 1), y2.create2(-3, -1), y2.create2(-5, 1));
+			Chapter1.createCharacters(this, y2.create2(-2, 1), y2.create2(-2, -1), y2.create2(-4, 1)/*,
+					y2.create2(-3, 1), y2.create2(-3, -1), y2.create2(-5, 1)*/);
 		}
 		/*levelMap.addArrow(new ShineArrow(List.of(y2.create2(2, 0), y2.create2(4, 1)), 120, true, null, true));
 		levelMap.addArrow(new ShineArrow(List.of(y2.create2(-2, 0), y2.create2(4, -4)), 120, true, null, true));

@@ -5,18 +5,18 @@ import item.*;
 import java.nio.*;
 import java.util.*;
 import java.util.stream.*;
-import javafx.scene.image.*;
 import system2.content.*;
 
 public class Stats2 implements Stats
 {
-	private static final Image IMAGE_TEMP = new Image("TA_3.png");
+	/*private static final Image IMAGE_TEMP = new Image("TA_3.png");
 	private static final Image IMAGE_TEAM = new Image("AN_3.png");
-	private static final Image IMAGE_ENEMY = new Image("Enemy_0.png");
+	private static final Image IMAGE_ENEMY = new Image("Enemy_0.png");*/
 
 	private XClass xClass;
 	private int level;
 	private String customName;
+	private String customImage;
 	private int strength;
 	private int finesse;
 	private int skill;
@@ -32,13 +32,14 @@ public class Stats2 implements Stats
 	private AttackItem2Slot slot;
 
 	public Stats2(XClass xClass, int level, String customName,
-			int strength, int finesse, int skill, int speed,
+			String customImage, int strength, int finesse, int skill, int speed,
 			int luck, int defense, int magicDef, int toughness,
 			int movement)
 	{
 		this.xClass = xClass;
 		this.level = level;
 		this.customName = customName;
+		this.customImage = customImage;
 		this.strength = strength;
 		this.finesse = finesse;
 		this.skill = skill;
@@ -210,19 +211,18 @@ public class Stats2 implements Stats
 	}
 
 	@Override
-	public Image image()
+	public String imagePath()
 	{
-		if(customName != null)
-			return IMAGE_TEAM;
+		if(customImage != null)
+			return customImage;
 		else
-			return IMAGE_ENEMY;
-		//return IMAGE_TEMP;
+			return "Enemy_0.png";
 	}
 
 	@Override
 	public Stats copy()
 	{
-		Stats2 copy = new Stats2(xClass, level, customName, strength, finesse, skill, speed, luck, defense, magicDef, toughness, movement);
+		Stats2 copy = new Stats2(xClass, level, customName, customImage, strength, finesse, skill, speed, luck, defense, magicDef, toughness, movement);
 		copy.currentHealth = currentHealth;
 		copy.exhaustion = exhaustion;
 		return copy;
@@ -241,6 +241,19 @@ public class Stats2 implements Stats
 			for(int i = 0; i < customNameChars.length; i++)
 			{
 				ints.add((int) customNameChars[i]);
+			}
+		}
+		else
+		{
+			ints.add(-1);
+		}
+		if(customImage != null)
+		{
+			char[] customImageChars = customImage.toCharArray();
+			ints.add(customImageChars.length);
+			for(int i = 0; i < customImageChars.length; i++)
+			{
+				ints.add((int) customImageChars[i]);
 			}
 		}
 		else
@@ -284,6 +297,16 @@ public class Stats2 implements Stats
 				customNameChars[i] = (char) intBuffer.get();
 			}
 			customName = new String(customNameChars);
+		}
+		int cicl = intBuffer.get();
+		if(cicl >= 0)
+		{
+			char[] customImageChars = new char[cicl];
+			for(int i = 0; i < customImageChars.length; i++)
+			{
+				customImageChars[i] = (char) intBuffer.get();
+			}
+			customImage = new String(customImageChars);
 		}
 		strength = intBuffer.get();
 		finesse = intBuffer.get();

@@ -172,7 +172,7 @@ public class WeightInv implements Inv
 		for(int i = 0; i < stackCount; i++)
 		{
 			int itemCount = intBuffer.get();
-			stacks.add(new InvStack(new ItemStack(s1.loadItem(intBuffer), itemCount)));
+			stacks.add(new InvStack(s1.loadItem(intBuffer), itemCount));
 		}
 	}
 }

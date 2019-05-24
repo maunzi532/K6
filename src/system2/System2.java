@@ -81,6 +81,12 @@ public class System2 implements CombatSystem<Stats2, AttackInfo2, AttackItem2>
 	public void postAttack(AttackInfo2 attackInfo){}
 
 	@Override
+	public List<Item> allItems()
+	{
+		return AttackItems2.INSTANCE.itemList;
+	}
+
+	@Override
 	public XEntity loadEntity(TileType y1, MainState mainState, IntBuffer intBuffer)
 	{
 		int classCode = intBuffer.get();

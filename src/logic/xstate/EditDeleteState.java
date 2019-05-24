@@ -6,10 +6,12 @@ import logic.*;
 public class EditDeleteState implements NAutoState
 {
 	private XEntity entity;
+	private MainState mainState;
 
-	public EditDeleteState(XEntity entity)
+	public EditDeleteState(XEntity entity, MainState mainState)
 	{
 		this.entity = entity;
+		this.mainState = mainState;
 	}
 
 	@Override
@@ -43,7 +45,7 @@ public class EditDeleteState implements NAutoState
 	@Override
 	public XMenu menu()
 	{
-		return XMenu.entityEditMenu(entity);
+		return XMenu.entityEditMenu(entity, mainState);
 	}
 
 	@Override

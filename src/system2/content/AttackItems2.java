@@ -1,5 +1,8 @@
 package system2.content;
 
+import item.*;
+import java.util.*;
+import java.util.stream.*;
 import system2.*;
 
 public class AttackItems2
@@ -7,6 +10,7 @@ public class AttackItems2
 	public static final AttackItems2 INSTANCE = new AttackItems2();
 
 	public final AttackItem2[] items;
+	public final List<Item> itemList;
 
 	public AttackItems2()
 	{
@@ -16,6 +20,7 @@ public class AttackItems2
 		items[300] = AxeItem.create(300, 11, 9, 0, 60, 0);
 		items[400] = SpellItem.create(400, 9, 14, 2, 80, 0);
 		items[500] = CrossbowItem.create(500, 8, 12, 0, 80, 0);
+		itemList = Arrays.stream(items).filter(Objects::nonNull).collect(Collectors.toList());
 	}
 
 	public static AttackItem2 standardDagger()

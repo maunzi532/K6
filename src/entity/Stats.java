@@ -2,7 +2,6 @@ package entity;
 
 import item.*;
 import java.util.*;
-import javafx.scene.image.*;
 
 public interface Stats
 {
@@ -24,7 +23,7 @@ public interface Stats
 
 	String getName();
 
-	Image image();
+	String imagePath();
 
 	Stats copy();
 

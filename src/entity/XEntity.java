@@ -2,6 +2,7 @@ package entity;
 
 import arrow.*;
 import draw.*;
+import file.*;
 import geom.f1.*;
 import java.util.*;
 import javafx.scene.image.*;
@@ -85,7 +86,7 @@ public class XEntity
 
 	public SideInfo standardSideInfo()
 	{
-		return new SideInfo(this, 1, stats.image(), stats.info().toArray(String[]::new));
+		return new SideInfo(this, 1, ImageLoader.getImage(stats.imagePath()), stats.info().toArray(String[]::new));
 	}
 
 	public XEntity copy(Tile copyLocation)

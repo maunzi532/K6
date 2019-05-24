@@ -10,10 +10,12 @@ import logic.*;
 public class EditMoveState implements NMarkState
 {
 	private XEntity entity;
+	private MainState mainState;
 
-	public EditMoveState(XEntity entity)
+	public EditMoveState(XEntity entity, MainState mainState)
 	{
 		this.entity = entity;
+		this.mainState = mainState;
 	}
 
 	@Override
@@ -37,7 +39,7 @@ public class EditMoveState implements NMarkState
 	@Override
 	public XMenu menu()
 	{
-		return XMenu.entityEditMenu(entity);
+		return XMenu.entityEditMenu(entity, mainState);
 	}
 
 	@Override
