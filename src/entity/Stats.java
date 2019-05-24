@@ -29,6 +29,8 @@ public interface Stats
 
 	List<String> info();
 
+	String[] sideInfoText();
+
 	List<Integer> save();
 
 	List<String> infoEdit();

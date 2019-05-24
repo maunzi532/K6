@@ -73,7 +73,7 @@ public class EntityArrowC
 				cht = change > 0 ? 1 : -1;
 				//infoArrow.setData(stats().getStat(0));
 				counter2++;
-				infoArrow.setData(start + cht * counter2);
+				infoArrow.statBar().setData(start + cht * counter2);
 			}
 		}
 		if(counter == startingTickC + changingTicks * Math.abs(change) && start + change <= 0 && blinkOnZero > 0)

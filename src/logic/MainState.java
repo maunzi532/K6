@@ -66,4 +66,10 @@ public class MainState
 		Transporter transporter1 = new Transporter(y2.create2(-3, -2), BuildingBlueprint.get(buildingBlueprintCache, "Transporter1"));
 		levelMap.addBuilding(transporter1);*/
 	}
+
+	//TODO Do not attack when health cost is too high
+	//TODO Analyze attack outcomes for AI
+	//TODO Improve enemy AI
+	//TODO Improve floor placement
+	//TODO Revertable Movement
 }

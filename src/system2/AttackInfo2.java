@@ -89,4 +89,10 @@ public class AttackInfo2 extends AttackInfo<Stats2, AttackMode2>
 	{
 		return inverse ? calcT.infos() : calc.infos();
 	}
+
+	@Override
+	public String[] getSideInfos(boolean inverse)
+	{
+		return inverse ? calcT.sideInfos() : calc.sideInfos();
+	}
 }

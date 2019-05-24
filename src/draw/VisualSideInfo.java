@@ -1,5 +1,6 @@
 package draw;
 
+import arrow.*;
 import entity.*;
 import file.*;
 import geom.*;
@@ -55,8 +56,10 @@ public class VisualSideInfo
 	public void attackInfo(AttackInfo aI)
 	{
 		boolean inverted = inverted(aI.entity.location(), aI.entityT.location());
-		l0.setSideInfo(new SideInfo(aI.getEntity(inverted), 0, ImageLoader.getImage(aI.getStats(inverted).imagePath()), aI.getInfos(inverted)));
-		r0.setSideInfo(new SideInfo(aI.getEntity(!inverted), 0, ImageLoader.getImage(aI.getStats(!inverted).imagePath()), aI.getInfos(!inverted)));
+		l0.setSideInfo(new SideInfo(aI.getEntity(inverted), 0, ImageLoader.getImage(aI.getStats(inverted).imagePath()),
+				StatBar.forEntity(aI.getEntity(inverted)), aI.getSideInfos(inverted)));
+		r0.setSideInfo(new SideInfo(aI.getEntity(!inverted), 0, ImageLoader.getImage(aI.getStats(!inverted).imagePath()),
+				StatBar.forEntity(aI.getEntity(!inverted)), aI.getSideInfos(!inverted)));
 	}
 
 	private boolean inverted(Tile loc0, Tile loc1)

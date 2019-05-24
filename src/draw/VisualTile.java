@@ -132,21 +132,21 @@ public class VisualTile
 				});
 		levelMap.getArrows().stream().filter(arrow -> arrow instanceof InfoArrow && av.isVisible(arrow, mid, range)).forEach(arrow ->
 		{
-			InfoArrow arrow1 = (InfoArrow) arrow;
-			PointD midPoint = layout.tileToPixel(av.dataLocation(arrow1, layout));
+			StatBar statBar = ((InfoArrow) arrow).statBar();
+			PointD midPoint = layout.tileToPixel(av.dataLocation((InfoArrow) arrow, layout));
 			double xw = layout.size().v[0] * ArrowViewer.DATA_WIDTH;
 			double yw = layout.size().v[1] * ArrowViewer.DATA_HEIGHT;
 			double xs = midPoint.v[0] - xw / 2;
 			double ys = midPoint.v[1] - yw / 2;
-			gd.setFill(arrow1.getBg());
+			gd.setFill(statBar.getBg());
 			gd.fillRect(xs, ys, xw, yw);
-			gd.setFill(arrow1.getFg());
-			gd.fillRect(xs, ys, xw * arrow1.getData() / arrow1.getMaxData(), yw);
-			gd.setStroke(arrow1.getBg());
+			gd.setFill(statBar.getFg());
+			gd.fillRect(xs, ys, xw * statBar.getData() / statBar.getMaxData(), yw);
+			gd.setStroke(statBar.getBg());
 			gd.strokeRect(xs, ys, xw, yw);
 			gd.setFont(new Font(yw * 0.8));
-			gd.setFill(arrow1.getTc());
-			gd.fillText(arrow1.getData() + "/" + arrow1.getMaxData(), xs + xw / 2, ys + yw / 2, xw);
+			gd.setFill(statBar.getTc());
+			gd.fillText(statBar.getData() + "/" + statBar.getMaxData(), xs + xw / 2, ys + yw / 2, xw);
 		});
 	}
 }

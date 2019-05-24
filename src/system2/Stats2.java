@@ -357,6 +357,12 @@ public class Stats2 implements Stats
 	}
 
 	@Override
+	public String[] sideInfoText()
+	{
+		return new String[]{customName != null ? customName : "Enemy", xClass.className + " lv" + level};
+	}
+
+	@Override
 	public List<String> infoEdit()
 	{
 		List<String> info = new ArrayList<>();

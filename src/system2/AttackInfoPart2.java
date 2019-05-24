@@ -98,4 +98,24 @@ public class AttackInfoPart2
 		}
 		return infos;
 	}
+
+	public String[] sideInfos()
+	{
+		String[] infos = new String[5];
+		if(cost > 0)
+			infos[0] = attackStats.getCurrentHealth() + "(-" + cost + ")/" + attackStats.getToughness();
+		else
+			infos[0] = attackStats.getCurrentHealth() + "/" + attackStats.getToughness();
+		if(attackCount > 0)
+		{
+			if(melting1)
+				infos[1] = meltDamage + "+" + damage + (attackCount > 2 ? "x" + (attackCount - 1) : "");
+			else
+				infos[1] = damage + (attackCount > 1 ? "x" + attackCount : "");
+			infos[2] = hitrate + (autohit1 ? "*" : "");
+			infos[3] = String.valueOf(critrate);
+			infos[4] = advantage > 0 ? "+" : "";
+		}
+		return infos;
+	}
 }

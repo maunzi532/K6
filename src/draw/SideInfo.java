@@ -1,5 +1,6 @@
 package draw;
 
+import arrow.*;
 import entity.*;
 import java.util.*;
 import javafx.scene.image.*;
@@ -9,27 +10,15 @@ public class SideInfo
 	private XEntity character;
 	private int type;
 	private Image charImage;
-	private int barCurrent;
-	private int barMax;
+	private StatBar statBar;
 	private String[] texts;
 
-	public SideInfo(XEntity character, int type, Image charImage, String... texts)
+	public SideInfo(XEntity character, int type, Image charImage, StatBar statBar, String... texts)
 	{
 		this.character = character;
 		this.type = type;
 		this.charImage = charImage;
-		barCurrent = -1;
-		barMax = -1;
-		this.texts = texts;
-	}
-
-	public SideInfo(XEntity character, int type, Image charImage, int barCurrent, int barMax, String... texts)
-	{
-		this.character = character;
-		this.type = type;
-		this.charImage = charImage;
-		this.barCurrent = barCurrent;
-		this.barMax = barMax;
+		this.statBar = statBar;
 		this.texts = texts;
 	}
 
@@ -41,6 +30,11 @@ public class SideInfo
 	public String[] getTexts()
 	{
 		return texts;
+	}
+
+	public StatBar getStatBar()
+	{
+		return statBar;
 	}
 
 	public void setCharImage(Image charImage)

@@ -86,7 +86,7 @@ public class XEntity
 
 	public SideInfo standardSideInfo()
 	{
-		return new SideInfo(this, 1, ImageLoader.getImage(stats.imagePath()), stats.info().toArray(String[]::new));
+		return new SideInfo(this, 1, ImageLoader.getImage(stats.imagePath()), StatBar.forEntity(this), stats.sideInfoText());
 	}
 
 	public XEntity copy(Tile copyLocation)
