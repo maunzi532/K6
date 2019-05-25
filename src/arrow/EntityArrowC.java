@@ -68,12 +68,12 @@ public class EntityArrowC
 		int cht = 0;
 		if(counter >= startingTickC && (counter - startingTickC) % changingTicks == 0)
 		{
-			if(counter2 < Math.abs(change))
+			if(Math.abs(counter2) < Math.abs(change))
 			{
 				cht = change > 0 ? 1 : -1;
 				//infoArrow.setData(stats().getStat(0));
-				counter2++;
-				infoArrow.statBar().setData(start + cht * counter2);
+				counter2 += cht;
+				infoArrow.statBar().setData(start + counter2);
 			}
 		}
 		if(counter == startingTickC + changingTicks * Math.abs(change) && start + change <= 0 && blinkOnZero > 0)

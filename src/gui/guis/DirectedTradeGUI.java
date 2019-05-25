@@ -142,6 +142,7 @@ public class DirectedTradeGUI extends XGUI implements InvGUI
 				provide.outputInv().commit();
 				receive.inputInv().commit();
 				takeAp.takeAp(1);
+				takeAp.irreversible();
 			}
 			stateControl.setState(NoneState.INSTANCE);
 			return true;

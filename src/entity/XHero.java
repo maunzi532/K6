@@ -17,6 +17,8 @@ public class XHero extends InvEntity
 	private boolean canMove;
 	private int ap;
 	private boolean mainAction;
+	private Tile revertLocation;
+	private boolean canRevert;
 
 	public XHero(Tile location, MainState mainState, Stats stats, int weightLimit, ItemList itemList)
 	{
@@ -74,6 +76,8 @@ public class XHero extends InvEntity
 		canMove = true;
 		ap = 2;
 		mainAction = true;
+		revertLocation = location;
+		canRevert = true;
 	}
 
 	public NState defaultState(boolean withMove)
@@ -101,6 +105,16 @@ public class XHero extends InvEntity
 		return mainAction;
 	}
 
+	public Tile getRevertLocation()
+	{
+		return revertLocation;
+	}
+
+	public boolean canRevert()
+	{
+		return !canMove && canRevert;
+	}
+
 	public void setMoved()
 	{
 		canMove = false;
@@ -114,6 +128,18 @@ public class XHero extends InvEntity
 	public void mainActionTaken()
 	{
 		mainAction = false;
+	}
+
+	public void irreversible()
+	{
+		if(!canMove)
+			canRevert = false;
+	}
+
+	public void revertMovement()
+	{
+		mainState.levelMap.moveEntity(this, revertLocation);
+		canMove = true;
 	}
 
 	@Override

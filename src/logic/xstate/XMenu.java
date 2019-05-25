@@ -12,8 +12,10 @@ public class XMenu
 	public static XMenu characterMenu(XHero character)
 	{
 		return new XMenu(new CharacterMovementState(character),
-				new CharacterInvState(character), new AttackTargetState(character), new RegenerateState(character, character.defaultState(true)),
+				new CharacterInvState(character), new AttackTargetState(character),
+				new RegenerateState(character, character.defaultState(true)),
 				new GiveOrTakeState(true, character), new GiveOrTakeState(false, character),
+				new RevertMovementState(character),
 				new BuildingChooseState(character), new RemoveBuildingState(character), new EnemyStartState());
 	}
 

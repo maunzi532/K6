@@ -121,6 +121,7 @@ public class AttackInfoGUI extends XGUI implements InvGUI
 		{
 			attacker.takeAp(2);
 			attacker.mainActionTaken();
+			attacker.irreversible();
 			stateControl.setState(new PreAttackState(NoneState.INSTANCE, chosen));
 			return true;
 		}

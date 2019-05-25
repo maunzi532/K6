@@ -32,8 +32,9 @@ public class AttackAnimState extends AttackState
 	@Override
 	public void onEnter(MainState mainState)
 	{
-		int change = aI.getChange(true, inverse, num);
-		int changeT = aI.getChange(false, !inverse, num);
+		int[] change2 = aI.getChange(inverse, num);
+		int change = change2[0];
+		int changeT = change2[1];
 		acE = new EntityArrowC(mainState, entity(), entityT().location(), 1, 0, 60,
 				10, 3, stats().getStat(0), stats().getMaxStat(0), change, 40);
 		acT = new EntityArrowC(mainState, entityT(), entity().location(), changeT < 0 ? 2 : 0, 40, 40,

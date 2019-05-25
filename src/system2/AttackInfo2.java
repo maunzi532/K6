@@ -10,6 +10,7 @@ public class AttackInfo2 extends AttackInfo<Stats2, AttackMode2>
 	private final String[] infos;
 	private final AttackInfoPart2 calc;
 	private final AttackInfoPart2 calcT;
+	private boolean[] cna;
 
 	public AttackInfo2(Random rng, XEntity entity, Tile loc, Stats2 stats, AttackMode2 mode, XEntity entityT, Tile locT, Stats2 statsT, AttackMode2 modeT,
 			int distance)
@@ -28,6 +29,7 @@ public class AttackInfo2 extends AttackInfo<Stats2, AttackMode2>
 			infos[i * 2] = i1[i];
 			infos[i * 2 + 1] = i2[i];
 		}
+		cna = new boolean[2];
 	}
 
 	private AttackInfoPart2 getCalc(boolean inverse)
@@ -36,22 +38,27 @@ public class AttackInfo2 extends AttackInfo<Stats2, AttackMode2>
 	}
 
 	@Override
-	public int getChange(boolean current, boolean inverse, int num)
+	public int[] getChange(boolean inverse, int num)
 	{
-		if(current)
+		int[] change = new int[2];
+		if(cna[inverse ? 1 : 0])
+			return change;
+		AttackInfoPart2 calc1 = getCalc(inverse);
+		if(num == 0)
 		{
-			if(num == 0)
+			if(getStats(inverse).getCurrentHealth() > calc1.cost)
+				change[0] = -getCalc(inverse).cost;
+			else
 			{
-				return -getCalc(inverse).cost;
+				cna[inverse ? 1 : 0] = true;
+				return change;
 			}
-			return 0;
 		}
-		AttackInfoPart2 calc1 = getCalc(!inverse);
 		if(num != 0 || !calc1.autohit1)
 		{
 			int rn = rng.nextInt(100);
 			if(rn >= calc1.hitrate)
-				return 0;
+				return change;
 		}
 		boolean crit;
 		int rn2 = rng.nextInt(100);
@@ -59,17 +66,18 @@ public class AttackInfo2 extends AttackInfo<Stats2, AttackMode2>
 		if(num == 0 && calc1.melting1)
 		{
 			if(crit)
-				return -calc1.meltCritDamage;
+				change[1] = -calc1.meltCritDamage;
 			else
-				return -calc1.meltDamage;
+				change[1] = -calc1.meltDamage;
 		}
 		else
 		{
 			if(crit)
-				return -calc1.critDamage;
+				change[1] = -calc1.critDamage;
 			else
-				return -calc1.damage;
+				change[1] = -calc1.damage;
 		}
+		return change;
 	}
 
 	@Override

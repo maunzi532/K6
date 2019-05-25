@@ -67,7 +67,6 @@ public class MainState
 		levelMap.addBuilding(transporter1);*/
 	}
 
-	//TODO Do not attack when health cost is too high
 	//TODO Analyze attack outcomes for AI
 	//TODO Improve enemy AI
 	//TODO Improve floor placement
