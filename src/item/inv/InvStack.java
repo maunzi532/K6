@@ -28,6 +28,8 @@ public class InvStack implements Inv0
 	{
 		item = copy.item;
 		current = copy.current;
+		decrease = 0;
+		increase = 0;
 	}
 
 	public int getCountC()

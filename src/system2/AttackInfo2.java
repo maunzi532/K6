@@ -8,8 +8,8 @@ public class AttackInfo2 extends AttackInfo<Stats2, AttackMode2>
 {
 	private final Random rng;
 	private final String[] infos;
-	private final AttackInfoPart2 calc;
-	private final AttackInfoPart2 calcT;
+	public final AttackInfoPart2 calc;
+	public final AttackInfoPart2 calcT;
 	private boolean[] cna;
 
 	public AttackInfo2(Random rng, XEntity entity, Tile loc, Stats2 stats, AttackMode2 mode, XEntity entityT, Tile locT, Stats2 statsT, AttackMode2 modeT,

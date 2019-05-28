@@ -69,6 +69,6 @@ public class MainState
 
 	//TODO Analyze attack outcomes for AI
 	//TODO Improve enemy AI
-	//TODO Improve floor placement
-	//TODO Revertable Movement
+	//TODO Improve floor placing tool
+	//TODO Build a real level
 }

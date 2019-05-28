@@ -102,7 +102,7 @@ public class EntityInvEditGUI extends XGUI implements InvGUI
 	@Override
 	public void target(int x, int y)
 	{
-		boolean tiv = invView.target(x, y, items.size(), this) || allItemsView.target(x, y, allItems.size(), this);;
+		boolean tiv = invView.target(x, y, items.size(), this) || allItemsView.target(x, y, allItems.size(), this);
 		if(!tiv || getTargeted() == CTile.NONE)
 		{
 			setTargeted(CTile.NONE);
