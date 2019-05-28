@@ -37,6 +37,8 @@ public interface CombatSystem<T extends Stats, A extends AttackInfo, I extends I
 
 	RNGDivider supplyDivider(A attackInfo);
 
+	double enemyAIScore(List<RNGOutcome> outcomes);
+
 	XEntity loadEntity(TileType y1, MainState mainState, IntBuffer intBuffer);
 
 	Item loadItem(IntBuffer intBuffer);

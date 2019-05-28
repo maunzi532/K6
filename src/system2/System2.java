@@ -95,6 +95,12 @@ public class System2 implements CombatSystem<Stats2, AttackInfo2, AttackItem2>
 	}
 
 	@Override
+	public double enemyAIScore(List<RNGOutcome> outcomes)
+	{
+		return new EnemyAI2(outcomes).score();
+	}
+
+	@Override
 	public XEntity loadEntity(TileType y1, MainState mainState, IntBuffer intBuffer)
 	{
 		int classCode = intBuffer.get();

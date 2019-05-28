@@ -1,5 +1,6 @@
 package entity;
 
+import entity.analysis.*;
 import geom.f1.*;
 import item.*;
 import item.inv.*;
@@ -76,10 +77,17 @@ public class XEnemy extends InvEntity
 			attackInfo.addAll(mainState.combatSystem
 					.attackInfo(mainState, this, t, stats, mainState.levelMap.getEntitiesH()));
 		}
+		HashMap<AttackInfo, Double> analysis = new HashMap<>();
+		for(AttackInfo info : attackInfo)
+		{
+			if(!analysis.containsKey(info))
+				analysis.put(info, mainState.combatSystem.enemyAIScore(new RNGInfoAnalysis(mainState.combatSystem.supplyDivider(info)).create().outcomes()));
+		}
 		if(!attackInfo.isEmpty())
 		{
 			Collections.shuffle(attackInfo);
-			return new EnemyMove(this, 0x100 + RANDOM.nextInt(0x100), attackInfo.get(0).loc, attackInfo.get(0));
+			AttackInfo maxScore = attackInfo.stream().max(Comparator.comparingDouble(analysis::get)).orElseThrow();
+			return new EnemyMove(this, 0x100 + RANDOM.nextInt(0x100), maxScore.loc, maxScore);
 		}
 		else if(canMove)
 		{

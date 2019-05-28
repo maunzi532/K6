@@ -208,9 +208,9 @@ public class RNGDivider2 extends RNGDivider
 	{
 		List<String> compareText = new ArrayList<>();
 		compareText(compareText);
-		return new RNGOutcome(chanceC(), dividerC(), 0, compareText.stream()
+		return new RNGOutcome2(chanceC(), dividerC(), compareText.stream()
 				.collect(Collectors.groupingBy(e -> e, Collectors.counting())).entrySet().stream()
-				.map(f -> f.getKey() + " " + f.getValue()).sorted().collect(Collectors.toList()));
+				.map(f -> f.getKey() + " " + f.getValue()).sorted().collect(Collectors.toList()), aI, health1, health2);
 	}
 
 	private void compareText(List<String> list)
