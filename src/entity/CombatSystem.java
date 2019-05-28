@@ -1,5 +1,6 @@
 package entity;
 
+import entity.analysis.*;
 import geom.f1.*;
 import item.*;
 import java.nio.*;
@@ -33,6 +34,8 @@ public interface CombatSystem<T extends Stats, A extends AttackInfo, I extends I
 	void postAttack(A attackInfo);
 
 	List<Item> allItems();
+
+	RNGDivider supplyDivider(A attackInfo);
 
 	XEntity loadEntity(TileType y1, MainState mainState, IntBuffer intBuffer);
 

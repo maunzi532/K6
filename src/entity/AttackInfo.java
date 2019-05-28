@@ -1,6 +1,7 @@
 package entity;
 
 import geom.f1.*;
+import java.util.*;
 
 public abstract class AttackInfo<T extends Stats, I extends XMode>
 {
@@ -52,4 +53,23 @@ public abstract class AttackInfo<T extends Stats, I extends XMode>
 	public abstract String[] getInfos(boolean inverse);
 
 	public abstract String[] getSideInfos(boolean inverse);
+
+	@Override
+	public boolean equals(Object o)
+	{
+		if(this == o) return true;
+		if(!(o instanceof AttackInfo)) return false;
+		AttackInfo<?, ?> that = (AttackInfo<?, ?>) o;
+		return distance == that.distance &&
+				entity.equals(that.entity) &&
+				Objects.equals(mode, that.mode) &&
+				entityT.equals(that.entityT) &&
+				Objects.equals(modeT, that.modeT);
+	}
+
+	@Override
+	public int hashCode()
+	{
+		return Objects.hash(entity, mode, entityT, modeT, distance);
+	}
 }

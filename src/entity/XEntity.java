@@ -2,6 +2,7 @@ package entity;
 
 import arrow.*;
 import draw.*;
+import entity.analysis.*;
 import file.*;
 import geom.f1.*;
 import java.util.*;
@@ -77,6 +78,11 @@ public class XEntity
 	public List<AttackInfo> attackInfo(XEntity target)
 	{
 		return mainState.combatSystem.attackInfo(mainState, this, stats, target, target.stats);
+	}
+
+	public List<RNGOutcome> outcomes(AttackInfo attackInfo)
+	{
+		return new RNGInfoAnalysis(mainState.combatSystem.supplyDivider(attackInfo)).create().outcomes2();
 	}
 
 	public Stats getStats()

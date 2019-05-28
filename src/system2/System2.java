@@ -1,6 +1,7 @@
 package system2;
 
 import entity.*;
+import entity.analysis.*;
 import geom.f1.*;
 import item.*;
 import item.inv.*;
@@ -9,6 +10,7 @@ import java.nio.*;
 import java.util.*;
 import java.util.stream.*;
 import logic.*;
+import system2.analysis.*;
 import system2.content.*;
 
 public class System2 implements CombatSystem<Stats2, AttackInfo2, AttackItem2>
@@ -84,6 +86,12 @@ public class System2 implements CombatSystem<Stats2, AttackInfo2, AttackItem2>
 	public List<Item> allItems()
 	{
 		return AttackItems2.INSTANCE.itemList;
+	}
+
+	@Override
+	public RNGDivider supplyDivider(AttackInfo2 attackInfo)
+	{
+		return new RNGDivider2(attackInfo);
 	}
 
 	@Override
