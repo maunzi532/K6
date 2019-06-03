@@ -66,11 +66,11 @@ public class XEnemy extends InvEntity
 		canAttack = false;
 	}
 
-	public EnemyMove preferredMove(int moveAway)
+	public EnemyMove preferredMove(boolean hasToMove, int moveAway)
 	{
 		if(!canAttack)
 			return new EnemyMove(this, -1, null, null, 0);
-		return think.preferredMove(mainState, this, canMove, true, moveAway);
+		return think.preferredMove(mainState, this, canMove, hasToMove, moveAway);
 	}
 
 	@Override

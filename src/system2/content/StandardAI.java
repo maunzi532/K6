@@ -38,8 +38,8 @@ public class StandardAI implements EnemyAI
 				analysis.put(px.attack, mainState.combatSystem.enemyAIScore(new RNGInfoAnalysis(mainState.combatSystem.supplyDivider(px.attack)).create().outcomes()));
 			if(px.attack != null)
 				px.score += analysis.get(px.attack) * 1000;
-			if(px.path.tile.equals(user.location()))
-				px.score -= moveAway;
+			if(!px.path.tile.equals(user.location()))
+				px.score += moveAway;
 			px.score += mainState.levelMap.getEntitiesH().stream().mapToInt(e -> mainState.y2.distance(e.location(), user.location())).max().orElse(0) * 20;
 		}
 		if(analysis.isEmpty())
