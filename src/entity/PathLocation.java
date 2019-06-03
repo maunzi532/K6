@@ -5,15 +5,28 @@ import java.util.*;
 
 public class PathLocation
 {
-	public final Tile t1;
+	public final Tile tile;
 	public final int cost;
 	public final boolean canEnd;
+	public final PathLocation from;
+	public final XEntity movingAlly;
 
-	public PathLocation(Tile t1, int cost, boolean canEnd)
+	public PathLocation(Tile tile)
 	{
-		this.t1 = t1;
+		this.tile = tile;
+		cost = 0;
+		canEnd = true;
+		from = null;
+		movingAlly = null;
+	}
+
+	public PathLocation(Tile tile, int cost, boolean canEnd, PathLocation from, XEntity movingAlly)
+	{
+		this.tile = tile;
 		this.cost = cost;
 		this.canEnd = canEnd;
+		this.from = from;
+		this.movingAlly = movingAlly;
 	}
 
 	@Override
@@ -22,12 +35,12 @@ public class PathLocation
 		if(this == o) return true;
 		if(!(o instanceof PathLocation)) return false;
 		PathLocation that = (PathLocation) o;
-		return t1.equals(that.t1);
+		return tile.equals(that.tile);
 	}
 
 	@Override
 	public int hashCode()
 	{
-		return Objects.hash(t1);
+		return Objects.hash(tile);
 	}
 }

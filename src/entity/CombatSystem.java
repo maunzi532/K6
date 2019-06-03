@@ -16,6 +16,12 @@ public interface CombatSystem<T extends Stats, A extends AttackInfo, I extends I
 
 	List<Integer> attackRanges(MainState mainState, XEntity entity, T stats, boolean counter);
 
+	default List<PathAttackX> pathAttackInfo(MainState mainState, XEntity entity, Tile loc, T stats, List<XEntity> possibleTargets, PathLocation pl)
+	{
+		return possibleTargets.stream().flatMap(e -> attackInfo(mainState, entity, loc, stats, e, e.location(), (T) e.stats).stream())
+				.map(e -> new PathAttackX(pl, e)).collect(Collectors.toList());
+	}
+
 	default List<A> attackInfo(MainState mainState, XEntity entity, Tile loc, T stats, List<XEntity> possibleTargets)
 	{
 		return possibleTargets.stream().flatMap(e -> attackInfo(mainState, entity, loc, stats, e, e.location(), (T) e.stats).stream())
@@ -38,6 +44,8 @@ public interface CombatSystem<T extends Stats, A extends AttackInfo, I extends I
 	RNGDivider supplyDivider(A attackInfo);
 
 	double enemyAIScore(List<RNGOutcome> outcomes);
+
+	EnemyAI standardAI();
 
 	XEntity loadEntity(TileType y1, MainState mainState, IntBuffer intBuffer);
 

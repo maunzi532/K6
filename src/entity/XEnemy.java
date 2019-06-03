@@ -1,6 +1,5 @@
 package entity;
 
-import entity.analysis.*;
 import geom.f1.*;
 import item.*;
 import item.inv.*;
@@ -11,23 +10,26 @@ public class XEnemy extends InvEntity
 {
 	private static final Random RANDOM = new Random();
 
+	private EnemyAI think;
 	private boolean canMove;
 	private boolean canAttack;
 
-	public XEnemy(Tile location, MainState mainState, Stats stats, int weightLimit, ItemList itemList)
+	public XEnemy(Tile location, MainState mainState, Stats stats, EnemyAI think, int weightLimit, ItemList itemList)
 	{
 		super(location, mainState, stats, weightLimit, itemList);
+		this.think = think;
 	}
 
-	public XEnemy(Tile location, MainState mainState, Stats stats, Inv inv)
+	public XEnemy(Tile location, MainState mainState, Stats stats, EnemyAI think, Inv inv)
 	{
 		super(location, mainState, stats, inv);
+		this.think = think;
 	}
 
 	@Override
 	public XEntity copy(Tile copyLocation)
 	{
-		XEnemy copy = new XEnemy(copyLocation, mainState, stats, inv.copy());
+		XEnemy copy = new XEnemy(copyLocation, mainState, stats, think.copy(), inv.copy());
 		copy.stats.autoEquip(copy);
 		return copy;
 	}
@@ -64,40 +66,11 @@ public class XEnemy extends InvEntity
 		canAttack = false;
 	}
 
-	public EnemyMove preferredMove()
+	public EnemyMove preferredMove(int moveAway)
 	{
-		List<Tile> v = new ArrayList<>();
-		List<AttackInfo> attackInfo = new ArrayList<>();
-		if(canMove)
-			v.addAll(new Pathing(mainState.y2, this, movement(), mainState.levelMap).start().getEndpoints());
-		else
-			v.add(location());
-		for(Tile t : v)
-		{
-			attackInfo.addAll(mainState.combatSystem
-					.attackInfo(mainState, this, t, stats, mainState.levelMap.getEntitiesH()));
-		}
-		HashMap<AttackInfo, Double> analysis = new HashMap<>();
-		for(AttackInfo info : attackInfo)
-		{
-			if(!analysis.containsKey(info))
-				analysis.put(info, mainState.combatSystem.enemyAIScore(new RNGInfoAnalysis(mainState.combatSystem.supplyDivider(info)).create().outcomes()));
-		}
-		if(!attackInfo.isEmpty())
-		{
-			Collections.shuffle(attackInfo);
-			AttackInfo maxScore = attackInfo.stream().max(Comparator.comparingDouble(analysis::get)).orElseThrow();
-			return new EnemyMove(this, 0x100 + RANDOM.nextInt(0x100), maxScore.loc, maxScore);
-		}
-		else if(canMove)
-		{
-			Collections.shuffle(v);
-			return new EnemyMove(this, RANDOM.nextInt(0x100), v.get(0), null);
-		}
-		else
-		{
-			return new EnemyMove(this, -1, null, null);
-		}
+		if(!canAttack)
+			return new EnemyMove(this, -1, null, null, 0);
+		return think.preferredMove(mainState, this, canMove, true, moveAway);
 	}
 
 	@Override

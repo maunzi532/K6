@@ -13,8 +13,14 @@ public class EnemyPhaseState implements NAutoState
 	public void onEnter(MainState mainState)
 	{
 		mainState.visualSideInfo.clearSideInfo();
-		initiativeMove = mainState.levelMap.getEntitiesE().stream().filter(XEnemy::canAttack).map(XEnemy::preferredMove)
+		initiativeMove = mainState.levelMap.getEntitiesE().stream().filter(XEnemy::canAttack).map(e -> e.preferredMove(0))
 				.max(Comparator.comparingInt(EnemyMove::getInitiative)).filter(e -> e.getInitiative() >= 0).orElse(null);
+		if(initiativeMove != null && initiativeMove.moveTo() != null && initiativeMove.moveTo().movingAlly != null)
+		{
+			EnemyMove initiativeMove2 = ((XEnemy) initiativeMove.moveTo().movingAlly).preferredMove(initiativeMove.getTileAdvantage());
+			if(initiativeMove2.getInitiative() >= 0)
+				initiativeMove = initiativeMove2;
+		}
 	}
 
 	@Override
@@ -31,12 +37,13 @@ public class EnemyPhaseState implements NAutoState
 	{
 		if(initiativeMove != null)
 		{
-			Tile moveTo = initiativeMove.moveTo();
+			Tile moveTo = initiativeMove.moveTo().tile;
 			AttackInfo attackInfo = initiativeMove.attackInfo();
 			if(moveTo != null)
 				initiativeMove.getEntity().setMoved();
 			if(attackInfo != null)
 			{
+				initiativeMove.getEntity().setMoved();
 				initiativeMove.getEntity().setAttacked();
 				if(moveTo != null)
 					return new MoveAnimState(new PreAttackState(this, attackInfo), initiativeMove.getEntity(), moveTo);

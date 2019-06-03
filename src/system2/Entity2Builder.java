@@ -58,7 +58,7 @@ public class Entity2Builder
 		}
 		else
 		{
-			entity = new XEnemy(location, mainState, stats, weightLimit, itemList);
+			entity = new XEnemy(location, mainState, stats, mainState.combatSystem.standardAI(), weightLimit, itemList);
 		}
 		stats.autoEquip(entity);
 		if(mainState.levelMap.getFloor(location) == null)

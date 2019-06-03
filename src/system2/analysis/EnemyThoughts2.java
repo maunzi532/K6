@@ -3,7 +3,7 @@ package system2.analysis;
 import entity.analysis.*;
 import java.util.*;
 
-public class EnemyAI2
+public class EnemyThoughts2
 {
 	private double loseChance;
 	private double avgDamageTakenInMaxHealth;
@@ -12,7 +12,7 @@ public class EnemyAI2
 	private double avgDamageDealtInMaxHealth;
 	private double avgDownToInMaxHealth;
 
-	public EnemyAI2(List<RNGOutcome> outcomes1)
+	public EnemyThoughts2(List<RNGOutcome> outcomes1)
 	{
 		List<RNGOutcome2> outcomes = new ArrayList<>();
 		for(RNGOutcome outcome : outcomes1)
@@ -25,12 +25,12 @@ public class EnemyAI2
 		winChance = outcomes.stream().filter(e -> e.win).mapToDouble(e -> e.chanceAsDouble).sum();
 		avgDamageDealtInMaxHealth = outcomes.stream().mapToDouble(e -> e.damageDealtT / (double) e.maxHealthT).sum() / outcomes.size();
 		avgDownToInMaxHealth = outcomes.stream().mapToDouble(e -> e.remainingHealthT / (double) e.maxHealthT).sum() / outcomes.size();
-		System.out.println(toString());
+		//System.out.println(toString());
 	}
 
 	public double score()
 	{
-		double score = 0;
+		double score = 8;
 		if(winChance > 0)
 			score += 1;
 		score += winChance * 10;
@@ -48,7 +48,7 @@ public class EnemyAI2
 	@Override
 	public String toString()
 	{
-		return "EnemyAI2{" +
+		return "EnemyThoughts2{" +
 				"loseChance=" + loseChance +
 				", avgDamageTakenInMaxHealth=" + avgDamageTakenInMaxHealth +
 				", avgHealthRemainingInMaxHealth=" + avgHealthRemainingInMaxHealth +

@@ -41,7 +41,7 @@ public class CharacterMovementState implements NMarkState
 	@Override
 	public Map<Tile, MarkType> marked(LevelMap levelMap)
 	{
-		return new Pathing(levelMap.y1, character, character.movement(), levelMap).start().getEndpoints()
+		return new Pathing(levelMap.y1, character, character.movement(), levelMap, null).start().getEndpoints()
 				.stream().collect(Collectors.toMap(e -> e, e -> MarkType.TARGET));
 	}
 

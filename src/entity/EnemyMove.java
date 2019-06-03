@@ -1,20 +1,20 @@
 package entity;
 
-import geom.f1.*;
-
 public class EnemyMove
 {
 	private XEnemy entity;
 	private int initiative;
-	private Tile moveTo;
+	private PathLocation moveTo;
 	private AttackInfo attackInfo;
+	private int tileAdvantage;
 
-	public EnemyMove(XEnemy entity, int initiative, Tile moveTo, AttackInfo attackInfo)
+	public EnemyMove(XEnemy entity, int initiative, PathLocation moveTo, AttackInfo attackInfo, int tileAdvantage)
 	{
 		this.entity = entity;
 		this.initiative = initiative;
 		this.moveTo = moveTo;
 		this.attackInfo = attackInfo;
+		this.tileAdvantage = tileAdvantage;
 	}
 
 	public XEnemy getEntity()
@@ -27,7 +27,7 @@ public class EnemyMove
 		return initiative;
 	}
 
-	public Tile moveTo()
+	public PathLocation moveTo()
 	{
 		return moveTo;
 	}
@@ -35,5 +35,10 @@ public class EnemyMove
 	public AttackInfo attackInfo()
 	{
 		return attackInfo;
+	}
+
+	public int getTileAdvantage()
+	{
+		return tileAdvantage;
 	}
 }

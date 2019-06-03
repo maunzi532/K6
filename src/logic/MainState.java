@@ -67,8 +67,9 @@ public class MainState
 		levelMap.addBuilding(transporter1);*/
 	}
 
-	//TODO Analyze attack outcomes for AI
-	//TODO Improve enemy AI
+	//TODO Enemy AI types
+	//TODO Better floor textures (Hex height same as Quad height)
 	//TODO Improve floor placing tool
+	//TODO Change menu bar to not overlap with SideInfo
 	//TODO Build a real level
 }

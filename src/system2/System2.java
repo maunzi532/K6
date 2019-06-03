@@ -97,7 +97,13 @@ public class System2 implements CombatSystem<Stats2, AttackInfo2, AttackItem2>
 	@Override
 	public double enemyAIScore(List<RNGOutcome> outcomes)
 	{
-		return new EnemyAI2(outcomes).score();
+		return new EnemyThoughts2(outcomes).score();
+	}
+
+	@Override
+	public EnemyAI standardAI()
+	{
+		return new StandardAI();
 	}
 
 	@Override
@@ -112,7 +118,7 @@ public class System2 implements CombatSystem<Stats2, AttackInfo2, AttackItem2>
 			if(classCode == 1)
 				return new XHero(location, mainState, stats, inv);
 			else
-				return new XEnemy(location, mainState, stats, inv);
+				return new XEnemy(location, mainState, stats, new StandardAI(), inv);
 		}
 		return new XEntity(location, mainState, stats);
 	}
