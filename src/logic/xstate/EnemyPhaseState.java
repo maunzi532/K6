@@ -43,7 +43,6 @@ public class EnemyPhaseState implements NAutoState
 				initiativeMove.getEntity().setMoved();
 			if(attackInfo != null)
 			{
-				initiativeMove.getEntity().setMoved();
 				initiativeMove.getEntity().setAttacked();
 				if(moveTo != null)
 					return new MoveAnimState(new PreAttackState(this, attackInfo), initiativeMove.getEntity(), moveTo);

@@ -168,7 +168,6 @@ public class BuildGUI extends XGUI implements InvGUI
 			{
 				character.takeAp(1);
 				character.mainActionTaken();
-				character.irreversible();
 				character.buildBuilding(cost, refundable.get(), blueprint);
 				stateControl.setState(NoneState.INSTANCE);
 				return true;

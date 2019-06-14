@@ -8,7 +8,6 @@ import item.inv.*;
 import java.util.*;
 import javafx.scene.image.*;
 import logic.*;
-import logic.xstate.*;
 
 public class XHero extends InvEntity
 {
@@ -80,29 +79,14 @@ public class XHero extends InvEntity
 		canRevert = true;
 	}
 
-	public NState defaultState(boolean withMove)
-	{
-		if(withMove && canMove)
-			return new CharacterMovementState(this);
-		else if(mainAction)
-			return new AttackTargetState(this);
-		else
-			return new CharacterInvState(this);
-	}
-
 	public boolean canMove()
 	{
-		return canMove;
+		return canMove && mainAction;
 	}
 
-	public int getAp()
+	public boolean ready(int apCost)
 	{
-		return ap;
-	}
-
-	public boolean isReady()
-	{
-		return mainAction;
+		return mainAction && apCost <= ap;
 	}
 
 	public Tile getRevertLocation()
@@ -128,6 +112,8 @@ public class XHero extends InvEntity
 	public void mainActionTaken()
 	{
 		mainAction = false;
+		canMove = false;
+		canRevert = false;
 	}
 
 	public void irreversible()

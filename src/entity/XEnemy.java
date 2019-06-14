@@ -48,7 +48,7 @@ public class XEnemy extends InvEntity
 
 	public boolean canMove()
 	{
-		return canMove;
+		return canMove && canAttack;
 	}
 
 	public boolean canAttack()
@@ -63,6 +63,7 @@ public class XEnemy extends InvEntity
 
 	public void setAttacked()
 	{
+		canMove = false;
 		canAttack = false;
 	}
 

@@ -4,10 +4,12 @@ import javafx.scene.image.*;
 
 public enum FloorTileType
 {
-	BLUE("Blue2.png", false, true, 1),
-	GSL("Green2.png", false, true, 2),
-	TECH("Red2.png", false, true, 1),
-	WALL("Gray2.png", true, false, 1);
+	BLUE("BLUE_Tile.png", false, true, 1),
+	GSL("GSL_Tile.png", false, true, 2),
+	TECH("RED_Tile.png", false, true, 1),
+	WALL("WALL_Tile.png", true, false, 1);
+
+	//Hex height same as Quad height
 
 	FloorTileType(String imageT, boolean blocked, boolean canMovementEnd, int moveCost)
 	{

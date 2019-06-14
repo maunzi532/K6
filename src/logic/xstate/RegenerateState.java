@@ -59,7 +59,7 @@ public class RegenerateState implements NAutoState
 	public boolean keepInMenu(MainState mainState)
 	{
 		if(entity instanceof XHero)
-			return ((XHero) entity).isReady() && entity.getStats().getRegenerateChange() > 0;
+			return ((XHero) entity).ready(0) && entity.getStats().getRegenerateChange() > 0;
 		return false;
 	}
 }

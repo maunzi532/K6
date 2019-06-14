@@ -30,7 +30,7 @@ public class RevertMovementState implements NAutoState
 	@Override
 	public NState nextState()
 	{
-		return character.defaultState(true);
+		return new AdvMoveState(character);
 	}
 
 	@Override

@@ -67,9 +67,22 @@ public class MainState
 		levelMap.addBuilding(transporter1);*/
 	}
 
-	//TODO Enemy AI types
-	//TODO Better floor textures (Hex height same as Quad height)
-	//TODO Improve floor placing tool
 	//TODO Change menu bar to not overlap with SideInfo
+	//TODO add permanent menu
+	//TODO Better controls
+	//TODO auto-camera
+	//TODO Enemy AI types
+	//TODO Improve floor placing tool
 	//TODO Build a real level
+
+	//LK char - move/attack/trade
+	//LK enemy - view range
+	//RK char/enemy - inv
+	//LK building - claimed area
+	//RK building - inv
+	//LK transporter - connected buildings
+	//RK transporter -
+
+	//enter - end turn
+	//esc - back to NoneState
 }

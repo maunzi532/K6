@@ -30,7 +30,7 @@ public class RemoveBuildingState implements NGUIState
 	@Override
 	public boolean keepInMenu(MainState mainState)
 	{
-		return builder.isReady() && builder.getAp() >= 1 && mainState.levelMap.getBuilding(builder.location()) instanceof Buildable;
+		return builder.ready(1) && mainState.levelMap.getBuilding(builder.location()) instanceof Buildable;
 	}
 
 	@Override
