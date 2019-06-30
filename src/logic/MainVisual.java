@@ -54,7 +54,30 @@ public class MainVisual implements XInputInterface
 	}
 
 	@Override
-	public void handleClick(double x, double y, int mouseKey)
+	public void mousePosition(double xMouse, double yMouse, boolean moved, boolean drag, int mouseKey)
+	{
+		if(mainState.stateControl.getState() instanceof NoneState || mainState.stateControl.getState().editMode())
+		{
+			double xp = xMouse / graphics.xHW() - 1;
+			double yp = yMouse / graphics.yHW() - 1;
+			if(xp > BORDER)
+				mapCamera.setXShift(mapCamera.getXShift() + xp - BORDER);
+			else if(xp < -BORDER)
+				mapCamera.setXShift(mapCamera.getXShift() + xp + BORDER);
+			if(yp > BORDER)
+				mapCamera.setYShift(mapCamera.getYShift() + yp - BORDER);
+			else if(yp < -BORDER)
+				mapCamera.setYShift(mapCamera.getYShift() + yp + BORDER);
+		}
+		if(moved && mainState.stateControl.getState() instanceof NGUIState && visualGUI.inside(xMouse, yMouse, mainState.stateControl.getXgui()))
+		{
+			mainState.stateControl.target(visualGUI.y2.toOffset(visualGUI.clickLocation(xMouse, yMouse)));
+		}
+		if(mouseKey >= 0)
+			handleClick(xMouse, yMouse, mouseKey);
+	}
+
+	private void handleClick(double x, double y, int mouseKey)
 	{
 		int menuOption = visualMenu.coordinatesToOption(x, y);
 		if(menuOption >= 0)
@@ -77,6 +100,12 @@ public class MainVisual implements XInputInterface
 	}
 
 	@Override
+	public void dragPosition(double xStart, double yStart, double xMoved, double yMoved, int mouseKey, boolean finished)
+	{
+
+	}
+
+	@Override
 	public void handleKey(KeyCode keyCode)
 	{
 		switch(keyCode)
@@ -88,15 +117,6 @@ public class MainVisual implements XInputInterface
 			case UP -> mainState.stateControl.handleMenuChoose(-1);
 			case DOWN -> mainState.stateControl.handleMenuChoose(1);
 			case E -> mainState.stateControl.toggleEditMode();
-		}
-	}
-
-	@Override
-	public void handleMouseMove(double x, double y)
-	{
-		if(mainState.stateControl.getState() instanceof NGUIState && visualGUI.inside(x, y, mainState.stateControl.getXgui()))
-		{
-			mainState.stateControl.target(visualGUI.y2.toOffset(visualGUI.clickLocation(x, y)));
 		}
 	}
 
@@ -118,35 +138,5 @@ public class MainVisual implements XInputInterface
 			levelEditor.draw();
 		visualGUI.draw2(mainState.stateControl.getXgui());
 		visualMenu.draw();
-	}
-
-	@Override
-	public void mousePosition(double xMouse, double yMouse)
-	{
-		if(mainState.stateControl.getState() instanceof NoneState || mainState.stateControl.getState().editMode())
-		{
-			double xp = xMouse / graphics.xHW() - 1;
-			double yp = yMouse / graphics.yHW() - 1;
-			if(xp > BORDER)
-				mapCamera.setXShift(mapCamera.getXShift() + xp - BORDER);
-			else if(xp < -BORDER)
-				mapCamera.setXShift(mapCamera.getXShift() + xp + BORDER);
-			if(yp > BORDER)
-				mapCamera.setYShift(mapCamera.getYShift() + yp - BORDER);
-			else if(yp < -BORDER)
-				mapCamera.setYShift(mapCamera.getYShift() + yp + BORDER);
-		}
-	}
-
-	@Override
-	public void handleDrag(double xStart, double yStart, double xEnd, double yEnd, int mouseKey)
-	{
-
-	}
-
-	@Override
-	public void dragPosition(double xStart, double yStart, double xMoved, double yMoved, int mouseKey)
-	{
-
 	}
 }

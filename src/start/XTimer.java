@@ -58,18 +58,18 @@ public class XTimer extends AnimationTimer
 	public void onMouseMove(MouseEvent mouseEvent)
 	{
 		moved = true;
+		inside = true;
 		xMoved = mouseEvent.getSceneX();
 		yMoved = mouseEvent.getSceneY();
-		inside = true;
 	}
 
 	public void onMouseExit(MouseEvent mouseEvent)
 	{
 		mouseDown = false;
 		isDrag = false;
+		inside = false;
 		xMoved = mouseEvent.getSceneX();
 		yMoved = mouseEvent.getSceneY();
-		inside = false;
 	}
 
 	public void onKeyEvent(KeyEvent keyEvent)
@@ -84,29 +84,27 @@ public class XTimer extends AnimationTimer
 		//System.out.println(1000000000d / (currentNanoTime - lastNanoTime));
 		inputInterface.frameTime(currentNanoTime - lastNanoTime);
 		lastNanoTime = currentNanoTime;
-		if(inside)
-		{
-			inputInterface.mousePosition(xMoved, yMoved);
-		}
-		if(moved)
-		{
-			inputInterface.handleMouseMove(xMoved, yMoved);
-			moved = false;
-		}
-		if(isDrag)
-		{
-			inputInterface.dragPosition(xStart, yStart, xMoved, yMoved, mouseKey.ordinal());
-		}
 		if(clicked)
 		{
-			inputInterface.handleClick(xClicked, yClicked, mouseKey.ordinal());
+			inputInterface.mousePosition(xClicked, yClicked, moved, isDrag, mouseKey.ordinal());
+			moved = false;
 			clicked = false;
 		}
-		else if(dragged)
+		else if(inside)
 		{
-			inputInterface.handleDrag(xStart, yStart, xClicked, yClicked, mouseKey.ordinal());
+			inputInterface.mousePosition(xMoved, yMoved, moved, isDrag, -1);
+			moved = false;
 		}
-		else if(keyCode != null)
+		if(dragged)
+		{
+			inputInterface.dragPosition(xStart, yStart, xClicked, yClicked, mouseKey.ordinal(), true);
+			dragged = false;
+		}
+		else if(isDrag)
+		{
+			inputInterface.dragPosition(xStart, yStart, xMoved, yMoved, mouseKey.ordinal(), false);
+		}
+		if(!clicked && !dragged && keyCode != null)
 		{
 			inputInterface.handleKey(keyCode);
 			keyCode = null;

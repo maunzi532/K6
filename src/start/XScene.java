@@ -35,7 +35,6 @@ public class XScene extends Application
 		MainVisual mainVisual = new MainVisual(graphics, args0.length > 0 && args0[0].equals("H"),
 				args0.length > 1 && args0[1].equals("H"), args0.length > 2 && args0[2].equals("H"));
 		XTimer xTimer = new XTimer(mainVisual);
-		xTimer.start();
 		s.setOnMousePressed(xTimer::onMouseDown);
 		s.setOnDragDetected(xTimer::onDragDetected);
 		s.setOnMouseReleased(xTimer::onMouseUp);
@@ -52,6 +51,7 @@ public class XScene extends Application
 			canvas.setHeight(g.doubleValue());
 			graphics.setyW(g.doubleValue());
 		});
+		xTimer.start();
 		stage.show();
 	}
 }
