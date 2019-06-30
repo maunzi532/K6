@@ -8,7 +8,6 @@ import item.inv.*;
 import item.view.ItemView;
 import java.util.*;
 import javafx.scene.paint.Color;
-import logic.*;
 import logic.xstate.*;
 
 public class BuildGUI extends XGUI implements InvGUI
@@ -130,7 +129,7 @@ public class BuildGUI extends XGUI implements InvGUI
 	}
 
 	@Override
-	public boolean click(int x, int y, int key, XStateControl stateControl)
+	public boolean click(int x, int y, int key, XStateHolder stateHolder)
 	{
 		List<List<CostBlueprint>> costBlueprints = blueprint.constructionBlueprint.blueprints;
 		CostBlueprint cost = costBlueprints.get(costNum).get(tileCostNum);
@@ -169,7 +168,7 @@ public class BuildGUI extends XGUI implements InvGUI
 				character.takeAp(1);
 				character.mainActionTaken();
 				character.buildBuilding(cost, refundable.get(), blueprint);
-				stateControl.setState(NoneState.INSTANCE);
+				stateHolder.setState(NoneState.INSTANCE);
 				return true;
 			}
 		}

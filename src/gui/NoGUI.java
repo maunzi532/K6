@@ -1,6 +1,6 @@
 package gui;
 
-import logic.XStateControl;
+import logic.xstate.*;
 
 public class NoGUI extends XGUI
 {
@@ -30,11 +30,11 @@ public class NoGUI extends XGUI
 	}
 
 	@Override
-	public boolean click(int x, int y, int key, XStateControl stateControl)
+	public boolean click(int x, int y, int key, XStateHolder stateHolder)
 	{
 		throw new RuntimeException();
 	}
 
 	@Override
-	public void close(XStateControl stateControl, boolean setState){}
+	public void close(XStateHolder stateHolder, boolean setState){}
 }

@@ -4,7 +4,6 @@ import entity.*;
 import gui.*;
 import item.view.*;
 import java.util.*;
-import logic.*;
 import logic.xstate.*;
 
 public class EntityEditGUI extends XGUI implements InvGUI
@@ -122,7 +121,7 @@ public class EntityEditGUI extends XGUI implements InvGUI
 	}
 
 	@Override
-	public boolean click(int x, int y, int key, XStateControl stateControl)
+	public boolean click(int x, int y, int key, XStateHolder stateHolder)
 	{
 		invView.checkClick(x, y, items.size(), this);
 		infoView.checkClick(x, y, info.size(), this);
@@ -149,8 +148,8 @@ public class EntityEditGUI extends XGUI implements InvGUI
 	}
 
 	@Override
-	public void close(XStateControl stateControl, boolean setState)
+	public void close(XStateHolder stateHolder, boolean setState)
 	{
-		stateControl.setState(EditingState.INSTANCE);
+		stateHolder.setState(EditingState.INSTANCE);
 	}
 }

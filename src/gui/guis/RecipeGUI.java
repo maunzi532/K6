@@ -6,7 +6,7 @@ import gui.*;
 import item.*;
 import item.inv.Inv;
 import item.view.*;
-import logic.*;
+import logic.xstate.*;
 
 public class RecipeGUI extends XGUI implements InvGUI
 {
@@ -91,7 +91,7 @@ public class RecipeGUI extends XGUI implements InvGUI
 	}
 
 	@Override
-	public boolean click(int x, int y, int key, XStateControl stateControl)
+	public boolean click(int x, int y, int key, XStateHolder stateHolder)
 	{
 		Recipe recipe = building.getRecipes().get(recipeNum);
 		requireView.checkClick(x, y, recipe.required.items.size(), this);
@@ -112,9 +112,9 @@ public class RecipeGUI extends XGUI implements InvGUI
 	}
 
 	@Override
-	public void close(XStateControl stateControl, boolean setState)
+	public void close(XStateHolder stateHolder, boolean setState)
 	{
 		building.lastViewedRecipeNum = recipeNum;
-		super.close(stateControl, setState);
+		super.close(stateHolder, setState);
 	}
 }

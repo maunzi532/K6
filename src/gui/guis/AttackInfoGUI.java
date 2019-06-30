@@ -4,7 +4,6 @@ import draw.*;
 import entity.*;
 import gui.*;
 import java.util.*;
-import logic.*;
 import logic.xstate.*;
 
 public class AttackInfoGUI extends XGUI implements InvGUI
@@ -116,14 +115,14 @@ public class AttackInfoGUI extends XGUI implements InvGUI
 	}
 
 	@Override
-	public boolean click(int x, int y, int key, XStateControl stateControl)
+	public boolean click(int x, int y, int key, XStateHolder stateHolder)
 	{
 		attacksView.checkClick(x, y, infoList.size(), this);
 		if(chosen != null)
 		{
 			attacker.takeAp(2);
 			attacker.mainActionTaken();
-			stateControl.setState(new PreAttackState(NoneState.INSTANCE, chosen));
+			stateHolder.setState(new PreAttackState(NoneState.INSTANCE, chosen));
 			return true;
 		}
 		if(attacksView.updateGUIFlag())

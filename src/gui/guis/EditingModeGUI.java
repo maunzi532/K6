@@ -3,7 +3,6 @@ package gui.guis;
 import gui.*;
 import java.util.*;
 import levelMap.editor.*;
-import logic.*;
 import logic.xstate.*;
 
 public class EditingModeGUI extends XGUI implements InvGUI
@@ -63,13 +62,13 @@ public class EditingModeGUI extends XGUI implements InvGUI
 	}
 
 	@Override
-	public boolean click(int x, int y, int key, XStateControl stateControl)
+	public boolean click(int x, int y, int key, XStateHolder stateHolder)
 	{
 		modesView.checkClick(x, y, modes.size(), this);
 		if(chosen != null)
 		{
 			editor.setCurrentSlot(chosen);
-			stateControl.setState(EditingState.INSTANCE);
+			stateHolder.setState(EditingState.INSTANCE);
 			return true;
 		}
 		if(modesView.updateGUIFlag())
@@ -84,8 +83,8 @@ public class EditingModeGUI extends XGUI implements InvGUI
 	}
 
 	@Override
-	public void close(XStateControl stateControl, boolean setState)
+	public void close(XStateHolder stateHolder, boolean setState)
 	{
-		stateControl.setState(EditingState.INSTANCE);
+		stateHolder.setState(EditingState.INSTANCE);
 	}
 }

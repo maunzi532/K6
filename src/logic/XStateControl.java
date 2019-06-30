@@ -10,7 +10,7 @@ import levelMap.*;
 import levelMap.editor.*;
 import logic.xstate.*;
 
-public class XStateControl
+public class XStateControl implements XStateHolder
 {
 	private MainState mainState;
 	private NState state;
@@ -33,6 +33,7 @@ public class XStateControl
 		return state;
 	}
 
+	@Override
 	public void setState(NState state)
 	{
 		this.state = state;

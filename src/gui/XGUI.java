@@ -1,7 +1,6 @@
 package gui;
 
 import javafx.scene.paint.*;
-import logic.*;
 import logic.xstate.*;
 
 public abstract class XGUI
@@ -82,18 +81,18 @@ public abstract class XGUI
 
 	public abstract void target(int x, int y);
 
-	public abstract boolean click(int x, int y, int key, XStateControl stateControl);
+	public abstract boolean click(int x, int y, int key, XStateHolder stateHolder);
 
-	public boolean clickOutside(int key, XStateControl stateControl)
+	public boolean clickOutside(int key, XStateHolder stateHolder)
 	{
-		close(stateControl, true);
+		close(stateHolder, true);
 		return true;
 	}
 
-	public void close(XStateControl stateControl, boolean setState)
+	public void close(XStateHolder stateHolder, boolean setState)
 	{
 		if(setState)
-			stateControl.setState(NoneState.INSTANCE);
+			stateHolder.setState(NoneState.INSTANCE);
 	}
 
 	public static String except1(int num)

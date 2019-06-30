@@ -9,7 +9,7 @@ import javafx.scene.text.*;
 import levelMap.editor.*;
 import logic.xstate.*;
 
-public class MainVisual
+public class MainVisual implements XInputInterface
 {
 	private static final double BORDER = 0.8;
 
@@ -47,6 +47,13 @@ public class MainVisual
 		draw();
 	}
 
+	@Override
+	public void frameTime(long nanoFrameTime)
+	{
+
+	}
+
+	@Override
 	public void handleClick(double x, double y, int mouseKey)
 	{
 		int menuOption = visualMenu.coordinatesToOption(x, y);
@@ -69,6 +76,7 @@ public class MainVisual
 		}
 	}
 
+	@Override
 	public void handleKey(KeyCode keyCode)
 	{
 		switch(keyCode)
@@ -83,6 +91,7 @@ public class MainVisual
 		}
 	}
 
+	@Override
 	public void handleMouseMove(double x, double y)
 	{
 		if(mainState.stateControl.getState() instanceof NGUIState && visualGUI.inside(x, y, mainState.stateControl.getXgui()))
@@ -91,6 +100,7 @@ public class MainVisual
 		}
 	}
 
+	@Override
 	public void tick()
 	{
 		mainState.stateControl.tick();
@@ -110,6 +120,7 @@ public class MainVisual
 		visualMenu.draw();
 	}
 
+	@Override
 	public void mousePosition(double xMouse, double yMouse)
 	{
 		if(mainState.stateControl.getState() instanceof NoneState || mainState.stateControl.getState().editMode())
@@ -125,5 +136,17 @@ public class MainVisual
 			else if(yp < -BORDER)
 				mapCamera.setYShift(mapCamera.getYShift() + yp + BORDER);
 		}
+	}
+
+	@Override
+	public void handleDrag(double xStart, double yStart, double xEnd, double yEnd, int mouseKey)
+	{
+
+	}
+
+	@Override
+	public void dragPosition(double xStart, double yStart, double xMoved, double yMoved, int mouseKey)
+	{
+
 	}
 }

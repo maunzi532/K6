@@ -4,7 +4,6 @@ import entity.*;
 import geom.f1.*;
 import java.util.*;
 import levelMap.*;
-import logic.*;
 
 public class AdvMoveState implements NMarkState
 {
@@ -46,17 +45,17 @@ public class AdvMoveState implements NMarkState
 	}
 
 	@Override
-	public void onClickMarked(Tile mapTile, MarkType markType, int key, LevelMap levelMap, XStateControl stateControl)
+	public void onClickMarked(Tile mapTile, MarkType markType, int key, LevelMap levelMap, XStateHolder stateHolder)
 	{
 		if(markType == MarkType.TARGET)
 		{
 			character.setMoved();
 			levelMap.moveEntity(character, mapTile);
-			stateControl.setState(new AdvMoveState(character));
+			stateHolder.setState(new AdvMoveState(character));
 		}
 		else if(markType == MarkType.ON)
 		{
-			stateControl.setState(new AttackInfoState(character, levelMap.getEntity(mapTile)));
+			stateHolder.setState(new AttackInfoState(character, levelMap.getEntity(mapTile)));
 		}
 	}
 }

@@ -7,7 +7,6 @@ import item.ItemList;
 import item.inv.CommitType;
 import item.view.*;
 import java.util.List;
-import logic.*;
 import logic.xstate.*;
 
 public class RemoveGUI extends XGUI implements InvGUI
@@ -82,7 +81,7 @@ public class RemoveGUI extends XGUI implements InvGUI
 	}
 
 	@Override
-	public boolean click(int x, int y, int key, XStateControl stateControl)
+	public boolean click(int x, int y, int key, XStateHolder stateHolder)
 	{
 		if(remove.contains(x, y) && character.inputInv().ok())
 		{
@@ -90,16 +89,16 @@ public class RemoveGUI extends XGUI implements InvGUI
 			character.irreversible();
 			character.inputInv().commit();
 			building.remove();
-			stateControl.setState(NoneState.INSTANCE);
+			stateHolder.setState(NoneState.INSTANCE);
 			return true;
 		}
 		return false;
 	}
 
 	@Override
-	public void close(XStateControl stateControl, boolean setState)
+	public void close(XStateHolder stateHolder, boolean setState)
 	{
 		character.inputInv().rollback();
-		super.close(stateControl, setState);
+		super.close(stateHolder, setState);
 	}
 }

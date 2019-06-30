@@ -4,7 +4,6 @@ import building.*;
 import geom.f1.*;
 import java.util.*;
 import levelMap.*;
-import logic.*;
 
 public class ProductionFloorsState implements NMarkState
 {
@@ -28,7 +27,7 @@ public class ProductionFloorsState implements NMarkState
 	}
 
 	@Override
-	public void onClickMarked(Tile mapTile, MarkType markType, int key, LevelMap levelMap, XStateControl stateControl)
+	public void onClickMarked(Tile mapTile, MarkType markType, int key, LevelMap levelMap, XStateHolder stateHolder)
 	{
 		building.toggleTarget(mapTile, levelMap);
 	}

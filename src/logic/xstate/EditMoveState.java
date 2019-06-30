@@ -19,7 +19,7 @@ public class EditMoveState implements NMarkState
 	}
 
 	@Override
-	public void onClickMarked(Tile mapTile, MarkType markType, int key, LevelMap levelMap, XStateControl stateControl)
+	public void onClickMarked(Tile mapTile, MarkType markType, int key, LevelMap levelMap, XStateHolder stateHolder)
 	{
 		levelMap.moveEntity(entity, mapTile);
 	}

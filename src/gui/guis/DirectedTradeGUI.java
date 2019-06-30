@@ -7,7 +7,6 @@ import item.inv.transport.DoubleInv;
 import item.view.ItemView;
 import java.util.List;
 import javafx.scene.paint.Color;
-import logic.*;
 import logic.xstate.*;
 
 public class DirectedTradeGUI extends XGUI implements InvGUI
@@ -105,7 +104,7 @@ public class DirectedTradeGUI extends XGUI implements InvGUI
 	}
 
 	@Override
-	public boolean click(int x, int y, int key, XStateControl stateControl)
+	public boolean click(int x, int y, int key, XStateHolder stateHolder)
 	{
 		provideView.checkClick(x, y, provideItems.size(), this);
 		receiveView.checkClick(x, y, receiveItems.size(), this);
@@ -144,7 +143,7 @@ public class DirectedTradeGUI extends XGUI implements InvGUI
 				takeAp.takeAp(1);
 				takeAp.irreversible();
 			}
-			stateControl.setState(NoneState.INSTANCE);
+			stateHolder.setState(NoneState.INSTANCE);
 			return true;
 		}
 		return false;
@@ -161,10 +160,10 @@ public class DirectedTradeGUI extends XGUI implements InvGUI
 	}
 
 	@Override
-	public void close(XStateControl stateControl, boolean setState)
+	public void close(XStateHolder stateHolder, boolean setState)
 	{
 		provide.outputInv().rollback();
 		receive.inputInv().rollback();
-		super.close(stateControl, setState);
+		super.close(stateHolder, setState);
 	}
 }

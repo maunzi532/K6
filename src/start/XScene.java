@@ -7,6 +7,7 @@ import javafx.scene.canvas.*;
 import javafx.scene.image.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import logic.*;
 
 public class XScene extends Application
 {
@@ -31,10 +32,13 @@ public class XScene extends Application
 		stage.setTitle("K6");
 		stage.getIcons().add(new Image("Tech.png"));
 		XGraphics graphics = new XGraphics(canvas.getGraphicsContext2D(), WIDTH, HEIGHT);
-		XTimer xTimer = new XTimer(graphics, args0.length > 0 && args0[0].equals("H"),
+		MainVisual mainVisual = new MainVisual(graphics, args0.length > 0 && args0[0].equals("H"),
 				args0.length > 1 && args0[1].equals("H"), args0.length > 2 && args0[2].equals("H"));
+		XTimer xTimer = new XTimer(mainVisual);
 		xTimer.start();
-		s.setOnMouseClicked(xTimer::onMouseClick);
+		s.setOnMousePressed(xTimer::onMouseDown);
+		s.setOnDragDetected(xTimer::onDragDetected);
+		s.setOnMouseReleased(xTimer::onMouseUp);
 		s.setOnMouseMoved(xTimer::onMouseMove);
 		s.setOnMouseExited(xTimer::onMouseExit);
 		s.setOnKeyPressed(xTimer::onKeyEvent);

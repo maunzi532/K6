@@ -1,7 +1,7 @@
 package gui.guis;
 
 import gui.*;
-import logic.*;
+import logic.xstate.*;
 
 public class EditingGUI extends XGUI
 {
@@ -32,7 +32,7 @@ public class EditingGUI extends XGUI
 	public void target(int x, int y){}
 
 	@Override
-	public boolean click(int x, int y, int key, XStateControl stateControl)
+	public boolean click(int x, int y, int key, XStateHolder stateHolder)
 	{
 		return false;
 	}

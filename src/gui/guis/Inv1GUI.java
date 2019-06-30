@@ -4,7 +4,7 @@ import gui.*;
 import item.inv.Inv;
 import item.view.*;
 import java.util.List;
-import logic.*;
+import logic.xstate.*;
 
 public class Inv1GUI extends XGUI implements InvGUI
 {
@@ -108,7 +108,7 @@ public class Inv1GUI extends XGUI implements InvGUI
 	}
 
 	@Override
-	public boolean click(int x, int y, int key, XStateControl stateControl)
+	public boolean click(int x, int y, int key, XStateHolder stateHolder)
 	{
 		return false;
 	}

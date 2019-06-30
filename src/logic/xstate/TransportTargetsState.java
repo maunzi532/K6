@@ -5,7 +5,6 @@ import geom.f1.*;
 import item.inv.transport.*;
 import java.util.*;
 import levelMap.*;
-import logic.*;
 
 public class TransportTargetsState implements NMarkState
 {
@@ -29,7 +28,7 @@ public class TransportTargetsState implements NMarkState
 	}
 
 	@Override
-	public void onClickMarked(Tile mapTile, MarkType markType, int key, LevelMap levelMap, XStateControl stateControl)
+	public void onClickMarked(Tile mapTile, MarkType markType, int key, LevelMap levelMap, XStateHolder stateHolder)
 	{
 		transporter.toggleTarget((DoubleInv) levelMap.getBuilding(mapTile));
 	}

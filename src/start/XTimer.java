@@ -1,15 +1,18 @@
 package start;
 
-import geom.*;
 import javafx.animation.*;
 import javafx.scene.input.*;
 import logic.*;
 
 public class XTimer extends AnimationTimer
 {
-	private long last;
-	private MainVisual mainVisual;
+	private XInputInterface inputInterface;
+	private long lastNanoTime;
+	private boolean mouseDown;
+	private boolean isDrag;
+	private double xStart, yStart;
 	private boolean clicked;
+	private boolean dragged;
 	private double xClicked, yClicked;
 	private boolean moved;
 	private boolean inside;
@@ -17,18 +20,40 @@ public class XTimer extends AnimationTimer
 	private MouseButton mouseKey;
 	private KeyCode keyCode;
 
-	XTimer(XGraphics graphics, boolean hexTiles, boolean hexMenu, boolean hexGUI)
+	XTimer(XInputInterface inputInterface)
 	{
-		mainVisual = new MainVisual(graphics, hexTiles, hexMenu, hexGUI);
+		this.inputInterface = inputInterface;
 	}
 
-	public void onMouseClick(MouseEvent mouseEvent)
+	public void onMouseDown(MouseEvent mouseEvent)
 	{
-		clicked = true;
-		xClicked = mouseEvent.getSceneX();
-		yClicked = mouseEvent.getSceneY();
+		mouseDown = true;
+		xStart = mouseEvent.getSceneX();
+		yStart = mouseEvent.getSceneY();
 		mouseKey = mouseEvent.getButton();
 	}
+
+	public void onDragDetected(MouseEvent mouseEvent)
+	{
+		isDrag = true;
+	}
+
+	public void onMouseUp(MouseEvent mouseEvent)
+	{
+		if(mouseDown)
+		{
+			mouseDown = false;
+			if(isDrag)
+				dragged = true;
+			else
+				clicked = true;
+			isDrag = false;
+			xClicked = mouseEvent.getSceneX();
+			yClicked = mouseEvent.getSceneY();
+			mouseKey = mouseEvent.getButton();
+		}
+	}
+
 
 	public void onMouseMove(MouseEvent mouseEvent)
 	{
@@ -40,6 +65,10 @@ public class XTimer extends AnimationTimer
 
 	public void onMouseExit(MouseEvent mouseEvent)
 	{
+		mouseDown = false;
+		isDrag = false;
+		xMoved = mouseEvent.getSceneX();
+		yMoved = mouseEvent.getSceneY();
 		inside = false;
 	}
 
@@ -51,28 +80,37 @@ public class XTimer extends AnimationTimer
 	@Override
 	public void handle(long currentNanoTime)
 	{
-		//System.out.println((currentNanoTime - last) / 1000000);
-		//System.out.println(1000000000d / (currentNanoTime - last));
-		last = currentNanoTime;
+		//System.out.println((currentNanoTime - lastNanoTime) / 1000000);
+		//System.out.println(1000000000d / (currentNanoTime - lastNanoTime));
+		inputInterface.frameTime(currentNanoTime - lastNanoTime);
+		lastNanoTime = currentNanoTime;
 		if(inside)
 		{
-			mainVisual.mousePosition(xMoved, yMoved);
+			inputInterface.mousePosition(xMoved, yMoved);
 		}
 		if(moved)
 		{
-			mainVisual.handleMouseMove(xMoved, yMoved);
+			inputInterface.handleMouseMove(xMoved, yMoved);
 			moved = false;
+		}
+		if(isDrag)
+		{
+			inputInterface.dragPosition(xStart, yStart, xMoved, yMoved, mouseKey.ordinal());
 		}
 		if(clicked)
 		{
-			mainVisual.handleClick(xClicked, yClicked, mouseKey.ordinal());
+			inputInterface.handleClick(xClicked, yClicked, mouseKey.ordinal());
 			clicked = false;
+		}
+		else if(dragged)
+		{
+			inputInterface.handleDrag(xStart, yStart, xClicked, yClicked, mouseKey.ordinal());
 		}
 		else if(keyCode != null)
 		{
-			mainVisual.handleKey(keyCode);
+			inputInterface.handleKey(keyCode);
 			keyCode = null;
 		}
-		mainVisual.tick();
+		inputInterface.tick();
 	}
 }

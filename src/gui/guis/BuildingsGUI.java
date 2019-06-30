@@ -5,7 +5,6 @@ import levelMap.MBuilding;
 import building.blueprint.BuildingBlueprint;
 import file.BlueprintCache;
 import gui.*;
-import logic.*;
 import logic.xstate.*;
 
 public class BuildingsGUI extends XGUI implements InvGUI
@@ -72,12 +71,12 @@ public class BuildingsGUI extends XGUI implements InvGUI
 	}
 
 	@Override
-	public boolean click(int x, int y, int key, XStateControl stateControl)
+	public boolean click(int x, int y, int key, XStateHolder stateHolder)
 	{
 		buildingsView.checkClick(x, y, names.length, this);
 		if(chosen != null)
 		{
-			stateControl.setState(new BuildState(builder, chosen));
+			stateHolder.setState(new BuildState(builder, chosen));
 			return true;
 		}
 		if(buildingsView.updateGUIFlag())
