@@ -36,10 +36,10 @@ public class AttackInfoPart2
 		melting1 = abilities.contains(Ability2.MELTING);
 		if(attackMode.magical())
 		{
-			damage = Math.max(0, attackMode.getDamage() + statsInfo.skill - statsInfoT.magicDef);
-			meltDamage = Math.max(0, attackMode.getDamage() + statsInfo.skill - statsInfoT.magicDef / 2);
+			damage = Math.max(0, attackMode.getDamage() + statsInfo.skill - statsInfoT.evasion);
+			meltDamage = Math.max(0, attackMode.getDamage() + statsInfo.skill - statsInfoT.evasion / 2);
 			cost = attackCount > 0 ? Math.max(0, attackMode.getHeavy() - statsInfo.strength) : 0;
-			hitrate = Math.max(0, Math.min(100, attackMode.getAccuracy() + statsInfo.finesse * 5 - statsInfoT.finesse * 4));
+			hitrate = Math.max(0, Math.min(100, attackMode.getAccuracy() + statsInfo.finesse * 5 - statsInfoT.luck * 5));
 			autohit1 = false;
 		}
 		else
@@ -47,7 +47,7 @@ public class AttackInfoPart2
 			damage = Math.max(0, attackMode.getDamage() + statsInfo.finesse - statsInfoT.defense);
 			meltDamage = Math.max(0, attackMode.getDamage() + statsInfo.finesse - statsInfoT.defense / 2);
 			cost = 0;
-			hitrate = Math.max(0, Math.min(100, attackMode.getAccuracy() + statsInfo.skill * 5 - statsInfoT.skill * 4));
+			hitrate = Math.max(0, Math.min(100, attackMode.getAccuracy() + statsInfo.skill * 5 - statsInfoT.evasion * 5));
 			autohit1 = advantage >= 0 && abilities.contains(Ability2.TWO_HANDED);
 		}
 		critDamage = damage * 2;

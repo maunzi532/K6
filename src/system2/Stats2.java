@@ -26,7 +26,7 @@ public class Stats2 implements Stats
 	private int speed;
 	private int luck;
 	private int defense;
-	private int magicDef;
+	private int evasion;
 	private int toughness;
 	private int movement;
 	private int currentHealth;
@@ -36,7 +36,7 @@ public class Stats2 implements Stats
 
 	public Stats2(XClass xClass, int level, String customName,
 			String customImage, int strength, int finesse, int skill, int speed,
-			int luck, int defense, int magicDef, int toughness,
+			int luck, int defense, int evasion, int toughness,
 			int movement)
 	{
 		this.xClass = xClass;
@@ -49,7 +49,7 @@ public class Stats2 implements Stats
 		this.speed = speed;
 		this.luck = luck;
 		this.defense = defense;
-		this.magicDef = magicDef;
+		this.evasion = evasion;
 		this.toughness = toughness;
 		currentHealth = toughness;
 		this.movement = movement;
@@ -72,7 +72,7 @@ public class Stats2 implements Stats
 		speed = xClass.getStat(3, level);
 		luck = xClass.getStat(4, level);
 		defense = xClass.getStat(5, level);
-		magicDef = xClass.getStat(6, level);
+		evasion = xClass.getStat(6, level);
 		toughness = xClass.getStat(7, level);
 		currentHealth = toughness;
 		movement = xClass.movement;
@@ -88,14 +88,14 @@ public class Stats2 implements Stats
 		return level;
 	}
 
-	public int getStrength()
-	{
-		return strength;
-	}
-
 	public int getToughness()
 	{
 		return toughness;
+	}
+
+	public int getStrength()
+	{
+		return strength;
 	}
 
 	public int getFinesse()
@@ -123,9 +123,14 @@ public class Stats2 implements Stats
 		return defense;
 	}
 
-	public int getMagicDef()
+	public int getEvasion()
 	{
-		return magicDef;
+		return evasion;
+	}
+
+	private int getCPower()
+	{
+		return (toughness / 5) + strength + finesse + skill + speed + luck + defense + evasion;
 	}
 
 	public int getMovement()
@@ -225,7 +230,8 @@ public class Stats2 implements Stats
 	@Override
 	public Stats copy()
 	{
-		Stats2 copy = new Stats2(xClass, level, customName, customImage, strength, finesse, skill, speed, luck, defense, magicDef, toughness, movement);
+		Stats2 copy = new Stats2(xClass, level, customName, customImage, strength, finesse, skill, speed, luck, defense,
+				evasion, toughness, movement);
 		copy.currentHealth = currentHealth;
 		copy.exhaustion = exhaustion;
 		return copy;
@@ -269,7 +275,7 @@ public class Stats2 implements Stats
 		ints.add(speed);
 		ints.add(luck);
 		ints.add(defense);
-		ints.add(magicDef);
+		ints.add(evasion);
 		ints.add(toughness);
 		ints.add(movement);
 		ints.add(currentHealth);
@@ -317,7 +323,7 @@ public class Stats2 implements Stats
 		speed = intBuffer.get();
 		luck = intBuffer.get();
 		defense = intBuffer.get();
-		magicDef = intBuffer.get();
+		evasion = intBuffer.get();
 		toughness = intBuffer.get();
 		movement = intBuffer.get();
 		currentHealth = intBuffer.get();
@@ -341,7 +347,9 @@ public class Stats2 implements Stats
 		info.add("Skill\n" + skill);
 		info.add("Speed\n" + speed);
 		info.add("Luck\n" + luck);
-		info.add("Defense\n" + defense + " / " + magicDef);
+		info.add("Defense\n" + defense);
+		info.add("Evasion\n" + evasion);
+		info.add("CPower\n" + getCPower());
 		info.add("Move\n" + movement);
 		info.add(exhaustion > 0 ? "Exhausted\n" + exhaustion : "");
 		info.add("Defend\n" + (lastUsed != null ? lastUsed.item.info().get(0).replace("Type\n", "") : "None"));
@@ -375,7 +383,7 @@ public class Stats2 implements Stats
 		info.add("Speed\n" + speed);
 		info.add("Luck\n" + luck);
 		info.add("Defense\n" + defense);
-		info.add("MagicDef\n" + magicDef);
+		info.add("Evasion\n" + evasion);
 		info.add("Toughness\n" + toughness);
 		info.add("Health\n" + currentHealth);
 		info.add("Exhaustion\n" + exhaustion);
@@ -455,9 +463,9 @@ public class Stats2 implements Stats
 			case 0x80 -> defense++;
 			case 0x81 -> defense--;
 			case 0x82 -> defense = xClass.getStat(5, level);
-			case 0x90 -> magicDef++;
-			case 0x91 -> magicDef--;
-			case 0x92 -> magicDef = xClass.getStat(6, level);
+			case 0x90 -> evasion++;
+			case 0x91 -> evasion--;
+			case 0x92 -> evasion = xClass.getStat(6, level);
 			case 0xa0 -> toughness++;
 			case 0xa1 -> toughness--;
 			case 0xa2 -> toughness = xClass.getStat(7, level);

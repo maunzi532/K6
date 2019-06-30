@@ -5,10 +5,14 @@ import logic.xstate.*;
 
 public class StateControl2 implements XStateHolder, ConvInputConsumer
 {
+	private MainState mainState;
+	private NState state;
+
 	@Override
 	public void setState(NState state)
 	{
-
+		this.state = state;
+		state.onEnter(mainState);
 	}
 
 	@Override
