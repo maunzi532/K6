@@ -3,6 +3,7 @@ package logic;
 import draw.*;
 import geom.*;
 import geom.d1.*;
+import geom.f1.*;
 import javafx.geometry.*;
 import javafx.scene.input.*;
 import javafx.scene.text.*;
@@ -21,6 +22,7 @@ public class MainVisual implements XInputInterface
 	private VisualSideInfo visualSideInfo;
 	private LevelEditor levelEditor;
 	private MainState mainState;
+	private ConvInputConsumer convInputConsumer;
 
 	public MainVisual(XGraphics graphics, boolean hexTiles, boolean hexMenu, boolean hexGUI)
 	{
@@ -75,6 +77,15 @@ public class MainVisual implements XInputInterface
 		}
 		if(mouseKey >= 0)
 			handleClick(xMouse, yMouse, mouseKey);
+		convInputConsumer.mousePosition(xMouse / graphics.xHW() - 1, yMouse / graphics.yHW() - 1,
+				visualGUI.inside(xMouse, yMouse, convInputConsumer.getGUI()), visualGUI.offsetClickLocation(xMouse, yMouse),
+				visualMenu.coordinatesToOption(xMouse, yMouse), levelEditor.editorClickNum(xMouse, yMouse),
+				targetedTile(xMouse, yMouse), moved, drag, mouseKey);
+	}
+
+	private Tile targetedTile(double x, double y)
+	{
+		return mainState.y2.cast(mapCamera.clickLocation(x, y));
 	}
 
 	private void handleClick(double x, double y, int mouseKey)
@@ -102,7 +113,7 @@ public class MainVisual implements XInputInterface
 	@Override
 	public void dragPosition(double xStart, double yStart, double xMoved, double yMoved, int mouseKey, boolean finished)
 	{
-
+		convInputConsumer.dragPosition(targetedTile(xStart, yStart), targetedTile(xMoved, yMoved), mouseKey, finished);
 	}
 
 	@Override
@@ -118,12 +129,14 @@ public class MainVisual implements XInputInterface
 			case DOWN -> mainState.stateControl.handleMenuChoose(1);
 			case E -> mainState.stateControl.toggleEditMode();
 		}
+		convInputConsumer.handleKey(keyCode);
 	}
 
 	@Override
 	public void tick()
 	{
 		mainState.stateControl.tick();
+		convInputConsumer.tick();
 		mainState.levelMap.tickArrows();
 		visualSideInfo.tick();
 		draw();

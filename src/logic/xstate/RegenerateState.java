@@ -50,12 +50,6 @@ public class RegenerateState implements NAutoState
 	}
 
 	@Override
-	public XMenu menu()
-	{
-		return XMenu.NOMENU;
-	}
-
-	@Override
 	public boolean keepInMenu(MainState mainState)
 	{
 		if(entity instanceof XHero)

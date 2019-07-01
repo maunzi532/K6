@@ -9,4 +9,10 @@ public interface NAutoState extends NState
 	boolean finished();
 
 	NState nextState();
+
+	@Override
+	default XMenu menu()
+	{
+		return XMenu.NOMENU;
+	}
 }

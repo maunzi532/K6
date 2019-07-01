@@ -44,10 +44,4 @@ public class EnemyStartState implements NAutoState
 	{
 		return "Enemy Phase";
 	}
-
-	@Override
-	public XMenu menu()
-	{
-		return XMenu.NOMENU;
-	}
 }

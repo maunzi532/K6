@@ -50,10 +50,4 @@ public class MoveAnimState implements NAutoState
 	{
 		return "Error";
 	}
-
-	@Override
-	public XMenu menu()
-	{
-		return XMenu.NOMENU;
-	}
 }

@@ -195,19 +195,6 @@ public class XStateControl implements XStateHolder
 		}
 	}
 
-	private void update()
-	{
-		if(state instanceof NMarkState)
-			mainState.levelMap.setMarked(((NMarkState) state).marked(mainState.levelMap));
-		else
-			mainState.levelMap.setMarked(Map.of());
-		menu = state.menu().getEntries().stream().filter(e -> e.keepInMenu(mainState)).collect(Collectors.toList());
-		if(state instanceof NGUIState)
-			xgui = ((NGUIState) state).gui(mainState);
-		else
-			xgui = NoGUI.NONE;
-	}
-
 	public void tick()
 	{
 		if(state instanceof NAutoState)
@@ -220,5 +207,18 @@ public class XStateControl implements XStateHolder
 				update();
 			}
 		}
+	}
+
+	private void update()
+	{
+		if(state instanceof NMarkState)
+			mainState.levelMap.setMarked(((NMarkState) state).marked(mainState.levelMap));
+		else
+			mainState.levelMap.setMarked(Map.of());
+		menu = state.menu().getEntries().stream().filter(e -> e.keepInMenu(mainState)).collect(Collectors.toList());
+		if(state instanceof NGUIState)
+			xgui = ((NGUIState) state).gui(mainState);
+		else
+			xgui = NoGUI.NONE;
 	}
 }

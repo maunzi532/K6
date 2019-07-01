@@ -43,12 +43,6 @@ public class EditDeleteState implements NAutoState
 	}
 
 	@Override
-	public XMenu menu()
-	{
-		return XMenu.entityEditMenu(entity, mainState);
-	}
-
-	@Override
 	public boolean editMode()
 	{
 		return true;

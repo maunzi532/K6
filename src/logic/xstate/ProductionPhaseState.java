@@ -16,12 +16,6 @@ public class ProductionPhaseState implements NAutoState
 	}
 
 	@Override
-	public XMenu menu()
-	{
-		return XMenu.NOMENU;
-	}
-
-	@Override
 	public void tick(MainState mainState)
 	{
 		if(counter == 0)

@@ -44,10 +44,4 @@ public class StartTurnState implements NAutoState
 	{
 		return "Start Turn";
 	}
-
-	@Override
-	public XMenu menu()
-	{
-		return XMenu.NOMENU;
-	}
 }

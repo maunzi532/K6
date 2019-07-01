@@ -40,12 +40,6 @@ public class RevertMovementState implements NAutoState
 	}
 
 	@Override
-	public XMenu menu()
-	{
-		return XMenu.characterMenu(character);
-	}
-
-	@Override
 	public boolean keepInMenu(MainState mainState)
 	{
 		return character.canRevert();

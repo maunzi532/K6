@@ -32,6 +32,11 @@ public abstract class VisualGUI
 		return y2.cast(camera.clickLocation(x, y));
 	}
 
+	public Tile offsetClickLocation(double x, double y)
+	{
+		return y2.toOffset(y2.cast(camera.clickLocation(x, y)));
+	}
+
 	public boolean inside(double x, double y, XGUI xgui)
 	{
 		return inside(camera.clickLocation(x, y), xgui);

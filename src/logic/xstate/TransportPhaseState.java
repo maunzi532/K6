@@ -39,10 +39,4 @@ public class TransportPhaseState implements NAutoState
 	{
 		return "Transport";
 	}
-
-	@Override
-	public XMenu menu()
-	{
-		return XMenu.NOMENU;
-	}
 }
