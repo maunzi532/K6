@@ -24,9 +24,9 @@ public class CharacterInvState implements NGUIState
 	public XMenu menu()
 	{
 		if(character instanceof XHero)
-			return XMenu.characterMenu((XHero) character);
+			return XMenu.characterGUIMenu((XHero) character);
 		else
-			return XMenu.enemyMenu(character);
+			return XMenu.enemyGUIMenu(character);
 	}
 
 	@Override

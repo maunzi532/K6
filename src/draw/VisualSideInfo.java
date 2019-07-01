@@ -53,6 +53,13 @@ public class VisualSideInfo
 		r0.draw();
 	}
 
+	public void sidedInfo(XEntity e1, XEntity e2)
+	{
+		boolean inverted = inverted(e1.location(), e2.location());
+		l0.setSideInfo((inverted ? e2 : e1).standardSideInfo());
+		r0.setSideInfo((inverted ? e1 : e2).standardSideInfo());
+	}
+
 	public void attackInfo(AttackInfo aI)
 	{
 		boolean inverted = inverted(aI.entity.location(), aI.entityT.location());

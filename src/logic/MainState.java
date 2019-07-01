@@ -17,7 +17,6 @@ public class MainState
 	public final DoubleType y2;
 	public final LevelMap levelMap;
 	public final BlueprintCache<BuildingBlueprint> buildingBlueprintCache;
-	//public final XStateControl stateControl;
 	public XStateHolder stateHolder;
 	public final CombatSystem combatSystem;
 	public final VisualSideInfo visualSideInfo;
@@ -27,8 +26,6 @@ public class MainState
 		this.y2 = y2;
 		levelMap = new LevelMap(y2);
 		buildingBlueprintCache = new BlueprintCache<>("buildings");
-		//stateControl = new XStateControl(this);
-		//combatSystem = new System1();
 		combatSystem = new System2();
 		visualSideInfo = visualSideInfo1;
 	}
@@ -69,17 +66,18 @@ public class MainState
 		levelMap.addBuilding(transporter1);*/
 	}
 
+	//TODO show enemy reach
 	//TODO Change menu bar to not overlap with SideInfo
 	//TODO add permanent menu
-	//TODO Better controls
 	//TODO auto-camera
 	//TODO Enemy AI types
 	//TODO Improve floor placing tool
 	//TODO Build a real level
 
-	//LK char - move/attack/trade
-	//LK enemy - view range
-	//RK char/enemy - inv
+	//LK char - move/attack
+	//RK char - inv/trade
+	//LK enemy - view reach
+	//RK enemy - inv
 	//LK building - claimed area
 	//RK building - inv
 	//LK transporter - connected buildings

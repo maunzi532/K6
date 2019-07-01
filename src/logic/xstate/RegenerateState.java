@@ -19,6 +19,7 @@ public class RegenerateState implements NAutoState
 	@Override
 	public void onEnter(MainState mainState)
 	{
+		mainState.visualSideInfo.setSideInfo(entity.standardSideInfo(), null);
 		acE = new EntityArrowC(mainState, entity, null, 0, 0, 0,
 				0, 3, entity.getStats().getStat(0),
 				entity.getStats().getMaxStat(0), entity.getStats().getRegenerateChange(), 0);

@@ -24,7 +24,7 @@ public class RemoveBuildingState implements NGUIState
 	@Override
 	public XMenu menu()
 	{
-		return XMenu.characterMenu(builder);
+		return XMenu.characterGUIMenu(builder);
 	}
 
 	@Override

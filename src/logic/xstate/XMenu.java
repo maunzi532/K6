@@ -9,16 +9,20 @@ public class XMenu
 {
 	public static final XMenu NOMENU = new XMenu();
 
-	public static XMenu characterMenu(XHero character)
+	public static XMenu characterMoveMenu(XHero character)
 	{
-		return new XMenu(new AdvMoveState(character), new CharacterInvState(character),
-				new RegenerateState(character, new AdvMoveState(character)),
+		return new XMenu(new AdvMoveState(character), new RegenerateState(character, new AdvMoveState(character)),
+				new RevertMovementState(character), new EnemyStartState());
+	}
+
+	public static XMenu characterGUIMenu(XHero character)
+	{
+		return new XMenu(new CharacterInvState(character),
 				new GiveOrTakeState(true, character), new GiveOrTakeState(false, character),
-				new RevertMovementState(character),
 				new BuildingChooseState(character), new RemoveBuildingState(character), new EnemyStartState());
 	}
 
-	public static XMenu enemyMenu(InvEntity enemy)
+	public static XMenu enemyGUIMenu(InvEntity enemy)
 	{
 		return new XMenu(new CharacterInvState(enemy), new EnemyStartState());
 	}

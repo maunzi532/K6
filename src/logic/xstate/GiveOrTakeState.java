@@ -28,7 +28,7 @@ public class GiveOrTakeState implements NMarkState
 	@Override
 	public XMenu menu()
 	{
-		return XMenu.characterMenu(character);
+		return XMenu.characterGUIMenu(character);
 	}
 
 	@Override

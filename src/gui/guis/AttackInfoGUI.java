@@ -13,6 +13,7 @@ public class AttackInfoGUI extends XGUI implements InvGUI
 
 	private final VisualSideInfo visualSideInfo;
 	private final XHero attacker;
+	private final XEntity target;
 	private final List<AttackInfo> infoList;
 	private final InvGUIPart attacksView;
 	private int lastTargeted;
@@ -22,6 +23,7 @@ public class AttackInfoGUI extends XGUI implements InvGUI
 	{
 		this.visualSideInfo = visualSideInfo;
 		this.attacker = attacker;
+		this.target = target;
 		nameA = new CTile(0, 0, new GuiTile(attacker.name()), 2, 1);
 		nameT = new CTile(4, 0, new GuiTile(target.name()), 2, 1);
 		infoList = attacker.attackInfo(target);
@@ -85,7 +87,7 @@ public class AttackInfoGUI extends XGUI implements InvGUI
 		setTargeted(CTile.NONE);
 		if(lastTargeted >= 0)
 		{
-			visualSideInfo.clearSideInfo();
+			visualSideInfo.sidedInfo(attacker, target);
 			lastTargeted = -1;
 		}
 	}
@@ -109,7 +111,7 @@ public class AttackInfoGUI extends XGUI implements InvGUI
 		setTargeted(CTile.NONE);
 		if(lastTargeted >= 0)
 		{
-			visualSideInfo.clearSideInfo();
+			visualSideInfo.sidedInfo(attacker, target);
 			lastTargeted = -1;
 		}
 	}

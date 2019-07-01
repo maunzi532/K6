@@ -4,6 +4,7 @@ import entity.*;
 import geom.f1.*;
 import java.util.*;
 import levelMap.*;
+import logic.*;
 
 public class AdvMoveState implements NMarkState
 {
@@ -23,7 +24,13 @@ public class AdvMoveState implements NMarkState
 	@Override
 	public XMenu menu()
 	{
-		return XMenu.characterMenu(character);
+		return XMenu.characterMoveMenu(character);
+	}
+
+	@Override
+	public void onEnter(MainState mainState)
+	{
+		mainState.visualSideInfo.setSideInfo(character.standardSideInfo(), null);
 	}
 
 	@Override

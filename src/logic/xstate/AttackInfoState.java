@@ -17,6 +17,12 @@ public class AttackInfoState implements NGUIState
 	}
 
 	@Override
+	public void onEnter(MainState mainState)
+	{
+		mainState.visualSideInfo.sidedInfo(attacker, target);
+	}
+
+	@Override
 	public String text()
 	{
 		return "Error";
@@ -25,7 +31,7 @@ public class AttackInfoState implements NGUIState
 	@Override
 	public XMenu menu()
 	{
-		return XMenu.characterMenu(attacker);
+		return XMenu.characterMoveMenu(attacker);
 	}
 
 	@Override
