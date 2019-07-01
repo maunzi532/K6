@@ -215,6 +215,7 @@ public class EntityInvEditGUI extends XGUI implements InvGUI
 	@Override
 	public void close(XStateHolder stateHolder, boolean setState)
 	{
-		stateHolder.setState(EditingState.INSTANCE);
+		if(setState)
+			stateHolder.setState(EditingState.INSTANCE);
 	}
 }

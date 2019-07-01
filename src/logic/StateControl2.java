@@ -1,5 +1,6 @@
 package logic;
 
+import entity.*;
 import geom.f1.*;
 import gui.*;
 import java.util.*;
@@ -25,6 +26,24 @@ public class StateControl2 implements XStateHolder, ConvInputConsumer
 	}
 
 	@Override
+	public NState getState()
+	{
+		return state;
+	}
+
+	@Override
+	public XGUI getGUI()
+	{
+		return xgui;
+	}
+
+	@Override
+	public List<NState> getMenu()
+	{
+		return menu;
+	}
+
+	@Override
 	public void setState(NState state)
 	{
 		this.state = state;
@@ -43,12 +62,6 @@ public class StateControl2 implements XStateHolder, ConvInputConsumer
 			xgui = ((NGUIState) state).gui(mainState);
 		else
 			xgui = NoGUI.NONE;
-	}
-
-	@Override
-	public XGUI getGUI()
-	{
-		return xgui;
 	}
 
 	@Override
@@ -71,6 +84,10 @@ public class StateControl2 implements XStateHolder, ConvInputConsumer
 				{
 					xgui.click(offsetGUITile.v[0], offsetGUITile.v[1], mouseKey, this);
 				}
+				else if(menuOption >= 0)
+				{
+					onMenuClick(menuOption, mouseKey);
+				}
 				else
 				{
 					xgui.clickOutside(mouseKey, this);
@@ -79,17 +96,7 @@ public class StateControl2 implements XStateHolder, ConvInputConsumer
 		}
 		else if(menuOption >= 0)
 		{
-			if(mouseKey >= 0)
-			{
-				if(state instanceof NAutoState)
-					return;
-				NState newState = menu.get(menuOption);
-				if(newState != state)
-				{
-					xgui.close(this, false);
-					setState(newState);
-				}
-			}
+			onMenuClick(menuOption, mouseKey);
 		}
 		else if(state.editMode() && editorOption >= 0)
 		{
@@ -100,6 +107,21 @@ public class StateControl2 implements XStateHolder, ConvInputConsumer
 		{
 			//tile
 			handleMapTarget(mapTile, mouseKey);
+		}
+	}
+
+	private void onMenuClick(int menuOption, int mouseKey)
+	{
+		if(mouseKey >= 0)
+		{
+			if(state instanceof NAutoState)
+				return;
+			NState newState = menu.get(menuOption);
+			if(newState != state)
+			{
+				xgui.close(this, false);
+				setState(newState);
+			}
 		}
 	}
 
@@ -116,31 +138,35 @@ public class StateControl2 implements XStateHolder, ConvInputConsumer
 		{
 			levelEditor.onMapClick(mapTile, mouseKey);
 		}
-		else
+		else if(mouseKey >= 0)
 		{
-			/*AdvTile advTile = mainState.levelMap.advTile(mapTile);
-			if(mouseKey == 1)
+			AdvTile advTile = mainState.levelMap.advTile(mapTile);
+			XEntity entity = advTile.getEntity();
+			if(entity != null)
 			{
-				if(advTile.getEntity() != null)
+				if(entity instanceof XHero)
 				{
-					setTileState(advTile.getEntity());
+					if(mouseKey == 1)
+					{
+						setState(new AdvMoveState((XHero) entity));
+					}
+					else if(mouseKey == 3)
+					{
+						setState(new CharacterInvState((XHero) entity));
+					}
 				}
-				else if(advTile.getBuilding() != null)
+				else if(entity instanceof XEnemy)
 				{
-					setTileState(advTile.getBuilding());
+					if(mouseKey == 1)
+					{
+						//setState(new AdvMoveState((XEnemy) entity));
+					}
+					else if(mouseKey == 3)
+					{
+						setState(new CharacterInvState((XEnemy) entity));
+					}
 				}
 			}
-			else if(mouseKey == 3)
-			{
-				if(advTile.getBuilding() != null)
-				{
-					setTileState(advTile.getBuilding());
-				}
-				else if(advTile.getEntity() != null)
-				{
-					setTileState(advTile.getEntity());
-				}
-			}*/
 		}
 	}
 

@@ -12,7 +12,8 @@ import logic.xstate.*;
 
 public class MainVisual implements XInputInterface
 {
-	private static final double BORDER = 0.8;
+	private static final double BORDER = 0.9;
+	private static final double BORDER2 = 0.75;
 
 	private XGraphics graphics;
 	private VisualTile visualTile;
@@ -35,17 +36,19 @@ public class MainVisual implements XInputInterface
 		visualSideInfo = new VisualSideInfo(graphics, mapCamera);
 		mainState = new MainState(y2, visualSideInfo);
 		mainState.initialize();
-		mainState.stateControl.start();
+		//mainState.stateControl.start();
 		graphics.gd().setImageSmoothing(false);
 		graphics.gd().setTextAlign(TextAlignment.CENTER);
 		graphics.gd().setTextBaseline(VPos.CENTER);
+		levelEditor = new LevelEditor(graphics, mainState);
+		convInputConsumer = new StateControl2(mainState, levelEditor, new StartTurnState());
+		mainState.stateHolder = (XStateHolder) convInputConsumer;
 		visualTile = new VisualTile(y2, new ArrowViewer(y2), mainState.levelMap, graphics.gd());
-		visualMenu = new VisualMenu(graphics, mainState.stateControl, hexMenu);
+		visualMenu = new VisualMenu(graphics, convInputConsumer, hexMenu);
 		if(hexGUI)
 			visualGUI = new VisualGUIHex(graphics, new HexCamera(graphics, 1, 1, graphics.yHW() / 8, graphics.yHW() / 8, 0, 0, HexMatrix.LP));
 		else
 			visualGUI = new VisualGUIQuad(graphics, new QuadCamera(graphics, 1, 1, graphics.yHW() / 8, graphics.yHW() / 8, 0, 0));
-		levelEditor = new LevelEditor(graphics, mainState);
 		draw();
 	}
 
@@ -58,25 +61,16 @@ public class MainVisual implements XInputInterface
 	@Override
 	public void mousePosition(double xMouse, double yMouse, boolean moved, boolean drag, int mouseKey)
 	{
-		if(mainState.stateControl.getState() instanceof NoneState || mainState.stateControl.getState().editMode())
-		{
-			double xp = xMouse / graphics.xHW() - 1;
-			double yp = yMouse / graphics.yHW() - 1;
-			if(xp > BORDER)
-				mapCamera.setXShift(mapCamera.getXShift() + xp - BORDER);
-			else if(xp < -BORDER)
-				mapCamera.setXShift(mapCamera.getXShift() + xp + BORDER);
-			if(yp > BORDER)
-				mapCamera.setYShift(mapCamera.getYShift() + yp - BORDER);
-			else if(yp < -BORDER)
-				mapCamera.setYShift(mapCamera.getYShift() + yp + BORDER);
-		}
-		if(moved && mainState.stateControl.getState() instanceof NGUIState && visualGUI.inside(xMouse, yMouse, mainState.stateControl.getXgui()))
-		{
-			mainState.stateControl.target(visualGUI.y2.toOffset(visualGUI.clickLocation(xMouse, yMouse)));
-		}
-		if(mouseKey >= 0)
-			handleClick(xMouse, yMouse, mouseKey);
+		double xp = xMouse / graphics.xHW() - 1;
+		double yp = yMouse / graphics.yHW() - 1;
+		if(xp > BORDER)
+			mapCamera.setXShift(mapCamera.getXShift() + xp - BORDER2);
+		else if(xp < -BORDER)
+			mapCamera.setXShift(mapCamera.getXShift() + xp + BORDER2);
+		if(yp > BORDER)
+			mapCamera.setYShift(mapCamera.getYShift() + yp - BORDER2);
+		else if(yp < -BORDER)
+			mapCamera.setYShift(mapCamera.getYShift() + yp + BORDER2);
 		convInputConsumer.mousePosition(xMouse / graphics.xHW() - 1, yMouse / graphics.yHW() - 1,
 				visualGUI.inside(xMouse, yMouse, convInputConsumer.getGUI()), visualGUI.offsetClickLocation(xMouse, yMouse),
 				visualMenu.coordinatesToOption(xMouse, yMouse), levelEditor.editorClickNum(xMouse, yMouse),
@@ -88,7 +82,7 @@ public class MainVisual implements XInputInterface
 		return mainState.y2.cast(mapCamera.clickLocation(x, y));
 	}
 
-	private void handleClick(double x, double y, int mouseKey)
+	/*private void handleClick(double x, double y, int mouseKey)
 	{
 		int menuOption = visualMenu.coordinatesToOption(x, y);
 		if(menuOption >= 0)
@@ -108,7 +102,7 @@ public class MainVisual implements XInputInterface
 		{
 			mainState.stateControl.handleMapClick(mainState.y2.cast(mapCamera.clickLocation(x, y)), mouseKey);
 		}
-	}
+	}*/
 
 	@Override
 	public void dragPosition(double xStart, double yStart, double xMoved, double yMoved, int mouseKey, boolean finished)
@@ -119,23 +113,23 @@ public class MainVisual implements XInputInterface
 	@Override
 	public void handleKey(KeyCode keyCode)
 	{
-		switch(keyCode)
+		/*switch(keyCode)
 		{
-			/*case RIGHT -> mapCamera.xShift += 0.5;
+			case RIGHT -> mapCamera.xShift += 0.5;
 			case LEFT -> mapCamera.xShift -= 0.5;
 			case UP -> mapCamera.yShift -= 0.5;
-			case DOWN -> mapCamera.yShift += 0.5;*/
+			case DOWN -> mapCamera.yShift += 0.5;
 			case UP -> mainState.stateControl.handleMenuChoose(-1);
 			case DOWN -> mainState.stateControl.handleMenuChoose(1);
 			case E -> mainState.stateControl.toggleEditMode();
-		}
+		}*/
 		convInputConsumer.handleKey(keyCode);
 	}
 
 	@Override
 	public void tick()
 	{
-		mainState.stateControl.tick();
+		//mainState.stateControl.tick();
 		convInputConsumer.tick();
 		mainState.levelMap.tickArrows();
 		visualSideInfo.tick();
@@ -147,9 +141,12 @@ public class MainVisual implements XInputInterface
 		//graphics.gd().clearRect(0, 0, graphics.xHW() * 2, graphics.yHW() * 2);
 		visualTile.draw(mapCamera);
 		visualSideInfo.draw();
-		if(mainState.stateControl.getState().editMode())
+		/*if(mainState.stateControl.getState().editMode())
 			levelEditor.draw();
-		visualGUI.draw2(mainState.stateControl.getXgui());
+		visualGUI.draw2(mainState.stateControl.getXgui());*/
+		if(convInputConsumer.getState().editMode())
+			levelEditor.draw();
+		visualGUI.draw2(convInputConsumer.getGUI());
 		visualMenu.draw();
 	}
 }

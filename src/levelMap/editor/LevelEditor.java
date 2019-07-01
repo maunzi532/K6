@@ -73,12 +73,12 @@ public class LevelEditor
 		currentSlot = num;
 		if(mouseKey == 3)
 		{
-			mainState.stateControl.setState(editingModeState);
+			mainState.stateHolder.setState(editingModeState);
 			return true;
 		}
-		if(!(mainState.stateControl.getState() instanceof EditingState))
+		if(!(mainState.stateHolder.getState() instanceof EditingState))
 		{
-			mainState.stateControl.setState(EditingState.INSTANCE);
+			mainState.stateHolder.setState(EditingState.INSTANCE);
 			return true;
 		}
 		return false;

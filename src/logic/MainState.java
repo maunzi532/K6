@@ -7,6 +7,7 @@ import file.*;
 import geom.d1.*;
 import levelMap.*;
 import levelMap.importX.*;
+import logic.xstate.*;
 import system2.*;
 import system2.content.*;
 
@@ -16,7 +17,8 @@ public class MainState
 	public final DoubleType y2;
 	public final LevelMap levelMap;
 	public final BlueprintCache<BuildingBlueprint> buildingBlueprintCache;
-	public final XStateControl stateControl;
+	//public final XStateControl stateControl;
+	public XStateHolder stateHolder;
 	public final CombatSystem combatSystem;
 	public final VisualSideInfo visualSideInfo;
 
@@ -25,7 +27,7 @@ public class MainState
 		this.y2 = y2;
 		levelMap = new LevelMap(y2);
 		buildingBlueprintCache = new BlueprintCache<>("buildings");
-		stateControl = new XStateControl(this);
+		//stateControl = new XStateControl(this);
 		//combatSystem = new System1();
 		combatSystem = new System2();
 		visualSideInfo = visualSideInfo1;
