@@ -117,7 +117,7 @@ public class AttackInfoGUI extends XGUI implements InvGUI
 	}
 
 	@Override
-	public boolean click(int x, int y, int key, XStateHolder stateHolder)
+	public void click(int x, int y, int key, XStateHolder stateHolder)
 	{
 		attacksView.checkClick(x, y, infoList.size(), this);
 		if(chosen != null)
@@ -125,11 +125,11 @@ public class AttackInfoGUI extends XGUI implements InvGUI
 			attacker.takeAp(2);
 			attacker.mainActionTaken();
 			stateHolder.setState(new PreAttackState(NoneState.INSTANCE, chosen));
-			return true;
 		}
-		if(attacksView.updateGUIFlag())
+		else if(attacksView.updateGUIFlag())
+		{
 			update();
-		return false;
+		}
 	}
 
 	@Override

@@ -15,6 +15,11 @@ public class SavedImport
 		file = new FileChooser().showOpenDialog(null);
 	}
 
+	public SavedImport(String loadFile)
+	{
+		file = new File(loadFile);
+	}
+
 	public boolean hasFile()
 	{
 		return file != null && file.exists();

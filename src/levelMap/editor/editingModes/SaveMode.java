@@ -40,8 +40,5 @@ public class SaveMode implements EditingMode
 	}
 
 	@Override
-	public boolean onMapClick(MainState mainState, Tile tile, int mouseKey)
-	{
-		return false;
-	}
+	public void onMapClick(MainState mainState, Tile tile, int mouseKey){}
 }

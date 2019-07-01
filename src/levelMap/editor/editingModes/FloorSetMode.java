@@ -24,7 +24,7 @@ public class FloorSetMode implements EditingMode
 	}
 
 	@Override
-	public boolean onMapClick(MainState mainState, Tile tile, int mouseKey)
+	public void onMapClick(MainState mainState, Tile tile, int mouseKey)
 	{
 		if(mouseKey == 1)
 		{
@@ -34,6 +34,5 @@ public class FloorSetMode implements EditingMode
 		{
 			mainState.levelMap.setFloorTile(tile, new FloorTile(0, tileType));
 		}
-		return false;
 	}
 }

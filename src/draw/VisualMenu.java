@@ -7,7 +7,6 @@ import java.util.*;
 import javafx.scene.canvas.*;
 import javafx.scene.paint.*;
 import javafx.scene.text.*;
-import logic.*;
 import logic.xstate.*;
 
 public class VisualMenu
@@ -15,9 +14,9 @@ public class VisualMenu
 	private final DoubleType y2;
 	private final GraphicsContext gd;
 	private final TileCamera camera;
-	private final ConvInputConsumer convInputConsumer;
+	private final XStateHolder stateHolder;
 
-	public VisualMenu(XGraphics graphics, ConvInputConsumer convInputConsumer, boolean hexMenu)
+	public VisualMenu(XGraphics graphics, XStateHolder stateHolder, boolean hexMenu)
 	{
 		gd = graphics.gd();
 		if(hexMenu)
@@ -25,24 +24,24 @@ public class VisualMenu
 		else
 			camera = new QuadCamera(graphics, 2, 1, graphics.yHW() / 8, graphics.yHW() / 8, 1.25 * HexMatrix.Q3, 0);
 		y2 = camera.getDoubleType();
-		this.convInputConsumer = convInputConsumer;
+		this.stateHolder = stateHolder;
 	}
 
 	public int coordinatesToOption(double x, double y)
 	{
 		Tile offset = y2.toOffset(y2.cast(camera.clickLocation(x, y)));
-		if(offset.v[0] != 0 || offset.v[1] < 0 || offset.v[1] >= convInputConsumer.getMenu().size())
+		if(offset.v[0] != 0 || offset.v[1] < 0 || offset.v[1] >= stateHolder.getMenu().size())
 			return -1;
 		return offset.v[1];
 	}
 
 	public void draw()
 	{
-		List<NState> menuEntries = convInputConsumer.getMenu();
+		List<NState> menuEntries = stateHolder.getMenu();
 		camera.setYShift((menuEntries.size() - 1) * 1.5 / 2d);
 		for(int i = 0; i < menuEntries.size(); i++)
 		{
-			draw0(camera.layout(), y2.fromOffset(0, i), menuEntries.get(i).text(), menuEntries.get(i) == convInputConsumer.getState());
+			draw0(camera.layout(), y2.fromOffset(0, i), menuEntries.get(i).text(), menuEntries.get(i) == stateHolder.getState());
 		}
 	}
 

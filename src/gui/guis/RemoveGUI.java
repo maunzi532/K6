@@ -81,7 +81,7 @@ public class RemoveGUI extends XGUI implements InvGUI
 	}
 
 	@Override
-	public boolean click(int x, int y, int key, XStateHolder stateHolder)
+	public void click(int x, int y, int key, XStateHolder stateHolder)
 	{
 		if(remove.contains(x, y) && character.inputInv().ok())
 		{
@@ -90,9 +90,7 @@ public class RemoveGUI extends XGUI implements InvGUI
 			character.inputInv().commit();
 			building.remove();
 			stateHolder.setState(NoneState.INSTANCE);
-			return true;
 		}
-		return false;
 	}
 
 	@Override

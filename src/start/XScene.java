@@ -32,8 +32,11 @@ public class XScene extends Application
 		stage.setTitle("K6");
 		stage.getIcons().add(new Image("Tech.png"));
 		XGraphics graphics = new XGraphics(canvas.getGraphicsContext2D(), WIDTH, HEIGHT);
-		MainVisual mainVisual = new MainVisual(graphics, args0.length > 0 && args0[0].equals("H"),
-				args0.length > 1 && args0[1].equals("H"), args0.length > 2 && args0[2].equals("H"));
+		MainVisual mainVisual = new MainVisual(graphics,
+				args0.length > 0 && args0[0].equals("H"),
+				args0.length > 1 && args0[1].equals("H"),
+				args0.length > 2 && args0[2].equals("H"),
+				args0.length > 3 ? args0[3] : null);
 		XTimer xTimer = new XTimer(mainVisual);
 		s.setOnMousePressed(xTimer::onMouseDown);
 		s.setOnDragDetected(xTimer::onDragDetected);

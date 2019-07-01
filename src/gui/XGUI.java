@@ -81,12 +81,11 @@ public abstract class XGUI
 
 	public abstract void target(int x, int y);
 
-	public abstract boolean click(int x, int y, int key, XStateHolder stateHolder);
+	public abstract void click(int x, int y, int key, XStateHolder stateHolder);
 
-	public boolean clickOutside(int key, XStateHolder stateHolder)
+	public void clickOutside(int key, XStateHolder stateHolder)
 	{
 		close(stateHolder, true);
-		return true;
 	}
 
 	public void close(XStateHolder stateHolder, boolean setState)

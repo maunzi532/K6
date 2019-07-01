@@ -57,10 +57,13 @@ public class LevelEditor
 
 	public void draw()
 	{
-		editorSlots.forEach(EditorSlot::draw);
+		if(mainState.stateHolder.getState().editMode())
+		{
+			editorSlots.forEach(EditorSlot::draw);
+		}
 	}
 
-	public boolean onEditorClick(int num, int mouseKey)
+	public void onEditorClick(int num, int mouseKey)
 	{
 		if(mouseKey == 1 && num == currentSlot)
 		{
@@ -74,23 +77,19 @@ public class LevelEditor
 		if(mouseKey == 3)
 		{
 			mainState.stateHolder.setState(editingModeState);
-			return true;
 		}
-		if(!(mainState.stateHolder.getState() instanceof EditingState))
+		else if(!(mainState.stateHolder.getState() instanceof EditingState))
 		{
 			mainState.stateHolder.setState(EditingState.INSTANCE);
-			return true;
 		}
-		return false;
 	}
 
-	public boolean onMapClick(Tile tile, int mouseKey)
+	public void onMapClick(Tile tile, int mouseKey)
 	{
 		if(currentSlot >= 0)
 		{
-			return editorSlots.get(currentSlot).onMapClick(mainState, tile, mouseKey);
+			editorSlots.get(currentSlot).onMapClick(mainState, tile, mouseKey);
 		}
-		return false;
 	}
 
 	public void setCurrentSlot(EditingMode mode)

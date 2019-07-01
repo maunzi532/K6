@@ -121,14 +121,15 @@ public class EntityEditGUI extends XGUI implements InvGUI
 	}
 
 	@Override
-	public boolean click(int x, int y, int key, XStateHolder stateHolder)
+	public void click(int x, int y, int key, XStateHolder stateHolder)
 	{
 		invView.checkClick(x, y, items.size(), this);
 		infoView.checkClick(x, y, info.size(), this);
 		changeView.checkClick(x, y, changeOptions.size(), this);
 		if(invView.updateGUIFlag() | infoView.updateGUIFlag() | changeView.updateGUIFlag())
+		{
 			update();
-		return false;
+		}
 	}
 
 	@Override

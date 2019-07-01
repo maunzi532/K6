@@ -91,7 +91,7 @@ public class RecipeGUI extends XGUI implements InvGUI
 	}
 
 	@Override
-	public boolean click(int x, int y, int key, XStateHolder stateHolder)
+	public void click(int x, int y, int key, XStateHolder stateHolder)
 	{
 		Recipe recipe = building.getRecipes().get(recipeNum);
 		requireView.checkClick(x, y, recipe.required.items.size(), this);
@@ -108,7 +108,6 @@ public class RecipeGUI extends XGUI implements InvGUI
 			recipeNum++;
 			update();
 		}
-		return false;
 	}
 
 	@Override

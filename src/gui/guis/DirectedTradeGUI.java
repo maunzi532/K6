@@ -104,7 +104,7 @@ public class DirectedTradeGUI extends XGUI implements InvGUI
 	}
 
 	@Override
-	public boolean click(int x, int y, int key, XStateHolder stateHolder)
+	public void click(int x, int y, int key, XStateHolder stateHolder)
 	{
 		provideView.checkClick(x, y, provideItems.size(), this);
 		receiveView.checkClick(x, y, receiveItems.size(), this);
@@ -144,9 +144,7 @@ public class DirectedTradeGUI extends XGUI implements InvGUI
 				takeAp.irreversible();
 			}
 			stateHolder.setState(NoneState.INSTANCE);
-			return true;
 		}
-		return false;
 	}
 
 	@Override

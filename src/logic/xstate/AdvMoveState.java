@@ -46,7 +46,7 @@ public class AdvMoveState implements NMarkState
 		{
 			character.attackRanges(false).stream().map(e -> levelMap.y1.range(character.location(), e, e))
 					.flatMap(Collection::stream).map(levelMap::getEntity).filter(e -> character.isEnemy(e))
-					.forEach(e -> markMap.put(e.location(), MarkType.ON));;
+					.forEach(e -> markMap.put(e.location(), MarkType.ON));
 		}
 		return markMap;
 	}

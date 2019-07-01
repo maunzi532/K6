@@ -22,12 +22,6 @@ public interface CombatSystem<T extends Stats, A extends AttackInfo, I extends I
 				.map(e -> new PathAttackX(pl, e)).collect(Collectors.toList());
 	}
 
-	default List<A> attackInfo(MainState mainState, XEntity entity, Tile loc, T stats, List<XEntity> possibleTargets)
-	{
-		return possibleTargets.stream().flatMap(e -> attackInfo(mainState, entity, loc, stats, e, e.location(), (T) e.stats).stream())
-				.collect(Collectors.toList());
-	}
-
 	default List<A> attackInfo(MainState mainState, XEntity entity, T stats, XEntity entityT, T statsT)
 	{
 		return attackInfo(mainState, entity, entity.location, stats, entityT, entityT.location, statsT);

@@ -18,7 +18,7 @@ public class BCEditMode implements EditingMode
 	}
 
 	@Override
-	public boolean onMapClick(MainState mainState, Tile tile, int mouseKey)
+	public void onMapClick(MainState mainState, Tile tile, int mouseKey)
 	{
 		AdvTile advTile = mainState.levelMap.advTile(tile);
 		if(mouseKey == 1)
@@ -26,12 +26,10 @@ public class BCEditMode implements EditingMode
 			if(advTile.getEntity() != null)
 			{
 				mainState.stateHolder.setState(new EntityEditState(advTile.getEntity(), mainState));
-				return true;
 			}
 			else if(advTile.getBuilding() != null)
 			{
 				mainState.stateHolder.setState(new BuildingEditState(advTile.getBuilding()));
-				return true;
 			}
 		}
 		else if(mouseKey == 3)
@@ -39,14 +37,11 @@ public class BCEditMode implements EditingMode
 			if(advTile.getBuilding() != null)
 			{
 				mainState.stateHolder.setState(new BuildingEditState(advTile.getBuilding()));
-				return true;
 			}
 			else if(advTile.getEntity() != null)
 			{
 				mainState.stateHolder.setState(new EntityEditState(advTile.getEntity(), mainState));
-				return true;
 			}
 		}
-		return false;
 	}
 }

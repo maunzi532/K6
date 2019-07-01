@@ -62,18 +62,18 @@ public class EditingModeGUI extends XGUI implements InvGUI
 	}
 
 	@Override
-	public boolean click(int x, int y, int key, XStateHolder stateHolder)
+	public void click(int x, int y, int key, XStateHolder stateHolder)
 	{
 		modesView.checkClick(x, y, modes.size(), this);
 		if(chosen != null)
 		{
 			editor.setCurrentSlot(chosen);
 			stateHolder.setState(EditingState.INSTANCE);
-			return true;
 		}
-		if(modesView.updateGUIFlag())
+		else if(modesView.updateGUIFlag())
+		{
 			update();
-		return false;
+		}
 	}
 
 	@Override

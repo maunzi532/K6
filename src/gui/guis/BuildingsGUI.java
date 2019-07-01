@@ -71,17 +71,17 @@ public class BuildingsGUI extends XGUI implements InvGUI
 	}
 
 	@Override
-	public boolean click(int x, int y, int key, XStateHolder stateHolder)
+	public void click(int x, int y, int key, XStateHolder stateHolder)
 	{
 		buildingsView.checkClick(x, y, names.length, this);
 		if(chosen != null)
 		{
 			stateHolder.setState(new BuildState(builder, chosen));
-			return true;
 		}
-		if(buildingsView.updateGUIFlag())
+		else if(buildingsView.updateGUIFlag())
+		{
 			update();
-		return false;
+		}
 	}
 
 	@Override

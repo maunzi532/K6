@@ -30,9 +30,9 @@ public class MainState
 		visualSideInfo = visualSideInfo1;
 	}
 
-	public void initialize()
+	public void initialize(String loadFile)
 	{
-		SavedImport savedImport = new SavedImport();
+		SavedImport savedImport = loadFile != null ? new SavedImport(loadFile) : new SavedImport();
 		if(savedImport.hasFile())
 		{
 			savedImport.importIntoMap(this);
@@ -40,14 +40,6 @@ public class MainState
 		else
 		{
 			//new TestImportSector(y2, 8).generate().importIntoMap(levelMap);
-			/*new Entity2Builder(this).setLocation(y2.create2(-2, 1)).setStats(new Stats2(XClasses.mageClass(), 0))
-					.addItem(AttackItems2.standardDagger()).create(true);
-			new Entity2Builder(this).setLocation(y2.create2(-2, -1)).setStats(new Stats2(XClasses.banditClass(), 0))
-					.addItem(AttackItems2.standardAxe()).create(true);
-			new Entity2Builder(this).setLocation(y2.create2(2, 1)).setStats(new Stats2(XClasses.soldierClass(), 0))
-					.addItem(AttackItems2.standardSpear()).create(false);
-			new Entity2Builder(this).setLocation(y2.create2(2, 0)).setStats(new Stats2(XClasses.pirateClass(), 0))
-					.addItem(AttackItems2.standardCrossbow()).create(false);*/
 			new Entity2Builder(this).setLocation(y2.create2(2, -1)).setStats(new Stats2(XClasses.hexerClass(), 0))
 					.addItem(AttackItems2.standardSpell()).create(false);
 			Chapter1.createCharacters(this, y2.create2(-2, 1), y2.create2(-2, -1), y2.create2(-4, 1)/*,
@@ -68,6 +60,7 @@ public class MainState
 
 	//TODO show enemy reach
 	//TODO Change menu bar to not overlap with SideInfo
+	//TODO Fix inconsistent attack info locations
 	//TODO add permanent menu
 	//TODO auto-camera
 	//TODO Enemy AI types
@@ -76,13 +69,13 @@ public class MainState
 
 	//LK char - move/attack
 	//RK char - inv/trade
-	//LK enemy - view reach
+	//LK enemy -- view reach
 	//RK enemy - inv
-	//LK building - claimed area
-	//RK building - inv
-	//LK transporter - connected buildings
-	//RK transporter -
+	//LK building -- claimed area
+	//RK building -- inv
+	//LK transporter -- connected buildings
+	//RK transporter --
 
-	//enter - end turn
-	//esc - back to NoneState
+	//enter -- end turn
+	//esc -- back to NoneState
 }

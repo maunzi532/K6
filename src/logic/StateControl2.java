@@ -184,6 +184,12 @@ public class StateControl2 implements XStateHolder, ConvInputConsumer
 	{
 		switch(keyCode)
 		{
+			/*case RIGHT -> mapCamera.xShift += 0.5;
+			case LEFT -> mapCamera.xShift -= 0.5;
+			case UP -> mapCamera.yShift -= 0.5;
+			case DOWN -> mapCamera.yShift += 0.5;
+			case UP -> mainState.stateControl.handleMenuChoose(-1);
+			case DOWN -> mainState.stateControl.handleMenuChoose(1);*/
 			case E ->
 			{
 				if(state instanceof NoneState)

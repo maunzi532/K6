@@ -44,8 +44,8 @@ public class EditorSlot
 		mode.onClick(mainState, mouseKey);
 	}
 
-	public boolean onMapClick(MainState mainState, Tile tile, int mouseKey)
+	public void onMapClick(MainState mainState, Tile tile, int mouseKey)
 	{
-		return mode.onMapClick(mainState, tile, mouseKey);
+		mode.onMapClick(mainState, tile, mouseKey);
 	}
 }

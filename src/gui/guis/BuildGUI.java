@@ -129,7 +129,7 @@ public class BuildGUI extends XGUI implements InvGUI
 	}
 
 	@Override
-	public boolean click(int x, int y, int key, XStateHolder stateHolder)
+	public void click(int x, int y, int key, XStateHolder stateHolder)
 	{
 		List<List<CostBlueprint>> costBlueprints = blueprint.constructionBlueprint.blueprints;
 		CostBlueprint cost = costBlueprints.get(costNum).get(tileCostNum);
@@ -169,9 +169,7 @@ public class BuildGUI extends XGUI implements InvGUI
 				character.mainActionTaken();
 				character.buildBuilding(cost, refundable.get(), blueprint);
 				stateHolder.setState(NoneState.INSTANCE);
-				return true;
 			}
 		}
-		return false;
 	}
 }

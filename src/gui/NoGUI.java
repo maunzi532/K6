@@ -30,7 +30,7 @@ public class NoGUI extends XGUI
 	}
 
 	@Override
-	public boolean click(int x, int y, int key, XStateHolder stateHolder)
+	public void click(int x, int y, int key, XStateHolder stateHolder)
 	{
 		throw new RuntimeException();
 	}

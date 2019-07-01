@@ -80,8 +80,5 @@ public class Inv2GUI extends XGUI implements InvGUI
 	}
 
 	@Override
-	public boolean click(int x, int y, int key, XStateHolder stateHolder)
-	{
-		return false;
-	}
+	public void click(int x, int y, int key, XStateHolder stateHolder){}
 }
