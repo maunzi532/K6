@@ -1,7 +1,6 @@
 package system2.content;
 
 import entity.*;
-import entity.analysis.*;
 import java.util.*;
 import java.util.stream.*;
 import logic.*;
@@ -35,7 +34,7 @@ public class StandardAI implements EnemyAI
 		for(PathAttackX px : pathsX)
 		{
 			if(px.attack != null && !analysis.containsKey(px.attack))
-				analysis.put(px.attack, mainState.combatSystem.enemyAIScore(new RNGInfoAnalysis(mainState.combatSystem.supplyDivider(px.attack)).create().outcomes()));
+				analysis.put(px.attack, mainState.combatSystem.enemyAIScore(px.attack.analysis.outcomes()));
 			if(px.attack != null)
 				px.score += analysis.get(px.attack) * 1000;
 			if(!px.path.tile.equals(user.location()))

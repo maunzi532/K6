@@ -52,6 +52,11 @@ public class RNGDivider2 extends RNGDivider
 		this.events = events;
 	}
 
+	public List<String> getEvents()
+	{
+		return events;
+	}
+
 	@Override
 	public void build()
 	{
@@ -64,7 +69,7 @@ public class RNGDivider2 extends RNGDivider
 			//1
 			List<String> events2 = new ArrayList<>();
 			int health1a = health1;
-			if(attacks1 == 0 && aI.calc.cost > 0)
+			if(attacked1 == 0 && aI.calc.cost > 0)
 			{
 				if(aI.calc.cost >= health1)
 				{
@@ -104,11 +109,12 @@ public class RNGDivider2 extends RNGDivider
 				}
 				else
 					events3.add("nodamage1");
-				if(health2 - damageDealt <= 0)
+				int remaining2 = health2 - damageDealt;
+				if(remaining2 <= 0)
 					events3.add("defeated1");
 				paths.add(new RNGDivider2(this, hitrate * (100 - critrate), 2, aI, health1a,
-						Math.max(0, health2 - damageDealt), attacks1, attacks2, attacked1 + 1, attacked2, crits1,
-						crits2, health2 - damageDealt <= 0, events3));
+						Math.max(0, remaining2), attacks1, attacks2, attacked1 + 1, attacked2, crits1,
+						crits2, remaining2 <= 0, events3));
 			}
 			if(hitrate > 0 && critrate > 0)
 			{
@@ -124,11 +130,12 @@ public class RNGDivider2 extends RNGDivider
 				}
 				else
 					events3.add("nodamagecrit1");
-				if(health2 - damageDealt <= 0)
+				int remaining2 = health2 - damageDealt;
+				if(remaining2 <= 0)
 					events3.add("defeated1");
 				paths.add(new RNGDivider2(this, hitrate * critrate, 2, aI, health1a,
-						Math.max(0, health2 - damageDealt), attacks1, attacks2, attacked1 + 1, attacked2, crits1 + 1,
-						crits2, health2 - damageDealt <= 0, events3));
+						Math.max(0, remaining2), attacks1, attacks2, attacked1 + 1, attacked2, crits1 + 1,
+						crits2, remaining2 <= 0, events3));
 			}
 		}
 		else if(canAttack2)
@@ -136,7 +143,7 @@ public class RNGDivider2 extends RNGDivider
 			//2
 			List<String> events2 = new ArrayList<>();
 			int health2a = health2;
-			if(attacks2 == 0 && aI.calcT.cost > 0)
+			if(attacked2 == 0 && aI.calcT.cost > 0)
 			{
 				if(aI.calcT.cost >= health2)
 				{
@@ -176,10 +183,11 @@ public class RNGDivider2 extends RNGDivider
 				}
 				else
 					events3.add("nodamage2");
-				if(health1 - damageDealt <= 0)
+				int remaining1 = health1 - damageDealt;
+				if(remaining1 <= 0)
 					events3.add("defeated2");
-				paths.add(new RNGDivider2(this, hitrate * (100 - critrate), 2, aI, Math.max(0, health1 - damageDealt),
-						health2a, attacks1, attacks2, attacked1, attacked2 + 1, crits1, crits2, health1 - damageDealt <= 0, events3));
+				paths.add(new RNGDivider2(this, hitrate * (100 - critrate), 2, aI, Math.max(0, remaining1),
+						health2a, attacks1, attacks2, attacked1, attacked2 + 1, crits1, crits2, remaining1 <= 0, events3));
 			}
 			if(hitrate > 0 && critrate > 0)
 			{
@@ -195,10 +203,11 @@ public class RNGDivider2 extends RNGDivider
 				}
 				else
 					events3.add("nodamagecrit2");
-				if(health1 - damageDealt <= 0)
+				int remaining1 = health1 - damageDealt;
+				if(remaining1 <= 0)
 					events3.add("defeated2");
-				paths.add(new RNGDivider2(this, hitrate * critrate, 2, aI, Math.max(0, health1 - damageDealt),
-						health2a, attacks1, attacks2, attacked1, attacked2 + 1, crits1, crits2 + 1, health1 - damageDealt <= 0, events3));
+				paths.add(new RNGDivider2(this, hitrate * critrate, 2, aI, Math.max(0, remaining1),
+						health2a, attacks1, attacks2, attacked1, attacked2 + 1, crits1, crits2 + 1, remaining1 <= 0, events3));
 			}
 		}
 	}

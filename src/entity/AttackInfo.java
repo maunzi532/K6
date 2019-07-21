@@ -1,5 +1,6 @@
 package entity;
 
+import entity.analysis.*;
 import geom.f1.*;
 import java.util.*;
 
@@ -14,6 +15,7 @@ public abstract class AttackInfo<T extends Stats, I extends XMode>
 	public final T statsT;
 	public final I modeT;
 	public final int distance;
+	public RNGInfoAnalysis analysis;
 
 	public AttackInfo(XEntity entity, Tile loc, T stats, I mode,
 			XEntity entityT, Tile locT, T statsT, I modeT, int distance)
@@ -27,6 +29,12 @@ public abstract class AttackInfo<T extends Stats, I extends XMode>
 		this.statsT = statsT;
 		this.modeT = modeT;
 		this.distance = distance;
+	}
+
+	public AttackInfo addAnalysis(CombatSystem combatSystem)
+	{
+		analysis = new RNGInfoAnalysis(combatSystem.supplyDivider(this)).create();
+		return this;
 	}
 
 	public XEntity getEntity(boolean inverse)

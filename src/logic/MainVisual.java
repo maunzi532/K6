@@ -25,13 +25,10 @@ public class MainVisual implements XInputInterface
 	private MainState mainState;
 	private ConvInputConsumer convInputConsumer;
 
-	public MainVisual(XGraphics graphics, boolean hexTiles, boolean hexMenu, boolean hexGUI, String loadFile)
+	public MainVisual(XGraphics graphics, TileCamera mapCamera, TileCamera menuCamera, TileCamera guiCamera, String loadFile)
 	{
 		this.graphics = graphics;
-		if(hexTiles)
-			mapCamera = new HexCamera(graphics, 1, 1, 44, 44, 0, 0, new HexMatrix(0.5));
-		else
-			mapCamera = new QuadCamera(graphics, 1, 1, 44, 44, 0, 0);
+		this.mapCamera = mapCamera;
 		DoubleType y2 = mapCamera.getDoubleType();
 		visualSideInfo = new VisualSideInfo(graphics, mapCamera);
 		mainState = new MainState(y2, visualSideInfo);
@@ -43,11 +40,8 @@ public class MainVisual implements XInputInterface
 		convInputConsumer = new StateControl2(mainState, levelEditor, new StartTurnState());
 		mainState.stateHolder = (XStateHolder) convInputConsumer;
 		visualTile = new VisualTile(y2, new ArrowViewer(y2), mainState.levelMap, graphics.gd());
-		visualMenu = new VisualMenu(graphics, mainState.stateHolder, hexMenu);
-		if(hexGUI)
-			visualGUI = new VisualGUIHex(graphics, new HexCamera(graphics, 1, 1, graphics.yHW() / 8, graphics.yHW() / 8, 0, 0, HexMatrix.LP));
-		else
-			visualGUI = new VisualGUIQuad(graphics, new QuadCamera(graphics, 1, 1, graphics.yHW() / 8, graphics.yHW() / 8, 0, 0));
+		visualMenu = new VisualMenu(graphics, mainState.stateHolder, menuCamera);
+		visualGUI = VisualGUI.forCamera(graphics, guiCamera);
 		draw();
 	}
 

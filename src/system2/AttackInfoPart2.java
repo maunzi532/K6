@@ -51,7 +51,7 @@ public class AttackInfoPart2
 			autohit1 = advantage >= 0 && abilities.contains(Ability2.TWO_HANDED);
 		}
 		critDamage = damage * 2;
-		meltCritDamage = meltDamage * 2;
+		meltCritDamage = Math.max(meltDamage, critDamage);
 		critrate = Math.max(0, Math.min(100, attackMode.getCrit() + statsInfo.luck * 5 - statsInfoT.luck * 5));
 	}
 

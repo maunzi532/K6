@@ -1,5 +1,6 @@
 package system2;
 
+import arrow.*;
 import entity.*;
 import entity.analysis.*;
 import geom.f1.*;
@@ -11,6 +12,7 @@ import java.util.*;
 import java.util.stream.*;
 import logic.*;
 import system2.analysis.*;
+import system2.animation.*;
 import system2.content.*;
 
 public class System2 implements CombatSystem<Stats2, AttackInfo2, AttackItem2>
@@ -57,7 +59,7 @@ public class System2 implements CombatSystem<Stats2, AttackInfo2, AttackItem2>
 		int distance = mainState.y2.distance(loc, locT);
 		return distanceAttackModes(entity, stats, distance)
 				.map(mode -> new AttackInfo2(rng, entity, loc, stats, mode,
-						entityT, locT, statsT, statsT.getLastUsed(), distance))
+						entityT, locT, statsT, statsT.getLastUsed(), distance).addAnalysis(this))
 				.collect(Collectors.toList());
 	}
 
@@ -104,6 +106,12 @@ public class System2 implements CombatSystem<Stats2, AttackInfo2, AttackItem2>
 	public EnemyAI standardAI()
 	{
 		return new StandardAI();
+	}
+
+	@Override
+	public AnimationArrow createAnimationArrow(RNGDivider divider)
+	{
+		return new AttackAnim((RNGDivider2) divider);
 	}
 
 	@Override

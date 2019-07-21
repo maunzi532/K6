@@ -82,7 +82,7 @@ public class XEntity
 
 	public List<RNGOutcome> outcomes(AttackInfo attackInfo)
 	{
-		return new RNGInfoAnalysis(mainState.combatSystem.supplyDivider(attackInfo)).create().outcomes2();
+		return attackInfo.analysis.outcomes2();
 	}
 
 	public Stats getStats()

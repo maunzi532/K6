@@ -5,6 +5,8 @@ import java.util.*;
 
 public abstract class RNGDivider
 {
+	private static final Random r = new Random();
+
 	public RNGDivider prev;
 	public long chance;
 	public long divider;
@@ -30,5 +32,20 @@ public abstract class RNGDivider
 	public long dividerC()
 	{
 		return prev != null ? prev.dividerC() + divider : divider;
+	}
+
+	public RNGDivider rollRNG()
+	{
+		if(paths.isEmpty())
+			return null;
+		int limit = paths.stream().mapToInt(e -> (int) e.chance).sum();
+		int randomNum = r.nextInt(limit);
+		for(int i = 0; i < paths.size(); i++)
+		{
+			randomNum -= paths.get(i).chance;
+			if(randomNum < 0)
+				return paths.get(i);
+		}
+		throw new RuntimeException();
 	}
 }

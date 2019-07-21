@@ -99,8 +99,8 @@ public class AttackInfoGUI extends XGUI implements InvGUI
 		if(lastTargeted != num)
 		{
 			visualSideInfo.attackInfo(infoList.get(num));
-			/*attacker.outcomes(infoList.get(num)).forEach(e -> System.out.println(e.readableChance() + " " + e.compareText));
-			System.out.println();*/
+			//analysis.get(num).outcomes2().forEach(e -> System.out.println(e.readableChance() + " " + e.compareText));
+			//System.out.println();
 			lastTargeted = num;
 		}
 	}

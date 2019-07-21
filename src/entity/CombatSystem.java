@@ -1,5 +1,6 @@
 package entity;
 
+import arrow.*;
 import entity.analysis.*;
 import geom.f1.*;
 import item.*;
@@ -40,6 +41,10 @@ public interface CombatSystem<T extends Stats, A extends AttackInfo, I extends I
 	double enemyAIScore(List<RNGOutcome> outcomes);
 
 	EnemyAI standardAI();
+
+	AnimationArrow createAnimationArrow(RNGDivider divider);
+
+	AnimationArrow animationForEvent(String event, RNGDivider divider);
 
 	XEntity loadEntity(TileType y1, MainState mainState, IntBuffer intBuffer);
 

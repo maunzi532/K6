@@ -16,13 +16,10 @@ public class VisualMenu
 	private final TileCamera camera;
 	private final XStateHolder stateHolder;
 
-	public VisualMenu(XGraphics graphics, XStateHolder stateHolder, boolean hexMenu)
+	public VisualMenu(XGraphics graphics, XStateHolder stateHolder, TileCamera camera)
 	{
 		gd = graphics.gd();
-		if(hexMenu)
-			camera = new HexCamera(graphics, 2, 1, graphics.yHW() / 8, graphics.yHW() / 8, 1.25 * HexMatrix.Q3, 0, HexMatrix.LP);
-		else
-			camera = new QuadCamera(graphics, 2, 1, graphics.yHW() / 8, graphics.yHW() / 8, 1.25 * HexMatrix.Q3, 0);
+		this.camera = camera;
 		y2 = camera.getDoubleType();
 		this.stateHolder = stateHolder;
 	}

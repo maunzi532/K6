@@ -32,6 +32,13 @@ public class AttackInfo2 extends AttackInfo<Stats2, AttackMode2>
 		cna = new boolean[2];
 	}
 
+	@Override
+	public AttackInfo2 addAnalysis(CombatSystem combatSystem)
+	{
+		super.addAnalysis(combatSystem);
+		return this;
+	}
+
 	private AttackInfoPart2 getCalc(boolean inverse)
 	{
 		return inverse ? calcT : calc;

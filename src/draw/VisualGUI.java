@@ -136,4 +136,14 @@ public abstract class VisualGUI
 			gd.fillText(guiTile.text, midPoint.v[0], midPoint.v[1], rEnd.v[0] - midPoint.v[0] + layout.size().v[0] * textWidth);
 		}
 	}
+
+	public static VisualGUI forCamera(XGraphics graphics, TileCamera camera)
+	{
+		if(camera instanceof HexCamera)
+			return new VisualGUIHex(graphics, (HexCamera) camera);
+		else if(camera instanceof QuadCamera)
+			return new VisualGUIQuad(graphics, (QuadCamera) camera);
+		else
+			throw new RuntimeException();
+	}
 }

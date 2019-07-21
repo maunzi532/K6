@@ -1,12 +1,13 @@
 package start;
 
 import geom.*;
-import javafx.application.Application;
+import geom.d1.*;
+import javafx.application.*;
 import javafx.scene.*;
 import javafx.scene.canvas.*;
 import javafx.scene.image.*;
-import javafx.scene.paint.Color;
-import javafx.stage.Stage;
+import javafx.scene.paint.*;
+import javafx.stage.*;
 import logic.*;
 
 public class XScene extends Application
@@ -33,9 +34,9 @@ public class XScene extends Application
 		stage.getIcons().add(new Image("Tech.png"));
 		XGraphics graphics = new XGraphics(canvas.getGraphicsContext2D(), WIDTH, HEIGHT);
 		MainVisual mainVisual = new MainVisual(graphics,
-				args0.length > 0 && args0[0].equals("H"),
-				args0.length > 1 && args0[1].equals("H"),
-				args0.length > 2 && args0[2].equals("H"),
+				mapCamera(args0, graphics),
+				menuCamera(args0, graphics),
+				guiCamera(args0, graphics),
 				args0.length > 3 ? args0[3] : null);
 		XTimer xTimer = new XTimer(mainVisual);
 		s.setOnMousePressed(xTimer::onMouseDown);
@@ -56,5 +57,29 @@ public class XScene extends Application
 		});
 		xTimer.start();
 		stage.show();
+	}
+
+	private TileCamera mapCamera(String[] args, XGraphics graphics)
+	{
+		if(args.length > 0 && args[0].equals("H"))
+			return new HexCamera(graphics, 1, 1, 44, 44, 0, 0, new HexMatrix(0.5));
+		else
+			return new QuadCamera(graphics, 1, 1, 44, 44, 0, 0);
+	}
+
+	private TileCamera menuCamera(String[] args, XGraphics graphics)
+	{
+		if(args.length > 1 && args[1].equals("H"))
+			return new HexCamera(graphics, 2, 1, graphics.yHW() / 8, graphics.yHW() / 8, 1.25 * HexMatrix.Q3, 0, HexMatrix.LP);
+		else
+			return new QuadCamera(graphics, 2, 1, graphics.yHW() / 8, graphics.yHW() / 8, 1.25 * HexMatrix.Q3, 0);
+	}
+
+	private TileCamera guiCamera(String[] args, XGraphics graphics)
+	{
+		if(args.length > 2 && args[2].equals("H"))
+			return new HexCamera(graphics, 1, 1, graphics.yHW() / 8, graphics.yHW() / 8, 0, 0, HexMatrix.LP);
+		else
+			return new QuadCamera(graphics, 1, 1, graphics.yHW() / 8, graphics.yHW() / 8, 0, 0);
 	}
 }
