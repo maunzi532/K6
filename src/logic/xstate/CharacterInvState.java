@@ -32,7 +32,7 @@ public class CharacterInvState implements NGUIState
 	@Override
 	public void onEnter(MainState mainState)
 	{
-		mainState.visualSideInfo.setSideInfo(character.standardSideInfo(), null);
+		mainState.visualSideInfo.setSideInfoXH(character.standardSideInfo(), character instanceof XHero);
 	}
 
 	@Override

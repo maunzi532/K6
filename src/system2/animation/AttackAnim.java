@@ -75,7 +75,7 @@ public class AttackAnim implements AnimTimer
 			else
 			{
 				String event = events.get(eventCounter);
-				System.out.println(event);
+				//System.out.println(event);
 				boolean inverse = event.charAt(event.length() - 1) == '2';
 				String eventType = event.substring(0, event.length() - 1);
 				startEvent(eventType, inverse);

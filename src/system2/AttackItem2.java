@@ -2,12 +2,9 @@ package system2;
 
 import item.*;
 import java.util.*;
-import javafx.scene.image.*;
 
 public abstract class AttackItem2 implements Item
 {
-	private static final Image IMAGE = new Image("BLUE.png");
-
 	private final int code;
 	private final int damage;
 	private final int heavy;
@@ -42,12 +39,6 @@ public abstract class AttackItem2 implements Item
 	public List<AttackMode2> attackModes()
 	{
 		return attackModes;
-	}
-
-	@Override
-	public Image image()
-	{
-		return IMAGE;
 	}
 
 	@Override

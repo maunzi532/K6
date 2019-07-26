@@ -12,10 +12,6 @@ import system2.content.*;
 
 public class Stats2 implements Stats
 {
-	/*private static final Image IMAGE_TEMP = new Image("TA_3.png");
-	private static final Image IMAGE_TEAM = new Image("AN_3.png");
-	private static final Image IMAGE_ENEMY = new Image("Enemy_0.png");*/
-
 	private XClass xClass;
 	private int level;
 	private String customName;

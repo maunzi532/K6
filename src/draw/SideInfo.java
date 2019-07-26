@@ -53,8 +53,7 @@ public class SideInfo
 		if(this == o) return true;
 		if(!(o instanceof SideInfo)) return false;
 		SideInfo sideInfo = (SideInfo) o;
-		return type == sideInfo.type &&
-				Objects.equals(character, sideInfo.character);
+		return Objects.equals(character, sideInfo.character);
 	}
 
 	@Override

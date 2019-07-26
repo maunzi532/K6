@@ -58,13 +58,14 @@ public class MainState
 		levelMap.addBuilding(transporter1);*/
 	}
 
+	//TODO improve marking
 	//TODO show enemy reach
+	//TODO Improve floor placing tool
+	//TODO screenshake on crit
 	//TODO Change menu bar to not overlap with SideInfo
-	//TODO Fix inconsistent attack info locations
 	//TODO add permanent menu
 	//TODO auto-camera
 	//TODO Enemy AI types
-	//TODO Improve floor placing tool
 	//TODO Build a real level
 
 	//LK char - move/attack

@@ -71,7 +71,8 @@ public class VisualSideInfo
 
 	private boolean inverted(Tile loc0, Tile loc1)
 	{
-		double[][] gp = tileCamera.layout().polygonCorners(tileCamera.getDoubleType().fromTile(loc0),
+		return false;
+		/*double[][] gp = tileCamera.layout().polygonCorners(tileCamera.getDoubleType().fromTile(loc0),
 				tileCamera.getDoubleType().fromTile(loc1));
 		if(gp[0][0] < gp[0][1])
 		{
@@ -81,6 +82,20 @@ public class VisualSideInfo
 		{
 			return true;
 		}
-		return gp[1][0] <= gp[1][1];
+		return gp[1][0] <= gp[1][1];*/
+	}
+
+	public void setSideInfoXH(SideInfo sideInfo, boolean l)
+	{
+		if(l)
+		{
+			l0.setSideInfo(sideInfo);
+			r0.setSideInfo(null);
+		}
+		else
+		{
+			l0.setSideInfo(null);
+			r0.setSideInfo(sideInfo);
+		}
 	}
 }

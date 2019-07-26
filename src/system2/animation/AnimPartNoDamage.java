@@ -38,11 +38,11 @@ public class AnimPartNoDamage implements AnimPart
 	public boolean tick()
 	{
 		counter++;
-		if(counter == AnimPartAttack.DODGETIME)
-		{
+		//if(counter == AnimPartAttack.DODGETIME)
+		//{
 			/*levelMap.addArrow(arrow);
 			target.setReplacementArrow(arrow);*/
-		}
+		//}
 		return true;//arrow.finished();
 	}
 }

@@ -2,6 +2,7 @@ package system2;
 
 import item.*;
 import java.util.*;
+import javafx.scene.image.*;
 
 public class AttackItem2Slot extends AttackItem2
 {
@@ -12,6 +13,12 @@ public class AttackItem2Slot extends AttackItem2
 		super(0, 0, 0, 0, 0, 0, List.of());
 		attackModes = List.of();
 		this.itemTypes = itemTypes;
+	}
+
+	@Override
+	public Image image()
+	{
+		return null;
 	}
 
 	@Override
