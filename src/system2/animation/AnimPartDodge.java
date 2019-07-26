@@ -4,33 +4,34 @@ import arrow.*;
 import entity.*;
 import levelMap.*;
 
-public class AnimPartAttack implements AnimPart
+public class AnimPartDodge implements AnimPart
 {
-	public static final int DODGETIME = 20;
-	private static final int LEN = 60;
-	private static final int FORWARD = 40;
+	private static final int LEN = 30;
+	private static final int FORWARD = 20;
 	private static final int BACKWARD = 20;
 
 	private final XEntity attacker;
 	private final XEntity target;
+	private final int distance;
 	private final LevelMap levelMap;
 	private ManualXArrow arrow;
 	private int counter;
 
-	public AnimPartAttack(XEntity attacker, XEntity target, LevelMap levelMap)
+	public AnimPartDodge(XEntity attacker, XEntity target, int distance, LevelMap levelMap)
 	{
 		this.attacker = attacker;
 		this.target = target;
+		this.distance = distance;
 		this.levelMap = levelMap;
-		arrow = new ManualXArrow(XArrow.convert(attacker.location(), target.location()), LEN, attacker.getImage());
+		arrow = new ManualXArrow(XArrow.convert(target.location(), attacker.location()), LEN, target.getImage());
 		levelMap.addArrow(arrow);
-		attacker.setReplacementArrow(arrow);
+		target.setReplacementArrow(arrow);
 	}
 
 	@Override
 	public boolean finished1()
 	{
-		return counter >= FORWARD - DODGETIME;
+		return counter >= FORWARD;
 	}
 
 	@Override
@@ -49,9 +50,9 @@ public class AnimPartAttack implements AnimPart
 			return true;
 		}
 		if(counter >= FORWARD)
-			arrow.setCounter(FORWARD * 2 - counter);
+			arrow.setCounter((counter - FORWARD * 2) / distance);
 		else
-			arrow.setCounter(counter);
+			arrow.setCounter(-counter / distance);
 		return false;
 	}
 }

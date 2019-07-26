@@ -90,15 +90,18 @@ public class AttackAnim implements AnimTimer
 			case "healthcost" -> linked.add(new AnimPartHealthCost(aI.getCalc(inverse).cost,
 						aI.getStats(inverse), healthBar(inverse).statBar()));
 			case "attack" -> linked.add(new AnimPartAttack(aI.getEntity(inverse), aI.getEntity(!inverse), levelMap));
-			case "miss" -> {}
+			case "miss" -> linked.add(new AnimPartDodge(aI.getEntity(inverse), aI.getEntity(!inverse), aI.distance, levelMap));
 			case "hit" -> linked.add(new AnimPartHit(aI.getEntity(!inverse), aI.getStats(!inverse),
-					aI.getCalc(inverse).damage, healthBar(!inverse).statBar(), levelMap));
-			case "melt" -> {}
-			case "nodamage" -> {}
-			case "defeated" -> {}
-			case "crit" -> {}
-			case "meltcrit" -> {}
-			case "nodamagecrit" -> {}
+					aI.getCalc(inverse).damage, healthBar(!inverse).statBar(), false, false, levelMap));
+			case "melt" -> linked.add(new AnimPartHit(aI.getEntity(!inverse), aI.getStats(!inverse),
+					aI.getCalc(inverse).meltDamage, healthBar(!inverse).statBar(), false, true, levelMap));
+			case "nodamage" -> linked.add(new AnimPartNoDamage(aI.getEntity(!inverse), false, levelMap));
+			case "defeated" -> linked.add(new AnimPartVanish(aI.getEntity(!inverse), levelMap));
+			case "crit" -> linked.add(new AnimPartHit(aI.getEntity(!inverse), aI.getStats(!inverse),
+					aI.getCalc(inverse).critDamage, healthBar(!inverse).statBar(), true, false, levelMap));
+			case "meltcrit" -> linked.add(new AnimPartHit(aI.getEntity(!inverse), aI.getStats(!inverse),
+					aI.getCalc(inverse).meltCritDamage, healthBar(!inverse).statBar(), true, true, levelMap));
+			case "nodamagecrit" -> linked.add(new AnimPartNoDamage(aI.getEntity(!inverse), true, levelMap));
 		}
 	}
 }

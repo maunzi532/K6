@@ -14,18 +14,21 @@ public class AnimPartHit implements AnimPart
 	private final XEntity target;
 	private final StatBar statBar;
 	private final LevelMap levelMap;
-	private int reduction;
+	private final int reduction;
+	private final boolean crit;
+	private final boolean melt;
 	private BlinkArrow arrow;
 	private int counter;
 
-	public AnimPartHit(XEntity target, Stats2 statsT, int damage, StatBar statBar, LevelMap levelMap)
+	public AnimPartHit(XEntity target, Stats2 statsT, int damage, StatBar statBar,
+			boolean crit, boolean melt, LevelMap levelMap)
 	{
 		this.target = target;
 		this.statBar = statBar;
+		this.crit = crit;
+		this.melt = melt;
 		this.levelMap = levelMap;
 		arrow = new BlinkArrow(target.location(), DURATION, false, target.getImage(), BLINKTIME);
-		levelMap.addArrow(arrow);
-		target.setReplacementArrow(arrow);
 		reduction = Math.min(statsT.getCurrentHealth(), damage);
 		statsT.setCurrentHealth(Math.max(0, statsT.getCurrentHealth() - damage));
 	}
@@ -46,8 +49,16 @@ public class AnimPartHit implements AnimPart
 	public boolean tick()
 	{
 		counter++;
-		if(counter % SPEED == 0 && counter / SPEED <= reduction)
+		if(counter == AnimPartAttack.DODGETIME)
+		{
+			levelMap.addArrow(arrow);
+			target.setReplacementArrow(arrow);
+		}
+		if(counter <= AnimPartAttack.DODGETIME)
+			return false;
+		int counter2 = counter - AnimPartAttack.DODGETIME;
+		if(counter2 % SPEED == 0 && counter2 / SPEED <= reduction)
 			statBar.setData(statBar.getData() - 1);
-		return counter / SPEED >= reduction && arrow.finished();
+		return counter2 / SPEED >= reduction && arrow.finished();
 	}
 }

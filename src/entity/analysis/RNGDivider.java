@@ -34,15 +34,26 @@ public abstract class RNGDivider
 		return prev != null ? prev.dividerC() + divider : divider;
 	}
 
+	private int chanceForDivider(int maxDivider)
+	{
+		int chance2 = (int) chance;
+		for(int div2 = (int) divider; div2 < maxDivider; div2++)
+		{
+			chance2 *= 100;
+		}
+		return chance2;
+	}
+
 	public RNGDivider rollRNG()
 	{
 		if(paths.isEmpty())
 			return null;
-		int limit = paths.stream().mapToInt(e -> (int) e.chance).sum();
+		int maxDivider = paths.stream().mapToInt(e -> (int) e.divider).max().orElseThrow();
+		int limit = paths.stream().mapToInt(e -> e.chanceForDivider(maxDivider)).sum();
 		int randomNum = r.nextInt(limit);
 		for(int i = 0; i < paths.size(); i++)
 		{
-			randomNum -= paths.get(i).chance;
+			randomNum -= paths.get(i).chanceForDivider(maxDivider);
 			if(randomNum < 0)
 				return paths.get(i);
 		}
