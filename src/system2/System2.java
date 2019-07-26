@@ -109,9 +109,9 @@ public class System2 implements CombatSystem<Stats2, AttackInfo2, AttackItem2>
 	}
 
 	@Override
-	public AnimationArrow createAnimationArrow(RNGDivider divider)
+	public AnimTimer createAnimationArrow(RNGDivider divider, MainState mainState)
 	{
-		return new AttackAnim((RNGDivider2) divider);
+		return new AttackAnim((RNGDivider2) divider, mainState.levelMap);
 	}
 
 	@Override

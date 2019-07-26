@@ -57,6 +57,11 @@ public class RNGDivider2 extends RNGDivider
 		return events;
 	}
 
+	public AttackInfo2 getAttackInfo()
+	{
+		return aI;
+	}
+
 	@Override
 	public void build()
 	{

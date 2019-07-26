@@ -1,32 +1,104 @@
 package system2.animation;
 
 import arrow.*;
-import entity.analysis.*;
+import entity.*;
 import java.util.*;
+import javafx.scene.paint.*;
+import levelMap.*;
 import system2.*;
 import system2.analysis.*;
 
-public class AttackAnim extends AnimationArrow
+public class AttackAnim implements AnimTimer
 {
-	private RNGDivider divider;
-	private System2 system;
+	private RNGDivider2 divider;
+	private LevelMap levelMap;
+	private AttackInfo2 aI;
 	private List<String> events;
 	private int eventCounter;
+	private List<AnimPart> linked;
+	private InfoArrow healthBar1;
+	private InfoArrow healthBar2;
 
-	public AttackAnim(RNGDivider2 divider, System2 system)
+	public AttackAnim(RNGDivider2 divider, LevelMap levelMap)
 	{
 		this.divider = divider;
-		this.system = system;
+		this.levelMap = levelMap;
+		aI = divider.getAttackInfo();
 		events = divider.getEvents();
+		eventCounter = -1;
+		linked = new ArrayList<>();
+		healthBar1 = new InfoArrow(aI.entity.location(), aI.entityT.location(),
+				aI.entity instanceof XHero ? Color.GREEN : Color.GRAY, Color.BLACK, Color.WHITE,
+				aI.getStats(false).getCurrentHealth(), aI.getStats(false).getToughness());
+		healthBar2 = new InfoArrow(aI.entityT.location(), aI.entity.location(),
+				aI.entityT instanceof XHero ? Color.GREEN : Color.GRAY, Color.BLACK, Color.WHITE,
+				aI.getStats(true).getCurrentHealth(), aI.getStats(true).getToughness());
+		levelMap.addArrow(healthBar1);
+		levelMap.addArrow(healthBar2);
+	}
+
+	private InfoArrow healthBar(boolean inverse)
+	{
+		return inverse ? healthBar2 : healthBar1;
+	}
+
+	@Override
+	public boolean finished()
+	{
+		if(divider != null)
+			return false;
+		healthBar1.remove();
+		healthBar2.remove();
+		return true;
 	}
 
 	@Override
 	public void tick()
 	{
-		super.tick();
-		if(linked.isEmpty())
+		if(divider == null)
+			return;
+		linked.removeIf(AnimPart::tick);
+		if(linked.stream().allMatch(AnimPart::finished1))
 		{
-			linked.add(system.animationForEvent(events.get(eventCounter), divider));
+			eventCounter++;
+			if(eventCounter >= events.size())
+			{
+				if(linked.stream().allMatch(AnimPart::finished2))
+				{
+					divider = (RNGDivider2) divider.rollRNG();
+					if(divider == null)
+						return;
+					events = divider.getEvents();
+					eventCounter = -1;
+				}
+			}
+			else
+			{
+				String event = events.get(eventCounter);
+				System.out.println(event);
+				boolean inverse = event.charAt(event.length() - 1) == '2';
+				String eventType = event.substring(0, event.length() - 1);
+				startEvent(eventType, inverse);
+			}
+		}
+	}
+
+	private void startEvent(String eventType, boolean inverse)
+	{
+		switch(eventType)
+		{
+			case "healthcost" -> linked.add(new AnimPartHealthCost(aI.getCalc(inverse).cost,
+						aI.getStats(inverse), healthBar(inverse).statBar()));
+			case "attack" -> linked.add(new AnimPartAttack(aI.getEntity(inverse), aI.getEntity(!inverse), levelMap));
+			case "miss" -> {}
+			case "hit" -> linked.add(new AnimPartHit(aI.getEntity(!inverse), aI.getStats(!inverse),
+					aI.getCalc(inverse).damage, healthBar(!inverse).statBar(), levelMap));
+			case "melt" -> {}
+			case "nodamage" -> {}
+			case "defeated" -> {}
+			case "crit" -> {}
+			case "meltcrit" -> {}
+			case "nodamagecrit" -> {}
 		}
 	}
 }

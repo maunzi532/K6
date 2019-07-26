@@ -8,7 +8,7 @@ import logic.*;
 public class AttackAnimState2 extends AttackState
 {
 	private RNGDivider divider;
-	private AnimationArrow arrow;
+	private AnimTimer arrow;
 
 	public AttackAnimState2(NState nextState, AttackInfo aI)
 	{
@@ -23,25 +23,21 @@ public class AttackAnimState2 extends AttackState
 	}
 
 	@Override
-	public void onEnter(MainState mainState){}
+	public void onEnter(MainState mainState)
+	{
+		arrow = mainState.combatSystem.createAnimationArrow(divider, mainState);
+	}
 
 	@Override
 	public void tick(MainState mainState)
 	{
-		if(arrow == null || arrow.finished())
-		{
-			divider = divider.rollRNG();
-			if(divider == null)
-				return;
-			arrow = mainState.combatSystem.createAnimationArrow(divider);
-		}
 		arrow.tick();
 	}
 
 	@Override
 	public boolean finished()
 	{
-		return divider == null;
+		return arrow.finished();
 	}
 
 	@Override

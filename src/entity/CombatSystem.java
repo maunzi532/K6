@@ -42,9 +42,7 @@ public interface CombatSystem<T extends Stats, A extends AttackInfo, I extends I
 
 	EnemyAI standardAI();
 
-	AnimationArrow createAnimationArrow(RNGDivider divider);
-
-	AnimationArrow animationForEvent(String event, RNGDivider divider);
+	AnimTimer createAnimationArrow(RNGDivider divider, MainState mainState);
 
 	XEntity loadEntity(TileType y1, MainState mainState, IntBuffer intBuffer);
 

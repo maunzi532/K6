@@ -39,7 +39,7 @@ public class AttackInfo2 extends AttackInfo<Stats2, AttackMode2>
 		return this;
 	}
 
-	private AttackInfoPart2 getCalc(boolean inverse)
+	public AttackInfoPart2 getCalc(boolean inverse)
 	{
 		return inverse ? calcT : calc;
 	}

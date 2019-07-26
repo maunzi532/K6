@@ -68,7 +68,7 @@ public class XArrow
 
 	public static XArrow factory(Tile start, Tile end, int duration, boolean loop, Image image, boolean shine)
 	{
-		List<Tile> locations = end == null || end.equals(start) ? List.of(start) : List.of(start, end);
+		List<Tile> locations = convert(start, end);
 		if(shine)
 		{
 			return new ShineArrow(locations, duration, loop, image, true);
@@ -77,5 +77,10 @@ public class XArrow
 		{
 			return new XArrow(locations, duration, loop, image);
 		}
+	}
+
+	public static List<Tile> convert(Tile start, Tile end)
+	{
+		return end == null || end.equals(start) ? List.of(start) : List.of(start, end);
 	}
 }
