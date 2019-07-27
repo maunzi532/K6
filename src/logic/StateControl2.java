@@ -19,11 +19,13 @@ public class StateControl2 implements XStateHolder, ConvInputConsumer
 	private List<NState> menu;
 	private XGUI xgui;
 	private VisMark cursorMarker;
+	private List<VisMark> dragMarker;
 
 	public StateControl2(MainState mainState, LevelEditor levelEditor, NState state)
 	{
 		this.mainState = mainState;
 		this.levelEditor = levelEditor;
+		dragMarker = List.of();
 		setState(state);
 	}
 
@@ -187,36 +189,47 @@ public class StateControl2 implements XStateHolder, ConvInputConsumer
 	{
 		if(!(state instanceof NGUIState))
 		{
-
+			dragMarker = mainState.y2.betweenArea(startTile, endTile).stream()
+					.map(e -> new VisMark(e, Color.CYAN, VisMark.d3)).collect(Collectors.toList());
+		}
+		else
+		{
+			dragMarker = List.of();
 		}
 	}
 
 	@Override
 	public void noDrag()
 	{
-
+		dragMarker = List.of();
 	}
 
 	@Override
 	public void handleKey(KeyCode keyCode)
 	{
-		switch(keyCode)
+		if(keyCode == KeyCode.Q)
 		{
-			/*case RIGHT -> mapCamera.xShift += 0.5;
-			case LEFT -> mapCamera.xShift -= 0.5;
-			case UP -> mapCamera.yShift -= 0.5;
-			case DOWN -> mapCamera.yShift += 0.5;
-			case UP -> mainState.stateControl.handleMenuChoose(-1);
-			case DOWN -> mainState.stateControl.handleMenuChoose(1);*/
-			case E ->
+			if(state instanceof NoneState)
 			{
-				if(state instanceof NoneState)
+				setState(EditingState.INSTANCE);
+			}
+			else if(state instanceof EditingState)
+			{
+				setState(NoneState.INSTANCE);
+			}
+		}
+		else if(!(state instanceof NAutoState))
+		{
+			for(NState menuEntry : menu)
+			{
+				if(keyCode == menuEntry.keybind())
 				{
-					setState(EditingState.INSTANCE);
-				}
-				else if(state instanceof EditingState)
-				{
-					setState(NoneState.INSTANCE);
+					if(menuEntry != state)
+					{
+						xgui.close(this, false);
+						setState(menuEntry);
+					}
+					return;
 				}
 			}
 		}
@@ -237,5 +250,6 @@ public class StateControl2 implements XStateHolder, ConvInputConsumer
 		mainState.levelMap.getVisMarked().addAll(state.visMarked(mainState));
 		if(cursorMarker != null)
 			mainState.levelMap.getVisMarked().add(cursorMarker);
+		mainState.levelMap.getVisMarked().addAll(dragMarker);
 	}
 }

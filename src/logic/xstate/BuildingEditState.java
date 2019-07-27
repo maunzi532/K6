@@ -23,12 +23,6 @@ public class BuildingEditState implements NGUIState
 	}
 
 	@Override
-	public String text()
-	{
-		return "Error";
-	}
-
-	@Override
 	public XMenu menu()
 	{
 		return XMenu.NOMENU;

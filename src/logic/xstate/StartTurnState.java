@@ -38,10 +38,4 @@ public class StartTurnState implements NAutoState
 	{
 		return NoneState.INSTANCE;
 	}
-
-	@Override
-	public String text()
-	{
-		return "Start Turn";
-	}
 }

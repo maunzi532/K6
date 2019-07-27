@@ -4,6 +4,7 @@ import entity.*;
 import geom.f1.*;
 import java.util.*;
 import java.util.stream.*;
+import javafx.scene.input.*;
 import levelMap.*;
 import logic.*;
 
@@ -34,6 +35,12 @@ public class EditCopyState implements NMarkState
 	public String text()
 	{
 		return "Copy";
+	}
+
+	@Override
+	public KeyCode keybind()
+	{
+		return KeyCode.C;
 	}
 
 	@Override

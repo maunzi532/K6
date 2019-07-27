@@ -1,12 +1,21 @@
 package logic.xstate;
 
 import java.util.*;
+import javafx.scene.input.*;
 import levelMap.*;
 import logic.*;
 
 public interface NState
 {
-	String text();
+	default String text()
+	{
+		return "Error";
+	}
+
+	default KeyCode keybind()
+	{
+		return null;
+	}
 
 	XMenu menu();
 

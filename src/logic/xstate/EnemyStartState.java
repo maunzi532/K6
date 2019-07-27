@@ -1,6 +1,7 @@
 package logic.xstate;
 
 import entity.*;
+import javafx.scene.input.*;
 import logic.*;
 
 public class EnemyStartState implements NAutoState
@@ -43,5 +44,11 @@ public class EnemyStartState implements NAutoState
 	public String text()
 	{
 		return "Enemy Phase";
+	}
+
+	@Override
+	public KeyCode keybind()
+	{
+		return KeyCode.ENTER;
 	}
 }

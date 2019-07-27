@@ -38,11 +38,11 @@ public class VisualMenu
 		camera.setYShift((menuEntries.size() - 1) * 1.5 / 2d);
 		for(int i = 0; i < menuEntries.size(); i++)
 		{
-			draw0(camera.layout(), y2.fromOffset(0, i), menuEntries.get(i).text(), menuEntries.get(i) == stateHolder.getState());
+			draw0(camera.layout(), y2.fromOffset(0, i), menuEntries.get(i), menuEntries.get(i) == stateHolder.getState());
 		}
 	}
 
-	private void draw0(TileLayout layout, Tile h1, String text, boolean active)
+	private void draw0(TileLayout layout, Tile h1, NState menuEntry, boolean active)
 	{
 		double[][] points = layout.tileCorners(h1);
 		int dch = y2.directionCount() / 2;
@@ -60,6 +60,18 @@ public class VisualMenu
 		PointD midPoint = layout.tileToPixel(h1);
 		gd.setFill(Color.BLACK);
 		gd.setFont(new Font(layout.size().v[1] * 0.5));
-		gd.fillText(text, midPoint.v[0], midPoint.v[1], layout.size().v[0] * 1.4);
+		if(menuEntry.keybind() != null)
+		{
+			gd.fillText(menuEntry.text(),
+					midPoint.v[0], midPoint.v[1], layout.size().v[0] * 1.4);
+			gd.setFill(Color.DARKSLATEGRAY);
+			gd.setFont(new Font(layout.size().v[1] * 0.3));
+			gd.fillText(menuEntry.keybind().getName(),
+					midPoint.v[0], midPoint.v[1] - layout.size().v[1] * 0.5, layout.size().v[0] * 1.4);
+		}
+		else
+		{
+			gd.fillText(menuEntry.text(), midPoint.v[0], midPoint.v[1], layout.size().v[0] * 1.4);
+		}
 	}
 }

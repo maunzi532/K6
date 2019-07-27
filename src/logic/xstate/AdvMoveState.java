@@ -3,6 +3,7 @@ package logic.xstate;
 import entity.*;
 import geom.f1.*;
 import java.util.*;
+import javafx.scene.input.*;
 import javafx.scene.paint.*;
 import levelMap.*;
 import logic.*;
@@ -24,6 +25,12 @@ public class AdvMoveState implements NMarkState
 	public String text()
 	{
 		return "Move";
+	}
+
+	@Override
+	public KeyCode keybind()
+	{
+		return KeyCode.M;
 	}
 
 	@Override

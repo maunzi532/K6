@@ -3,6 +3,7 @@ package logic.xstate;
 import entity.*;
 import gui.*;
 import gui.guis.*;
+import javafx.scene.input.*;
 import logic.*;
 
 public class EntityInvEditState implements NGUIState
@@ -29,6 +30,12 @@ public class EntityInvEditState implements NGUIState
 	public String text()
 	{
 		return "Edit Inv.";
+	}
+
+	@Override
+	public KeyCode keybind()
+	{
+		return KeyCode.I;
 	}
 
 	@Override

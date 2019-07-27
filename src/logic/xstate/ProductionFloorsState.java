@@ -3,6 +3,7 @@ package logic.xstate;
 import building.*;
 import geom.f1.*;
 import java.util.*;
+import javafx.scene.input.*;
 import levelMap.*;
 
 public class ProductionFloorsState implements NMarkState
@@ -18,6 +19,12 @@ public class ProductionFloorsState implements NMarkState
 	public String text()
 	{
 		return "Floor";
+	}
+
+	@Override
+	public KeyCode keybind()
+	{
+		return KeyCode.F;
 	}
 
 	@Override

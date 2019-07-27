@@ -58,17 +58,19 @@ public class MainState
 		levelMap.addBuilding(transporter1);*/
 	}
 
-	//TODO improve marking
+	//TODO Build a real level
+
 	//TODO menu bar keybinds
 	//TODO show enemy reach
-	//TODO Improve floor placing tool
+	//TODO Floor placing tool drag to place area
 	//TODO screenshake on crit
+
+	//TODO scale tiles, menubar, gui when resizing
 	//TODO Change menu bar to not overlap with SideInfo
 	//TODO Add visMark to GiveOrTakeState, ProductionFloorsState, TransportTargetsState
 	//TODO add permanent menu
 	//TODO auto-camera
 	//TODO Enemy AI types
-	//TODO Build a real level
 
 	//LK char - move/attack
 	//RK char - inv/trade

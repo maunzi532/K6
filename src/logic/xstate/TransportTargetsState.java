@@ -4,6 +4,7 @@ import building.*;
 import geom.f1.*;
 import item.inv.transport.*;
 import java.util.*;
+import javafx.scene.input.*;
 import levelMap.*;
 
 public class TransportTargetsState implements NMarkState
@@ -19,6 +20,12 @@ public class TransportTargetsState implements NMarkState
 	public String text()
 	{
 		return "Targets";
+	}
+
+	@Override
+	public KeyCode keybind()
+	{
+		return KeyCode.T;
 	}
 
 	@Override

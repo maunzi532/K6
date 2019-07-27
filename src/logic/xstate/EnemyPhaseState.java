@@ -62,10 +62,4 @@ public class EnemyPhaseState implements NAutoState
 			return new ProductionPhaseState();
 		}
 	}
-
-	@Override
-	public String text()
-	{
-		return "Enemy Phase";
-	}
 }

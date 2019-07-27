@@ -44,10 +44,4 @@ public class MoveAnimState implements NAutoState
 	{
 		return nextState;
 	}
-
-	@Override
-	public String text()
-	{
-		return "Error";
-	}
 }

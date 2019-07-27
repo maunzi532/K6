@@ -34,10 +34,4 @@ public abstract class AttackState implements NAutoState
 	{
 		return aI.getStats(!inverse());
 	}
-
-	@Override
-	public String text()
-	{
-		return "Error";
-	}
 }

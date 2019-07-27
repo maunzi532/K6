@@ -54,7 +54,6 @@ public class XTimer extends AnimationTimer
 		}
 	}
 
-
 	public void onMouseMove(MouseEvent mouseEvent)
 	{
 		moved = true;

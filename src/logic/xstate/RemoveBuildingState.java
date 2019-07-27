@@ -4,6 +4,7 @@ import building.*;
 import entity.*;
 import gui.*;
 import gui.guis.*;
+import javafx.scene.input.*;
 import logic.*;
 
 public class RemoveBuildingState implements NGUIState
@@ -19,6 +20,12 @@ public class RemoveBuildingState implements NGUIState
 	public String text()
 	{
 		return "Remove";
+	}
+
+	@Override
+	public KeyCode keybind()
+	{
+		return KeyCode.R;
 	}
 
 	@Override

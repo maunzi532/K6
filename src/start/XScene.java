@@ -43,6 +43,7 @@ public class XScene extends Application
 		s.setOnDragDetected(xTimer::onDragDetected);
 		s.setOnMouseReleased(xTimer::onMouseUp);
 		s.setOnMouseMoved(xTimer::onMouseMove);
+		s.setOnMouseDragged(xTimer::onMouseMove);
 		s.setOnMouseExited(xTimer::onMouseExit);
 		s.setOnKeyPressed(xTimer::onKeyEvent);
 		s.widthProperty().addListener((e, f, g) ->

@@ -5,6 +5,7 @@ import geom.f1.*;
 import item.inv.transport.*;
 import java.util.*;
 import java.util.stream.*;
+import javafx.scene.input.*;
 import levelMap.*;
 import logic.*;
 
@@ -23,6 +24,12 @@ public class GiveOrTakeState implements NMarkState
 	public String text()
 	{
 		return give ? "Give" : "Take";
+	}
+
+	@Override
+	public KeyCode keybind()
+	{
+		return give ? KeyCode.G : KeyCode.T;
 	}
 
 	@Override

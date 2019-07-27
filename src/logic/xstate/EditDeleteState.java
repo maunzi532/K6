@@ -1,6 +1,7 @@
 package logic.xstate;
 
 import entity.*;
+import javafx.scene.input.*;
 import logic.*;
 
 public class EditDeleteState implements NAutoState
@@ -40,6 +41,12 @@ public class EditDeleteState implements NAutoState
 	public String text()
 	{
 		return "Delete";
+	}
+
+	@Override
+	public KeyCode keybind()
+	{
+		return KeyCode.D;
 	}
 
 	@Override

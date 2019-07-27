@@ -3,6 +3,7 @@ package logic.xstate;
 import entity.*;
 import gui.*;
 import gui.guis.*;
+import javafx.scene.input.*;
 import logic.*;
 
 public class CharacterInvState implements NGUIState
@@ -18,6 +19,12 @@ public class CharacterInvState implements NGUIState
 	public String text()
 	{
 		return "Inv.";
+	}
+
+	@Override
+	public KeyCode keybind()
+	{
+		return KeyCode.I;
 	}
 
 	@Override

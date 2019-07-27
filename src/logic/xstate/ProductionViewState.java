@@ -3,6 +3,7 @@ package logic.xstate;
 import building.*;
 import gui.*;
 import gui.guis.*;
+import javafx.scene.input.*;
 import logic.*;
 
 public class ProductionViewState implements NGUIState
@@ -18,6 +19,12 @@ public class ProductionViewState implements NGUIState
 	public String text()
 	{
 		return "View";
+	}
+
+	@Override
+	public KeyCode keybind()
+	{
+		return KeyCode.V;
 	}
 
 	@Override

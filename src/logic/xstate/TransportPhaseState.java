@@ -33,10 +33,4 @@ public class TransportPhaseState implements NAutoState
 	{
 		return new StartTurnState();
 	}
-
-	@Override
-	public String text()
-	{
-		return "Transport";
-	}
 }

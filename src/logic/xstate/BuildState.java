@@ -18,12 +18,6 @@ public class BuildState implements NGUIState
 	}
 
 	@Override
-	public String text()
-	{
-		return "Error";
-	}
-
-	@Override
 	public XMenu menu()
 	{
 		return XMenu.characterGUIMenu(builder);

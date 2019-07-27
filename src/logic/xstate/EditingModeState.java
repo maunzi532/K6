@@ -21,12 +21,6 @@ public class EditingModeState implements NGUIState
 	}
 
 	@Override
-	public String text()
-	{
-		return "Error";
-	}
-
-	@Override
 	public XMenu menu()
 	{
 		return XMenu.NOMENU;
