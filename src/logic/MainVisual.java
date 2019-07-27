@@ -52,22 +52,29 @@ public class MainVisual implements XInputInterface
 	}
 
 	@Override
-	public void mousePosition(double xMouse, double yMouse, boolean moved, boolean drag, int mouseKey)
+	public void mousePosition(double xMouse, double yMouse, boolean inside, boolean moved, boolean drag, int mouseKey)
 	{
-		double xp = xMouse / graphics.xHW() - 1;
-		double yp = yMouse / graphics.yHW() - 1;
-		if(xp > BORDER)
-			mapCamera.setXShift(mapCamera.getXShift() + xp - BORDER2);
-		else if(xp < -BORDER)
-			mapCamera.setXShift(mapCamera.getXShift() + xp + BORDER2);
-		if(yp > BORDER)
-			mapCamera.setYShift(mapCamera.getYShift() + yp - BORDER2);
-		else if(yp < -BORDER)
-			mapCamera.setYShift(mapCamera.getYShift() + yp + BORDER2);
-		convInputConsumer.mousePosition(xMouse / graphics.xHW() - 1, yMouse / graphics.yHW() - 1,
-				visualGUI.inside(xMouse, yMouse, mainState.stateHolder.getGUI()), visualGUI.offsetClickLocation(xMouse, yMouse),
-				visualMenu.coordinatesToOption(xMouse, yMouse), levelEditor.editorClickNum(xMouse, yMouse),
-				targetedTile(xMouse, yMouse), moved, drag, mouseKey);
+		if(inside)
+		{
+			double xp = xMouse / graphics.xHW() - 1;
+			double yp = yMouse / graphics.yHW() - 1;
+			if(xp > BORDER)
+				mapCamera.setXShift(mapCamera.getXShift() + xp - BORDER2);
+			else if(xp < -BORDER)
+				mapCamera.setXShift(mapCamera.getXShift() + xp + BORDER2);
+			if(yp > BORDER)
+				mapCamera.setYShift(mapCamera.getYShift() + yp - BORDER2);
+			else if(yp < -BORDER)
+				mapCamera.setYShift(mapCamera.getYShift() + yp + BORDER2);
+			convInputConsumer.mousePosition(xMouse / graphics.xHW() - 1, yMouse / graphics.yHW() - 1,
+					visualGUI.inside(xMouse, yMouse, mainState.stateHolder.getGUI()),
+					visualGUI.offsetClickLocation(xMouse, yMouse), visualMenu.coordinatesToOption(xMouse, yMouse),
+					levelEditor.editorClickNum(xMouse, yMouse), targetedTile(xMouse, yMouse), moved, drag, mouseKey);
+		}
+		else
+		{
+			convInputConsumer.mouseOutside();
+		}
 	}
 
 	private Tile targetedTile(double x, double y)
@@ -76,9 +83,13 @@ public class MainVisual implements XInputInterface
 	}
 
 	@Override
-	public void dragPosition(double xStart, double yStart, double xMoved, double yMoved, int mouseKey, boolean finished)
+	public void dragPosition(boolean active, double xStart, double yStart,
+			double xMoved, double yMoved, int mouseKey, boolean finished)
 	{
-		convInputConsumer.dragPosition(targetedTile(xStart, yStart), targetedTile(xMoved, yMoved), mouseKey, finished);
+		if(active)
+			convInputConsumer.dragPosition(targetedTile(xStart, yStart), targetedTile(xMoved, yMoved), mouseKey, finished);
+		else
+			convInputConsumer.noDrag();
 	}
 
 	@Override
@@ -90,9 +101,10 @@ public class MainVisual implements XInputInterface
 	@Override
 	public void tick()
 	{
-		convInputConsumer.tick();
 		mainState.levelMap.tickArrows();
+		convInputConsumer.tick();
 		visualSideInfo.tick();
+
 		draw();
 	}
 

@@ -17,6 +17,7 @@ public class LevelMap
 	private final ArrayList<XHero> entitiesH;
 	private final ArrayList<XEnemy> entitiesE;
 	private Map<Tile, MarkType> marked;
+	private final List<VisMark> visMarked;
 	private final ArrayList<XArrow> arrows;
 
 	public LevelMap(TileType y1)
@@ -27,6 +28,7 @@ public class LevelMap
 		entitiesH = new ArrayList<>();
 		entitiesE = new ArrayList<>();
 		marked = Map.of();
+		visMarked = new ArrayList<>();
 		arrows = new ArrayList<>();
 	}
 
@@ -197,6 +199,11 @@ public class LevelMap
 		this.marked = marked;
 	}
 
+	public List<VisMark> getVisMarked()
+	{
+		return visMarked;
+	}
+
 	public List<XArrow> getArrows()
 	{
 		return arrows;
@@ -209,6 +216,7 @@ public class LevelMap
 
 	public void tickArrows()
 	{
+		visMarked.clear();
 		arrows.forEach(XArrow::tick);
 		arrows.removeIf(XArrow::finished);
 	}

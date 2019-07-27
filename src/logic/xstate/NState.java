@@ -1,5 +1,7 @@
 package logic.xstate;
 
+import java.util.*;
+import levelMap.*;
 import logic.*;
 
 public interface NState
@@ -21,5 +23,10 @@ public interface NState
 	default boolean editMode()
 	{
 		return false;
+	}
+
+	default List<VisMark> visMarked(MainState mainState)
+	{
+		return List.of();
 	}
 }

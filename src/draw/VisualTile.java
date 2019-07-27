@@ -38,6 +38,7 @@ public class VisualTile
 			}
 		}
 		drawArrows0(layout, mid, range);
+		drawMarked0(layout);
 		for(int i = -range; i <= range; i++)
 		{
 			int i1 = camera instanceof HexCamera ? i : 0;
@@ -65,15 +66,15 @@ public class VisualTile
 			gd.setFill(Color.BLACK);
 		}
 		gd.fillPolygon(points[0], points[1], y1.directionCount());
-		if(levelMap.getMarked().containsKey(t1))
+		/*if(levelMap.getMarked().containsKey(t1))
 		{
 			mark(levelMap.getMarked().get(t1));
 			gd.strokePolygon(points[0], points[1], y1.directionCount());
-			/*for(int i = 0; i < y1.directionCount() / 2; i++)
+			for(int i = 0; i < y1.directionCount() / 2; i++)
 			{
 				gd.strokeLine(points[0][i], points[1][i], points[0][(i + 3) % y1.directionCount()], points[1][(i + 3) % y1.directionCount()]);
-			}*/
-		}
+			}
+		}*/
 		if(advTile.visible(levelMap))
 		{
 			if(advTile.getBuilding() != null)
@@ -104,6 +105,16 @@ public class VisualTile
 					double[][] points = layout.polygonCorners(av.arrowPoints(arrow1));
 					gd.fillPolygon(points[0], points[1], points[0].length);
 				});
+	}
+
+	private void drawMarked0(TileLayout layout)
+	{
+		for(VisMark vm : levelMap.getVisMarked())
+		{
+			double[][] points = layout.tileCorners(vm.getLocation(), vm.getMidDistance());
+			gd.setStroke(vm.getColor());
+			gd.strokePolygon(points[0], points[1], y1.directionCount());
+		}
 	}
 
 	public void draw1(TileLayout layout, Tile t1)

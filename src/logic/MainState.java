@@ -59,10 +59,12 @@ public class MainState
 	}
 
 	//TODO improve marking
+	//TODO menu bar keybinds
 	//TODO show enemy reach
 	//TODO Improve floor placing tool
 	//TODO screenshake on crit
 	//TODO Change menu bar to not overlap with SideInfo
+	//TODO Add visMark to GiveOrTakeState, ProductionFloorsState, TransportTargetsState
 	//TODO add permanent menu
 	//TODO auto-camera
 	//TODO Enemy AI types

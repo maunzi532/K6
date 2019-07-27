@@ -15,6 +15,12 @@ public interface TileLayout
 
 	PointD cornerOffset(int corner);
 
+	default PointD cornerOffset(int corner, double distanceMultiplier)
+	{
+		PointD cornerOffset = cornerOffset(corner);
+		return new PointD(cornerOffset.v[0] * distanceMultiplier, cornerOffset.v[1] * distanceMultiplier);
+	}
+
 	int directionCount();
 
 	default double[][] tileCorners(Tile t1)
@@ -24,6 +30,19 @@ public interface TileLayout
 		for(int i = 0; i < directionCount(); i++)
 		{
 			PointD corner = center.plus(cornerOffset(i));
+			corners[0][i] = corner.v[0];
+			corners[1][i] = corner.v[1];
+		}
+		return corners;
+	}
+
+	default double[][] tileCorners(Tile t1, double distanceMultiplier)
+	{
+		double[][] corners = new double[2][directionCount()];
+		PointD center = tileToPixel(t1);
+		for(int i = 0; i < directionCount(); i++)
+		{
+			PointD corner = center.plus(cornerOffset(i, distanceMultiplier));
 			corners[0][i] = corner.v[0];
 			corners[1][i] = corner.v[1];
 		}

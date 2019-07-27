@@ -6,6 +6,7 @@ import gui.*;
 import java.util.*;
 import java.util.stream.*;
 import javafx.scene.input.*;
+import javafx.scene.paint.*;
 import levelMap.*;
 import levelMap.editor.*;
 import logic.xstate.*;
@@ -17,6 +18,7 @@ public class StateControl2 implements XStateHolder, ConvInputConsumer
 	private NState state;
 	private List<NState> menu;
 	private XGUI xgui;
+	private VisMark cursorMarker;
 
 	public StateControl2(MainState mainState, LevelEditor levelEditor, NState state)
 	{
@@ -93,21 +95,31 @@ public class StateControl2 implements XStateHolder, ConvInputConsumer
 					xgui.clickOutside(mouseKey, this);
 				}
 			}
+			cursorMarker = null;
 		}
 		else if(menuOption >= 0)
 		{
 			onMenuClick(menuOption, mouseKey);
+			cursorMarker = null;
 		}
 		else if(state.editMode() && editorOption >= 0)
 		{
 			//editor
 			levelEditor.onEditorClick(editorOption, mouseKey);
+			cursorMarker = null;
 		}
 		else
 		{
 			//tile
 			handleMapTarget(mapTile, mouseKey);
+			cursorMarker = new VisMark(mapTile, Color.ORANGE, VisMark.d2);
 		}
+	}
+
+	@Override
+	public void mouseOutside()
+	{
+		cursorMarker = null;
 	}
 
 	private void onMenuClick(int menuOption, int mouseKey)
@@ -180,6 +192,12 @@ public class StateControl2 implements XStateHolder, ConvInputConsumer
 	}
 
 	@Override
+	public void noDrag()
+	{
+
+	}
+
+	@Override
 	public void handleKey(KeyCode keyCode)
 	{
 		switch(keyCode)
@@ -216,5 +234,8 @@ public class StateControl2 implements XStateHolder, ConvInputConsumer
 				setState(autoState.nextState());
 			}
 		}
+		mainState.levelMap.getVisMarked().addAll(state.visMarked(mainState));
+		if(cursorMarker != null)
+			mainState.levelMap.getVisMarked().add(cursorMarker);
 	}
 }

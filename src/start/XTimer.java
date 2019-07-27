@@ -84,25 +84,33 @@ public class XTimer extends AnimationTimer
 		//System.out.println(1000000000d / (currentNanoTime - lastNanoTime));
 		inputInterface.frameTime(currentNanoTime - lastNanoTime);
 		lastNanoTime = currentNanoTime;
-		if(clicked)
+		if(clicked && inside)
 		{
-			inputInterface.mousePosition(xClicked, yClicked, moved, isDrag, mouseKey.ordinal());
+			inputInterface.mousePosition(xClicked, yClicked, true, moved, isDrag, mouseKey.ordinal());
 			moved = false;
 			clicked = false;
 		}
 		else if(inside)
 		{
-			inputInterface.mousePosition(xMoved, yMoved, moved, isDrag, -1);
+			inputInterface.mousePosition(xMoved, yMoved, true, moved, isDrag, -1);
 			moved = false;
+		}
+		else
+		{
+			inputInterface.mousePosition(0, 0, false, moved, isDrag, -1);
 		}
 		if(dragged)
 		{
-			inputInterface.dragPosition(xStart, yStart, xClicked, yClicked, mouseKey.ordinal(), true);
+			inputInterface.dragPosition(true, xStart, yStart, xClicked, yClicked, mouseKey.ordinal(), true);
 			dragged = false;
 		}
 		else if(isDrag)
 		{
-			inputInterface.dragPosition(xStart, yStart, xMoved, yMoved, mouseKey.ordinal(), false);
+			inputInterface.dragPosition(true, xStart, yStart, xMoved, yMoved, mouseKey.ordinal(), false);
+		}
+		else
+		{
+			inputInterface.dragPosition(false, 0, 0, 0, 0, 0, false);
 		}
 		if(!clicked && !dragged && keyCode != null)
 		{
