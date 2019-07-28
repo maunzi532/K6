@@ -22,6 +22,11 @@ public class XMenu
 				new BuildingChooseState(character), new RemoveBuildingState(character), new EnemyStartState());
 	}
 
+	public static XMenu enemyMoveMenu(XEnemy character)
+	{
+		return new XMenu(new ReachViewState(character), new EnemyStartState());
+	}
+
 	public static XMenu enemyGUIMenu(InvEntity enemy)
 	{
 		return new XMenu(new CharacterInvState(enemy), new EnemyStartState());

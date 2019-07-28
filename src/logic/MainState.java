@@ -60,13 +60,12 @@ public class MainState
 
 	//TODO Build a real level
 
-	//TODO menu bar keybinds
 	//TODO show enemy reach
 	//TODO Floor placing tool drag to place area
 	//TODO screenshake on crit
 
 	//TODO scale tiles, menubar, gui when resizing
-	//TODO Change menu bar to not overlap with SideInfo
+	//TODO Make menu bar not overlap with SideInfo
 	//TODO Add visMark to GiveOrTakeState, ProductionFloorsState, TransportTargetsState
 	//TODO add permanent menu
 	//TODO auto-camera

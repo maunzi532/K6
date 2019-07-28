@@ -173,7 +173,7 @@ public class StateControl2 implements XStateHolder, ConvInputConsumer
 				{
 					if(mouseKey == 1)
 					{
-						//setState(new AdvMoveState((XEnemy) entity));
+						setState(new ReachViewState((XEnemy) entity));
 					}
 					else if(mouseKey == 3)
 					{
