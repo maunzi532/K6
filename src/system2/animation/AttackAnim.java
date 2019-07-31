@@ -29,10 +29,10 @@ public class AttackAnim implements AnimTimer
 		linked = new ArrayList<>();
 		healthBar1 = new InfoArrow(aI.entity.location(), aI.entityT.location(),
 				aI.entity instanceof XHero ? Color.GREEN : Color.GRAY, Color.BLACK, Color.WHITE,
-				aI.getStats(false).getCurrentHealth(), aI.getStats(false).getToughness());
+				aI.getStats(false).getCurrentHealth(), aI.getStats(false).maxHealth());
 		healthBar2 = new InfoArrow(aI.entityT.location(), aI.entity.location(),
 				aI.entityT instanceof XHero ? Color.GREEN : Color.GRAY, Color.BLACK, Color.WHITE,
-				aI.getStats(true).getCurrentHealth(), aI.getStats(true).getToughness());
+				aI.getStats(true).getCurrentHealth(), aI.getStats(true).maxHealth());
 		levelMap.addArrow(healthBar1);
 		levelMap.addArrow(healthBar2);
 	}

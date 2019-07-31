@@ -92,6 +92,14 @@ public class LevelEditor
 		}
 	}
 
+	public void onMapDrag(Tile tile1, Tile tile2, int mouseKey)
+	{
+		if(currentSlot >= 0)
+		{
+			editorSlots.get(currentSlot).onMapDrag(mainState, tile1, tile2, mouseKey);
+		}
+	}
+
 	public void setCurrentSlot(EditingMode mode)
 	{
 		if(currentSlot >= 0)

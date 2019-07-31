@@ -12,26 +12,4 @@ public abstract class AttackState implements NAutoState
 		this.nextState = nextState;
 		this.aI = aI;
 	}
-
-	protected abstract boolean inverse();
-
-	protected XEntity entity()
-	{
-		return aI.getEntity(inverse());
-	}
-
-	protected XEntity entityT()
-	{
-		return aI.getEntity(!inverse());
-	}
-
-	protected Stats stats()
-	{
-		return aI.getStats(inverse());
-	}
-
-	protected Stats statsT()
-	{
-		return aI.getStats(!inverse());
-	}
 }

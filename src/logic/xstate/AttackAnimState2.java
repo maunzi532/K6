@@ -17,12 +17,6 @@ public class AttackAnimState2 extends AttackState
 	}
 
 	@Override
-	protected boolean inverse()
-	{
-		return false;
-	}
-
-	@Override
 	public void onEnter(MainState mainState)
 	{
 		arrow = mainState.combatSystem.createAnimationArrow(divider, mainState);

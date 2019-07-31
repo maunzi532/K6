@@ -95,6 +95,17 @@ public class MainVisual implements XInputInterface
 	@Override
 	public void handleKey(KeyCode keyCode)
 	{
+		if(keyCode.isArrowKey())
+		{
+			if(keyCode == KeyCode.RIGHT)
+				mapCamera.setXShift(mapCamera.getXShift() + 3);
+			if(keyCode == KeyCode.DOWN)
+				mapCamera.setYShift(mapCamera.getYShift() + 3);
+			if(keyCode == KeyCode.LEFT)
+				mapCamera.setXShift(mapCamera.getXShift() - 3);
+			if(keyCode == KeyCode.UP)
+				mapCamera.setYShift(mapCamera.getYShift() - 3);
+		}
 		convInputConsumer.handleKey(keyCode);
 	}
 

@@ -48,4 +48,9 @@ public class EditorSlot
 	{
 		mode.onMapClick(mainState, tile, mouseKey);
 	}
+
+	public void onMapDrag(MainState mainState, Tile tile1, Tile tile2, int mouseKey)
+	{
+		mode.onMapDrag(mainState, tile1, tile2, mouseKey);
+	}
 }

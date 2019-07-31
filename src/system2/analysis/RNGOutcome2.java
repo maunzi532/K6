@@ -22,11 +22,11 @@ public class RNGOutcome2 extends RNGOutcome
 		super(chance, divider, compareText);
 		damageTaken = sourceaI.stats.getCurrentHealth() - health;
 		remainingHealth = health;
-		maxHealth = sourceaI.stats.getToughness();
+		maxHealth = sourceaI.stats.maxHealth();
 		lose = health <= 0;
 		damageDealtT = sourceaI.statsT.getCurrentHealth() - healthT;
 		remainingHealthT = healthT;
-		maxHealthT = sourceaI.statsT.getToughness();
+		maxHealthT = sourceaI.statsT.maxHealth();
 		win = healthT <= 0;
 	}
 }

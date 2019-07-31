@@ -11,12 +11,6 @@ public class PreAttackState extends AttackState
 	}
 
 	@Override
-	protected boolean inverse()
-	{
-		return false;
-	}
-
-	@Override
 	public void onEnter(MainState mainState)
 	{
 		mainState.visualSideInfo.attackInfo(aI);

@@ -60,10 +60,11 @@ public class MainState
 
 	//TODO Build a real level
 
-	//TODO show enemy reach
+	//TODO show enemy reach (all enemies)
 	//TODO Floor placing tool drag to place area
 	//TODO screenshake on crit
 
+	//TODO RegenerateState use new system
 	//TODO scale tiles, menubar, gui when resizing
 	//TODO Make menu bar not overlap with SideInfo
 	//TODO Add visMark to GiveOrTakeState, ProductionFloorsState, TransportTargetsState

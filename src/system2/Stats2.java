@@ -12,6 +12,8 @@ import system2.content.*;
 
 public class Stats2 implements Stats
 {
+	public static final int HEALTH_MULTIPLIER = 5;
+
 	private XClass xClass;
 	private int level;
 	private String customName;
@@ -47,7 +49,7 @@ public class Stats2 implements Stats
 		this.defense = defense;
 		this.evasion = evasion;
 		this.toughness = toughness;
-		currentHealth = toughness;
+		currentHealth = maxHealth();
 		this.movement = movement;
 		slot = new AttackItem2Slot(xClass.usableItems);
 	}
@@ -70,7 +72,7 @@ public class Stats2 implements Stats
 		defense = xClass.getStat(5, level);
 		evasion = xClass.getStat(6, level);
 		toughness = xClass.getStat(7, level);
-		currentHealth = toughness;
+		currentHealth = maxHealth();
 		movement = xClass.movement;
 	}
 
@@ -126,12 +128,17 @@ public class Stats2 implements Stats
 
 	private int getCPower()
 	{
-		return (toughness / 5) + strength + finesse + skill + speed + luck + defense + evasion;
+		return toughness + strength + finesse + skill + speed + luck + defense + evasion;
 	}
 
 	public int getMovement()
 	{
 		return movement;
+	}
+
+	public int maxHealth()
+	{
+		return toughness * HEALTH_MULTIPLIER;
 	}
 
 	public int getCurrentHealth()
@@ -181,19 +188,19 @@ public class Stats2 implements Stats
 	@Override
 	public int getMaxStat(int num)
 	{
-		return toughness;
+		return maxHealth();
 	}
 
 	@Override
 	public void change(int change)
 	{
-		currentHealth = Math.max(0, Math.min(toughness, currentHealth + change));
+		currentHealth = Math.max(0, Math.min(maxHealth(), currentHealth + change));
 	}
 
 	@Override
 	public int getRegenerateChange()
 	{
-		return toughness - currentHealth;
+		return maxHealth() - currentHealth;
 	}
 
 	@Override
@@ -337,7 +344,7 @@ public class Stats2 implements Stats
 		List<String> info = new ArrayList<>();
 		info.add("Class\n" + xClass.className);
 		info.add("Level\n" + level);
-		info.add("Health\n" + currentHealth + "/" + toughness);
+		info.add("Health\n" + currentHealth + "/" + maxHealth());
 		info.add("Strength\n" + strength);
 		info.add("Finesse\n" + finesse);
 		info.add("Skill\n" + skill);
@@ -381,7 +388,7 @@ public class Stats2 implements Stats
 		info.add("Defense\n" + defense);
 		info.add("Evasion\n" + evasion);
 		info.add("Toughness\n" + toughness);
-		info.add("Health\n" + currentHealth);
+		info.add("Health\n" + currentHealth + "/" + maxHealth());
 		info.add("Exhaustion\n" + exhaustion);
 		info.add("Move\n" + movement);
 		info.add("Defend\n" + (lastUsed != null ? lastUsed.item.info().get(0).replace("Type\n", "") : "None"));
@@ -467,7 +474,7 @@ public class Stats2 implements Stats
 			case 0xa2 -> toughness = xClass.getStat(7, level);
 			case 0xb0 -> currentHealth++;
 			case 0xb1 -> currentHealth--;
-			case 0xb2 -> currentHealth = toughness;
+			case 0xb2 -> currentHealth = maxHealth();
 			case 0xc0 -> exhaustion++;
 			case 0xc1 -> exhaustion--;
 			case 0xc2 -> exhaustion = 0;

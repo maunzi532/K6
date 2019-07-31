@@ -52,13 +52,7 @@ public abstract class AttackInfo<T extends Stats, I extends XMode>
 		return inverse ? modeT : mode;
 	}
 
-	public abstract int[] getChange(boolean inverse, int num);
-
-	public abstract int attackCount(boolean inverse);
-
 	public abstract String[] getInfos();
-
-	public abstract String[] getInfos(boolean inverse);
 
 	public abstract String[] getSideInfos(boolean inverse);
 

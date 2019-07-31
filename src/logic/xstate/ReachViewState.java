@@ -48,9 +48,8 @@ public class ReachViewState implements NMarkState
 				new Pathing(mainState.y2, character, character.movement(), mainState.levelMap, null)
 				.start().getEndpoints();
 		movement.forEach(e -> movementRange.add(new VisMark(e, Color.MEDIUMVIOLETRED, VisMark.d1)));
-		movement.stream().map(loc -> character.attackRanges(false).stream()
-				.map(e -> mainState.y2.range(loc, e, e))
-				.flatMap(Collection::stream)).flatMap(e -> e).distinct()
+		movement.stream().flatMap(loc -> character.attackRanges(false).stream()
+				.flatMap(e -> mainState.y2.range(loc, e, e).stream())).distinct()
 				.forEach(e -> attackRange.add(new VisMark(e, Color.RED, VisMark.d1)));
 		allTargets = new ArrayList<>();
 		allTargets.addAll(attackRange);

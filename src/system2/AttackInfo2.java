@@ -44,7 +44,6 @@ public class AttackInfo2 extends AttackInfo<Stats2, AttackMode2>
 		return inverse ? calcT : calc;
 	}
 
-	@Override
 	public int[] getChange(boolean inverse, int num)
 	{
 		int[] change = new int[2];
@@ -87,7 +86,6 @@ public class AttackInfo2 extends AttackInfo<Stats2, AttackMode2>
 		return change;
 	}
 
-	@Override
 	public int attackCount(boolean inverse)
 	{
 		return getCalc(inverse).attackCount;
@@ -99,7 +97,6 @@ public class AttackInfo2 extends AttackInfo<Stats2, AttackMode2>
 		return infos;
 	}
 
-	@Override
 	public String[] getInfos(boolean inverse)
 	{
 		return inverse ? calcT.infos() : calc.infos();

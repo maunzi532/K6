@@ -191,6 +191,10 @@ public class StateControl2 implements XStateHolder, ConvInputConsumer
 		{
 			dragMarker = mainState.y2.betweenArea(startTile, endTile).stream()
 					.map(e -> new VisMark(e, Color.CYAN, VisMark.d3)).collect(Collectors.toList());
+			if(finished && state.editMode() && mouseKey >= 0)
+			{
+				levelEditor.onMapDrag(startTile, endTile, mouseKey);
+			}
 		}
 		else
 		{

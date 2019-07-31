@@ -83,9 +83,9 @@ public class AttackInfoPart2
 	{
 		String[] infos = new String[5];
 		if(cost > 0)
-			infos[0] = attackStats.getCurrentHealth() + "(-" + cost + ")/" + attackStats.getToughness();
+			infos[0] = attackStats.getCurrentHealth() + "(-" + cost + ")/" + attackStats.maxHealth();
 		else
-			infos[0] = attackStats.getCurrentHealth() + "/" + attackStats.getToughness();
+			infos[0] = attackStats.getCurrentHealth() + "/" + attackStats.maxHealth();
 		if(attackCount > 0)
 		{
 			if(melting1)
@@ -103,9 +103,9 @@ public class AttackInfoPart2
 	{
 		String[] infos = new String[5];
 		if(cost > 0)
-			infos[0] = attackStats.getCurrentHealth() + "(-" + cost + ")/" + attackStats.getToughness();
+			infos[0] = attackStats.getCurrentHealth() + "(-" + cost + ")/" + attackStats.maxHealth();
 		else
-			infos[0] = attackStats.getCurrentHealth() + "/" + attackStats.getToughness();
+			infos[0] = attackStats.getCurrentHealth() + "/" + attackStats.maxHealth();
 		if(attackCount > 0)
 		{
 			if(melting1)

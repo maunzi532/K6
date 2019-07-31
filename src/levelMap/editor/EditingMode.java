@@ -13,4 +13,6 @@ public interface EditingMode
 	default void onClick(MainState mainState, int mouseKey){}
 
 	void onMapClick(MainState mainState, Tile tile, int mouseKey);
+
+	default void onMapDrag(MainState mainState, Tile tile1, Tile tile2, int mouseKey){}
 }
