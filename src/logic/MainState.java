@@ -40,7 +40,7 @@ public class MainState
 		else
 		{
 			//new TestImportSector(y2, 8).generate().importIntoMap(levelMap);
-			new Entity2Builder(this).setLocation(y2.create2(2, -1)).setStats(new Stats2(XClasses.hexerClass(), 0))
+			new Entity2Builder(this).setLocation(y2.create2(2, -1)).setStats(new Stats2(XClasses.hexerClass(), 0, null))
 					.addItem(AttackItems2.standardSpell()).create(false);
 			Chapter1.createCharacters(this, y2.create2(-2, 1), y2.create2(-2, -1), y2.create2(-4, 1)/*,
 					y2.create2(-3, 1), y2.create2(-3, -1), y2.create2(-5, 1)*/);
@@ -61,20 +61,22 @@ public class MainState
 	//TODO Build a real level
 
 	//TODO show enemy reach (all enemies)
-	//TODO Floor placing tool drag to place area
-	//TODO screenshake on crit
+	//TODO get levelup essence
+	//TODO get levelup
+	//TODO chooseable starting locations
+	//TODO enemy reinforcements
 
-	//TODO RegenerateState use new system
+	//TODO screenshake on crit
 	//TODO scale tiles, menubar, gui when resizing
 	//TODO Make menu bar not overlap with SideInfo
 	//TODO Add visMark to GiveOrTakeState, ProductionFloorsState, TransportTargetsState
-	//TODO add permanent menu
-	//TODO auto-camera
+	//TODO add keybind info
+	//TODO improve camera
 	//TODO Enemy AI types
 
 	//LK char - move/attack
 	//RK char - inv/trade
-	//LK enemy -- view reach
+	//LK enemy - view reach
 	//RK enemy - inv
 	//LK building -- claimed area
 	//RK building -- inv

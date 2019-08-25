@@ -9,7 +9,7 @@ public class RegenerateState implements NAutoState
 {
 	private XEntity entity;
 	private NState nextState;
-	private EntityArrowC acE;
+	private AnimTimer arrow;
 
 	public RegenerateState(XEntity entity, NState nextState)
 	{
@@ -21,22 +21,19 @@ public class RegenerateState implements NAutoState
 	public void onEnter(MainState mainState)
 	{
 		mainState.visualSideInfo.setSideInfo(entity.standardSideInfo(), null);
-		acE = new EntityArrowC(mainState, entity, null, 0, 0, 0,
-				0, 3, entity.getStats().getStat(0),
-				entity.getStats().getMaxStat(0), entity.getStats().getRegenerateChange(), 0);
-		entity.getStats().regenerating();
+		arrow = mainState.combatSystem.createRegenerationAnimation(entity, mainState);
 	}
 
 	@Override
 	public void tick(MainState mainState)
 	{
-		entity.getStats().change(acE.tick(mainState));
+		arrow.tick();
 	}
 
 	@Override
 	public boolean finished()
 	{
-		return acE.finished() >= 0;
+		return arrow.finished();
 	}
 
 	@Override

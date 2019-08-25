@@ -19,7 +19,7 @@ public class AttackAnimState2 extends AttackState
 	@Override
 	public void onEnter(MainState mainState)
 	{
-		arrow = mainState.combatSystem.createAnimationArrow(divider, mainState);
+		arrow = mainState.combatSystem.createAnimationTimer(divider, mainState);
 	}
 
 	@Override

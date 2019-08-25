@@ -6,35 +6,33 @@ public class XClass
 {
 	public final int code;
 	public final String className;
-	public final int[] baseStats;
-	public final int[] increase;
+	public final StaticLevelSystem levelSystem;
 	public final int movement;
 	public final List<Class> usableItems;
 	public final List<Ability2> abilities;
 
-	public XClass(int code, String className, int[] baseStats, int[] increase, int movement,
+	public XClass(int code, String className, int baseLevel, int[] baseStats, int[] increase, int movement,
 			List<Class> usableItems, List<Ability2> abilities)
 	{
 		this.code = code;
 		this.className = className;
-		this.baseStats = baseStats;
-		this.increase = increase;
+		levelSystem = new StaticLevelSystem(baseLevel, baseStats, increase);
 		this.movement = movement;
 		this.usableItems = usableItems;
 		this.abilities = abilities;
 	}
 
-	public XClass(int code, String className, int[] baseStats, int movement,
+	public XClass(int code, String className, int baseLevel, int[] baseStats, int movement,
 			List<Class> usableItems, List<Ability2> abilities)
 	{
 		this.code = code;
 		this.className = className;
-		this.baseStats = baseStats;
-		increase = new int[baseStats.length];
+		int[] increase = new int[baseStats.length];
 		for(int i = 0; i < baseStats.length; i++)
 		{
 			increase[i] = baseStats[i] * 5;
 		}
+		levelSystem = new StaticLevelSystem(baseLevel, baseStats, increase);
 		this.movement = movement;
 		this.usableItems = usableItems;
 		this.abilities = abilities;
@@ -42,6 +40,6 @@ public class XClass
 
 	public int getStat(int num, int level)
 	{
-		return baseStats[num] + (increase[num] * level) / 100;
+		return levelSystem.forLevel(num, level);
 	}
 }

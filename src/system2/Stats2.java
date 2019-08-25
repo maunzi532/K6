@@ -16,6 +16,7 @@ public class Stats2 implements Stats
 
 	private XClass xClass;
 	private int level;
+	private PlayerLevelSystem playerLevelSystem;
 	private String customName;
 	private String customImage;
 	private int strength;
@@ -35,10 +36,11 @@ public class Stats2 implements Stats
 	public Stats2(XClass xClass, int level, String customName,
 			String customImage, int strength, int finesse, int skill, int speed,
 			int luck, int defense, int evasion, int toughness,
-			int movement)
+			int movement, PlayerLevelSystem playerLevelSystem)
 	{
 		this.xClass = xClass;
 		this.level = level;
+		this.playerLevelSystem = playerLevelSystem;
 		this.customName = customName;
 		this.customImage = customImage;
 		this.strength = strength;
@@ -54,26 +56,49 @@ public class Stats2 implements Stats
 		slot = new AttackItem2Slot(xClass.usableItems);
 	}
 
-	public Stats2(XClass xClass, int level)
+	public Stats2(XClass xClass, int level, String customName,
+			String customImage, int movement, PlayerLevelSystem playerLevelSystem)
 	{
 		this.xClass = xClass;
 		this.level = level;
+		this.playerLevelSystem = playerLevelSystem;
+		autoStats();
+		this.customName = customName;
+		this.customImage = customImage;
+		currentHealth = maxHealth();
+		this.movement = movement;
+		slot = new AttackItem2Slot(xClass.usableItems);
+	}
+
+	public Stats2(XClass xClass, int level, PlayerLevelSystem playerLevelSystem)
+	{
+		this.xClass = xClass;
+		this.level = level;
+		this.playerLevelSystem = playerLevelSystem;
 		autoStats();
 		slot = new AttackItem2Slot(xClass.usableItems);
 	}
 
 	public void autoStats()
 	{
-		strength = xClass.getStat(0, level);
-		finesse = xClass.getStat(1, level);
-		skill = xClass.getStat(2, level);
-		speed = xClass.getStat(3, level);
-		luck = xClass.getStat(4, level);
-		defense = xClass.getStat(5, level);
-		evasion = xClass.getStat(6, level);
-		toughness = xClass.getStat(7, level);
+		strength = autoStat1(0);
+		finesse = autoStat1(1);
+		skill = autoStat1(2);
+		speed = autoStat1(3);
+		luck = autoStat1(4);
+		defense = autoStat1(5);
+		evasion = autoStat1(6);
+		toughness = autoStat1(7);
 		currentHealth = maxHealth();
 		movement = xClass.movement;
+	}
+
+	private int autoStat1(int num)
+	{
+		if(playerLevelSystem != null)
+			return playerLevelSystem.forLevel(num, level);
+		else
+			return xClass.getStat(num, level);
 	}
 
 	public XClass getxClass()
@@ -84,6 +109,22 @@ public class Stats2 implements Stats
 	public int getLevel()
 	{
 		return level;
+	}
+
+	public int getStat1(int num)
+	{
+		return switch(num)
+		{
+			case 0 -> strength;
+			case 1 -> finesse;
+			case 2 -> skill;
+			case 3 -> speed;
+			case 4 -> luck;
+			case 5 -> defense;
+			case 6 -> evasion;
+			case 7 -> toughness;
+			default -> 0;
+		};
 	}
 
 	public int getToughness()
@@ -126,7 +167,7 @@ public class Stats2 implements Stats
 		return evasion;
 	}
 
-	private int getCPower()
+	public int getCPower()
 	{
 		return toughness + strength + finesse + skill + speed + luck + defense + evasion;
 	}
@@ -234,7 +275,7 @@ public class Stats2 implements Stats
 	public Stats copy()
 	{
 		Stats2 copy = new Stats2(xClass, level, customName, customImage, strength, finesse, skill, speed, luck, defense,
-				evasion, toughness, movement);
+				evasion, toughness, movement, playerLevelSystem);
 		copy.currentHealth = currentHealth;
 		copy.exhaustion = exhaustion;
 		return copy;
@@ -246,6 +287,15 @@ public class Stats2 implements Stats
 		List<Integer> ints = new ArrayList<>();
 		ints.add(xClass.code);
 		ints.add(level);
+		if(playerLevelSystem != null)
+		{
+			ints.add(1);
+			ints.addAll(playerLevelSystem.save());
+		}
+		else
+		{
+			ints.add(-1);
+		}
 		if(customName != null)
 		{
 			char[] customNameChars = customName.toCharArray();
@@ -300,6 +350,10 @@ public class Stats2 implements Stats
 		xClass = XClasses.INSTANCE.xClasses[intBuffer.get()];
 		slot = new AttackItem2Slot(xClass.usableItems);
 		level = intBuffer.get();
+		if(intBuffer.get() > 0)
+		{
+			playerLevelSystem = new PlayerLevelSystem(intBuffer);
+		}
 		int cncl = intBuffer.get();
 		if(cncl >= 0)
 		{

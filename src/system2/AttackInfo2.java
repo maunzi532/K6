@@ -86,20 +86,10 @@ public class AttackInfo2 extends AttackInfo<Stats2, AttackMode2>
 		return change;
 	}
 
-	public int attackCount(boolean inverse)
-	{
-		return getCalc(inverse).attackCount;
-	}
-
 	@Override
 	public String[] getInfos()
 	{
 		return infos;
-	}
-
-	public String[] getInfos(boolean inverse)
-	{
-		return inverse ? calcT.infos() : calc.infos();
 	}
 
 	@Override

@@ -22,6 +22,13 @@ public class InfoArrow extends XArrow
 		statBar = new StatBar(fg, bg, tc, data, maxData);
 	}
 
+	public InfoArrow(Tile location1,
+			Color fg, Color bg, Color tc, int data, int maxData)
+	{
+		super(List.of(location1), 0, true, null);
+		statBar = new StatBar(fg, bg, tc, data, maxData);
+	}
+
 	public StatBar statBar()
 	{
 		return statBar;
