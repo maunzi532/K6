@@ -68,6 +68,7 @@ public class MainState
 	//TODO chooseable starting locations
 	//TODO Save characters and level separately
 	//TODO enemy reinforcements
+	//TODO Fix game crashing when you lose
 
 	//TODO screenshake on crit
 	//TODO scale tiles, menubar, gui when resizing

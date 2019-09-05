@@ -48,7 +48,7 @@ public class MainVisual implements XInputInterface
 	@Override
 	public void frameTime(long nanoFrameTime)
 	{
-
+		//System.out.println(1000000000L / nanoFrameTime);
 	}
 
 	@Override

@@ -11,7 +11,7 @@ import java.util.stream.*;
 
 public class LevelMap
 {
-	public static final int TIME_PER_DISTANCE = 20;
+	public static final int TIME_PER_DISTANCE = 10;
 
 	public final TileType y1;
 	private final HashMap<Tile, AdvTile> advTiles;

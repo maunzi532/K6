@@ -10,8 +10,8 @@ import javafx.scene.text.*;
 
 public abstract class VisualGUI
 {
-	private static final int FADEIN = 10;
-	private static final int FADEOUT = 5;
+	private static final int FADEIN = 6;
+	private static final int FADEOUT = 3;
 
 	public final DoubleType y2;
 	protected final GraphicsContext gd;

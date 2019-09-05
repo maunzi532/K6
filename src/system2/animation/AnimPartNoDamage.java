@@ -6,7 +6,7 @@ import levelMap.*;
 
 public class AnimPartNoDamage implements AnimPart
 {
-	private static final int DURATION = 40;
+	private static final int DURATION = 20;
 
 	private final XEntity target;
 	private final LevelMap levelMap;

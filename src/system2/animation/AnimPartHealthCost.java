@@ -5,7 +5,7 @@ import system2.*;
 
 public class AnimPartHealthCost implements AnimPart
 {
-	private static final int SPEED = 4;
+	private static final int SPEED = 2;
 
 	private final int healthCost;
 	private final Stats2 stats;

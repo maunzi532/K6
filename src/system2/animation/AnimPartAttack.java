@@ -6,10 +6,10 @@ import levelMap.*;
 
 public class AnimPartAttack implements AnimPart
 {
-	public static final int DODGETIME = 20;
-	private static final int LEN = 60;
-	private static final int FORWARD = 40;
-	private static final int BACKWARD = 20;
+	public static final int DODGETIME = 10;
+	private static final int LEN = 30;
+	private static final int FORWARD = 20;
+	private static final int BACKWARD = 10;
 
 	private final XEntity attacker;
 	private final XEntity target;

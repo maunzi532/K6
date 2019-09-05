@@ -6,9 +6,9 @@ import levelMap.*;
 
 public class AnimPartDodge implements AnimPart
 {
-	private static final int LEN = 30;
-	private static final int FORWARD = 20;
-	private static final int BACKWARD = 20;
+	private static final int LEN = 15;
+	private static final int FORWARD = 10;
+	private static final int BACKWARD = 10;
 
 	private final XEntity attacker;
 	private final XEntity target;

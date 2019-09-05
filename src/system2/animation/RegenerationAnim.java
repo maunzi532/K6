@@ -8,7 +8,7 @@ import system2.*;
 
 public class RegenerationAnim implements AnimTimer
 {
-	private static final int SPEED = 4;
+	private static final int SPEED = 2;
 
 	private XEntity entity;
 	private LevelMap levelMap;

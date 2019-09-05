@@ -7,9 +7,9 @@ import system2.*;
 
 public class AnimPartHit implements AnimPart
 {
-	private static final int DURATION = 40;
-	private static final int BLINKTIME = 10;
-	private static final int SPEED = 4;
+	private static final int DURATION = 20;
+	private static final int BLINKTIME = 5;
+	private static final int SPEED = 2;
 
 	private final XEntity target;
 	private final StatBar statBar;

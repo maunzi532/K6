@@ -6,8 +6,8 @@ import levelMap.*;
 
 public class AnimPartVanish implements AnimPart
 {
-	private static final int DURATION = 40;
-	private static final int BLINKTIME = 5;
+	private static final int DURATION = 20;
+	private static final int BLINKTIME = 3;
 
 	private final XEntity target;
 	private final LevelMap levelMap;
