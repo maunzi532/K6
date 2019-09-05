@@ -1,6 +1,7 @@
 package entity;
 
 import arrow.*;
+import com.fasterxml.jackson.jr.stree.*;
 import entity.analysis.*;
 import geom.f1.*;
 import item.*;
@@ -48,5 +49,9 @@ public interface CombatSystem<T extends Stats, A extends AttackInfo, I extends I
 
 	XEntity loadEntity(TileType y1, MainState mainState, IntBuffer intBuffer);
 
+	XEntity loadEntity(TileType y1, MainState mainState, JrsObject data);
+
 	Item loadItem(IntBuffer intBuffer);
+
+	Item loadItem(JrsObject data);
 }

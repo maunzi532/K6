@@ -31,7 +31,8 @@ public class SaveMode implements EditingMode
 	{
 		try
 		{
-			Files.write(new FileChooser().showSaveDialog(null).toPath(), mainState.levelMap.saveData());
+			//Files.write(new FileChooser().showSaveDialog(null).toPath(), mainState.levelMap.saveData());
+			Files.write(new FileChooser().showSaveDialog(null).toPath(), mainState.levelMap.saveDataJSON().getBytes());
 			state = 1;
 		}catch(IOException e)
 		{

@@ -1,5 +1,8 @@
 package system2;
 
+import com.fasterxml.jackson.jr.ob.comp.*;
+import com.fasterxml.jackson.jr.stree.*;
+import java.io.*;
 import java.nio.*;
 import java.util.*;
 import java.util.stream.*;
@@ -102,6 +105,39 @@ public class PlayerLevelSystem implements LevelSystem
 		for(int i = 0; i < STAT_COUNT; i++)
 		{
 			baseIncrease[i] = intBuffer.get();
+		}
+		setAssumedIncrease();
+	}
+
+	public <T extends ComposerBase> ObjectComposer<T> save(ObjectComposer<T> a1) throws IOException
+	{
+		var a2 = a1.put("BaseLevel", baseLevel).startArrayField("BaseLevelStats");
+		for(int i = 0; i < STAT_COUNT; i++)
+		{
+			a2.add(baseLevelStats[i]);
+		}
+		var a3 = a2.end().startArrayField("BaseIncrease");
+		for(int i = 0; i < STAT_COUNT; i++)
+		{
+			a3.add(baseIncrease[i]);
+		}
+		return a3.end();
+	}
+
+	public PlayerLevelSystem(JrsObject data)
+	{
+		baseLevel = ((JrsNumber) data.get("BaseLevel")).getValue().intValue();
+		var array1 = ((JrsArray) data.get("BsaeLevelStats"));
+		baseLevelStats = new int[STAT_COUNT];
+		for(int i = 0; i < STAT_COUNT; i++)
+		{
+			baseLevelStats[i] = ((JrsNumber) array1.get(i)).getValue().intValue();
+		}
+		var array2 = ((JrsArray) data.get("BaseIncrease"));
+		baseIncrease = new int[STAT_COUNT];
+		for(int i = 0; i < STAT_COUNT; i++)
+		{
+			baseIncrease[i] = ((JrsNumber) array2.get(i)).getValue().intValue();
 		}
 		setAssumedIncrease();
 	}

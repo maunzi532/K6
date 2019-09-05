@@ -1,10 +1,12 @@
 package entity;
 
 import arrow.*;
+import com.fasterxml.jackson.jr.ob.comp.*;
 import draw.*;
 import entity.analysis.*;
 import file.*;
 import geom.f1.*;
+import java.io.*;
 import java.util.*;
 import javafx.scene.image.*;
 import logic.*;
@@ -119,5 +121,20 @@ public class XEntity
 	public List<Integer> save2()
 	{
 		return List.of();
+	}
+
+	public <T extends ComposerBase> ObjectComposer<T> save(ObjectComposer<T> a1, TileType y1) throws IOException
+	{
+		var a2 = a1.put("Type", classSave())
+				.put("sx", y1.sx(location))
+				.put("sy", y1.sy(location))
+				.startObjectField("Stats");
+		var a3 = stats.save(a2);
+		return save2(a3.end());
+	}
+
+	public <T extends ComposerBase> ObjectComposer<T> save2(ObjectComposer<T> a1) throws IOException
+	{
+		return a1;
 	}
 }

@@ -1,7 +1,9 @@
 package item.inv;
 
+import com.fasterxml.jackson.jr.ob.comp.*;
 import item.*;
 import item.view.*;
+import java.io.*;
 import java.util.*;
 
 public interface Inv extends Inv0
@@ -76,4 +78,6 @@ public interface Inv extends Inv0
 	}
 
 	List<Integer> save();
+
+	<T extends ComposerBase> ObjectComposer<T> save(ObjectComposer<T> a1) throws IOException;
 }

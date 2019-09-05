@@ -1,6 +1,7 @@
 package system2;
 
 import arrow.*;
+import com.fasterxml.jackson.jr.stree.*;
 import entity.*;
 import entity.analysis.*;
 import geom.f1.*;
@@ -138,6 +139,23 @@ public class System2 implements CombatSystem<Stats2, AttackInfo2, AttackItem2>
 	}
 
 	@Override
+	public XEntity loadEntity(TileType y1, MainState mainState, JrsObject data)
+	{
+		int classCode = ((JrsNumber) data.get("Type")).getValue().intValue();
+		Tile location = y1.create2(((JrsNumber) data.get("sx")).getValue().intValue(), ((JrsNumber) data.get("sy")).getValue().intValue());
+		Stats2 stats = new Stats2(((JrsObject) data.get("Stats")), this);
+		if(classCode > 0)
+		{
+			Inv inv = new WeightInv(((JrsObject) data.get("Inventory")), this);
+			if(classCode == 1)
+				return new XHero(location, mainState, stats, inv);
+			else
+				return new XEnemy(location, mainState, stats, new StandardAI(), inv);
+		}
+		return new XEntity(location, mainState, stats);
+	}
+
+	@Override
 	public Item loadItem(IntBuffer intBuffer)
 	{
 		if(intBuffer.get() == 0)
@@ -148,5 +166,19 @@ public class System2 implements CombatSystem<Stats2, AttackInfo2, AttackItem2>
 		{
 			return AttackItems2.INSTANCE.items[intBuffer.get()];
 		}
+	}
+
+	@Override
+	public Item loadItem(JrsObject data)
+	{
+		if(data.get("ItemCode") != null)
+		{
+			return Items.values()[((JrsNumber) data.get("ItemCode")).getValue().intValue()];
+		}
+		if(data.get("AttackItemCode") != null)
+		{
+			return AttackItems2.INSTANCE.items[((JrsNumber) data.get("AttackItemCode")).getValue().intValue()];
+		}
+		throw new RuntimeException();
 	}
 }

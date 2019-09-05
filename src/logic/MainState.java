@@ -35,16 +35,17 @@ public class MainState
 		SavedImport savedImport = loadFile != null ? new SavedImport(loadFile) : new SavedImport();
 		if(savedImport.hasFile())
 		{
-			savedImport.importIntoMap(this);
+			savedImport.importIntoMap2(this);
 		}
 		else
 		{
 			//new TestImportSector(y2, 8).generate().importIntoMap(levelMap);
 			new Entity2Builder(this).setLocation(y2.create2(2, -1)).setStats(new Stats2(XClasses.hexerClass(), 0, null))
 					.addItem(AttackItems2.standardSpell()).create(false);
-			Chapter1.createCharacters(this, y2.create2(-2, 1), y2.create2(-2, -1), y2.create2(-4, 1)/*,
-					y2.create2(-3, 1), y2.create2(-3, -1), y2.create2(-5, 1)*/);
+			Chapter1.createCharacters(this, y2.create2(-2, 1), y2.create2(-2, -1), y2.create2(-4, 1),
+					y2.create2(-3, 1), y2.create2(-3, -1), y2.create2(-5, 1));
 		}
+		//System.out.println(levelMap.saveDataJSON());
 		/*levelMap.addArrow(new ShineArrow(List.of(y2.create2(2, 0), y2.create2(4, 1)), 120, true, null, true));
 		levelMap.addArrow(new ShineArrow(List.of(y2.create2(-2, 0), y2.create2(4, -4)), 120, true, null, true));
 		levelMap.addArrow(new ShineArrow(List.of(y2.create2(-3, 0)), 120, true, null, true));*/
@@ -63,7 +64,9 @@ public class MainState
 	//TODO show enemy reach (all enemies)
 	//TODO get levelup essence
 	//TODO get levelup
+	//TODO equip weapon without attacking
 	//TODO chooseable starting locations
+	//TODO Save characters and level separately
 	//TODO enemy reinforcements
 
 	//TODO screenshake on crit

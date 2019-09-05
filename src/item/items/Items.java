@@ -1,6 +1,8 @@
 package item.items;
 
+import com.fasterxml.jackson.jr.ob.comp.*;
 import item.*;
+import java.io.*;
 import java.util.*;
 import javafx.scene.image.*;
 
@@ -47,5 +49,11 @@ public enum Items implements Item
 	public List<Integer> save()
 	{
 		return List.of(0, ordinal());
+	}
+
+	@Override
+	public <T extends ComposerBase> ObjectComposer<T> save(ObjectComposer<T> a1) throws IOException
+	{
+		return a1.put("ItemCode", ordinal());
 	}
 }

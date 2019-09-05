@@ -1,8 +1,10 @@
 package levelMap;
 
 import arrow.*;
+import com.fasterxml.jackson.jr.ob.*;
 import entity.*;
 import geom.f1.*;
+import java.io.*;
 import java.nio.*;
 import java.util.*;
 import java.util.stream.*;
@@ -248,6 +250,43 @@ public class LevelMap
 		IntBuffer sb3 = sb2.asIntBuffer();
 		v.forEach(sb3::put);
 		return sb2.array();
+	}
+
+	public String saveDataJSON()
+	{
+		try
+		{
+			var a1 = JSON.std.with(JSON.Feature.PRETTY_PRINT_OUTPUT).composeString()
+					.startObject()
+					.put("code", 0xA4D2839F);
+			List<XEntity> entities = new ArrayList<>();
+			ByteBuffer sb = ByteBuffer.allocate(advTiles.size() * 4);
+			for(Map.Entry<Tile, AdvTile> entry : advTiles.entrySet())
+			{
+				Tile t1 = entry.getKey();
+				AdvTile adv = entry.getValue();
+				if(adv.getFloorTile() != null)
+				{
+					sb.put((byte) y1.sx(t1));
+					sb.put((byte) y1.sy(t1));
+					sb.put((byte) adv.getFloorTile().sector);
+					sb.put((byte) adv.getFloorTile().type.ordinal());
+					if(adv.getEntity() != null)
+						entities.add(adv.getEntity());
+				}
+			}
+			var a2 = a1.put("FloorTiles", Base64.getEncoder().encodeToString(sb.array())).startArrayField("XEntities");
+			for(XEntity entity : entities)
+			{
+				a2 = entity.save(a2.startObject(), y1).end();
+			}
+			return a2.end()
+					.end()
+					.finish();
+		}catch(IOException e)
+		{
+			throw new RuntimeException(e);
+		}
 	}
 
 	public void createTile(byte x, byte y, byte s, byte t)

@@ -1,7 +1,11 @@
 package item.inv;
 
+import com.fasterxml.jackson.jr.ob.comp.*;
+import com.fasterxml.jackson.jr.stree.*;
+import entity.*;
 import item.*;
 import item.view.*;
+import java.io.*;
 import java.util.*;
 import java.util.stream.*;
 
@@ -138,5 +142,33 @@ public class SlotInv implements Inv
 			}
 		}
 		return ints;
+	}
+
+	@Override
+	public <T extends ComposerBase> ObjectComposer<T> save(ObjectComposer<T> a1) throws IOException
+	{
+		var a2 = a1.startArrayField("Slots");
+		for(InvSlot invSlot : slots)
+		{
+			var a3 = invSlot.getType().save(a2.startObject().put("Limit", invSlot.getLimit()).startObjectField("ItemType")).end();
+			if(invSlot.stackExists())
+			{
+				a3 = invSlot.getStackItemC().save(a3.put("Count", invSlot.getCurrentC()).startObjectField("Item")).end();
+			}
+			a2 = a3.end();
+		}
+		return a2.end();
+	}
+
+	public SlotInv(JrsObject data, CombatSystem s1)
+	{
+		slots = new ArrayList<>();
+		var array1 = (JrsArray) data.get("Slots");
+		array1.elements().forEachRemaining(object1 ->
+		{
+			/*int itemCount = ((JrsNumber) ((JrsObject) object1).get("Count")).getValue().intValue();
+			stacks.add(new InvStack(s1.loadItem(((JrsObject) ((JrsObject) object1).get("Count"))), itemCount));*/
+			//TODO load SlotInv
+		});
 	}
 }

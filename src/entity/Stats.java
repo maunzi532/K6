@@ -1,6 +1,8 @@
 package entity;
 
+import com.fasterxml.jackson.jr.ob.comp.*;
 import item.*;
+import java.io.*;
 import java.util.*;
 
 public interface Stats
@@ -32,6 +34,8 @@ public interface Stats
 	String[] sideInfoText();
 
 	List<Integer> save();
+
+	<T extends ComposerBase> ObjectComposer<T> save(ObjectComposer<T> a1) throws IOException;
 
 	List<String> infoEdit();
 

@@ -1,6 +1,8 @@
 package system2;
 
+import com.fasterxml.jackson.jr.ob.comp.*;
 import item.*;
+import java.io.*;
 import java.util.*;
 
 public abstract class AttackItem2 implements Item
@@ -102,6 +104,12 @@ public abstract class AttackItem2 implements Item
 	public List<Integer> save()
 	{
 		return List.of(1, code);
+	}
+
+	@Override
+	public <T extends ComposerBase> ObjectComposer<T> save(ObjectComposer<T> a1) throws IOException
+	{
+		return a1.put("AttackItemCode", code);
 	}
 
 	@Override

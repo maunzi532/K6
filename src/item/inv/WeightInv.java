@@ -1,8 +1,11 @@
 package item.inv;
 
+import com.fasterxml.jackson.jr.ob.comp.*;
+import com.fasterxml.jackson.jr.stree.*;
 import entity.*;
 import item.*;
 import item.view.*;
+import java.io.*;
 import java.nio.*;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -174,5 +177,31 @@ public class WeightInv implements Inv
 			int itemCount = intBuffer.get();
 			stacks.add(new InvStack(s1.loadItem(intBuffer), itemCount));
 		}
+	}
+
+	@Override
+	public <T extends ComposerBase> ObjectComposer<T> save(ObjectComposer<T> a1) throws IOException
+	{
+		var a2 = a1.put("WCurrent", currentW)
+				.put("WLimit", limitW)
+				.startArrayField("Stacks");
+		for(InvStack invStack : stacks)
+		{
+			a2 = invStack.item.save(a2.startObject().put("Count", invStack.getCountC()).startObjectField("Item")).end().end();
+		}
+		return a2.end();
+	}
+
+	public WeightInv(JrsObject data, CombatSystem s1)
+	{
+		currentW = ((JrsNumber) data.get("WCurrent")).getValue().intValue();
+		limitW = ((JrsNumber) data.get("WLimit")).getValue().intValue();
+		stacks = new ArrayList<>();
+		var array1 = (JrsArray) data.get("Stacks");
+		array1.elements().forEachRemaining(object1 ->
+		{
+			int itemCount = ((JrsNumber) ((JrsObject) object1).get("Count")).getValue().intValue();
+			stacks.add(new InvStack(s1.loadItem(((JrsObject) ((JrsObject) object1).get("Item"))), itemCount));
+		});
 	}
 }

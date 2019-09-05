@@ -1,9 +1,11 @@
 package entity;
 
+import com.fasterxml.jackson.jr.ob.comp.*;
 import geom.f1.*;
 import item.*;
 import item.inv.*;
 import item.inv.transport.*;
+import java.io.*;
 import java.util.*;
 import logic.*;
 
@@ -53,5 +55,11 @@ public class InvEntity extends XEntity implements DoubleInv
 	public List<Integer> save2()
 	{
 		return inv.save();
+	}
+
+	@Override
+	public <T extends ComposerBase> ObjectComposer<T> save2(ObjectComposer<T> a1) throws IOException
+	{
+		return inv.save(a1.startObjectField("Inventory")).end();
 	}
 }
