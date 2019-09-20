@@ -5,7 +5,6 @@ import com.fasterxml.jackson.jr.stree.*;
 import entity.analysis.*;
 import geom.f1.*;
 import item.*;
-import java.nio.*;
 import java.util.*;
 import java.util.stream.*;
 import logic.*;
@@ -47,11 +46,9 @@ public interface CombatSystem<T extends Stats, A extends AttackInfo, I extends I
 
 	AnimTimer createRegenerationAnimation(XEntity entity, MainState mainState);
 
-	XEntity loadEntity(TileType y1, MainState mainState, IntBuffer intBuffer);
-
 	XEntity loadEntity(TileType y1, MainState mainState, JrsObject data);
 
-	Item loadItem(IntBuffer intBuffer);
+	XEntity loadEntityOrStartLoc(TileType y1, MainState mainState, JrsObject data, Map<String, JrsObject> characters);
 
 	Item loadItem(JrsObject data);
 }

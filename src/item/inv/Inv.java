@@ -77,7 +77,5 @@ public interface Inv extends Inv0
 		return true;
 	}
 
-	List<Integer> save();
-
 	<T extends ComposerBase> ObjectComposer<T> save(ObjectComposer<T> a1) throws IOException;
 }

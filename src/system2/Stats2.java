@@ -5,7 +5,6 @@ import com.fasterxml.jackson.jr.stree.*;
 import entity.*;
 import item.*;
 import java.io.*;
-import java.nio.*;
 import java.util.*;
 import java.util.stream.*;
 import javafx.scene.control.*;
@@ -281,117 +280,6 @@ public class Stats2 implements Stats
 		copy.currentHealth = currentHealth;
 		copy.exhaustion = exhaustion;
 		return copy;
-	}
-
-	@Override
-	public List<Integer> save()
-	{
-		List<Integer> ints = new ArrayList<>();
-		ints.add(xClass.code);
-		ints.add(level);
-		if(playerLevelSystem != null)
-		{
-			ints.add(1);
-			ints.addAll(playerLevelSystem.save());
-		}
-		else
-		{
-			ints.add(-1);
-		}
-		if(customName != null)
-		{
-			char[] customNameChars = customName.toCharArray();
-			ints.add(customNameChars.length);
-			for(int i = 0; i < customNameChars.length; i++)
-			{
-				ints.add((int) customNameChars[i]);
-			}
-		}
-		else
-		{
-			ints.add(-1);
-		}
-		if(customImage != null)
-		{
-			char[] customImageChars = customImage.toCharArray();
-			ints.add(customImageChars.length);
-			for(int i = 0; i < customImageChars.length; i++)
-			{
-				ints.add((int) customImageChars[i]);
-			}
-		}
-		else
-		{
-			ints.add(-1);
-		}
-		ints.add(strength);
-		ints.add(finesse);
-		ints.add(skill);
-		ints.add(speed);
-		ints.add(luck);
-		ints.add(defense);
-		ints.add(evasion);
-		ints.add(toughness);
-		ints.add(movement);
-		ints.add(currentHealth);
-		ints.add(exhaustion);
-		if(lastUsed != null)
-		{
-			ints.add(lastUsed.code);
-			ints.addAll(lastUsed.item.save());
-		}
-		else
-		{
-			ints.add(-1);
-		}
-		return ints;
-	}
-
-	public Stats2(IntBuffer intBuffer, CombatSystem s1)
-	{
-		xClass = XClasses.INSTANCE.xClasses[intBuffer.get()];
-		slot = new AttackItem2Slot(xClass.usableItems);
-		level = intBuffer.get();
-		if(intBuffer.get() > 0)
-		{
-			playerLevelSystem = new PlayerLevelSystem(intBuffer);
-		}
-		int cncl = intBuffer.get();
-		if(cncl >= 0)
-		{
-			char[] customNameChars = new char[cncl];
-			for(int i = 0; i < customNameChars.length; i++)
-			{
-				customNameChars[i] = (char) intBuffer.get();
-			}
-			customName = new String(customNameChars);
-		}
-		int cicl = intBuffer.get();
-		if(cicl >= 0)
-		{
-			char[] customImageChars = new char[cicl];
-			for(int i = 0; i < customImageChars.length; i++)
-			{
-				customImageChars[i] = (char) intBuffer.get();
-			}
-			customImage = new String(customImageChars);
-		}
-		strength = intBuffer.get();
-		finesse = intBuffer.get();
-		skill = intBuffer.get();
-		speed = intBuffer.get();
-		luck = intBuffer.get();
-		defense = intBuffer.get();
-		evasion = intBuffer.get();
-		toughness = intBuffer.get();
-		movement = intBuffer.get();
-		currentHealth = intBuffer.get();
-		exhaustion = intBuffer.get();
-		int clu = intBuffer.get();
-		if(clu >= 0)
-		{
-			lastUsed = ((AttackItem2) s1.loadItem(intBuffer)).attackModes().stream().filter(e -> e.code == clu).findFirst().orElseThrow();
-		}
 	}
 
 	@Override

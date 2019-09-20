@@ -46,12 +46,6 @@ public enum Items implements Item
 	}
 
 	@Override
-	public List<Integer> save()
-	{
-		return List.of(0, ordinal());
-	}
-
-	@Override
 	public <T extends ComposerBase> ObjectComposer<T> save(ObjectComposer<T> a1) throws IOException
 	{
 		return a1.put("ItemCode", ordinal());

@@ -25,14 +25,14 @@ public class MainVisual implements XInputInterface
 	private MainState mainState;
 	private ConvInputConsumer convInputConsumer;
 
-	public MainVisual(XGraphics graphics, TileCamera mapCamera, TileCamera menuCamera, TileCamera guiCamera, String loadFile)
+	public MainVisual(XGraphics graphics, TileCamera mapCamera, TileCamera menuCamera, TileCamera guiCamera, String loadFile, String loadFile2)
 	{
 		this.graphics = graphics;
 		this.mapCamera = mapCamera;
 		DoubleType y2 = mapCamera.getDoubleType();
 		visualSideInfo = new VisualSideInfo(graphics, mapCamera);
 		mainState = new MainState(y2, visualSideInfo);
-		mainState.initialize(loadFile);
+		mainState.initialize(loadFile, loadFile2);
 		graphics.gd().setImageSmoothing(false);
 		graphics.gd().setTextAlign(TextAlignment.CENTER);
 		graphics.gd().setTextBaseline(VPos.CENTER);

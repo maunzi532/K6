@@ -8,7 +8,6 @@ import geom.f1.*;
 import item.*;
 import item.inv.*;
 import item.items.*;
-import java.nio.*;
 import java.util.*;
 import java.util.stream.*;
 import logic.*;
@@ -122,23 +121,6 @@ public class System2 implements CombatSystem<Stats2, AttackInfo2, AttackItem2>
 	}
 
 	@Override
-	public XEntity loadEntity(TileType y1, MainState mainState, IntBuffer intBuffer)
-	{
-		int classCode = intBuffer.get();
-		Tile location = y1.create2(intBuffer.get(), intBuffer.get());
-		Stats2 stats = new Stats2(intBuffer, this);
-		if(classCode > 0)
-		{
-			Inv inv = new WeightInv(intBuffer, this);
-			if(classCode == 1)
-				return new XHero(location, mainState, stats, inv);
-			else
-				return new XEnemy(location, mainState, stats, new StandardAI(), inv);
-		}
-		return new XEntity(location, mainState, stats);
-	}
-
-	@Override
 	public XEntity loadEntity(TileType y1, MainState mainState, JrsObject data)
 	{
 		int classCode = ((JrsNumber) data.get("Type")).getValue().intValue();
@@ -148,7 +130,7 @@ public class System2 implements CombatSystem<Stats2, AttackInfo2, AttackItem2>
 		{
 			Inv inv = new WeightInv(((JrsObject) data.get("Inventory")), this);
 			if(classCode == 1)
-				return new XHero(location, mainState, stats, inv);
+				return new XHero(location, mainState, stats, false, false, inv);
 			else
 				return new XEnemy(location, mainState, stats, new StandardAI(), inv);
 		}
@@ -156,15 +138,32 @@ public class System2 implements CombatSystem<Stats2, AttackInfo2, AttackItem2>
 	}
 
 	@Override
-	public Item loadItem(IntBuffer intBuffer)
+	public XEntity loadEntityOrStartLoc(TileType y1, MainState mainState, JrsObject data, Map<String, JrsObject> characters)
 	{
-		if(intBuffer.get() == 0)
+		Tile location = y1.create2(((JrsNumber) data.get("sx")).getValue().intValue(), ((JrsNumber) data.get("sy")).getValue().intValue());
+		if(data.get("StartName") != null)
 		{
-			return Items.values()[intBuffer.get()];
+			String startName = data.get("StartName").asText();
+			boolean locked = ((JrsBoolean) data.get("Locked")).booleanValue();
+			boolean invLocked = ((JrsBoolean) data.get("InvLocked")).booleanValue();
+			JrsObject char1 = characters.get(startName);
+			Stats2 stats = new Stats2(((JrsObject) char1.get("Stats")), this);
+			Inv inv = new WeightInv(((JrsObject) char1.get("Inventory")), this);
+			return new XHero(location, mainState, stats, locked, invLocked, inv);
 		}
 		else
 		{
-			return AttackItems2.INSTANCE.items[intBuffer.get()];
+			int classCode = ((JrsNumber) data.get("Type")).getValue().intValue();
+			Stats2 stats = new Stats2(((JrsObject) data.get("Stats")), this);
+			if(classCode > 0)
+			{
+				Inv inv = new WeightInv(((JrsObject) data.get("Inventory")), this);
+				if(classCode == 1)
+					return new XHero(location, mainState, stats, false, false, inv);
+				else
+					return new XEnemy(location, mainState, stats, new StandardAI(), inv);
+			}
+			return new XEntity(location, mainState, stats);
 		}
 	}
 

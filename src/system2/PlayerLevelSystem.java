@@ -3,7 +3,6 @@ package system2;
 import com.fasterxml.jackson.jr.ob.comp.*;
 import com.fasterxml.jackson.jr.stree.*;
 import java.io.*;
-import java.nio.*;
 import java.util.*;
 import java.util.stream.*;
 
@@ -76,37 +75,6 @@ public class PlayerLevelSystem implements LevelSystem
 			levelup[get[r.nextInt(get.length)]]++;
 		}
 		return levelup;
-	}
-
-	public List<Integer> save()
-	{
-		List<Integer> ints = new ArrayList<>();
-		ints.add(baseLevel);
-		for(int i = 0; i < STAT_COUNT; i++)
-		{
-			ints.add(baseLevelStats[i]);
-		}
-		for(int i = 0; i < STAT_COUNT; i++)
-		{
-			ints.add(baseIncrease[i]);
-		}
-		return ints;
-	}
-
-	public PlayerLevelSystem(IntBuffer intBuffer)
-	{
-		baseLevel = intBuffer.get();
-		baseLevelStats = new int[STAT_COUNT];
-		for(int i = 0; i < STAT_COUNT; i++)
-		{
-			baseLevelStats[i] = intBuffer.get();
-		}
-		baseIncrease = new int[STAT_COUNT];
-		for(int i = 0; i < STAT_COUNT; i++)
-		{
-			baseIncrease[i] = intBuffer.get();
-		}
-		setAssumedIncrease();
 	}
 
 	public <T extends ComposerBase> ObjectComposer<T> save(ObjectComposer<T> a1) throws IOException

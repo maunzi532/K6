@@ -102,25 +102,9 @@ public class XEntity
 		return new XEntity(copyLocation, mainState, stats.copy());
 	}
 
-	public int[] save(TileType y1)
-	{
-		List<Integer> ints = new ArrayList<>();
-		ints.add(classSave());
-		ints.add(y1.sx(location));
-		ints.add(y1.sy(location));
-		ints.addAll(stats.save());
-		ints.addAll(save2());
-		return ints.stream().mapToInt(e -> e).toArray();
-	}
-
 	public int classSave()
 	{
 		return 0;
-	}
-
-	public List<Integer> save2()
-	{
-		return List.of();
 	}
 
 	public <T extends ComposerBase> ObjectComposer<T> save(ObjectComposer<T> a1, TileType y1) throws IOException
@@ -136,5 +120,12 @@ public class XEntity
 	public <T extends ComposerBase> ObjectComposer<T> save2(ObjectComposer<T> a1) throws IOException
 	{
 		return a1;
+	}
+
+	public <T extends ComposerBase> ObjectComposer<T> save3(ObjectComposer<T> a1) throws IOException
+	{
+		var a2 = a1.startObjectField("Stats");
+		var a3 = stats.save(a2);
+		return save2(a3.end());
 	}
 }

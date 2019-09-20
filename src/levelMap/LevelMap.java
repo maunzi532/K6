@@ -223,42 +223,19 @@ public class LevelMap
 		arrows.removeIf(XArrow::finished);
 	}
 
-	public byte[] saveData()
-	{
-		List<XEntity> entities = new ArrayList<>();
-		ByteBuffer sb = ByteBuffer.allocate(advTiles.size() * 4 + 12);
-		sb.putInt(0xA4D2839F);
-		sb.putInt(advTiles.size());
-		for(Map.Entry<Tile, AdvTile> entry : advTiles.entrySet())
-		{
-			Tile t1 = entry.getKey();
-			AdvTile adv = entry.getValue();
-			if(adv.getFloorTile() != null)
-			{
-				sb.put((byte) y1.sx(t1));
-				sb.put((byte) y1.sy(t1));
-				sb.put((byte) adv.getFloorTile().sector);
-				sb.put((byte) adv.getFloorTile().type.ordinal());
-				if(adv.getEntity() != null)
-					entities.add(adv.getEntity());
-			}
-		}
-		sb.putInt(entities.size());
-		List<int[]> v = entities.stream().map(e -> e.save(y1)).collect(Collectors.toList());
-		ByteBuffer sb2 = ByteBuffer.allocate(sb.capacity() + v.stream().mapToInt(e -> e.length).sum() * 4);
-		sb2.put(sb.array());
-		IntBuffer sb3 = sb2.asIntBuffer();
-		v.forEach(sb3::put);
-		return sb2.array();
-	}
-
-	public String saveDataJSON()
+	public String[] saveDataJSON()
 	{
 		try
 		{
-			var a1 = JSON.std.with(JSON.Feature.PRETTY_PRINT_OUTPUT).composeString()
+			var a1 = JSON.std.with(JSON.Feature.PRETTY_PRINT_OUTPUT)
+					.composeString()
 					.startObject()
 					.put("code", 0xA4D2839F);
+			var xheroSave = JSON.std.with(JSON.Feature.PRETTY_PRINT_OUTPUT)
+					.composeString()
+					.startObject()
+					.put("code", 0xA4D2839F)
+					.startArrayField("Characters");
 			List<XEntity> entities = new ArrayList<>();
 			ByteBuffer sb = ByteBuffer.allocate(advTiles.size() * 4);
 			for(Map.Entry<Tile, AdvTile> entry : advTiles.entrySet())
@@ -279,10 +256,10 @@ public class LevelMap
 			for(XEntity entity : entities)
 			{
 				a2 = entity.save(a2.startObject(), y1).end();
+				if(entity instanceof XHero)
+					xheroSave = entity.save3(xheroSave.startObject()).end();
 			}
-			return a2.end()
-					.end()
-					.finish();
+			return new String[]{a2.end().end().finish(), xheroSave.end().end().finish()};
 		}catch(IOException e)
 		{
 			throw new RuntimeException(e);

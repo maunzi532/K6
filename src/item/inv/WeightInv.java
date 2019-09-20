@@ -6,7 +6,6 @@ import entity.*;
 import item.*;
 import item.view.*;
 import java.io.*;
-import java.nio.*;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -149,34 +148,6 @@ public class WeightInv implements Inv
 			return true;
 		}
 		return false;
-	}
-
-	@Override
-	public List<Integer> save()
-	{
-		List<Integer> ints = new ArrayList<>();
-		ints.add(currentW);
-		ints.add(limitW);
-		ints.add(stacks.size());
-		for(InvStack invStack : stacks)
-		{
-			ints.add(invStack.getCountC());
-			ints.addAll(invStack.item.save());
-		}
-		return ints;
-	}
-
-	public WeightInv(IntBuffer intBuffer, CombatSystem s1)
-	{
-		currentW = intBuffer.get();
-		limitW = intBuffer.get();
-		stacks = new ArrayList<>();
-		int stackCount = intBuffer.get();
-		for(int i = 0; i < stackCount; i++)
-		{
-			int itemCount = intBuffer.get();
-			stacks.add(new InvStack(s1.loadItem(intBuffer), itemCount));
-		}
 	}
 
 	@Override

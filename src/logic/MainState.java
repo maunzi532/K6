@@ -30,12 +30,12 @@ public class MainState
 		visualSideInfo = visualSideInfo1;
 	}
 
-	public void initialize(String loadFile)
+	public void initialize(String loadFile, String loadFile2)
 	{
-		SavedImport savedImport = loadFile != null ? new SavedImport(loadFile) : new SavedImport();
+		SavedImport savedImport = loadFile != null ? new SavedImport(loadFile, loadFile2) : new SavedImport();
 		if(savedImport.hasFile())
 		{
-			savedImport.importIntoMap2(this);
+			savedImport.importIntoMap3(this);
 		}
 		else
 		{
@@ -65,10 +65,12 @@ public class MainState
 	//TODO get levelup essence
 	//TODO get levelup
 	//TODO equip weapon without attacking
+	//TODO turn counter
 	//TODO chooseable starting locations
-	//TODO Save characters and level separately
+	//TODO turn 0 item swapping
 	//TODO enemy reinforcements
 	//TODO Fix game crashing when you lose
+	//TODO Editable starting location settings
 
 	//TODO screenshake on crit
 	//TODO scale tiles, menubar, gui when resizing
@@ -77,6 +79,7 @@ public class MainState
 	//TODO add keybind info
 	//TODO improve camera
 	//TODO Enemy AI types
+	//TODO Save Buildings as JSON
 
 	//LK char - move/attack
 	//RK char - inv/trade

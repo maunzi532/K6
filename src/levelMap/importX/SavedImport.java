@@ -12,45 +12,23 @@ import logic.*;
 public class SavedImport
 {
 	private File file;
+	private File file2;
 
 	public SavedImport()
 	{
 		file = new FileChooser().showOpenDialog(null);
+		file2 = new FileChooser().showOpenDialog(null);
 	}
 
-	public SavedImport(String loadFile)
+	public SavedImport(String loadFile, String loadFile2)
 	{
 		file = new File(loadFile);
+		file2 = new File(loadFile2);
 	}
 
 	public boolean hasFile()
 	{
-		return file != null && file.exists();
-	}
-
-	public void importIntoMap(MainState mainState)
-	{
-		try
-		{
-			byte[] bytes = Files.readAllBytes(file.toPath());
-			ByteBuffer sb = ByteBuffer.wrap(bytes);
-			if(sb.getInt() != 0xA4D2839F)
-				throw new RuntimeException("Wrong file");
-			int lenTiles = sb.getInt();
-			for(int i = 0; i < lenTiles; i++)
-			{
-				mainState.levelMap.createTile(sb.get(), sb.get(), sb.get(), sb.get());
-			}
-			int lenEntities = sb.getInt();
-			IntBuffer sb3 = sb.asIntBuffer();
-			for(int i = 0; i < lenEntities; i++)
-			{
-				mainState.levelMap.addEntity(mainState.combatSystem.loadEntity(mainState.y2, mainState, sb3));
-			}
-		}catch(IOException e)
-		{
-			throw new RuntimeException(e);
-		}
+		return file != null && file2 != null && file.exists() && file2.exists();
 	}
 
 	public void importIntoMap2(MainState mainState)
@@ -68,6 +46,33 @@ public class SavedImport
 				}
 				((JrsArray) tree.get("XEntities")).elements().forEachRemaining(e ->
 						mainState.levelMap.addEntity(mainState.combatSystem.loadEntity(mainState.y2, mainState, (JrsObject) e)));
+			}
+		}catch(IOException e)
+		{
+			throw new RuntimeException(e);
+		}
+	}
+
+	public void importIntoMap3(MainState mainState)
+	{
+		try
+		{
+			var tree = JSON.std.with(new JacksonJrsTreeCodec()).treeFrom(new String(Files.readAllBytes(file.toPath())));
+			var tree2 = JSON.std.with(new JacksonJrsTreeCodec()).treeFrom(new String(Files.readAllBytes(file2.toPath())));
+			if(((JrsNumber) tree.get("code")).getValue().intValue() == 0xA4D2839F &&
+					((JrsNumber) tree2.get("code")).getValue().intValue() == 0xA4D2839F)
+			{
+				ByteBuffer sb = ByteBuffer.wrap(Base64.getDecoder().decode(((JrsString) tree.get("FloorTiles")).getValue()));
+				int lenTiles = sb.remaining() / 4;
+				for(int i = 0; i < lenTiles; i++)
+				{
+					mainState.levelMap.createTile(sb.get(), sb.get(), sb.get(), sb.get());
+				}
+				Map<String, JrsObject> characters = new HashMap<>();
+				((JrsArray) tree2.get("Characters")).elements().forEachRemaining(
+						character -> characters.put(((JrsObject) ((JrsObject) character).get("Stats")).get("CustomName").asText(), (JrsObject) character));
+				((JrsArray) tree.get("XEntities")).elements().forEachRemaining(e ->
+						mainState.levelMap.addEntity(mainState.combatSystem.loadEntityOrStartLoc(mainState.y2, mainState, (JrsObject) e, characters)));
 			}
 		}catch(IOException e)
 		{

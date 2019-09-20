@@ -44,48 +44,6 @@ public class AttackInfo2 extends AttackInfo<Stats2, AttackMode2>
 		return inverse ? calcT : calc;
 	}
 
-	public int[] getChange(boolean inverse, int num)
-	{
-		int[] change = new int[2];
-		if(cna[inverse ? 1 : 0])
-			return change;
-		AttackInfoPart2 calc1 = getCalc(inverse);
-		if(num == 0)
-		{
-			if(getStats(inverse).getCurrentHealth() > calc1.cost)
-				change[0] = -getCalc(inverse).cost;
-			else
-			{
-				cna[inverse ? 1 : 0] = true;
-				return change;
-			}
-		}
-		if(num != 0 || !calc1.autohit1)
-		{
-			int rn = rng.nextInt(100);
-			if(rn >= calc1.hitrate)
-				return change;
-		}
-		boolean crit;
-		int rn2 = rng.nextInt(100);
-		crit = rn2 < calc1.critrate;
-		if(num == 0 && calc1.melting1)
-		{
-			if(crit)
-				change[1] = -calc1.meltCritDamage;
-			else
-				change[1] = -calc1.meltDamage;
-		}
-		else
-		{
-			if(crit)
-				change[1] = -calc1.critDamage;
-			else
-				change[1] = -calc1.damage;
-		}
-		return change;
-	}
-
 	@Override
 	public String[] getInfos()
 	{

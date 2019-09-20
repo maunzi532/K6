@@ -54,7 +54,7 @@ public class Entity2Builder
 		InvEntity entity;
 		if(player)
 		{
-			entity = new XHero(location, mainState, stats, weightLimit, itemList);
+			entity = new XHero(location, mainState, stats, false, false, weightLimit, itemList);
 		}
 		else
 		{

@@ -18,7 +18,5 @@ public interface Item
 
 	List<String> info();
 
-	List<Integer> save();
-
 	<T extends ComposerBase> ObjectComposer<T> save(ObjectComposer<T> a1) throws IOException;
 }

@@ -2,9 +2,11 @@ package entity;
 
 import building.*;
 import building.blueprint.*;
+import com.fasterxml.jackson.jr.ob.comp.*;
 import geom.f1.*;
 import item.*;
 import item.inv.*;
+import java.io.*;
 import java.util.*;
 import javafx.scene.image.*;
 import logic.*;
@@ -18,21 +20,29 @@ public class XHero extends InvEntity
 	private boolean mainAction;
 	private Tile revertLocation;
 	private boolean canRevert;
+	private boolean startLocked;
+	private boolean startInvLocked;
 
-	public XHero(Tile location, MainState mainState, Stats stats, int weightLimit, ItemList itemList)
+	public XHero(Tile location, MainState mainState, Stats stats, boolean startLocked, boolean startInvLocked,
+			int weightLimit,
+			ItemList itemList)
 	{
 		super(location, mainState, stats, weightLimit, itemList);
+		this.startLocked = startLocked;
+		this.startInvLocked = startInvLocked;
 	}
 
-	public XHero(Tile location, MainState mainState, Stats stats, Inv inv)
+	public XHero(Tile location, MainState mainState, Stats stats, boolean startLocked, boolean startInvLocked, Inv inv)
 	{
 		super(location, mainState, stats, inv);
+		this.startLocked = startLocked;
+		this.startInvLocked = startInvLocked;
 	}
 
 	@Override
 	public XEntity copy(Tile copyLocation)
 	{
-		XHero copy = new XHero(copyLocation, mainState, stats, inv.copy());
+		XHero copy = new XHero(copyLocation, mainState, stats, startLocked, startInvLocked, inv.copy());
 		copy.stats.autoEquip(copy);
 		return copy;
 	}
@@ -132,5 +142,15 @@ public class XHero extends InvEntity
 	public int classSave()
 	{
 		return 1;
+	}
+
+	@Override
+	public <T extends ComposerBase> ObjectComposer<T> save(ObjectComposer<T> a1, TileType y1) throws IOException
+	{
+		return a1.put("StartName", stats.getName())
+				.put("Locked", startLocked)
+				.put("InvLocked", startInvLocked)
+				.put("sx", y1.sx(location))
+				.put("sy", y1.sy(location));
 	}
 }

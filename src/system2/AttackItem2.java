@@ -101,12 +101,6 @@ public abstract class AttackItem2 implements Item
 	}
 
 	@Override
-	public List<Integer> save()
-	{
-		return List.of(1, code);
-	}
-
-	@Override
 	public <T extends ComposerBase> ObjectComposer<T> save(ObjectComposer<T> a1) throws IOException
 	{
 		return a1.put("AttackItemCode", code);

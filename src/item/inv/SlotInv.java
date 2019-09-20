@@ -123,28 +123,6 @@ public class SlotInv implements Inv
 	}
 
 	@Override
-	public List<Integer> save()
-	{
-		List<Integer> ints = new ArrayList<>();
-		ints.add(slots.size());
-		for(InvSlot invSlot : slots)
-		{
-			ints.add(invSlot.getLimit());
-			ints.addAll(invSlot.getType().save());
-			if(invSlot.stackExists())
-			{
-				ints.add(invSlot.getCurrentC());
-				ints.addAll(invSlot.getStackItemC().save());
-			}
-			else
-			{
-				ints.add(-1);
-			}
-		}
-		return ints;
-	}
-
-	@Override
 	public <T extends ComposerBase> ObjectComposer<T> save(ObjectComposer<T> a1) throws IOException
 	{
 		var a2 = a1.startArrayField("Slots");

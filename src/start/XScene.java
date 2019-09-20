@@ -37,7 +37,8 @@ public class XScene extends Application
 				mapCamera(args0, graphics),
 				menuCamera(args0, graphics),
 				guiCamera(args0, graphics),
-				args0.length > 3 ? args0[3] : null);
+				args0.length > 3 ? args0[3] : null,
+				args0.length > 4 ? args0[4] : null);
 		XTimer xTimer = new XTimer(mainVisual);
 		s.setOnMousePressed(xTimer::onMouseDown);
 		s.setOnDragDetected(xTimer::onDragDetected);

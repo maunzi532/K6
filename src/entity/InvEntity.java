@@ -6,7 +6,6 @@ import item.*;
 import item.inv.*;
 import item.inv.transport.*;
 import java.io.*;
-import java.util.*;
 import logic.*;
 
 public class InvEntity extends XEntity implements DoubleInv
@@ -49,12 +48,6 @@ public class InvEntity extends XEntity implements DoubleInv
 		InvEntity copy = new InvEntity(copyLocation, mainState, stats, inv.copy());
 		copy.stats.autoEquip(copy);
 		return copy;
-	}
-
-	@Override
-	public List<Integer> save2()
-	{
-		return inv.save();
 	}
 
 	@Override
