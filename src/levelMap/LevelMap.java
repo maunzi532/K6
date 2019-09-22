@@ -1,6 +1,7 @@
 package levelMap;
 
 import arrow.*;
+import building.*;
 import com.fasterxml.jackson.jr.ob.*;
 import entity.*;
 import geom.f1.*;
@@ -107,6 +108,12 @@ public class LevelMap
 		advTile(building.location()).setBuilding(building);
 	}
 
+	public void addBuilding2(ProductionBuilding building)
+	{
+		advTile(building.location()).setBuilding(building);
+		building.claimFloor(this);
+	}
+
 	public MBuilding getOwner(Tile t1)
 	{
 		return advTile(t1).getOwned();
@@ -162,6 +169,22 @@ public class LevelMap
 		advTile(entity.location()).setEntity(null);
 		entity.setLocation(newLocation);
 		advTile(newLocation).setEntity(entity);
+	}
+
+	public void swapEntities(XEntity entity1, XEntity entity2)
+	{
+		Tile location1 = entity1.location();
+		Tile location2 = entity2.location();
+		XArrow arrow1 = XArrow.factory(location1, location2, y1.distance(location2, location1) * TIME_PER_DISTANCE, false, entity1.getImage(), false);
+		addArrow(arrow1);
+		entity1.setReplacementArrow(arrow1);
+		XArrow arrow2 = XArrow.factory(location2, location1, y1.distance(location2, location1) * TIME_PER_DISTANCE, false, entity2.getImage(), false);
+		addArrow(arrow2);
+		entity2.setReplacementArrow(arrow2);
+		advTile(location1).setEntity(entity2);
+		advTile(location2).setEntity(entity1);
+		entity1.setLocation(location2);
+		entity2.setLocation(location1);
 	}
 
 	public int createSector(boolean visible)

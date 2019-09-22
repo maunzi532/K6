@@ -1,0 +1,174 @@
+{
+  "code" : -1529707617,
+  "Blueprints" : [ {
+    "Name" : "GSL1",
+    "Construction" : [ [ {
+      "Refundable" : [ ],
+      "Costs" : [ {
+        "ItemCode" : 3,
+        "Amount" : 3
+      } ],
+      "FloorTiles" : [ {
+        "Type" : "GSL",
+        "Amount" : 8,
+        "MinRange" : 0,
+        "MaxRange" : 3
+      } ]
+    }, {
+      "Refundable" : [ ],
+      "Costs" : [ {
+        "ItemCode" : 3,
+        "Amount" : 2
+      } ],
+      "FloorTiles" : [ {
+        "Type" : "GSL",
+        "Amount" : 12,
+        "MinRange" : 0,
+        "MaxRange" : 3
+      } ]
+    } ], [ {
+      "Refundable" : [ {
+        "ItemCode" : 2
+      } ],
+      "Costs" : [ ],
+      "FloorTiles" : [ {
+        "Type" : "GSL",
+        "Amount" : 8,
+        "MinRange" : 0,
+        "MaxRange" : 3
+      } ]
+    } ] ],
+    "Production" : {
+      "InputLimits" : [ {
+        "ItemCode" : 0,
+        "Amount" : 5
+      } ],
+      "OutputLimits" : [ {
+        "ItemCode" : 1,
+        "Amount" : 5
+      } ],
+      "Recipes" : [ {
+        "Required" : [ {
+          "ItemCode" : 0
+        } ],
+        "Results" : [ {
+          "ItemCode" : 1
+        } ]
+      } ]
+    }
+  }, {
+    "Name" : "Material1",
+    "Construction" : [ [ {
+      "Refundable" : [ ],
+      "Costs" : [ {
+        "ItemCode" : 3,
+        "Amount" : 2
+      } ],
+      "FloorTiles" : [ ]
+    } ], [ {
+      "Refundable" : [ {
+        "ItemCode" : 2
+      } ],
+      "Costs" : [ ],
+      "FloorTiles" : [ ]
+    } ] ],
+    "Production" : {
+      "InputLimits" : [ {
+        "ItemCode" : 1,
+        "Amount" : 5
+      }, {
+        "ItemCode" : 0,
+        "Amount" : 5
+      } ],
+      "OutputLimits" : [ {
+        "ItemCode" : 3,
+        "Amount" : 5
+      } ],
+      "Recipes" : [ {
+        "Required" : [ {
+          "ItemCode" : 1
+        }, {
+          "ItemCode" : 0
+        } ],
+        "Results" : [ {
+          "ItemCode" : 3
+        } ]
+      } ]
+    }
+  }, {
+    "Name" : "BLUE1",
+    "Construction" : [ [ {
+      "Refundable" : [ ],
+      "Costs" : [ {
+        "ItemCode" : 3,
+        "Amount" : 3
+      } ],
+      "FloorTiles" : [ {
+        "Type" : "BLUE",
+        "Amount" : 6,
+        "MinRange" : 0,
+        "MaxRange" : 3
+      } ]
+    }, {
+      "Refundable" : [ ],
+      "Costs" : [ {
+        "ItemCode" : 3,
+        "Amount" : 2
+      } ],
+      "FloorTiles" : [ {
+        "Type" : "BLUE",
+        "Amount" : 8,
+        "MinRange" : 0,
+        "MaxRange" : 3
+      } ]
+    }, {
+      "Refundable" : [ ],
+      "Costs" : [ {
+        "ItemCode" : 3
+      } ],
+      "FloorTiles" : [ {
+        "Type" : "BLUE",
+        "Amount" : 10,
+        "MinRange" : 0,
+        "MaxRange" : 3
+      } ]
+    } ], [ {
+      "Refundable" : [ {
+        "ItemCode" : 2
+      } ],
+      "Costs" : [ ],
+      "FloorTiles" : [ {
+        "Type" : "BLUE",
+        "Amount" : 6,
+        "MinRange" : 0,
+        "MaxRange" : 3
+      } ]
+    } ] ],
+    "Production" : {
+      "InputLimits" : [ ],
+      "OutputLimits" : [ {
+        "ItemCode" : 0,
+        "Amount" : 5
+      } ],
+      "Recipes" : [ {
+        "Required" : [ ],
+        "Results" : [ {
+          "ItemCode" : 0
+        } ]
+      } ]
+    }
+  }, {
+    "Name" : "Transporter1",
+    "Construction" : [ [ {
+      "Refundable" : [ {
+        "ItemCode" : 2
+      } ],
+      "Costs" : [ ],
+      "FloorTiles" : [ ]
+    } ] ],
+    "Transporter" : {
+      "Range" : 2,
+      "Amount" : 1
+    }
+  } ]
+}

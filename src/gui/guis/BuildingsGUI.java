@@ -51,7 +51,7 @@ public class BuildingsGUI extends XGUI implements InvGUI
 		/*ItemView itemView = itemsView.get(index);
 		tiles[x][y1] = new GuiTile(itemView.currentWithLimit());
 		tiles[x + 1][y1] = new GuiTile(null, itemView.mode.image(), null);*/
-		BuildingBlueprint blueprint = BuildingBlueprint.get(blueprintCache, names[index]);
+		BuildingBlueprint blueprint = blueprintCache.get(names[index]);
 		tiles[x][y1] = new GuiTile(blueprint.name);
 		tiles[x + 1][y1] = new GuiTile(null, MBuilding.IMAGE, false, null);
 	}
@@ -87,6 +87,6 @@ public class BuildingsGUI extends XGUI implements InvGUI
 	@Override
 	public void onClickItem(int invID, int num, int xi, int yi)
 	{
-		chosen = BuildingBlueprint.get(blueprintCache, names[num]);
+		chosen = blueprintCache.get(names[num]);
 	}
 }

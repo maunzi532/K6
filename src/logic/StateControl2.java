@@ -162,7 +162,7 @@ public class StateControl2 implements XStateHolder, ConvInputConsumer
 				{
 					if(mouseKey == 1)
 					{
-						setState(new AdvMoveState((XHero) entity));
+						setState(new AdvMoveState((XHero) entity)); //TODO add swap state
 					}
 					else if(mouseKey == 3)
 					{

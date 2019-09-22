@@ -1,6 +1,9 @@
 package building.blueprint;
 
+import com.fasterxml.jackson.jr.ob.comp.*;
+import com.fasterxml.jackson.jr.stree.*;
 import file.*;
+import java.io.*;
 import levelMap.*;
 
 public class RequiresFloorTiles
@@ -26,5 +29,21 @@ public class RequiresFloorTiles
 		amount = node.get(1).dataInt();
 		minRange = node.get(2).dataInt();
 		maxRange = node.get(3).dataInt();
+	}
+
+	public RequiresFloorTiles(JrsObject data)
+	{
+		floorTileType = FloorTileType.valueOf(data.get("Type").asText().toUpperCase());
+		amount = ((JrsNumber) data.get("Amount")).getValue().intValue();
+		minRange = ((JrsNumber) data.get("MinRange")).getValue().intValue();
+		maxRange = ((JrsNumber) data.get("MaxRange")).getValue().intValue();
+	}
+
+	public <T extends ComposerBase> ObjectComposer<T> save(ObjectComposer<T> a1) throws IOException
+	{
+		return a1.put("Type", floorTileType.name())
+				.put("Amount", amount)
+				.put("MinRange", minRange)
+				.put("MaxRange", maxRange);
 	}
 }

@@ -68,13 +68,13 @@ public class XHero extends InvEntity
 
 	public void buildBuilding(CostBlueprint costs, ItemList refundable, BuildingBlueprint blueprint)
 	{
-		if(blueprint.type == 0)
+		if(blueprint.productionBlueprint != null)
 		{
 			ProductionBuilding building = new ProductionBuilding(location, costs, refundable, blueprint);
 			mainState.levelMap.addBuilding(building);
 			building.claimFloor(mainState.levelMap);
 		}
-		else
+		else if(blueprint.transporterBlueprint != null)
 		{
 			mainState.levelMap.addBuilding(new Transporter(location, costs, refundable, blueprint));
 		}
@@ -107,6 +107,16 @@ public class XHero extends InvEntity
 	public boolean canRevert()
 	{
 		return !canMove && canRevert;
+	}
+
+	public boolean isStartLocked()
+	{
+		return startLocked;
+	}
+
+	public boolean isStartInvLocked()
+	{
+		return startInvLocked;
 	}
 
 	public void setMoved()

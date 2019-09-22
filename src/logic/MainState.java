@@ -1,5 +1,6 @@
 package logic;
 
+import building.*;
 import building.blueprint.*;
 import draw.*;
 import entity.*;
@@ -15,6 +16,7 @@ public class MainState
 {
 	//public static final int CL = 20;
 	public final DoubleType y2;
+	public int turnCounter;
 	public final LevelMap levelMap;
 	public final BlueprintCache<BuildingBlueprint> buildingBlueprintCache;
 	public XStateHolder stateHolder;
@@ -24,8 +26,9 @@ public class MainState
 	public MainState(DoubleType y2, VisualSideInfo visualSideInfo1)
 	{
 		this.y2 = y2;
+		turnCounter = -1;
 		levelMap = new LevelMap(y2);
-		buildingBlueprintCache = new BlueprintCache<>("buildings");
+		buildingBlueprintCache = new BlueprintCache<>(BuildingBlueprint::new, "BuildingBlueprints");
 		combatSystem = new System2();
 		visualSideInfo = visualSideInfo1;
 	}
@@ -49,37 +52,38 @@ public class MainState
 		/*levelMap.addArrow(new ShineArrow(List.of(y2.create2(2, 0), y2.create2(4, 1)), 120, true, null, true));
 		levelMap.addArrow(new ShineArrow(List.of(y2.create2(-2, 0), y2.create2(4, -4)), 120, true, null, true));
 		levelMap.addArrow(new ShineArrow(List.of(y2.create2(-3, 0)), 120, true, null, true));*/
-		/*ProductionBuilding blue1 = new ProductionBuilding(y2.create2(-2, -2), BuildingBlueprint.get(buildingBlueprintCache, "BLUE1"));
-		levelMap.addBuilding(blue1);
-		blue1.claimFloor(levelMap);
-		ProductionBuilding gsl1 = new ProductionBuilding(y2.create2(-3, -3), BuildingBlueprint.get(buildingBlueprintCache, "GSL1"));
-		levelMap.addBuilding(gsl1);
-		gsl1.claimFloor(levelMap);
-		Transporter transporter1 = new Transporter(y2.create2(-3, -2), BuildingBlueprint.get(buildingBlueprintCache, "Transporter1"));
-		levelMap.addBuilding(transporter1);*/
+		levelMap.addBuilding2(new ProductionBuilding(y2.create2(-2, -2), buildingBlueprintCache.get("BLUE1")));
+		levelMap.addBuilding2(new ProductionBuilding(y2.create2(-3, -3), buildingBlueprintCache.get("GSL1")));
+		levelMap.addBuilding(new Transporter(y2.create2(-3, -2), buildingBlueprintCache.get("Transporter1")));
 	}
 
 	//TODO Build a real level
 
-	//TODO show enemy reach (all enemies)
-	//TODO get levelup essence
-	//TODO get levelup
+	//TODO Load Blueprints from JSON
+	//TODO Save Buildings as JSON
+	//TODO Save Transporters as JSON
+	//TODO Add visMark to GiveOrTakeState, ProductionFloorsState, TransportTargetsState
+
 	//TODO equip weapon without attacking
-	//TODO turn counter
+	//TODO always show xhero characters on the same side
+	//TODO show turn counter
+	//TODO ReachViewState for all characters (menu as param)
+	//TODO change xmenu options on turn 0
 	//TODO chooseable starting locations
 	//TODO turn 0 item swapping
 	//TODO enemy reinforcements
 	//TODO Fix game crashing when you lose
 	//TODO Editable starting location settings
+	//TODO get levelup essence
+	//TODO get levelup
 
+	//TODO show enemy reach (all enemies)
 	//TODO screenshake on crit
 	//TODO scale tiles, menubar, gui when resizing
 	//TODO Make menu bar not overlap with SideInfo
-	//TODO Add visMark to GiveOrTakeState, ProductionFloorsState, TransportTargetsState
-	//TODO add keybind info
+	//TODO add keybind info for keybinds other than menu
 	//TODO improve camera
 	//TODO Enemy AI types
-	//TODO Save Buildings as JSON
 
 	//LK char - move/attack
 	//RK char - inv/trade

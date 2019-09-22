@@ -1,40 +1,83 @@
 package file;
 
+import com.fasterxml.jackson.jr.ob.*;
+import com.fasterxml.jackson.jr.stree.*;
+import java.io.*;
+import java.nio.file.*;
 import java.util.*;
+import java.util.function.*;
 
 public class BlueprintCache<T extends FullBlueprint>
 {
-	private HashMap<String, BlueprintNode> inputs;
 	private HashMap<String, T> cached;
 
-	public BlueprintCache(String filename)
+	public BlueprintCache(String filename, Function<BlueprintNode, T> initializer)
 	{
-		FileBlueprint fileBlueprint = new FileBlueprint(filename);
-		inputs = new HashMap<>();
 		cached = new HashMap<>();
+		FileBlueprint fileBlueprint = new FileBlueprint(filename);
 		for(BlueprintNode node : fileBlueprint.startNode.inside)
 		{
-			inputs.put(node.get(0).data, node);
+			cached.put(node.get(0).data, initializer.apply(node));
 		}
 	}
 
-	public T getCached(String name)
+	public BlueprintCache(Function<JrsObject, T> initializer, String filename)
 	{
-		return cached.get(name);
+		cached = new HashMap<>();
+		try
+		{
+			var tree = JSON.std.with(new JacksonJrsTreeCodec()).treeFrom(loadTextResource(filename));
+			if(((JrsNumber) tree.get("code")).getValue().intValue() == 0xA4D2839F)
+			{
+				((JrsArray) tree.get("Blueprints")).elements()
+						.forEachRemaining(e -> cached.put(((JrsObject) e).get("Name").asText(), initializer.apply((JrsObject) e)));
+			}
+		}catch(IOException e)
+		{
+			throw new RuntimeException(e);
+		}
 	}
 
-	public BlueprintNode getInput(String name)
+	public static String loadTextResource(String resource)
 	{
-		return inputs.get(name);
+		try
+		{
+			//noinspection ConstantConditions
+			return new String(Thread.currentThread().getContextClassLoader().getResourceAsStream(resource).readAllBytes());
+		}catch(IOException | NullPointerException e)
+		{
+			throw new RuntimeException(e);
+		}
 	}
 
-	public void putCached(String name, T blueprint)
+	public void saveBlueprints(String filename)
 	{
-		cached.put(name, blueprint);
+		try
+		{
+			var a1 = JSON.std.with(JSON.Feature.PRETTY_PRINT_OUTPUT)
+					.composeString()
+					.startObject()
+					.put("code", 0xA4D2839F);
+			var a2 = a1.startArrayField("Blueprints");
+			for(String key : cached.keySet())
+			{
+				a2 = get(key).save(a2.startObject()).end();
+			}
+			String text = a2.end().end().finish();
+			Files.write(new File(filename).toPath(), text.getBytes());
+		}catch(IOException e)
+		{
+			throw new RuntimeException(e);
+		}
 	}
 
 	public Set<String> allNames()
 	{
-		return inputs.keySet();
+		return cached.keySet();
+	}
+
+	public T get(String name)
+	{
+		return cached.get(name);
 	}
 }
