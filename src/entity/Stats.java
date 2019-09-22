@@ -33,7 +33,7 @@ public interface Stats
 
 	String[] sideInfoText();
 
-	<T extends ComposerBase> ObjectComposer<T> save(ObjectComposer<T> a1) throws IOException;
+	<T extends ComposerBase> ObjectComposer<T> save(ObjectComposer<T> a1, ItemLoader itemLoader) throws IOException;
 
 	List<String> infoEdit();
 

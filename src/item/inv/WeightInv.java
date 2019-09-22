@@ -2,12 +2,11 @@ package item.inv;
 
 import com.fasterxml.jackson.jr.ob.comp.*;
 import com.fasterxml.jackson.jr.stree.*;
-import entity.*;
 import item.*;
 import item.view.*;
 import java.io.*;
 import java.util.*;
-import java.util.stream.Collectors;
+import java.util.stream.*;
 
 public class WeightInv implements Inv
 {
@@ -150,29 +149,25 @@ public class WeightInv implements Inv
 		return false;
 	}
 
+	public WeightInv(JrsObject data, ItemLoader itemLoader)
+	{
+		currentW = ((JrsNumber) data.get("WCurrent")).getValue().intValue();
+		limitW = ((JrsNumber) data.get("WLimit")).getValue().intValue();
+		stacks = new ArrayList<>();
+		((JrsArray) data.get("Stacks")).elements().forEachRemaining(object1 -> stacks.add(new InvStack(new ItemStack((JrsObject) object1, itemLoader))));
+		commit();
+	}
+
 	@Override
-	public <T extends ComposerBase> ObjectComposer<T> save(ObjectComposer<T> a1) throws IOException
+	public <T extends ComposerBase> ObjectComposer<T> save(ObjectComposer<T> a1, ItemLoader itemLoader) throws IOException
 	{
 		var a2 = a1.put("WCurrent", currentW)
 				.put("WLimit", limitW)
 				.startArrayField("Stacks");
 		for(InvStack invStack : stacks)
 		{
-			a2 = invStack.item.save(a2.startObject().put("Count", invStack.getCountC()).startObjectField("Item")).end().end();
+			a2 = invStack.toItemStack().save(a2.startObject(), itemLoader).end();
 		}
 		return a2.end();
-	}
-
-	public WeightInv(JrsObject data, CombatSystem s1)
-	{
-		currentW = ((JrsNumber) data.get("WCurrent")).getValue().intValue();
-		limitW = ((JrsNumber) data.get("WLimit")).getValue().intValue();
-		stacks = new ArrayList<>();
-		var array1 = (JrsArray) data.get("Stacks");
-		array1.elements().forEachRemaining(object1 ->
-		{
-			int itemCount = ((JrsNumber) ((JrsObject) object1).get("Count")).getValue().intValue();
-			stacks.add(new InvStack(s1.loadItem(((JrsObject) ((JrsObject) object1).get("Item"))), itemCount));
-		});
 	}
 }

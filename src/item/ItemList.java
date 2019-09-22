@@ -2,7 +2,6 @@ package item;
 
 import com.fasterxml.jackson.jr.ob.comp.*;
 import com.fasterxml.jackson.jr.stree.*;
-import item.items.*;
 import java.io.*;
 import java.util.*;
 import java.util.stream.*;
@@ -38,37 +37,17 @@ public class ItemList
 				.entrySet().stream().map(e -> new ItemStack(e.getKey(), e.getValue())).collect(Collectors.toList()));
 	}
 
-	public ItemList(JrsArray data)
+	public ItemList(JrsArray data, ItemLoader itemLoader)
 	{
 		items = new ArrayList<>();
-		data.elements().forEachRemaining(e -> items.add(ls1(e)));
+		data.elements().forEachRemaining(e -> items.add(new ItemStack((JrsObject) e, itemLoader)));
 	}
 
-	private ItemStack ls1(JrsValue data)
-	{
-		if(data.get("Amount") != null)
-		{
-			return new ItemStack(Items.values()[((JrsNumber) ((JrsObject) data).get("ItemCode")).getValue().intValue()],
-					((JrsNumber) ((JrsObject) data).get("Amount")).getValue().intValue());
-		}
-		else
-		{
-			return new ItemStack(Items.values()[((JrsNumber) data.get("ItemCode")).getValue().intValue()], 1);
-		}
-	}
-
-	public <T extends ComposerBase> ArrayComposer<T> save(ArrayComposer<T> a1) throws IOException
+	public <T extends ComposerBase> ArrayComposer<T> save(ArrayComposer<T> a1, ItemLoader itemLoader) throws IOException
 	{
 		for(ItemStack stack : items)
 		{
-			if(stack.count == 1)
-			{
-				a1 = stack.item.save(a1.startObject()).end();
-			}
-			else
-			{
-				a1 = stack.item.save(a1.startObject()).put("Amount", stack.count).end();
-			}
+			a1 = stack.save(a1.startObject(), itemLoader).end();
 		}
 		return a1;
 	}

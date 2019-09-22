@@ -32,6 +32,11 @@ public class InvStack implements Inv0
 		increase = 0;
 	}
 
+	public ItemStack toItemStack()
+	{
+		return new ItemStack(item, current);
+	}
+
 	public int getCountC()
 	{
 		return current;

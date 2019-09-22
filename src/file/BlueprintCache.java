@@ -2,6 +2,7 @@ package file;
 
 import com.fasterxml.jackson.jr.ob.*;
 import com.fasterxml.jackson.jr.stree.*;
+import item.*;
 import java.io.*;
 import java.nio.file.*;
 import java.util.*;
@@ -38,7 +39,7 @@ public class BlueprintCache<T extends FullBlueprint>
 		return blueprints.keySet();
 	}
 
-	public void saveBlueprints(String filename)
+	public void saveBlueprints(String filename, ItemLoader itemLoader)
 	{
 		try
 		{
@@ -49,7 +50,7 @@ public class BlueprintCache<T extends FullBlueprint>
 			var a2 = a1.startArrayField("Blueprints");
 			for(String key : blueprints.keySet())
 			{
-				a2 = get(key).save(a2.startObject()).end();
+				a2 = get(key).save(a2.startObject(), itemLoader).end();
 			}
 			String text = a2.end().end().finish();
 			Files.write(new File(filename).toPath(), text.getBytes());

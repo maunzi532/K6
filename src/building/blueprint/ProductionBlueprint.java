@@ -20,22 +20,22 @@ public class ProductionBlueprint
 		this.recipes = recipes;
 	}
 
-	public ProductionBlueprint(JrsObject data)
+	public ProductionBlueprint(JrsObject data, ItemLoader itemLoader)
 	{
-		inputLimits = new ItemList((JrsArray) data.get("InputLimits"));
-		outputLimits = new ItemList((JrsArray) data.get("OutputLimits"));
+		inputLimits = new ItemList((JrsArray) data.get("InputLimits"), itemLoader);
+		outputLimits = new ItemList((JrsArray) data.get("OutputLimits"), itemLoader);
 		recipes = new ArrayList<>();
-		((JrsArray) data.get("Recipes")).elements().forEachRemaining(e -> recipes.add(new Recipe((JrsObject) e)));
+		((JrsArray) data.get("Recipes")).elements().forEachRemaining(e -> recipes.add(new Recipe((JrsObject) e, itemLoader)));
 	}
 
-	public <T extends ComposerBase> ObjectComposer<T> save(ObjectComposer<T> a1) throws IOException
+	public <T extends ComposerBase> ObjectComposer<T> save(ObjectComposer<T> a1, ItemLoader itemLoader) throws IOException
 	{
-		var a2 = inputLimits.save(a1.startArrayField("InputLimits")).end();
-		a2 = outputLimits.save(a2.startArrayField("OutputLimits")).end();
+		var a2 = inputLimits.save(a1.startArrayField("InputLimits"), itemLoader).end();
+		a2 = outputLimits.save(a2.startArrayField("OutputLimits"), itemLoader).end();
 		var a3 = a2.startArrayField("Recipes");
 		for(Recipe recipe : recipes)
 		{
-			a3 = recipe.save(a3.startObject()).end();
+			a3 = recipe.save(a3.startObject(), itemLoader).end();
 		}
 		return a3.end();
 	}

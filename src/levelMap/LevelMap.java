@@ -5,6 +5,7 @@ import building.*;
 import com.fasterxml.jackson.jr.ob.*;
 import entity.*;
 import geom.f1.*;
+import item.*;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
@@ -246,7 +247,7 @@ public class LevelMap
 		arrows.removeIf(XArrow::finished);
 	}
 
-	public String[] saveDataJSON()
+	public String[] saveDataJSON(ItemLoader itemLoader)
 	{
 		try
 		{
@@ -278,9 +279,9 @@ public class LevelMap
 			var a2 = a1.put("FloorTiles", Base64.getEncoder().encodeToString(sb.array())).startArrayField("XEntities");
 			for(XEntity entity : entities)
 			{
-				a2 = entity.save(a2.startObject(), y1).end();
+				a2 = entity.save(a2.startObject(), itemLoader, y1).end();
 				if(entity instanceof XHero)
-					xheroSave = entity.save3(xheroSave.startObject()).end();
+					xheroSave = entity.save3(xheroSave.startObject(), itemLoader).end();
 			}
 			return new String[]{a2.end().end().finish(), xheroSave.end().end().finish()};
 		}catch(IOException e)

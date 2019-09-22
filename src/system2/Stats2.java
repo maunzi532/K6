@@ -282,42 +282,7 @@ public class Stats2 implements Stats
 		return copy;
 	}
 
-	@Override
-	public <T extends ComposerBase> ObjectComposer<T> save(ObjectComposer<T> a1) throws IOException
-	{
-		var a2 = a1.put("Class", xClass.code)
-				.put("Level", level);
-		if(playerLevelSystem != null)
-		{
-			a2 = playerLevelSystem.save(a2.startObjectField("LevelSystem")).end();
-		}
-		if(customName != null)
-		{
-			a2 = a2.put("CustomName", customName);
-		}
-		if(customImage != null)
-		{
-			a2 = a2.put("CustomImage", customImage);
-		}
-		var a3 = a2.put("Strength", strength)
-				.put("Finesse", finesse)
-				.put("Skill", skill)
-				.put("Speed", speed)
-				.put("Luck", luck)
-				.put("Defense", defense)
-				.put("Evasion", evasion)
-				.put("Toughness", toughness)
-				.put("Movement", movement)
-				.put("CurrentHealth", currentHealth)
-				.put("Exhaustion", exhaustion);
-		if(lastUsed != null)
-		{
-			a3 = lastUsed.item.save(a3.put("LastUsed", lastUsed.code).startObjectField("LastUsedItem")).end();
-		}
-		return a3;
-	}
-
-	public Stats2(JrsObject data, CombatSystem s1)
+	public Stats2(JrsObject data, ItemLoader itemLoader)
 	{
 		xClass = XClasses.INSTANCE.xClasses[((JrsNumber) data.get("Class")).getValue().intValue()];
 		slot = new AttackItem2Slot(xClass.usableItems);
@@ -347,9 +312,45 @@ public class Stats2 implements Stats
 		exhaustion = ((JrsNumber) data.get("Exhaustion")).getValue().intValue();
 		if(data.get("LastUsed") != null)
 		{
-			lastUsed = ((AttackItem2) s1.loadItem((JrsObject) data.get("LastUsedItem"))).attackModes()
+			lastUsed = ((AttackItem2) itemLoader.loadItem((JrsObject) data.get("LastUsedItem"))).attackModes()
 					.stream().filter(e -> e.code == ((JrsNumber) data.get("LastUsed")).getValue().intValue()).findFirst().orElseThrow();
 		}
+	}
+
+	@Override
+	public <T extends ComposerBase> ObjectComposer<T> save(ObjectComposer<T> a1, ItemLoader itemLoader) throws IOException
+	{
+		var a2 = a1.put("Class", xClass.code)
+				.put("Level", level);
+		if(playerLevelSystem != null)
+		{
+			a2 = playerLevelSystem.save(a2.startObjectField("LevelSystem")).end();
+		}
+		if(customName != null)
+		{
+			a2 = a2.put("CustomName", customName);
+		}
+		if(customImage != null)
+		{
+			a2 = a2.put("CustomImage", customImage);
+		}
+		var a3 = a2.put("Strength", strength)
+				.put("Finesse", finesse)
+				.put("Skill", skill)
+				.put("Speed", speed)
+				.put("Luck", luck)
+				.put("Defense", defense)
+				.put("Evasion", evasion)
+				.put("Toughness", toughness)
+				.put("Movement", movement)
+				.put("CurrentHealth", currentHealth)
+				.put("Exhaustion", exhaustion);
+		if(lastUsed != null)
+		{
+			var a4 = a3.put("LastUsed", lastUsed.code).startObjectField("LastUsedItem");
+			a3 = itemLoader.saveItem(a4, lastUsed.item).end();
+		}
+		return a3;
 	}
 
 	@Override

@@ -155,7 +155,7 @@ public class XHero extends InvEntity
 	}
 
 	@Override
-	public <T extends ComposerBase> ObjectComposer<T> save(ObjectComposer<T> a1, TileType y1) throws IOException
+	public <T extends ComposerBase> ObjectComposer<T> save(ObjectComposer<T> a1, ItemLoader itemLoader, TileType y1) throws IOException
 	{
 		return a1.put("StartName", stats.getName())
 				.put("Locked", startLocked)

@@ -22,20 +22,20 @@ public class CostBlueprint
 		this.requiredFloorTiles = requiredFloorTiles;
 	}
 
-	public CostBlueprint(JrsObject data)
+	public CostBlueprint(JrsObject data, ItemLoader itemLoader)
 	{
-		refundable = new ItemList((JrsArray) data.get("Refundable"));
-		costs = new ItemList((JrsArray) data.get("Costs"));
+		refundable = new ItemList((JrsArray) data.get("Refundable"), itemLoader);
+		costs = new ItemList((JrsArray) data.get("Costs"), itemLoader);
 		required = refundable.add(costs);
 		requiredFloorTiles = new ArrayList<>();
 		((JrsArray) data.get("FloorTiles")).elements()
 				.forEachRemaining(e -> requiredFloorTiles.add(new RequiresFloorTiles((JrsObject) e)));
 	}
 
-	public <T extends ComposerBase> ObjectComposer<T> save(ObjectComposer<T> a1) throws IOException
+	public <T extends ComposerBase> ObjectComposer<T> save(ObjectComposer<T> a1, ItemLoader itemLoader) throws IOException
 	{
-		var a2 = refundable.save(a1.startArrayField("Refundable")).end();
-		a2 = costs.save(a2.startArrayField("Costs")).end();
+		var a2 = refundable.save(a1.startArrayField("Refundable"), itemLoader).end();
+		a2 = costs.save(a2.startArrayField("Costs"), itemLoader).end();
 		var a3 = a2.startArrayField("FloorTiles");
 		for(RequiresFloorTiles ft1 : requiredFloorTiles)
 		{

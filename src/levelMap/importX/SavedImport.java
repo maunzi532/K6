@@ -45,7 +45,7 @@ public class SavedImport
 					mainState.levelMap.createTile(sb.get(), sb.get(), sb.get(), sb.get());
 				}
 				((JrsArray) tree.get("XEntities")).elements().forEachRemaining(e ->
-						mainState.levelMap.addEntity(mainState.combatSystem.loadEntity(mainState.y2, mainState, (JrsObject) e)));
+						mainState.levelMap.addEntity(mainState.combatSystem.loadEntity(mainState.y2, mainState, (JrsObject) e, mainState.itemLoader)));
 			}
 		}catch(IOException e)
 		{
@@ -72,7 +72,7 @@ public class SavedImport
 				((JrsArray) tree2.get("Characters")).elements().forEachRemaining(
 						character -> characters.put(((JrsObject) ((JrsObject) character).get("Stats")).get("CustomName").asText(), (JrsObject) character));
 				((JrsArray) tree.get("XEntities")).elements().forEachRemaining(e ->
-						mainState.levelMap.addEntity(mainState.combatSystem.loadEntityOrStartLoc(mainState.y2, mainState, (JrsObject) e, characters)));
+						mainState.levelMap.addEntity(mainState.combatSystem.loadEntityOrStartLoc(mainState.y2, mainState, (JrsObject) e, mainState.itemLoader, characters)));
 			}
 		}catch(IOException e)
 		{

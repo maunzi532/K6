@@ -46,9 +46,9 @@ public interface CombatSystem<T extends Stats, A extends AttackInfo, I extends I
 
 	AnimTimer createRegenerationAnimation(XEntity entity, MainState mainState);
 
-	XEntity loadEntity(TileType y1, MainState mainState, JrsObject data);
+	XEntity loadEntity(TileType y1, MainState mainState, JrsObject data, ItemLoader itemLoader);
 
-	XEntity loadEntityOrStartLoc(TileType y1, MainState mainState, JrsObject data, Map<String, JrsObject> characters);
+	XEntity loadEntityOrStartLoc(TileType y1, MainState mainState, JrsObject data, ItemLoader itemLoader, Map<String, JrsObject> characters);
 
 	Item loadItem(JrsObject data);
 }

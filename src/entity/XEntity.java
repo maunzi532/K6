@@ -6,6 +6,7 @@ import draw.*;
 import entity.analysis.*;
 import file.*;
 import geom.f1.*;
+import item.*;
 import java.io.*;
 import java.util.*;
 import javafx.scene.image.*;
@@ -107,25 +108,25 @@ public class XEntity
 		return 0;
 	}
 
-	public <T extends ComposerBase> ObjectComposer<T> save(ObjectComposer<T> a1, TileType y1) throws IOException
+	public <T extends ComposerBase> ObjectComposer<T> save(ObjectComposer<T> a1, ItemLoader itemLoader, TileType y1) throws IOException
 	{
 		var a2 = a1.put("Type", classSave())
 				.put("sx", y1.sx(location))
 				.put("sy", y1.sy(location))
 				.startObjectField("Stats");
-		var a3 = stats.save(a2);
-		return save2(a3.end());
+		var a3 = stats.save(a2, itemLoader);
+		return save2(a3.end(), itemLoader);
 	}
 
-	public <T extends ComposerBase> ObjectComposer<T> save2(ObjectComposer<T> a1) throws IOException
+	public <T extends ComposerBase> ObjectComposer<T> save2(ObjectComposer<T> a1, ItemLoader itemLoader) throws IOException
 	{
 		return a1;
 	}
 
-	public <T extends ComposerBase> ObjectComposer<T> save3(ObjectComposer<T> a1) throws IOException
+	public <T extends ComposerBase> ObjectComposer<T> save3(ObjectComposer<T> a1, ItemLoader itemLoader) throws IOException
 	{
 		var a2 = a1.startObjectField("Stats");
-		var a3 = stats.save(a2);
-		return save2(a3.end());
+		var a3 = stats.save(a2, itemLoader);
+		return save2(a3.end(), itemLoader);
 	}
 }

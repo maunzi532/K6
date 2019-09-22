@@ -51,8 +51,8 @@ public class InvEntity extends XEntity implements DoubleInv
 	}
 
 	@Override
-	public <T extends ComposerBase> ObjectComposer<T> save2(ObjectComposer<T> a1) throws IOException
+	public <T extends ComposerBase> ObjectComposer<T> save2(ObjectComposer<T> a1, ItemLoader itemLoader) throws IOException
 	{
-		return inv.save(a1.startObjectField("Inventory")).end();
+		return inv.save(a1.startObjectField("Inventory"), itemLoader).end();
 	}
 }

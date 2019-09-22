@@ -6,6 +6,7 @@ import draw.*;
 import entity.*;
 import file.*;
 import geom.d1.*;
+import item.*;
 import levelMap.*;
 import levelMap.importX.*;
 import logic.xstate.*;
@@ -16,6 +17,7 @@ public class MainState
 {
 	//public static final int CL = 20;
 	public final DoubleType y2;
+	public final ItemLoader itemLoader;
 	public int turnCounter;
 	public final LevelMap levelMap;
 	public final BlueprintCache<BuildingBlueprint> buildingBlueprintCache;
@@ -26,9 +28,10 @@ public class MainState
 	public MainState(DoubleType y2, VisualSideInfo visualSideInfo1)
 	{
 		this.y2 = y2;
+		itemLoader = new ItemLoader2();
 		turnCounter = -1;
 		levelMap = new LevelMap(y2);
-		buildingBlueprintCache = new BlueprintCache<>("BuildingBlueprints", BuildingBlueprint::new);
+		buildingBlueprintCache = new BlueprintCache<>("BuildingBlueprints", e -> new BuildingBlueprint(e, itemLoader));
 		combatSystem = new System2();
 		visualSideInfo = visualSideInfo1;
 	}

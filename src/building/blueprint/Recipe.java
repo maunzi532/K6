@@ -16,15 +16,15 @@ public class Recipe
 		this.results = results;
 	}
 
-	public Recipe(JrsObject data)
+	public Recipe(JrsObject data, ItemLoader itemLoader)
 	{
-		required = new ItemList((JrsArray) data.get("Required"));
-		results = new ItemList((JrsArray) data.get("Results"));
+		required = new ItemList((JrsArray) data.get("Required"), itemLoader);
+		results = new ItemList((JrsArray) data.get("Results"), itemLoader);
 	}
 
-	public <T extends ComposerBase> ObjectComposer<T> save(ObjectComposer<T> a1) throws IOException
+	public <T extends ComposerBase> ObjectComposer<T> save(ObjectComposer<T> a1, ItemLoader itemLoader) throws IOException
 	{
-		var a2 = required.save(a1.startArrayField("Required")).end();
-		return results.save(a2.startArrayField("Results")).end();
+		var a2 = required.save(a1.startArrayField("Required"), itemLoader).end();
+		return results.save(a2.startArrayField("Results"), itemLoader).end();
 	}
 }

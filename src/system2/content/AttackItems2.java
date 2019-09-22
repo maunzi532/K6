@@ -10,6 +10,7 @@ public class AttackItems2
 	public static final AttackItems2 INSTANCE = new AttackItems2();
 
 	public final AttackItem2[] items;
+	public final List<Item> itemListA;
 	public final List<Item> itemList;
 
 	public AttackItems2()
@@ -36,6 +37,7 @@ public class AttackItems2
 		items[501] = CrossbowItem.create(501, 9, 14, 0, 100, 0);
 		items[502] = CrossbowItem.create(502, 12, 15, 0, 50, 20);
 
+		itemListA = Arrays.asList(items);
 		itemList = Arrays.stream(items).filter(Objects::nonNull).collect(Collectors.toList());
 	}
 
