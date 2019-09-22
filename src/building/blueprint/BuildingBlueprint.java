@@ -13,40 +13,12 @@ public class BuildingBlueprint implements FullBlueprint
 	public TransporterBlueprint transporterBlueprint;
 
 	public BuildingBlueprint(String name, ConstructionBlueprint constructionBlueprint,
-			ProductionBlueprint productionBlueprint)
+			ProductionBlueprint productionBlueprint, TransporterBlueprint transporterBlueprint)
 	{
 		this.name = name;
 		this.constructionBlueprint = constructionBlueprint;
 		this.productionBlueprint = productionBlueprint;
-	}
-
-	public BuildingBlueprint(String name, ConstructionBlueprint constructionBlueprint,
-			TransporterBlueprint transporterBlueprint)
-	{
-		this.name = name;
-		this.constructionBlueprint = constructionBlueprint;
 		this.transporterBlueprint = transporterBlueprint;
-	}
-
-	public BuildingBlueprint(BlueprintNode node)
-	{
-		if(!node.data.equals(getClass().getSimpleName()))
-			throw new RuntimeException(node.data + ", required: " + getClass().getSimpleName());
-		name = node.get(0).data;
-		constructionBlueprint = new ConstructionBlueprint(node.get(1));
-		String n2Name = node.get(2).data;
-		if("ProductionBlueprint".equals(n2Name))
-		{
-			productionBlueprint = new ProductionBlueprint(node.get(2));
-		}
-		else if("TransporterBlueprint".equals(n2Name))
-		{
-			transporterBlueprint = new TransporterBlueprint(node.get(2));
-		}
-		else
-		{
-			throw new RuntimeException(n2Name + ", must be building type");
-		}
 	}
 
 	public BuildingBlueprint(JrsObject data)
@@ -79,11 +51,5 @@ public class BuildingBlueprint implements FullBlueprint
 			a2 = transporterBlueprint.save(a2.startObjectField("Transporter")).end();
 		}
 		return a2;
-	}
-
-	@Override
-	public String name()
-	{
-		return name;
 	}
 }

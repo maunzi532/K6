@@ -28,7 +28,7 @@ public class MainState
 		this.y2 = y2;
 		turnCounter = -1;
 		levelMap = new LevelMap(y2);
-		buildingBlueprintCache = new BlueprintCache<>(BuildingBlueprint::new, "BuildingBlueprints");
+		buildingBlueprintCache = new BlueprintCache<>("BuildingBlueprints", BuildingBlueprint::new);
 		combatSystem = new System2();
 		visualSideInfo = visualSideInfo1;
 	}

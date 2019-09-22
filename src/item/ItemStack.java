@@ -1,8 +1,5 @@
 package item;
 
-import file.*;
-import item.items.*;
-
 public class ItemStack
 {
 	public final Item item;
@@ -12,20 +9,6 @@ public class ItemStack
 	{
 		this.item = item;
 		this.count = count;
-	}
-
-	public ItemStack(BlueprintNode node)
-	{
-		if(node.size() == 0)
-		{
-			item = Items.valueOf(node.data);
-			count = 1;
-		}
-		else
-		{
-			item = Items.valueOf(node.data);
-			count = node.get(0).dataInt();
-		}
 	}
 
 	public int weight()

@@ -2,7 +2,6 @@ package item;
 
 import com.fasterxml.jackson.jr.ob.comp.*;
 import com.fasterxml.jackson.jr.stree.*;
-import file.*;
 import item.items.*;
 import java.io.*;
 import java.util.*;
@@ -37,13 +36,6 @@ public class ItemList
 		return new ItemList(Stream.concat(items.stream(), other.items.stream())
 				.collect(Collectors.groupingBy((ItemStack e) -> e.item, Collectors.summingInt((ItemStack f) -> f.count)))
 				.entrySet().stream().map(e -> new ItemStack(e.getKey(), e.getValue())).collect(Collectors.toList()));
-	}
-
-	public ItemList(BlueprintNode node)
-	{
-		if(!node.data.equals(getClass().getSimpleName()))
-			throw new RuntimeException(node.data + ", required: " + getClass().getSimpleName());
-		items = node.inside.stream().map(ItemStack::new).collect(Collectors.toList());
 	}
 
 	public ItemList(JrsArray data)

@@ -2,7 +2,6 @@ package building.blueprint;
 
 import com.fasterxml.jackson.jr.ob.comp.*;
 import com.fasterxml.jackson.jr.stree.*;
-import file.*;
 import item.*;
 import java.io.*;
 
@@ -15,14 +14,6 @@ public class Recipe
 	{
 		this.required = required;
 		this.results = results;
-	}
-
-	public Recipe(BlueprintNode node)
-	{
-		if(!node.data.equals(getClass().getSimpleName()))
-			throw new RuntimeException(node.data + ", required: " + getClass().getSimpleName());
-		required = new ItemList(node.get(0));
-		results = new ItemList(node.get(1));
 	}
 
 	public Recipe(JrsObject data)

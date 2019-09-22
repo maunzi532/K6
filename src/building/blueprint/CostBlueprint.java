@@ -2,11 +2,9 @@ package building.blueprint;
 
 import com.fasterxml.jackson.jr.ob.comp.*;
 import com.fasterxml.jackson.jr.stree.*;
-import file.*;
 import item.*;
 import java.io.*;
 import java.util.*;
-import java.util.stream.*;
 
 public class CostBlueprint
 {
@@ -16,37 +14,19 @@ public class CostBlueprint
 	public final List<RequiresFloorTiles> requiredFloorTiles;
 
 	public CostBlueprint(ItemList refundable, ItemList costs,
-			RequiresFloorTiles... requiredFloorTiles)
+			List<RequiresFloorTiles> requiredFloorTiles)
 	{
 		this.refundable = refundable;
 		this.costs = costs;
-		this.requiredFloorTiles = Arrays.asList(requiredFloorTiles);
-		required = costs.add(refundable);
-	}
-
-	public CostBlueprint(ItemList refundable, RequiresFloorTiles... requiredFloorTiles)
-	{
-		this.refundable = refundable;
-		costs = new ItemList();
-		this.requiredFloorTiles = Arrays.asList(requiredFloorTiles);
-		required = costs.add(refundable);
-	}
-
-	public CostBlueprint(BlueprintNode node)
-	{
-		if(!node.data.equals(getClass().getSimpleName()))
-			throw new RuntimeException(node.data + ", required: " + getClass().getSimpleName());
-		refundable = new ItemList(node.get(0));
-		costs = new ItemList(node.get(1));
-		requiredFloorTiles = node.get(2).inside.stream().map(RequiresFloorTiles::new).collect(Collectors.toList());
-		required = costs.add(refundable);
+		required = refundable.add(costs);
+		this.requiredFloorTiles = requiredFloorTiles;
 	}
 
 	public CostBlueprint(JrsObject data)
 	{
 		refundable = new ItemList((JrsArray) data.get("Refundable"));
 		costs = new ItemList((JrsArray) data.get("Costs"));
-		required = costs.add(refundable);
+		required = refundable.add(costs);
 		requiredFloorTiles = new ArrayList<>();
 		((JrsArray) data.get("FloorTiles")).elements()
 				.forEachRemaining(e -> requiredFloorTiles.add(new RequiresFloorTiles((JrsObject) e)));

@@ -9,28 +9,18 @@ import java.util.function.*;
 
 public class BlueprintCache<T extends FullBlueprint>
 {
-	private HashMap<String, T> cached;
+	private HashMap<String, T> blueprints;
 
-	public BlueprintCache(String filename, Function<BlueprintNode, T> initializer)
+	public BlueprintCache(String filename, Function<JrsObject, T> initializer)
 	{
-		cached = new HashMap<>();
-		FileBlueprint fileBlueprint = new FileBlueprint(filename);
-		for(BlueprintNode node : fileBlueprint.startNode.inside)
-		{
-			cached.put(node.get(0).data, initializer.apply(node));
-		}
-	}
-
-	public BlueprintCache(Function<JrsObject, T> initializer, String filename)
-	{
-		cached = new HashMap<>();
+		blueprints = new HashMap<>();
 		try
 		{
-			var tree = JSON.std.with(new JacksonJrsTreeCodec()).treeFrom(loadTextResource(filename));
+			var tree = JSON.std.with(new JacksonJrsTreeCodec()).treeFrom(ImageLoader.loadTextResource(filename));
 			if(((JrsNumber) tree.get("code")).getValue().intValue() == 0xA4D2839F)
 			{
 				((JrsArray) tree.get("Blueprints")).elements()
-						.forEachRemaining(e -> cached.put(((JrsObject) e).get("Name").asText(), initializer.apply((JrsObject) e)));
+						.forEachRemaining(e -> blueprints.put(((JrsObject) e).get("Name").asText(), initializer.apply((JrsObject) e)));
 			}
 		}catch(IOException e)
 		{
@@ -38,16 +28,14 @@ public class BlueprintCache<T extends FullBlueprint>
 		}
 	}
 
-	public static String loadTextResource(String resource)
+	public T get(String name)
 	{
-		try
-		{
-			//noinspection ConstantConditions
-			return new String(Thread.currentThread().getContextClassLoader().getResourceAsStream(resource).readAllBytes());
-		}catch(IOException | NullPointerException e)
-		{
-			throw new RuntimeException(e);
-		}
+		return blueprints.get(name);
+	}
+
+	public Set<String> allNames()
+	{
+		return blueprints.keySet();
 	}
 
 	public void saveBlueprints(String filename)
@@ -59,7 +47,7 @@ public class BlueprintCache<T extends FullBlueprint>
 					.startObject()
 					.put("code", 0xA4D2839F);
 			var a2 = a1.startArrayField("Blueprints");
-			for(String key : cached.keySet())
+			for(String key : blueprints.keySet())
 			{
 				a2 = get(key).save(a2.startObject()).end();
 			}
@@ -69,15 +57,5 @@ public class BlueprintCache<T extends FullBlueprint>
 		{
 			throw new RuntimeException(e);
 		}
-	}
-
-	public Set<String> allNames()
-	{
-		return cached.keySet();
-	}
-
-	public T get(String name)
-	{
-		return cached.get(name);
 	}
 }
