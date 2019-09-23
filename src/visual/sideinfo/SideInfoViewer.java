@@ -1,12 +1,13 @@
-package draw;
+package visual.sideinfo;
 
 import arrow.*;
 import geom.*;
 import java.util.*;
 import javafx.scene.paint.*;
 import javafx.scene.text.*;
+import logic.sideinfo.*;
 
-public class SideInfoViewer
+public class SideInfoViewer implements SideInfoHolder
 {
 	private static final int SHIFT_TIME = 10;
 
@@ -22,6 +23,7 @@ public class SideInfoViewer
 		this.flipped = flipped;
 	}
 
+	@Override
 	public void setSideInfo(SideInfo sideInfo)
 	{
 		if(Objects.equals(current, sideInfo))

@@ -42,7 +42,7 @@ public class BuildingChooseState implements NGUIState
 	@Override
 	public void onEnter(MainState mainState)
 	{
-		mainState.visualSideInfo.setSideInfo(builder.standardSideInfo(), null);
+		mainState.sideInfoFrame.setSideInfo(builder.standardSideInfo(), null);
 	}
 
 	@Override

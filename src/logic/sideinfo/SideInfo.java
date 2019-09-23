@@ -1,4 +1,4 @@
-package draw;
+package logic.sideinfo;
 
 import arrow.*;
 import entity.*;

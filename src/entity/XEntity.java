@@ -2,7 +2,7 @@ package entity;
 
 import arrow.*;
 import com.fasterxml.jackson.jr.ob.comp.*;
-import draw.*;
+import logic.sideinfo.*;
 import entity.analysis.*;
 import file.*;
 import geom.f1.*;

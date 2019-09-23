@@ -1,4 +1,4 @@
-package draw;
+package visual;
 
 import arrow.*;
 import geom.*;

@@ -1,6 +1,6 @@
 package gui.guis;
 
-import draw.*;
+import logic.sideinfo.*;
 import entity.*;
 import gui.*;
 import java.util.*;
@@ -11,7 +11,7 @@ public class AttackInfoGUI extends XGUI implements InvGUI
 	private final CTile nameA;
 	private final CTile nameT;
 
-	private final VisualSideInfo visualSideInfo;
+	private final SideInfoFrame sideInfoFrame;
 	private final XHero attacker;
 	private final XEntity target;
 	private final List<AttackInfo> infoList;
@@ -19,9 +19,9 @@ public class AttackInfoGUI extends XGUI implements InvGUI
 	private int lastTargeted;
 	private AttackInfo chosen;
 
-	public AttackInfoGUI(VisualSideInfo visualSideInfo, XHero attacker, XEntity target)
+	public AttackInfoGUI(SideInfoFrame sideInfoFrame, XHero attacker, XEntity target)
 	{
-		this.visualSideInfo = visualSideInfo;
+		this.sideInfoFrame = sideInfoFrame;
 		this.attacker = attacker;
 		this.target = target;
 		nameA = new CTile(0, 0, new GuiTile(attacker.name()), 2, 1);
@@ -87,7 +87,7 @@ public class AttackInfoGUI extends XGUI implements InvGUI
 		setTargeted(CTile.NONE);
 		if(lastTargeted >= 0)
 		{
-			visualSideInfo.sidedInfo(attacker, target);
+			sideInfoFrame.sidedInfo(attacker, target);
 			lastTargeted = -1;
 		}
 	}
@@ -98,7 +98,7 @@ public class AttackInfoGUI extends XGUI implements InvGUI
 		setTargeted(cTile);
 		if(lastTargeted != num)
 		{
-			visualSideInfo.attackInfo(infoList.get(num));
+			sideInfoFrame.attackInfo(infoList.get(num));
 			//analysis.get(num).outcomes2().forEach(e -> System.out.println(e.readableChance() + " " + e.compareText));
 			//System.out.println();
 			lastTargeted = num;
@@ -111,7 +111,7 @@ public class AttackInfoGUI extends XGUI implements InvGUI
 		setTargeted(CTile.NONE);
 		if(lastTargeted >= 0)
 		{
-			visualSideInfo.sidedInfo(attacker, target);
+			sideInfoFrame.sidedInfo(attacker, target);
 			lastTargeted = -1;
 		}
 	}

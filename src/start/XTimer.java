@@ -1,8 +1,8 @@
 package start;
 
+import visual.*;
 import javafx.animation.*;
 import javafx.scene.input.*;
-import logic.*;
 
 public class XTimer extends AnimationTimer
 {

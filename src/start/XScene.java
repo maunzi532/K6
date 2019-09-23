@@ -1,5 +1,6 @@
 package start;
 
+import visual.*;
 import geom.*;
 import geom.d1.*;
 import javafx.application.*;
@@ -8,7 +9,6 @@ import javafx.scene.canvas.*;
 import javafx.scene.image.*;
 import javafx.scene.paint.*;
 import javafx.stage.*;
-import logic.*;
 
 public class XScene extends Application
 {

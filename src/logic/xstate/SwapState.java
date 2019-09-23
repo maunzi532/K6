@@ -42,7 +42,7 @@ public class SwapState implements NMarkState
 	@Override
 	public void onEnter(MainState mainState)
 	{
-		mainState.visualSideInfo.setSideInfo(character.standardSideInfo(), null);
+		mainState.sideInfoFrame.setSideInfo(character.standardSideInfo(), null);
 		if(character.isStartLocked())
 		{
 			swapTargets = List.of();

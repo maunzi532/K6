@@ -26,7 +26,7 @@ public interface NState
 
 	default void onEnter(MainState mainState)
 	{
-		mainState.visualSideInfo.clearSideInfo();
+		mainState.sideInfoFrame.clearSideInfo();
 	}
 
 	default boolean editMode()

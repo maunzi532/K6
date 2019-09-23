@@ -21,7 +21,7 @@ public class PostAttackState extends AttackState
 	{
 		if(finished())
 		{
-			mainState.visualSideInfo.clearSideInfo();
+			mainState.sideInfoFrame.clearSideInfo();
 		}
 	}
 

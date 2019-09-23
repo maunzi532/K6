@@ -1,7 +1,7 @@
 package logic;
 
 import building.blueprint.*;
-import draw.*;
+import logic.sideinfo.*;
 import entity.*;
 import file.*;
 import geom.d1.*;
@@ -22,9 +22,9 @@ public class MainState
 	public final BlueprintCache<BuildingBlueprint> buildingBlueprintCache;
 	public XStateHolder stateHolder;
 	public final CombatSystem combatSystem;
-	public final VisualSideInfo visualSideInfo;
+	public final SideInfoFrame sideInfoFrame;
 
-	public MainState(DoubleType y2, VisualSideInfo visualSideInfo1)
+	public MainState(DoubleType y2, SideInfoFrame sideInfoFrame)
 	{
 		this.y2 = y2;
 		itemLoader = new ItemLoader2();
@@ -32,7 +32,7 @@ public class MainState
 		levelMap = new LevelMap(y2);
 		buildingBlueprintCache = new BlueprintCache<>("BuildingBlueprints", e -> new BuildingBlueprint(e, itemLoader));
 		combatSystem = new System2();
-		visualSideInfo = visualSideInfo1;
+		this.sideInfoFrame = sideInfoFrame;
 	}
 
 	public void initialize(String loadFile, String loadFile2)
@@ -50,7 +50,6 @@ public class MainState
 			Chapter1.createCharacters(this, y2.create2(-2, 1), y2.create2(-2, -1), y2.create2(-4, 1),
 					y2.create2(-3, 1), y2.create2(-3, -1), y2.create2(-5, 1));
 		}
-		//System.out.println(levelMap.saveDataJSON());
 		/*levelMap.addArrow(new ShineArrow(List.of(y2.create2(2, 0), y2.create2(4, 1)), 120, true, null, true));
 		levelMap.addArrow(new ShineArrow(List.of(y2.create2(-2, 0), y2.create2(4, -4)), 120, true, null, true));
 		levelMap.addArrow(new ShineArrow(List.of(y2.create2(-3, 0)), 120, true, null, true));*/
@@ -61,7 +60,6 @@ public class MainState
 
 	//TODO Build a real level
 
-	//TODO Load/Save Transporters as JSON
 	//TODO Add visMark to GiveOrTakeState, ProductionFloorsState, TransportTargetsState
 	//TODO ProductionBuilding menu
 	//TODO Transporter menu
@@ -80,6 +78,7 @@ public class MainState
 	//TODO get levelup
 
 	//TODO Refactor LevelMap
+	//TODO LevelEditor create XEntity
 	//TODO show enemy reach (all enemies)
 	//TODO screenshake on crit
 	//TODO scale tiles, menubar, gui when resizing
@@ -87,6 +86,7 @@ public class MainState
 	//TODO add keybind info for keybinds other than menu
 	//TODO improve camera
 	//TODO Enemy AI types
+	//TODO save transporter history
 
 	//LK char - move/attack
 	//RK char - inv/trade

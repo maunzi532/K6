@@ -19,7 +19,7 @@ public class AttackInfoState implements NGUIState
 	@Override
 	public void onEnter(MainState mainState)
 	{
-		mainState.visualSideInfo.sidedInfo(attacker, target);
+		mainState.sideInfoFrame.sidedInfo(attacker, target);
 	}
 
 	@Override
@@ -31,6 +31,6 @@ public class AttackInfoState implements NGUIState
 	@Override
 	public XGUI gui(MainState mainState)
 	{
-		return new AttackInfoGUI(mainState.visualSideInfo, attacker, target);
+		return new AttackInfoGUI(mainState.sideInfoFrame, attacker, target);
 	}
 }

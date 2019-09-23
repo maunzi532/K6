@@ -69,7 +69,7 @@ public class StateControl2 implements XStateHolder, ConvInputConsumer
 	}
 
 	@Override
-	public void mousePosition(double xRel, double yRel, boolean insideGUI, Tile offsetGUITile, int menuOption,
+	public void mousePosition(boolean insideGUI, Tile offsetGUITile, int menuOption,
 			int editorOption, Tile mapTile, boolean moved, boolean drag, int mouseKey)
 	{
 		//move camera

@@ -41,7 +41,7 @@ public class ReachViewState implements NMarkState
 	@Override
 	public void onEnter(MainState mainState)
 	{
-		mainState.visualSideInfo.setSideInfo(null, character.standardSideInfo());
+		mainState.sideInfoFrame.setSideInfo(null, character.standardSideInfo());
 		movementRange = new ArrayList<>();
 		attackRange = new ArrayList<>();
 		List<Tile> movement =

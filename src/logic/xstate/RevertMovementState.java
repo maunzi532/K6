@@ -16,7 +16,7 @@ public class RevertMovementState implements NAutoState
 	@Override
 	public void onEnter(MainState mainState)
 	{
-		mainState.visualSideInfo.setSideInfo(character.standardSideInfo(), null);
+		mainState.sideInfoFrame.setSideInfo(character.standardSideInfo(), null);
 		character.revertMovement();
 	}
 

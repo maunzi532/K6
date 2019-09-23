@@ -1,4 +1,4 @@
-package logic;
+package visual;
 
 import javafx.scene.input.*;
 

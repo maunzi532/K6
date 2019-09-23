@@ -18,7 +18,7 @@ public class EditDeleteState implements NAutoState
 	@Override
 	public void onEnter(MainState mainState)
 	{
-		mainState.visualSideInfo.clearSideInfo();
+		mainState.sideInfoFrame.clearSideInfo();
 		mainState.levelMap.removeEntity(entity);
 	}
 

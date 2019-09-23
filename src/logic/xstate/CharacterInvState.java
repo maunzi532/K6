@@ -39,7 +39,7 @@ public class CharacterInvState implements NGUIState
 	@Override
 	public void onEnter(MainState mainState)
 	{
-		mainState.visualSideInfo.setSideInfoXH(character.standardSideInfo(), character instanceof XHero);
+		mainState.sideInfoFrame.setSideInfoXH(character.standardSideInfo(), character instanceof XHero);
 	}
 
 	@Override

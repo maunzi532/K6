@@ -1,19 +1,16 @@
 package levelMap.editor;
 
-import draw.*;
 import geom.f1.*;
 import gui.guis.*;
 import logic.*;
 
 public class EditorSlot
 {
-	private final VisualGUI visualGUI;
-	private final EditingGUI gui;
-	private EditingMode mode;
+	public final EditingGUI gui;
+	public EditingMode mode;
 
-	public EditorSlot(VisualGUI visualGUI, EditingMode mode)
+	public EditorSlot(EditingMode mode)
 	{
-		this.visualGUI = visualGUI;
 		gui = new EditingGUI();
 		setMode(mode);
 	}
@@ -21,17 +18,6 @@ public class EditorSlot
 	public void setMode(EditingMode mode)
 	{
 		this.mode = mode;
-	}
-
-	public boolean isClicked(double x, double y)
-	{
-		return visualGUI.inside(x, y, gui);
-	}
-
-	public void draw()
-	{
-		gui.setTile(mode.guiTile());
-		visualGUI.draw(gui);
 	}
 
 	public void onEnter(MainState mainState)

@@ -35,28 +35,6 @@ public class SavedImport
 		return file != null && file2 != null && file.exists() && file2.exists();
 	}
 
-	public void importIntoMap2(MainState mainState)
-	{
-		try
-		{
-			var tree = JSON.std.with(new JacksonJrsTreeCodec()).treeFrom(new String(Files.readAllBytes(file.toPath())));
-			if(((JrsNumber) tree.get("code")).getValue().intValue() == 0xA4D2839F)
-			{
-				ByteBuffer sb = ByteBuffer.wrap(Base64.getDecoder().decode(((JrsString) tree.get("FloorTiles")).getValue()));
-				int lenTiles = sb.remaining() / 4;
-				for(int i = 0; i < lenTiles; i++)
-				{
-					mainState.levelMap.createTile(sb.get(), sb.get(), sb.get(), sb.get());
-				}
-				((JrsArray) tree.get("XEntities")).elements().forEachRemaining(e ->
-						mainState.levelMap.addEntity(mainState.combatSystem.loadEntity(mainState.y2, mainState, (JrsObject) e, mainState.itemLoader)));
-			}
-		}catch(IOException e)
-		{
-			throw new RuntimeException(e);
-		}
-	}
-
 	public void importIntoMap3(MainState mainState)
 	{
 		try

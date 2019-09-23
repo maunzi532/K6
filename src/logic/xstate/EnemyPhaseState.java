@@ -12,7 +12,7 @@ public class EnemyPhaseState implements NAutoState
 	@Override
 	public void onEnter(MainState mainState)
 	{
-		mainState.visualSideInfo.clearSideInfo();
+		mainState.sideInfoFrame.clearSideInfo();
 		initiativeMove = mainState.levelMap.getEntitiesE().stream().filter(XEnemy::canAttack).map(e -> e.preferredMove(false, 0))
 				.max(Comparator.comparingInt(EnemyMove::getInitiative)).filter(e -> e.getInitiative() >= 0).orElse(null);
 		if(initiativeMove != null && initiativeMove.moveTo() != null && initiativeMove.moveTo().movingAlly != null)

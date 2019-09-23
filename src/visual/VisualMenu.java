@@ -1,4 +1,4 @@
-package draw;
+package visual;
 
 import geom.*;
 import geom.d1.*;

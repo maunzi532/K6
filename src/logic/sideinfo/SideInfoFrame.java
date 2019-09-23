@@ -1,22 +1,19 @@
-package draw;
+package logic.sideinfo;
 
 import arrow.*;
 import entity.*;
 import file.*;
-import geom.*;
 import geom.f1.*;
 
-public class VisualSideInfo
+public class SideInfoFrame
 {
-	private final SideInfoViewer l0;
-	private final SideInfoViewer r0;
-	private final TileCamera tileCamera;
+	private final SideInfoHolder l0;
+	private final SideInfoHolder r0;
 
-	public VisualSideInfo(XGraphics graphics, TileCamera tileCamera)
+	public SideInfoFrame(SideInfoHolder l0, SideInfoHolder r0)
 	{
-		l0 = new SideInfoViewer(graphics, false);
-		r0 = new SideInfoViewer(graphics, true);
-		this.tileCamera = tileCamera;
+		this.l0 = l0;
+		this.r0 = r0;
 	}
 
 	public void setSideInfo(SideInfo sideInfoL, SideInfo sideInfoR)
@@ -41,18 +38,6 @@ public class VisualSideInfo
 		r0.setSideInfo(null);
 	}
 
-	public void tick()
-	{
-		l0.tick();
-		r0.tick();
-	}
-
-	public void draw()
-	{
-		l0.draw();
-		r0.draw();
-	}
-
 	public void sidedInfo(XEntity e1, XEntity e2)
 	{
 		boolean inverted = inverted(e1.location(), e2.location());
@@ -72,17 +57,6 @@ public class VisualSideInfo
 	private boolean inverted(Tile loc0, Tile loc1)
 	{
 		return false;
-		/*double[][] gp = tileCamera.layout().polygonCorners(tileCamera.getDoubleType().fromTile(loc0),
-				tileCamera.getDoubleType().fromTile(loc1));
-		if(gp[0][0] < gp[0][1])
-		{
-			return false;
-		}
-		if(gp[0][0] > gp[0][1])
-		{
-			return true;
-		}
-		return gp[1][0] <= gp[1][1];*/
 	}
 
 	public void setSideInfoXH(SideInfo sideInfo, boolean l)

@@ -10,7 +10,7 @@ public class StartTurnState implements NAutoState
 	@Override
 	public void onEnter(MainState mainState)
 	{
-		mainState.visualSideInfo.clearSideInfo();
+		mainState.sideInfoFrame.clearSideInfo();
 		mainState.turnCounter++;
 		for(XHero xHero : mainState.levelMap.getEntitiesH())
 		{

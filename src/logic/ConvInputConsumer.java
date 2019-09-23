@@ -5,8 +5,7 @@ import javafx.scene.input.*;
 
 public interface ConvInputConsumer
 {
-	void mousePosition(double xRel, double yRel, boolean insideGUI, Tile offsetGUITile,
-			int menuOption, int editorOption, Tile mapTile, boolean moved, boolean drag, int mouseKey);
+	void mousePosition(boolean insideGUI, Tile offsetGUITile, int menuOption, int editorOption, Tile mapTile, boolean moved, boolean drag, int mouseKey);
 
 	void mouseOutside();
 
