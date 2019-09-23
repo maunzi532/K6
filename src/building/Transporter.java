@@ -72,12 +72,19 @@ public class Transporter extends Buildable
 		}
 	}
 
+	@Override
+	public void loadConnect(LevelMap levelMap)
+	{
+		targets = targets.stream().map(e -> ((PreConnectMapObject) e).restore(levelMap)).collect(Collectors.toList());
+	}
+
 	public Transporter(JrsObject data, ItemLoader itemLoader, TileType y1)
 	{
 		super(data, itemLoader, y1);
+		targets = new ArrayList<>();
+		((JrsArray) data.get("Targets")).elements().forEachRemaining(e -> targets.add(new PreConnectMapObject((JrsObject) e, y1)));
 		range = ((JrsNumber) data.get("Range")).getValue().intValue();
 		amount = ((JrsNumber) data.get("Amount")).getValue().intValue();
-		targets = new ArrayList<>();
 		invTransporter = new InvTransporter(targets, targets, amount);
 	}
 
@@ -85,6 +92,11 @@ public class Transporter extends Buildable
 			IOException
 	{
 		a1 = super.save(a1, itemLoader, y1);
-		return a1.put("Range", range).put("Amount", amount);
+		var a2 = a1.startArrayField("Targets");
+		for(DoubleInv target : targets)
+		{
+			a2 = new PreConnectMapObject(target.location(), target.type()).save(a2.startObject(), y1).end();
+		}
+		return a2.end().put("Range", range).put("Amount", amount);
 	}
 }

@@ -1,6 +1,5 @@
 package logic;
 
-import building.*;
 import building.blueprint.*;
 import draw.*;
 import entity.*;
@@ -18,7 +17,6 @@ public class MainState
 	//public static final int CL = 20;
 	public final DoubleType y2;
 	public final ItemLoader itemLoader;
-	public final BuildingLoader buildingLoader;
 	public int turnCounter;
 	public final LevelMap levelMap;
 	public final BlueprintCache<BuildingBlueprint> buildingBlueprintCache;
@@ -30,7 +28,6 @@ public class MainState
 	{
 		this.y2 = y2;
 		itemLoader = new ItemLoader2();
-		buildingLoader = new BuildingLoader1();
 		turnCounter = -1;
 		levelMap = new LevelMap(y2);
 		buildingBlueprintCache = new BlueprintCache<>("BuildingBlueprints", e -> new BuildingBlueprint(e, itemLoader));
@@ -82,6 +79,7 @@ public class MainState
 	//TODO get levelup essence
 	//TODO get levelup
 
+	//TODO Refactor LevelMap
 	//TODO show enemy reach (all enemies)
 	//TODO screenshake on crit
 	//TODO scale tiles, menubar, gui when resizing

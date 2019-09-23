@@ -121,6 +121,12 @@ public class ProductionBuilding extends Buildable implements DoubleInv
 	}
 
 	@Override
+	public DoubleInvType type()
+	{
+		return DoubleInvType.BUILDING;
+	}
+
+	@Override
 	public Inv inputInv()
 	{
 		return inputInv;
@@ -172,7 +178,7 @@ public class ProductionBuilding extends Buildable implements DoubleInv
 	}
 
 	@Override
-	public void claimFloor2(LevelMap levelMap)
+	public void loadConnect(LevelMap levelMap)
 	{
 		for(Tile tile : claimed)
 		{

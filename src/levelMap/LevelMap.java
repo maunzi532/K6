@@ -115,12 +115,6 @@ public class LevelMap
 		building.claimFloor(this);
 	}
 
-	public void addBuilding3(MBuilding building)
-	{
-		advTile(building.location()).setBuilding(building);
-		building.claimFloor2(this);
-	}
-
 	public MBuilding getOwner(Tile t1)
 	{
 		return advTile(t1).getOwned();

@@ -24,7 +24,7 @@ public interface MBuilding
 
 	default void afterTransport(){}
 
-	default void claimFloor2(LevelMap levelMap){}
+	void loadConnect(LevelMap levelMap);
 
 	<T extends ComposerBase> ObjectComposer<T> save(ObjectComposer<T> a1, ItemLoader itemLoader, TileType y1) throws IOException;
 }

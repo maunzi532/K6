@@ -1,10 +1,13 @@
 package item.inv.transport;
 
+import building.*;
 import geom.f1.*;
 import item.inv.*;
 
 public interface DoubleInv
 {
+	DoubleInvType type();
+
 	String name();
 
 	Tile location();

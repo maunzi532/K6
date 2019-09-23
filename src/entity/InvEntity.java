@@ -1,5 +1,6 @@
 package entity;
 
+import building.*;
 import com.fasterxml.jackson.jr.ob.comp.*;
 import geom.f1.*;
 import item.*;
@@ -23,6 +24,12 @@ public class InvEntity extends XEntity implements DoubleInv
 	{
 		super(location, mainState, stats);
 		this.inv = inv;
+	}
+
+	@Override
+	public DoubleInvType type()
+	{
+		return DoubleInvType.ENTITY;
 	}
 
 	@Override
