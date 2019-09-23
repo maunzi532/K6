@@ -24,10 +24,10 @@ public class VisualTile
 		this.gd = gd;
 	}
 
-	public void draw(TileCamera camera)
+	public void draw(TileCamera camera, int screenshake)
 	{
 		int range = camera.getRange();
-		TileLayout layout = camera.layout();
+		TileLayout layout = camera.layout(screenshake);
 		Tile mid = camera.mid(layout);
 		for(int i = -range; i <= range; i++)
 		{

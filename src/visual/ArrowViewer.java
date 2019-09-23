@@ -56,6 +56,11 @@ public class ArrowViewer
 
 	private double distance(XArrow arrow)
 	{
+		if(arrow.duration() == 0)
+		{
+			System.out.println(arrow.getClass().getSimpleName());
+			return 0;
+		}
 		return (arrow.counter() % arrow.duration()) / (double) arrow.duration();
 	}
 

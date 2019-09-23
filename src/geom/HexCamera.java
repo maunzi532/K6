@@ -22,9 +22,9 @@ public class HexCamera extends TileCamera
 	}
 
 	@Override
-	public TileLayout layout()
+	public TileLayout layout(int screenshake)
 	{
 		return new HexLayout(matrix, new PointD(xSize(), ySize()),
-				new PointD(dimension.xHW() * xMid - xShift * xSize(), dimension.yHW() * yMid - yShift * ySize()));
+				new PointD(dimension.xHW() * xMid - xShift * xSize() + screenshake, dimension.yHW() * yMid - yShift * ySize()));
 	}
 }

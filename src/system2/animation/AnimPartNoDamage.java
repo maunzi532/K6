@@ -2,23 +2,23 @@ package system2.animation;
 
 import arrow.*;
 import entity.*;
-import levelMap.*;
+import logic.*;
 
 public class AnimPartNoDamage implements AnimPart
 {
 	private static final int DURATION = 20;
 
 	private final XEntity target;
-	private final LevelMap levelMap;
+	private final MainState mainState;
 	private final boolean crit;
 	private XArrow arrow;
 	private int counter;
 
-	public AnimPartNoDamage(XEntity target, boolean crit, LevelMap levelMap)
+	public AnimPartNoDamage(XEntity target, boolean crit, MainState mainState)
 	{
 		this.target = target;
 		this.crit = crit;
-		this.levelMap = levelMap;
+		this.mainState = mainState;
 		//arrow = new BlinkArrow(target.location(), DURATION, false, target.getImage(), BLINKTIME);
 	}
 

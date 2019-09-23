@@ -2,7 +2,7 @@ package system2.animation;
 
 import arrow.*;
 import entity.*;
-import levelMap.*;
+import logic.*;
 
 public class AnimPartDodge implements AnimPart
 {
@@ -13,18 +13,16 @@ public class AnimPartDodge implements AnimPart
 	private final XEntity attacker;
 	private final XEntity target;
 	private final int distance;
-	private final LevelMap levelMap;
 	private ManualXArrow arrow;
 	private int counter;
 
-	public AnimPartDodge(XEntity attacker, XEntity target, int distance, LevelMap levelMap)
+	public AnimPartDodge(XEntity attacker, XEntity target, int distance, MainState mainState)
 	{
 		this.attacker = attacker;
 		this.target = target;
 		this.distance = distance;
-		this.levelMap = levelMap;
 		arrow = new ManualXArrow(XArrow.convert(target.location(), attacker.location()), LEN, target.getImage());
-		levelMap.addArrow(arrow);
+		mainState.levelMap.addArrow(arrow);
 		target.setReplacementArrow(arrow);
 	}
 

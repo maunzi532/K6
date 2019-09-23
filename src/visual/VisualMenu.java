@@ -38,7 +38,7 @@ public class VisualMenu
 		camera.setYShift((menuEntries.size() - 1) * 1.5 / 2d);
 		for(int i = 0; i < menuEntries.size(); i++)
 		{
-			draw0(camera.layout(), y2.fromOffset(0, i), menuEntries.get(i), menuEntries.get(i) == stateHolder.getState());
+			draw0(camera.layout(0), y2.fromOffset(0, i), menuEntries.get(i), menuEntries.get(i) == stateHolder.getState());
 		}
 	}
 

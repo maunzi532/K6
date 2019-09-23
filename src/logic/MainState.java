@@ -18,6 +18,7 @@ public class MainState
 	public final TileType y1;
 	public final ItemLoader itemLoader;
 	public int turnCounter;
+	public int screenshake;
 	public final LevelMap levelMap;
 	public final BlueprintCache<BuildingBlueprint> buildingBlueprintCache;
 	public XStateHolder stateHolder;
@@ -80,7 +81,6 @@ public class MainState
 	//TODO Refactor LevelMap
 	//TODO LevelEditor create XEntity
 	//TODO show enemy reach (all enemies)
-	//TODO screenshake on crit
 	//TODO scale tiles, menubar, gui when resizing
 	//TODO Make menu bar not overlap with SideInfo
 	//TODO add keybind info for keybinds other than menu

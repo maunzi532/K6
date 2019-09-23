@@ -84,7 +84,7 @@ public class MainVisual implements XInputInterface
 
 	private Tile targetedTile(double x, double y)
 	{
-		return mapCamera.getDoubleType().cast(mapCamera.clickLocation(x, y));
+		return mapCamera.getDoubleType().cast(mapCamera.clickLocation(x, y, mainState.screenshake));
 	}
 
 	@Override
@@ -120,14 +120,17 @@ public class MainVisual implements XInputInterface
 		mainState.levelMap.tickArrows();
 		convInputConsumer.tick();
 		visualSideInfo.tick();
-
+		if(mainState.screenshake > 0)
+		{
+			mainState.screenshake--;
+		}
 		draw();
 	}
 
 	private void draw()
 	{
 		//graphics.gd().clearRect(0, 0, graphics.xHW() * 2, graphics.yHW() * 2);
-		visualTile.draw(mapCamera);
+		visualTile.draw(mapCamera, mainState.screenshake);
 		visualSideInfo.draw();
 		visualLevelEditor.draw(levelEditor);
 		visualGUI.draw2(mainState.stateHolder.getGUI());

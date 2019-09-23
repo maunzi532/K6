@@ -4,14 +4,14 @@ import arrow.*;
 import entity.*;
 import java.util.*;
 import javafx.scene.paint.*;
-import levelMap.*;
+import logic.*;
 import system2.*;
 import system2.analysis.*;
 
 public class AttackAnim implements AnimTimer
 {
 	private RNGDivider2 divider;
-	private LevelMap levelMap;
+	private MainState mainState;
 	private AttackInfo2 aI;
 	private List<String> events;
 	private int eventCounter;
@@ -19,10 +19,10 @@ public class AttackAnim implements AnimTimer
 	private InfoArrow healthBar1;
 	private InfoArrow healthBar2;
 
-	public AttackAnim(RNGDivider2 divider, LevelMap levelMap)
+	public AttackAnim(RNGDivider2 divider, MainState mainState)
 	{
 		this.divider = divider;
-		this.levelMap = levelMap;
+		this.mainState = mainState;
 		aI = divider.getAttackInfo();
 		events = divider.getEvents();
 		eventCounter = -1;
@@ -33,8 +33,8 @@ public class AttackAnim implements AnimTimer
 		healthBar2 = new InfoArrow(aI.entityT.location(), aI.entity.location(),
 				aI.entityT instanceof XHero ? Color.GREEN : Color.GRAY, Color.BLACK, Color.WHITE,
 				aI.getStats(true).getCurrentHealth(), aI.getStats(true).maxHealth());
-		levelMap.addArrow(healthBar1);
-		levelMap.addArrow(healthBar2);
+		mainState.levelMap.addArrow(healthBar1);
+		mainState.levelMap.addArrow(healthBar2);
 	}
 
 	private InfoArrow healthBar(boolean inverse)
@@ -89,19 +89,19 @@ public class AttackAnim implements AnimTimer
 		{
 			case "healthcost" -> linked.add(new AnimPartHealthCost(aI.getCalc(inverse).cost,
 						aI.getStats(inverse), healthBar(inverse).statBar()));
-			case "attack" -> linked.add(new AnimPartAttack(aI.getEntity(inverse), aI.getEntity(!inverse), levelMap));
-			case "miss" -> linked.add(new AnimPartDodge(aI.getEntity(inverse), aI.getEntity(!inverse), aI.distance, levelMap));
+			case "attack" -> linked.add(new AnimPartAttack(aI.getEntity(inverse), aI.getEntity(!inverse), mainState));
+			case "miss" -> linked.add(new AnimPartDodge(aI.getEntity(inverse), aI.getEntity(!inverse), aI.distance, mainState));
 			case "hit" -> linked.add(new AnimPartHit(aI.getEntity(!inverse), aI.getStats(!inverse),
-					aI.getCalc(inverse).damage, healthBar(!inverse).statBar(), false, false, levelMap));
+					aI.getCalc(inverse).damage, healthBar(!inverse).statBar(), false, false, mainState));
 			case "melt" -> linked.add(new AnimPartHit(aI.getEntity(!inverse), aI.getStats(!inverse),
-					aI.getCalc(inverse).meltDamage, healthBar(!inverse).statBar(), false, true, levelMap));
-			case "nodamage" -> linked.add(new AnimPartNoDamage(aI.getEntity(!inverse), false, levelMap));
-			case "defeated" -> linked.add(new AnimPartVanish(aI.getEntity(!inverse), levelMap));
+					aI.getCalc(inverse).meltDamage, healthBar(!inverse).statBar(), false, true, mainState));
+			case "nodamage" -> linked.add(new AnimPartNoDamage(aI.getEntity(!inverse), false, mainState));
+			case "defeated" -> linked.add(new AnimPartVanish(aI.getEntity(!inverse), mainState));
 			case "crit" -> linked.add(new AnimPartHit(aI.getEntity(!inverse), aI.getStats(!inverse),
-					aI.getCalc(inverse).critDamage, healthBar(!inverse).statBar(), true, false, levelMap));
+					aI.getCalc(inverse).critDamage, healthBar(!inverse).statBar(), true, false, mainState));
 			case "meltcrit" -> linked.add(new AnimPartHit(aI.getEntity(!inverse), aI.getStats(!inverse),
-					aI.getCalc(inverse).meltCritDamage, healthBar(!inverse).statBar(), true, true, levelMap));
-			case "nodamagecrit" -> linked.add(new AnimPartNoDamage(aI.getEntity(!inverse), true, levelMap));
+					aI.getCalc(inverse).meltCritDamage, healthBar(!inverse).statBar(), true, true, mainState));
+			case "nodamagecrit" -> linked.add(new AnimPartNoDamage(aI.getEntity(!inverse), true, mainState));
 		}
 	}
 }

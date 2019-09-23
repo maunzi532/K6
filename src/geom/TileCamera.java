@@ -63,11 +63,16 @@ public abstract class TileCamera
 
 	public abstract int getRange();
 
-	public abstract TileLayout layout();
+	public abstract TileLayout layout(int screenshake);
 
 	public DoubleTile clickLocation(double x, double y)
 	{
-		return layout().pixelToTile(new PointD(x, y), y2);
+		return layout(0).pixelToTile(new PointD(x, y), y2);
+	}
+
+	public DoubleTile clickLocation(double x, double y, int screenshake)
+	{
+		return layout(screenshake).pixelToTile(new PointD(x, y), y2);
 	}
 
 	public Tile mid(TileLayout layout)

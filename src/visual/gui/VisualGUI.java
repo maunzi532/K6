@@ -68,7 +68,7 @@ public abstract class VisualGUI
 			return;
 		camera.setXShift(cxs);
 		camera.setYShift(cys);
-		TileLayout layout = camera.layout();
+		TileLayout layout = camera.layout(0);
 		gd.setFill(xgui.background());
 		gd.setStroke(xgui.background());
 		Color bg2 = xgui.background().brighter();
