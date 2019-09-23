@@ -20,11 +20,6 @@ public class ItemStack
 		return item.weight() * count;
 	}
 
-	public ItemStack merge(ItemStack other)
-	{
-		return new ItemStack(item, count + other.count);
-	}
-
 	public ItemStack(JrsObject data, ItemLoader itemLoader)
 	{
 		item = itemLoader.loadItem(data);

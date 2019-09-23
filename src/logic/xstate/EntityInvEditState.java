@@ -6,24 +6,13 @@ import gui.guis.*;
 import javafx.scene.input.*;
 import logic.*;
 
-public class EntityInvEditState implements NGUIState
+public class EntityInvEditState implements NGUIState, NEditState
 {
 	private XEntity entity;
-	private MainState mainState;
 
-	public EntityInvEditState(XEntity entity, MainState mainState)
+	public EntityInvEditState(XEntity entity)
 	{
 		this.entity = entity;
-		this.mainState = mainState;
-	}
-
-	@Override
-	public XGUI gui(MainState mainState)
-	{
-		if(entity instanceof InvEntity)
-			return new EntityInvEditGUI((InvEntity) entity, mainState.combatSystem.allItems());
-		else
-			return NoGUI.NONE;
 	}
 
 	@Override
@@ -41,12 +30,15 @@ public class EntityInvEditState implements NGUIState
 	@Override
 	public XMenu menu()
 	{
-		return XMenu.entityEditMenu(entity, mainState);
+		return XMenu.entityEditMenu(entity);
 	}
 
 	@Override
-	public boolean editMode()
+	public XGUI gui(MainState mainState)
 	{
-		return true;
+		if(entity instanceof InvEntity)
+			return new EntityInvEditGUI((InvEntity) entity, mainState.combatSystem.allItems());
+		else
+			return NoGUI.NONE;
 	}
 }

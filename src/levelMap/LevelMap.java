@@ -1,7 +1,6 @@
 package levelMap;
 
 import arrow.*;
-import building.*;
 import com.fasterxml.jackson.jr.ob.*;
 import entity.*;
 import geom.f1.*;
@@ -9,7 +8,6 @@ import item.*;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
-import java.util.stream.*;
 
 public class LevelMap
 {
@@ -20,7 +18,6 @@ public class LevelMap
 	private final List<Boolean> visibleSectors;
 	private final ArrayList<XHero> entitiesH;
 	private final ArrayList<XEnemy> entitiesE;
-	private Map<Tile, MarkType> marked;
 	private final List<VisMark> visMarked;
 	private final ArrayList<XArrow> arrows;
 
@@ -31,7 +28,6 @@ public class LevelMap
 		visibleSectors = new ArrayList<>();
 		entitiesH = new ArrayList<>();
 		entitiesE = new ArrayList<>();
-		marked = Map.of();
 		visMarked = new ArrayList<>();
 		arrows = new ArrayList<>();
 	}
@@ -107,12 +103,6 @@ public class LevelMap
 	public void addBuilding(MBuilding building)
 	{
 		advTile(building.location()).setBuilding(building);
-	}
-
-	public void addBuilding2(ProductionBuilding building)
-	{
-		advTile(building.location()).setBuilding(building);
-		building.claimFloor(this);
 	}
 
 	public MBuilding getOwner(Tile t1)
@@ -199,11 +189,6 @@ public class LevelMap
 		return visibleSectors.get(sector);
 	}
 
-	public List<Tile> noEntityTiles()
-	{
-		return advTiles.entrySet().stream().filter(e -> e.getValue().getEntity() == null).map(Map.Entry::getKey).collect(Collectors.toList());
-	}
-
 	public ArrayList<XHero> getEntitiesH()
 	{
 		return entitiesH;
@@ -212,17 +197,6 @@ public class LevelMap
 	public ArrayList<XEnemy> getEntitiesE()
 	{
 		return entitiesE;
-	}
-
-	public Map<Tile, MarkType> getMarked()
-	{
-		return marked;
-	}
-
-	public void setMarked(Map<Tile, MarkType> marked)
-	{
-		Objects.requireNonNull(marked);
-		this.marked = marked;
 	}
 
 	public List<VisMark> getVisMarked()

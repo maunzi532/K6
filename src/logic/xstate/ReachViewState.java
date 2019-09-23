@@ -11,13 +11,23 @@ import logic.*;
 public class ReachViewState implements NMarkState
 {
 	private XEnemy character;
-	private List<VisMark> movementRange;
-	private List<VisMark> attackRange;
 	private List<VisMark> allTargets;
 
 	public ReachViewState(XEnemy character)
 	{
 		this.character = character;
+	}
+
+	@Override
+	public void onEnter(MainState mainState)
+	{
+		mainState.sideInfoFrame.setSideInfo(null, character.standardSideInfo());
+		List<Tile> movement = new Pathing(mainState.y2, character, character.movement(), mainState.levelMap, null).start().getEndpoints();
+		allTargets = new ArrayList<>();
+		movement.forEach(e -> allTargets.add(new VisMark(e, Color.MEDIUMVIOLETRED, VisMark.d1)));
+		movement.stream().flatMap(loc -> character.attackRanges(false).stream()
+				.flatMap(e -> mainState.y2.range(loc, e, e).stream())).distinct()
+				.forEach(e -> allTargets.add(new VisMark(e, Color.RED, VisMark.d1)));
 	}
 
 	@Override
@@ -39,21 +49,9 @@ public class ReachViewState implements NMarkState
 	}
 
 	@Override
-	public void onEnter(MainState mainState)
+	public void onClick(Tile mapTile, MainState mainState, XStateHolder stateHolder, int key)
 	{
-		mainState.sideInfoFrame.setSideInfo(null, character.standardSideInfo());
-		movementRange = new ArrayList<>();
-		attackRange = new ArrayList<>();
-		List<Tile> movement =
-				new Pathing(mainState.y2, character, character.movement(), mainState.levelMap, null)
-				.start().getEndpoints();
-		movement.forEach(e -> movementRange.add(new VisMark(e, Color.MEDIUMVIOLETRED, VisMark.d1)));
-		movement.stream().flatMap(loc -> character.attackRanges(false).stream()
-				.flatMap(e -> mainState.y2.range(loc, e, e).stream())).distinct()
-				.forEach(e -> attackRange.add(new VisMark(e, Color.RED, VisMark.d1)));
-		allTargets = new ArrayList<>();
-		allTargets.addAll(attackRange);
-		allTargets.addAll(movementRange);
+		stateHolder.setState(NoneState.INSTANCE);
 	}
 
 	@Override
@@ -62,12 +60,4 @@ public class ReachViewState implements NMarkState
 		return allTargets;
 	}
 
-	@Override
-	public void onClickMarked(Tile mapTile, MarkType markType, int key, LevelMap levelMap, XStateHolder stateHolder){}
-
-	@Override
-	public Map<Tile, MarkType> marked(LevelMap levelMap)
-	{
-		return Map.of();
-	}
 }

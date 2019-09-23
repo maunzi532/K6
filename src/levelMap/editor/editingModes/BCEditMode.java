@@ -25,7 +25,7 @@ public class BCEditMode implements EditingMode
 		{
 			if(advTile.getEntity() != null)
 			{
-				mainState.stateHolder.setState(new EntityEditState(advTile.getEntity(), mainState));
+				mainState.stateHolder.setState(new EntityEditState(advTile.getEntity()));
 			}
 			else if(advTile.getBuilding() != null)
 			{
@@ -40,7 +40,7 @@ public class BCEditMode implements EditingMode
 			}
 			else if(advTile.getEntity() != null)
 			{
-				mainState.stateHolder.setState(new EntityEditState(advTile.getEntity(), mainState));
+				mainState.stateHolder.setState(new EntityEditState(advTile.getEntity()));
 			}
 		}
 	}

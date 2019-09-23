@@ -60,9 +60,10 @@ public class MainState
 
 	//TODO Build a real level
 
-	//TODO Add visMark to GiveOrTakeState, ProductionFloorsState, TransportTargetsState
+	//TODO change y2 to y1 in mainState
 	//TODO ProductionBuilding menu
 	//TODO Transporter menu
+	//TODO XEntity item trading
 
 	//TODO equip weapon without attacking
 	//TODO always show xhero characters on the same side
@@ -70,9 +71,10 @@ public class MainState
 	//TODO ReachViewState for all characters (menu as param)
 	//TODO change xmenu options on turn 0
 	//TODO chooseable starting locations
-	//TODO turn 0 item swapping
+	//TODO turn 0 item trading
 	//TODO enemy reinforcements
 	//TODO Fix game crashing when you lose
+	//TODO ESC to go back to NoneState/EditingState
 	//TODO Editable starting location settings
 	//TODO get levelup essence
 	//TODO get levelup

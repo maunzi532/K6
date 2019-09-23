@@ -234,12 +234,6 @@ public class Stats2 implements Stats
 	}
 
 	@Override
-	public void change(int change)
-	{
-		currentHealth = Math.max(0, Math.min(maxHealth(), currentHealth + change));
-	}
-
-	@Override
 	public int getRegenerateChange()
 	{
 		return maxHealth() - currentHealth;
@@ -249,12 +243,6 @@ public class Stats2 implements Stats
 	public void regenerating()
 	{
 		exhaustion++;
-	}
-
-	@Override
-	public boolean removeEntity()
-	{
-		return currentHealth <= 0;
 	}
 
 	@Override

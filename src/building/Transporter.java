@@ -39,9 +39,14 @@ public class Transporter extends Buildable
 		invTransporter = new InvTransporter(targets, targets, amount);
 	}
 
+	public int getRange()
+	{
+		return range;
+	}
+
 	public boolean isTarget(Object target)
 	{
-		return target instanceof DoubleInv && ((DoubleInv) target).active() && targets.contains(target);
+		return DoubleInv.isTargetable(target) && targets.contains(target);
 	}
 
 	public Map<Tile, MarkType> targets(LevelMap levelMap)

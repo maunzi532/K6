@@ -3,13 +3,10 @@ package entity;
 import geom.f1.*;
 import item.*;
 import item.inv.*;
-import java.util.*;
 import logic.*;
 
 public class XEnemy extends InvEntity
 {
-	private static final Random RANDOM = new Random();
-
 	private EnemyAI think;
 	private boolean canMove;
 	private boolean canAttack;

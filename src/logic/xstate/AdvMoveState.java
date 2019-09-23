@@ -11,14 +11,34 @@ import logic.*;
 public class AdvMoveState implements NMarkState
 {
 	private XHero character;
-	private Map<Tile, MarkType> markMap;
-	private List<VisMark> movementTargets;
-	private List<VisMark> attackTargets;
+	private List<Tile> movement;
+	private List<Tile> attack;
 	private List<VisMark> allTargets;
 
 	public AdvMoveState(XHero character)
 	{
 		this.character = character;
+	}
+
+	@Override
+	public void onEnter(MainState mainState)
+	{
+		mainState.sideInfoFrame.setSideInfo(character.standardSideInfo(), null);
+		movement = new ArrayList<>();
+		attack = new ArrayList<>();
+		if(character.canMove())
+		{
+			movement.addAll(new Pathing(mainState.y2, character, character.movement(), mainState.levelMap, null).start().getEndpoints());
+		}
+		if(character.ready(2))
+		{
+			character.attackRanges(false).stream().map(e -> mainState.y2.range(character.location(), e, e))
+					.flatMap(Collection::stream).map(mainState.levelMap::getEntity).filter(e -> character.isEnemy(e))
+					.forEach(e -> attack.add(e.location()));
+		}
+		allTargets = new ArrayList<>();
+		movement.stream().map(e -> new VisMark(e, Color.YELLOW, VisMark.d1)).forEach(allTargets::add);
+		attack.stream().map(e -> new VisMark(e, Color.RED, VisMark.d1)).forEach(allTargets::add);
 	}
 
 	@Override
@@ -40,55 +60,21 @@ public class AdvMoveState implements NMarkState
 	}
 
 	@Override
-	public void onEnter(MainState mainState)
+	public void onClick(Tile mapTile, MainState mainState, XStateHolder stateHolder, int key)
 	{
-		mainState.sideInfoFrame.setSideInfo(character.standardSideInfo(), null);
-		markMap = new HashMap<>();
-		movementTargets = new ArrayList<>();
-		attackTargets = new ArrayList<>();
-		if(character.canMove())
+		if(attack.contains(mapTile))
 		{
-			new Pathing(mainState.y2, character, character.movement(), mainState.levelMap, null)
-					.start().getEndpoints()
-					.forEach(e ->
-					{
-						markMap.put(e, MarkType.TARGET);
-						movementTargets.add(new VisMark(e, Color.YELLOW, VisMark.d1));
-					});
+			stateHolder.setState(new AttackInfoState(character, mainState.levelMap.getEntity(mapTile)));
 		}
-		if(character.ready(2))
-		{
-			character.attackRanges(false).stream().map(e -> mainState.y2.range(character.location(), e, e))
-					.flatMap(Collection::stream).map(mainState.levelMap::getEntity).filter(e -> character.isEnemy(e))
-					.forEach(e ->
-					{
-						markMap.put(e.location(), MarkType.ON);
-						attackTargets.add(new VisMark(e.location(), Color.RED, VisMark.d1));
-					});
-		}
-		allTargets = new ArrayList<>();
-		allTargets.addAll(movementTargets);
-		allTargets.addAll(attackTargets);
-	}
-
-	@Override
-	public Map<Tile, MarkType> marked(LevelMap levelMap)
-	{
-		return markMap;
-	}
-
-	@Override
-	public void onClickMarked(Tile mapTile, MarkType markType, int key, LevelMap levelMap, XStateHolder stateHolder)
-	{
-		if(markType == MarkType.TARGET)
+		else if(movement.contains(mapTile))
 		{
 			character.setMoved();
-			levelMap.moveEntity(character, mapTile);
+			mainState.levelMap.moveEntity(character, mapTile);
 			stateHolder.setState(new AdvMoveState(character));
 		}
-		else if(markType == MarkType.ON)
+		else
 		{
-			stateHolder.setState(new AttackInfoState(character, levelMap.getEntity(mapTile)));
+			stateHolder.setState(NoneState.INSTANCE);
 		}
 	}
 

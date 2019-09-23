@@ -1,41 +1,26 @@
 package logic.xstate;
 
-import java.util.*;
 import javafx.scene.input.*;
-import levelMap.*;
 import logic.*;
 
 public interface NState
 {
+	void onEnter(MainState mainState);
+
 	default String text()
 	{
-		return "Error";
+		throw new RuntimeException();
 	}
 
 	default KeyCode keybind()
 	{
-		return null;
+		throw new RuntimeException();
 	}
-
-	XMenu menu();
 
 	default boolean keepInMenu(MainState mainState)
 	{
 		return true;
 	}
 
-	default void onEnter(MainState mainState)
-	{
-		mainState.sideInfoFrame.clearSideInfo();
-	}
-
-	default boolean editMode()
-	{
-		return false;
-	}
-
-	default List<VisMark> visMarked(MainState mainState)
-	{
-		return List.of();
-	}
+	XMenu menu();
 }

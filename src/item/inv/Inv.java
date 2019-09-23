@@ -14,8 +14,6 @@ public interface Inv extends Inv0
 
 	ItemView viewRecipeItem(Item item);
 
-	ItemView viewRequiredItem(Item item);
-
 	InvNumView viewInvWeight();
 
 	Inv copy();

@@ -9,7 +9,7 @@ public interface XStateHolder
 
 	NState getState();
 
-	XGUI getGUI();
-
 	List<NState> getMenu();
+
+	XGUI getGUI();
 }

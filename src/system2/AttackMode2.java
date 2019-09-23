@@ -47,16 +47,6 @@ public abstract class AttackMode2 implements XMode
 		return item.getCrit();
 	}
 
-	public int getDefense()
-	{
-		return 0;
-	}
-
-	public int getMagicDef()
-	{
-		return 0;
-	}
-
 	public int attackCount()
 	{
 		return 2;

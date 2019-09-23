@@ -3,16 +3,34 @@ package logic.xstate;
 import building.*;
 import geom.f1.*;
 import java.util.*;
+import java.util.stream.*;
 import javafx.scene.input.*;
+import javafx.scene.paint.*;
 import levelMap.*;
+import logic.*;
 
 public class ProductionFloorsState implements NMarkState
 {
 	private ProductionBuilding building;
+	private List<Tile> targetableTiles;
+	private List<VisMark> visMarked;
 
 	public ProductionFloorsState(ProductionBuilding building)
 	{
 		this.building = building;
+	}
+
+	@Override
+	public void onEnter(MainState mainState)
+	{
+		targetableTiles = building.getCosts().requiredFloorTiles.stream().flatMap(flt -> mainState.y2.range(building.location(), flt.minRange, flt.maxRange).stream()
+				.filter(e -> mainState.levelMap.getFloor(e).type == flt.floorTileType)).collect(Collectors.toList());
+		createVisMarked();
+	}
+
+	private void createVisMarked()
+	{
+		visMarked = targetableTiles.stream().map(e -> new VisMark(e, building.getClaimed().contains(e) ? Color.BLUE : Color.YELLOW, VisMark.d1)).collect(Collectors.toList());
 	}
 
 	@Override
@@ -34,14 +52,22 @@ public class ProductionFloorsState implements NMarkState
 	}
 
 	@Override
-	public void onClickMarked(Tile mapTile, MarkType markType, int key, LevelMap levelMap, XStateHolder stateHolder)
+	public void onClick(Tile mapTile, MainState mainState, XStateHolder stateHolder, int key)
 	{
-		building.toggleTarget(mapTile, levelMap);
+		if(targetableTiles.contains(mapTile))
+		{
+			building.toggleTarget(mapTile, mainState.levelMap);
+			createVisMarked();
+		}
+		else
+		{
+			stateHolder.setState(NoneState.INSTANCE);
+		}
 	}
 
 	@Override
-	public Map<Tile, MarkType> marked(LevelMap levelMap)
+	public List<VisMark> visMarked(MainState mainState)
 	{
-		return building.floors(levelMap);
+		return visMarked;
 	}
 }

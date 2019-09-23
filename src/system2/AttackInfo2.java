@@ -6,17 +6,13 @@ import java.util.*;
 
 public class AttackInfo2 extends AttackInfo<Stats2, AttackMode2>
 {
-	private final Random rng;
 	private final String[] infos;
 	public final AttackInfoPart2 calc;
 	public final AttackInfoPart2 calcT;
-	private boolean[] cna;
 
-	public AttackInfo2(Random rng, XEntity entity, Tile loc, Stats2 stats, AttackMode2 mode, XEntity entityT, Tile locT, Stats2 statsT, AttackMode2 modeT,
-			int distance)
+	public AttackInfo2(XEntity entity, Tile loc, Stats2 stats, AttackMode2 mode, XEntity entityT, Tile locT, Stats2 statsT, AttackMode2 modeT, int distance)
 	{
 		super(entity, loc, stats, mode, entityT, locT, statsT, modeT, distance);
-		this.rng = rng;
 		boolean rangeOk = Arrays.stream(mode.getRanges(false)).anyMatch(e -> e == distance);
 		boolean rangeOkT = Arrays.stream(modeT.getRanges(true)).anyMatch(e -> e == distance);
 		calc = new AttackInfoPart2(stats, mode, rangeOk, statsT, modeT, rangeOkT);
@@ -29,7 +25,6 @@ public class AttackInfo2 extends AttackInfo<Stats2, AttackMode2>
 			infos[i * 2] = i1[i];
 			infos[i * 2 + 1] = i2[i];
 		}
-		cna = new boolean[2];
 	}
 
 	@Override

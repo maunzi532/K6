@@ -63,8 +63,7 @@ public class HexDoubleType extends HexTileType implements DoubleType
 		return create3d(t1.v[0] * scalar, t1.v[1] * scalar, t1.v[2] * scalar);
 	}
 
-	@Override
-	public double length(DoubleTile t1)
+	private double length(DoubleTile t1)
 	{
 		return (Math.abs(t1.v[0]) + Math.abs(t1.v[1]) + Math.abs(t1.v[2])) / 2;
 	}
@@ -76,8 +75,7 @@ public class HexDoubleType extends HexTileType implements DoubleType
 		return create3d(t1.v[0] / length, t1.v[1] / length, t1.v[2] / length);
 	}
 
-	@Override
-	public DoubleTile rotate(DoubleTile t1, boolean inverse)
+	private DoubleTile rotate(DoubleTile t1, boolean inverse)
 	{
 		if(inverse)
 			return create3d(t1.v[1], t1.v[2], t1.v[0]);

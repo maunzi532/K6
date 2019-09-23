@@ -5,21 +5,9 @@ import java.util.*;
 public class QuadTileType implements TileType
 {
 	@Override
-	public Tile create(int[] v)
-	{
-		return new Tile(v);
-	}
-
-	@Override
 	public Tile create2(int n1, int n2)
 	{
 		return new Tile(new int[]{n1, n2});
-	}
-
-	@Override
-	public Tile create3(int n1, int n2, int n3)
-	{
-		throw new RuntimeException();
 	}
 
 	@Override
@@ -65,12 +53,6 @@ public class QuadTileType implements TileType
 	}
 
 	@Override
-	public Tile rotate(Tile t1, boolean inverse)
-	{
-		throw new RuntimeException();
-	}
-
-	@Override
 	public List<Tile> range(Tile t1, int minRange, int maxRange)
 	{
 		List<Tile> re = new ArrayList<>();
@@ -87,12 +69,6 @@ public class QuadTileType implements TileType
 			}
 		}
 		return re;
-	}
-
-	@Override
-	public Tile upwardsT()
-	{
-		return create2(0, -1);
 	}
 
 	@Override

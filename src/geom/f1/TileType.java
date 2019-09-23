@@ -5,11 +5,7 @@ import java.util.stream.*;
 
 public interface TileType
 {
-	Tile create(int[] v);
-
 	Tile create2(int n1, int n2);
-
-	Tile create3(int n1, int n2, int n3);
 
 	Tile add(Tile t1, Tile t2);
 
@@ -37,8 +33,6 @@ public interface TileType
 	{
 		return IntStream.range(0, directionCount()).mapToObj(i -> neighbor(t1, i)).toArray(Tile[]::new);
 	}
-
-	Tile rotate(Tile t1, boolean inverse);
 
 	List<Tile> range(Tile t1, int minRange, int maxRange);
 
@@ -85,8 +79,6 @@ public interface TileType
 		}
 		return List.of(t1);
 	}
-
-	Tile upwardsT();
 
 	Tile fromOffset(int x, int y);
 

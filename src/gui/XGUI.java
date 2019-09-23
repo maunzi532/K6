@@ -65,11 +65,6 @@ public abstract class XGUI
 		}
 	}
 
-	/*public GuiTile tile(CTile tile)
-	{
-		return tiles[tile.x][tile.y];
-	}*/
-
 	public abstract int xw();
 
 	public abstract int yw();
@@ -92,12 +87,5 @@ public abstract class XGUI
 	{
 		if(setState)
 			stateHolder.setState(NoneState.INSTANCE);
-	}
-
-	public static String except1(int num)
-	{
-		if(num == 1)
-			return null;
-		return String.valueOf(num);
 	}
 }

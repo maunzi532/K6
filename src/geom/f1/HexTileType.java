@@ -5,19 +5,12 @@ import java.util.*;
 public class HexTileType implements TileType
 {
 	@Override
-	public Tile create(int[] v)
-	{
-		return new Tile(v);
-	}
-
-	@Override
 	public Tile create2(int n1, int n2)
 	{
 		return new Tile(new int[]{n1, -n1 - n2, n2});
 	}
 
-	@Override
-	public Tile create3(int n1, int n2, int n3)
+	protected Tile create3(int n1, int n2, int n3)
 	{
 		return new Tile(new int[]{n1, n2, n3});
 	}
@@ -65,15 +58,6 @@ public class HexTileType implements TileType
 	}
 
 	@Override
-	public Tile rotate(Tile t1, boolean inverse)
-	{
-		if(inverse)
-			return create3(t1.v[1], t1.v[2], t1.v[0]);
-		else
-			return create3(t1.v[2], t1.v[0], t1.v[1]);
-	}
-
-	@Override
 	public List<Tile> range(Tile t1, int minRange, int maxRange)
 	{
 		List<Tile> re = new ArrayList<>();
@@ -90,12 +74,6 @@ public class HexTileType implements TileType
 			}
 		}
 		return re;
-	}
-
-	@Override
-	public Tile upwardsT()
-	{
-		return create3(1, 1, -2);
 	}
 
 	@Override

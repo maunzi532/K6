@@ -11,8 +11,6 @@ public interface Stats
 
 	int getMaxStat(int num);
 
-	void change(int change);
-
 	int getRegenerateChange();
 
 	void regenerating();
@@ -20,8 +18,6 @@ public interface Stats
 	void autoEquip(InvEntity entity);
 
 	Item getItemFilter();
-
-	boolean removeEntity();
 
 	String getName();
 

@@ -16,6 +16,12 @@ public class CharacterInvState implements NGUIState
 	}
 
 	@Override
+	public void onEnter(MainState mainState)
+	{
+		mainState.sideInfoFrame.setSideInfoXH(character.standardSideInfo(), character instanceof XHero);
+	}
+
+	@Override
 	public String text()
 	{
 		return "Inv.";
@@ -34,12 +40,6 @@ public class CharacterInvState implements NGUIState
 			return XMenu.characterGUIMenu((XHero) character);
 		else
 			return XMenu.enemyGUIMenu(character);
-	}
-
-	@Override
-	public void onEnter(MainState mainState)
-	{
-		mainState.sideInfoFrame.setSideInfoXH(character.standardSideInfo(), character instanceof XHero);
 	}
 
 	@Override

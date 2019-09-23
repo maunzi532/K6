@@ -17,6 +17,12 @@ public class RemoveBuildingState implements NGUIState
 	}
 
 	@Override
+	public void onEnter(MainState mainState)
+	{
+		mainState.sideInfoFrame.setSideInfo(builder.standardSideInfo(), null);
+	}
+
+	@Override
 	public String text()
 	{
 		return "Remove";
@@ -29,21 +35,15 @@ public class RemoveBuildingState implements NGUIState
 	}
 
 	@Override
-	public XMenu menu()
-	{
-		return XMenu.characterGUIMenu(builder);
-	}
-
-	@Override
 	public boolean keepInMenu(MainState mainState)
 	{
 		return builder.ready(1) && mainState.levelMap.getBuilding(builder.location()) instanceof Buildable;
 	}
 
 	@Override
-	public void onEnter(MainState mainState)
+	public XMenu menu()
 	{
-		mainState.sideInfoFrame.setSideInfo(builder.standardSideInfo(), null);
+		return XMenu.characterGUIMenu(builder);
 	}
 
 	@Override

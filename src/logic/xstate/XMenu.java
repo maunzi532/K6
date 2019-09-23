@@ -3,7 +3,6 @@ package logic.xstate;
 import building.*;
 import entity.*;
 import java.util.*;
-import logic.*;
 
 public class XMenu
 {
@@ -43,10 +42,10 @@ public class XMenu
 		return new XMenu(new TransportTargetsState(transporter), new ProductionPhaseState());
 	}
 
-	public static XMenu entityEditMenu(XEntity entity, MainState mainState)
+	public static XMenu entityEditMenu(XEntity entity)
 	{
-		return new XMenu(new EntityEditState(entity, mainState), new EntityInvEditState(entity, mainState),
-				new EditMoveState(entity, mainState), new EditCopyState(entity, mainState), new EditDeleteState(entity, mainState));
+		return new XMenu(new EntityEditState(entity), new EntityInvEditState(entity),
+				new EditMoveState(entity), new EditCopyState(entity), new EditDeleteState(entity));
 	}
 
 	private List<NState> entries;

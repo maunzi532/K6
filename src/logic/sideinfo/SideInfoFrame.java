@@ -3,7 +3,6 @@ package logic.sideinfo;
 import arrow.*;
 import entity.*;
 import file.*;
-import geom.f1.*;
 
 public class SideInfoFrame
 {
@@ -40,23 +39,22 @@ public class SideInfoFrame
 
 	public void sidedInfo(XEntity e1, XEntity e2)
 	{
-		boolean inverted = inverted(e1.location(), e2.location());
+		e1.location();
+		e2.location();
+		boolean inverted = false;
 		l0.setSideInfo((inverted ? e2 : e1).standardSideInfo());
 		r0.setSideInfo((inverted ? e1 : e2).standardSideInfo());
 	}
 
 	public void attackInfo(AttackInfo aI)
 	{
-		boolean inverted = inverted(aI.entity.location(), aI.entityT.location());
+		aI.entity.location();
+		aI.entityT.location();
+		boolean inverted = false;
 		l0.setSideInfo(new SideInfo(aI.getEntity(inverted), 0, ImageLoader.getImage(aI.getStats(inverted).imagePath()),
 				StatBar.forEntity(aI.getEntity(inverted)), aI.getSideInfos(inverted)));
 		r0.setSideInfo(new SideInfo(aI.getEntity(!inverted), 0, ImageLoader.getImage(aI.getStats(!inverted).imagePath()),
 				StatBar.forEntity(aI.getEntity(!inverted)), aI.getSideInfos(!inverted)));
-	}
-
-	private boolean inverted(Tile loc0, Tile loc1)
-	{
-		return false;
 	}
 
 	public void setSideInfoXH(SideInfo sideInfo, boolean l)

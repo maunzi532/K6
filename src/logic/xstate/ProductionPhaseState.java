@@ -11,6 +11,12 @@ public class ProductionPhaseState implements NAutoState
 	private int counter;
 
 	@Override
+	public void onEnter(MainState mainState)
+	{
+		mainState.sideInfoFrame.clearSideInfo();
+	}
+
+	@Override
 	public String text()
 	{
 		return "Production";

@@ -25,24 +25,6 @@ public class RegenerateState implements NAutoState
 	}
 
 	@Override
-	public void tick(MainState mainState)
-	{
-		arrow.tick();
-	}
-
-	@Override
-	public boolean finished()
-	{
-		return arrow.finished();
-	}
-
-	@Override
-	public NState nextState()
-	{
-		return nextState;
-	}
-
-	@Override
 	public String text()
 	{
 		return "Regenerate";
@@ -60,5 +42,23 @@ public class RegenerateState implements NAutoState
 		if(entity instanceof XHero)
 			return ((XHero) entity).ready(0) && entity.getStats().getRegenerateChange() > 0;
 		return false;
+	}
+
+	@Override
+	public void tick(MainState mainState)
+	{
+		arrow.tick();
+	}
+
+	@Override
+	public boolean finished()
+	{
+		return arrow.finished();
+	}
+
+	@Override
+	public NState nextState()
+	{
+		return nextState;
 	}
 }

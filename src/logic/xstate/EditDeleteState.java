@@ -4,15 +4,13 @@ import entity.*;
 import javafx.scene.input.*;
 import logic.*;
 
-public class EditDeleteState implements NAutoState
+public class EditDeleteState implements NAutoState, NEditState
 {
 	private XEntity entity;
-	private MainState mainState;
 
-	public EditDeleteState(XEntity entity, MainState mainState)
+	public EditDeleteState(XEntity entity)
 	{
 		this.entity = entity;
-		this.mainState = mainState;
 	}
 
 	@Override
@@ -20,21 +18,6 @@ public class EditDeleteState implements NAutoState
 	{
 		mainState.sideInfoFrame.clearSideInfo();
 		mainState.levelMap.removeEntity(entity);
-	}
-
-	@Override
-	public void tick(MainState mainState){}
-
-	@Override
-	public boolean finished()
-	{
-		return true;
-	}
-
-	@Override
-	public NState nextState()
-	{
-		return EditingState.INSTANCE;
 	}
 
 	@Override
@@ -50,8 +33,17 @@ public class EditDeleteState implements NAutoState
 	}
 
 	@Override
-	public boolean editMode()
+	public void tick(MainState mainState){}
+
+	@Override
+	public boolean finished()
 	{
 		return true;
+	}
+
+	@Override
+	public NState nextState()
+	{
+		return EditingState.INSTANCE;
 	}
 }

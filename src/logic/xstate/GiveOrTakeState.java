@@ -6,6 +6,7 @@ import item.inv.transport.*;
 import java.util.*;
 import java.util.stream.*;
 import javafx.scene.input.*;
+import javafx.scene.paint.*;
 import levelMap.*;
 import logic.*;
 
@@ -13,11 +14,23 @@ public class GiveOrTakeState implements NMarkState
 {
 	private boolean give;
 	private XHero character;
+	private List<DoubleInv> possibleTargets;
+	private List<VisMark> visMarked;
 
 	public GiveOrTakeState(boolean give, XHero character)
 	{
 		this.give = give;
 		this.character = character;
+	}
+
+	@Override
+	public void onEnter(MainState mainState)
+	{
+		mainState.sideInfoFrame.setSideInfo(character.standardSideInfo(), null);
+		possibleTargets = mainState.y2.range(character.location(), 0, character.maxAccessRange()).stream()
+				.filter(e -> DoubleInv.isTargetable(mainState.levelMap.getBuilding(e)))
+				.map(e -> (DoubleInv) mainState.levelMap.getBuilding(e)).collect(Collectors.toList());
+		visMarked = possibleTargets.stream().map(e -> new VisMark(e.location(), Color.YELLOW, VisMark.d1)).collect(Collectors.toList());
 	}
 
 	@Override
@@ -33,36 +46,40 @@ public class GiveOrTakeState implements NMarkState
 	}
 
 	@Override
+	public boolean keepInMenu(MainState mainState)
+	{
+		return character.ready(1);
+	}
+
+	@Override
 	public XMenu menu()
 	{
 		return XMenu.characterGUIMenu(character);
 	}
 
 	@Override
-	public void onClickMarked(Tile mapTile, MarkType markType, int key, LevelMap levelMap, XStateHolder stateHolder)
+	public void onClick(Tile mapTile, MainState mainState, XStateHolder stateHolder, int key)
 	{
-		if(give)
-			stateHolder.setState(new DirectedTradeState(character, (DoubleInv) levelMap.getBuilding(mapTile), character));
+		List<DoubleInv> list = possibleTargets.stream().filter(e -> mapTile.equals(e.location())).collect(Collectors.toList());
+		if(list.isEmpty())
+		{
+			stateHolder.setState(NoneState.INSTANCE);
+		}
 		else
-			stateHolder.setState(new DirectedTradeState((DoubleInv) levelMap.getBuilding(mapTile), character, character));
+		{
+			for(DoubleInv inv1 : list)
+			{
+				if(give)
+					stateHolder.setState(new DirectedTradeState(character, inv1, character));
+				else
+					stateHolder.setState(new DirectedTradeState(inv1, character, character));
+			}
+		}
 	}
 
 	@Override
-	public Map<Tile, MarkType> marked(LevelMap levelMap)
+	public List<VisMark> visMarked(MainState mainState)
 	{
-		return levelMap.y1.range(character.location(), 0, character.maxAccessRange()).stream()
-				.filter(e -> levelMap.getBuilding(e) instanceof DoubleInv).collect(Collectors.toMap(e -> e, e -> MarkType.TARGET));
-	}
-
-	@Override
-	public void onEnter(MainState mainState)
-	{
-		mainState.sideInfoFrame.setSideInfo(character.standardSideInfo(), null);
-	}
-
-	@Override
-	public boolean keepInMenu(MainState mainState)
-	{
-		return character.ready(1);
+		return visMarked;
 	}
 }

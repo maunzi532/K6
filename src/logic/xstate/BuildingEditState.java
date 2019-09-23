@@ -7,7 +7,7 @@ import java.util.*;
 import levelMap.*;
 import logic.*;
 
-public class BuildingEditState implements NGUIState
+public class BuildingEditState implements NGUIState, NEditState
 {
 	private MBuilding building;
 
@@ -17,20 +17,14 @@ public class BuildingEditState implements NGUIState
 	}
 
 	@Override
-	public XGUI gui(MainState mainState)
-	{
-		return new Inv1GUI(((ProductionBuilding) building).getOutputInv(), ((ProductionBuilding) building).name(), List.of());
-	}
-
-	@Override
 	public XMenu menu()
 	{
 		return XMenu.NOMENU;
 	}
 
 	@Override
-	public boolean editMode()
+	public XGUI gui(MainState mainState)
 	{
-		return true;
+		return new Inv1GUI(((ProductionBuilding) building).getOutputInv(), ((ProductionBuilding) building).name(), List.of());
 	}
 }

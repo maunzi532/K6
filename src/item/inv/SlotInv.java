@@ -45,16 +45,6 @@ public class SlotInv implements Inv
 	}
 
 	@Override
-	public ItemView viewRequiredItem(Item item)
-	{
-		ItemStack itemStack = new ItemStack(item, 1);
-		return slots.stream().map(e -> e.wouldProvide(itemStack, true))
-				.filter(Optional::isPresent).map(Optional::get).findFirst()
-				.map(e -> new ItemView(e.item, e.count, e.count))
-				.orElse(new ItemView(item, 0, 0));
-	}
-
-	@Override
 	public InvNumView viewInvWeight()
 	{
 		return new InvNumView(slots.stream().mapToInt(e -> e.getStackItemC().weight() * e.getCurrentC()).sum(),

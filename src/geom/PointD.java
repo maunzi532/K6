@@ -9,12 +9,7 @@ public class PointD
 		v = new double[]{x, y};
 	}
 
-	public PointD(double[] v)
-	{
-		this.v = v;
-	}
-
-	public PointD plus(PointD p1)
+	public PointD add(PointD p1)
 	{
 		return new PointD(v[0] + p1.v[0], v[1] + p1.v[1]);
 	}

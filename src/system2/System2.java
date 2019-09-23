@@ -16,8 +16,6 @@ import system2.content.*;
 
 public class System2 implements CombatSystem<Stats2, AttackInfo2, AttackItem2>
 {
-	private final Random rng = new Random();
-
 	@Override
 	public int movement(MainState mainState, XEntity entity, Stats2 stats)
 	{
@@ -57,7 +55,7 @@ public class System2 implements CombatSystem<Stats2, AttackInfo2, AttackItem2>
 	{
 		int distance = mainState.y2.distance(loc, locT);
 		return distanceAttackModes(entity, stats, distance)
-				.map(mode -> new AttackInfo2(rng, entity, loc, stats, mode,
+				.map(mode -> new AttackInfo2(entity, loc, stats, mode,
 						entityT, locT, statsT, statsT.getLastUsed(), distance).addAnalysis(this))
 				.collect(Collectors.toList());
 	}

@@ -66,15 +66,6 @@ public class VisualTile
 			gd.setFill(Color.BLACK);
 		}
 		gd.fillPolygon(points[0], points[1], y1.directionCount());
-		/*if(levelMap.getMarked().containsKey(t1))
-		{
-			mark(levelMap.getMarked().get(t1));
-			gd.strokePolygon(points[0], points[1], y1.directionCount());
-			for(int i = 0; i < y1.directionCount() / 2; i++)
-			{
-				gd.strokeLine(points[0][i], points[1][i], points[0][(i + 3) % y1.directionCount()], points[1][(i + 3) % y1.directionCount()]);
-			}
-		}*/
 		if(advTile.visible(levelMap))
 		{
 			if(advTile.getBuilding() != null)
@@ -83,16 +74,6 @@ public class VisualTile
 				gd.drawImage(MBuilding.IMAGE, midPoint.v[0] - layout.size().v[0], midPoint.v[1] - layout.size().v[1],
 						layout.size().v[0] * 2, layout.size().v[1] * 2);
 			}
-		}
-	}
-
-	public void mark(MarkType markType)
-	{
-		switch(markType)
-		{
-			case TARGET, OFF -> gd.setStroke(Color.YELLOW);
-			case ON -> gd.setStroke(Color.RED);
-			case BLOCKED -> gd.setStroke(Color.BLACK);
 		}
 	}
 

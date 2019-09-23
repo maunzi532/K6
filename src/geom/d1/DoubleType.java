@@ -21,16 +21,12 @@ public interface DoubleType extends TileType
 
 	DoubleTile multiply(DoubleTile t1, double scalar);
 
-	double length(DoubleTile t1);
-
 	default DoubleTile normalize(Tile t1)
 	{
 		return normalize(fromTile(t1));
 	}
 
 	DoubleTile normalize(DoubleTile t1);
-
-	DoubleTile rotate(DoubleTile t1, boolean inverse);
 
 	DoubleTile rotateR2(DoubleTile t1, boolean inverse);
 

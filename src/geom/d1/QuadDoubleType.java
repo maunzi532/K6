@@ -45,8 +45,7 @@ public class QuadDoubleType extends QuadTileType implements DoubleType
 		return create2d(t1.v[0] * scalar, t1.v[1] * scalar);
 	}
 
-	@Override
-	public double length(DoubleTile t1)
+	private double length(DoubleTile t1)
 	{
 		return Math.abs(t1.v[0]) + Math.abs(t1.v[1]);
 	}
@@ -58,8 +57,7 @@ public class QuadDoubleType extends QuadTileType implements DoubleType
 		return create2d(t1.v[0] / length, t1.v[1] / length);
 	}
 
-	@Override
-	public DoubleTile rotate(DoubleTile t1, boolean inverse)
+	private DoubleTile rotate(DoubleTile t1, boolean inverse)
 	{
 		if(inverse)
 			return createD(t1.v[1], -t1.v[0]);

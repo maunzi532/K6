@@ -1,7 +1,5 @@
 package item;
 
-import com.fasterxml.jackson.jr.ob.comp.*;
-import java.io.*;
 import java.util.*;
 import javafx.scene.image.*;
 
@@ -17,6 +15,4 @@ public interface Item
 	}
 
 	List<String> info();
-
-	<T extends ComposerBase> ObjectComposer<T> save(ObjectComposer<T> a1) throws IOException;
 }

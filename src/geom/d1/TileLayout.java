@@ -29,7 +29,7 @@ public interface TileLayout
 		PointD center = tileToPixel(t1);
 		for(int i = 0; i < directionCount(); i++)
 		{
-			PointD corner = center.plus(cornerOffset(i));
+			PointD corner = center.add(cornerOffset(i));
 			corners[0][i] = corner.v[0];
 			corners[1][i] = corner.v[1];
 		}
@@ -42,7 +42,7 @@ public interface TileLayout
 		PointD center = tileToPixel(t1);
 		for(int i = 0; i < directionCount(); i++)
 		{
-			PointD corner = center.plus(cornerOffset(i, distanceMultiplier));
+			PointD corner = center.add(cornerOffset(i, distanceMultiplier));
 			corners[0][i] = corner.v[0];
 			corners[1][i] = corner.v[1];
 		}

@@ -21,21 +21,6 @@ public class RevertMovementState implements NAutoState
 	}
 
 	@Override
-	public void tick(MainState mainState){}
-
-	@Override
-	public boolean finished()
-	{
-		return true;
-	}
-
-	@Override
-	public NState nextState()
-	{
-		return new AdvMoveState(character);
-	}
-
-	@Override
 	public String text()
 	{
 		return "Back";
@@ -51,5 +36,20 @@ public class RevertMovementState implements NAutoState
 	public boolean keepInMenu(MainState mainState)
 	{
 		return character.canRevert();
+	}
+
+	@Override
+	public void tick(MainState mainState){}
+
+	@Override
+	public boolean finished()
+	{
+		return true;
+	}
+
+	@Override
+	public NState nextState()
+	{
+		return new AdvMoveState(character);
 	}
 }
