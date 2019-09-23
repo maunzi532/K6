@@ -1,7 +1,10 @@
 package item.inv;
 
+import com.fasterxml.jackson.jr.ob.comp.*;
+import com.fasterxml.jackson.jr.stree.*;
 import item.*;
-import java.util.Optional;
+import java.io.*;
+import java.util.*;
 
 public class InvSlot implements Inv0
 {
@@ -142,5 +145,28 @@ public class InvSlot implements Inv0
 			return true;
 		}
 		return false;
+	}
+
+	public InvSlot(JrsObject data, ItemLoader itemLoader)
+	{
+		ItemStack restrictions = new ItemStack((JrsObject) data.get("Restrictions"), itemLoader);
+		type = restrictions.item;
+		limit = restrictions.count;
+		if(data.get("Inside") != null)
+		{
+			stackExists = true;
+			stack = new InvStack(new ItemStack((JrsObject) data.get("Inside"), itemLoader));
+			stack.commit();
+		}
+	}
+
+	public <T extends ComposerBase> ObjectComposer<T> save(ObjectComposer<T> a1, ItemLoader itemLoader) throws IOException
+	{
+		a1 = new ItemStack(type, limit).save(a1.startObjectField("Restrictions"), itemLoader).end();
+		if(stackExists)
+		{
+			a1 = stack.toItemStack().save(a1.startObjectField("Inside"), itemLoader).end();
+		}
+		return a1;
 	}
 }

@@ -2,10 +2,13 @@ package building;
 
 import arrow.*;
 import building.blueprint.*;
+import com.fasterxml.jackson.jr.ob.comp.*;
+import com.fasterxml.jackson.jr.stree.*;
 import geom.f1.*;
 import item.*;
 import item.inv.*;
 import item.inv.transport.*;
+import java.io.*;
 import java.util.*;
 import java.util.stream.*;
 import levelMap.*;
@@ -166,5 +169,45 @@ public class ProductionBuilding extends Buildable implements DoubleInv
 	{
 		inputInv.commit();
 		outputInv.commit();
+	}
+
+	@Override
+	public void claimFloor2(LevelMap levelMap)
+	{
+		for(Tile tile : claimed)
+		{
+			levelMap.addOwner(tile, this);
+		}
+	}
+
+	public ProductionBuilding(JrsObject data, ItemLoader itemLoader, TileType y1)
+	{
+		super(data, itemLoader, y1);
+		inputInv = new SlotInv((JrsObject) data.get("InputInv"), itemLoader);
+		outputInv = new SlotInv((JrsObject) data.get("OutputInv"), itemLoader);
+		recipes = new ArrayList<>();
+		((JrsArray) data.get("Recipes")).elements().forEachRemaining(e -> recipes.add(new Recipe((JrsObject) e, itemLoader)));
+		claimed = new ArrayList<>();
+		((JrsArray) data.get("Claimed")).elements().forEachRemaining(e ->
+				claimed.add(y1.create2(((JrsNumber) ((JrsObject) e).get("sx")).getValue().intValue(),
+						((JrsNumber) ((JrsObject) e).get("sy")).getValue().intValue())));
+	}
+
+	public <T extends ComposerBase> ObjectComposer<T> save(ObjectComposer<T> a1, ItemLoader itemLoader, TileType y1) throws IOException
+	{
+		a1 = super.save(a1, itemLoader, y1);
+		a1 = inputInv.save(a1.startObjectField("InputInv"), itemLoader).end();
+		a1 = outputInv.save(a1.startObjectField("OutputInv"), itemLoader).end();
+		var a2 = a1.startArrayField("Recipes");
+		for(Recipe recipe : recipes)
+		{
+			a2 = recipe.save(a2.startObject(), itemLoader).end();
+		}
+		var a3 = a2.end().startArrayField("Claimed");
+		for(Tile tile : claimed)
+		{
+			a3 = a3.startObject().put("sx", y1.sx(tile)).put("sy", y1.sy(tile)).end();
+		}
+		return a3.end();
 	}
 }

@@ -2,9 +2,12 @@ package building;
 
 import arrow.*;
 import building.blueprint.*;
+import com.fasterxml.jackson.jr.ob.comp.*;
+import com.fasterxml.jackson.jr.stree.*;
 import geom.f1.*;
 import item.*;
 import item.inv.transport.*;
+import java.io.*;
 import java.util.*;
 import java.util.stream.*;
 import levelMap.*;
@@ -67,5 +70,21 @@ public class Transporter extends Buildable
 			levelMap.addArrow(XArrow.factory(transport.from.location(),
 					transport.to.location(), TransportPhaseState.TRANSPORT_TIME, false, transport.item.image(), true));
 		}
+	}
+
+	public Transporter(JrsObject data, ItemLoader itemLoader, TileType y1)
+	{
+		super(data, itemLoader, y1);
+		range = ((JrsNumber) data.get("Range")).getValue().intValue();
+		amount = ((JrsNumber) data.get("Amount")).getValue().intValue();
+		targets = new ArrayList<>();
+		invTransporter = new InvTransporter(targets, targets, amount);
+	}
+
+	public <T extends ComposerBase> ObjectComposer<T> save(ObjectComposer<T> a1, ItemLoader itemLoader, TileType y1) throws
+			IOException
+	{
+		a1 = super.save(a1, itemLoader, y1);
+		return a1.put("Range", range).put("Amount", amount);
 	}
 }

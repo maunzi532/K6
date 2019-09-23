@@ -18,6 +18,7 @@ public class MainState
 	//public static final int CL = 20;
 	public final DoubleType y2;
 	public final ItemLoader itemLoader;
+	public final BuildingLoader buildingLoader;
 	public int turnCounter;
 	public final LevelMap levelMap;
 	public final BlueprintCache<BuildingBlueprint> buildingBlueprintCache;
@@ -29,6 +30,7 @@ public class MainState
 	{
 		this.y2 = y2;
 		itemLoader = new ItemLoader2();
+		buildingLoader = new BuildingLoader1();
 		turnCounter = -1;
 		levelMap = new LevelMap(y2);
 		buildingBlueprintCache = new BlueprintCache<>("BuildingBlueprints", e -> new BuildingBlueprint(e, itemLoader));
@@ -55,17 +57,17 @@ public class MainState
 		/*levelMap.addArrow(new ShineArrow(List.of(y2.create2(2, 0), y2.create2(4, 1)), 120, true, null, true));
 		levelMap.addArrow(new ShineArrow(List.of(y2.create2(-2, 0), y2.create2(4, -4)), 120, true, null, true));
 		levelMap.addArrow(new ShineArrow(List.of(y2.create2(-3, 0)), 120, true, null, true));*/
-		levelMap.addBuilding2(new ProductionBuilding(y2.create2(-2, -2), buildingBlueprintCache.get("BLUE1")));
+		/*levelMap.addBuilding2(new ProductionBuilding(y2.create2(-2, -2), buildingBlueprintCache.get("BLUE1")));
 		levelMap.addBuilding2(new ProductionBuilding(y2.create2(-3, -3), buildingBlueprintCache.get("GSL1")));
-		levelMap.addBuilding(new Transporter(y2.create2(-3, -2), buildingBlueprintCache.get("Transporter1")));
+		levelMap.addBuilding(new Transporter(y2.create2(-3, -2), buildingBlueprintCache.get("Transporter1")));*/
 	}
 
 	//TODO Build a real level
 
-	//TODO Load Blueprints from JSON
-	//TODO Save Buildings as JSON
-	//TODO Save Transporters as JSON
+	//TODO Load/Save Transporters as JSON
 	//TODO Add visMark to GiveOrTakeState, ProductionFloorsState, TransportTargetsState
+	//TODO ProductionBuilding menu
+	//TODO Transporter menu
 
 	//TODO equip weapon without attacking
 	//TODO always show xhero characters on the same side

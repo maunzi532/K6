@@ -124,13 +124,7 @@ public class SlotInv implements Inv
 	public SlotInv(JrsObject data, ItemLoader itemLoader)
 	{
 		slots = new ArrayList<>();
-		var array1 = (JrsArray) data.get("Slots");
-		array1.elements().forEachRemaining(object1 ->
-		{
-			/*int itemCount = ((JrsNumber) ((JrsObject) object1).get("Count")).getValue().intValue();
-			stacks.add(new InvStack(s1.loadItem(((JrsObject) ((JrsObject) object1).get("Count"))), itemCount));*/
-			//TODO load SlotInv
-		});
+		((JrsArray) data.get("Slots")).elements().forEachRemaining(object1 -> slots.add(new InvSlot((JrsObject) object1, itemLoader)));
 	}
 
 	@Override
@@ -139,13 +133,7 @@ public class SlotInv implements Inv
 		var a2 = a1.startArrayField("Slots");
 		for(InvSlot invSlot : slots)
 		{
-			var a3 = invSlot.getType().save(a2.startObject().put("Limit", invSlot.getLimit()).startObjectField("ItemType")).end();
-			if(invSlot.stackExists())
-			{
-				a3 = invSlot.getStackItemC().save(a3.put("Count", invSlot.getCurrentC()).startObjectField("Item")).end();
-			}
-			a2 = a3.end();
-			//TODO save SlotInv
+			a2 = invSlot.save(a2.startObject(), itemLoader).end();
 		}
 		return a2.end();
 	}

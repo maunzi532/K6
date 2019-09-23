@@ -7,7 +7,6 @@ import entity.analysis.*;
 import geom.f1.*;
 import item.*;
 import item.inv.*;
-import item.items.*;
 import java.util.*;
 import java.util.stream.*;
 import logic.*;
@@ -165,19 +164,5 @@ public class System2 implements CombatSystem<Stats2, AttackInfo2, AttackItem2>
 			}
 			return new XEntity(location, mainState, stats);
 		}
-	}
-
-	@Override
-	public Item loadItem(JrsObject data)
-	{
-		if(data.get("ItemCode") != null)
-		{
-			return Items.values()[((JrsNumber) data.get("ItemCode")).getValue().intValue()];
-		}
-		if(data.get("AttackItemCode") != null)
-		{
-			return AttackItems2.INSTANCE.items[((JrsNumber) data.get("AttackItemCode")).getValue().intValue()];
-		}
-		throw new RuntimeException();
 	}
 }

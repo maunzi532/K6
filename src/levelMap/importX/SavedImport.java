@@ -68,6 +68,8 @@ public class SavedImport
 				{
 					mainState.levelMap.createTile(sb.get(), sb.get(), sb.get(), sb.get());
 				}
+				((JrsArray) tree.get("Buildings")).elements().forEachRemaining(e ->
+						mainState.levelMap.addBuilding3(mainState.buildingLoader.loadBuilding((JrsObject) e, mainState.itemLoader, mainState.y2)));
 				Map<String, JrsObject> characters = new HashMap<>();
 				((JrsArray) tree2.get("Characters")).elements().forEachRemaining(
 						character -> characters.put(((JrsObject) ((JrsObject) character).get("Stats")).get("CustomName").asText(), (JrsObject) character));

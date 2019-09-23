@@ -115,6 +115,12 @@ public class LevelMap
 		building.claimFloor(this);
 	}
 
+	public void addBuilding3(MBuilding building)
+	{
+		advTile(building.location()).setBuilding(building);
+		building.claimFloor2(this);
+	}
+
 	public MBuilding getOwner(Tile t1)
 	{
 		return advTile(t1).getOwned();
@@ -261,6 +267,7 @@ public class LevelMap
 					.put("code", 0xA4D2839F)
 					.startArrayField("Characters");
 			List<XEntity> entities = new ArrayList<>();
+			List<MBuilding> buildings = new ArrayList<>();
 			ByteBuffer sb = ByteBuffer.allocate(advTiles.size() * 4);
 			for(Map.Entry<Tile, AdvTile> entry : advTiles.entrySet())
 			{
@@ -272,18 +279,26 @@ public class LevelMap
 					sb.put((byte) y1.sy(t1));
 					sb.put((byte) adv.getFloorTile().sector);
 					sb.put((byte) adv.getFloorTile().type.ordinal());
+					if(adv.getBuilding() != null && adv.getBuilding().active())
+						buildings.add(adv.getBuilding());
 					if(adv.getEntity() != null)
 						entities.add(adv.getEntity());
 				}
 			}
-			var a2 = a1.put("FloorTiles", Base64.getEncoder().encodeToString(sb.array())).startArrayField("XEntities");
+			var a2 = a1.put("FloorTiles", Base64.getEncoder().encodeToString(sb.array()))
+					.startArrayField("Buildings");
+			for(MBuilding building : buildings)
+			{
+				a2 = building.save(a2.startObject(), itemLoader, y1).end();
+			}
+			var a3 = a2.end().startArrayField("XEntities");
 			for(XEntity entity : entities)
 			{
-				a2 = entity.save(a2.startObject(), itemLoader, y1).end();
+				a3 = entity.save(a3.startObject(), itemLoader, y1).end();
 				if(entity instanceof XHero)
 					xheroSave = entity.save3(xheroSave.startObject(), itemLoader).end();
 			}
-			return new String[]{a2.end().end().finish(), xheroSave.end().end().finish()};
+			return new String[]{a3.end().end().finish(), xheroSave.end().end().finish()};
 		}catch(IOException e)
 		{
 			throw new RuntimeException(e);
