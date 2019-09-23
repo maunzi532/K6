@@ -19,6 +19,7 @@ public class MainState
 	public final ItemLoader itemLoader;
 	public int turnCounter;
 	public int screenshake;
+	public boolean preferBuildings;
 	public final LevelMap levelMap;
 	public final BlueprintCache<BuildingBlueprint> buildingBlueprintCache;
 	public XStateHolder stateHolder;
@@ -61,7 +62,7 @@ public class MainState
 
 	//TODO Build a real level
 
-	//TODO target building when entity is on the tile
+	//TODO show if preferBuildings is active
 	//TODO XEntity item trading
 
 	//TODO equip weapon without attacking
@@ -72,7 +73,6 @@ public class MainState
 	//TODO chooseable starting locations
 	//TODO turn 0 item trading
 	//TODO enemy reinforcements
-	//TODO Fix game crashing when you lose
 	//TODO ESC to go back to NoneState/EditingState
 	//TODO Editable starting location settings
 	//TODO get levelup essence

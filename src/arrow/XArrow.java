@@ -6,6 +6,8 @@ import javafx.scene.image.*;
 
 public class XArrow
 {
+	public static final int TIME_PER_DISTANCE = 10;
+
 	protected final List<Tile> locations;
 	protected final int duration;
 	protected final boolean loop;
@@ -66,17 +68,11 @@ public class XArrow
 		return true;
 	}
 
-	public static XArrow factory(Tile start, Tile end, int duration, boolean loop, Image image, boolean shine)
+	public static XArrow factory(Tile start, Tile end, TileType y1, boolean loop, Image image)
 	{
+		int duration = end == null || end.equals(start) ? 0 : y1.distance(end, start) * TIME_PER_DISTANCE;
 		List<Tile> locations = convert(start, end);
-		if(shine)
-		{
-			return new ShineArrow(locations, duration, loop, image, true);
-		}
-		else
-		{
-			return new XArrow(locations, duration, loop, image);
-		}
+		return new XArrow(locations, duration, loop, image);
 	}
 
 	public static List<Tile> convert(Tile start, Tile end)

@@ -11,8 +11,6 @@ import java.util.*;
 
 public class LevelMap
 {
-	public static final int TIME_PER_DISTANCE = 10;
-
 	public final TileType y1;
 	private final HashMap<Tile, AdvTile> advTiles;
 	private final List<Boolean> visibleSectors;
@@ -153,8 +151,7 @@ public class LevelMap
 
 	public void moveEntity(XEntity entity, Tile newLocation)
 	{
-		XArrow arrow = XArrow.factory(entity.location(), newLocation,
-				y1.distance(newLocation, entity.location()) * TIME_PER_DISTANCE, false, entity.getImage(), false);
+		XArrow arrow = XArrow.factory(entity.location(), newLocation, y1, false, entity.getImage());
 		addArrow(arrow);
 		entity.setReplacementArrow(arrow);
 		advTile(entity.location()).setEntity(null);
@@ -166,10 +163,10 @@ public class LevelMap
 	{
 		Tile location1 = entity1.location();
 		Tile location2 = entity2.location();
-		XArrow arrow1 = XArrow.factory(location1, location2, y1.distance(location2, location1) * TIME_PER_DISTANCE, false, entity1.getImage(), false);
+		XArrow arrow1 = XArrow.factory(location1, location2, y1, false, entity1.getImage());
 		addArrow(arrow1);
 		entity1.setReplacementArrow(arrow1);
-		XArrow arrow2 = XArrow.factory(location2, location1, y1.distance(location2, location1) * TIME_PER_DISTANCE, false, entity2.getImage(), false);
+		XArrow arrow2 = XArrow.factory(location2, location1, y1, false, entity2.getImage());
 		addArrow(arrow2);
 		entity2.setReplacementArrow(arrow2);
 		advTile(location1).setEntity(entity2);

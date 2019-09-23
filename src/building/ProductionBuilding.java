@@ -150,8 +150,8 @@ public class ProductionBuilding extends Buildable implements DoubleInv
 					if(outputInv.tryAdd(recipe.results, false, CommitType.COMMIT))
 					{
 						inputInv.commit();
-						levelMap.addArrow(XArrow.factory(location(), null, ProductionPhaseState.ARROW_TIME, false,
-								recipe.results.items.get(0).item.image(), true));
+						levelMap.addArrow(ShineArrow.factory(location(), null,
+								ProductionPhaseState.ARROW_TIME, false, recipe.results.items.get(0).item.image()));
 						return;
 					}
 					else

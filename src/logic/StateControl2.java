@@ -151,60 +151,79 @@ public class StateControl2 implements XStateHolder, ConvInputConsumer
 		else if(mouseKey >= 0)
 		{
 			AdvTile advTile = mainState.levelMap.advTile(mapTile);
-			XEntity entity = advTile.getEntity();
-			if(entity != null)
+			if(mainState.preferBuildings)
 			{
-				if(entity instanceof XHero)
+				if(advTile.getBuilding() != null)
 				{
-					if(mouseKey == 1)
-					{
-						setState(new AdvMoveState((XHero) entity)); //TODO add swap state
-					}
-					else if(mouseKey == 3)
-					{
-						setState(new CharacterInvState((XHero) entity));
-					}
+					onClickBuilding(advTile.getBuilding(), mouseKey);
 				}
-				else if(entity instanceof XEnemy)
+				else if(advTile.getEntity() != null)
 				{
-					if(mouseKey == 1)
-					{
-						setState(new ReachViewState((XEnemy) entity));
-					}
-					else if(mouseKey == 3)
-					{
-						setState(new CharacterInvState((XEnemy) entity));
-					}
+					onClickEntity(advTile.getEntity(), mouseKey);
 				}
 			}
 			else
 			{
-				MBuilding building = advTile.getBuilding();
-				if(building != null)
+				if(advTile.getEntity() != null)
 				{
-					if(building instanceof ProductionBuilding)
-					{
-						if(mouseKey == 1)
-						{
-							setState(new ProductionFloorsState((ProductionBuilding) building));
-						}
-						else if(mouseKey == 3)
-						{
-							setState(new ProductionInvState((ProductionBuilding) building));
-						}
-					}
-					else if(building instanceof Transporter)
-					{
-						if(mouseKey == 1)
-						{
-							setState(new TransportTargetsState((Transporter) building));
-						}
-						else if(mouseKey == 3)
-						{
-							//setState(new TransportTargetsState((Transporter) building));
-						}
-					}
+					onClickEntity(advTile.getEntity(), mouseKey);
 				}
+				else if(advTile.getBuilding() != null)
+				{
+					onClickBuilding(advTile.getBuilding(), mouseKey);
+				}
+			}
+		}
+	}
+
+	private void onClickEntity(XEntity entity, int mouseKey)
+	{
+		if(entity instanceof XHero)
+		{
+			if(mouseKey == 1)
+			{
+				setState(new AdvMoveState((XHero) entity)); //TODO add swap state
+			}
+			else if(mouseKey == 3)
+			{
+				setState(new CharacterInvState((XHero) entity));
+			}
+		}
+		else if(entity instanceof XEnemy)
+		{
+			if(mouseKey == 1)
+			{
+				setState(new ReachViewState((XEnemy) entity));
+			}
+			else if(mouseKey == 3)
+			{
+				setState(new CharacterInvState((XEnemy) entity));
+			}
+		}
+	}
+
+	private void onClickBuilding(MBuilding building, int mouseKey)
+	{
+		if(building instanceof ProductionBuilding)
+		{
+			if(mouseKey == 1)
+			{
+				setState(new ProductionFloorsState((ProductionBuilding) building));
+			}
+			else if(mouseKey == 3)
+			{
+				setState(new ProductionInvState((ProductionBuilding) building));
+			}
+		}
+		else if(building instanceof Transporter)
+		{
+			if(mouseKey == 1)
+			{
+				setState(new TransportTargetsState((Transporter) building));
+			}
+			else if(mouseKey == 3)
+			{
+				//setState(new TransportTargetsState((Transporter) building));
 			}
 		}
 	}
@@ -245,6 +264,21 @@ public class StateControl2 implements XStateHolder, ConvInputConsumer
 			else if(state instanceof EditingState)
 			{
 				setState(NoneState.INSTANCE);
+			}
+		}
+		else if(keyCode == KeyCode.TAB)
+		{
+			mainState.preferBuildings = !mainState.preferBuildings;
+		}
+		else if(keyCode == KeyCode.ESCAPE)
+		{
+			if(state instanceof NGUIState)
+			{
+				xgui.clickOutside(1, this);
+			}
+			else if(state instanceof NMarkState)
+			{
+				((NMarkState) state).onEscape(this);
 			}
 		}
 		else if(!(state instanceof NAutoState))

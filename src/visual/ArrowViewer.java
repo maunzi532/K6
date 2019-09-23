@@ -58,7 +58,6 @@ public class ArrowViewer
 	{
 		if(arrow.duration() == 0)
 		{
-			System.out.println(arrow.getClass().getSimpleName());
 			return 0;
 		}
 		return (arrow.counter() % arrow.duration()) / (double) arrow.duration();

@@ -30,4 +30,10 @@ public class ShineArrow extends XArrow
 	{
 		return stored;
 	}
+
+	public static ShineArrow factory(Tile start, Tile end, int duration, boolean loop, Image image)
+	{
+		List<Tile> locations = convert(start, end);
+		return new ShineArrow(locations, duration, loop, image, true);
+	}
 }
