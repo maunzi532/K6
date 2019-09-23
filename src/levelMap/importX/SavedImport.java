@@ -53,7 +53,7 @@ public class SavedImport
 				List<MBuilding> buildings = new ArrayList<>();
 				((JrsArray) tree.get("Buildings")).elements().forEachRemaining(e ->
 				{
-					MBuilding building = loadBuilding((JrsObject) e, mainState.itemLoader, mainState.y2);
+					MBuilding building = loadBuilding((JrsObject) e, mainState.itemLoader, mainState.y1);
 					buildings.add(building);
 					mainState.levelMap.addBuilding(building);
 				});
@@ -61,7 +61,7 @@ public class SavedImport
 				((JrsArray) tree2.get("Characters")).elements().forEachRemaining(
 						character -> characters.put(((JrsObject) ((JrsObject) character).get("Stats")).get("CustomName").asText(), (JrsObject) character));
 				((JrsArray) tree.get("XEntities")).elements().forEachRemaining(e ->
-						mainState.levelMap.addEntity(mainState.combatSystem.loadEntityOrStartLoc(mainState.y2, mainState, (JrsObject) e, mainState.itemLoader, characters)));
+						mainState.levelMap.addEntity(mainState.combatSystem.loadEntityOrStartLoc(mainState.y1, mainState, (JrsObject) e, mainState.itemLoader, characters)));
 				buildings.forEach(e -> e.loadConnect(mainState.levelMap));
 			}
 		}catch(IOException e)

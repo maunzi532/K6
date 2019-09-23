@@ -7,6 +7,7 @@ import gui.*;
 import javafx.scene.canvas.*;
 import javafx.scene.paint.*;
 import javafx.scene.text.*;
+import visual.*;
 
 public abstract class VisualGUI
 {

@@ -1,11 +1,11 @@
 package visual.sideinfo;
 
 import arrow.*;
-import geom.*;
 import java.util.*;
 import javafx.scene.paint.*;
 import javafx.scene.text.*;
 import logic.sideinfo.*;
+import visual.*;
 
 public class SideInfoViewer implements SideInfoHolder
 {

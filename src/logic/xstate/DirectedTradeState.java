@@ -3,7 +3,7 @@ package logic.xstate;
 import entity.*;
 import gui.*;
 import gui.guis.*;
-import item.inv.transport.*;
+import building.transport.*;
 import logic.*;
 
 public class DirectedTradeState implements NGUIState

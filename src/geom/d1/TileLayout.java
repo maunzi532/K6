@@ -1,6 +1,5 @@
 package geom.d1;
 
-import geom.*;
 import geom.f1.*;
 
 public interface TileLayout

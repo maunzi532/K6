@@ -1,11 +1,10 @@
 package entity;
 
-import building.*;
 import com.fasterxml.jackson.jr.ob.comp.*;
 import geom.f1.*;
 import item.*;
 import item.inv.*;
-import item.inv.transport.*;
+import building.transport.*;
 import java.io.*;
 import logic.*;
 

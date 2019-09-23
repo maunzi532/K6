@@ -1,7 +1,7 @@
 package gui.guis;
 
 import gui.*;
-import item.inv.transport.DoubleInv;
+import building.transport.DoubleInv;
 import item.view.*;
 import java.util.List;
 import logic.xstate.*;

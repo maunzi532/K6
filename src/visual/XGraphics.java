@@ -1,5 +1,6 @@
-package geom;
+package visual;
 
+import geom.*;
 import javafx.scene.canvas.*;
 
 public class XGraphics extends XDimension

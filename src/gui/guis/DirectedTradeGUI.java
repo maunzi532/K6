@@ -3,7 +3,7 @@ package gui.guis;
 import entity.*;
 import gui.*;
 import item.*;
-import item.inv.transport.DoubleInv;
+import building.transport.DoubleInv;
 import item.view.ItemView;
 import java.util.List;
 import javafx.scene.paint.Color;

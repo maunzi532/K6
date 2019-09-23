@@ -1,17 +1,16 @@
 package visual;
 
-import logic.sideinfo.*;
-import visual.gui.*;
-import visual.sideinfo.*;
 import geom.*;
-import geom.d1.*;
 import geom.f1.*;
 import javafx.geometry.*;
 import javafx.scene.input.*;
 import javafx.scene.text.*;
 import levelMap.editor.*;
 import logic.*;
+import logic.sideinfo.*;
 import logic.xstate.*;
+import visual.gui.*;
+import visual.sideinfo.*;
 
 public class MainVisual implements XInputInterface
 {
@@ -33,11 +32,11 @@ public class MainVisual implements XInputInterface
 	{
 		this.graphics = graphics;
 		this.mapCamera = mapCamera;
-		DoubleType y2 = mapCamera.getDoubleType();
+		TileType y1 = mapCamera.getDoubleType();
 		SideInfoViewer sivL = new SideInfoViewer(graphics, false);
 		SideInfoViewer sivR = new SideInfoViewer(graphics, true);
 		visualSideInfo = new VisualSideInfo(sivL, sivR);
-		mainState = new MainState(y2, new SideInfoFrame(sivL, sivR));
+		mainState = new MainState(y1, new SideInfoFrame(sivL, sivR));
 		mainState.initialize(loadFile, loadFile2);
 		graphics.gd().setImageSmoothing(false);
 		graphics.gd().setTextAlign(TextAlignment.CENTER);
@@ -46,7 +45,7 @@ public class MainVisual implements XInputInterface
 		levelEditor = new LevelEditor(mainState);
 		convInputConsumer = new StateControl2(mainState, levelEditor, new StartTurnState());
 		mainState.stateHolder = (XStateHolder) convInputConsumer;
-		visualTile = new VisualTile(y2, new ArrowViewer(y2), mainState.levelMap, graphics.gd());
+		visualTile = new VisualTile(y1, new ArrowViewer(mapCamera.getDoubleType()), mainState.levelMap, graphics.gd());
 		visualMenu = new VisualMenu(graphics, mainState.stateHolder, menuCamera);
 		visualGUI = VisualGUI.forCamera(graphics, guiCamera);
 		draw();
@@ -85,7 +84,7 @@ public class MainVisual implements XInputInterface
 
 	private Tile targetedTile(double x, double y)
 	{
-		return mainState.y2.cast(mapCamera.clickLocation(x, y));
+		return mapCamera.getDoubleType().cast(mapCamera.clickLocation(x, y));
 	}
 
 	@Override

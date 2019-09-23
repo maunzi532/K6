@@ -1,4 +1,4 @@
-package geom;
+package geom.d1;
 
 public class PointD
 {

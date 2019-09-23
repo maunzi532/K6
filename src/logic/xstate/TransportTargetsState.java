@@ -2,7 +2,7 @@ package logic.xstate;
 
 import building.*;
 import geom.f1.*;
-import item.inv.transport.*;
+import building.transport.*;
 import java.util.*;
 import java.util.stream.*;
 import javafx.scene.input.*;
@@ -24,9 +24,9 @@ public class TransportTargetsState implements NMarkState
 	@Override
 	public void onEnter(MainState mainState)
 	{
-		possibleTargets = mainState.y2.range(transporter.location(), 0, transporter.getRange()).stream()
+		possibleTargets = mainState.y1.range(transporter.location(), 0, transporter.getRange()).stream()
 				.filter(e -> DoubleInv.isTargetable(mainState.levelMap.getBuilding(e)))
-				.map(e -> (DoubleInv) e).collect(Collectors.toList());
+				.map(e -> (DoubleInv) mainState.levelMap.getBuilding(e)).collect(Collectors.toList());
 		createVisMarked();
 	}
 

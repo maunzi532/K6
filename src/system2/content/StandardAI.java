@@ -17,7 +17,7 @@ public class StandardAI implements EnemyAI
 		if(canMove)
 		{
 			List<XEntity> allies = hasToMove ? null : mainState.levelMap.getEntitiesE().stream().filter(e -> e != user && e.canMove()).collect(Collectors.toList());
-			locations.addAll(new Pathing(mainState.y2, user, user.movement(), mainState.levelMap, allies).start().getEndpaths());
+			locations.addAll(new Pathing(mainState.y1, user, user.movement(), mainState.levelMap, allies).start().getEndpaths());
 		}
 		else
 			locations.add(new PathLocation(user.location()));
@@ -39,13 +39,14 @@ public class StandardAI implements EnemyAI
 				px.score += analysis.get(px.attack) * 1000;
 			if(!px.path.tile.equals(user.location()))
 				px.score += moveAway;
-			px.score += mainState.levelMap.getEntitiesH().stream().mapToInt(e -> mainState.y2.distance(e.location(), user.location())).max().orElse(0) * 20;
+			px.score += mainState.levelMap.getEntitiesH().stream().mapToInt(e -> mainState.y1
+					.distance(e.location(), user.location())).max().orElse(0) * 20;
 		}
 		if(analysis.isEmpty())
 		{
-			PathLocation doubledPath = new Pathing(mainState.y2, user, user.movement() * 2,
+			PathLocation doubledPath = new Pathing(mainState.y1, user, user.movement() * 2,
 					mainState.levelMap, null).start().getEndpaths().stream().min(Comparator.comparingInt((PathLocation f) ->
-					mainState.levelMap.getEntitiesH().stream().mapToInt(e -> mainState.y2.distance(e.location(), f.tile)).min().orElse(0))
+					mainState.levelMap.getEntitiesH().stream().mapToInt(e -> mainState.y1.distance(e.location(), f.tile)).min().orElse(0))
 					.thenComparingInt(f -> f.cost)).orElseThrow();
 			int len = 0;
 			PathLocation doubledPath2 = doubledPath;

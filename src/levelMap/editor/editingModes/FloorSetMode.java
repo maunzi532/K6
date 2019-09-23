@@ -41,11 +41,11 @@ public class FloorSetMode implements EditingMode
 	{
 		if(mouseKey == 1)
 		{
-			mainState.y2.betweenArea(tile1, tile2).forEach(mainState.levelMap::clearTile);
+			mainState.y1.betweenArea(tile1, tile2).forEach(mainState.levelMap::clearTile);
 		}
 		if(mouseKey == 3)
 		{
-			mainState.y2.betweenArea(tile1, tile2)
+			mainState.y1.betweenArea(tile1, tile2)
 					.forEach(tile -> mainState.levelMap.setFloorTile(tile, new FloorTile(0, tileType)));
 		}
 	}

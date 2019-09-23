@@ -1,4 +1,4 @@
-package item.inv.transport;
+package building.transport;
 
 import item.Item;
 import java.util.*;

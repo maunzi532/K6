@@ -3,6 +3,7 @@ package visual.gui;
 import geom.*;
 import geom.d1.*;
 import gui.*;
+import visual.*;
 
 public class VisualGUIQuad extends VisualGUI
 {

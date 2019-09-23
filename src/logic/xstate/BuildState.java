@@ -18,6 +18,9 @@ public class BuildState implements NGUIState
 	}
 
 	@Override
+	public void onEnter(MainState mainState){}
+
+	@Override
 	public XMenu menu()
 	{
 		return XMenu.characterGUIMenu(builder);

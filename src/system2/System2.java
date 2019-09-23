@@ -53,7 +53,7 @@ public class System2 implements CombatSystem<Stats2, AttackInfo2, AttackItem2>
 	public List<AttackInfo2> attackInfo(MainState mainState, XEntity entity, Tile loc, Stats2 stats,
 			XEntity entityT, Tile locT, Stats2 statsT)
 	{
-		int distance = mainState.y2.distance(loc, locT);
+		int distance = mainState.y1.distance(loc, locT);
 		return distanceAttackModes(entity, stats, distance)
 				.map(mode -> new AttackInfo2(entity, loc, stats, mode,
 						entityT, locT, statsT, statsT.getLastUsed(), distance).addAnalysis(this))

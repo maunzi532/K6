@@ -1,5 +1,6 @@
 package logic;
 
+import building.*;
 import entity.*;
 import geom.f1.*;
 import gui.*;
@@ -176,6 +177,35 @@ public class StateControl2 implements XStateHolder, ConvInputConsumer
 					}
 				}
 			}
+			else
+			{
+				MBuilding building = advTile.getBuilding();
+				if(building != null)
+				{
+					if(building instanceof ProductionBuilding)
+					{
+						if(mouseKey == 1)
+						{
+							setState(new ProductionFloorsState((ProductionBuilding) building));
+						}
+						else if(mouseKey == 3)
+						{
+							setState(new ProductionInvState((ProductionBuilding) building));
+						}
+					}
+					else if(building instanceof Transporter)
+					{
+						if(mouseKey == 1)
+						{
+							setState(new TransportTargetsState((Transporter) building));
+						}
+						else if(mouseKey == 3)
+						{
+							//setState(new TransportTargetsState((Transporter) building));
+						}
+					}
+				}
+			}
 		}
 	}
 
@@ -184,7 +214,7 @@ public class StateControl2 implements XStateHolder, ConvInputConsumer
 	{
 		if(!(state instanceof NGUIState))
 		{
-			dragMarker = mainState.y2.betweenArea(startTile, endTile).stream()
+			dragMarker = mainState.y1.betweenArea(startTile, endTile).stream()
 					.map(e -> new VisMark(e, Color.CYAN, VisMark.d3)).collect(Collectors.toList());
 			if(finished && state instanceof NEditState && mouseKey >= 0)
 			{

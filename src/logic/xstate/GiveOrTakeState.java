@@ -2,7 +2,7 @@ package logic.xstate;
 
 import entity.*;
 import geom.f1.*;
-import item.inv.transport.*;
+import building.transport.*;
 import java.util.*;
 import java.util.stream.*;
 import javafx.scene.input.*;
@@ -27,7 +27,7 @@ public class GiveOrTakeState implements NMarkState
 	public void onEnter(MainState mainState)
 	{
 		mainState.sideInfoFrame.setSideInfo(character.standardSideInfo(), null);
-		possibleTargets = mainState.y2.range(character.location(), 0, character.maxAccessRange()).stream()
+		possibleTargets = mainState.y1.range(character.location(), 0, character.maxAccessRange()).stream()
 				.filter(e -> DoubleInv.isTargetable(mainState.levelMap.getBuilding(e)))
 				.map(e -> (DoubleInv) mainState.levelMap.getBuilding(e)).collect(Collectors.toList());
 		visMarked = possibleTargets.stream().map(e -> new VisMark(e.location(), Color.YELLOW, VisMark.d1)).collect(Collectors.toList());

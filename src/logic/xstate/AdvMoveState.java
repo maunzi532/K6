@@ -28,11 +28,11 @@ public class AdvMoveState implements NMarkState
 		attack = new ArrayList<>();
 		if(character.canMove())
 		{
-			movement.addAll(new Pathing(mainState.y2, character, character.movement(), mainState.levelMap, null).start().getEndpoints());
+			movement.addAll(new Pathing(mainState.y1, character, character.movement(), mainState.levelMap, null).start().getEndpoints());
 		}
 		if(character.ready(2))
 		{
-			character.attackRanges(false).stream().map(e -> mainState.y2.range(character.location(), e, e))
+			character.attackRanges(false).stream().map(e -> mainState.y1.range(character.location(), e, e))
 					.flatMap(Collection::stream).map(mainState.levelMap::getEntity).filter(e -> character.isEnemy(e))
 					.forEach(e -> attack.add(e.location()));
 		}
