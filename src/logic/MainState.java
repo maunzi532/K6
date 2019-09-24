@@ -85,8 +85,6 @@ public class MainState
 
 	//TODO Build a real level
 
-	//TODO Refactor LevelMap
-
 	//TODO show pause menu
 	//TODO show better controls info
 
@@ -110,6 +108,7 @@ public class MainState
 	//TODO Make menu bar not overlap with SideInfo
 	//TODO improve camera
 	//TODO add configurable keybindings
+	//TODO Refactor sectors
 
 	//LK char - move/attack
 	//RK char - inv/trade

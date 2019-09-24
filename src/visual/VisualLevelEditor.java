@@ -3,7 +3,7 @@ package visual;
 import geom.*;
 import geom.d1.*;
 import java.util.*;
-import levelMap.editor.*;
+import logic.editor.*;
 import logic.xstate.*;
 import visual.gui.*;
 

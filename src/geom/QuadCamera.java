@@ -23,4 +23,10 @@ public class QuadCamera extends TileCamera
 	{
 		return new QuadLayout(new PointD(xSize(), ySize()), new PointD(dimension.xHW() * xMid - xShift * xSize() + screenshake, dimension.yHW() * yMid - yShift * ySize()));
 	}
+
+	@Override
+	public int startMultiplier()
+	{
+		return 0;
+	}
 }

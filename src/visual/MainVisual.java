@@ -6,7 +6,7 @@ import javafx.geometry.*;
 import javafx.scene.input.*;
 import javafx.scene.paint.*;
 import javafx.scene.text.*;
-import levelMap.editor.*;
+import logic.editor.*;
 import logic.*;
 import logic.sideinfo.*;
 import logic.xstate.*;

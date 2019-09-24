@@ -3,6 +3,7 @@ package logic.xstate;
 import entity.*;
 import geom.f1.*;
 import building.transport.*;
+import logic.gui.guis.*;
 import java.util.*;
 import java.util.stream.*;
 import javafx.scene.input.*;
@@ -111,9 +112,9 @@ public class GiveOrTakeState implements NMarkState
 	private void startTradeState(XStateHolder stateHolder, DoubleInv inv1, boolean levelStarted)
 	{
 		if(give)
-			stateHolder.setState(new DirectedTradeState(character, inv1, levelStarted ? character : null));
+			stateHolder.setState(new DirectedTradeGUI(character, inv1, levelStarted ? character : null));
 		else
-			stateHolder.setState(new DirectedTradeState(inv1, character, levelStarted ? character : null));
+			stateHolder.setState(new DirectedTradeGUI(inv1, character, levelStarted ? character : null));
 	}
 
 	@Override

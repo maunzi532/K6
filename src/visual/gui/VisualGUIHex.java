@@ -2,7 +2,7 @@ package visual.gui;
 
 import geom.*;
 import geom.d1.*;
-import gui.*;
+import logic.gui.*;
 import visual.*;
 
 public class VisualGUIHex extends VisualGUI
@@ -22,13 +22,13 @@ public class VisualGUIHex extends VisualGUI
 		RLS = y2.createD(4d / 6d, -8d / 6d, 4d / 6d);
 	}
 
-	private DoubleTile rl(XGUI xgui)
+	private DoubleTile rl(NGUIState xgui)
 	{
 		return y2.add(y2.fromTile(y2.fromOffset(xgui.xw() - 1, xgui.yw() - 1)), (xgui.yw() - 2) % 2 == 1 ? RLS : RLE);
 	}
 
 	@Override
-	public boolean inside(DoubleTile h1, XGUI xgui)
+	public boolean inside(DoubleTile h1, NGUIState xgui)
 	{
 		if(xgui.xw() <= 0 || xgui.yw() <= 0)
 			return false;
@@ -39,7 +39,7 @@ public class VisualGUIHex extends VisualGUI
 	}
 
 	@Override
-	public void draw(XGUI xgui)
+	public void draw(NGUIState xgui)
 	{
 		double cxs = xgui.xw() - (xgui.yw() > 1 ? 0.5 : 1d) * HexMatrix.Q3 / 2d;
 		double cys = (xgui.yw() - 1) * 1.5 / 2d;

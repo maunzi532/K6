@@ -3,7 +3,7 @@ package visual.gui;
 import geom.*;
 import geom.d1.*;
 import geom.f1.*;
-import gui.*;
+import logic.gui.*;
 import javafx.scene.canvas.*;
 import javafx.scene.paint.*;
 import javafx.scene.text.*;
@@ -17,8 +17,8 @@ public abstract class VisualGUI
 	public final DoubleType y2;
 	protected final GraphicsContext gd;
 	protected final TileCamera camera;
-	private XGUI last;
-	private XGUI last2;
+	private NGUIState last;
+	private NGUIState last2;
 	private int counter;
 
 	public VisualGUI(GraphicsContext gd, TileCamera camera)
@@ -33,14 +33,14 @@ public abstract class VisualGUI
 		return y2.toOffset(y2.cast(camera.clickLocation(x, y)));
 	}
 
-	public boolean inside(double x, double y, XGUI xgui)
+	public boolean inside(double x, double y, NGUIState xgui)
 	{
 		return inside(camera.clickLocation(x, y), xgui);
 	}
 
-	public abstract boolean inside(DoubleTile h1, XGUI xgui);
+	public abstract boolean inside(DoubleTile h1, NGUIState xgui);
 
-	public void draw2(XGUI xgui)
+	public void draw2(NGUIState xgui)
 	{
 		if(xgui != last)
 		{
@@ -60,9 +60,9 @@ public abstract class VisualGUI
 		camera.setZoom(1);
 	}
 
-	public abstract void draw(XGUI xgui);
+	public abstract void draw(NGUIState xgui);
 
-	public void draw1(XGUI xgui, double cxs, double cys, DoubleTile lu, DoubleTile rl, double imgSize, double fontSize, double textWidth)
+	public void draw1(NGUIState xgui, double cxs, double cys, DoubleTile lu, DoubleTile rl, double imgSize, double fontSize, double textWidth)
 	{
 		if(xgui.xw() <= 0 || xgui.yw() <= 0)
 			return;

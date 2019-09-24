@@ -1,6 +1,6 @@
 package logic.xstate;
 
-import gui.*;
+import logic.gui.*;
 import java.util.*;
 
 public interface XStateHolder
@@ -11,5 +11,5 @@ public interface XStateHolder
 
 	List<NState> getMenu();
 
-	XGUI getGUI();
+	NGUIState getGUI();
 }

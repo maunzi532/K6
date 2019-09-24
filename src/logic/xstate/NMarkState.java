@@ -4,6 +4,7 @@ import geom.f1.*;
 import java.util.*;
 import levelMap.*;
 import logic.*;
+import logic.editor.xstate.*;
 
 public interface NMarkState extends NState
 {

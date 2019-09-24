@@ -2,6 +2,9 @@ package logic.xstate;
 
 import building.*;
 import entity.*;
+import logic.editor.xgui.*;
+import logic.editor.xstate.*;
+import logic.gui.guis.*;
 import java.util.*;
 
 public class XMenu
@@ -21,9 +24,9 @@ public class XMenu
 
 	public static XMenu characterGUIMenu(XHero character)
 	{
-		return new XMenu(new CharacterInvState(character),
+		return new XMenu(new CharacterInvGUI(character),
 				new GiveOrTakeState(true, character), new GiveOrTakeState(false, character),
-				new BuildingChooseState(character), new RemoveBuildingState(character), new EnemyStartState());
+				new SelectBuildingGUI(character), new RemoveBuildingGUI(character), new EnemyStartState());
 	}
 
 	public static XMenu enemyMoveMenu(XEnemy character)
@@ -33,13 +36,13 @@ public class XMenu
 
 	public static XMenu enemyGUIMenu(InvEntity enemy)
 	{
-		return new XMenu(new CharacterInvState(enemy), new EnemyStartState());
+		return new XMenu(new CharacterInvGUI(enemy), new EnemyStartState());
 	}
 
 	public static XMenu productionMenu(ProductionBuilding building)
 	{
-		return new XMenu(new ProductionFloorsState(building), new ProductionViewState(building),
-				new ProductionInvState(building));
+		return new XMenu(new ProductionFloorsState(building), new RecipeGUI(building),
+				new ProductionInvGUI(building));
 	}
 
 	public static XMenu transportMenu(Transporter transporter)
@@ -49,8 +52,15 @@ public class XMenu
 
 	public static XMenu entityEditMenu(XEntity entity)
 	{
-		return new XMenu(new EntityEditState(entity), new EntityInvEditState(entity),
-				new EditMoveState(entity), new EditCopyState(entity), new EditDeleteState(entity));
+		if(entity instanceof InvEntity)
+		{
+			return new XMenu(new EntityEditGUI((InvEntity) entity), new EntityInvEditGUI((InvEntity) entity),
+					new EditMoveState(entity), new EditCopyState(entity), new EditDeleteState(entity));
+		}
+		else
+		{
+			return new XMenu(new EditMoveState(entity), new EditCopyState(entity), new EditDeleteState(entity));
+		}
 	}
 
 	private List<NState> entries;

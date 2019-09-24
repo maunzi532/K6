@@ -65,6 +65,8 @@ public abstract class TileCamera
 
 	public abstract TileLayout layout(int screenshake);
 
+	public abstract int startMultiplier();
+
 	public DoubleTile clickLocation(double x, double y)
 	{
 		return layout(0).pixelToTile(new PointD(x, y), y2);

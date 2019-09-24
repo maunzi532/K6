@@ -34,8 +34,8 @@ public class VisualTile
 		Tile mid = camera.mid(layout);
 		for(int i = -range; i <= range; i++)
 		{
-			int i1 = camera instanceof HexCamera ? i : 0;
-			for(int j = Math.min(0, -i1) + range; j >= Math.max(0, -i1) - range; j--)
+			int i1 = i * camera.startMultiplier();
+			for(int j = Math.min(0, i1) + range; j >= Math.max(0, i1) - range; j--)
 			{
 				draw0(layout, y1.add(mid, y1.create2(j, i)));
 			}
@@ -44,8 +44,8 @@ public class VisualTile
 		drawMarked0(layout);
 		for(int i = -range; i <= range; i++)
 		{
-			int i1 = camera instanceof HexCamera ? i : 0;
-			for(int j = Math.min(0, -i1) + range; j >= Math.max(0, -i1) - range; j--)
+			int i1 = i * camera.startMultiplier();
+			for(int j = Math.min(0, i1) + range; j >= Math.max(0, i1) - range; j--)
 			{
 				draw1(layout, y1.add(mid, y1.create2(j, i)));
 			}
@@ -109,8 +109,6 @@ public class VisualTile
 			if(advTile.getEntity() != null && advTile.getEntity().isVisible())
 			{
 				PointD midPoint = layout.tileToPixel(t1);
-				/*gd.setFill(new LinearGradient(points[0][0], points[1][0], points[0][3], points[1][3], false, null,
-						new Stop(0, Color.AZURE), new Stop(1, Color.BLACK)));*/
 				gd.drawImage(advTile.getEntity().getImage(), midPoint.v[0] - layout.size().v[0], midPoint.v[1] - layout.size().v[1],
 						layout.size().v[0] * 2, layout.size().v[1] * 2);
 			}

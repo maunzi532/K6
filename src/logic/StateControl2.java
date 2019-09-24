@@ -3,13 +3,15 @@ package logic;
 import building.*;
 import entity.*;
 import geom.f1.*;
-import gui.*;
+import logic.editor.xstate.*;
+import logic.gui.*;
+import logic.gui.guis.*;
 import java.util.*;
 import java.util.stream.*;
 import javafx.scene.input.*;
 import javafx.scene.paint.*;
 import levelMap.*;
-import levelMap.editor.*;
+import logic.editor.*;
 import logic.xstate.*;
 
 public class StateControl2 implements XStateHolder, ConvInputConsumer
@@ -18,7 +20,7 @@ public class StateControl2 implements XStateHolder, ConvInputConsumer
 	private final LevelEditor levelEditor;
 	private NState state;
 	private List<NState> menu;
-	private XGUI xgui;
+	private NGUIState xgui;
 	private VisMark cursorMarker;
 	private List<VisMark> dragMarker;
 
@@ -37,7 +39,7 @@ public class StateControl2 implements XStateHolder, ConvInputConsumer
 	}
 
 	@Override
-	public XGUI getGUI()
+	public NGUIState getGUI()
 	{
 		return xgui;
 	}
@@ -60,7 +62,7 @@ public class StateControl2 implements XStateHolder, ConvInputConsumer
 	{
 		menu = state.menu().getEntries().stream().filter(e -> e.keepInMenu(mainState)).collect(Collectors.toList());
 		if(state instanceof NGUIState)
-			xgui = ((NGUIState) state).gui(mainState);
+			xgui = (NGUIState) state;
 		else
 			xgui = NoGUI.NONE;
 	}
@@ -193,7 +195,7 @@ public class StateControl2 implements XStateHolder, ConvInputConsumer
 			}
 			else if(mouseKey == 3)
 			{
-				setState(new CharacterInvState((XHero) entity));
+				setState(new CharacterInvGUI((XHero) entity));
 			}
 		}
 		else if(entity instanceof XEnemy)
@@ -204,7 +206,7 @@ public class StateControl2 implements XStateHolder, ConvInputConsumer
 			}
 			else if(mouseKey == 3)
 			{
-				setState(new CharacterInvState((XEnemy) entity));
+				setState(new CharacterInvGUI((XEnemy) entity));
 			}
 		}
 	}
@@ -219,7 +221,7 @@ public class StateControl2 implements XStateHolder, ConvInputConsumer
 			}
 			else if(mouseKey == 3)
 			{
-				setState(new ProductionInvState((ProductionBuilding) building));
+				setState(new ProductionInvGUI((ProductionBuilding) building));
 			}
 		}
 		else if(building instanceof Transporter)

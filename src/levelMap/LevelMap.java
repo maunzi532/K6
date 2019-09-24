@@ -14,8 +14,10 @@ public class LevelMap
 	public final TileType y1;
 	private final HashMap<Tile, AdvTile> advTiles;
 	private final List<Boolean> visibleSectors;
+	private final ArrayList<MBuilding> buildings;
 	private final ArrayList<XHero> entitiesH;
 	private final ArrayList<XEnemy> entitiesE;
+	private final ArrayList<XEntity> entities3;
 	private final ArrayList<XArrow> arrows;
 
 	public LevelMap(TileType y1)
@@ -23,8 +25,10 @@ public class LevelMap
 		this.y1 = y1;
 		advTiles = new HashMap<>();
 		visibleSectors = new ArrayList<>();
+		buildings = new ArrayList<>();
 		entitiesH = new ArrayList<>();
 		entitiesE = new ArrayList<>();
+		entities3 = new ArrayList<>();
 		arrows = new ArrayList<>();
 	}
 
@@ -68,8 +72,12 @@ public class LevelMap
 			XEntity entity = advTiles.get(t1).getEntity();
 			if(entity instanceof XHero)
 				entitiesH.remove(entity);
-			if(entity instanceof XEnemy)
+			else if(entity instanceof XEnemy)
 				entitiesE.remove(entity);
+			else
+				entities3.remove(entity);
+			if(advTiles.get(t1).getBuilding() != null)
+				advTiles.get(t1).getBuilding().remove();
 			advTiles.remove(t1);
 		}
 	}
@@ -99,6 +107,7 @@ public class LevelMap
 	public void addBuilding(MBuilding building)
 	{
 		advTile(building.location()).setBuilding(building);
+		buildings.add(building);
 	}
 
 	public MBuilding getOwner(Tile t1)
@@ -125,26 +134,22 @@ public class LevelMap
 	{
 		advTile(entity.location()).setEntity(entity);
 		if(entity instanceof XHero)
-		{
 			entitiesH.add((XHero) entity);
-		}
-		if(entity instanceof XEnemy)
-		{
+		else if(entity instanceof XEnemy)
 			entitiesE.add((XEnemy) entity);
-		}
+		else
+			entities3.add(entity);
 	}
 
 	public void removeEntity(XEntity entity)
 	{
 		advTile(entity.location()).setEntity(null);
 		if(entity instanceof XHero)
-		{
 			entitiesH.remove(entity);
-		}
-		if(entity instanceof XEnemy)
-		{
+		else if(entity instanceof XEnemy)
 			entitiesE.remove(entity);
-		}
+		else
+			entities3.remove(entity);
 	}
 
 	public void moveEntity(XEntity entity, Tile newLocation)
@@ -173,6 +178,21 @@ public class LevelMap
 		entity2.setLocation(location1);
 	}
 
+	public ArrayList<XHero> getEntitiesH()
+	{
+		return entitiesH;
+	}
+
+	public ArrayList<XEnemy> getEntitiesE()
+	{
+		return entitiesE;
+	}
+
+	public ArrayList<XEntity> getEntities3()
+	{
+		return entities3;
+	}
+
 	public int createSector(boolean visible)
 	{
 		visibleSectors.add(visible);
@@ -182,16 +202,6 @@ public class LevelMap
 	public boolean sectorVisible(int sector)
 	{
 		return visibleSectors.get(sector);
-	}
-
-	public ArrayList<XHero> getEntitiesH()
-	{
-		return entitiesH;
-	}
-
-	public ArrayList<XEnemy> getEntitiesE()
-	{
-		return entitiesE;
 	}
 
 	public List<XArrow> getArrows()
@@ -223,8 +233,6 @@ public class LevelMap
 					.startObject()
 					.put("code", 0xA4D2839F)
 					.startArrayField("Characters");
-			List<XEntity> entities = new ArrayList<>();
-			List<MBuilding> buildings = new ArrayList<>();
 			ByteBuffer sb = ByteBuffer.allocate(advTiles.size() * 4);
 			for(Map.Entry<Tile, AdvTile> entry : advTiles.entrySet())
 			{
@@ -236,24 +244,28 @@ public class LevelMap
 					sb.put((byte) y1.sy(t1));
 					sb.put((byte) adv.getFloorTile().sector);
 					sb.put((byte) adv.getFloorTile().type.ordinal());
-					if(adv.getBuilding() != null && adv.getBuilding().active())
-						buildings.add(adv.getBuilding());
-					if(adv.getEntity() != null)
-						entities.add(adv.getEntity());
 				}
 			}
 			var a2 = a1.put("FloorTiles", Base64.getEncoder().encodeToString(sb.array()))
 					.startArrayField("Buildings");
 			for(MBuilding building : buildings)
 			{
-				a2 = building.save(a2.startObject(), itemLoader, y1).end();
+				if(building.active())
+					a2 = building.save(a2.startObject(), itemLoader, y1).end();
 			}
 			var a3 = a2.end().startArrayField("XEntities");
-			for(XEntity entity : entities)
+			for(XEntity entity : entitiesH)
 			{
 				a3 = entity.save(a3.startObject(), itemLoader, y1).end();
-				if(entity instanceof XHero)
-					xheroSave = entity.save3(xheroSave.startObject(), itemLoader).end();
+				xheroSave = entity.save3(xheroSave.startObject(), itemLoader).end();
+			}
+			for(XEntity entity : entitiesE)
+			{
+				a3 = entity.save(a3.startObject(), itemLoader, y1).end();
+			}
+			for(XEntity entity : entities3)
+			{
+				a3 = entity.save(a3.startObject(), itemLoader, y1).end();
 			}
 			return new String[]{a3.end().end().finish(), xheroSave.end().end().finish()};
 		}catch(IOException e)

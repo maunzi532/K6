@@ -2,6 +2,7 @@ package logic.xstate;
 
 import entity.*;
 import geom.f1.*;
+import logic.gui.guis.*;
 import java.util.*;
 import javafx.scene.input.*;
 import javafx.scene.paint.*;
@@ -64,7 +65,7 @@ public class AdvMoveState implements NMarkState
 	{
 		if(attack.contains(mapTile))
 		{
-			stateHolder.setState(new AttackInfoState(character, mainState.levelMap.getEntity(mapTile)));
+			stateHolder.setState(new AttackInfoGUI(character, mainState.levelMap.getEntity(mapTile)));
 		}
 		else if(movement.contains(mapTile))
 		{

@@ -27,4 +27,10 @@ public class HexCamera extends TileCamera
 		return new HexLayout(matrix, new PointD(xSize(), ySize()),
 				new PointD(dimension.xHW() * xMid - xShift * xSize() + screenshake, dimension.yHW() * yMid - yShift * ySize()));
 	}
+
+	@Override
+	public int startMultiplier()
+	{
+		return -1;
+	}
 }
