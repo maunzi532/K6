@@ -14,6 +14,11 @@ public class XMenu
 				new RevertMovementState(character), new EnemyStartState());
 	}
 
+	public static XMenu characterStartMoveMenu(XHero character)
+	{
+		return new XMenu(new SwapState(character), new ReachViewState(character, false), new StartTurnState());
+	}
+
 	public static XMenu characterGUIMenu(XHero character)
 	{
 		return new XMenu(new CharacterInvState(character),
@@ -23,7 +28,7 @@ public class XMenu
 
 	public static XMenu enemyMoveMenu(XEnemy character)
 	{
-		return new XMenu(new ReachViewState(character), new EnemyStartState());
+		return new XMenu(new ReachViewState(character, true), new EnemyStartState());
 	}
 
 	public static XMenu enemyGUIMenu(InvEntity enemy)

@@ -27,11 +27,13 @@ public class GiveOrTakeState implements NMarkState
 	public void onEnter(MainState mainState)
 	{
 		mainState.sideInfoFrame.setSideInfo(character.standardSideInfo(), null);
+		boolean levelStarted = mainState.turnCounter > 0;
 		List<Tile> range = mainState.y1.range(character.location(), 0, character.maxAccessRange());
-		possibleTargets = Stream.concat(range.stream().filter(e -> DoubleInv.isTargetable(mainState.levelMap.getBuilding(e)))
-				.map(e -> (DoubleInv) mainState.levelMap.getBuilding(e)),
-				range.stream().filter(e -> DoubleInv.isTargetable(mainState.levelMap.getEntity(e)))
-				.map(e -> (DoubleInv) mainState.levelMap.getEntity(e))).collect(Collectors.toList());
+		possibleTargets = Stream.concat(range.stream().map(mainState.levelMap::getBuilding)
+				.filter(DoubleInv::isTargetable).map(e -> (DoubleInv) e),
+				range.stream().map(mainState.levelMap::getEntity)
+						.filter(target -> DoubleInv.isTargetable(target) && target != character).map(e -> (DoubleInv) e))
+				.filter(e -> e.playerTradeable(levelStarted)).collect(Collectors.toList());
 		visMarked = possibleTargets.stream().map(e -> new VisMark(e.location(), Color.YELLOW, e instanceof XEntity ? VisMark.d2 : VisMark.d1)).collect(Collectors.toList());
 	}
 
@@ -50,7 +52,14 @@ public class GiveOrTakeState implements NMarkState
 	@Override
 	public boolean keepInMenu(MainState mainState)
 	{
-		return character.ready(1);
+		if(mainState.turnCounter == 0)
+		{
+			return !character.isStartInvLocked();
+		}
+		else
+		{
+			return character.ready(1);
+		}
 	}
 
 	@Override
@@ -62,6 +71,7 @@ public class GiveOrTakeState implements NMarkState
 	@Override
 	public void onClick(Tile mapTile, MainState mainState, XStateHolder stateHolder, int key)
 	{
+		boolean levelStarted = mainState.turnCounter > 0;
 		List<DoubleInv> list = possibleTargets.stream().filter(e -> mapTile.equals(e.location())).collect(Collectors.toList());
 		if(list.isEmpty())
 		{
@@ -69,7 +79,7 @@ public class GiveOrTakeState implements NMarkState
 		}
 		else if(list.size() == 1)
 		{
-			startTradeState(stateHolder, list.get(0));
+			startTradeState(stateHolder, list.get(0), levelStarted);
 		}
 		else
 		{
@@ -79,7 +89,7 @@ public class GiveOrTakeState implements NMarkState
 				{
 					if(inv1 instanceof MBuilding)
 					{
-						startTradeState(stateHolder, inv1);
+						startTradeState(stateHolder, inv1, levelStarted);
 						break;
 					}
 				}
@@ -90,7 +100,7 @@ public class GiveOrTakeState implements NMarkState
 				{
 					if(inv1 instanceof XEntity)
 					{
-						startTradeState(stateHolder, inv1);
+						startTradeState(stateHolder, inv1, levelStarted);
 						break;
 					}
 				}
@@ -98,12 +108,12 @@ public class GiveOrTakeState implements NMarkState
 		}
 	}
 
-	private void startTradeState(XStateHolder stateHolder, DoubleInv inv1)
+	private void startTradeState(XStateHolder stateHolder, DoubleInv inv1, boolean levelStarted)
 	{
 		if(give)
-			stateHolder.setState(new DirectedTradeState(character, inv1, character));
+			stateHolder.setState(new DirectedTradeState(character, inv1, levelStarted ? character : null));
 		else
-			stateHolder.setState(new DirectedTradeState(inv1, character, character));
+			stateHolder.setState(new DirectedTradeState(inv1, character, levelStarted ? character : null));
 	}
 
 	@Override

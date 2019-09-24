@@ -159,14 +159,14 @@ public class StateControl2 implements XStateHolder, ConvInputConsumer
 				}
 				else if(advTile.getEntity() != null)
 				{
-					onClickEntity(advTile.getEntity(), mouseKey);
+					onClickEntity(advTile.getEntity(), mainState.turnCounter > 0, mouseKey);
 				}
 			}
 			else
 			{
 				if(advTile.getEntity() != null)
 				{
-					onClickEntity(advTile.getEntity(), mouseKey);
+					onClickEntity(advTile.getEntity(), mainState.turnCounter > 0, mouseKey);
 				}
 				else if(advTile.getBuilding() != null)
 				{
@@ -176,13 +176,20 @@ public class StateControl2 implements XStateHolder, ConvInputConsumer
 		}
 	}
 
-	private void onClickEntity(XEntity entity, int mouseKey)
+	private void onClickEntity(XEntity entity, boolean levelStarted, int mouseKey)
 	{
 		if(entity instanceof XHero)
 		{
 			if(mouseKey == 1)
 			{
-				setState(new AdvMoveState((XHero) entity)); //TODO add swap state
+				if(levelStarted)
+				{
+					setState(new AdvMoveState((XHero) entity));
+				}
+				else
+				{
+					setState(new SwapState((XHero) entity));
+				}
 			}
 			else if(mouseKey == 3)
 			{
@@ -193,7 +200,7 @@ public class StateControl2 implements XStateHolder, ConvInputConsumer
 		{
 			if(mouseKey == 1)
 			{
-				setState(new ReachViewState((XEnemy) entity));
+				setState(new ReachViewState(entity, true));
 			}
 			else if(mouseKey == 3)
 			{

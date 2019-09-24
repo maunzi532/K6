@@ -59,6 +59,12 @@ public class XHero extends InvEntity
 		return other instanceof XEnemy;
 	}
 
+	@Override
+	public boolean playerTradeable(boolean levelStarted)
+	{
+		return !levelStarted && !startInvLocked;
+	}
+
 	public Optional<ItemList> tryBuildingCosts(CostBlueprint cost, CommitType commitType)
 	{
 		if(inv.tryProvide(cost.costs, false, CommitType.LEAVE).isEmpty())

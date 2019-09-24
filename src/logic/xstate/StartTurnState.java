@@ -1,6 +1,7 @@
 package logic.xstate;
 
 import entity.*;
+import javafx.scene.input.*;
 import logic.*;
 
 public class StartTurnState implements NAutoState
@@ -16,6 +17,18 @@ public class StartTurnState implements NAutoState
 		{
 			xHero.startTurn();
 		}
+	}
+
+	@Override
+	public String text()
+	{
+		return "Start";
+	}
+
+	@Override
+	public KeyCode keybind()
+	{
+		return KeyCode.ENTER;
 	}
 
 	@Override

@@ -16,6 +16,11 @@ public interface DoubleInv
 
 	Tile location();
 
+	default boolean playerTradeable(boolean levelStarted)
+	{
+		return false;
+	}
+
 	Inv inputInv();
 
 	Inv outputInv();

@@ -10,12 +10,14 @@ import logic.*;
 
 public class ReachViewState implements NMarkState
 {
-	private XEnemy character;
+	private XEntity character;
+	private boolean enemy;
 	private List<VisMark> allTargets;
 
-	public ReachViewState(XEnemy character)
+	public ReachViewState(XEntity character, boolean enemy)
 	{
 		this.character = character;
+		this.enemy = enemy;
 	}
 
 	@Override
@@ -33,19 +35,19 @@ public class ReachViewState implements NMarkState
 	@Override
 	public String text()
 	{
-		return "Movement";
+		return enemy ? "Movement" : "Reach";
 	}
 
 	@Override
 	public KeyCode keybind()
 	{
-		return KeyCode.M;
+		return enemy ? KeyCode.M : KeyCode.R;
 	}
 
 	@Override
 	public XMenu menu()
 	{
-		return XMenu.enemyMoveMenu(character);
+		return enemy ? XMenu.enemyMoveMenu((XEnemy) character) : XMenu.characterStartMoveMenu((XHero) character);
 	}
 
 	@Override

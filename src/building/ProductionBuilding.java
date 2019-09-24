@@ -139,6 +139,12 @@ public class ProductionBuilding extends Buildable implements DoubleInv
 	}
 
 	@Override
+	public boolean playerTradeable(boolean levelStarted)
+	{
+		return true;
+	}
+
+	@Override
 	public void productionPhase(LevelMap levelMap)
 	{
 		if(canWork(levelMap, false))
