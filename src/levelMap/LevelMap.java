@@ -16,7 +16,6 @@ public class LevelMap
 	private final List<Boolean> visibleSectors;
 	private final ArrayList<XHero> entitiesH;
 	private final ArrayList<XEnemy> entitiesE;
-	private final List<VisMark> visMarked;
 	private final ArrayList<XArrow> arrows;
 
 	public LevelMap(TileType y1)
@@ -26,7 +25,6 @@ public class LevelMap
 		visibleSectors = new ArrayList<>();
 		entitiesH = new ArrayList<>();
 		entitiesE = new ArrayList<>();
-		visMarked = new ArrayList<>();
 		arrows = new ArrayList<>();
 	}
 
@@ -196,11 +194,6 @@ public class LevelMap
 		return entitiesE;
 	}
 
-	public List<VisMark> getVisMarked()
-	{
-		return visMarked;
-	}
-
 	public List<XArrow> getArrows()
 	{
 		return arrows;
@@ -213,7 +206,6 @@ public class LevelMap
 
 	public void tickArrows()
 	{
-		visMarked.clear();
 		arrows.forEach(XArrow::tick);
 		arrows.removeIf(XArrow::finished);
 	}

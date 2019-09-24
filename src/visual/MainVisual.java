@@ -4,6 +4,7 @@ import geom.*;
 import geom.f1.*;
 import javafx.geometry.*;
 import javafx.scene.input.*;
+import javafx.scene.paint.*;
 import javafx.scene.text.*;
 import levelMap.editor.*;
 import logic.*;
@@ -27,6 +28,7 @@ public class MainVisual implements XInputInterface
 	private LevelEditor levelEditor;
 	private MainState mainState;
 	private ConvInputConsumer convInputConsumer;
+	private boolean paused;
 
 	public MainVisual(XGraphics graphics, TileCamera mapCamera, TileCamera menuCamera, TileCamera guiCamera, String loadFile, String loadFile2)
 	{
@@ -45,7 +47,7 @@ public class MainVisual implements XInputInterface
 		levelEditor = new LevelEditor(mainState);
 		convInputConsumer = new StateControl2(mainState, levelEditor, new StartTurnState());
 		mainState.stateHolder = (XStateHolder) convInputConsumer;
-		visualTile = new VisualTile(y1, new ArrowViewer(mapCamera.getDoubleType()), mainState.levelMap, graphics.gd());
+		visualTile = new VisualTile(y1, new ArrowViewer(mapCamera.getDoubleType()), mainState.levelMap, mainState.visMarked, graphics.gd());
 		visualMenu = new VisualMenu(graphics, mainState.stateHolder, menuCamera);
 		visualGUI = VisualGUI.forCamera(graphics, guiCamera);
 		draw();
@@ -72,13 +74,19 @@ public class MainVisual implements XInputInterface
 				mapCamera.setYShift(mapCamera.getYShift() + yp - BORDER2);
 			else if(yp < -BORDER)
 				mapCamera.setYShift(mapCamera.getYShift() + yp + BORDER2);
-			convInputConsumer.mousePosition(visualGUI.inside(xMouse, yMouse, mainState.stateHolder.getGUI()),
-					visualGUI.offsetClickLocation(xMouse, yMouse), visualMenu.coordinatesToOption(xMouse, yMouse),
-					visualLevelEditor.editorClickNum(xMouse, yMouse, levelEditor), targetedTile(xMouse, yMouse), moved, drag, mouseKey);
+			if(!paused)
+			{
+				convInputConsumer.mousePosition(visualGUI.inside(xMouse, yMouse, mainState.stateHolder.getGUI()),
+						visualGUI.offsetClickLocation(xMouse, yMouse), visualMenu.coordinatesToOption(xMouse, yMouse),
+						visualLevelEditor.editorClickNum(xMouse, yMouse, levelEditor), targetedTile(xMouse, yMouse), moved, drag, mouseKey);
+			}
 		}
 		else
 		{
-			convInputConsumer.mouseOutside();
+			if(!paused)
+			{
+				convInputConsumer.mouseOutside();
+			}
 		}
 	}
 
@@ -91,6 +99,8 @@ public class MainVisual implements XInputInterface
 	public void dragPosition(boolean active, double xStart, double yStart,
 			double xMoved, double yMoved, int mouseKey, boolean finished)
 	{
+		if(paused)
+			return;
 		if(active)
 			convInputConsumer.dragPosition(targetedTile(xStart, yStart), targetedTile(xMoved, yMoved), mouseKey, finished);
 		else
@@ -111,15 +121,33 @@ public class MainVisual implements XInputInterface
 			if(keyCode == KeyCode.UP)
 				mapCamera.setYShift(mapCamera.getYShift() - 3);
 		}
-		convInputConsumer.handleKey(keyCode);
+		if(paused)
+		{
+			if(keyCode == KeyCode.P)
+				paused = false;
+		}
+		else
+		{
+			if(keyCode == KeyCode.P)
+				paused = true;
+			else
+				convInputConsumer.handleKey(keyCode);
+		}
 	}
 
 	@Override
 	public void tick()
 	{
-		mainState.levelMap.tickArrows();
-		convInputConsumer.tick();
-		visualSideInfo.tick();
+		if(paused)
+		{
+			convInputConsumer.tickPaused();
+		}
+		else
+		{
+			mainState.levelMap.tickArrows();
+			convInputConsumer.tick();
+			visualSideInfo.tick();
+		}
 		if(mainState.screenshake > 0)
 		{
 			mainState.screenshake--;
@@ -135,5 +163,30 @@ public class MainVisual implements XInputInterface
 		visualLevelEditor.draw(levelEditor);
 		visualGUI.draw2(mainState.stateHolder.getGUI());
 		visualMenu.draw();
+		drawInfoText();
+	}
+
+	private static final String[] CONTROLS_INFO = new String[]
+			{
+					"arrowkeys/border to move view",
+					"TAB to change between choosing buildings/entities first",
+					"Q to enter/exit editing mode",
+					"ESC to exit menus"
+			};
+
+	private void drawInfoText()
+	{
+		graphics.gd().setFill(Color.BLACK);
+		graphics.gd().fillRect(0, 0, graphics.xHW() * 2, graphics.yHW() / 10);
+		graphics.gd().setFill(Color.WHITE);
+		graphics.gd().setFont(new Font(graphics.yHW() / 20));
+		graphics.gd().setTextAlign(TextAlignment.LEFT);
+		graphics.gd().fillText(mainState.turnText(), graphics.xHW() / 20, graphics.yHW() / 20);
+		graphics.gd().fillText(mainState.preferBuildingsText(), graphics.xHW() / 2, graphics.yHW() / 20);
+		if(paused)
+			graphics.gd().fillText("Paused", graphics.xHW(), graphics.yHW() / 20);
+		graphics.gd().setTextAlign(TextAlignment.RIGHT);
+		graphics.gd().fillText("P to open pause menu", graphics.xHW() * 2 - graphics.xHW() / 20, graphics.yHW() / 20);
+		graphics.gd().setTextAlign(TextAlignment.CENTER);
 	}
 }

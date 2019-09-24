@@ -16,4 +16,6 @@ public interface ConvInputConsumer
 	void handleKey(KeyCode keyCode);
 
 	void tick();
+
+	void tickPaused();
 }

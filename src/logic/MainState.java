@@ -5,6 +5,7 @@ import entity.*;
 import file.*;
 import geom.f1.*;
 import item.*;
+import java.util.*;
 import levelMap.*;
 import levelMap.importX.*;
 import logic.sideinfo.*;
@@ -21,6 +22,7 @@ public class MainState
 	public int screenshake;
 	public boolean preferBuildings;
 	public final LevelMap levelMap;
+	public final List<VisMark> visMarked;
 	public final BlueprintCache<BuildingBlueprint> buildingBlueprintCache;
 	public XStateHolder stateHolder;
 	public final CombatSystem combatSystem;
@@ -32,9 +34,30 @@ public class MainState
 		itemLoader = new ItemLoader2();
 		turnCounter = -1;
 		levelMap = new LevelMap(y1);
+		visMarked = new ArrayList<>();
 		buildingBlueprintCache = new BlueprintCache<>("BuildingBlueprints", e -> new BuildingBlueprint(e, itemLoader));
 		combatSystem = new System2();
 		this.sideInfoFrame = sideInfoFrame;
+	}
+
+	public String turnText()
+	{
+		if(turnCounter <= 0)
+		{
+			return "Preparation Phase";
+		}
+		else
+		{
+			return "Turn " + turnCounter;
+		}
+	}
+
+	public String preferBuildingsText()
+	{
+		if(preferBuildings)
+			return "BCM";
+		else
+			return "ECM";
 	}
 
 	public void initialize(String loadFile, String loadFile2)
@@ -62,29 +85,31 @@ public class MainState
 
 	//TODO Build a real level
 
+	//TODO Refactor LevelMap
+
+	//TODO show pause menu
+	//TODO show better controls info
+
 	//TODO equip weapon without attacking
 	//TODO always show xhero characters on the same side
 	//TODO show enemy reach (all enemies)
-
-	//TODO show if preferBuildings is active
-	//TODO show turn counter
-
-	//TODO enemy reinforcements
-	//TODO get levelup essence
-	//TODO get levelup
+	//TODO save transporter history
 
 	//TODO Editable starting location settings
 	//TODO LevelEditor create XEntity
 	//TODO LevelEditor create Building
 	//TODO LevelEditor edit Building
 
-	//TODO Refactor LevelMap
+	//TODO get levelup essence
+	//TODO get levelup
+
+	//TODO enemy reinforcements
+	//TODO Enemy AI types
+
 	//TODO scale tiles, menubar, gui when resizing
 	//TODO Make menu bar not overlap with SideInfo
-	//TODO add keybind info for keybinds other than menu
 	//TODO improve camera
-	//TODO Enemy AI types
-	//TODO save transporter history
+	//TODO add configurable keybindings
 
 	//LK char - move/attack
 	//RK char - inv/trade

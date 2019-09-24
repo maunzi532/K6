@@ -317,14 +317,27 @@ public class StateControl2 implements XStateHolder, ConvInputConsumer
 				setState(autoState.nextState());
 			}
 		}
+		List<VisMark> visMarked = mainState.visMarked;
+		visMarked.clear();
 		if(state instanceof NMarkState)
 		{
-			mainState.levelMap.getVisMarked().addAll(((NMarkState) state).visMarked(mainState));
+			visMarked.addAll(((NMarkState) state).visMarked(mainState));
 		}
 		if(cursorMarker != null)
 		{
-			mainState.levelMap.getVisMarked().add(cursorMarker);
+			visMarked.add(cursorMarker);
 		}
-		mainState.levelMap.getVisMarked().addAll(dragMarker);
+		visMarked.addAll(dragMarker);
+	}
+
+	@Override
+	public void tickPaused()
+	{
+		List<VisMark> visMarked = mainState.visMarked;
+		visMarked.clear();
+		if(state instanceof NMarkState)
+		{
+			visMarked.addAll(((NMarkState) state).visMarked(mainState));
+		}
 	}
 }
