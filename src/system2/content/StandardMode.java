@@ -7,7 +7,7 @@ public class StandardMode extends AttackMode2
 {
 	public StandardMode(AttackItem2 item)
 	{
-		super(item, 0);
+		super(item, 1);
 		abilities = List.of();
 	}
 }

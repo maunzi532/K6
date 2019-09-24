@@ -54,6 +54,7 @@ public class Stats2 implements Stats
 		this.toughness = toughness;
 		currentHealth = maxHealth();
 		this.movement = movement;
+		lastUsed = new NoAttackMode();
 		slot = new AttackItem2Slot(xClass.usableItems);
 	}
 
@@ -68,6 +69,7 @@ public class Stats2 implements Stats
 		this.customImage = customImage;
 		currentHealth = maxHealth();
 		this.movement = movement;
+		lastUsed = new NoAttackMode();
 		slot = new AttackItem2Slot(xClass.usableItems);
 	}
 
@@ -77,6 +79,7 @@ public class Stats2 implements Stats
 		this.level = level;
 		this.playerLevelSystem = playerLevelSystem;
 		autoStats();
+		lastUsed = new NoAttackMode();
 		slot = new AttackItem2Slot(xClass.usableItems);
 	}
 
@@ -212,7 +215,18 @@ public class Stats2 implements Stats
 	public void autoEquip(InvEntity entity)
 	{
 		setLastUsed(((AttackItem2) entity.outputInv().viewRecipeItem(getItemFilter()).item).attackModes()
-				.stream().findFirst().orElse(EmptyItem.INSTANCE.attackModes.get(0)));
+				.stream().findFirst().orElse(new NoAttackMode()));
+	}
+
+	@Override
+	public void afterTrading(InvEntity entity)
+	{
+		if(lastUsed instanceof NoAttackMode)
+			return;
+		if(!entity.outputInv().canGive(new ItemStack(lastUsed.item, 1), false))
+		{
+			lastUsed = new NoAttackMode();
+		}
 	}
 
 	@Override
@@ -303,6 +317,10 @@ public class Stats2 implements Stats
 			lastUsed = ((AttackItem2) itemLoader.loadItem((JrsObject) data.get("LastUsedItem"))).attackModes()
 					.stream().filter(e -> e.code == ((JrsNumber) data.get("LastUsed")).getValue().intValue()).findFirst().orElseThrow();
 		}
+		else
+		{
+			lastUsed = new NoAttackMode();
+		}
 	}
 
 	@Override
@@ -333,7 +351,7 @@ public class Stats2 implements Stats
 				.put("Movement", movement)
 				.put("CurrentHealth", currentHealth)
 				.put("Exhaustion", exhaustion);
-		if(lastUsed != null)
+		if(!(lastUsed instanceof NoAttackMode))
 		{
 			var a4 = a3.put("LastUsed", lastUsed.code).startObjectField("LastUsedItem");
 			a3 = itemLoader.saveItem(a4, lastUsed.item).end();
@@ -358,7 +376,7 @@ public class Stats2 implements Stats
 		info.add("CPower\n" + getCPower());
 		info.add("Move\n" + movement);
 		info.add(exhaustion > 0 ? "Exhausted\n" + exhaustion : "");
-		info.add("Defend\n" + (lastUsed != null ? lastUsed.item.info().get(0).replace("Type\n", "") : "None"));
+		info.add("Defend\n" + (lastUsed instanceof NoAttackMode ? "None" : lastUsed.item.info().get(0).replace("Type\n", "")));
 		for(Class e : slot.getItemTypes())
 		{
 			info.add("ItemType\n" + e.getSimpleName().replace("Item", ""));
@@ -394,7 +412,7 @@ public class Stats2 implements Stats
 		info.add("Health\n" + currentHealth + "/" + maxHealth());
 		info.add("Exhaustion\n" + exhaustion);
 		info.add("Move\n" + movement);
-		info.add("Defend\n" + (lastUsed != null ? lastUsed.item.info().get(0).replace("Type\n", "") : "None"));
+		info.add("Defend\n" + (lastUsed instanceof NoAttackMode ? "None" : lastUsed.item.info().get(0).replace("Type\n", "")));
 		info.add("ItemTypes\n" + slot.getItemTypes().stream().map(e -> e.getSimpleName().replace("Item", ""))
 				.collect(Collectors.joining("\n")));
 		return info;

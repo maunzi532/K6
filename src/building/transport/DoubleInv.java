@@ -34,4 +34,6 @@ public interface DoubleInv
 	{
 		return 0;
 	}
+
+	default void afterTrading(){}
 }

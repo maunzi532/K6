@@ -140,6 +140,8 @@ public class DirectedTradeGUI extends XGUI implements InvGUI
 			{
 				provide.outputInv().commit();
 				receive.inputInv().commit();
+				provide.afterTrading();
+				receive.afterTrading();
 				takeAp.takeAp(1);
 				takeAp.irreversible();
 			}

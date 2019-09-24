@@ -43,6 +43,12 @@ public class InvEntity extends XEntity implements DoubleInv
 		return inv;
 	}
 
+	@Override
+	public void afterTrading()
+	{
+		stats.afterTrading(this);
+	}
+
 	public void addItems(ItemList itemList)
 	{
 		inv.tryAdd(itemList, false, CommitType.COMMIT);

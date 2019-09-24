@@ -7,7 +7,7 @@ public class FinesseMode extends AttackMode2
 {
 	public FinesseMode(AttackItem2 item)
 	{
-		super(item, 1);
+		super(item, 2);
 		abilities = List.of(Ability2.TWO_HANDED);
 	}
 }

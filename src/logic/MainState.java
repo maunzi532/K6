@@ -63,24 +63,27 @@ public class MainState
 	//TODO Build a real level
 
 	//TODO show if preferBuildings is active
-	//TODO XEntity item trading
 
 	//TODO equip weapon without attacking
 	//TODO always show xhero characters on the same side
-	//TODO show turn counter
 	//TODO ReachViewState for all characters (menu as param)
+	//TODO show enemy reach (all enemies)
+
+	//TODO show turn counter
 	//TODO change xmenu options on turn 0
 	//TODO chooseable starting locations
 	//TODO turn 0 item trading
-	//TODO enemy reinforcements
-	//TODO ESC to go back to NoneState/EditingState
 	//TODO Editable starting location settings
+
+	//TODO enemy reinforcements
 	//TODO get levelup essence
 	//TODO get levelup
 
-	//TODO Refactor LevelMap
 	//TODO LevelEditor create XEntity
-	//TODO show enemy reach (all enemies)
+	//TODO LevelEditor create Building
+	//TODO LevelEditor edit Building
+
+	//TODO Refactor LevelMap
 	//TODO scale tiles, menubar, gui when resizing
 	//TODO Make menu bar not overlap with SideInfo
 	//TODO add keybind info for keybinds other than menu

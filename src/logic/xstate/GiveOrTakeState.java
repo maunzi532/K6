@@ -27,10 +27,12 @@ public class GiveOrTakeState implements NMarkState
 	public void onEnter(MainState mainState)
 	{
 		mainState.sideInfoFrame.setSideInfo(character.standardSideInfo(), null);
-		possibleTargets = mainState.y1.range(character.location(), 0, character.maxAccessRange()).stream()
-				.filter(e -> DoubleInv.isTargetable(mainState.levelMap.getBuilding(e)))
-				.map(e -> (DoubleInv) mainState.levelMap.getBuilding(e)).collect(Collectors.toList());
-		visMarked = possibleTargets.stream().map(e -> new VisMark(e.location(), Color.YELLOW, VisMark.d1)).collect(Collectors.toList());
+		List<Tile> range = mainState.y1.range(character.location(), 0, character.maxAccessRange());
+		possibleTargets = Stream.concat(range.stream().filter(e -> DoubleInv.isTargetable(mainState.levelMap.getBuilding(e)))
+				.map(e -> (DoubleInv) mainState.levelMap.getBuilding(e)),
+				range.stream().filter(e -> DoubleInv.isTargetable(mainState.levelMap.getEntity(e)))
+				.map(e -> (DoubleInv) mainState.levelMap.getEntity(e))).collect(Collectors.toList());
+		visMarked = possibleTargets.stream().map(e -> new VisMark(e.location(), Color.YELLOW, e instanceof XEntity ? VisMark.d2 : VisMark.d1)).collect(Collectors.toList());
 	}
 
 	@Override
@@ -65,16 +67,43 @@ public class GiveOrTakeState implements NMarkState
 		{
 			stateHolder.setState(NoneState.INSTANCE);
 		}
+		else if(list.size() == 1)
+		{
+			startTradeState(stateHolder, list.get(0));
+		}
 		else
 		{
-			for(DoubleInv inv1 : list)
+			if(mainState.preferBuildings)
 			{
-				if(give)
-					stateHolder.setState(new DirectedTradeState(character, inv1, character));
-				else
-					stateHolder.setState(new DirectedTradeState(inv1, character, character));
+				for(DoubleInv inv1 : list)
+				{
+					if(inv1 instanceof MBuilding)
+					{
+						startTradeState(stateHolder, inv1);
+						break;
+					}
+				}
+			}
+			else
+			{
+				for(DoubleInv inv1 : list)
+				{
+					if(inv1 instanceof XEntity)
+					{
+						startTradeState(stateHolder, inv1);
+						break;
+					}
+				}
 			}
 		}
+	}
+
+	private void startTradeState(XStateHolder stateHolder, DoubleInv inv1)
+	{
+		if(give)
+			stateHolder.setState(new DirectedTradeState(character, inv1, character));
+		else
+			stateHolder.setState(new DirectedTradeState(inv1, character, character));
 	}
 
 	@Override

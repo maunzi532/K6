@@ -17,6 +17,8 @@ public interface Stats
 
 	void autoEquip(InvEntity entity);
 
+	void afterTrading(InvEntity entity);
+
 	Item getItemFilter();
 
 	String getName();
