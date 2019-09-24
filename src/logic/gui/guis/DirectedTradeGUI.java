@@ -10,7 +10,7 @@ import java.util.List;
 import javafx.scene.paint.Color;
 import logic.xstate.*;
 
-public class DirectedTradeGUI extends NGUIState implements InvGUI
+public class DirectedTradeGUI extends XGUIState implements InvGUI
 {
 	private static final CTile nameProvide = new CTile(0, 0, 4, 1);
 	private static final CTile nameReceive = new CTile(5, 0, 4, 1);

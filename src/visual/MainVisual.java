@@ -166,13 +166,13 @@ public class MainVisual implements XInputInterface
 		drawInfoText();
 	}
 
-	private static final String[] CONTROLS_INFO = new String[]
+	/*private static final String[] CONTROLS_INFO = new String[]
 			{
 					"arrowkeys/border to move view",
 					"TAB to change between choosing buildings/entities first",
 					"Q to enter/exit editing mode",
 					"ESC to exit menus"
-			};
+			};*/
 
 	private void drawInfoText()
 	{

@@ -9,7 +9,7 @@ import levelMap.*;
 import logic.*;
 import logic.xstate.*;
 
-public class SelectBuildingGUI extends NGUIState implements InvGUI
+public class SelectBuildingGUI extends XGUIState implements InvGUI
 {
 	private static final CTile textInv = new CTile(2, 0, new GuiTile("Buildings"), 2, 1);
 

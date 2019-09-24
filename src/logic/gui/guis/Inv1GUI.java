@@ -7,7 +7,7 @@ import item.view.*;
 import java.util.List;
 import logic.xstate.*;
 
-public class Inv1GUI extends NGUIState implements InvGUI
+public class Inv1GUI extends XGUIState implements InvGUI
 {
 	private static final CTile textInv = new CTile(2, 0, 2, 1);
 	private static final CTile weight = new CTile(0, 0);

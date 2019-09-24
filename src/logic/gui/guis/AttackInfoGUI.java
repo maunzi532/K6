@@ -7,7 +7,7 @@ import logic.*;
 import logic.sideinfo.*;
 import logic.xstate.*;
 
-public class AttackInfoGUI extends NGUIState implements InvGUI
+public class AttackInfoGUI extends XGUIState implements InvGUI
 {
 	private XHero attacker;
 	private XEntity target;

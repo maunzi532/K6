@@ -17,8 +17,8 @@ public abstract class VisualGUI
 	public final DoubleType y2;
 	protected final GraphicsContext gd;
 	protected final TileCamera camera;
-	private NGUIState last;
-	private NGUIState last2;
+	private XGUIState last;
+	private XGUIState last2;
 	private int counter;
 
 	public VisualGUI(GraphicsContext gd, TileCamera camera)
@@ -33,14 +33,14 @@ public abstract class VisualGUI
 		return y2.toOffset(y2.cast(camera.clickLocation(x, y)));
 	}
 
-	public boolean inside(double x, double y, NGUIState xgui)
+	public boolean inside(double x, double y, XGUIState xgui)
 	{
-		return inside(camera.clickLocation(x, y), xgui);
+		return xgui != null && inside(camera.clickLocation(x, y), xgui);
 	}
 
-	public abstract boolean inside(DoubleTile h1, NGUIState xgui);
+	public abstract boolean inside(DoubleTile h1, XGUIState xgui);
 
-	public void draw2(NGUIState xgui)
+	public void draw2(XGUIState xgui)
 	{
 		if(xgui != last)
 		{
@@ -55,14 +55,17 @@ public abstract class VisualGUI
 			camera.setZoom((double) (FADEOUT - counter) / FADEOUT);
 			draw(last2);
 		}
-		camera.setZoom((double) counter / FADEIN);
-		draw(xgui);
+		if(xgui != null)
+		{
+			camera.setZoom((double) counter / FADEIN);
+			draw(xgui);
+		}
 		camera.setZoom(1);
 	}
 
-	public abstract void draw(NGUIState xgui);
+	public abstract void draw(XGUIState xgui);
 
-	public void draw1(NGUIState xgui, double cxs, double cys, DoubleTile lu, DoubleTile rl, double imgSize, double fontSize, double textWidth)
+	public void draw1(XGUIState xgui, double cxs, double cys, DoubleTile lu, DoubleTile rl, double imgSize, double fontSize, double textWidth)
 	{
 		if(xgui.xw() <= 0 || xgui.yw() <= 0)
 			return;

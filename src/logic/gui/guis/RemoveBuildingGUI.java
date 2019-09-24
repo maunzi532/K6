@@ -11,7 +11,7 @@ import javafx.scene.input.*;
 import logic.*;
 import logic.xstate.*;
 
-public class RemoveBuildingGUI extends NGUIState implements InvGUI
+public class RemoveBuildingGUI extends XGUIState implements InvGUI
 {
 	private static final CTile textInv = new CTile(0, 0, new GuiTile("Remove Building?"), 4, 1);
 	private static final CTile weight = new CTile(4, 0, 2, 1);

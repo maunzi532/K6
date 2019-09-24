@@ -3,7 +3,7 @@ package logic.gui;
 import javafx.scene.paint.*;
 import logic.xstate.*;
 
-public abstract class NGUIState implements NState
+public abstract class XGUIState implements NState
 {
 	private static final Color BACKGROUND = Color.color(0.4, 0.4, 0.5);
 

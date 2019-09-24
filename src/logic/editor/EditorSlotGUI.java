@@ -4,7 +4,7 @@ import logic.*;
 import logic.gui.*;
 import logic.xstate.*;
 
-public class EditorSlotGUI extends NGUIState
+public class EditorSlotGUI extends XGUIState
 {
 	public EditorSlotGUI()
 	{

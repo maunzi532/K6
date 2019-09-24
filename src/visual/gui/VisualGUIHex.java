@@ -22,13 +22,13 @@ public class VisualGUIHex extends VisualGUI
 		RLS = y2.createD(4d / 6d, -8d / 6d, 4d / 6d);
 	}
 
-	private DoubleTile rl(NGUIState xgui)
+	private DoubleTile rl(XGUIState xgui)
 	{
 		return y2.add(y2.fromTile(y2.fromOffset(xgui.xw() - 1, xgui.yw() - 1)), (xgui.yw() - 2) % 2 == 1 ? RLS : RLE);
 	}
 
 	@Override
-	public boolean inside(DoubleTile h1, NGUIState xgui)
+	public boolean inside(DoubleTile h1, XGUIState xgui)
 	{
 		if(xgui.xw() <= 0 || xgui.yw() <= 0)
 			return false;
@@ -39,7 +39,7 @@ public class VisualGUIHex extends VisualGUI
 	}
 
 	@Override
-	public void draw(NGUIState xgui)
+	public void draw(XGUIState xgui)
 	{
 		double cxs = xgui.xw() - (xgui.yw() > 1 ? 0.5 : 1d) * HexMatrix.Q3 / 2d;
 		double cys = (xgui.yw() - 1) * 1.5 / 2d;

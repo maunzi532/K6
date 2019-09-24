@@ -8,7 +8,7 @@ import logic.*;
 import logic.gui.*;
 import logic.xstate.*;
 
-public class Inv2GUI extends NGUIState implements InvGUI
+public class Inv2GUI extends XGUIState implements InvGUI
 {
 	private static final CTile textInputInv = new CTile(1, 0, new GuiTile("Input"), 2, 1);
 	private static final CTile textOutputInv = new CTile(6, 0, new GuiTile("Output"), 2, 1);

@@ -11,5 +11,5 @@ public interface XStateHolder
 
 	List<NState> getMenu();
 
-	NGUIState getGUI();
+	XGUIState getGUI();
 }

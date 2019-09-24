@@ -7,7 +7,7 @@ import java.util.*;
 import logic.editor.*;
 import logic.xstate.*;
 
-public class EditorSlotModeGUI extends NGUIState implements InvGUI, NEditState
+public class EditorSlotModeGUI extends XGUIState implements InvGUI, NEditState
 {
 	private static final CTile textInv = new CTile(2, 0, new GuiTile("Editing modes"), 2, 1);
 

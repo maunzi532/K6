@@ -10,7 +10,7 @@ import item.view.*;
 import javafx.scene.input.*;
 import logic.xstate.*;
 
-public class RecipeGUI extends NGUIState implements InvGUI
+public class RecipeGUI extends XGUIState implements InvGUI
 {
 	private static final CTile textRequires = new CTile(1, 0, new GuiTile("Requires"), 2, 1);
 	private static final CTile textResults = new CTile(4, 0, new GuiTile("Results"), 2, 1);

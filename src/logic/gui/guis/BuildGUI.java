@@ -11,7 +11,7 @@ import javafx.scene.paint.*;
 import logic.*;
 import logic.xstate.*;
 
-public class BuildGUI extends NGUIState implements InvGUI
+public class BuildGUI extends XGUIState implements InvGUI
 {
 	private static final CTile textTiles = new CTile(0, 1, new GuiTile("Floor Req."), 2, 1);
 	private static final CTile textRequired = new CTile(3, 1, new GuiTile("Required"), 2, 1);

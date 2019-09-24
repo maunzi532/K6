@@ -20,7 +20,6 @@ public class StateControl2 implements XStateHolder, ConvInputConsumer
 	private final LevelEditor levelEditor;
 	private NState state;
 	private List<NState> menu;
-	private NGUIState xgui;
 	private VisMark cursorMarker;
 	private List<VisMark> dragMarker;
 
@@ -39,9 +38,12 @@ public class StateControl2 implements XStateHolder, ConvInputConsumer
 	}
 
 	@Override
-	public NGUIState getGUI()
+	public XGUIState getGUI()
 	{
-		return xgui;
+		if(state instanceof XGUIState)
+			return (XGUIState) state;
+		else
+			return null;
 	}
 
 	@Override
@@ -55,37 +57,28 @@ public class StateControl2 implements XStateHolder, ConvInputConsumer
 	{
 		this.state = state;
 		state.onEnter(mainState);
-		update();
-	}
-
-	private void update()
-	{
 		menu = state.menu().getEntries().stream().filter(e -> e.keepInMenu(mainState)).collect(Collectors.toList());
-		if(state instanceof NGUIState)
-			xgui = (NGUIState) state;
-		else
-			xgui = NoGUI.NONE;
 	}
 
 	@Override
 	public void mousePosition(boolean insideGUI, Tile offsetGUITile, int menuOption,
 			int editorOption, Tile mapTile, boolean moved, boolean drag, int mouseKey)
 	{
-		//move camera
-		if(state instanceof NGUIState)
+		if(state instanceof XGUIState)
 		{
+			XGUIState xguiState = (XGUIState) state;
 			if(moved)
 			{
 				if(insideGUI)
 				{
-					xgui.target(offsetGUITile.v[0], offsetGUITile.v[1]);
+					xguiState.target(offsetGUITile.v[0], offsetGUITile.v[1]);
 				}
 			}
 			if(mouseKey >= 0)
 			{
 				if(insideGUI)
 				{
-					xgui.click(offsetGUITile.v[0], offsetGUITile.v[1], mouseKey, this);
+					xguiState.click(offsetGUITile.v[0], offsetGUITile.v[1], mouseKey, this);
 				}
 				else if(menuOption >= 0)
 				{
@@ -93,7 +86,7 @@ public class StateControl2 implements XStateHolder, ConvInputConsumer
 				}
 				else
 				{
-					xgui.clickOutside(mouseKey, this);
+					xguiState.clickOutside(mouseKey, this);
 				}
 			}
 			cursorMarker = null;
@@ -132,7 +125,6 @@ public class StateControl2 implements XStateHolder, ConvInputConsumer
 			NState newState = menu.get(menuOption);
 			if(newState != state)
 			{
-				xgui.close(this, false);
 				setState(newState);
 			}
 		}
@@ -240,7 +232,7 @@ public class StateControl2 implements XStateHolder, ConvInputConsumer
 	@Override
 	public void dragPosition(Tile startTile, Tile endTile, int mouseKey, boolean finished)
 	{
-		if(!(state instanceof NGUIState))
+		if(!(state instanceof XGUIState))
 		{
 			dragMarker = mainState.y1.betweenArea(startTile, endTile).stream()
 					.map(e -> new VisMark(e, Color.CYAN, VisMark.d3)).collect(Collectors.toList());
@@ -281,9 +273,9 @@ public class StateControl2 implements XStateHolder, ConvInputConsumer
 		}
 		else if(keyCode == KeyCode.ESCAPE)
 		{
-			if(state instanceof NGUIState)
+			if(state instanceof XGUIState)
 			{
-				xgui.clickOutside(1, this);
+				((XGUIState) state).clickOutside(1, this);
 			}
 			else if(state instanceof NMarkState)
 			{
@@ -298,7 +290,6 @@ public class StateControl2 implements XStateHolder, ConvInputConsumer
 				{
 					if(menuEntry != state)
 					{
-						xgui.close(this, false);
 						setState(menuEntry);
 					}
 					return;
