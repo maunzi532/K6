@@ -88,7 +88,7 @@ public class MainState
 	//TODO show pause menu
 	//TODO show better controls info
 
-	//TODO equip weapon without attacking
+	//TODO equip weapon and choose mode without attacking
 	//TODO always show xhero characters on the same side
 	//TODO show enemy reach (all enemies)
 	//TODO save transporter history
@@ -98,6 +98,7 @@ public class MainState
 	//TODO LevelEditor create Building
 	//TODO LevelEditor edit Building
 
+	//TODO change item weight mechanics
 	//TODO get levelup essence
 	//TODO get levelup
 

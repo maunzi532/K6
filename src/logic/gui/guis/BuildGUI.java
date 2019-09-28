@@ -1,7 +1,9 @@
 package logic.gui.guis;
 
+import building.*;
 import building.blueprint.*;
 import entity.*;
+import levelMap.*;
 import logic.gui.*;
 import item.*;
 import item.inv.*;
@@ -23,23 +25,31 @@ public class BuildGUI extends XGUIState implements InvGUI
 	private static final CTile build = new CTile(6, 0, new GuiTile("Build"), 2, 1);
 	private static final CTile buildA = new CTile(6, 0, new GuiTile("Build", null, false, Color.CYAN), 2, 1);
 
-	private XHero character;
+	private XBuilder builder;
 	private BuildingBlueprint blueprint;
+	private LevelMap levelMap;
 	private int costNum = 0;
 	private int tileCostNum = 0;
 	private InvGUIPart floorTiles;
 	private InvGUIPart required;
 	private InvGUIPart returned;
 
-	public BuildGUI(XHero character, BuildingBlueprint blueprint)
+	public BuildGUI(XBuilder builder, BuildingBlueprint blueprint)
 	{
-		this.character = character;
+		this.builder = builder;
 		this.blueprint = blueprint;
+	}
+
+	@Override
+	public boolean editMode()
+	{
+		return !(builder instanceof XHero);
 	}
 
 	@Override
 	public void onEnter(MainState mainState)
 	{
+		levelMap = mainState.levelMap;
 		floorTiles = new InvGUIPart(0, 0, 2, 1, 4, 2, 1);
 		required = new InvGUIPart(1, 3, 2, 1, 4, 2, 1);
 		returned = new InvGUIPart(2, 6, 2, 1, 4, 2, 1);
@@ -49,7 +59,14 @@ public class BuildGUI extends XGUIState implements InvGUI
 	@Override
 	public XMenu menu()
 	{
-		return XMenu.characterGUIMenu(character);
+		if(builder instanceof XHero)
+		{
+			return XMenu.characterGUIMenu((XHero) builder);
+		}
+		else
+		{
+			return null; //TODO
+		}
 	}
 
 	@Override
@@ -78,7 +95,7 @@ public class BuildGUI extends XGUIState implements InvGUI
 		setTile(next);
 		setTile(lessTiles);
 		setTile(moreTiles);
-		if(character.tryBuildingCosts(cost, CommitType.ROLLBACK).isPresent())
+		if(builder.tryBuildingCosts(cost, CommitType.ROLLBACK).isPresent())
 			setTile(buildA);
 		else
 			setTile(build);
@@ -97,7 +114,7 @@ public class BuildGUI extends XGUIState implements InvGUI
 		else if(invID == 1)
 		{
 			ItemStack items = cost.required.items.get(index);
-			ItemView itemView = character.outputInv().viewRecipeItem(items.item);
+			ItemView itemView = builder.viewRecipeItem(items.item);
 			Color color = itemView.base >= items.count ? Color.CYAN : null;
 			tiles[x][y1] = new GuiTile(itemView.base + " / " + items.count, null, false, color);
 			tiles[x + 1][y1] = new GuiTile(null, itemView.item.image(), false, color);
@@ -174,12 +191,15 @@ public class BuildGUI extends XGUIState implements InvGUI
 		}
 		else if(build.contains(x, y))
 		{
-			Optional<ItemList> refundable = character.tryBuildingCosts(cost, CommitType.COMMIT);
+			Optional<ItemList> refundable = builder.tryBuildingCosts(cost, CommitType.COMMIT);
 			if(refundable.isPresent())
 			{
-				character.takeAp(1);
-				character.mainActionTaken();
-				character.buildBuilding(cost, refundable.get(), blueprint);
+				if(builder instanceof XHero)
+				{
+					((XHero) builder).takeAp(1);
+					((XHero) builder).mainActionTaken();
+				}
+				builder.buildBuilding(levelMap, cost, refundable.get(), blueprint);
 				stateHolder.setState(NoneState.INSTANCE);
 			}
 		}

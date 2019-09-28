@@ -79,7 +79,7 @@ public abstract class VisualGUI
 		PointD p1 = layout.tileToPixel(rl);
 		gd.fillRect(p0.v[0], p0.v[1], p1.v[0] - p0.v[0], p1.v[1] - p0.v[1]);
 		gd.strokeRect(p0.v[0], p0.v[1], p1.v[0] - p0.v[0], p1.v[1] - p0.v[1]);
-		GuiTile[][] guiTiles = xgui.getTiles();
+		GuiTile[][] guiTiles = xgui.tiles;
 		for(int ix = 0; ix < xgui.xw(); ix++)
 		{
 			for(int iy = 0; iy < xgui.yw(); iy++)

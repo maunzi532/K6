@@ -11,7 +11,7 @@ import javafx.scene.input.*;
 import logic.*;
 import logic.xstate.*;
 
-public class EntityInvEditGUI extends XGUIState implements InvGUI, NEditState
+public class EntityInvEditGUI extends XGUIState implements InvGUI
 {
 	private static final CTile textInv = new CTile(2, 0, 2, 1);
 	private static final CTile weight = new CTile(0, 0);
@@ -34,6 +34,12 @@ public class EntityInvEditGUI extends XGUIState implements InvGUI, NEditState
 	public EntityInvEditGUI(InvEntity entity)
 	{
 		this.entity = entity;
+	}
+
+	@Override
+	public boolean editMode()
+	{
+		return true;
 	}
 
 	@Override

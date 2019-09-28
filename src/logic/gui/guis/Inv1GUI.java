@@ -12,15 +12,15 @@ public class Inv1GUI extends XGUIState implements InvGUI
 	private static final CTile textInv = new CTile(2, 0, 2, 1);
 	private static final CTile weight = new CTile(0, 0);
 
-	private Inv inv;
-	private InvNumView weightView;
-	private List<ItemView> itemsView;
-	private InvGUIPart invView;
-	private InvGUIPart itemView;
-	private String name;
-	private List<String> baseInfo;
-	private ItemView viewing;
-	private boolean changed;
+	protected Inv inv;
+	protected InvNumView weightView;
+	protected List<ItemView> itemsView;
+	protected InvGUIPart invView;
+	protected InvGUIPart itemView;
+	protected String name;
+	protected List<String> baseInfo;
+	protected ItemView viewing;
+	protected boolean changed;
 
 	public Inv1GUI(Inv inv, String name, List<String> baseInfo)
 	{
@@ -51,7 +51,7 @@ public class Inv1GUI extends XGUIState implements InvGUI
 		return 6;
 	}
 
-	private void update()
+	protected void update()
 	{
 		initTiles();
 		invView.addToGUI(itemsView.size(), this);
@@ -76,7 +76,7 @@ public class Inv1GUI extends XGUIState implements InvGUI
 		}
 	}
 
-	private List<String> info()
+	protected List<String> info()
 	{
 		if(viewing != null)
 			return viewing.item.info();

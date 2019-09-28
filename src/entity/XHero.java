@@ -6,12 +6,13 @@ import com.fasterxml.jackson.jr.ob.comp.*;
 import geom.f1.*;
 import item.*;
 import item.inv.*;
+import item.view.*;
 import java.io.*;
 import java.util.*;
 import javafx.scene.image.*;
 import logic.*;
 
-public class XHero extends InvEntity
+public class XHero extends InvEntity implements XBuilder
 {
 	private static final Image IMAGE_S = new Image("S.png");
 
@@ -65,25 +66,18 @@ public class XHero extends InvEntity
 		return !levelStarted && !startInvLocked;
 	}
 
+	@Override
+	public ItemView viewRecipeItem(Item item)
+	{
+		return outputInv().viewRecipeItem(item);
+	}
+
+	@Override
 	public Optional<ItemList> tryBuildingCosts(CostBlueprint cost, CommitType commitType)
 	{
 		if(inv.tryProvide(cost.costs, false, CommitType.LEAVE).isEmpty())
 			return Optional.empty();
 		return inv.tryProvide(cost.refundable, false, commitType);
-	}
-
-	public void buildBuilding(CostBlueprint costs, ItemList refundable, BuildingBlueprint blueprint)
-	{
-		if(blueprint.productionBlueprint != null)
-		{
-			ProductionBuilding building = new ProductionBuilding(location, costs, refundable, blueprint);
-			mainState.levelMap.addBuilding(building);
-			building.claimFloor(mainState.levelMap);
-		}
-		else if(blueprint.transporterBlueprint != null)
-		{
-			mainState.levelMap.addBuilding(new Transporter(location, costs, refundable, blueprint));
-		}
 	}
 
 	public void startTurn()

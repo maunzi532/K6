@@ -5,6 +5,11 @@ import logic.*;
 
 public interface NState
 {
+	default boolean editMode()
+	{
+		return false;
+	}
+
 	void onEnter(MainState mainState);
 
 	default String text()

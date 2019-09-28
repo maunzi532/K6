@@ -5,13 +5,19 @@ import javafx.scene.input.*;
 import logic.*;
 import logic.xstate.*;
 
-public class EditDeleteState implements NAutoState, NEditState
+public class EditDeleteState implements NAutoState
 {
 	private XEntity entity;
 
 	public EditDeleteState(XEntity entity)
 	{
 		this.entity = entity;
+	}
+
+	@Override
+	public boolean editMode()
+	{
+		return true;
 	}
 
 	@Override

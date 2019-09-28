@@ -8,13 +8,19 @@ import levelMap.*;
 import logic.*;
 import logic.xstate.*;
 
-public class EditCopyState implements NMarkState, NEditState
+public class EditCopyState implements NMarkState
 {
 	private XEntity entity;
 
 	public EditCopyState(XEntity entity)
 	{
 		this.entity = entity;
+	}
+
+	@Override
+	public boolean editMode()
+	{
+		return true;
 	}
 
 	@Override

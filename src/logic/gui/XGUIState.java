@@ -7,8 +7,8 @@ public abstract class XGUIState implements NState
 {
 	private static final Color BACKGROUND = Color.color(0.4, 0.4, 0.5);
 
-	protected GuiTile[][] tiles;
-	private CTile targeted = CTile.NONE;
+	public GuiTile[][] tiles;
+	public CTile targeted = CTile.NONE;
 
 	@Override
 	public XMenu menu()
@@ -26,11 +26,6 @@ public abstract class XGUIState implements NState
 				tiles[i][j] = GuiTile.EMPTY;
 			}
 		}
-	}
-
-	public GuiTile[][] getTiles()
-	{
-		return tiles;
 	}
 
 	public CTile getTargeted()

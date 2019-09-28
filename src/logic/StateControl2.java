@@ -96,7 +96,7 @@ public class StateControl2 implements XStateHolder, ConvInputConsumer
 			onMenuClick(menuOption, mouseKey);
 			cursorMarker = null;
 		}
-		else if(state instanceof NEditState && editorOption >= 0)
+		else if(state.editMode() && editorOption >= 0)
 		{
 			//editor
 			levelEditor.onEditorClick(editorOption, mouseKey);
@@ -138,7 +138,7 @@ public class StateControl2 implements XStateHolder, ConvInputConsumer
 		{
 			((NMarkState) state).onClick(mapTile, mainState, this, mouseKey);
 		}
-		else if(state instanceof NEditState && mouseKey >= 0)
+		else if(state.editMode() && mouseKey >= 0)
 		{
 			levelEditor.onMapClick(mapTile, mouseKey);
 		}
@@ -236,7 +236,7 @@ public class StateControl2 implements XStateHolder, ConvInputConsumer
 		{
 			dragMarker = mainState.y1.betweenArea(startTile, endTile).stream()
 					.map(e -> new VisMark(e, Color.CYAN, VisMark.d3)).collect(Collectors.toList());
-			if(finished && state instanceof NEditState && mouseKey >= 0)
+			if(finished && state.editMode() && mouseKey >= 0)
 			{
 				levelEditor.onMapDrag(startTile, endTile, mouseKey);
 			}

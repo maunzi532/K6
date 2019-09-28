@@ -14,7 +14,7 @@ public interface NMarkState extends NState
 
 	default void onEscape(XStateHolder stateHolder)
 	{
-		if(this instanceof NEditState)
+		if(editMode())
 		{
 			stateHolder.setState(EditingState.INSTANCE);
 		}

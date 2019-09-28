@@ -4,7 +4,6 @@ import geom.*;
 import geom.d1.*;
 import java.util.*;
 import logic.editor.*;
-import logic.xstate.*;
 import visual.gui.*;
 
 public class VisualLevelEditor
@@ -33,7 +32,7 @@ public class VisualLevelEditor
 
 	public void draw(LevelEditor levelEditor)
 	{
-		if(levelEditor.mainState.stateHolder.getState() instanceof NEditState)
+		if(levelEditor.mainState.stateHolder.getState().editMode())
 		{
 			for(int i = 0; i < LevelEditor.SLOT_COUNT; i++)
 			{
