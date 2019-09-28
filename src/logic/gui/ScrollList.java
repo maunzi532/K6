@@ -15,7 +15,6 @@ public class ScrollList<T>
 	private final CTile scrollUp;
 	private final CTile scrollDown;
 	public List<T> elements;
-	private boolean updateGUIFlag;
 	private int currentScroll;
 	private boolean skipScroll1;
 	private int elementLinesY;
@@ -42,22 +41,9 @@ public class ScrollList<T>
 				new GuiTile("Scroll", null, false, null, sizeX, 1), elementSizeX, 1);
 	}
 
-	public boolean readUpdateGUIFlag()
-	{
-		if(updateGUIFlag)
-		{
-			updateGUIFlag = false;
-			return true;
-		}
-		else
-		{
-			return false;
-		}
-	}
-
 	public void update()
 	{
-		elementLinesY = elements.size() / elementCountX;
+		elementLinesY = -Math.floorDiv(-elements.size(), elementCountX);
 		if(elementLinesY <= elementCountYm0)
 		{
 			skipScroll1 = false;
@@ -124,12 +110,12 @@ public class ScrollList<T>
 			}
 		}
 		if(canScrollUp)
-			setTile(tiles, scrollUp);
+			setFilledTile(tiles, scrollUp);
 		if(canScrollDown)
-			setTile(tiles, scrollDown);
+			setFilledTile(tiles, scrollDown);
 	}
 
-	private void setTile(GuiTile[][] tiles, CTile tile)
+	private void setFilledTile(GuiTile[][] tiles, CTile tile)
 	{
 		for(int ix = 0; ix < tile.r; ix++)
 		{
@@ -143,13 +129,13 @@ public class ScrollList<T>
 		}
 	}
 
-	public Optional<CTile> target(int x, int y, boolean scrollClick, Consumer<T> onTarget, Runnable onMissedTarget)
+	public ScrollListTargetResult<T> target(int x, int y, boolean scrollClick)
 	{
 		int xr = x - locationX;
 		int yr = y - locationY;
 		if(xr < 0 || yr < 0 || xr >= sizeX || yr >= sizeY)
 		{
-			return Optional.empty();
+			return new ScrollListTargetResult<>(false, false, CTile.NONE, null);
 		}
 		if(canScrollUp && yr == 0)
 		{
@@ -158,13 +144,8 @@ public class ScrollList<T>
 				currentScroll--;
 				if(skipScroll1 && currentScroll == 1)
 					currentScroll = 0;
-				updateGUIFlag = true;
 			}
-			if(onMissedTarget != null)
-			{
-				onMissedTarget.run();
-			}
-			return Optional.of(scrollUp);
+			return new ScrollListTargetResult<>(true, scrollClick, scrollUp, null);
 		}
 		if(canScrollDown && yr == sizeY - 1)
 		{
@@ -173,38 +154,22 @@ public class ScrollList<T>
 				currentScroll++;
 				if(skipScroll1 && currentScroll == 1)
 					currentScroll = 2;
-				updateGUIFlag = true;
 			}
-			if(onMissedTarget != null)
-			{
-				onMissedTarget.run();
-			}
-			return Optional.of(scrollDown);
+			return new ScrollListTargetResult<>(true, scrollClick, scrollDown, null);
 		}
 		int yr1 = y - startY();
 		if(xr >= elementSizeX * elementCountX || yr1 >= elementSizeY * shownLinesY)
 		{
-			if(onMissedTarget != null)
-			{
-				onMissedTarget.run();
-			}
-			return Optional.of(CTile.NONE);
+			return new ScrollListTargetResult<>(true, false, CTile.NONE, null);
 		}
 		int xel = xr / elementSizeX;
 		int yel = yr1 / elementSizeY;
-		int elementNum = yel * elementCountX + xel;
+		int elementNum = (yel + currentScroll) * elementCountX + xel;
 		if(elementNum >= elements.size())
 		{
-			if(onMissedTarget != null)
-			{
-				onMissedTarget.run();
-			}
-			return Optional.of(CTile.NONE);
+			return new ScrollListTargetResult<>(true, false, CTile.NONE, null);
 		}
-		if(onTarget != null)
-		{
-			onTarget.accept(elements.get(elementNum));
-		}
-		return Optional.of(new CTile(locationX + xel * elementSizeX, startY() + yel * elementSizeY, elementSizeX, elementSizeY));
+		return new ScrollListTargetResult<>(true, false,
+				new CTile(locationX + xel * elementSizeX, startY() + yel * elementSizeY, elementSizeX, elementSizeY), elements.get(elementNum));
 	}
 }

@@ -1,5 +1,6 @@
 package logic.gui;
 
+import item.view.*;
 import javafx.scene.image.*;
 import javafx.scene.paint.*;
 
@@ -52,5 +53,14 @@ public class GuiTile
 		color = copy.color;
 		l = r - 1;
 		u = d - 1;
+	}
+
+	public static GuiTile[] itemViewView(ItemView itemView)
+	{
+		return new GuiTile[]
+				{
+						new GuiTile(itemView.currentWithLimit()),
+						new GuiTile(null, itemView.item.image(), false, null)
+				};
 	}
 }

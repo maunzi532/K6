@@ -1,26 +1,26 @@
 package logic.editor.xgui;
 
 import entity.*;
+import item.view.*;
+import java.util.*;
+import java.util.stream.*;
+import javafx.scene.input.*;
 import logic.*;
 import logic.editor.xstate.*;
 import logic.gui.*;
-import item.view.*;
-import java.util.*;
-import javafx.scene.input.*;
 import logic.xstate.*;
 
-public class EntityEditGUI extends XGUIState implements InvGUI
+public class EntityEditGUI extends XGUIState
 {
 	private static final CTile textInv = new CTile(2, 0, 2, 1);
 	private static final CTile weight = new CTile(0, 0);
 
 	private InvEntity entity;
 	private InvNumView weightView;
-	private List<ItemView> items;
-	private InvGUIPart invView;
-	private InvGUIPart infoView;
-	private InvGUIPart changeView;
 	private List<String> info;
+	private ScrollList<ItemView> invView;
+	private ScrollList<Integer> infoView;
+	private ScrollList<Integer> changeView;
 	private ItemView viewing;
 	private boolean targetChanged;
 	private int changeStatNum;
@@ -40,14 +40,13 @@ public class EntityEditGUI extends XGUIState implements InvGUI
 	@Override
 	public void onEnter(MainState mainState)
 	{
-		weightView = this.entity.inputInv().viewInvWeight();
-		items = this.entity.inputInv().viewItems(true);
-		invView = new InvGUIPart(0, 0, 1, 1, 5, 2, 1);
-		info = entity.getStats().infoEdit();
-		infoView = new InvGUIPart(1, 3, 1, 3, 5, 1, 1);
+		weightView = entity.inputInv().viewInvWeight();
+		invView = new ScrollList<>(0, 1, 2, 5, 2, 1);
+		invView.elements = entity.inputInv().viewItems(true);
+		infoView = new ScrollList<>(3, 1, 3, 5, 1, 1);
 		changeStatNum = -1;
 		changeOptions = List.of();
-		changeView = new InvGUIPart(2, 7, 1, 1, 5, 1, 1);
+		changeView = new ScrollList<>(7, 1, 1, 5, 1, 1);
 		update();
 	}
 
@@ -88,94 +87,60 @@ public class EntityEditGUI extends XGUIState implements InvGUI
 			info = viewing.item.info();
 		else
 			info = entity.getStats().infoEdit();
-		invView.addToGUI(items.size(), this);
-		infoView.addToGUI(info.size(), this);
-		changeView.addToGUI(changeOptions.size(), this);
-		setTile(textInv, new GuiTile(entity.name()));
-		setTile(weight, new GuiTile(weightView.currentWithLimit()));
-	}
-
-	@Override
-	public void itemView(int invID, int x, int y1, int index)
-	{
-		if(invID == 0)
-		{
-			ItemView itemView = items.get(index);
-			tiles[x][y1] = new GuiTile(itemView.currentWithLimit());
-			tiles[x + 1][y1] = new GuiTile(null, itemView.item.image(), false, null);
-		}
-		else if(invID == 1)
-		{
-			if(index < info.size())
-				tiles[x][y1] = new GuiTile(info.get(index));
-		}
-		else
-		{
-			tiles[x][y1] = new GuiTile(changeOptions.get(index));
-		}
+		infoView.elements = IntStream.range(0, info.size()).boxed().collect(Collectors.toList());
+		changeView.elements = IntStream.range(0, changeOptions.size()).boxed().collect(Collectors.toList());
+		invView.update();
+		infoView.update();
+		changeView.update();
+		invView.draw(tiles, GuiTile::itemViewView);
+		infoView.draw(tiles, e -> new GuiTile[]{new GuiTile(info.get(e))});
+		changeView.draw(tiles, e -> new GuiTile[]{new GuiTile(changeOptions.get(e))});
+		setEmptyTileAndFill(textInv, new GuiTile(entity.name()));
+		setEmptyTileAndFill(weight, new GuiTile(weightView.currentWithLimit()));
 	}
 
 	@Override
 	public void target(int x, int y)
 	{
-		boolean tiv = invView.target(x, y, items.size(), this);
-		if(!tiv || getTargeted() == CTile.NONE)
+		var result0 = invView.target(x, y, false);
+		targeted = result0.targetTile;
+		if(viewing != result0.target)
 		{
-			setTargeted(CTile.NONE);
-			if(viewing != null)
-				targetChanged = true;
-			viewing = null;
-		}
-		if(targetChanged)
-		{
-			targetChanged = false;
+			viewing = result0.target;
 			update();
 		}
-		if(tiv)
+		if(result0.inside)
 			return;
-		if(infoView.target(x, y, info.size(), this))
-			return;
-		changeView.target(x, y, changeOptions.size(), this);
-	}
-
-	@Override
-	public void onTarget(int invID, int num, int xi, int yi, CTile cTile)
-	{
-		setTargeted(cTile);
-		if(invID == 0)
+		var result1 = infoView.target(x, y, false);
+		if(result1.inside)
 		{
-			if(viewing != items.get(num))
-			{
-				targetChanged = true;
-				viewing = items.get(num);
-			}
+			targeted = result1.targetTile;
+			return;
+		}
+		var result2 = changeView.target(x, y, false);
+		if(result2.inside)
+		{
+			targeted = result2.targetTile;
 		}
 	}
 
 	@Override
 	public void click(int x, int y, int key, XStateHolder stateHolder)
 	{
-		invView.checkClick(x, y, items.size(), this);
-		infoView.checkClick(x, y, info.size(), this);
-		changeView.checkClick(x, y, changeOptions.size(), this);
-		if(invView.updateGUIFlag() | infoView.updateGUIFlag() | changeView.updateGUIFlag())
+		var result0 = invView.target(x, y, true);
+		var result1 = infoView.target(x, y, true);
+		var result2 = changeView.target(x, y, true);
+		if(result0.scrolled || result1.scrolled || result2.scrolled)
+			update();
+		if(result1.target != null)
 		{
+			changeStatNum = result1.target;
+			changeOptions = entity.getStats().editOptions(result1.target);
 			update();
 		}
-	}
-
-	@Override
-	public void onClickItem(int invID, int num, int xi, int yi)
-	{
-		if(invID == 1)
+		if(result2.target != null)
 		{
-			changeStatNum = num;
-			changeOptions = entity.getStats().editOptions(num);
-			update();
-		}
-		if(invID == 2)
-		{
-			entity.getStats().applyEditOption(changeStatNum, num, entity);
+			entity.getStats().applyEditOption(changeStatNum, result2.target, entity);
 			update();
 		}
 	}

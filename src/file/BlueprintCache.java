@@ -39,6 +39,11 @@ public class BlueprintCache<T extends FullBlueprint>
 		return blueprints.keySet();
 	}
 
+	public List<T> allBlueprints()
+	{
+		return new ArrayList<>(blueprints.values());
+	}
+
 	public void saveBlueprints(String filename, ItemLoader itemLoader)
 	{
 		try

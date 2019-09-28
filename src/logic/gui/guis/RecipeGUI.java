@@ -5,7 +5,6 @@ import building.blueprint.*;
 import item.*;
 import item.inv.*;
 import item.view.*;
-import java.util.*;
 import javafx.scene.input.*;
 import logic.*;
 import logic.gui.*;
@@ -78,13 +77,13 @@ public class RecipeGUI extends XGUIState
 		resultView.update();
 		requireView.draw(tiles, this::elementViewRequired);
 		resultView.draw(tiles, this::elementViewResults);
-		setTile(textRequires);
-		setTile(textResults);
+		setFilledTile(textRequires);
+		setFilledTile(textResults);
 		if(recipeNum > 0)
-			setTile(prev);
+			setFilledTile(prev);
 		if(recipeNum < building.getRecipes().size() - 1)
-			setTile(next);
-		setTile(arrow);
+			setFilledTile(next);
+		setFilledTile(arrow);
 	}
 
 	public GuiTile[] elementViewRequired(ItemStack stack)
@@ -112,16 +111,16 @@ public class RecipeGUI extends XGUIState
 	@Override
 	public void target(int x, int y)
 	{
-		Optional<CTile> requireViewTarget = requireView.target(x, y, false, null, null);
-		if(requireViewTarget.isPresent())
+		var result0 = requireView.target(x, y, false);
+		if(result0.inside)
 		{
-			targeted = requireViewTarget.get();
+			targeted = result0.targetTile;
 			return;
 		}
-		Optional<CTile> resultViewTarget = resultView.target(x, y, false, null, null);
-		if(resultViewTarget.isPresent())
+		var result1 = resultView.target(x, y, false);
+		if(result1.inside)
 		{
-			targeted = resultViewTarget.get();
+			targeted = result1.targetTile;
 			return;
 		}
 		if(recipeNum > 0 && prev.contains(x, y))
@@ -135,19 +134,22 @@ public class RecipeGUI extends XGUIState
 	@Override
 	public void click(int x, int y, int key, XStateHolder stateHolder)
 	{
-		requireView.target(x, y, true, null, null);
-		resultView.target(x, y, true, null, null);
-		if(requireView.readUpdateGUIFlag() | resultView.readUpdateGUIFlag())
+		var result0 = requireView.target(x, y, true);
+		var result1 = resultView.target(x, y, true);
+		if(result0.scrolled || result1.scrolled)
 			update();
-		else if(recipeNum > 0 && prev.contains(x, y))
+		if(!result0.inside && !result1.inside)
 		{
-			recipeNum--;
-			update();
-		}
-		else if(recipeNum < building.getRecipes().size() - 1 && next.contains(x, y))
-		{
-			recipeNum++;
-			update();
+			if(recipeNum > 0 && prev.contains(x, y))
+			{
+				recipeNum--;
+				update();
+			}
+			else if(recipeNum < building.getRecipes().size() - 1 && next.contains(x, y))
+			{
+				recipeNum++;
+				update();
+			}
 		}
 	}
 

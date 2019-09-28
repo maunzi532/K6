@@ -7,7 +7,7 @@ import item.inv.Inv;
 import item.view.*;
 import logic.xstate.*;
 
-public class Inv1GUI extends XGUIState implements InvGUI
+public class Inv1GUI extends XGUIState
 {
 	private static final CTile textInv = new CTile(2, 0, 2, 1);
 	private static final CTile weight = new CTile(0, 0);
@@ -20,7 +20,6 @@ public class Inv1GUI extends XGUIState implements InvGUI
 	protected String name;
 	protected List<String> baseInfo;
 	protected ItemView viewing;
-	protected boolean changed;
 
 	public Inv1GUI(Inv inv, String name, List<String> baseInfo)
 	{
@@ -58,10 +57,10 @@ public class Inv1GUI extends XGUIState implements InvGUI
 		itemView.elements = info();
 		invView.update();
 		itemView.update();
-		invView.draw(tiles, this::elementViewItem);
-		itemView.draw(tiles, this::elementViewInfo);
-		setTile(textInv, new GuiTile(name));
-		setTile(weight, new GuiTile(weightView.currentWithLimit()));
+		invView.draw(tiles, GuiTile::itemViewView);
+		itemView.draw(tiles, info -> new GuiTile[]{new GuiTile(info)});
+		setEmptyTileAndFill(textInv, new GuiTile(name));
+		setEmptyTileAndFill(weight, new GuiTile(weightView.currentWithLimit()));
 	}
 
 	protected List<String> info()
@@ -73,84 +72,23 @@ public class Inv1GUI extends XGUIState implements InvGUI
 	}
 
 	@Override
-	public void itemView(int invID, int x, int y1, int index)
-	{
-		if(invID == 0)
-		{
-			ItemView itemView = itemsView.get(index);
-			tiles[x][y1] = new GuiTile(itemView.currentWithLimit());
-			tiles[x + 1][y1] = new GuiTile(null, itemView.item.image(), false, null);
-		}
-		else
-		{
-			if(index < info().size())
-				tiles[x][y1] = new GuiTile(info().get(index));
-		}
-	}
-
-	private GuiTile[] elementViewItem(ItemView itemView)
-	{
-		return new GuiTile[]
-				{
-						new GuiTile(itemView.currentWithLimit()),
-						new GuiTile(null, itemView.item.image(), false, null)
-				};
-	}
-
-	private GuiTile[] elementViewInfo(String info)
-	{
-		return new GuiTile[]{new GuiTile(info)};
-	}
-
-	@Override
 	public void target(int x, int y)
 	{
-		Optional<CTile> invViewTarget = invView.target(x, y, false, this::onTargetItem, this::onMissedTargetItem);
-		targeted = invViewTarget.orElse(CTile.NONE);
-		if(changed)
+		var result0 = invView.target(x, y, false);
+		targeted = result0.targetTile;
+		if(viewing != result0.target)
 		{
-			changed = false;
+			viewing = result0.target;
 			update();
-		}
-	}
-
-	@Override
-	public void onTarget(int invID, int num, int xi, int yi, CTile cTile)
-	{
-		setTargeted(cTile);
-		if(invID == 0)
-		{
-			if(viewing != itemsView.get(num))
-			{
-				changed = true;
-				viewing = itemsView.get(num);
-			}
-		}
-	}
-
-	private void onTargetItem(ItemView itemView)
-	{
-		if(viewing != itemView)
-		{
-			changed = true;
-			viewing = itemView;
-		}
-	}
-
-	private void onMissedTargetItem()
-	{
-		if(viewing != null)
-		{
-			changed = true;
-			viewing = null;
 		}
 	}
 
 	@Override
 	public void click(int x, int y, int key, XStateHolder stateHolder)
 	{
-		invView.target(x, y, true, null, null);
-		if(invView.readUpdateGUIFlag())
+		var result0 = invView.target(x, y, true);
+		var result1 = itemView.target(x, y, true);
+		if(result0.scrolled || result1.scrolled)
 			update();
 	}
 }

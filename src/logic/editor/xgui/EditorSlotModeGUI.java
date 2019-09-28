@@ -1,20 +1,17 @@
 package logic.editor.xgui;
 
 import logic.*;
+import logic.editor.*;
 import logic.editor.xstate.*;
 import logic.gui.*;
-import java.util.*;
-import logic.editor.*;
 import logic.xstate.*;
 
-public class EditorSlotModeGUI extends XGUIState implements InvGUI
+public class EditorSlotModeGUI extends XGUIState
 {
 	private static final CTile textInv = new CTile(2, 0, new GuiTile("Editing modes"), 2, 1);
 
 	private LevelEditor editor;
-	private List<EditingMode> modes;
-	private InvGUIPart modesView;
-	private EditingMode chosen;
+	private ScrollList<EditingMode> modesView;
 
 	public EditorSlotModeGUI(LevelEditor editor)
 	{
@@ -31,8 +28,8 @@ public class EditorSlotModeGUI extends XGUIState implements InvGUI
 	public void onEnter(MainState mainState)
 	{
 		mainState.sideInfoFrame.clearSideInfo();
-		modes = editor.getModes();
-		modesView = new InvGUIPart(0, 0, 1, 6, 5, 1, 1);
+		modesView = new ScrollList<>(0, 1, 6, 5, 1, 1);
+		modesView.elements = editor.getModes();
 		update();
 	}
 
@@ -51,49 +48,29 @@ public class EditorSlotModeGUI extends XGUIState implements InvGUI
 	private void update()
 	{
 		initTiles();
-		modesView.addToGUI(modes.size(), this);
-		setTile(textInv);
-	}
-
-	@Override
-	public void itemView(int invID, int x, int y1, int index)
-	{
-		tiles[x][y1] = modes.get(index).guiTile();
+		modesView.update();
+		modesView.draw(tiles, mode -> new GuiTile[]{mode.guiTile()});
+		setFilledTile(textInv);
 	}
 
 	@Override
 	public void target(int x, int y)
 	{
-		if(modesView.target(x, y, modes.size(), this))
-			return;
-		setTargeted(CTile.NONE);
-	}
-
-	@Override
-	public void onTarget(int invID, int num, int xi, int yi, CTile cTile)
-	{
-		setTargeted(cTile);
+		var result0 = modesView.target(x, y, false);
+		targeted = result0.targetTile;
 	}
 
 	@Override
 	public void click(int x, int y, int key, XStateHolder stateHolder)
 	{
-		modesView.checkClick(x, y, modes.size(), this);
-		if(chosen != null)
+		var result0 = modesView.target(x, y, true);
+		if(result0.target != null)
 		{
-			editor.setCurrentSlot(chosen);
+			editor.setCurrentSlot(result0.target);
 			stateHolder.setState(EditingState.INSTANCE);
 		}
-		else if(modesView.updateGUIFlag())
-		{
+		else if(result0.scrolled)
 			update();
-		}
-	}
-
-	@Override
-	public void onClickItem(int invID, int num, int xi, int yi)
-	{
-		chosen = modes.get(num);
 	}
 
 	@Override

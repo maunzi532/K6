@@ -40,7 +40,7 @@ public abstract class XGUIState implements NState
 		this.targeted = targeted;
 	}
 
-	public void setTile(CTile tile, GuiTile guiTile)
+	public void setEmptyTileAndFill(CTile tile, GuiTile guiTile)
 	{
 		for(int ix = 0; ix < tile.r; ix++)
 		{
@@ -54,7 +54,7 @@ public abstract class XGUIState implements NState
 		}
 	}
 
-	public void setTile(CTile tile)
+	public void setFilledTile(CTile tile)
 	{
 		for(int ix = 0; ix < tile.r; ix++)
 		{

@@ -98,9 +98,12 @@ public class MainState
 	//TODO LevelEditor create Building
 	//TODO LevelEditor edit Building
 
-	//TODO change item weight mechanics
+	//TODO change melt/crit interaction
+	//TODO change item weight mechanics and change speed effects
+	//TODO nerf luck and other percentage-based stats
 	//TODO get levelup essence
 	//TODO get levelup
+	//TODO add upgraded classes
 
 	//TODO enemy reinforcements
 	//TODO Enemy AI types

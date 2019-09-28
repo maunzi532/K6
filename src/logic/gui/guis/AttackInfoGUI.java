@@ -1,23 +1,20 @@
 package logic.gui.guis;
 
 import entity.*;
-import logic.gui.*;
-import java.util.*;
 import logic.*;
+import logic.gui.*;
 import logic.sideinfo.*;
 import logic.xstate.*;
 
-public class AttackInfoGUI extends XGUIState implements InvGUI
+public class AttackInfoGUI extends XGUIState
 {
 	private XHero attacker;
 	private XEntity target;
 	private SideInfoFrame sideInfoFrame;
 	private CTile nameA;
 	private CTile nameT;
-	private List<AttackInfo> infoList;
-	private InvGUIPart attacksView;
-	private int lastTargeted;
-	private AttackInfo chosen;
+	private ScrollList<AttackInfo> attacksView;
+	private AttackInfo lastTargeted;
 
 	public AttackInfoGUI(XHero attacker, XEntity target)
 	{
@@ -32,9 +29,9 @@ public class AttackInfoGUI extends XGUIState implements InvGUI
 		sideInfoFrame.sidedInfo(attacker, target);
 		nameA = new CTile(0, 0, new GuiTile(attacker.name()), 2, 1);
 		nameT = new CTile(4, 0, new GuiTile(target.name()), 2, 1);
-		infoList = attacker.attackInfo(target);
-		attacksView = new InvGUIPart(0, 0, 1, 1, 3, 6, 2);
-		lastTargeted = -1;
+		attacksView = new ScrollList<>(0, 1, 6, 6, 6, 2);
+		attacksView.elements = attacker.attackInfo(target);
+		lastTargeted = null;
 		update();
 	}
 
@@ -59,94 +56,67 @@ public class AttackInfoGUI extends XGUIState implements InvGUI
 	private void update()
 	{
 		initTiles();
-		attacksView.addToGUI(infoList.size(), this);
-		setTile(nameA);
-		setTile(nameT);
+		attacksView.update();
+		attacksView.draw(tiles, this::itemView);
+		setFilledTile(nameA);
+		setFilledTile(nameT);
 	}
 
-	@Override
-	public void itemView(int invID, int x, int y1, int index)
+	private GuiTile[] itemView(AttackInfo aI)
 	{
-		AttackInfo info = infoList.get(index);
-		tiles[x][y1] = new GuiTile(read(info, 0));
-		tiles[x][y1 + 1] = new GuiTile(read(info, 4));
-		tiles[x + 1][y1] = new GuiTile(read(info, 2));
-		tiles[x + 1][y1 + 1] = new GuiTile(read(info, 6));
-		tiles[x + 2][y1] = new GuiTile(read(info, 8), Optional.ofNullable(info.mode).map(XMode::image).orElse(null),
-				false, null);
-		tiles[x + 2][y1 + 1] = new GuiTile(read(info, 10));
-		tiles[x + 3][y1] = new GuiTile(read(info, 9), Optional.ofNullable(info.modeT).map(XMode::image).orElse(null),
-				true, null);
-		tiles[x + 3][y1 + 1] = new GuiTile(read(info, 11));
-		tiles[x + 4][y1] = new GuiTile(read(info, 1));
-		tiles[x + 4][y1 + 1] = new GuiTile(read(info, 5));
-		tiles[x + 5][y1] = new GuiTile(read(info, 3));
-		tiles[x + 5][y1 + 1] = new GuiTile(read(info, 7));
+		String[] infos = aI.getInfos();
+		return new GuiTile[]
+				{
+						new GuiTile(read(infos, 0)),
+						new GuiTile(read(infos, 2)),
+						new GuiTile(read(infos, 8), aI.mode.image(), false, null),
+						new GuiTile(read(infos, 9), aI.modeT.image(), false, null),
+						new GuiTile(read(infos, 1)),
+						new GuiTile(read(infos, 3)),
+						new GuiTile(read(infos, 4)),
+						new GuiTile(read(infos, 6)),
+						new GuiTile(read(infos, 10)),
+						new GuiTile(read(infos, 11)),
+						new GuiTile(read(infos, 5)),
+						new GuiTile(read(infos, 7)),
+				};
 	}
 
-	private String read(AttackInfo info, int n)
+	private String read(String[] infos, int n)
 	{
-		if(n >= info.getInfos().length)
+		if(n >= infos.length)
 			return "";
-		return info.getInfos()[n];
+		return infos[n];
 	}
 
 	@Override
 	public void target(int x, int y)
 	{
-		if(attacksView.target(x, y, infoList.size(), this))
-			return;
-		setTargeted(CTile.NONE);
-		if(lastTargeted >= 0)
+		var result0 = attacksView.target(x, y, false);
+		targeted = result0.targetTile;
+		if(lastTargeted != result0.target)
 		{
-			sideInfoFrame.sidedInfo(attacker, target);
-			lastTargeted = -1;
-		}
-	}
-
-	@Override
-	public void onTarget(int invID, int num, int xi, int yi, CTile cTile)
-	{
-		setTargeted(cTile);
-		if(lastTargeted != num)
-		{
-			sideInfoFrame.attackInfo(infoList.get(num));
+			if(result0.target != null)
+				sideInfoFrame.attackInfo(result0.target);
+			else
+				sideInfoFrame.sidedInfo(attacker, target);
 			//analysis.get(num).outcomes2().forEach(e -> System.out.println(e.readableChance() + " " + e.compareText));
 			//System.out.println();
-			lastTargeted = num;
-		}
-	}
-
-	@Override
-	public void onMissedTarget(int invID)
-	{
-		setTargeted(CTile.NONE);
-		if(lastTargeted >= 0)
-		{
-			sideInfoFrame.sidedInfo(attacker, target);
-			lastTargeted = -1;
+			lastTargeted = result0.target;
 		}
 	}
 
 	@Override
 	public void click(int x, int y, int key, XStateHolder stateHolder)
 	{
-		attacksView.checkClick(x, y, infoList.size(), this);
-		if(chosen != null)
+		var result0 = attacksView.target(x, y, true);
+		if(result0.target != null)
 		{
 			attacker.takeAp(2);
 			attacker.mainActionTaken();
-			stateHolder.setState(new PreAttackState(NoneState.INSTANCE, chosen));
+			stateHolder.setState(new PreAttackState(NoneState.INSTANCE, result0.target));
 		}
-		else if(attacksView.updateGUIFlag())
-		{
+		else if(result0.scrolled)
 			update();
-		}
-	}
-
-	@Override
-	public void onClickItem(int invID, int num, int xi, int yi)
-	{
-		chosen = infoList.get(num);
 	}
 }

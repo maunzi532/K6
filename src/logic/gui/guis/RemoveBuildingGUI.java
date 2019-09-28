@@ -2,16 +2,15 @@ package logic.gui.guis;
 
 import building.*;
 import entity.*;
-import logic.gui.*;
 import item.*;
 import item.inv.*;
 import item.view.*;
-import java.util.*;
 import javafx.scene.input.*;
 import logic.*;
+import logic.gui.*;
 import logic.xstate.*;
 
-public class RemoveBuildingGUI extends XGUIState implements InvGUI
+public class RemoveBuildingGUI extends XGUIState
 {
 	private static final CTile textInv = new CTile(0, 0, new GuiTile("Remove Building?"), 4, 1);
 	private static final CTile weight = new CTile(4, 0, 2, 1);
@@ -21,8 +20,7 @@ public class RemoveBuildingGUI extends XGUIState implements InvGUI
 	private Buildable building;
 	private ItemList refunds;
 	private InvNumView weightView;
-	private List<ItemView> itemsView;
-	private InvGUIPart invView;
+	private ScrollList<ItemView> invView;
 
 	public RemoveBuildingGUI(XHero character)
 	{
@@ -37,8 +35,8 @@ public class RemoveBuildingGUI extends XGUIState implements InvGUI
 		refunds = building.getRefundable();
 		character.inputInv().tryAdd(refunds, true, CommitType.LEAVE);
 		weightView = character.inputInv().viewInvWeight();
-		itemsView = character.inputInv().viewItems(true);
-		invView = new InvGUIPart(0, 0, 1, 3, 4, 2, 1);
+		invView = new ScrollList<>(0, 1, 3, 4, 2, 1);
+		invView.elements = character.inputInv().viewItems(true);
 		update();
 	}
 
@@ -81,25 +79,31 @@ public class RemoveBuildingGUI extends XGUIState implements InvGUI
 	private void update()
 	{
 		initTiles();
-		invView.addToGUI(itemsView.size(), this);
-		setTile(textInv);
-		setTile(weight, new GuiTile(weightView.baseAndCurrentWithLimit()));
-		setTile(remove);
+		invView.update();
+		invView.draw(tiles, this::changedItemView);
+		setFilledTile(textInv);
+		setEmptyTileAndFill(weight, new GuiTile(weightView.baseAndCurrentWithLimit()));
+		setFilledTile(remove);
 	}
 
-	@Override
-	public void itemView(int invID, int x, int y1, int index)
+	private GuiTile[] changedItemView(ItemView itemView)
 	{
-		ItemView itemView = itemsView.get(index);
-		tiles[x][y1] = new GuiTile(itemView.baseAndCurrentWithLimit());
-		tiles[x + 1][y1] = new GuiTile(null, itemView.item.image(), false, null);
+		return new GuiTile[]
+				{
+						new GuiTile(itemView.baseAndCurrentWithLimit()),
+						new GuiTile(null, itemView.item.image(), false, null)
+				};
 	}
 
 	@Override
 	public void target(int x, int y)
 	{
-		if(invView.target(x, y, itemsView.size(), this))
+		var result0 = invView.target(x, y, false);
+		if(result0.inside)
+		{
+			targeted = result0.targetTile;
 			return;
+		}
 		if(remove.contains(x, y))
 			setTargeted(remove);
 		else
@@ -107,14 +111,11 @@ public class RemoveBuildingGUI extends XGUIState implements InvGUI
 	}
 
 	@Override
-	public void onTarget(int invID, int num, int xi, int yi, CTile cTile)
-	{
-		setTargeted(cTile);
-	}
-
-	@Override
 	public void click(int x, int y, int key, XStateHolder stateHolder)
 	{
+		var result0 = invView.target(x, y, true);
+		if(result0.scrolled)
+			update();
 		if(remove.contains(x, y) && character.inputInv().ok())
 		{
 			character.takeAp(1);

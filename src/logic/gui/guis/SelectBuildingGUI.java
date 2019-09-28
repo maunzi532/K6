@@ -3,21 +3,18 @@ package logic.gui.guis;
 import building.blueprint.*;
 import entity.*;
 import file.*;
-import logic.gui.*;
 import javafx.scene.input.*;
 import levelMap.*;
 import logic.*;
+import logic.gui.*;
 import logic.xstate.*;
 
-public class SelectBuildingGUI extends XGUIState implements InvGUI
+public class SelectBuildingGUI extends XGUIState
 {
 	private static final CTile textInv = new CTile(2, 0, new GuiTile("Buildings"), 2, 1);
 
 	private final XHero builder;
-	private BlueprintCache<BuildingBlueprint> blueprintCache;
-	private String[] names;
-	private InvGUIPart buildingsView;
-	private BuildingBlueprint chosen = null;
+	private ScrollList<BuildingBlueprint> buildingsView;
 
 	public SelectBuildingGUI(XHero builder)
 	{
@@ -28,9 +25,9 @@ public class SelectBuildingGUI extends XGUIState implements InvGUI
 	public void onEnter(MainState mainState)
 	{
 		mainState.sideInfoFrame.setSideInfo(builder.standardSideInfo(), null);
-		blueprintCache = mainState.buildingBlueprintCache;
-		names = blueprintCache.allNames().toArray(String[]::new);
-		buildingsView = new InvGUIPart(0, 0, 1, 3, 5, 2, 1);
+		BlueprintCache<BuildingBlueprint> blueprintCache = mainState.buildingBlueprintCache;
+		buildingsView = new ScrollList<>(0, 1, 6, 5, 2, 1);
+		buildingsView.elements = blueprintCache.allBlueprints();
 		update();
 	}
 
@@ -73,52 +70,36 @@ public class SelectBuildingGUI extends XGUIState implements InvGUI
 	private void update()
 	{
 		initTiles();
-		buildingsView.addToGUI(names.length, this);
-		setTile(textInv);
+		buildingsView.update();
+		buildingsView.draw(tiles, this::itemView);
+		setFilledTile(textInv);
 	}
 
-	@Override
-	public void itemView(int invID, int x, int y1, int index)
+	public GuiTile[] itemView(BuildingBlueprint blueprint)
 	{
-		/*ItemView itemView = itemsView.get(index);
-		tiles[x][y1] = new GuiTile(itemView.currentWithLimit());
-		tiles[x + 1][y1] = new GuiTile(null, itemView.mode.image(), null);*/
-		BuildingBlueprint blueprint = blueprintCache.get(names[index]);
-		tiles[x][y1] = new GuiTile(blueprint.name);
-		tiles[x + 1][y1] = new GuiTile(null, MBuilding.IMAGE, false, null);
+		return new GuiTile[]
+				{
+						new GuiTile(blueprint.name),
+						new GuiTile(null, MBuilding.IMAGE, false, null)
+				};
 	}
 
 	@Override
 	public void target(int x, int y)
 	{
-		if(buildingsView.target(x, y, names.length, this))
-			return;
-		setTargeted(CTile.NONE);
-	}
-
-	@Override
-	public void onTarget(int invID, int num, int xi, int yi, CTile cTile)
-	{
-		setTargeted(cTile);
+		var result0 = buildingsView.target(x, y, false);
+		targeted = result0.targetTile;
 	}
 
 	@Override
 	public void click(int x, int y, int key, XStateHolder stateHolder)
 	{
-		buildingsView.checkClick(x, y, names.length, this);
-		if(chosen != null)
+		var result0 = buildingsView.target(x, y, true);
+		if(result0.target != null)
 		{
-			stateHolder.setState(new BuildGUI(builder, chosen));
+			stateHolder.setState(new BuildGUI(builder, result0.target));
 		}
-		else if(buildingsView.updateGUIFlag())
-		{
+		else if(result0.scrolled)
 			update();
-		}
-	}
-
-	@Override
-	public void onClickItem(int invID, int num, int xi, int yi)
-	{
-		chosen = blueprintCache.get(names[num]);
 	}
 }

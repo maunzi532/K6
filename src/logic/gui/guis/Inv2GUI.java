@@ -3,12 +3,11 @@ package logic.gui.guis;
 import building.transport.*;
 import item.inv.*;
 import item.view.*;
-import java.util.*;
 import logic.*;
 import logic.gui.*;
 import logic.xstate.*;
 
-public class Inv2GUI extends XGUIState implements InvGUI
+public class Inv2GUI extends XGUIState
 {
 	private static final CTile textInputInv = new CTile(1, 0, new GuiTile("Input"), 2, 1);
 	private static final CTile textOutputInv = new CTile(6, 0, new GuiTile("Output"), 2, 1);
@@ -19,10 +18,8 @@ public class Inv2GUI extends XGUIState implements InvGUI
 	private Inv outputInv;
 	private InvNumView weightViewInput;
 	private InvNumView weightViewOutput;
-	private List<ItemView> itemsViewInput;
-	private List<ItemView> itemsViewOutput;
-	private InvGUIPart invViewInput;
-	private InvGUIPart invViewOutput;
+	private ScrollList<ItemView> invViewInput;
+	private ScrollList<ItemView> invViewOutput;
 
 	public Inv2GUI(DoubleInv doubleInv)
 	{
@@ -35,10 +32,10 @@ public class Inv2GUI extends XGUIState implements InvGUI
 	{
 		weightViewInput = inputInv.viewInvWeight();
 		weightViewOutput = outputInv.viewInvWeight();
-		itemsViewInput = inputInv.viewItems(true);
-		itemsViewOutput = outputInv.viewItems(true);
-		invViewInput = new InvGUIPart(0, 0, 1, 2, 5, 2, 1);
-		invViewOutput = new InvGUIPart(1, 5, 1, 2, 5, 2, 1);
+		invViewInput = new ScrollList<>(0, 1, 4, 5, 2, 1);
+		invViewOutput = new ScrollList<>(5, 1, 4, 5, 2, 1);
+		invViewInput.elements = inputInv.viewItems(true);
+		invViewOutput.elements = outputInv.viewItems(true);
 		update();
 	}
 
@@ -57,39 +54,35 @@ public class Inv2GUI extends XGUIState implements InvGUI
 	private void update()
 	{
 		initTiles();
-		invViewInput.addToGUI(itemsViewInput.size(), this);
-		invViewOutput.addToGUI(itemsViewOutput.size(), this);
-		setTile(textInputInv);
-		setTile(textOutputInv);
-		setTile(weightInput, new GuiTile(weightViewInput.currentWithLimit()));
-		setTile(weightOutput, new GuiTile(weightViewOutput.currentWithLimit()));
-	}
-
-	@Override
-	public void itemView(int invID, int x, int y1, int index)
-	{
-		List<ItemView> itemsView = invID == 0 ? itemsViewInput : itemsViewOutput;
-		ItemView itemView = itemsView.get(index);
-		tiles[x][y1] = new GuiTile(itemView.currentWithLimit());
-		tiles[x + 1][y1] = new GuiTile(null, itemView.item.image(), false, null);
+		invViewInput.update();
+		invViewOutput.update();
+		invViewInput.draw(tiles, GuiTile::itemViewView);
+		invViewOutput.draw(tiles, GuiTile::itemViewView);
+		setFilledTile(textInputInv);
+		setFilledTile(textOutputInv);
+		setEmptyTileAndFill(weightInput, new GuiTile(weightViewInput.currentWithLimit()));
+		setEmptyTileAndFill(weightOutput, new GuiTile(weightViewOutput.currentWithLimit()));
 	}
 
 	@Override
 	public void target(int x, int y)
 	{
-		if(invViewInput.target(x, y, itemsViewInput.size(), this))
+		var result0 = invViewInput.target(x, y, false);
+		if(result0.inside)
+		{
+			targeted = result0.targetTile;
 			return;
-		if(invViewOutput.target(x, y, itemsViewOutput.size(), this))
-			return;
-		setTargeted(CTile.NONE);
+		}
+		var result1 = invViewOutput.target(x, y, false);
+		targeted = result1.targetTile;
 	}
 
 	@Override
-	public void onTarget(int invID, int num, int xi, int yi, CTile cTile)
+	public void click(int x, int y, int key, XStateHolder stateHolder)
 	{
-		setTargeted(cTile);
+		var result0 = invViewInput.target(x, y, true);
+		var result1 = invViewOutput.target(x, y, true);
+		if(result0.scrolled || result1.scrolled)
+			update();
 	}
-
-	@Override
-	public void click(int x, int y, int key, XStateHolder stateHolder){}
 }

@@ -1,17 +1,17 @@
 package logic.editor.xgui;
 
 import entity.*;
-import logic.editor.xstate.*;
-import logic.gui.*;
 import item.*;
 import item.inv.*;
 import item.view.*;
 import java.util.*;
 import javafx.scene.input.*;
 import logic.*;
+import logic.editor.xstate.*;
+import logic.gui.*;
 import logic.xstate.*;
 
-public class EntityInvEditGUI extends XGUIState implements InvGUI
+public class EntityInvEditGUI extends XGUIState
 {
 	private static final CTile textInv = new CTile(2, 0, 2, 1);
 	private static final CTile weight = new CTile(0, 0);
@@ -19,17 +19,14 @@ public class EntityInvEditGUI extends XGUIState implements InvGUI
 	private final InvEntity entity;
 	private Inv inv;
 	private InvNumView weightView;
-	private List<ItemView> items;
-	private List<Item> allItems;
-	private InvGUIPart invView;
-	private InvGUIPart infoView;
-	private InvGUIPart allItemsView;
+	private ScrollList<ItemView> invView;
+	private ScrollList<String> infoView;
+	private ScrollList<Item> allItemsView;
 	private String name;
 	private List<String> info;
 	private Item viewing;
-	private boolean targetChanged;
 	private boolean otherItem;
-	private int editItemNum;
+	private Item editItem;
 
 	public EntityInvEditGUI(InvEntity entity)
 	{
@@ -47,14 +44,13 @@ public class EntityInvEditGUI extends XGUIState implements InvGUI
 	{
 		inv = this.entity.inputInv();
 		weightView = inv.viewInvWeight();
-		items = inv.viewItems(true);
-		invView = new InvGUIPart(0, 0, 1, 1, 5, 2, 1);
+		invView = new ScrollList<>(0, 1, 2, 5, 2, 1);
+		invView.elements = inv.viewItems(true);
 		name = entity.name();
 		info = entity.getStats().infoEdit();
-		infoView = new InvGUIPart(1, 2, 1, 3, 5, 1, 1);
-		allItems = mainState.combatSystem.allItems();
-		allItemsView = new InvGUIPart(2, 5, 1, 3, 5, 1, 1);
-		editItemNum = -1;
+		infoView = new ScrollList<>(2, 1, 3, 5, 1, 1);
+		allItemsView = new ScrollList<>(5, 1, 3, 5, 1, 1);
+		allItemsView.elements = mainState.combatSystem.allItems();
 		update();
 	}
 
@@ -91,7 +87,7 @@ public class EntityInvEditGUI extends XGUIState implements InvGUI
 	private void update()
 	{
 		initTiles();
-		if(editItemNum >= 0)
+		if(editItem != null)
 		{
 			if(otherItem)
 				info = List.of("Add", "X");
@@ -102,142 +98,103 @@ public class EntityInvEditGUI extends XGUIState implements InvGUI
 			info = viewing.info();
 		else
 			info = entity.getStats().infoEdit();
-		items = entity.inputInv().viewItems(true);
-		invView.addToGUI(items.size(), this);
-		infoView.addToGUI(info.size(), this);
-		allItemsView.addToGUI(allItems.size(), this);
-		setTile(textInv, new GuiTile(name));
-		setTile(weight, new GuiTile(weightView.currentWithLimit()));
-	}
-
-	@Override
-	public void itemView(int invID, int x, int y1, int index)
-	{
-		if(invID == 0)
-		{
-			ItemView itemView = items.get(index);
-			tiles[x][y1] = new GuiTile(itemView.currentWithLimit());
-			tiles[x + 1][y1] = new GuiTile(null, itemView.item.image(), false, null);
-		}
-		else if(invID == 1)
-		{
-			if(index < info.size())
-				tiles[x][y1] = new GuiTile(info.get(index));
-		}
-		else
-		{
-			tiles[x][y1] = new GuiTile(null, allItems.get(index).image(), false, null);
-		}
+		invView.elements = entity.inputInv().viewItems(true);
+		infoView.elements = info;
+		invView.update();
+		infoView.update();
+		allItemsView.update();
+		invView.draw(tiles, GuiTile::itemViewView);
+		infoView.draw(tiles, e -> new GuiTile[]{new GuiTile(e)});
+		allItemsView.draw(tiles, e -> new GuiTile[]{new GuiTile(null, e.image(), false, null)});
+		setEmptyTileAndFill(textInv, new GuiTile(name));
+		setEmptyTileAndFill(weight, new GuiTile(weightView.currentWithLimit()));
 	}
 
 	@Override
 	public void target(int x, int y)
 	{
-		boolean tiv = invView.target(x, y, items.size(), this) || allItemsView.target(x, y, allItems.size(), this);
-		if(!tiv || getTargeted() == CTile.NONE)
+		var result0 = invView.target(x, y, false);
+		Item r0Item = Optional.ofNullable(result0.target).map(e -> e.item).orElse(null);
+		if(viewing != r0Item)
 		{
-			setTargeted(CTile.NONE);
-			if(viewing != null)
-				targetChanged = true;
-			viewing = null;
-		}
-		if(targetChanged)
-		{
-			targetChanged = false;
+			viewing = r0Item;
 			update();
 		}
-		if(tiv)
-			return;
-		infoView.target(x, y, info.size(), this);
-	}
-
-	@Override
-	public void onTarget(int invID, int num, int xi, int yi, CTile cTile)
-	{
-		setTargeted(cTile);
-		if(editItemNum < 0)
+		if(result0.inside)
 		{
-			if(invID == 0)
-			{
-				if(viewing != items.get(num).item)
-				{
-					targetChanged = true;
-					viewing = items.get(num).item;
-				}
-			}
-			else if(invID == 2)
-			{
-				if(viewing != allItems.get(num))
-				{
-					targetChanged = true;
-					viewing = allItems.get(num);
-				}
-			}
+			targeted = result0.targetTile;
+			return;
 		}
+		var result2 = allItemsView.target(x, y, false);
+		if(viewing != result2.target)
+		{
+			viewing = result2.target;
+			update();
+		}
+		if(result2.inside)
+		{
+			targeted = result2.targetTile;
+			return;
+		}
+		targeted = CTile.NONE;
 	}
 
 	@Override
 	public void click(int x, int y, int key, XStateHolder stateHolder)
 	{
-		invView.checkClick(x, y, items.size(), this);
-		allItemsView.checkClick(x, y, allItems.size(), this);
-		infoView.checkClick(x, y, info.size(), this);
-		if(invView.updateGUIFlag() | allItemsView.updateGUIFlag() | infoView.updateGUIFlag())
-		{
+		var result0 = invView.target(x, y, true);
+		var result1 = infoView.target(x, y, true);
+		var result2 = allItemsView.target(x, y, true);
+		if(result0.scrolled || result1.scrolled || result2.scrolled)
 			update();
-		}
-	}
-
-	@Override
-	public void onClickItem(int invID, int num, int xi, int yi)
-	{
-		if(invID == 0)
+		if(result0.target != null)
 		{
 			otherItem = false;
-			editItemNum = num;
+			editItem = result0.target.item;
 			update();
 		}
-		if(invID == 2)
+		if(result2.target != null)
 		{
 			otherItem = true;
-			editItemNum = num;
+			editItem = result2.target;
 			update();
 		}
-		if(invID == 1)
+		if(result1.target != null)
 		{
-			if(editItemNum >= 0)
+			if(editItem != null)
 			{
 				if(otherItem)
 				{
-					if(num == 0)
+					if(result1.target.equals("Add"))
 					{
-						inv.tryAdd(new ItemList(new ItemStack(allItems.get(editItemNum), 1)), false, CommitType.COMMIT);
-						editItemNum = -1;
+						inv.tryAdd(new ItemList(new ItemStack(editItem, 1)), false, CommitType.COMMIT);
 						update();
 					}
-					else if(num == 1)
+					else if(result1.target.equals("X"))
 					{
-						editItemNum = -1;
+						editItem = null;
 						update();
 					}
 				}
 				else
 				{
-					if(num == 0)
+					if(result1.target.equals("+"))
 					{
-						inv.tryAdd(new ItemList(new ItemStack(items.get(editItemNum).item, 1)), false, CommitType.COMMIT);
-						editItemNum = -1;
+						inv.tryAdd(new ItemList(new ItemStack(editItem, 1)), false, CommitType.COMMIT);
 						update();
 					}
-					else if(num == 1)
+					else if(result1.target.equals("-"))
 					{
-						inv.tryGive(new ItemList(new ItemStack(items.get(editItemNum).item, 1)), false, CommitType.COMMIT);
-						editItemNum = -1;
+						inv.tryGive(new ItemList(new ItemStack(editItem, 1)), false, CommitType.COMMIT);
+						if(!inv.tryGive(new ItemList(new ItemStack(editItem, 1)), false, CommitType.ROLLBACK))
+						{
+							editItem = null;
+						}
 						update();
 					}
-					else if(num == 2)
+					else if(result1.target.equals("X"))
 					{
-						editItemNum = -1;
+						editItem = null;
 						update();
 					}
 				}
