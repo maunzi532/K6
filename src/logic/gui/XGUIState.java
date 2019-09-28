@@ -1,10 +1,12 @@
 package logic.gui;
 
+import javafx.scene.image.*;
 import javafx.scene.paint.*;
 import logic.xstate.*;
 
 public abstract class XGUIState implements NState
 {
+	public static final Image ARROW = new Image("Arrow.png");
 	private static final Color BACKGROUND = Color.color(0.4, 0.4, 0.5);
 
 	public GuiTile[][] tiles;

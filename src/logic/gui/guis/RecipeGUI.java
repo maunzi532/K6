@@ -2,26 +2,27 @@ package logic.gui.guis;
 
 import building.*;
 import building.blueprint.*;
-import logic.*;
-import logic.gui.*;
 import item.*;
 import item.inv.*;
 import item.view.*;
+import java.util.*;
 import javafx.scene.input.*;
+import logic.*;
+import logic.gui.*;
 import logic.xstate.*;
 
-public class RecipeGUI extends XGUIState implements InvGUI
+public class RecipeGUI extends XGUIState
 {
 	private static final CTile textRequires = new CTile(1, 0, new GuiTile("Requires"), 2, 1);
 	private static final CTile textResults = new CTile(4, 0, new GuiTile("Results"), 2, 1);
 	private static final CTile prev = new CTile(0, 1, new GuiTile("Previous"));
 	private static final CTile next = new CTile(6, 1, new GuiTile("Next"));
-	private static final CTile arrow = new CTile(3, 1, new GuiTile(null, ARROW, false, null));
+	private static final CTile arrow = new CTile(3, 1, new GuiTile(null, XGUIState.ARROW, false, null));
 
 	private ProductionBuilding building;
 	private int recipeNum;
-	private InvGUIPart requireView;
-	private InvGUIPart resultView;
+	private ScrollList<ItemStack> requireView;
+	private ScrollList<ItemStack> resultView;
 
 	public RecipeGUI(ProductionBuilding building)
 	{
@@ -32,8 +33,8 @@ public class RecipeGUI extends XGUIState implements InvGUI
 	public void onEnter(MainState mainState)
 	{
 		recipeNum = building.lastViewedRecipeNum;
-		requireView = new InvGUIPart(0, 1, 1, 1, 5, 2, 1);
-		resultView = new InvGUIPart(1, 4, 1, 1, 5, 2, 1);
+		requireView = new ScrollList<>(1, 1, 2, 5, 2, 1);
+		resultView = new ScrollList<>(4, 1, 2, 5, 2, 1);
 		update();
 	}
 
@@ -71,8 +72,12 @@ public class RecipeGUI extends XGUIState implements InvGUI
 	{
 		initTiles();
 		Recipe recipe = building.getRecipes().get(recipeNum);
-		requireView.addToGUI(recipe.required.items.size(), this);
-		resultView.addToGUI(recipe.results.items.size(), this);
+		requireView.elements = recipe.required.items;
+		resultView.elements = recipe.results.items;
+		requireView.update();
+		resultView.update();
+		requireView.draw(tiles, this::elementViewRequired);
+		resultView.draw(tiles, this::elementViewResults);
 		setTile(textRequires);
 		setTile(textResults);
 		if(recipeNum > 0)
@@ -82,46 +87,57 @@ public class RecipeGUI extends XGUIState implements InvGUI
 		setTile(arrow);
 	}
 
-	@Override
-	public void itemView(int invID, int x, int y1, int index)
+	public GuiTile[] elementViewRequired(ItemStack stack)
 	{
-		Recipe recipe = building.getRecipes().get(recipeNum);
-		ItemStack items = (invID == 0 ? recipe.required : recipe.results).items.get(index);
-		Inv inv = invID == 0 ? building.getInputInv() : building.getOutputInv();
-		ItemView itemView = inv.viewRecipeItem(items.item);
-		tiles[x][y1] = new GuiTile(itemView.currentWithLimit());
-		tiles[x + 1][y1] = new GuiTile(InvNumView.except1(items.count), itemView.item.image(), false, null);
+		Inv inv = building.getInputInv();
+		ItemView itemView = inv.viewRecipeItem(stack.item);
+		return new GuiTile[]
+				{
+						new GuiTile(itemView.currentWithLimit()),
+						new GuiTile(InvNumView.except1(stack.count), itemView.item.image(), false, null)
+				};
+	}
+
+	public GuiTile[] elementViewResults(ItemStack stack)
+	{
+		Inv inv = building.getOutputInv();
+		ItemView itemView = inv.viewRecipeItem(stack.item);
+		return new GuiTile[]
+				{
+						new GuiTile(itemView.currentWithLimit()),
+						new GuiTile(InvNumView.except1(stack.count), itemView.item.image(), false, null)
+				};
 	}
 
 	@Override
 	public void target(int x, int y)
 	{
-		Recipe recipe = building.getRecipes().get(recipeNum);
-		if(requireView.target(x, y, recipe.required.items.size(), this))
+		Optional<CTile> requireViewTarget = requireView.target(x, y, false, null, null);
+		if(requireViewTarget.isPresent())
+		{
+			targeted = requireViewTarget.get();
 			return;
-		if(resultView.target(x, y, recipe.results.items.size(), this))
+		}
+		Optional<CTile> resultViewTarget = resultView.target(x, y, false, null, null);
+		if(resultViewTarget.isPresent())
+		{
+			targeted = resultViewTarget.get();
 			return;
+		}
 		if(recipeNum > 0 && prev.contains(x, y))
-			setTargeted(prev);
+			targeted = prev;
 		else if(recipeNum < building.getRecipes().size() - 1 && next.contains(x, y))
-			setTargeted(next);
+			targeted = next;
 		else
-			setTargeted(CTile.NONE);
-	}
-
-	@Override
-	public void onTarget(int invID, int num, int xi, int yi, CTile cTile)
-	{
-		setTargeted(cTile);
+			targeted = CTile.NONE;
 	}
 
 	@Override
 	public void click(int x, int y, int key, XStateHolder stateHolder)
 	{
-		Recipe recipe = building.getRecipes().get(recipeNum);
-		requireView.checkClick(x, y, recipe.required.items.size(), this);
-		resultView.checkClick(x, y, recipe.results.items.size(), this);
-		if(requireView.updateGUIFlag() | resultView.updateGUIFlag())
+		requireView.target(x, y, true, null, null);
+		resultView.target(x, y, true, null, null);
+		if(requireView.readUpdateGUIFlag() | resultView.readUpdateGUIFlag())
 			update();
 		else if(recipeNum > 0 && prev.contains(x, y))
 		{

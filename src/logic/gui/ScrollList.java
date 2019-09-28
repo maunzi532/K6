@@ -15,14 +15,16 @@ public class ScrollList<T>
 	private final CTile scrollUp;
 	private final CTile scrollDown;
 	public List<T> elements;
+	private boolean updateGUIFlag;
 	private int currentScroll;
+	private boolean skipScroll1;
 	private int elementLinesY;
 	private boolean canScrollUp;
 	private boolean canScrollDown;
 	private int elementCountY;
 	private int shownLinesY;
 
-	public ScrollList(int locationX, int locationY, int sizeX, int sizeY, int elementSizeX, int elementSizeY, List<T> elements)
+	public ScrollList(int locationX, int locationY, int sizeX, int sizeY, int elementSizeX, int elementSizeY)
 	{
 		this.locationX = locationX;
 		this.locationY = locationY;
@@ -38,8 +40,19 @@ public class ScrollList<T>
 				new GuiTile("Scroll", null, false, null, sizeX, 1), elementSizeX, 1);
 		scrollDown = new CTile(locationX, locationY + sizeY - 1,
 				new GuiTile("Scroll", null, false, null, sizeX, 1), elementSizeX, 1);
-		this.elements = elements;
-		update();
+	}
+
+	public boolean readUpdateGUIFlag()
+	{
+		if(updateGUIFlag)
+		{
+			updateGUIFlag = false;
+			return true;
+		}
+		else
+		{
+			return false;
+		}
 	}
 
 	public void update()
@@ -47,17 +60,21 @@ public class ScrollList<T>
 		elementLinesY = elements.size() / elementCountX;
 		if(elementLinesY <= elementCountYm0)
 		{
+			skipScroll1 = false;
 			currentScroll = 0;
 			canScrollUp = false;
 			canScrollDown = false;
 		}
 		else
 		{
+			skipScroll1 = elementCountY(elementLinesY, 0) > elementCountY(elementLinesY, 1);
 			currentScroll = Math.max(0, Math.min(currentScroll, elementLinesY - elementCountYm1));
+			if(skipScroll1 && currentScroll == 1)
+				currentScroll = 0;
 			canScrollUp = currentScroll > 0;
-			canScrollDown = elementLinesY - currentScroll > calcElementCountY(canScrollUp, false);
+			canScrollDown = canScrollDownAt(elementLinesY, currentScroll);
 		}
-		elementCountY = calcElementCountY(canScrollUp, canScrollDown);
+		elementCountY = elementCountY(elementLinesY, currentScroll);
 		shownLinesY = Math.min(elementLinesY - currentScroll, elementCountY);
 	}
 
@@ -69,6 +86,16 @@ public class ScrollList<T>
 			return elementCountYm0;
 		else
 			return elementCountYm1;
+	}
+
+	private boolean canScrollDownAt(int elementLinesY, int scroll)
+	{
+		return elementLinesY - scroll > calcElementCountY(scroll > 0, false);
+	}
+
+	private int elementCountY(int elementLinesY, int scroll)
+	{
+		return calcElementCountY(scroll > 0, canScrollDownAt(elementLinesY, scroll));
 	}
 
 	private int startY()
@@ -96,6 +123,24 @@ public class ScrollList<T>
 				}
 			}
 		}
+		if(canScrollUp)
+			setTile(tiles, scrollUp);
+		if(canScrollDown)
+			setTile(tiles, scrollDown);
+	}
+
+	private void setTile(GuiTile[][] tiles, CTile tile)
+	{
+		for(int ix = 0; ix < tile.r; ix++)
+		{
+			for(int iy = 0; iy < tile.d; iy++)
+			{
+				if(ix == tile.r - 1 && iy == tile.d - 1)
+					tiles[tile.x + ix][tile.y + iy] = tile.guiTile;
+				else
+					tiles[tile.x + ix][tile.y + iy] = tile.other;
+			}
+		}
 	}
 
 	public Optional<CTile> target(int x, int y, boolean scrollClick, Consumer<T> onTarget, Runnable onMissedTarget)
@@ -111,6 +156,13 @@ public class ScrollList<T>
 			if(scrollClick)
 			{
 				currentScroll--;
+				if(skipScroll1 && currentScroll == 1)
+					currentScroll = 0;
+				updateGUIFlag = true;
+			}
+			if(onMissedTarget != null)
+			{
+				onMissedTarget.run();
 			}
 			return Optional.of(scrollUp);
 		}
@@ -119,6 +171,13 @@ public class ScrollList<T>
 			if(scrollClick)
 			{
 				currentScroll++;
+				if(skipScroll1 && currentScroll == 1)
+					currentScroll = 2;
+				updateGUIFlag = true;
+			}
+			if(onMissedTarget != null)
+			{
+				onMissedTarget.run();
 			}
 			return Optional.of(scrollDown);
 		}
@@ -132,7 +191,7 @@ public class ScrollList<T>
 			return Optional.of(CTile.NONE);
 		}
 		int xel = xr / elementSizeX;
-		int yel = yr1 / elementSizeX;
+		int yel = yr1 / elementSizeY;
 		int elementNum = yel * elementCountX + xel;
 		if(elementNum >= elements.size())
 		{

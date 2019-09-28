@@ -1,10 +1,10 @@
 package logic.gui.guis;
 
+import java.util.*;
 import logic.*;
 import logic.gui.*;
 import item.inv.Inv;
 import item.view.*;
-import java.util.List;
 import logic.xstate.*;
 
 public class Inv1GUI extends XGUIState implements InvGUI
@@ -15,8 +15,8 @@ public class Inv1GUI extends XGUIState implements InvGUI
 	protected Inv inv;
 	protected InvNumView weightView;
 	protected List<ItemView> itemsView;
-	protected InvGUIPart invView;
-	protected InvGUIPart itemView;
+	protected ScrollList<ItemView> invView;
+	protected ScrollList<String> itemView;
 	protected String name;
 	protected List<String> baseInfo;
 	protected ItemView viewing;
@@ -34,8 +34,8 @@ public class Inv1GUI extends XGUIState implements InvGUI
 	{
 		weightView = inv.viewInvWeight();
 		itemsView = inv.viewItems(true);
-		invView = new InvGUIPart(0, 0, 1, 1, 5, 2, 1);
-		itemView = new InvGUIPart(1, 3, 1, 3, 5, 1, 1);
+		invView = new ScrollList<>(0, 1, 2, 5, 2, 1);
+		itemView = new ScrollList<>(3, 1, 3, 5, 1, 1);
 		update();
 	}
 
@@ -54,10 +54,22 @@ public class Inv1GUI extends XGUIState implements InvGUI
 	protected void update()
 	{
 		initTiles();
-		invView.addToGUI(itemsView.size(), this);
-		itemView.addToGUI(info().size(), this);
+		invView.elements = itemsView;
+		itemView.elements = info();
+		invView.update();
+		itemView.update();
+		invView.draw(tiles, this::elementViewItem);
+		itemView.draw(tiles, this::elementViewInfo);
 		setTile(textInv, new GuiTile(name));
 		setTile(weight, new GuiTile(weightView.currentWithLimit()));
+	}
+
+	protected List<String> info()
+	{
+		if(viewing != null)
+			return viewing.item.info();
+		else
+			return baseInfo;
 	}
 
 	@Override
@@ -76,24 +88,25 @@ public class Inv1GUI extends XGUIState implements InvGUI
 		}
 	}
 
-	protected List<String> info()
+	private GuiTile[] elementViewItem(ItemView itemView)
 	{
-		if(viewing != null)
-			return viewing.item.info();
-		else
-			return baseInfo;
+		return new GuiTile[]
+				{
+						new GuiTile(itemView.currentWithLimit()),
+						new GuiTile(null, itemView.item.image(), false, null)
+				};
+	}
+
+	private GuiTile[] elementViewInfo(String info)
+	{
+		return new GuiTile[]{new GuiTile(info)};
 	}
 
 	@Override
 	public void target(int x, int y)
 	{
-		if(!invView.target(x, y, itemsView.size(), this) || getTargeted() == CTile.NONE)
-		{
-			setTargeted(CTile.NONE);
-			if(viewing != null)
-				changed = true;
-			viewing = null;
-		}
+		Optional<CTile> invViewTarget = invView.target(x, y, false, this::onTargetItem, this::onMissedTargetItem);
+		targeted = invViewTarget.orElse(CTile.NONE);
 		if(changed)
 		{
 			changed = false;
@@ -115,6 +128,29 @@ public class Inv1GUI extends XGUIState implements InvGUI
 		}
 	}
 
+	private void onTargetItem(ItemView itemView)
+	{
+		if(viewing != itemView)
+		{
+			changed = true;
+			viewing = itemView;
+		}
+	}
+
+	private void onMissedTargetItem()
+	{
+		if(viewing != null)
+		{
+			changed = true;
+			viewing = null;
+		}
+	}
+
 	@Override
-	public void click(int x, int y, int key, XStateHolder stateHolder){}
+	public void click(int x, int y, int key, XStateHolder stateHolder)
+	{
+		invView.target(x, y, true, null, null);
+		if(invView.readUpdateGUIFlag())
+			update();
+	}
 }
