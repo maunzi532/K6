@@ -4,7 +4,6 @@ import entity.*;
 import javafx.scene.input.*;
 import javafx.scene.paint.*;
 import logic.*;
-import logic.editor.xstate.*;
 import logic.gui.*;
 import logic.xstate.*;
 
@@ -93,12 +92,5 @@ public class HeroEditGUI extends XGUIState
 			hero.toggleStartInvLocked();
 			update();
 		}
-	}
-
-	@Override
-	public void close(XStateHolder stateHolder, boolean setState)
-	{
-		if(setState)
-			stateHolder.setState(EditingState.INSTANCE);
 	}
 }

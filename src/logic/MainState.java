@@ -85,16 +85,14 @@ public class MainState
 
 	//TODO Build a real level
 
-	//TODO show pause menu
-	//TODO show better controls info
-
 	//TODO equip weapon and choose mode without attacking
 	//TODO always show xhero characters on the same side
 	//TODO show enemy reach (all enemies)
 	//TODO save transporter history
+	//TODO get inv back when removing building
 
 	//TODO LevelEditor create XEntity
-	//TODO LevelEditor edit Building
+	//TODO LevelEditor edit Building inv
 	//TODO BuildGUI show if there are more recipes
 
 	//TODO change melt/crit interaction
@@ -111,8 +109,10 @@ public class MainState
 	//TODO scale tiles, menubar, gui when resizing
 	//TODO Make menu bar not overlap with SideInfo
 	//TODO improve camera
-	//TODO add configurable keybindings
 	//TODO Refactor sectors
+	//TODO show pause menu
+	//TODO add configurable keybindings
+	//TODO show better controls info
 
 	//LK char - move/attack
 	//RK char - inv/trade

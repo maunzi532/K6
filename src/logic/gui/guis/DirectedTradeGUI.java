@@ -171,10 +171,10 @@ public class DirectedTradeGUI extends XGUIState
 	}
 
 	@Override
-	public void close(XStateHolder stateHolder, boolean setState)
+	public void close(XStateHolder stateHolder)
 	{
 		provide.outputInv().rollback();
 		receive.inputInv().rollback();
-		super.close(stateHolder, setState);
+		super.close(stateHolder);
 	}
 }

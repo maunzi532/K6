@@ -3,7 +3,6 @@ package logic.editor.xgui;
 import entity.*;
 import javafx.scene.input.*;
 import logic.*;
-import logic.editor.xstate.*;
 import logic.gui.*;
 import logic.xstate.*;
 
@@ -73,12 +72,5 @@ public class EnemyEditGUI extends XGUIState
 	public void click(int x, int y, int key, XStateHolder stateHolder)
 	{
 
-	}
-
-	@Override
-	public void close(XStateHolder stateHolder, boolean setState)
-	{
-		if(setState)
-			stateHolder.setState(EditingState.INSTANCE);
 	}
 }

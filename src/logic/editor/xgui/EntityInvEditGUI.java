@@ -7,7 +7,6 @@ import item.view.*;
 import java.util.*;
 import javafx.scene.input.*;
 import logic.*;
-import logic.editor.xstate.*;
 import logic.gui.*;
 import logic.xstate.*;
 
@@ -200,12 +199,5 @@ public class EntityInvEditGUI extends XGUIState
 				}
 			}
 		}
-	}
-
-	@Override
-	public void close(XStateHolder stateHolder, boolean setState)
-	{
-		if(setState)
-			stateHolder.setState(EditingState.INSTANCE);
 	}
 }

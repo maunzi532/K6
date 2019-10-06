@@ -154,9 +154,9 @@ public class RecipeGUI extends XGUIState
 	}
 
 	@Override
-	public void close(XStateHolder stateHolder, boolean setState)
+	public void close(XStateHolder stateHolder)
 	{
 		building.lastViewedRecipeNum = recipeNum;
-		super.close(stateHolder, setState);
+		super.close(stateHolder);
 	}
 }

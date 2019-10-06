@@ -6,7 +6,6 @@ import java.util.*;
 import java.util.stream.*;
 import javafx.scene.input.*;
 import logic.*;
-import logic.editor.xstate.*;
 import logic.gui.*;
 import logic.xstate.*;
 
@@ -143,12 +142,5 @@ public class EntityEditGUI extends XGUIState
 			entity.getStats().applyEditOption(changeStatNum, result2.target, entity);
 			update();
 		}
-	}
-
-	@Override
-	public void close(XStateHolder stateHolder, boolean setState)
-	{
-		if(setState)
-			stateHolder.setState(EditingState.INSTANCE);
 	}
 }

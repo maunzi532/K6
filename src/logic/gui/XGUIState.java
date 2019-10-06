@@ -2,6 +2,7 @@ package logic.gui;
 
 import javafx.scene.image.*;
 import javafx.scene.paint.*;
+import logic.editor.xstate.*;
 import logic.xstate.*;
 
 public abstract class XGUIState implements NState
@@ -83,12 +84,14 @@ public abstract class XGUIState implements NState
 
 	public void clickOutside(int key, XStateHolder stateHolder)
 	{
-		close(stateHolder, true);
+		close(stateHolder);
 	}
 
-	public void close(XStateHolder stateHolder, boolean setState)
+	public void close(XStateHolder stateHolder)
 	{
-		if(setState)
+		if(editMode())
+			stateHolder.setState(EditingState.INSTANCE);
+		else
 			stateHolder.setState(NoneState.INSTANCE);
 	}
 }

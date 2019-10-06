@@ -3,12 +3,14 @@ package logic.xstate;
 import arrow.*;
 import entity.*;
 import entity.analysis.*;
+import java.util.function.*;
 import logic.*;
 
 public class AttackAnimState2 extends AttackState
 {
 	private RNGDivider divider;
 	private AnimTimer arrow;
+	private Supplier<RNGOutcome> outcomeSupplier;
 
 	public AttackAnimState2(NState nextState, AttackInfo aI)
 	{
@@ -20,6 +22,7 @@ public class AttackAnimState2 extends AttackState
 	public void onEnter(MainState mainState)
 	{
 		arrow = mainState.combatSystem.createAnimationTimer(divider, mainState);
+		outcomeSupplier = (Supplier<RNGOutcome>) arrow;
 	}
 
 	@Override
@@ -37,6 +40,6 @@ public class AttackAnimState2 extends AttackState
 	@Override
 	public NState nextState()
 	{
-		return new PostAttackState(nextState, aI, arrow.hack());
+		return new PostAttackState(nextState, aI, outcomeSupplier.get());
 	}
 }

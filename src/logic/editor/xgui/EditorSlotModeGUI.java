@@ -72,11 +72,4 @@ public class EditorSlotModeGUI extends XGUIState
 		else if(result0.scrolled)
 			update();
 	}
-
-	@Override
-	public void close(XStateHolder stateHolder, boolean setState)
-	{
-		if(setState)
-			stateHolder.setState(EditingState.INSTANCE);
-	}
 }

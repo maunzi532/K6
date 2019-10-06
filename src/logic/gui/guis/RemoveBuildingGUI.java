@@ -127,9 +127,9 @@ public class RemoveBuildingGUI extends XGUIState
 	}
 
 	@Override
-	public void close(XStateHolder stateHolder, boolean setState)
+	public void close(XStateHolder stateHolder)
 	{
 		character.inputInv().rollback();
-		super.close(stateHolder, setState);
+		super.close(stateHolder);
 	}
 }

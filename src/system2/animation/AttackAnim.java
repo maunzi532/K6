@@ -4,12 +4,13 @@ import arrow.*;
 import entity.*;
 import entity.analysis.*;
 import java.util.*;
+import java.util.function.*;
 import javafx.scene.paint.*;
 import logic.*;
 import system2.*;
 import system2.analysis.*;
 
-public class AttackAnim implements AnimTimer
+public class AttackAnim implements AnimTimer, Supplier<RNGOutcome>
 {
 	private RNGDivider2 divider;
 	private RNGDivider2 lastDivider;
@@ -110,7 +111,7 @@ public class AttackAnim implements AnimTimer
 	}
 
 	@Override
-	public RNGOutcome hack()
+	public RNGOutcome get()
 	{
 		return lastDivider.asOutcome();
 	}

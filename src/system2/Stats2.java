@@ -9,6 +9,7 @@ import java.util.*;
 import java.util.stream.*;
 import javafx.scene.control.*;
 import javafx.stage.*;
+import system2.animation.*;
 import system2.content.*;
 
 public class Stats2 implements Stats
@@ -317,6 +318,7 @@ public class Stats2 implements Stats
 		slot = new AttackItem2Slot(xClass.usableItems);
 		level = ((JrsNumber) data.get("Level")).getValue().intValue();
 		exp = ((JrsNumber) data.get("Exp")).getValue().intValue();
+		exp = 100; //TODO
 		if(data.get("LevelSystem") != null)
 		{
 			playerLevelSystem = new PlayerLevelSystem(((JrsObject) data.get("LevelSystem")));
@@ -403,6 +405,38 @@ public class Stats2 implements Stats
 		info.add("Luck\n" + luck);
 		info.add("Defense\n" + defense);
 		info.add("Evasion\n" + evasion);
+		info.add("CPower\n" + getCPower());
+		info.add("Move\n" + movement);
+		info.add(exhaustion > 0 ? "Exhausted\n" + exhaustion : "");
+		info.add("Defend\n" + (lastUsed instanceof NoAttackMode ? "None" : lastUsed.item.info().get(0).replace("Type\n", "")));
+		for(Class e : slot.getItemTypes())
+		{
+			info.add("ItemType\n" + e.getSimpleName().replace("Item", ""));
+		}
+		for(Ability2 ability : xClass.abilities)
+		{
+			info.add("Ability\n" + ability.name);
+		}
+		return info;
+	}
+
+	@Override
+	public List<String> levelup()
+	{
+		int[] levelup = getLevelSystem().getLevelup(this); //TODO
+		List<String> info = new ArrayList<>();
+		info.add("Class\n" + xClass.className);
+		info.add("Level\n" + level + " -> " + (level + 1));
+		info.add("Exp\n" + exp + " -> " + ((exp - GetExpAnim.LEVELUP_EXP) / 2));
+		info.add("Health\n" + currentHealth + " -> " + currentHealth);
+		info.add("Strength\n" + strength);
+		info.add("Finesse\n" + finesse);
+		info.add("Skill\n" + skill);
+		info.add("Speed\n" + speed);
+		info.add("Luck\n" + luck);
+		info.add("Defense\n" + defense);
+		info.add("Evasion\n" + evasion);
+		info.add("Toughness\n" + toughness + " -> " + toughness);
 		info.add("CPower\n" + getCPower());
 		info.add("Move\n" + movement);
 		info.add(exhaustion > 0 ? "Exhausted\n" + exhaustion : "");

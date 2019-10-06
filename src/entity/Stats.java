@@ -29,6 +29,8 @@ public interface Stats
 
 	List<String> info();
 
+	List<String> levelup();
+
 	String[] sideInfoText();
 
 	<T extends ComposerBase> ObjectComposer<T> save(ObjectComposer<T> a1, ItemLoader itemLoader) throws IOException;
