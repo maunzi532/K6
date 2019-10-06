@@ -2,11 +2,12 @@ package logic.editor.editingModes;
 
 import entity.*;
 import geom.f1.*;
+import levelMap.*;
+import logic.*;
+import logic.editor.*;
 import logic.editor.xgui.*;
 import logic.gui.*;
-import levelMap.*;
-import logic.editor.*;
-import logic.*;
+import logic.gui.guis.*;
 
 public class BCCreateMode implements EditingMode
 {
@@ -24,30 +25,24 @@ public class BCCreateMode implements EditingMode
 		AdvTile advTile = mainState.levelMap.advTile(tile);
 		if(mainState.preferBuildings)
 		{
-			if(advTile.getBuilding() != null)
+			if(advTile.getBuilding() == null)
 			{
-				mainState.stateHolder.setState(new Inv1GUI_BES(advTile.getBuilding()));
+				mainState.stateHolder.setState(new SelectBuildingGUI(new EditModeBuilder(tile)));
 			}
-			else if(advTile.getEntity() != null)
+			else if(advTile.getEntity() == null)
 			{
-				if(advTile.getEntity() instanceof InvEntity)
-				{
-					mainState.stateHolder.setState(new EntityEditGUI((InvEntity) advTile.getEntity()));
-				}
+				mainState.stateHolder.setState(new EntityEditGUI((InvEntity) advTile.getEntity()));
 			}
 		}
 		else
 		{
-			if(advTile.getEntity() != null)
+			if(advTile.getEntity() == null)
 			{
-				if(advTile.getEntity() instanceof InvEntity)
-				{
-					mainState.stateHolder.setState(new EntityEditGUI((InvEntity) advTile.getEntity()));
-				}
+				mainState.stateHolder.setState(new EntityEditGUI((InvEntity) advTile.getEntity()));
 			}
-			else if(advTile.getBuilding() != null)
+			else if(advTile.getBuilding() == null)
 			{
-				mainState.stateHolder.setState(new Inv1GUI_BES(advTile.getBuilding()));
+				mainState.stateHolder.setState(new SelectBuildingGUI(new EditModeBuilder(tile)));
 			}
 		}
 	}

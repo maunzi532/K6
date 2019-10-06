@@ -119,6 +119,16 @@ public class XHero extends InvEntity implements XBuilder
 		return startInvLocked;
 	}
 
+	public void toggleStartLocked()
+	{
+		startLocked = !startLocked;
+	}
+
+	public void toggleStartInvLocked()
+	{
+		startInvLocked = !startInvLocked;
+	}
+
 	public void setMoved()
 	{
 		canMove = false;
@@ -157,10 +167,15 @@ public class XHero extends InvEntity implements XBuilder
 	@Override
 	public <T extends ComposerBase> ObjectComposer<T> save(ObjectComposer<T> a1, ItemLoader itemLoader, TileType y1) throws IOException
 	{
-		return a1.put("StartName", stats.getName())
+		var a2 = a1.put("StartName", stats.getName())
 				.put("Locked", startLocked)
 				.put("InvLocked", startInvLocked)
 				.put("sx", y1.sx(location))
 				.put("sy", y1.sy(location));
+		if(startInvLocked)
+		{
+			a2 = inv.save(a2.startObjectField("Inventory"), itemLoader).end();
+		}
+		return a2;
 	}
 }

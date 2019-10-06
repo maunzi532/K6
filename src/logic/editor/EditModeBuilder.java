@@ -12,6 +12,11 @@ public class EditModeBuilder implements XBuilder
 {
 	private Tile location;
 
+	public EditModeBuilder(Tile location)
+	{
+		this.location = location;
+	}
+
 	@Override
 	public Tile location()
 	{
@@ -21,7 +26,7 @@ public class EditModeBuilder implements XBuilder
 	@Override
 	public ItemView viewRecipeItem(Item item)
 	{
-		return new ItemView(new ItemStack(item, 1));
+		return new ItemView(new ItemStack(item, -1));
 	}
 
 	@Override

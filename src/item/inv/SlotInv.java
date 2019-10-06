@@ -37,6 +37,12 @@ public class SlotInv implements Inv
 	}
 
 	@Override
+	public ItemList allItems()
+	{
+		return new ItemList(slots.stream().filter(e -> e.getCurrentX() > 0).map(e -> new ItemStack(e.getStackItemC(), e.getCurrentX())).collect(Collectors.toList()));
+	}
+
+	@Override
 	public ItemView viewRecipeItem(Item item)
 	{
 		return slots.stream().filter(e -> item.canContain(e.getStackItemC())).findFirst()

@@ -12,6 +12,8 @@ public interface Inv extends Inv0
 
 	List<ItemView> viewItems(boolean withEmpty);
 
+	ItemList allItems();
+
 	ItemView viewRecipeItem(Item item);
 
 	InvNumView viewInvWeight();

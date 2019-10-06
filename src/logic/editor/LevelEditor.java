@@ -25,6 +25,7 @@ public class LevelEditor
 		modes = new ArrayList<>();
 		modes.add(new SaveMode());
 		modes.add(BCEditMode.INSTANCE);
+		modes.add(BCCreateMode.INSTANCE);
 		for(int i = 0; i < FloorTileType.values().length; i++)
 		{
 			modes.add(new FloorSetMode(FloorTileType.values()[i]));

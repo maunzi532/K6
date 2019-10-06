@@ -5,6 +5,7 @@ import com.fasterxml.jackson.jr.ob.*;
 import com.fasterxml.jackson.jr.stree.*;
 import geom.f1.*;
 import item.*;
+import item.inv.*;
 import java.io.*;
 import java.nio.*;
 import java.nio.file.*;
@@ -61,7 +62,8 @@ public class SavedImport
 				((JrsArray) tree2.get("Characters")).elements().forEachRemaining(
 						character -> characters.put(((JrsObject) ((JrsObject) character).get("Stats")).get("CustomName").asText(), (JrsObject) character));
 				((JrsArray) tree.get("XEntities")).elements().forEachRemaining(e ->
-						mainState.levelMap.addEntity(mainState.combatSystem.loadEntityOrStartLoc(mainState.y1, mainState, (JrsObject) e, mainState.itemLoader, characters)));
+						mainState.levelMap.addEntity(mainState.combatSystem.loadEntityOrStartLoc(mainState.y1, mainState,
+								(JrsObject) e, mainState.itemLoader, characters, new WeightInv(100)))); // TODO
 				buildings.forEach(e -> e.loadConnect(mainState.levelMap));
 			}
 		}catch(IOException e)

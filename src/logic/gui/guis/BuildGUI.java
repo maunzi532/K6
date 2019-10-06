@@ -4,6 +4,7 @@ import building.*;
 import building.blueprint.*;
 import entity.*;
 import levelMap.*;
+import logic.editor.xstate.*;
 import logic.gui.*;
 import item.*;
 import item.inv.*;
@@ -65,7 +66,7 @@ public class BuildGUI extends XGUIState
 		}
 		else
 		{
-			return null; //TODO
+			return XMenu.NOMENU;
 		}
 	}
 
@@ -119,10 +120,10 @@ public class BuildGUI extends XGUIState
 	private GuiTile[] itemView1(ItemStack stack)
 	{
 		ItemView itemView = builder.viewRecipeItem(stack.item);
-		Color color = itemView.base >= stack.count ? Color.CYAN : null;
+		Color color = itemView.base >= stack.count || itemView.base == -1 ? Color.CYAN : null;
 		return new GuiTile[]
 				{
-						new GuiTile(itemView.base + " / " + stack.count, null, false, color),
+						new GuiTile((itemView.base == -1 ? "-" : itemView.base) + " / " + stack.count, null, false, color),
 						new GuiTile(null, itemView.item.image(), false, color)
 				};
 	}
@@ -216,7 +217,10 @@ public class BuildGUI extends XGUIState
 						((XHero) builder).mainActionTaken();
 					}
 					builder.buildBuilding(levelMap, cost, refundable.get(), blueprint);
-					stateHolder.setState(NoneState.INSTANCE);
+					if(builder instanceof XHero)
+						stateHolder.setState(NoneState.INSTANCE);
+					else
+						stateHolder.setState(EditingState.INSTANCE);
 				}
 			}
 		}

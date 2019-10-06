@@ -1,5 +1,6 @@
 package logic.gui.guis;
 
+import building.*;
 import building.blueprint.*;
 import entity.*;
 import file.*;
@@ -13,18 +14,27 @@ public class SelectBuildingGUI extends XGUIState
 {
 	private static final CTile textInv = new CTile(2, 0, new GuiTile("Buildings"), 2, 1);
 
-	private final XHero builder;
+	private final XBuilder builder;
 	private ScrollList<BuildingBlueprint> buildingsView;
 
-	public SelectBuildingGUI(XHero builder)
+	public SelectBuildingGUI(XBuilder builder)
 	{
 		this.builder = builder;
 	}
 
 	@Override
+	public boolean editMode()
+	{
+		return !(builder instanceof XHero);
+	}
+
+	@Override
 	public void onEnter(MainState mainState)
 	{
-		mainState.sideInfoFrame.setSideInfo(builder.standardSideInfo(), null);
+		if(builder instanceof XHero)
+		{
+			mainState.sideInfoFrame.setSideInfo(((XHero) builder).standardSideInfo(), null);
+		}
 		BlueprintCache<BuildingBlueprint> blueprintCache = mainState.buildingBlueprintCache;
 		buildingsView = new ScrollList<>(0, 1, 6, 5, 2, 1);
 		buildingsView.elements = blueprintCache.allBlueprints();
@@ -46,13 +56,20 @@ public class SelectBuildingGUI extends XGUIState
 	@Override
 	public boolean keepInMenu(MainState mainState)
 	{
-		return builder.ready(1) && mainState.levelMap.getBuilding(builder.location()) == null;
+		return !(builder instanceof XHero) || (((XHero) builder).ready(1) && mainState.levelMap.getBuilding(builder.location()) == null);
 	}
 
 	@Override
 	public XMenu menu()
 	{
-		return XMenu.characterGUIMenu(builder);
+		if(builder instanceof XHero)
+		{
+			return XMenu.characterGUIMenu((XHero) builder);
+		}
+		else
+		{
+			return XMenu.NOMENU;
+		}
 	}
 
 	@Override

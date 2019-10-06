@@ -35,6 +35,12 @@ public class WeightInv implements Inv
 	}
 
 	@Override
+	public ItemList allItems()
+	{
+		return new ItemList(stacks.stream().map(InvStack::toItemStack).collect(Collectors.toList()));
+	}
+
+	@Override
 	public ItemView viewRecipeItem(Item item)
 	{
 		return stacks.stream().filter(e -> item.canContain(e.item)).findFirst()

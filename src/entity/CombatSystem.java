@@ -5,6 +5,7 @@ import com.fasterxml.jackson.jr.stree.*;
 import entity.analysis.*;
 import geom.f1.*;
 import item.*;
+import item.inv.*;
 import java.util.*;
 import java.util.stream.*;
 import logic.*;
@@ -48,5 +49,5 @@ public interface CombatSystem<T extends Stats, A extends AttackInfo, I extends I
 
 	XEntity loadEntity(TileType y1, MainState mainState, JrsObject data, ItemLoader itemLoader);
 
-	XEntity loadEntityOrStartLoc(TileType y1, MainState mainState, JrsObject data, ItemLoader itemLoader, Map<String, JrsObject> characters);
+	XEntity loadEntityOrStartLoc(TileType y1, MainState mainState, JrsObject data, ItemLoader itemLoader, Map<String, JrsObject> characters, Inv storage);
 }

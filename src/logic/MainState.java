@@ -93,10 +93,9 @@ public class MainState
 	//TODO show enemy reach (all enemies)
 	//TODO save transporter history
 
-	//TODO Editable starting location settings
 	//TODO LevelEditor create XEntity
-	//TODO LevelEditor create Building
 	//TODO LevelEditor edit Building
+	//TODO BuildGUI show if there are more recipes
 
 	//TODO change melt/crit interaction
 	//TODO change item weight mechanics and change speed effects
@@ -105,6 +104,7 @@ public class MainState
 	//TODO get levelup
 	//TODO add upgraded classes
 
+	//TODO add item storage
 	//TODO enemy reinforcements
 	//TODO Enemy AI types
 

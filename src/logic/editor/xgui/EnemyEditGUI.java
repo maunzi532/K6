@@ -1,0 +1,84 @@
+package logic.editor.xgui;
+
+import entity.*;
+import javafx.scene.input.*;
+import logic.*;
+import logic.editor.xstate.*;
+import logic.gui.*;
+import logic.xstate.*;
+
+public class EnemyEditGUI extends XGUIState
+{
+	private XEnemy enemy;
+
+	public EnemyEditGUI(XEnemy enemy)
+	{
+		this.enemy = enemy;
+	}
+
+	@Override
+	public boolean editMode()
+	{
+		return true;
+	}
+
+	@Override
+	public void onEnter(MainState mainState)
+	{
+		update();
+	}
+
+	private void update()
+	{
+		initTiles();
+	}
+
+	@Override
+	public String text()
+	{
+		return "Settings";
+	}
+
+	@Override
+	public KeyCode keybind()
+	{
+		return KeyCode.S;
+	}
+
+	@Override
+	public XMenu menu()
+	{
+		return XMenu.entityEditMenu(enemy);
+	}
+
+	@Override
+	public int xw()
+	{
+		return 6;
+	}
+
+	@Override
+	public int yw()
+	{
+		return 4;
+	}
+
+	@Override
+	public void target(int x, int y)
+	{
+
+	}
+
+	@Override
+	public void click(int x, int y, int key, XStateHolder stateHolder)
+	{
+
+	}
+
+	@Override
+	public void close(XStateHolder stateHolder, boolean setState)
+	{
+		if(setState)
+			stateHolder.setState(EditingState.INSTANCE);
+	}
+}

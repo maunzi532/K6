@@ -54,8 +54,17 @@ public class XMenu
 	{
 		if(entity instanceof InvEntity)
 		{
-			return new XMenu(new EntityEditGUI((InvEntity) entity), new EntityInvEditGUI((InvEntity) entity),
-					new EditMoveState(entity), new EditCopyState(entity), new EditDeleteState(entity));
+			if(entity instanceof XHero)
+			{
+				return new XMenu(new EntityEditGUI((InvEntity) entity), new EntityInvEditGUI((InvEntity) entity), new HeroEditGUI((XHero) entity),
+						new EditMoveState(entity), new EditCopyState(entity), new EditDeleteState(entity));
+			}
+			if(entity instanceof XEnemy)
+			{
+				return new XMenu(new EntityEditGUI((InvEntity) entity), new EntityInvEditGUI((InvEntity) entity), new EnemyEditGUI((XEnemy) entity),
+						new EditMoveState(entity), new EditCopyState(entity), new EditDeleteState(entity));
+			}
+			throw new RuntimeException();
 		}
 		else
 		{
