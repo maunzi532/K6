@@ -58,6 +58,6 @@ public class StatBar
 	public static StatBar forEntity(XEntity entity)
 	{
 		return new StatBar(entity instanceof XHero ? Color.GREEN : Color.GRAY, Color.BLACK, Color.WHITE,
-				entity.getStats().getStat(0), entity.getStats().getMaxStat(0));
+				entity.getStats().getVisualStat(0), entity.getStats().getMaxVisualStat(0));
 	}
 }

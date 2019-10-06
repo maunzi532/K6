@@ -17,6 +17,7 @@ public class Stats2 implements Stats
 
 	private XClass xClass;
 	private int level;
+	private int exp;
 	private PlayerLevelSystem playerLevelSystem;
 	private String customName;
 	private String customImage;
@@ -34,13 +35,14 @@ public class Stats2 implements Stats
 	private AttackMode2 lastUsed;
 	private AttackItem2Slot slot;
 
-	public Stats2(XClass xClass, int level, String customName,
+	public Stats2(XClass xClass, int level, int exp, String customName,
 			String customImage, int strength, int finesse, int skill, int speed,
 			int luck, int defense, int evasion, int toughness,
 			int movement, PlayerLevelSystem playerLevelSystem)
 	{
 		this.xClass = xClass;
 		this.level = level;
+		this.exp = exp;
 		this.playerLevelSystem = playerLevelSystem;
 		this.customName = customName;
 		this.customImage = customImage;
@@ -113,6 +115,21 @@ public class Stats2 implements Stats
 	public int getLevel()
 	{
 		return level;
+	}
+
+	public int getExp()
+	{
+		return exp;
+	}
+
+	public void addExp(int amount)
+	{
+		exp += amount;
+	}
+
+	public LevelSystem getLevelSystem()
+	{
+		return playerLevelSystem != null ? playerLevelSystem : xClass.levelSystem;
 	}
 
 	public int getStat1(int num)
@@ -236,15 +253,25 @@ public class Stats2 implements Stats
 	}
 
 	@Override
-	public int getStat(int num)
+	public int getVisualStat(int num)
 	{
-		return currentHealth;
+		return switch(num)
+				{
+					case 0 -> currentHealth;
+					case 1 -> exp;
+					default -> throw new IllegalStateException("Unexpected value: " + num);
+				};
 	}
 
 	@Override
-	public int getMaxStat(int num)
+	public int getMaxVisualStat(int num)
 	{
-		return maxHealth();
+		return switch(num)
+				{
+					case 0 -> maxHealth();
+					case 1 -> 100;
+					default -> throw new IllegalStateException("Unexpected value: " + num);
+				};
 	}
 
 	@Override
@@ -277,7 +304,7 @@ public class Stats2 implements Stats
 	@Override
 	public Stats copy()
 	{
-		Stats2 copy = new Stats2(xClass, level, customName, customImage, strength, finesse, skill, speed, luck, defense,
+		Stats2 copy = new Stats2(xClass, level, exp, customName, customImage, strength, finesse, skill, speed, luck, defense,
 				evasion, toughness, movement, playerLevelSystem);
 		copy.currentHealth = currentHealth;
 		copy.exhaustion = exhaustion;
@@ -289,6 +316,7 @@ public class Stats2 implements Stats
 		xClass = XClasses.INSTANCE.xClasses[((JrsNumber) data.get("Class")).getValue().intValue()];
 		slot = new AttackItem2Slot(xClass.usableItems);
 		level = ((JrsNumber) data.get("Level")).getValue().intValue();
+		exp = ((JrsNumber) data.get("Exp")).getValue().intValue();
 		if(data.get("LevelSystem") != null)
 		{
 			playerLevelSystem = new PlayerLevelSystem(((JrsObject) data.get("LevelSystem")));
@@ -327,7 +355,8 @@ public class Stats2 implements Stats
 	public <T extends ComposerBase> ObjectComposer<T> save(ObjectComposer<T> a1, ItemLoader itemLoader) throws IOException
 	{
 		var a2 = a1.put("Class", xClass.code)
-				.put("Level", level);
+				.put("Level", level)
+				.put("Exp", exp);
 		if(playerLevelSystem != null)
 		{
 			a2 = playerLevelSystem.save(a2.startObjectField("LevelSystem")).end();
@@ -365,6 +394,7 @@ public class Stats2 implements Stats
 		List<String> info = new ArrayList<>();
 		info.add("Class\n" + xClass.className);
 		info.add("Level\n" + level);
+		info.add("Exp\n" + exp);
 		info.add("Health\n" + currentHealth + "/" + maxHealth());
 		info.add("Strength\n" + strength);
 		info.add("Finesse\n" + finesse);
@@ -401,6 +431,7 @@ public class Stats2 implements Stats
 		info.add(customName != null ? "Name\n" + customName : "Generic\nName");
 		info.add("Class\n" + xClass.className);
 		info.add("Level\n" + level);
+		info.add("Exp\n" + exp);
 		info.add("Strength\n" + strength);
 		info.add("Finesse\n" + finesse);
 		info.add("Skill\n" + skill);
@@ -427,9 +458,9 @@ public class Stats2 implements Stats
 			return List.of("Prev", "Next");
 		if(num == 2)
 			return List.of("+", "-", "Reset\nstats");
-		if(num <= 13)
+		if(num <= 14)
 			return List.of("+", "-", "Reset");
-		if(num == 14)
+		if(num == 15)
 			return List.of("Auto");
 		return List.of();
 	}
@@ -469,40 +500,43 @@ public class Stats2 implements Stats
 			case 0x20 -> level++;
 			case 0x21 -> level--;
 			case 0x22 -> autoStats();
-			case 0x30 -> strength++;
-			case 0x31 -> strength--;
-			case 0x32 -> strength = xClass.getStat(0, level);
-			case 0x40 -> finesse++;
-			case 0x41 -> finesse--;
-			case 0x42 -> finesse = xClass.getStat(1, level);
-			case 0x50 -> skill++;
-			case 0x51 -> skill--;
-			case 0x52 -> skill = xClass.getStat(2, level);
-			case 0x60 -> speed++;
-			case 0x61 -> speed--;
-			case 0x62 -> speed = xClass.getStat(3, level);
-			case 0x70 -> luck++;
-			case 0x71 -> luck--;
-			case 0x72 -> luck = xClass.getStat(4, level);
-			case 0x80 -> defense++;
-			case 0x81 -> defense--;
-			case 0x82 -> defense = xClass.getStat(5, level);
-			case 0x90 -> evasion++;
-			case 0x91 -> evasion--;
-			case 0x92 -> evasion = xClass.getStat(6, level);
-			case 0xa0 -> toughness++;
-			case 0xa1 -> toughness--;
-			case 0xa2 -> toughness = xClass.getStat(7, level);
-			case 0xb0 -> currentHealth++;
-			case 0xb1 -> currentHealth--;
-			case 0xb2 -> currentHealth = maxHealth();
-			case 0xc0 -> exhaustion++;
-			case 0xc1 -> exhaustion--;
-			case 0xc2 -> exhaustion = 0;
-			case 0xd0 -> movement++;
-			case 0xd1 -> movement--;
-			case 0xd2 -> movement = xClass.movement;
-			case 0xe0 -> autoEquip((InvEntity) entity);
+			case 0x30 -> exp++;
+			case 0x31 -> exp--;
+			case 0x32 -> exp = 0;
+			case 0x40 -> strength++;
+			case 0x41 -> strength--;
+			case 0x42 -> strength = xClass.getStat(0, level);
+			case 0x50 -> finesse++;
+			case 0x51 -> finesse--;
+			case 0x52 -> finesse = xClass.getStat(1, level);
+			case 0x60 -> skill++;
+			case 0x61 -> skill--;
+			case 0x62 -> skill = xClass.getStat(2, level);
+			case 0x70 -> speed++;
+			case 0x71 -> speed--;
+			case 0x72 -> speed = xClass.getStat(3, level);
+			case 0x80 -> luck++;
+			case 0x81 -> luck--;
+			case 0x82 -> luck = xClass.getStat(4, level);
+			case 0x90 -> defense++;
+			case 0x91 -> defense--;
+			case 0x92 -> defense = xClass.getStat(5, level);
+			case 0xa0 -> evasion++;
+			case 0xa1 -> evasion--;
+			case 0xa2 -> evasion = xClass.getStat(6, level);
+			case 0xb0 -> toughness++;
+			case 0xb1 -> toughness--;
+			case 0xb2 -> toughness = xClass.getStat(7, level);
+			case 0xc0 -> currentHealth++;
+			case 0xc1 -> currentHealth--;
+			case 0xc2 -> currentHealth = maxHealth();
+			case 0xd0 -> exhaustion++;
+			case 0xd1 -> exhaustion--;
+			case 0xd2 -> exhaustion = 0;
+			case 0xe0 -> movement++;
+			case 0xe1 -> movement--;
+			case 0xe2 -> movement = xClass.movement;
+			case 0xf0 -> autoEquip((InvEntity) entity);
 		}
 	}
 }

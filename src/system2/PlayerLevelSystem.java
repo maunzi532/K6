@@ -8,26 +8,30 @@ import java.util.stream.*;
 
 public class PlayerLevelSystem implements LevelSystem
 {
+	private static final Random RANDOM = new Random();
 	private static final int STAT_COUNT = 8;
 
 	private int baseLevel;
 	private int[] baseLevelStats;
 	private int[] baseIncrease;
 	private int[] assumedIncrease;
+	private int levelCap;
 
-	public PlayerLevelSystem(int baseLevel, int[] baseLevelStats, int[] baseIncrease)
+	public PlayerLevelSystem(int baseLevel, int[] baseLevelStats, int[] baseIncrease, int levelCap)
 	{
 		this.baseLevel = baseLevel;
 		this.baseLevelStats = baseLevelStats;
 		this.baseIncrease = baseIncrease;
+		this.levelCap = levelCap;
 		setAssumedIncrease();
 	}
 
-	public PlayerLevelSystem(int baseLevel, int[] baseLevelStats)
+	public PlayerLevelSystem(int baseLevel, int[] baseLevelStats, int levelCap)
 	{
 		this.baseLevel = baseLevel;
 		this.baseLevelStats = baseLevelStats;
 		baseIncrease = Arrays.stream(baseLevelStats).map(e -> e * 5).toArray();
+		this.levelCap = levelCap;
 		setAssumedIncrease();
 	}
 
@@ -40,6 +44,18 @@ public class PlayerLevelSystem implements LevelSystem
 	public int forLevel(int stat, int level)
 	{
 		return Math.max(0, baseLevelStats[stat] * 100 + assumedIncrease[stat] * (level - baseLevel)) / 100;
+	}
+
+	@Override
+	public int levelCap()
+	{
+		return levelCap;
+	}
+
+	@Override
+	public int[] getLevelup(Stats2 current)
+	{
+		return randomLevelup(levelupPercent(current), RANDOM);
 	}
 
 	public int[] levelupPercent(Stats2 current)
@@ -89,13 +105,13 @@ public class PlayerLevelSystem implements LevelSystem
 		{
 			a3.add(baseIncrease[i]);
 		}
-		return a3.end();
+		return a3.end().put("LevelCap", levelCap);
 	}
 
 	public PlayerLevelSystem(JrsObject data)
 	{
 		baseLevel = ((JrsNumber) data.get("BaseLevel")).getValue().intValue();
-		var array1 = ((JrsArray) data.get("BsaeLevelStats"));
+		var array1 = ((JrsArray) data.get("BaseLevelStats"));
 		baseLevelStats = new int[STAT_COUNT];
 		for(int i = 0; i < STAT_COUNT; i++)
 		{
@@ -108,5 +124,6 @@ public class PlayerLevelSystem implements LevelSystem
 			baseIncrease[i] = ((JrsNumber) array2.get(i)).getValue().intValue();
 		}
 		setAssumedIncrease();
+		levelCap = ((JrsNumber) data.get("LevelCap")).getValue().intValue();
 	}
 }

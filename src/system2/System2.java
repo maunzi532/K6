@@ -79,9 +79,6 @@ public class System2 implements CombatSystem<Stats2, AttackInfo2, AttackItem2>
 	}
 
 	@Override
-	public void postAttack(AttackInfo2 attackInfo){}
-
-	@Override
 	public List<Item> allItems()
 	{
 		return AttackItems2.INSTANCE.itemList;
@@ -115,6 +112,12 @@ public class System2 implements CombatSystem<Stats2, AttackInfo2, AttackItem2>
 	public AnimTimer createRegenerationAnimation(XEntity entity, MainState mainState)
 	{
 		return new RegenerationAnim(entity, mainState.levelMap);
+	}
+
+	@Override
+	public AnimTimer createPostAttackAnimation(AttackInfo aI, RNGOutcome result, MainState mainState)
+	{
+		return new GetExpAnim((AttackInfo2) aI, (RNGOutcome2) result, mainState);
 	}
 
 	@Override

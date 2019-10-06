@@ -1,34 +1,37 @@
 package logic.xstate;
 
+import arrow.*;
 import entity.*;
+import entity.analysis.*;
 import logic.*;
 
 public class PostAttackState extends AttackState
 {
-	public PostAttackState(NState nextState, AttackInfo aI)
+	private RNGOutcome result;
+	private AnimTimer arrow;
+
+	public PostAttackState(NState nextState, AttackInfo aI, RNGOutcome result)
 	{
 		super(nextState, aI);
+		this.result = result;
 	}
 
 	@Override
 	public void onEnter(MainState mainState)
 	{
-		mainState.combatSystem.postAttack(aI);
+		arrow = mainState.combatSystem.createPostAttackAnimation(aI, result, mainState);
 	}
 
 	@Override
 	public void tick(MainState mainState)
 	{
-		if(finished())
-		{
-			mainState.sideInfoFrame.clearSideInfo();
-		}
+		arrow.tick();
 	}
 
 	@Override
 	public boolean finished()
 	{
-		return true;
+		return arrow.finished();
 	}
 
 	@Override

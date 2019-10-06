@@ -100,7 +100,7 @@ public class MainState
 	//TODO change melt/crit interaction
 	//TODO change item weight mechanics and change speed effects
 	//TODO nerf luck and other percentage-based stats
-	//TODO get levelup essence
+	//TODO levelup essence formula
 	//TODO get levelup
 	//TODO add upgraded classes
 

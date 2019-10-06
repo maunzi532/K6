@@ -7,9 +7,9 @@ import java.util.*;
 
 public interface Stats
 {
-	int getStat(int num);
+	int getVisualStat(int num);
 
-	int getMaxStat(int num);
+	int getMaxVisualStat(int num);
 
 	int getRegenerateChange();
 

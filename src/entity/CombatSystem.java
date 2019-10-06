@@ -33,8 +33,6 @@ public interface CombatSystem<T extends Stats, A extends AttackInfo, I extends I
 
 	void preAttack(A attackInfo);
 
-	void postAttack(A attackInfo);
-
 	List<Item> allItems();
 
 	RNGDivider supplyDivider(A attackInfo);
@@ -46,6 +44,8 @@ public interface CombatSystem<T extends Stats, A extends AttackInfo, I extends I
 	AnimTimer createAnimationTimer(RNGDivider divider, MainState mainState);
 
 	AnimTimer createRegenerationAnimation(XEntity entity, MainState mainState);
+
+	AnimTimer createPostAttackAnimation(AttackInfo aI, RNGOutcome result, MainState mainState);
 
 	XEntity loadEntity(TileType y1, MainState mainState, JrsObject data, ItemLoader itemLoader);
 

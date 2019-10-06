@@ -2,6 +2,7 @@ package system2.animation;
 
 import arrow.*;
 import entity.*;
+import entity.analysis.*;
 import java.util.*;
 import javafx.scene.paint.*;
 import logic.*;
@@ -11,6 +12,7 @@ import system2.analysis.*;
 public class AttackAnim implements AnimTimer
 {
 	private RNGDivider2 divider;
+	private RNGDivider2 lastDivider;
 	private MainState mainState;
 	private AttackInfo2 aI;
 	private List<String> events;
@@ -22,6 +24,7 @@ public class AttackAnim implements AnimTimer
 	public AttackAnim(RNGDivider2 divider, MainState mainState)
 	{
 		this.divider = divider;
+		lastDivider = divider;
 		this.mainState = mainState;
 		aI = divider.getAttackInfo();
 		events = divider.getEvents();
@@ -65,6 +68,7 @@ public class AttackAnim implements AnimTimer
 			{
 				if(linked.stream().allMatch(AnimPart::finished2))
 				{
+					lastDivider = divider;
 					divider = (RNGDivider2) divider.rollRNG();
 					if(divider == null)
 						return;
@@ -103,5 +107,11 @@ public class AttackAnim implements AnimTimer
 					aI.getCalc(inverse).meltCritDamage, healthBar(!inverse).statBar(), true, true, mainState));
 			case "nodamagecrit" -> linked.add(new AnimPartNoDamage(aI.getEntity(!inverse), true, mainState));
 		}
+	}
+
+	@Override
+	public RNGOutcome hack()
+	{
+		return lastDivider.asOutcome();
 	}
 }

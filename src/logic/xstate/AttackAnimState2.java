@@ -37,6 +37,6 @@ public class AttackAnimState2 extends AttackState
 	@Override
 	public NState nextState()
 	{
-		return new PostAttackState(nextState, aI);
+		return new PostAttackState(nextState, aI, arrow.hack());
 	}
 }
