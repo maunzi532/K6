@@ -21,9 +21,9 @@ public class CrossbowItem extends AttackItem2
 	}
 
 	@Override
-	public int getAdvType()
+	public AdvantageType getAdvType()
 	{
-		return 5;
+		return AdvantageType.CROSSBOW;
 	}
 
 	@Override

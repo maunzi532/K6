@@ -2,6 +2,7 @@ package system2;
 
 import item.*;
 import java.util.*;
+import system2.content.*;
 
 public abstract class AttackItem2 implements Item
 {
@@ -88,10 +89,7 @@ public abstract class AttackItem2 implements Item
 		return counter ? counterR : ranges;
 	}
 
-	public int getAdvType()
-	{
-		return 0;
-	}
+	public abstract AdvantageType getAdvType();
 
 	public boolean magical()
 	{

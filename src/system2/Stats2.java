@@ -423,24 +423,29 @@ public class Stats2 implements Stats
 	@Override
 	public List<String> levelup()
 	{
-		int[] levelup = getLevelSystem().getLevelup(this); //TODO
+		int[] levelup = getLevelSystem().getLevelup(this);
 		List<String> info = new ArrayList<>();
 		info.add("Class\n" + xClass.className);
 		info.add("Level\n" + level + " -> " + (level + 1));
 		info.add("Exp\n" + exp + " -> " + ((exp - GetExpAnim.LEVELUP_EXP) / 2));
-		info.add("Health\n" + currentHealth + " -> " + currentHealth);
-		info.add("Strength\n" + strength);
-		info.add("Finesse\n" + finesse);
-		info.add("Skill\n" + skill);
-		info.add("Speed\n" + speed);
-		info.add("Luck\n" + luck);
-		info.add("Defense\n" + defense);
-		info.add("Evasion\n" + evasion);
-		info.add("Toughness\n" + toughness + " -> " + toughness);
-		info.add("CPower\n" + getCPower());
+		int changedHealth = currentHealth;
+		if(levelup[7] > 0)
+			changedHealth += levelup[7] * HEALTH_MULTIPLIER;
+		if(changedHealth > (toughness + levelup[7]) * HEALTH_MULTIPLIER)
+			changedHealth = (toughness + levelup[7]) * HEALTH_MULTIPLIER;
+		info.add("Health\n" + currentHealth + " -> " + changedHealth);
+		info.add("Strength\n" + strength + " -> " + (strength + levelup[0]));
+		info.add("Finesse\n" + finesse + " -> " + (finesse + levelup[1]));
+		info.add("Skill\n" + skill + " -> " + (skill + levelup[2]));
+		info.add("Speed\n" + speed + " -> " + (speed + levelup[3]));
+		info.add("Luck\n" + luck + " -> " + (luck + levelup[4]));
+		info.add("Defense\n" + defense + " -> " + (defense + levelup[5]));
+		info.add("Evasion\n" + evasion + " -> " + (evasion + levelup[6]));
+		info.add("Toughness\n" + toughness + " -> " + (toughness + levelup[7]));
+		info.add("CPower\n" + getCPower() + " -> " + (getCPower() + Arrays.stream(levelup).sum()));
 		info.add("Move\n" + movement);
 		info.add(exhaustion > 0 ? "Exhausted\n" + exhaustion : "");
-		info.add("Defend\n" + (lastUsed instanceof NoAttackMode ? "None" : lastUsed.item.info().get(0).replace("Type\n", "")));
+		/*info.add("Defend\n" + (lastUsed instanceof NoAttackMode ? "None" : lastUsed.item.info().get(0).replace("Type\n", "")));
 		for(Class e : slot.getItemTypes())
 		{
 			info.add("ItemType\n" + e.getSimpleName().replace("Item", ""));
@@ -448,7 +453,18 @@ public class Stats2 implements Stats
 		for(Ability2 ability : xClass.abilities)
 		{
 			info.add("Ability\n" + ability.name);
-		}
+		}*/
+		level++;
+		exp = (exp - GetExpAnim.LEVELUP_EXP) / 2;
+		strength = strength + levelup[0];
+		finesse = finesse + levelup[1];
+		skill = skill + levelup[2];
+		speed = speed + levelup[3];
+		luck = luck + levelup[4];
+		defense = defense + levelup[5];
+		evasion = evasion + levelup[6];
+		toughness = toughness + levelup[7];
+		currentHealth = changedHealth;
 		return info;
 	}
 

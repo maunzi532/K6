@@ -1,9 +1,15 @@
 package system2;
 
 import java.util.*;
+import system2.content.*;
 
 public class AttackInfoPart2
 {
+	private static final int MELT_MODIFIER = 2;
+	private static final int CRIT_MODIFIER = 3;
+	private static final int HITRATE_PER_STAT = 2;
+	private static final int CRITRATE_PER_STAT = 2;
+
 	private final Stats2 attackStats;
 	private final AttackMode2 attackMode;
 	private final Stats2 defendStats;
@@ -37,22 +43,22 @@ public class AttackInfoPart2
 		if(attackMode.magical())
 		{
 			damage = Math.max(0, attackMode.getDamage() + statsInfo.skill - statsInfoT.evasion);
-			meltDamage = Math.max(0, attackMode.getDamage() + statsInfo.skill - statsInfoT.evasion / 2);
+			meltDamage = Math.max(0, attackMode.getDamage() + statsInfo.skill - statsInfoT.evasion / MELT_MODIFIER);
 			cost = attackCount > 0 ? Math.max(0, attackMode.getHeavy() - statsInfo.strength) : 0;
-			hitrate = Math.max(0, Math.min(100, attackMode.getAccuracy() + statsInfo.finesse * 5 - statsInfoT.luck * 5));
+			hitrate = Math.max(0, Math.min(100, attackMode.getAccuracy() + statsInfo.finesse * HITRATE_PER_STAT - statsInfoT.luck * HITRATE_PER_STAT));
 			autohit1 = false;
 		}
 		else
 		{
 			damage = Math.max(0, attackMode.getDamage() + statsInfo.finesse - statsInfoT.defense);
-			meltDamage = Math.max(0, attackMode.getDamage() + statsInfo.finesse - statsInfoT.defense / 2);
+			meltDamage = Math.max(0, attackMode.getDamage() + statsInfo.finesse - statsInfoT.defense / MELT_MODIFIER);
 			cost = 0;
-			hitrate = Math.max(0, Math.min(100, attackMode.getAccuracy() + statsInfo.skill * 5 - statsInfoT.evasion * 5));
+			hitrate = Math.max(0, Math.min(100, attackMode.getAccuracy() + statsInfo.skill * HITRATE_PER_STAT - statsInfoT.evasion * HITRATE_PER_STAT));
 			autohit1 = advantage >= 0 && abilities.contains(Ability2.TWO_HANDED);
 		}
-		critDamage = damage * 2;
-		meltCritDamage = Math.max(meltDamage, critDamage);
-		critrate = Math.max(0, Math.min(100, attackMode.getCrit() + statsInfo.luck * 5 - statsInfoT.luck * 5));
+		critDamage = damage * CRIT_MODIFIER;
+		meltCritDamage = meltDamage + (damage * (CRIT_MODIFIER - 1));
+		critrate = Math.max(0, Math.min(100, attackMode.getCrit() + statsInfo.luck * CRITRATE_PER_STAT - statsInfoT.luck * CRITRATE_PER_STAT));
 	}
 
 	private int calcAttackCount(AttackMode2 attackMode, boolean rangeOk, StatsInfo2 statsInfo, StatsInfo2 statsInfoT)
@@ -67,16 +73,27 @@ public class AttackInfoPart2
 		return atc;
 	}
 
-	private int advantage(int adv, int advT)
+	private int advantage(AdvantageType adv, AdvantageType advT)
 	{
-		if(adv < 1 || advT < 1 || adv > 3 || advT > 3)
+		if(adv == advT)
 			return 0;
-		int diff = adv - advT;
-		if(diff > 1)
-			return -1;
-		if(diff < -1)
+		if(adv == AdvantageType.DEFEND)
 			return 1;
-		return diff;
+		if(advT == AdvantageType.DEFEND)
+			return -1;
+		if(adv == AdvantageType.DAGGER && advT == AdvantageType.AXE)
+			return 1;
+		if(advT == AdvantageType.DAGGER && adv == AdvantageType.AXE)
+			return -1;
+		if(adv == AdvantageType.SPEAR && advT == AdvantageType.DAGGER)
+			return 1;
+		if(advT == AdvantageType.SPEAR && adv == AdvantageType.DAGGER)
+			return -1;
+		if(adv == AdvantageType.AXE && advT == AdvantageType.SPEAR)
+			return 1;
+		if(advT == AdvantageType.AXE && adv == AdvantageType.SPEAR)
+			return -1;
+		return 0;
 	}
 
 	public String[] infos()

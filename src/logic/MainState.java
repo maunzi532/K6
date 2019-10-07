@@ -90,22 +90,22 @@ public class MainState
 	//TODO show enemy reach (all enemies)
 	//TODO save transporter history
 	//TODO get inv back when removing building
+	//TODO fix WeightInv weight calculation
 
 	//TODO LevelEditor create XEntity
-	//TODO LevelEditor edit Building inv
+	//TODO LevelEditor edit Building inv (inputInv/outputInv)
 	//TODO BuildGUI show if there are more recipes
-	//TODO EntityInvEditGUI use TargetScrollList
 
-	//TODO change melt/crit interaction
-	//TODO change item weight mechanics and change speed effects
-	//TODO nerf luck and other percentage-based stats
+	//TODO change item weight mechanics
+	//TODO change speed effects
 	//TODO levelup essence formula
-	//TODO get levelup
+	//TODO use PlayerLevelSystem
 	//TODO add upgraded classes
 
 	//TODO add item storage
 	//TODO enemy reinforcements
 	//TODO Enemy AI types
+	//TODO complicated levelup system
 
 	//TODO scale tiles, menubar, gui when resizing
 	//TODO Make menu bar not overlap with SideInfo
@@ -114,6 +114,7 @@ public class MainState
 	//TODO show pause menu
 	//TODO add configurable keybindings
 	//TODO show better controls info
+	//TODO show better SideInfo
 
 	//LK char - move/attack
 	//RK char - inv/trade

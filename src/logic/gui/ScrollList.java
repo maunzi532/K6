@@ -43,9 +43,9 @@ public class ScrollList<T> implements GuiElement
 		elementCountYm1 = (sizeY - 1) / elementSizeY;
 		elementCountYm2 = (sizeY - 2) / elementSizeY;
 		scrollUp = new CTile(locationX, locationY,
-				new GuiTile("Scroll", null, false, null, sizeX, 1), elementSizeX, 1);
+				new GuiTile("Scroll", null, false, null, sizeX, 1), sizeX, 1);
 		scrollDown = new CTile(locationX, locationY + sizeY - 1,
-				new GuiTile("Scroll", null, false, null, sizeX, 1), elementSizeX, 1);
+				new GuiTile("Scroll", null, false, null, sizeX, 1), sizeX, 1);
 	}
 
 	@Override

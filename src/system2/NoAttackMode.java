@@ -2,6 +2,7 @@ package system2;
 
 import java.util.*;
 import javafx.scene.image.*;
+import system2.content.*;
 
 public class NoAttackMode extends AttackMode2
 {
@@ -52,6 +53,7 @@ public class NoAttackMode extends AttackMode2
 		return 0;
 	}
 
+	@Override
 	public List<Ability2> getAllAbilities(Stats2 stats)
 	{
 		ArrayList<Ability2> allAbilities = new ArrayList<>();
@@ -66,9 +68,9 @@ public class NoAttackMode extends AttackMode2
 	}
 
 	@Override
-	public int getAdvType()
+	public AdvantageType getAdvType()
 	{
-		return 0;
+		return AdvantageType.DEFEND;
 	}
 
 	@Override

@@ -3,6 +3,7 @@ package system2;
 import entity.*;
 import java.util.*;
 import javafx.scene.image.*;
+import system2.content.*;
 
 public abstract class AttackMode2 implements XMode
 {
@@ -66,7 +67,7 @@ public abstract class AttackMode2 implements XMode
 		return item.getRanges(counter);
 	}
 
-	public int getAdvType()
+	public AdvantageType getAdvType()
 	{
 		return item.getAdvType();
 	}

@@ -21,9 +21,9 @@ public class SpearItem extends AttackItem2
 	}
 
 	@Override
-	public int getAdvType()
+	public AdvantageType getAdvType()
 	{
-		return 2;
+		return AdvantageType.SPEAR;
 	}
 
 	@Override

@@ -3,6 +3,7 @@ package system2;
 import item.*;
 import java.util.*;
 import javafx.scene.image.*;
+import system2.content.*;
 
 public class AttackItem2Slot extends AttackItem2
 {
@@ -25,6 +26,12 @@ public class AttackItem2Slot extends AttackItem2
 	public boolean canContain(Item item)
 	{
 		return itemTypes.stream().anyMatch(e -> e.isInstance(item));
+	}
+
+	@Override
+	public AdvantageType getAdvType()
+	{
+		throw new RuntimeException();
 	}
 
 	public List<Class> getItemTypes()

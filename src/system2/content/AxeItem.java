@@ -21,9 +21,9 @@ public class AxeItem extends AttackItem2
 	}
 
 	@Override
-	public int getAdvType()
+	public AdvantageType getAdvType()
 	{
-		return 3;
+		return AdvantageType.AXE;
 	}
 
 	@Override

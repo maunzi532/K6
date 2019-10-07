@@ -21,9 +21,9 @@ public class SpellItem extends AttackItem2
 	}
 
 	@Override
-	public int getAdvType()
+	public AdvantageType getAdvType()
 	{
-		return 4;
+		return AdvantageType.SPELL;
 	}
 
 	@Override
