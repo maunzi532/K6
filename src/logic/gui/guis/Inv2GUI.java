@@ -51,6 +51,7 @@ public class Inv2GUI extends XGUIState
 		return 6;
 	}
 
+	@Override
 	private void update()
 	{
 		initTiles();
@@ -82,7 +83,7 @@ public class Inv2GUI extends XGUIState
 	{
 		var result0 = invViewInput.target(x, y, true);
 		var result1 = invViewOutput.target(x, y, true);
-		if(result0.scrolled || result1.scrolled)
+		if(result0.requiresUpdate || result1.requiresUpdate)
 			update();
 	}
 }

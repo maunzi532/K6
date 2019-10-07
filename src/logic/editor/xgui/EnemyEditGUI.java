@@ -27,6 +27,7 @@ public class EnemyEditGUI extends XGUIState
 		update();
 	}
 
+	@Override
 	private void update()
 	{
 		initTiles();

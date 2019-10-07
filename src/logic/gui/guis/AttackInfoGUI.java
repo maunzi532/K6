@@ -53,6 +53,7 @@ public class AttackInfoGUI extends XGUIState
 		return 7;
 	}
 
+	@Override
 	private void update()
 	{
 		initTiles();
@@ -116,7 +117,7 @@ public class AttackInfoGUI extends XGUIState
 			attacker.mainActionTaken();
 			stateHolder.setState(new PreAttackState(NoneState.INSTANCE, result0.target));
 		}
-		else if(result0.scrolled)
+		else if(result0.requiresUpdate)
 			update();
 	}
 }

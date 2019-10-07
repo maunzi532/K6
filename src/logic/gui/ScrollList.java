@@ -3,11 +3,14 @@ package logic.gui;
 import java.util.*;
 import java.util.function.*;
 
-public class ScrollList<T>
+public class ScrollList<T> implements GuiElement
 {
 	private final int locationX, locationY;
 	private final int sizeX, sizeY;
 	private final int elementSizeX, elementSizeY;
+	private final Function<T, GuiTile[]> function;
+	private final Consumer<T> onTarget;
+	private final Consumer<T> onClick;
 	private final int elementCountX;
 	private final int elementCountYm0;
 	private final int elementCountYm1;
@@ -23,7 +26,8 @@ public class ScrollList<T>
 	private int elementCountY;
 	private int shownLinesY;
 
-	public ScrollList(int locationX, int locationY, int sizeX, int sizeY, int elementSizeX, int elementSizeY)
+	public ScrollList(int locationX, int locationY, int sizeX, int sizeY, int elementSizeX, int elementSizeY,
+			Function<T, GuiTile[]> function, Consumer<T> onTarget, Consumer<T> onClick)
 	{
 		this.locationX = locationX;
 		this.locationY = locationY;
@@ -31,6 +35,9 @@ public class ScrollList<T>
 		this.sizeY = sizeY;
 		this.elementSizeX = elementSizeX;
 		this.elementSizeY = elementSizeY;
+		this.function = function;
+		this.onTarget = onTarget;
+		this.onClick = onClick;
 		elementCountX = sizeX / elementSizeX;
 		elementCountYm0 = sizeY / elementSizeY;
 		elementCountYm1 = (sizeY - 1) / elementSizeY;
@@ -89,7 +96,8 @@ public class ScrollList<T>
 		return canScrollUp ? locationY + 1 : locationY;
 	}
 
-	public void draw(GuiTile[][] tiles, Function<T, GuiTile[]> function)
+	@Override
+	public void draw(GuiTile[][] tiles)
 	{
 		int startY = startY();
 		for(int iy = 0; iy < shownLinesY; iy++)
@@ -129,47 +137,65 @@ public class ScrollList<T>
 		}
 	}
 
-	public ScrollListTargetResult<T> target(int x, int y, boolean scrollClick)
+	@Override
+	public ElementTargetResult target(int x, int y, boolean click)
 	{
 		int xr = x - locationX;
 		int yr = y - locationY;
 		if(xr < 0 || yr < 0 || xr >= sizeX || yr >= sizeY)
 		{
-			return new ScrollListTargetResult<>(false, false, CTile.NONE, null);
+			return new ElementTargetResult(false, false, CTile.NONE);
 		}
 		if(canScrollUp && yr == 0)
 		{
-			if(scrollClick)
+			if(click)
 			{
 				currentScroll--;
 				if(skipScroll1 && currentScroll == 1)
 					currentScroll = 0;
 			}
-			return new ScrollListTargetResult<>(true, scrollClick, scrollUp, null);
+			return new ElementTargetResult(true, click, scrollUp);
 		}
 		if(canScrollDown && yr == sizeY - 1)
 		{
-			if(scrollClick)
+			if(click)
 			{
 				currentScroll++;
 				if(skipScroll1 && currentScroll == 1)
 					currentScroll = 2;
 			}
-			return new ScrollListTargetResult<>(true, scrollClick, scrollDown, null);
+			return new ElementTargetResult(true, click, scrollDown);
 		}
 		int yr1 = y - startY();
 		if(xr >= elementSizeX * elementCountX || yr1 >= elementSizeY * shownLinesY)
 		{
-			return new ScrollListTargetResult<>(true, false, CTile.NONE, null);
+			return new ElementTargetResult(true, false, CTile.NONE);
 		}
 		int xel = xr / elementSizeX;
 		int yel = yr1 / elementSizeY;
 		int elementNum = (yel + currentScroll) * elementCountX + xel;
 		if(elementNum >= elements.size())
 		{
-			return new ScrollListTargetResult<>(true, false, CTile.NONE, null);
+			return new ElementTargetResult(true, false, CTile.NONE);
 		}
-		return new ScrollListTargetResult<>(true, false,
-				new CTile(locationX + xel * elementSizeX, startY() + yel * elementSizeY, elementSizeX, elementSizeY), elements.get(elementNum));
+		boolean requireUpdate = false;
+		if(click)
+		{
+			if(onClick != null)
+			{
+				onClick.accept(elements.get(elementNum));
+				requireUpdate = true;
+			}
+		}
+		else
+		{
+			if(onTarget != null)
+			{
+				onTarget.accept(elements.get(elementNum));
+				requireUpdate = true;
+			}
+		}
+		return new ElementTargetResult(true, requireUpdate,
+				new CTile(locationX + xel * elementSizeX, startY() + yel * elementSizeY, elementSizeX, elementSizeY));
 	}
 }

@@ -76,6 +76,7 @@ public class RemoveBuildingGUI extends XGUIState
 		return 6;
 	}
 
+	@Override
 	private void update()
 	{
 		initTiles();
@@ -114,7 +115,7 @@ public class RemoveBuildingGUI extends XGUIState
 	public void click(int x, int y, int key, XStateHolder stateHolder)
 	{
 		var result0 = invView.target(x, y, true);
-		if(result0.scrolled)
+		if(result0.requiresUpdate)
 			update();
 		if(remove.contains(x, y) && character.inputInv().ok())
 		{

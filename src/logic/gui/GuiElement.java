@@ -1,0 +1,8 @@
+package logic.gui;
+
+public interface GuiElement
+{
+	void draw(GuiTile[][] tiles);
+
+	ElementTargetResult target(int x, int y, boolean click);
+}

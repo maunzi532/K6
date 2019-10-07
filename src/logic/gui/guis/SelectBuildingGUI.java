@@ -84,6 +84,7 @@ public class SelectBuildingGUI extends XGUIState
 		return 6;
 	}
 
+	@Override
 	private void update()
 	{
 		initTiles();
@@ -116,7 +117,7 @@ public class SelectBuildingGUI extends XGUIState
 		{
 			stateHolder.setState(new BuildGUI(builder, result0.target));
 		}
-		else if(result0.scrolled)
+		else if(result0.requiresUpdate)
 			update();
 	}
 }

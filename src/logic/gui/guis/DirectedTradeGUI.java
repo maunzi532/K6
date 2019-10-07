@@ -59,6 +59,7 @@ public class DirectedTradeGUI extends XGUIState
 		return 6;
 	}
 
+	@Override
 	private void update()
 	{
 		setTargeted(CTile.NONE);
@@ -122,7 +123,7 @@ public class DirectedTradeGUI extends XGUIState
 			provideMarked = result0.target.item;
 			update();
 		}
-		if(result0.scrolled || result1.scrolled)
+		if(result0.requiresUpdate || result1.requiresUpdate)
 			update();
 		if(!result0.inside && !result1.inside)
 		{

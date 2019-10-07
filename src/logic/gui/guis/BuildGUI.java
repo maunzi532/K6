@@ -82,6 +82,7 @@ public class BuildGUI extends XGUIState
 		return 6;
 	}
 
+	@Override
 	public void update()
 	{
 		initTiles();
@@ -178,7 +179,7 @@ public class BuildGUI extends XGUIState
 		var result0 = floorTiles.target(x, y, true);
 		var result1 = required.target(x, y, true);
 		var result2 = returned.target(x, y, true);
-		if(result0.scrolled || result1.scrolled || result2.scrolled)
+		if(result0.requiresUpdate || result1.requiresUpdate || result2.requiresUpdate)
 			update();
 		if(!result0.inside && !result1.inside && !result2.inside)
 		{

@@ -83,6 +83,7 @@ public class EntityInvEditGUI extends XGUIState
 		return 6;
 	}
 
+	@Override
 	private void update()
 	{
 		initTiles();
@@ -144,7 +145,7 @@ public class EntityInvEditGUI extends XGUIState
 		var result0 = invView.target(x, y, true);
 		var result1 = infoView.target(x, y, true);
 		var result2 = allItemsView.target(x, y, true);
-		if(result0.scrolled || result1.scrolled || result2.scrolled)
+		if(result0.requiresUpdate || result1.requiresUpdate || result2.requiresUpdate)
 			update();
 		if(result0.target != null)
 		{

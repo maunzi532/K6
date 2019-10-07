@@ -31,6 +31,7 @@ public class HeroEditGUI extends XGUIState
 		update();
 	}
 
+	@Override
 	private void update()
 	{
 		initTiles();

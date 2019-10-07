@@ -50,6 +50,7 @@ public class Inv1GUI extends XGUIState
 		return 6;
 	}
 
+	@Override
 	protected void update()
 	{
 		initTiles();
@@ -88,7 +89,7 @@ public class Inv1GUI extends XGUIState
 	{
 		var result0 = invView.target(x, y, true);
 		var result1 = itemView.target(x, y, true);
-		if(result0.scrolled || result1.scrolled)
+		if(result0.requiresUpdate || result1.requiresUpdate)
 			update();
 	}
 }

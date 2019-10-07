@@ -32,8 +32,15 @@ public class RecipeGUI extends XGUIState
 	public void onEnter(MainState mainState)
 	{
 		recipeNum = building.lastViewedRecipeNum;
-		requireView = new ScrollList<>(1, 1, 2, 5, 2, 1);
-		resultView = new ScrollList<>(4, 1, 2, 5, 2, 1);
+		requireView = new ScrollList<>(1, 1, 2, 5, 2, 1, this::elementViewRequired, null, null);
+		resultView = new ScrollList<>(4, 1, 2, 5, 2, 1, this::elementViewResults, null, null);
+		elements.add(requireView);
+		elements.add(resultView);
+		elements.add(new CElement(textRequires));
+		elements.add(new CElement(textResults));
+		elements.add(new CElement(prev, true, () -> recipeNum > 0, null, () -> recipeNum--));
+		elements.add(new CElement(next, true, () -> recipeNum < building.getRecipes().size() - 1, null, () -> recipeNum++));
+		elements.add(new CElement(arrow));
 		update();
 	}
 
@@ -67,7 +74,8 @@ public class RecipeGUI extends XGUIState
 		return 6;
 	}
 
-	private void update()
+	@Override
+	protected void update()
 	{
 		initTiles();
 		Recipe recipe = building.getRecipes().get(recipeNum);
@@ -75,8 +83,8 @@ public class RecipeGUI extends XGUIState
 		resultView.elements = recipe.results.items;
 		requireView.update();
 		resultView.update();
-		requireView.draw(tiles, this::elementViewRequired);
-		resultView.draw(tiles, this::elementViewResults);
+		/*requireView.draw(tiles, this::elementViewRequired);
+		resultView.draw(tiles, this::elementViewResults);*/
 		setFilledTile(textRequires);
 		setFilledTile(textResults);
 		if(recipeNum > 0)
@@ -85,6 +93,19 @@ public class RecipeGUI extends XGUIState
 			setFilledTile(next);
 		setFilledTile(arrow);
 	}
+
+	@Override
+	protected void updateBeforeDraw()
+	{
+		Recipe recipe = building.getRecipes().get(recipeNum);
+		requireView.elements = recipe.required.items;
+		resultView.elements = recipe.results.items;
+		requireView.update();
+		resultView.update();
+	}
+
+	@Override
+	protected void updateAfterDraw(){}
 
 	public GuiTile[] elementViewRequired(ItemStack stack)
 	{
@@ -136,7 +157,7 @@ public class RecipeGUI extends XGUIState
 	{
 		var result0 = requireView.target(x, y, true);
 		var result1 = resultView.target(x, y, true);
-		if(result0.scrolled || result1.scrolled)
+		if(result0.requiresUpdate || result1.requiresUpdate)
 			update();
 		if(!result0.inside && !result1.inside)
 		{

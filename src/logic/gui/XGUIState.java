@@ -1,5 +1,6 @@
 package logic.gui;
 
+import java.util.*;
 import javafx.scene.image.*;
 import javafx.scene.paint.*;
 import logic.editor.xstate.*;
@@ -11,13 +12,34 @@ public abstract class XGUIState implements NState
 	private static final Color BACKGROUND = Color.color(0.4, 0.4, 0.5);
 
 	public GuiTile[][] tiles;
+	public List<GuiElement> elements;
 	public CTile targeted = CTile.NONE;
+
+	public XGUIState()
+	{
+		elements = new ArrayList<>();
+	}
 
 	@Override
 	public XMenu menu()
 	{
 		return XMenu.NOMENU;
 	}
+
+	protected void update()
+	{
+		updateBeforeDraw();
+		initTiles();
+		for(GuiElement element : elements)
+		{
+			element.draw(tiles);
+		}
+		updateAfterDraw();
+	}
+
+	protected abstract void updateBeforeDraw();
+
+	protected abstract void updateAfterDraw();
 
 	protected void initTiles()
 	{
@@ -78,9 +100,34 @@ public abstract class XGUIState implements NState
 		return BACKGROUND;
 	}
 
-	public abstract void target(int x, int y);
+	public void target(int x, int y)
+	{
+		for(GuiElement element : elements)
+		{
+			ElementTargetResult result = element.target(x, y, false);
+			if(result.inside)
+			{
+				targeted = result.targetTile;
+				break;
+			}
+		}
+	}
 
-	public abstract void click(int x, int y, int key, XStateHolder stateHolder);
+	public void click(int x, int y, int key, XStateHolder stateHolder)
+	{
+		for(GuiElement element : elements)
+		{
+			ElementTargetResult result = element.target(x, y, true);
+			if(result.inside)
+			{
+				if(result.requiresUpdate)
+				{
+					update();
+				}
+				break;
+			}
+		}
+	}
 
 	public void clickOutside(int key, XStateHolder stateHolder)
 	{

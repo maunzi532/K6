@@ -45,6 +45,7 @@ public class EditorSlotModeGUI extends XGUIState
 		return 6;
 	}
 
+	@Override
 	private void update()
 	{
 		initTiles();
@@ -69,7 +70,7 @@ public class EditorSlotModeGUI extends XGUIState
 			editor.setCurrentSlot(result0.target);
 			stateHolder.setState(EditingState.INSTANCE);
 		}
-		else if(result0.scrolled)
+		else if(result0.requiresUpdate)
 			update();
 	}
 }
