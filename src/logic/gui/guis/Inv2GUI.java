@@ -5,7 +5,6 @@ import item.inv.*;
 import item.view.*;
 import logic.*;
 import logic.gui.*;
-import logic.xstate.*;
 
 public class Inv2GUI extends XGUIState
 {
@@ -16,10 +15,6 @@ public class Inv2GUI extends XGUIState
 
 	private Inv inputInv;
 	private Inv outputInv;
-	private InvNumView weightViewInput;
-	private InvNumView weightViewOutput;
-	private ScrollList<ItemView> invViewInput;
-	private ScrollList<ItemView> invViewOutput;
 
 	public Inv2GUI(DoubleInv doubleInv)
 	{
@@ -30,12 +25,18 @@ public class Inv2GUI extends XGUIState
 	@Override
 	public void onEnter(MainState mainState)
 	{
-		weightViewInput = inputInv.viewInvWeight();
-		weightViewOutput = outputInv.viewInvWeight();
-		invViewInput = new ScrollList<>(0, 1, 4, 5, 2, 1);
-		invViewOutput = new ScrollList<>(5, 1, 4, 5, 2, 1);
-		invViewInput.elements = inputInv.viewItems(true);
-		invViewOutput.elements = outputInv.viewItems(true);
+		InvNumView weightViewInput = inputInv.viewInvWeight();
+		InvNumView weightViewOutput = outputInv.viewInvWeight();
+		ScrollList<ItemView> invViewInput = new ScrollList<>(0, 1, 4, 5, 2, 1,
+				inputInv.viewItems(true), GuiTile::itemViewView, null, null);
+		elements.add(invViewInput);
+		ScrollList<ItemView> invViewOutput = new ScrollList<>(5, 1, 4, 5, 2, 1,
+				outputInv.viewItems(true), GuiTile::itemViewView, null, null);
+		elements.add(invViewOutput);
+		elements.add(new CElement(textInputInv));
+		elements.add(new CElement(textOutputInv));
+		elements.add(new CElement(weightInput, new GuiTile(weightViewInput.currentWithLimit())));
+		elements.add(new CElement(weightOutput, new GuiTile(weightViewOutput.currentWithLimit())));
 		update();
 	}
 
@@ -49,41 +50,5 @@ public class Inv2GUI extends XGUIState
 	public int yw()
 	{
 		return 6;
-	}
-
-	@Override
-	private void update()
-	{
-		initTiles();
-		invViewInput.update();
-		invViewOutput.update();
-		invViewInput.draw(tiles, GuiTile::itemViewView);
-		invViewOutput.draw(tiles, GuiTile::itemViewView);
-		setFilledTile(textInputInv);
-		setFilledTile(textOutputInv);
-		setEmptyTileAndFill(weightInput, new GuiTile(weightViewInput.currentWithLimit()));
-		setEmptyTileAndFill(weightOutput, new GuiTile(weightViewOutput.currentWithLimit()));
-	}
-
-	@Override
-	public void target(int x, int y)
-	{
-		var result0 = invViewInput.target(x, y, false);
-		if(result0.inside)
-		{
-			targeted = result0.targetTile;
-			return;
-		}
-		var result1 = invViewOutput.target(x, y, false);
-		targeted = result1.targetTile;
-	}
-
-	@Override
-	public void click(int x, int y, int key, XStateHolder stateHolder)
-	{
-		var result0 = invViewInput.target(x, y, true);
-		var result1 = invViewOutput.target(x, y, true);
-		if(result0.requiresUpdate || result1.requiresUpdate)
-			update();
 	}
 }

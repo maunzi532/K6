@@ -15,7 +15,6 @@ public class SelectBuildingGUI extends XGUIState
 	private static final CTile textInv = new CTile(2, 0, new GuiTile("Buildings"), 2, 1);
 
 	private final XBuilder builder;
-	private ScrollList<BuildingBlueprint> buildingsView;
 
 	public SelectBuildingGUI(XBuilder builder)
 	{
@@ -36,8 +35,11 @@ public class SelectBuildingGUI extends XGUIState
 			mainState.sideInfoFrame.setSideInfo(((XHero) builder).standardSideInfo(), null);
 		}
 		BlueprintCache<BuildingBlueprint> blueprintCache = mainState.buildingBlueprintCache;
-		buildingsView = new ScrollList<>(0, 1, 6, 5, 2, 1);
-		buildingsView.elements = blueprintCache.allBlueprints();
+		ScrollList<BuildingBlueprint> buildingsView = new ScrollList<>(0, 1, 6, 5, 2, 1,
+				blueprintCache.allBlueprints(), this::itemView, null,
+				target -> mainState.stateHolder.setState(new BuildGUI(builder, target)));
+		elements.add(buildingsView);
+		elements.add(new CElement(textInv));
 		update();
 	}
 
@@ -84,15 +86,6 @@ public class SelectBuildingGUI extends XGUIState
 		return 6;
 	}
 
-	@Override
-	private void update()
-	{
-		initTiles();
-		buildingsView.update();
-		buildingsView.draw(tiles, this::itemView);
-		setFilledTile(textInv);
-	}
-
 	public GuiTile[] itemView(BuildingBlueprint blueprint)
 	{
 		return new GuiTile[]
@@ -100,24 +93,5 @@ public class SelectBuildingGUI extends XGUIState
 						new GuiTile(blueprint.name),
 						new GuiTile(null, MBuilding.IMAGE, false, null)
 				};
-	}
-
-	@Override
-	public void target(int x, int y)
-	{
-		var result0 = buildingsView.target(x, y, false);
-		targeted = result0.targetTile;
-	}
-
-	@Override
-	public void click(int x, int y, int key, XStateHolder stateHolder)
-	{
-		var result0 = buildingsView.target(x, y, true);
-		if(result0.target != null)
-		{
-			stateHolder.setState(new BuildGUI(builder, result0.target));
-		}
-		else if(result0.requiresUpdate)
-			update();
 	}
 }

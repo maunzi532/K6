@@ -18,9 +18,6 @@ public class RemoveBuildingGUI extends XGUIState
 
 	private final XHero character;
 	private Buildable building;
-	private ItemList refunds;
-	private InvNumView weightView;
-	private ScrollList<ItemView> invView;
 
 	public RemoveBuildingGUI(XHero character)
 	{
@@ -32,11 +29,15 @@ public class RemoveBuildingGUI extends XGUIState
 	{
 		mainState.sideInfoFrame.setSideInfo(character.standardSideInfo(), null);
 		building = (Buildable) mainState.levelMap.getBuilding(character.location());
-		refunds = building.getRefundable();
+		ItemList refunds = building.getRefundable();
 		character.inputInv().tryAdd(refunds, true, CommitType.LEAVE);
-		weightView = character.inputInv().viewInvWeight();
-		invView = new ScrollList<>(0, 1, 3, 4, 2, 1);
-		invView.elements = character.inputInv().viewItems(true);
+		InvNumView weightView = character.inputInv().viewInvWeight();
+		ScrollList<ItemView> invView = new ScrollList<>(0, 1, 3, 4, 2, 1,
+				character.inputInv().viewItems(true), this::changedItemView, null, null);
+		elements.add(invView);
+		elements.add(new CElement(textInv));
+		elements.add(new CElement(weight, new GuiTile(weightView.baseAndCurrentWithLimit())));
+		elements.add(new CElement(remove, true, null, null, () -> onClickRemove(mainState)));
 		update();
 	}
 
@@ -76,16 +77,6 @@ public class RemoveBuildingGUI extends XGUIState
 		return 6;
 	}
 
-	@Override
-	private void update()
-	{
-		initTiles();
-		invView.update();
-		invView.draw(tiles, this::changedItemView);
-		setFilledTile(textInv);
-		setEmptyTileAndFill(weight, new GuiTile(weightView.baseAndCurrentWithLimit()));
-		setFilledTile(remove);
-	}
 
 	private GuiTile[] changedItemView(ItemView itemView)
 	{
@@ -96,34 +87,15 @@ public class RemoveBuildingGUI extends XGUIState
 				};
 	}
 
-	@Override
-	public void target(int x, int y)
+	private void onClickRemove(MainState mainState)
 	{
-		var result0 = invView.target(x, y, false);
-		if(result0.inside)
-		{
-			targeted = result0.targetTile;
-			return;
-		}
-		if(remove.contains(x, y))
-			setTargeted(remove);
-		else
-			setTargeted(CTile.NONE);
-	}
-
-	@Override
-	public void click(int x, int y, int key, XStateHolder stateHolder)
-	{
-		var result0 = invView.target(x, y, true);
-		if(result0.requiresUpdate)
-			update();
-		if(remove.contains(x, y) && character.inputInv().ok())
+		if(character.inputInv().ok())
 		{
 			character.takeAp(1);
 			character.irreversible();
 			character.inputInv().commit();
 			building.remove();
-			stateHolder.setState(NoneState.INSTANCE);
+			mainState.stateHolder.setState(NoneState.INSTANCE);
 		}
 	}
 

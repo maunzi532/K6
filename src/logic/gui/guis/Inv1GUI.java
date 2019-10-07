@@ -1,11 +1,10 @@
 package logic.gui.guis;
 
+import item.inv.*;
+import item.view.*;
 import java.util.*;
 import logic.*;
 import logic.gui.*;
-import item.inv.Inv;
-import item.view.*;
-import logic.xstate.*;
 
 public class Inv1GUI extends XGUIState
 {
@@ -15,11 +14,10 @@ public class Inv1GUI extends XGUIState
 	protected Inv inv;
 	protected InvNumView weightView;
 	protected List<ItemView> itemsView;
-	protected ScrollList<ItemView> invView;
+	protected TargetScrollList<ItemView> invView;
 	protected ScrollList<String> itemView;
 	protected String name;
 	protected List<String> baseInfo;
-	protected ItemView viewing;
 
 	public Inv1GUI(Inv inv, String name, List<String> baseInfo)
 	{
@@ -33,8 +31,14 @@ public class Inv1GUI extends XGUIState
 	{
 		weightView = inv.viewInvWeight();
 		itemsView = inv.viewItems(true);
-		invView = new ScrollList<>(0, 1, 2, 5, 2, 1);
-		itemView = new ScrollList<>(3, 1, 3, 5, 1, 1);
+		invView = new TargetScrollList<>(0, 1, 2, 5, 2, 1, null,
+				GuiTile::itemViewView, null);
+		elements.add(invView);
+		itemView = new ScrollList<>(3, 1, 3, 5, 1, 1, null,
+				info -> new GuiTile[]{new GuiTile(info)}, null, null);
+		elements.add(itemView);
+		elements.add(new CElement(textInv, new GuiTile(name)));
+		elements.add(new CElement(weight, new GuiTile(weightView.currentWithLimit())));
 		update();
 	}
 
@@ -51,45 +55,17 @@ public class Inv1GUI extends XGUIState
 	}
 
 	@Override
-	protected void update()
+	protected void updateBeforeDraw()
 	{
-		initTiles();
 		invView.elements = itemsView;
 		itemView.elements = info();
-		invView.update();
-		itemView.update();
-		invView.draw(tiles, GuiTile::itemViewView);
-		itemView.draw(tiles, info -> new GuiTile[]{new GuiTile(info)});
-		setEmptyTileAndFill(textInv, new GuiTile(name));
-		setEmptyTileAndFill(weight, new GuiTile(weightView.currentWithLimit()));
 	}
 
 	protected List<String> info()
 	{
-		if(viewing != null)
-			return viewing.item.info();
+		if(invView.getTargeted() != null)
+			return invView.getTargeted().item.info();
 		else
 			return baseInfo;
-	}
-
-	@Override
-	public void target(int x, int y)
-	{
-		var result0 = invView.target(x, y, false);
-		targeted = result0.targetTile;
-		if(viewing != result0.target)
-		{
-			viewing = result0.target;
-			update();
-		}
-	}
-
-	@Override
-	public void click(int x, int y, int key, XStateHolder stateHolder)
-	{
-		var result0 = invView.target(x, y, true);
-		var result1 = itemView.target(x, y, true);
-		if(result0.requiresUpdate || result1.requiresUpdate)
-			update();
 	}
 }

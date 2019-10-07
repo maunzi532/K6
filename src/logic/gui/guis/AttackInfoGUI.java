@@ -11,9 +11,6 @@ public class AttackInfoGUI extends XGUIState
 	private XHero attacker;
 	private XEntity target;
 	private SideInfoFrame sideInfoFrame;
-	private CTile nameA;
-	private CTile nameT;
-	private ScrollList<AttackInfo> attacksView;
 	private AttackInfo lastTargeted;
 
 	public AttackInfoGUI(XHero attacker, XEntity target)
@@ -27,10 +24,16 @@ public class AttackInfoGUI extends XGUIState
 	{
 		sideInfoFrame = mainState.sideInfoFrame;
 		sideInfoFrame.sidedInfo(attacker, target);
-		nameA = new CTile(0, 0, new GuiTile(attacker.name()), 2, 1);
-		nameT = new CTile(4, 0, new GuiTile(target.name()), 2, 1);
-		attacksView = new ScrollList<>(0, 1, 6, 6, 6, 2);
-		attacksView.elements = attacker.attackInfo(target);
+		ScrollList<AttackInfo> attacksView = new ScrollList<>(0, 1, 6, 6, 6, 2,
+				attacker.attackInfo(target), this::itemView, this::onTarget1, target1 ->
+		{
+			attacker.takeAp(2);
+			attacker.mainActionTaken();
+			mainState.stateHolder.setState(new PreAttackState(NoneState.INSTANCE, target1));
+		});
+		elements.add(attacksView);
+		elements.add(new CElement(new CTile(0, 0, new GuiTile(attacker.name()), 2, 1)));
+		elements.add(new CElement(new CTile(4, 0, new GuiTile(target.name()), 2, 1)));
 		lastTargeted = null;
 		update();
 	}
@@ -51,16 +54,6 @@ public class AttackInfoGUI extends XGUIState
 	public int yw()
 	{
 		return 7;
-	}
-
-	@Override
-	private void update()
-	{
-		initTiles();
-		attacksView.update();
-		attacksView.draw(tiles, this::itemView);
-		setFilledTile(nameA);
-		setFilledTile(nameT);
 	}
 
 	private GuiTile[] itemView(AttackInfo aI)
@@ -90,34 +83,18 @@ public class AttackInfoGUI extends XGUIState
 		return infos[n];
 	}
 
-	@Override
-	public void target(int x, int y)
+	private Boolean onTarget1(AttackInfo target1)
 	{
-		var result0 = attacksView.target(x, y, false);
-		targeted = result0.targetTile;
-		if(lastTargeted != result0.target)
+		if(lastTargeted != target1)
 		{
-			if(result0.target != null)
-				sideInfoFrame.attackInfo(result0.target);
+			if(target1 != null)
+				sideInfoFrame.attackInfo(target1);
 			else
 				sideInfoFrame.sidedInfo(attacker, target);
 			//analysis.get(num).outcomes2().forEach(e -> System.out.println(e.readableChance() + " " + e.compareText));
 			//System.out.println();
-			lastTargeted = result0.target;
+			lastTargeted = target1;
 		}
-	}
-
-	@Override
-	public void click(int x, int y, int key, XStateHolder stateHolder)
-	{
-		var result0 = attacksView.target(x, y, true);
-		if(result0.target != null)
-		{
-			attacker.takeAp(2);
-			attacker.mainActionTaken();
-			stateHolder.setState(new PreAttackState(NoneState.INSTANCE, result0.target));
-		}
-		else if(result0.requiresUpdate)
-			update();
+		return false;
 	}
 }

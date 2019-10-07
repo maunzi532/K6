@@ -9,7 +9,7 @@ public class ScrollList<T> implements GuiElement
 	private final int sizeX, sizeY;
 	private final int elementSizeX, elementSizeY;
 	private final Function<T, GuiTile[]> function;
-	private final Consumer<T> onTarget;
+	protected Function<T, Boolean> onTarget;
 	private final Consumer<T> onClick;
 	private final int elementCountX;
 	private final int elementCountYm0;
@@ -26,8 +26,8 @@ public class ScrollList<T> implements GuiElement
 	private int elementCountY;
 	private int shownLinesY;
 
-	public ScrollList(int locationX, int locationY, int sizeX, int sizeY, int elementSizeX, int elementSizeY,
-			Function<T, GuiTile[]> function, Consumer<T> onTarget, Consumer<T> onClick)
+	public ScrollList(int locationX, int locationY, int sizeX, int sizeY, int elementSizeX, int elementSizeY, List<T> elements,
+			Function<T, GuiTile[]> function, Function<T, Boolean> onTarget, Consumer<T> onClick)
 	{
 		this.locationX = locationX;
 		this.locationY = locationY;
@@ -35,6 +35,7 @@ public class ScrollList<T> implements GuiElement
 		this.sizeY = sizeY;
 		this.elementSizeX = elementSizeX;
 		this.elementSizeY = elementSizeY;
+		this.elements = elements;
 		this.function = function;
 		this.onTarget = onTarget;
 		this.onClick = onClick;
@@ -48,6 +49,7 @@ public class ScrollList<T> implements GuiElement
 				new GuiTile("Scroll", null, false, null, sizeX, 1), elementSizeX, 1);
 	}
 
+	@Override
 	public void update()
 	{
 		elementLinesY = -Math.floorDiv(-elements.size(), elementCountX);
@@ -191,8 +193,8 @@ public class ScrollList<T> implements GuiElement
 		{
 			if(onTarget != null)
 			{
-				onTarget.accept(elements.get(elementNum));
-				requireUpdate = true;
+				if(onTarget.apply(elements.get(elementNum)))
+					requireUpdate = true;
 			}
 		}
 		return new ElementTargetResult(true, requireUpdate,

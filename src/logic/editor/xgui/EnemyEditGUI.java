@@ -28,12 +28,6 @@ public class EnemyEditGUI extends XGUIState
 	}
 
 	@Override
-	private void update()
-	{
-		initTiles();
-	}
-
-	@Override
 	public String text()
 	{
 		return "Settings";
@@ -61,17 +55,5 @@ public class EnemyEditGUI extends XGUIState
 	public int yw()
 	{
 		return 4;
-	}
-
-	@Override
-	public void target(int x, int y)
-	{
-
-	}
-
-	@Override
-	public void click(int x, int y, int key, XStateHolder stateHolder)
-	{
-
 	}
 }

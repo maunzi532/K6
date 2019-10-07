@@ -13,6 +13,8 @@ public class HeroEditGUI extends XGUIState
 	private static final CTile isInventoryLocked = new CTile(2, 1, 2, 1);
 
 	private XHero hero;
+	private CElement locationLockedElement;
+	private CElement inventoryLockedElement;
 
 	public HeroEditGUI(XHero hero)
 	{
@@ -28,15 +30,18 @@ public class HeroEditGUI extends XGUIState
 	@Override
 	public void onEnter(MainState mainState)
 	{
+		locationLockedElement = new CElement(isLocationLocked, true, null, null, () -> hero.toggleStartLocked());
+		elements.add(locationLockedElement);
+		inventoryLockedElement = new CElement(isInventoryLocked, true, null, null, () -> hero.toggleStartInvLocked());
+		elements.add(inventoryLockedElement);
 		update();
 	}
 
 	@Override
-	private void update()
+	protected void updateBeforeDraw()
 	{
-		initTiles();
-		setEmptyTileAndFill(isLocationLocked, new GuiTile("Lock\nLocation", null, false, hero.isStartLocked() ? Color.CYAN : null));
-		setEmptyTileAndFill(isInventoryLocked, new GuiTile("Lock\nInventory", null, false, hero.isStartInvLocked() ? Color.CYAN : null));
+		locationLockedElement.fillTile = new GuiTile("Lock\nLocation", null, false, hero.isStartLocked() ? Color.CYAN : null);
+		inventoryLockedElement.fillTile = new GuiTile("Lock\nInventory", null, false, hero.isStartInvLocked() ? Color.CYAN : null);
 	}
 
 	@Override
@@ -67,31 +72,5 @@ public class HeroEditGUI extends XGUIState
 	public int yw()
 	{
 		return 4;
-	}
-
-	@Override
-	public void target(int x, int y)
-	{
-		if(isLocationLocked.contains(x, y))
-			setTargeted(isLocationLocked);
-		else if(isInventoryLocked.contains(x, y))
-			setTargeted(isInventoryLocked);
-		else
-			setTargeted(CTile.NONE);
-	}
-
-	@Override
-	public void click(int x, int y, int key, XStateHolder stateHolder)
-	{
-		if(isLocationLocked.contains(x, y))
-		{
-			hero.toggleStartLocked();
-			update();
-		}
-		else if(isInventoryLocked.contains(x, y))
-		{
-			hero.toggleStartInvLocked();
-			update();
-		}
 	}
 }

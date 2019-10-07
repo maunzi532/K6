@@ -32,9 +32,11 @@ public class RecipeGUI extends XGUIState
 	public void onEnter(MainState mainState)
 	{
 		recipeNum = building.lastViewedRecipeNum;
-		requireView = new ScrollList<>(1, 1, 2, 5, 2, 1, this::elementViewRequired, null, null);
-		resultView = new ScrollList<>(4, 1, 2, 5, 2, 1, this::elementViewResults, null, null);
+		requireView = new ScrollList<>(1, 1, 2, 5, 2, 1, null,
+				this::elementViewRequired, null, null);
 		elements.add(requireView);
+		resultView = new ScrollList<>(4, 1, 2, 5, 2, 1, null,
+				this::elementViewResults, null, null);
 		elements.add(resultView);
 		elements.add(new CElement(textRequires));
 		elements.add(new CElement(textResults));
@@ -75,37 +77,12 @@ public class RecipeGUI extends XGUIState
 	}
 
 	@Override
-	protected void update()
-	{
-		initTiles();
-		Recipe recipe = building.getRecipes().get(recipeNum);
-		requireView.elements = recipe.required.items;
-		resultView.elements = recipe.results.items;
-		requireView.update();
-		resultView.update();
-		/*requireView.draw(tiles, this::elementViewRequired);
-		resultView.draw(tiles, this::elementViewResults);*/
-		setFilledTile(textRequires);
-		setFilledTile(textResults);
-		if(recipeNum > 0)
-			setFilledTile(prev);
-		if(recipeNum < building.getRecipes().size() - 1)
-			setFilledTile(next);
-		setFilledTile(arrow);
-	}
-
-	@Override
 	protected void updateBeforeDraw()
 	{
 		Recipe recipe = building.getRecipes().get(recipeNum);
 		requireView.elements = recipe.required.items;
 		resultView.elements = recipe.results.items;
-		requireView.update();
-		resultView.update();
 	}
-
-	@Override
-	protected void updateAfterDraw(){}
 
 	public GuiTile[] elementViewRequired(ItemStack stack)
 	{
@@ -127,51 +104,6 @@ public class RecipeGUI extends XGUIState
 						new GuiTile(itemView.currentWithLimit()),
 						new GuiTile(InvNumView.except1(stack.count), itemView.item.image(), false, null)
 				};
-	}
-
-	@Override
-	public void target(int x, int y)
-	{
-		var result0 = requireView.target(x, y, false);
-		if(result0.inside)
-		{
-			targeted = result0.targetTile;
-			return;
-		}
-		var result1 = resultView.target(x, y, false);
-		if(result1.inside)
-		{
-			targeted = result1.targetTile;
-			return;
-		}
-		if(recipeNum > 0 && prev.contains(x, y))
-			targeted = prev;
-		else if(recipeNum < building.getRecipes().size() - 1 && next.contains(x, y))
-			targeted = next;
-		else
-			targeted = CTile.NONE;
-	}
-
-	@Override
-	public void click(int x, int y, int key, XStateHolder stateHolder)
-	{
-		var result0 = requireView.target(x, y, true);
-		var result1 = resultView.target(x, y, true);
-		if(result0.requiresUpdate || result1.requiresUpdate)
-			update();
-		if(!result0.inside && !result1.inside)
-		{
-			if(recipeNum > 0 && prev.contains(x, y))
-			{
-				recipeNum--;
-				update();
-			}
-			else if(recipeNum < building.getRecipes().size() - 1 && next.contains(x, y))
-			{
-				recipeNum++;
-				update();
-			}
-		}
 	}
 
 	@Override

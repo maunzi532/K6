@@ -32,14 +32,15 @@ public abstract class XGUIState implements NState
 		initTiles();
 		for(GuiElement element : elements)
 		{
+			element.update();
 			element.draw(tiles);
 		}
 		updateAfterDraw();
 	}
 
-	protected abstract void updateBeforeDraw();
+	protected void updateBeforeDraw(){}
 
-	protected abstract void updateAfterDraw();
+	protected void updateAfterDraw(){}
 
 	protected void initTiles()
 	{
@@ -102,15 +103,25 @@ public abstract class XGUIState implements NState
 
 	public void target(int x, int y)
 	{
+		boolean requireUpdate = false;
+		boolean found = false;
 		for(GuiElement element : elements)
 		{
 			ElementTargetResult result = element.target(x, y, false);
 			if(result.inside)
 			{
+				found = true;
 				targeted = result.targetTile;
-				break;
+			}
+			if(result.requiresUpdate)
+			{
+				requireUpdate = true;
 			}
 		}
+		if(!found)
+			targeted = CTile.NONE;
+		if(requireUpdate)
+			update();
 	}
 
 	public void click(int x, int y, int key, XStateHolder stateHolder)

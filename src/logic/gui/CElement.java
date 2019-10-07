@@ -8,7 +8,7 @@ public class CElement implements GuiElement
 	public GuiTile fillTile;
 	private boolean targetable;
 	private Supplier<Boolean> exists;
-	private Runnable onTarget;
+	private Supplier<Boolean> onTarget;
 	private Runnable onClick;
 
 	public CElement(CTile tile)
@@ -16,7 +16,13 @@ public class CElement implements GuiElement
 		this.tile = tile;
 	}
 
-	public CElement(CTile tile, boolean targetable, Supplier<Boolean> exists, Runnable onTarget,
+	public CElement(CTile tile, GuiTile fillTile)
+	{
+		this.tile = tile;
+		this.fillTile = fillTile;
+	}
+
+	public CElement(CTile tile, boolean targetable, Supplier<Boolean> exists, Supplier<Boolean> onTarget,
 			Runnable onClick)
 	{
 		this.tile = tile;
@@ -27,7 +33,7 @@ public class CElement implements GuiElement
 	}
 
 	public CElement(CTile tile, GuiTile fillTile, boolean targetable, Supplier<Boolean> exists,
-			Runnable onTarget, Runnable onClick)
+			Supplier<Boolean> onTarget, Runnable onClick)
 	{
 		this.tile = tile;
 		this.fillTile = fillTile;
@@ -36,6 +42,9 @@ public class CElement implements GuiElement
 		this.onTarget = onTarget;
 		this.onClick = onClick;
 	}
+
+	@Override
+	public void update(){}
 
 	@Override
 	public void draw(GuiTile[][] tiles)
@@ -95,8 +104,8 @@ public class CElement implements GuiElement
 			{
 				if(onTarget != null)
 				{
-					onTarget.run();
-					requireUpdate = true;
+					if(onTarget.get())
+						requireUpdate = true;
 				}
 			}
 			return new ElementTargetResult(true, requireUpdate, tile);

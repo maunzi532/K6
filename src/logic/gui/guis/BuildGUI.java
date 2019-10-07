@@ -28,17 +28,20 @@ public class BuildGUI extends XGUIState
 
 	private XBuilder builder;
 	private BuildingBlueprint blueprint;
+	private List<List<CostBlueprint>> costBlueprints;
 	private LevelMap levelMap;
 	private int costNum = 0;
 	private int tileCostNum = 0;
 	private ScrollList<RequiresFloorTiles> floorTiles;
 	private ScrollList<ItemStack> required;
 	private ScrollList<ItemStack> returned;
+	private CElement buildElement;
 
 	public BuildGUI(XBuilder builder, BuildingBlueprint blueprint)
 	{
 		this.builder = builder;
 		this.blueprint = blueprint;
+		costBlueprints = blueprint.constructionBlueprint.blueprints;
 	}
 
 	@Override
@@ -51,9 +54,24 @@ public class BuildGUI extends XGUIState
 	public void onEnter(MainState mainState)
 	{
 		levelMap = mainState.levelMap;
-		floorTiles = new ScrollList<>(0, 2, 2, 4, 2, 1);
-		required = new ScrollList<>(3, 2, 2, 4, 2, 1);
-		returned = new ScrollList<>(6, 2, 2, 4, 2, 1);
+		floorTiles = new ScrollList<>(0, 2, 2, 4, 2, 1, null,
+				this::itemView0, null, null);
+		elements.add(floorTiles);
+		required = new ScrollList<>(3, 2, 2, 4, 2, 1, null,
+				this::itemView1, null, null);
+		elements.add(required);
+		returned = new ScrollList<>(6, 2, 2, 4, 2, 1, null,
+				this::itemView2, null, null);
+		elements.add(returned);
+		elements.add(new CElement(textTiles));
+		elements.add(new CElement(textRequired));
+		elements.add(new CElement(textReturned));
+		elements.add(new CElement(prev, true, null, null, this::clickPrev));
+		elements.add(new CElement(next, true, null, null, this::clickNext));
+		elements.add(new CElement(lessTiles, true, null, null, this::clickLessTiles));
+		elements.add(new CElement(moreTiles, true, null, null, this::clickMoreTiles));
+		buildElement = new CElement(build, true, null, null, () -> clickBuild(mainState));
+		elements.add(buildElement);
 		update();
 	}
 
@@ -83,30 +101,16 @@ public class BuildGUI extends XGUIState
 	}
 
 	@Override
-	public void update()
+	protected void updateBeforeDraw()
 	{
-		initTiles();
 		CostBlueprint cost = blueprint.constructionBlueprint.blueprints.get(costNum).get(tileCostNum);
 		floorTiles.elements = cost.requiredFloorTiles;
 		required.elements = cost.required.items;
 		returned.elements = cost.refundable.items;
-		floorTiles.update();
-		required.update();
-		returned.update();
-		floorTiles.draw(tiles, this::itemView0);
-		required.draw(tiles, this::itemView1);
-		returned.draw(tiles, this::itemView2);
-		setFilledTile(textTiles);
-		setFilledTile(textRequired);
-		setFilledTile(textReturned);
-		setFilledTile(prev);
-		setFilledTile(next);
-		setFilledTile(lessTiles);
-		setFilledTile(moreTiles);
 		if(builder.tryBuildingCosts(cost, CommitType.ROLLBACK).isPresent())
-			setFilledTile(buildA);
+			buildElement.fillTile = new GuiTile("Build", null, false, Color.CYAN);
 		else
-			setFilledTile(build);
+			buildElement.fillTile = new GuiTile("Build");
 	}
 
 	private GuiTile[] itemView0(RequiresFloorTiles rft)
@@ -138,92 +142,56 @@ public class BuildGUI extends XGUIState
 				};
 	}
 
-	@Override
-	public void target(int x, int y)
+	private void clickPrev()
 	{
-		var result0 = floorTiles.target(x, y, false);
-		if(result0.inside)
+		if(costNum > 0)
 		{
-			targeted = result0.targetTile;
-			return;
+			costNum--;
+			tileCostNum = 0;
 		}
-		var result1 = required.target(x, y, false);
-		if(result1.inside)
-		{
-			targeted = result1.targetTile;
-			return;
-		}
-		var result2 = returned.target(x, y, false);
-		if(result2.inside)
-		{
-			targeted = result2.targetTile;
-			return;
-		}
-		if(prev.contains(x, y))
-			setTargeted(prev);
-		else if(next.contains(x, y))
-			setTargeted(next);
-		else if(lessTiles.contains(x, y))
-			setTargeted(lessTiles);
-		else if(moreTiles.contains(x, y))
-			setTargeted(moreTiles);
-		else if(build.contains(x, y))
-			setTargeted(build);
-		else
-			setTargeted(CTile.NONE);
 	}
 
-	@Override
-	public void click(int x, int y, int key, XStateHolder stateHolder)
+	private void clickNext()
 	{
-		var result0 = floorTiles.target(x, y, true);
-		var result1 = required.target(x, y, true);
-		var result2 = returned.target(x, y, true);
-		if(result0.requiresUpdate || result1.requiresUpdate || result2.requiresUpdate)
-			update();
-		if(!result0.inside && !result1.inside && !result2.inside)
+		if(costNum < costBlueprints.size() - 1)
 		{
-			List<List<CostBlueprint>> costBlueprints = blueprint.constructionBlueprint.blueprints;
-			CostBlueprint cost = costBlueprints.get(costNum).get(tileCostNum);
-			if(costNum > 0 && prev.contains(x, y))
+			costNum++;
+			tileCostNum = 0;
+		}
+	}
+
+	private void clickLessTiles()
+	{
+		if(tileCostNum > 0)
+		{
+			tileCostNum--;
+		}
+	}
+
+	private void clickMoreTiles()
+	{
+		if(tileCostNum < costBlueprints.get(costNum).size() - 1)
+		{
+			tileCostNum++;
+		}
+	}
+
+	private void clickBuild(MainState mainState)
+	{
+		CostBlueprint cost = costBlueprints.get(costNum).get(tileCostNum);
+		Optional<ItemList> refundable = builder.tryBuildingCosts(cost, CommitType.COMMIT);
+		if(refundable.isPresent())
+		{
+			if(builder instanceof XHero)
 			{
-				costNum--;
-				tileCostNum = 0;
-				update();
+				((XHero) builder).takeAp(1);
+				((XHero) builder).mainActionTaken();
 			}
-			else if(costNum < costBlueprints.size() - 1 && next.contains(x, y))
-			{
-				costNum++;
-				tileCostNum = 0;
-				update();
-			}
-			else if(tileCostNum > 0 && lessTiles.contains(x, y))
-			{
-				tileCostNum--;
-				update();
-			}
-			else if(tileCostNum < costBlueprints.get(costNum).size() - 1 && moreTiles.contains(x, y))
-			{
-				tileCostNum++;
-				update();
-			}
-			else if(build.contains(x, y))
-			{
-				Optional<ItemList> refundable = builder.tryBuildingCosts(cost, CommitType.COMMIT);
-				if(refundable.isPresent())
-				{
-					if(builder instanceof XHero)
-					{
-						((XHero) builder).takeAp(1);
-						((XHero) builder).mainActionTaken();
-					}
-					builder.buildBuilding(levelMap, cost, refundable.get(), blueprint);
-					if(builder instanceof XHero)
-						stateHolder.setState(NoneState.INSTANCE);
-					else
-						stateHolder.setState(EditingState.INSTANCE);
-				}
-			}
+			builder.buildBuilding(levelMap, cost, refundable.get(), blueprint);
+			if(builder instanceof XHero)
+				mainState.stateHolder.setState(NoneState.INSTANCE);
+			else
+				mainState.stateHolder.setState(EditingState.INSTANCE);
 		}
 	}
 }

@@ -24,6 +24,7 @@ public class DirectedTradeGUI extends XGUIState
 	private XHero takeAp;
 	private ScrollList<ItemView> provideView;
 	private ScrollList<ItemView> receiveView;
+	private CElement transferElement;
 	private Item provideMarked;
 	private int amount;
 	private boolean changed;
@@ -39,10 +40,19 @@ public class DirectedTradeGUI extends XGUIState
 	public void onEnter(MainState mainState)
 	{
 		mainState.sideInfoFrame.clearSideInfo();
-		provideView = new ScrollList<>(0, 1, 4, 5, 2, 1);
-		receiveView = new ScrollList<>(5, 1, 4, 5, 2, 1);
-		provideView.elements = provide.outputInv().viewItems(false);
-		receiveView.elements = receive.inputInv().viewItems(true);
+		provideView = new ScrollList<>(0, 1, 4, 5, 2, 1, null,
+				e -> itemView(e, true), null, target -> provideMarked = target.item);
+		elements.add(provideView);
+		receiveView = new ScrollList<>(5, 1, 4, 5, 2, 1, null,
+				e -> itemView(e, false), null, null);
+		elements.add(receiveView);
+		elements.add(new CElement(nameProvide, new GuiTile(provide.name(), null, false, Color.BLUE)));
+		elements.add(new CElement(nameReceive, new GuiTile(receive.name(), null, false, Color.BLUE)));
+		elements.add(new CElement(more, true, null, null, () -> amount++));
+		transferElement = new CElement(transfer, true, null, null, this::clickTransfer);
+		elements.add(transferElement);
+		elements.add(new CElement(less, true, null, null, () -> amount = Math.max(0, amount - 1)));
+		elements.add(new CElement(ok, true, null, null, () -> clickOk(mainState)));
 		amount = 1;
 		update();
 	}
@@ -60,20 +70,12 @@ public class DirectedTradeGUI extends XGUIState
 	}
 
 	@Override
-	private void update()
+	protected void updateBeforeDraw()
 	{
 		setTargeted(CTile.NONE);
-		initTiles();
-		provideView.update();
-		receiveView.update();
-		provideView.draw(tiles, e -> itemView(e, true));
-		receiveView.draw(tiles, e -> itemView(e, false));
-		setEmptyTileAndFill(nameProvide, new GuiTile(provide.name(), null, false, Color.BLUE));
-		setEmptyTileAndFill(nameReceive, new GuiTile(receive.name(), null, false, Color.BLUE));
-		setFilledTile(more);
-		setEmptyTileAndFill(transfer, new GuiTile(String.valueOf(amount), ARROW, false, null));
-		setFilledTile(less);
-		setFilledTile(ok);
+		provideView.elements = provide.outputInv().viewItems(false);
+		receiveView.elements = receive.inputInv().viewItems(true);
+		transferElement.fillTile = new GuiTile(String.valueOf(amount), ARROW, false, null);
 	}
 
 	private GuiTile[] itemView(ItemView view, boolean provideInv)
@@ -86,89 +88,40 @@ public class DirectedTradeGUI extends XGUIState
 				};
 	}
 
-	@Override
-	public void target(int x, int y)
+	private void clickTransfer()
 	{
-		var result0 = provideView.target(x, y, false);
-		if(result0.inside)
+		if(provideMarked != null)
 		{
-			targeted = result0.targetTile;
-			return;
+			List<ItemView> provideItems = provideView.elements;
+			ItemStack items = new ItemStack(provideItems.stream().filter(e -> e.item == provideMarked).findFirst().orElseThrow().item, amount);
+			if(provide.outputInv().canGive(items, false) && receive.inputInv().canAdd(items, false))
+			{
+				provide.outputInv().give(items, false);
+				receive.inputInv().add(items, false);
+				provideView.elements = provide.outputInv().viewItems(false);
+				receiveView.elements = receive.inputInv().viewItems(true);
+				provideMarked = provideView.elements.stream().filter(e -> e.item.equals(items.item)).findFirst().map(e -> e.item).orElse(null);
+				changed = true;
+				update();
+			}
 		}
-		var result1 = receiveView.target(x, y, false);
-		if(result1.inside)
-		{
-			targeted = result1.targetTile;
-			return;
-		}
-		if(more.contains(x, y))
-			setTargeted(more);
-		else if(less.contains(x, y))
-			setTargeted(less);
-		else if(transfer.contains(x, y))
-			setTargeted(transfer);
-		else if(ok.contains(x, y))
-			setTargeted(ok);
-		else
-			setTargeted(CTile.NONE);
 	}
 
-	@Override
-	public void click(int x, int y, int key, XStateHolder stateHolder)
+	private void clickOk(MainState mainState)
 	{
-		var result0 = provideView.target(x, y, true);
-		var result1 = receiveView.target(x, y, true);
-		if(result0.target != null)
+		if(changed)
 		{
-			provideMarked = result0.target.item;
-			update();
-		}
-		if(result0.requiresUpdate || result1.requiresUpdate)
-			update();
-		if(!result0.inside && !result1.inside)
-		{
-			if(more.contains(x, y))
+			provide.outputInv().commit();
+			receive.inputInv().commit();
+			provide.afterTrading();
+			receive.afterTrading();
+			if(takeAp != null)
 			{
-				amount++;
-				update();
-			}
-			else if(amount > 1 && less.contains(x, y))
-			{
-				amount--;
-				update();
-			}
-			else if(provideMarked != null && transfer.contains(x, y))
-			{
-				List<ItemView> provideItems = provideView.elements;
-				ItemStack items = new ItemStack(provideItems.stream().filter(e -> e.item == provideMarked).findFirst().orElseThrow().item, amount);
-				if(provide.outputInv().canGive(items, false) && receive.inputInv().canAdd(items, false))
-				{
-					provide.outputInv().give(items, false);
-					receive.inputInv().add(items, false);
-					provideView.elements = provide.outputInv().viewItems(false);
-					receiveView.elements = receive.inputInv().viewItems(true);
-					provideMarked = provideView.elements.stream().filter(e -> e.item.equals(items.item)).findFirst().map(e -> e.item).orElse(null);
-					changed = true;
-					update();
-				}
-			}
-			else if(ok.contains(x, y))
-			{
-				if(changed)
-				{
-					provide.outputInv().commit();
-					receive.inputInv().commit();
-					provide.afterTrading();
-					receive.afterTrading();
-					if(takeAp != null)
-					{
-						takeAp.takeAp(1);
-						takeAp.irreversible();
-					}
-				}
-				stateHolder.setState(NoneState.INSTANCE);
+				takeAp.takeAp(1);
+				takeAp.irreversible();
 			}
 		}
+		mainState.stateHolder.setState(NoneState.INSTANCE);
 	}
 
 	@Override
