@@ -23,8 +23,7 @@ public class BuildGUI extends XGUIState
 	private static final CTile next = new CTile(5, 1, new GuiTile("Next"));
 	private static final CTile lessTiles = new CTile(0, 0, new GuiTile("Less Tiles"));
 	private static final CTile moreTiles = new CTile(1, 0, new GuiTile("More Tiles"));
-	private static final CTile build = new CTile(6, 0, new GuiTile("Build"), 2, 1);
-	private static final CTile buildA = new CTile(6, 0, new GuiTile("Build", null, false, Color.CYAN), 2, 1);
+	private static final CTile build = new CTile(6, 0, 2, 1);
 
 	private XBuilder builder;
 	private BuildingBlueprint blueprint;
@@ -55,22 +54,22 @@ public class BuildGUI extends XGUIState
 	{
 		levelMap = mainState.levelMap;
 		floorTiles = new ScrollList<>(0, 2, 2, 4, 2, 1, null,
-				this::itemView0, null, null);
+				this::itemView0, null);
 		elements.add(floorTiles);
 		required = new ScrollList<>(3, 2, 2, 4, 2, 1, null,
-				this::itemView1, null, null);
+				this::itemView1, null);
 		elements.add(required);
 		returned = new ScrollList<>(6, 2, 2, 4, 2, 1, null,
-				this::itemView2, null, null);
+				this::itemView2, null);
 		elements.add(returned);
 		elements.add(new CElement(textTiles));
 		elements.add(new CElement(textRequired));
 		elements.add(new CElement(textReturned));
-		elements.add(new CElement(prev, true, null, null, this::clickPrev));
-		elements.add(new CElement(next, true, null, null, this::clickNext));
-		elements.add(new CElement(lessTiles, true, null, null, this::clickLessTiles));
-		elements.add(new CElement(moreTiles, true, null, null, this::clickMoreTiles));
-		buildElement = new CElement(build, true, null, null, () -> clickBuild(mainState));
+		elements.add(new CElement(prev, true, null, this::clickPrev));
+		elements.add(new CElement(next, true, null, this::clickNext));
+		elements.add(new CElement(lessTiles, true, null, this::clickLessTiles));
+		elements.add(new CElement(moreTiles, true, null, this::clickMoreTiles));
+		buildElement = new CElement(build, true, null, () -> clickBuild(mainState));
 		elements.add(buildElement);
 		update();
 	}

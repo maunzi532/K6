@@ -11,7 +11,7 @@ public class AttackInfoGUI extends XGUIState
 	private XHero attacker;
 	private XEntity target;
 	private SideInfoFrame sideInfoFrame;
-	private AttackInfo lastTargeted;
+	private TargetScrollList<AttackInfo> attacksView;
 
 	public AttackInfoGUI(XHero attacker, XEntity target)
 	{
@@ -24,18 +24,28 @@ public class AttackInfoGUI extends XGUIState
 	{
 		sideInfoFrame = mainState.sideInfoFrame;
 		sideInfoFrame.sidedInfo(attacker, target);
-		ScrollList<AttackInfo> attacksView = new ScrollList<>(0, 1, 6, 6, 6, 2,
-				attacker.attackInfo(target), this::itemView, this::onTarget1, target1 ->
-		{
-			attacker.takeAp(2);
-			attacker.mainActionTaken();
-			mainState.stateHolder.setState(new PreAttackState(NoneState.INSTANCE, target1));
-		});
+		attacksView = new TargetScrollList<>(0, 1, 6, 6, 6, 2,
+				attacker.attackInfo(target), this::itemView, target1 -> clickAttack(mainState, target1));
 		elements.add(attacksView);
 		elements.add(new CElement(new CTile(0, 0, new GuiTile(attacker.name()), 2, 1)));
 		elements.add(new CElement(new CTile(4, 0, new GuiTile(target.name()), 2, 1)));
-		lastTargeted = null;
 		update();
+	}
+
+	private void clickAttack(MainState mainState, AttackInfo target1)
+	{
+		attacker.takeAp(2);
+		attacker.mainActionTaken();
+		mainState.stateHolder.setState(new PreAttackState(NoneState.INSTANCE, target1));
+	}
+
+	@Override
+	protected void updateBeforeDraw()
+	{
+		if(attacksView.getTargeted() != null)
+			sideInfoFrame.attackInfo(attacksView.getTargeted());
+		else
+			sideInfoFrame.sidedInfo(attacker, target);
 	}
 
 	@Override
@@ -81,20 +91,5 @@ public class AttackInfoGUI extends XGUIState
 		if(n >= infos.length)
 			return "";
 		return infos[n];
-	}
-
-	private Boolean onTarget1(AttackInfo target1)
-	{
-		if(lastTargeted != target1)
-		{
-			if(target1 != null)
-				sideInfoFrame.attackInfo(target1);
-			else
-				sideInfoFrame.sidedInfo(attacker, target);
-			//analysis.get(num).outcomes2().forEach(e -> System.out.println(e.readableChance() + " " + e.compareText));
-			//System.out.println();
-			lastTargeted = target1;
-		}
-		return false;
 	}
 }

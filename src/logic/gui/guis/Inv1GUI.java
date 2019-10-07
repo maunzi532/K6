@@ -35,7 +35,7 @@ public class Inv1GUI extends XGUIState
 				GuiTile::itemViewView, null);
 		elements.add(invView);
 		itemView = new ScrollList<>(3, 1, 3, 5, 1, 1, null,
-				info -> new GuiTile[]{new GuiTile(info)}, null, null);
+				GuiTile::textView, null);
 		elements.add(itemView);
 		elements.add(new CElement(textInv, new GuiTile(name)));
 		elements.add(new CElement(weight, new GuiTile(weightView.currentWithLimit())));

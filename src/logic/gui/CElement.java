@@ -8,7 +8,7 @@ public class CElement implements GuiElement
 	public GuiTile fillTile;
 	private boolean targetable;
 	private Supplier<Boolean> exists;
-	private Supplier<Boolean> onTarget;
+	protected Supplier<Boolean> onTarget;
 	private Runnable onClick;
 
 	public CElement(CTile tile)
@@ -22,24 +22,11 @@ public class CElement implements GuiElement
 		this.fillTile = fillTile;
 	}
 
-	public CElement(CTile tile, boolean targetable, Supplier<Boolean> exists, Supplier<Boolean> onTarget,
-			Runnable onClick)
+	public CElement(CTile tile, boolean targetable, Supplier<Boolean> exists, Runnable onClick)
 	{
 		this.tile = tile;
 		this.targetable = targetable;
 		this.exists = exists;
-		this.onTarget = onTarget;
-		this.onClick = onClick;
-	}
-
-	public CElement(CTile tile, GuiTile fillTile, boolean targetable, Supplier<Boolean> exists,
-			Supplier<Boolean> onTarget, Runnable onClick)
-	{
-		this.tile = tile;
-		this.fillTile = fillTile;
-		this.targetable = targetable;
-		this.exists = exists;
-		this.onTarget = onTarget;
 		this.onClick = onClick;
 	}
 

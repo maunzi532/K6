@@ -40,20 +40,20 @@ public class DirectedTradeGUI extends XGUIState
 	public void onEnter(MainState mainState)
 	{
 		mainState.sideInfoFrame.clearSideInfo();
+		amount = 1;
 		provideView = new ScrollList<>(0, 1, 4, 5, 2, 1, null,
-				e -> itemView(e, true), null, target -> provideMarked = target.item);
+				e -> itemView(e, true), target -> provideMarked = target.item);
 		elements.add(provideView);
 		receiveView = new ScrollList<>(5, 1, 4, 5, 2, 1, null,
-				e -> itemView(e, false), null, null);
+				e -> itemView(e, false), null);
 		elements.add(receiveView);
 		elements.add(new CElement(nameProvide, new GuiTile(provide.name(), null, false, Color.BLUE)));
 		elements.add(new CElement(nameReceive, new GuiTile(receive.name(), null, false, Color.BLUE)));
-		elements.add(new CElement(more, true, null, null, () -> amount++));
-		transferElement = new CElement(transfer, true, null, null, this::clickTransfer);
+		elements.add(new CElement(more, true, null, () -> amount++));
+		transferElement = new CElement(transfer, true, null, this::clickTransfer);
 		elements.add(transferElement);
-		elements.add(new CElement(less, true, null, null, () -> amount = Math.max(0, amount - 1)));
-		elements.add(new CElement(ok, true, null, null, () -> clickOk(mainState)));
-		amount = 1;
+		elements.add(new CElement(less, true, null, () -> amount = Math.max(0, amount - 1)));
+		elements.add(new CElement(ok, true, null, () -> clickOk(mainState)));
 		update();
 	}
 

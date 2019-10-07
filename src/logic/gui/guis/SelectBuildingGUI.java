@@ -36,7 +36,7 @@ public class SelectBuildingGUI extends XGUIState
 		}
 		BlueprintCache<BuildingBlueprint> blueprintCache = mainState.buildingBlueprintCache;
 		ScrollList<BuildingBlueprint> buildingsView = new ScrollList<>(0, 1, 6, 5, 2, 1,
-				blueprintCache.allBlueprints(), this::itemView, null,
+				blueprintCache.allBlueprints(), this::itemView,
 				target -> mainState.stateHolder.setState(new BuildGUI(builder, target)));
 		elements.add(buildingsView);
 		elements.add(new CElement(textInv));

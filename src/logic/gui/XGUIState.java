@@ -64,34 +64,6 @@ public abstract class XGUIState implements NState
 		this.targeted = targeted;
 	}
 
-	public void setEmptyTileAndFill(CTile tile, GuiTile guiTile)
-	{
-		for(int ix = 0; ix < tile.r; ix++)
-		{
-			for(int iy = 0; iy < tile.d; iy++)
-			{
-				if(ix == tile.r - 1 && iy == tile.d - 1)
-					tiles[tile.x + ix][tile.y + iy] = new GuiTile(guiTile, tile.r, tile.d);
-				else
-					tiles[tile.x + ix][tile.y + iy] = CTile.getOther(guiTile);
-			}
-		}
-	}
-
-	public void setFilledTile(CTile tile)
-	{
-		for(int ix = 0; ix < tile.r; ix++)
-		{
-			for(int iy = 0; iy < tile.d; iy++)
-			{
-				if(ix == tile.r - 1 && iy == tile.d - 1)
-					tiles[tile.x + ix][tile.y + iy] = tile.guiTile;
-				else
-					tiles[tile.x + ix][tile.y + iy] = tile.other;
-			}
-		}
-	}
-
 	public abstract int xw();
 
 	public abstract int yw();

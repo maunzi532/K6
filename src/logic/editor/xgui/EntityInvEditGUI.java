@@ -17,10 +17,11 @@ public class EntityInvEditGUI extends XGUIState
 
 	private final InvEntity entity;
 	private Inv inv;
-	private ScrollList<ItemView> invView;
+	private TargetScrollList<ItemView> invView;
 	private ScrollList<String> infoView;
+	private TargetScrollList<Item> allItemsView;
+	private CElement weightElement;
 	private List<String> info;
-	private Item viewing;
 	private boolean otherItem;
 	private Item editItem;
 
@@ -38,21 +39,21 @@ public class EntityInvEditGUI extends XGUIState
 	@Override
 	public void onEnter(MainState mainState)
 	{
-		inv = this.entity.inputInv();
-		InvNumView weightView = inv.viewInvWeight();
-		invView = new ScrollList<>(0, 1, 2, 5, 2, 1, null,
-				GuiTile::itemViewView, this::itemTarget1, this::itemClick1);
+		inv = entity.inputInv();
+		invView = new TargetScrollList<>(0, 1, 2, 5, 2, 1, null,
+				GuiTile::itemViewView, this::itemClick1);
 		elements.add(invView);
 		info = entity.getStats().infoEdit();
 		infoView = new ScrollList<>(2, 1, 3, 5, 1, 1, null,
-				e -> new GuiTile[]{new GuiTile(e)}, null, this::onClickInfoView);
+				GuiTile::textView, this::onClickInfoView);
 		elements.add(infoView);
-		ScrollList<Item> allItemsView = new ScrollList<Item>(5, 1, 3, 5, 1, 1,
-				mainState.combatSystem.allItems(), e -> new GuiTile[]{new GuiTile(null, e.image(), false, null)},
-				this::itemTarget2, this::itemClick2);
+		allItemsView = new TargetScrollList<Item>(5, 1, 3, 5, 1, 1,
+				mainState.combatSystem.allItems(), e -> GuiTile.cast(new GuiTile(null, e.image(), false, null)),
+				this::itemClick2);
 		elements.add(allItemsView);
-		elements.add(new CElement(textInv, new GuiTile("name")));
-		elements.add(new CElement(weight, new GuiTile(weightView.currentWithLimit())));
+		elements.add(new CElement(textInv, new GuiTile(entity.name())));
+		weightElement = new CElement(weight);
+		elements.add(weightElement);
 		update();
 	}
 
@@ -96,33 +97,21 @@ public class EntityInvEditGUI extends XGUIState
 			else
 				info = List.of("+", "-", "X");
 		}
-		else if(viewing != null)
-			info = viewing.info();
+		else if(invView.getTargeted() != null)
+		{
+			info = invView.getTargeted().item.info();
+		}
+		else if(allItemsView.getTargeted() != null)
+		{
+			info = allItemsView.getTargeted().info();
+		}
 		else
+		{
 			info = entity.getStats().infoEdit();
+		}
 		invView.elements = entity.inputInv().viewItems(true);
 		infoView.elements = info;
-	}
-
-	private Boolean itemTarget1(ItemView target)
-	{
-		Item item = Optional.ofNullable(target).map(e -> e.item).orElse(null);
-		if(viewing != item)
-		{
-			viewing = item;
-			return true;
-		}
-		return false;
-	}
-
-	private Boolean itemTarget2(Item target)
-	{
-		if(viewing != target)
-		{
-			viewing = target;
-			return true;
-		}
-		return false;
+		weightElement.fillTile = new GuiTile(inv.viewInvWeight().currentWithLimit());
 	}
 
 	private void itemClick1(ItemView target)
@@ -141,27 +130,14 @@ public class EntityInvEditGUI extends XGUIState
 	{
 		if(editItem != null)
 		{
-			if(otherItem)
+			switch(target)
 			{
-				if(target.equals("Add"))
+				case "Add", "+" ->
 				{
 					inv.tryAdd(new ItemList(new ItemStack(editItem, 1)), false, CommitType.COMMIT);
 					update();
 				}
-				else if(target.equals("X"))
-				{
-					editItem = null;
-					update();
-				}
-			}
-			else
-			{
-				if(target.equals("+"))
-				{
-					inv.tryAdd(new ItemList(new ItemStack(editItem, 1)), false, CommitType.COMMIT);
-					update();
-				}
-				else if(target.equals("-"))
+				case "-" ->
 				{
 					inv.tryGive(new ItemList(new ItemStack(editItem, 1)), false, CommitType.COMMIT);
 					if(!inv.tryGive(new ItemList(new ItemStack(editItem, 1)), false, CommitType.ROLLBACK))
@@ -170,7 +146,7 @@ public class EntityInvEditGUI extends XGUIState
 					}
 					update();
 				}
-				else if(target.equals("X"))
+				case "X" ->
 				{
 					editItem = null;
 					update();

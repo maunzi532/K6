@@ -30,9 +30,9 @@ public class HeroEditGUI extends XGUIState
 	@Override
 	public void onEnter(MainState mainState)
 	{
-		locationLockedElement = new CElement(isLocationLocked, true, null, null, () -> hero.toggleStartLocked());
+		locationLockedElement = new CElement(isLocationLocked, true, null, () -> hero.toggleStartLocked());
 		elements.add(locationLockedElement);
-		inventoryLockedElement = new CElement(isInventoryLocked, true, null, null, () -> hero.toggleStartInvLocked());
+		inventoryLockedElement = new CElement(isInventoryLocked, true, null, () -> hero.toggleStartInvLocked());
 		elements.add(inventoryLockedElement);
 		update();
 	}

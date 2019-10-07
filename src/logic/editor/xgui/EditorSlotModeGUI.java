@@ -27,11 +27,7 @@ public class EditorSlotModeGUI extends XGUIState
 	{
 		mainState.sideInfoFrame.clearSideInfo();
 		elements.add(new ScrollList<>(0, 1, 6, 5, 1, 1, editor.getModes(),
-				mode -> new GuiTile[]{mode.guiTile()}, null, target ->
-		{
-			editor.setCurrentSlot(target);
-			mainState.stateHolder.setState(EditingState.INSTANCE);
-		}));
+				mode -> GuiTile.cast(mode.guiTile()), target -> click(target, mainState)));
 		elements.add(new CElement(textInv));
 		update();
 	}
@@ -46,5 +42,11 @@ public class EditorSlotModeGUI extends XGUIState
 	public int yw()
 	{
 		return 6;
+	}
+
+	private void click(EditingMode target, MainState mainState)
+	{
+		editor.setCurrentSlot(target);
+		mainState.stateHolder.setState(EditingState.INSTANCE);
 	}
 }

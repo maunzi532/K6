@@ -55,6 +55,16 @@ public class GuiTile
 		u = d - 1;
 	}
 
+	public static GuiTile[] cast(GuiTile guiTile)
+	{
+		return new GuiTile[]{guiTile};
+	}
+
+	public static GuiTile[] textView(String text)
+	{
+		return new GuiTile[]{new GuiTile(text)};
+	}
+
 	public static GuiTile[] itemViewView(ItemView itemView)
 	{
 		return new GuiTile[]

@@ -33,15 +33,15 @@ public class RecipeGUI extends XGUIState
 	{
 		recipeNum = building.lastViewedRecipeNum;
 		requireView = new ScrollList<>(1, 1, 2, 5, 2, 1, null,
-				this::elementViewRequired, null, null);
+				this::elementViewRequired, null);
 		elements.add(requireView);
 		resultView = new ScrollList<>(4, 1, 2, 5, 2, 1, null,
-				this::elementViewResults, null, null);
+				this::elementViewResults, null);
 		elements.add(resultView);
 		elements.add(new CElement(textRequires));
 		elements.add(new CElement(textResults));
-		elements.add(new CElement(prev, true, () -> recipeNum > 0, null, () -> recipeNum--));
-		elements.add(new CElement(next, true, () -> recipeNum < building.getRecipes().size() - 1, null, () -> recipeNum++));
+		elements.add(new CElement(prev, true, () -> recipeNum > 0, () -> recipeNum--));
+		elements.add(new CElement(next, true, () -> recipeNum < building.getRecipes().size() - 1, () -> recipeNum++));
 		elements.add(new CElement(arrow));
 		update();
 	}

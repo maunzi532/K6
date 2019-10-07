@@ -94,6 +94,7 @@ public class MainState
 	//TODO LevelEditor create XEntity
 	//TODO LevelEditor edit Building inv
 	//TODO BuildGUI show if there are more recipes
+	//TODO EntityInvEditGUI use TargetScrollList
 
 	//TODO change melt/crit interaction
 	//TODO change item weight mechanics and change speed effects

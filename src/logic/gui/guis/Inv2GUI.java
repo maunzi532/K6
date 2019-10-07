@@ -28,10 +28,10 @@ public class Inv2GUI extends XGUIState
 		InvNumView weightViewInput = inputInv.viewInvWeight();
 		InvNumView weightViewOutput = outputInv.viewInvWeight();
 		ScrollList<ItemView> invViewInput = new ScrollList<>(0, 1, 4, 5, 2, 1,
-				inputInv.viewItems(true), GuiTile::itemViewView, null, null);
+				inputInv.viewItems(true), GuiTile::itemViewView, null);
 		elements.add(invViewInput);
 		ScrollList<ItemView> invViewOutput = new ScrollList<>(5, 1, 4, 5, 2, 1,
-				outputInv.viewItems(true), GuiTile::itemViewView, null, null);
+				outputInv.viewItems(true), GuiTile::itemViewView, null);
 		elements.add(invViewOutput);
 		elements.add(new CElement(textInputInv));
 		elements.add(new CElement(textOutputInv));

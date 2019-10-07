@@ -15,13 +15,13 @@ public class EntityEditGUI extends XGUIState
 	private static final CTile weight = new CTile(0, 0);
 
 	private InvEntity entity;
-	private InvNumView weightView;
 	private List<String> info;
 	private TargetScrollList<ItemView> invView;
 	private ScrollList<Integer> infoView;
 	private ScrollList<Integer> changeView;
 	private int changeStatNum;
 	private List<String> changeOptions;
+	private CElement textInvE;
 
 	public EntityEditGUI(InvEntity entity)
 	{
@@ -37,25 +37,21 @@ public class EntityEditGUI extends XGUIState
 	@Override
 	public void onEnter(MainState mainState)
 	{
-		weightView = entity.inputInv().viewInvWeight();
+		changeStatNum = -1;
+		changeOptions = List.of();
 		invView = new TargetScrollList<>(0, 1, 2, 5, 2, 1,
 				entity.inputInv().viewItems(true), GuiTile::itemViewView, null);
 		elements.add(invView);
 		infoView = new ScrollList<>(3, 1, 3, 5, 1, 1, null,
-				e -> new GuiTile[]{new GuiTile(info.get(e))}, null, target ->
-		{
-			changeStatNum = target;
-			changeOptions = entity.getStats().editOptions(target);
-		});
+				e -> GuiTile.textView(info.get(e)), this::clickInfo);
 		elements.add(infoView);
-		changeStatNum = -1;
-		changeOptions = List.of();
 		changeView = new ScrollList<>(7, 1, 1, 5, 1, 1, null,
-				e -> new GuiTile[]{new GuiTile(changeOptions.get(e))}, null,
+				e -> GuiTile.textView(changeOptions.get(e)),
 				target -> entity.getStats().applyEditOption(changeStatNum, target, entity));
 		elements.add(changeView);
-		elements.add(new CElement(textInv, new GuiTile(entity.name())));
-		elements.add(new CElement(weight, new GuiTile(weightView.currentWithLimit())));
+		textInvE = new CElement(textInv);
+		elements.add(textInvE);
+		elements.add(new CElement(weight, new GuiTile(entity.inputInv().viewInvWeight().currentWithLimit())));
 		update();
 	}
 
@@ -98,5 +94,12 @@ public class EntityEditGUI extends XGUIState
 			info = entity.getStats().infoEdit();
 		infoView.elements = IntStream.range(0, info.size()).boxed().collect(Collectors.toList());
 		changeView.elements = IntStream.range(0, changeOptions.size()).boxed().collect(Collectors.toList());
+		textInvE.fillTile = new GuiTile(entity.name());
+	}
+
+	private void clickInfo(int target)
+	{
+		changeStatNum = target;
+		changeOptions = entity.getStats().editOptions(target);
 	}
 }

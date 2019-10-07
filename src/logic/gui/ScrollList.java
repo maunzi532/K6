@@ -27,7 +27,7 @@ public class ScrollList<T> implements GuiElement
 	private int shownLinesY;
 
 	public ScrollList(int locationX, int locationY, int sizeX, int sizeY, int elementSizeX, int elementSizeY, List<T> elements,
-			Function<T, GuiTile[]> function, Function<T, Boolean> onTarget, Consumer<T> onClick)
+			Function<T, GuiTile[]> function, Consumer<T> onClick)
 	{
 		this.locationX = locationX;
 		this.locationY = locationY;
@@ -37,7 +37,6 @@ public class ScrollList<T> implements GuiElement
 		this.elementSizeY = elementSizeY;
 		this.elements = elements;
 		this.function = function;
-		this.onTarget = onTarget;
 		this.onClick = onClick;
 		elementCountX = sizeX / elementSizeX;
 		elementCountYm0 = sizeY / elementSizeY;
