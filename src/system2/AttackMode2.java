@@ -33,6 +33,16 @@ public abstract class AttackMode2 implements XMode
 		return item.getHeavy();
 	}
 
+	public int getAdaptive()
+	{
+		return item.getAdaptive();
+	}
+
+	public AdaptiveType getAdaptiveType()
+	{
+		return item.getAdaptiveType();
+	}
+
 	public int getSlow()
 	{
 		return item.getSlow();

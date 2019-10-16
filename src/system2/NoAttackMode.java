@@ -30,6 +30,18 @@ public class NoAttackMode extends AttackMode2
 	}
 
 	@Override
+	public int getAdaptive()
+	{
+		return 0;
+	}
+
+	@Override
+	public AdaptiveType getAdaptiveType()
+	{
+		return AdaptiveType.NONE;
+	}
+
+	@Override
 	public int getSlow()
 	{
 		return 0;

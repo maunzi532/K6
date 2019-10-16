@@ -8,15 +8,15 @@ public class DaggerItem extends AttackItem2
 {
 	private static final Image IMAGE = new Image("DaggerItem.png");
 
-	private DaggerItem(int code, int damage, int heavy, int slow, int accuracy, int crit, List<Ability2> abilities)
+	private DaggerItem(int code, int damage, int heavy, int adaptive, AdaptiveType adaptiveType, int slow, int accuracy, int crit, List<Ability2> abilities)
 	{
-		this(code, damage, heavy, slow, accuracy, crit, abilities, new int[]{1}, new int[]{1, 2});
+		this(code, damage, heavy, adaptive, adaptiveType, slow, accuracy, crit, abilities, new int[]{1}, new int[]{1, 2});
 	}
 
-	private DaggerItem(int code, int damage, int heavy, int slow, int accuracy, int crit, List<Ability2> abilities, int[] ranges,
+	private DaggerItem(int code, int damage, int heavy, int adaptive, AdaptiveType adaptiveType, int slow, int accuracy, int crit, List<Ability2> abilities, int[] ranges,
 			int[] counterR)
 	{
-		super(code, damage, heavy, slow, accuracy, crit, abilities, ranges, counterR);
+		super(code, damage, heavy,  adaptive, adaptiveType, slow, accuracy, crit, abilities, ranges, counterR);
 		attackModes = List.of(new FinesseMode(this));
 	}
 
@@ -32,11 +32,11 @@ public class DaggerItem extends AttackItem2
 		return IMAGE;
 	}
 
-	public static DaggerItem create(int code, int damage, int heavy, int slow, int accuracy, int crit, Ability2... extraAbilities)
+	public static DaggerItem create(int code, int damage, int heavy, int adaptive, AdaptiveType adaptiveType, int slow, int accuracy, int crit, Ability2... extraAbilities)
 	{
 		ArrayList<Ability2> abilities = new ArrayList<>();
 		abilities.add(Ability2.FAST);
 		abilities.addAll(Arrays.asList(extraAbilities));
-		return new DaggerItem(code, damage, heavy, slow, accuracy, crit, abilities);
+		return new DaggerItem(code, damage, heavy, adaptive, adaptiveType, slow, accuracy, crit, abilities);
 	}
 }

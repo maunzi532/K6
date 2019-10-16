@@ -9,6 +9,8 @@ public abstract class AttackItem2 implements Item
 	private final int code;
 	private final int damage;
 	private final int heavy;
+	private final int adaptive;
+	private final AdaptiveType adaptiveType;
 	private final int slow;
 	private final int accuracy;
 	private final int crit;
@@ -17,18 +19,20 @@ public abstract class AttackItem2 implements Item
 	private final List<Ability2> abilities;
 	protected List<AttackMode2> attackModes;
 
-	public AttackItem2(int code, int damage, int heavy, int slow, int accuracy, int crit, List<Ability2> abilities,
-			int... ranges)
+	public AttackItem2(int code, int damage, int heavy, int adaptive, AdaptiveType adaptiveType, int slow,
+			int accuracy, int crit, List<Ability2> abilities, int... ranges)
 	{
-		this(code, damage, heavy, slow, accuracy, crit, abilities, ranges, ranges);
+		this(code, damage, heavy, adaptive, adaptiveType, slow, accuracy, crit, abilities, ranges, ranges);
 	}
 
-	public AttackItem2(int code, int damage, int heavy, int slow, int accuracy, int crit, List<Ability2> abilities,
-			int[] ranges, int[] counterR)
+	public AttackItem2(int code, int damage, int heavy, int adaptive, AdaptiveType adaptiveType, int slow,
+			int accuracy, int crit, List<Ability2> abilities, int[] ranges, int[] counterR)
 	{
 		this.code = code;
 		this.damage = damage;
 		this.heavy = heavy;
+		this.adaptive = adaptive;
+		this.adaptiveType = adaptiveType;
 		this.slow = slow;
 		this.accuracy = accuracy;
 		this.crit = crit;
@@ -62,6 +66,16 @@ public abstract class AttackItem2 implements Item
 	public int getHeavy()
 	{
 		return heavy;
+	}
+
+	public int getAdaptive()
+	{
+		return adaptive;
+	}
+
+	public AdaptiveType getAdaptiveType()
+	{
+		return adaptiveType;
 	}
 
 	public int getSlow()

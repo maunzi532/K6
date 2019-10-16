@@ -8,15 +8,15 @@ public class SpearItem extends AttackItem2
 {
 	private static final Image IMAGE = new Image("SpearItem.png");
 
-	private SpearItem(int code, int damage, int heavy, int slow, int accuracy, int crit, List<Ability2> abilities)
+	private SpearItem(int code, int damage, int heavy, int adaptive, AdaptiveType adaptiveType, int slow, int accuracy, int crit, List<Ability2> abilities)
 	{
-		this(code, damage, heavy, slow, accuracy, crit, abilities, new int[]{1, 2}, new int[]{1, 2});
+		this(code, damage, heavy, adaptive, adaptiveType, slow, accuracy, crit, abilities, new int[]{1, 2}, new int[]{1, 2});
 	}
 
-	private SpearItem(int code, int damage, int heavy, int slow, int accuracy, int crit, List<Ability2> abilities, int[] ranges,
+	private SpearItem(int code, int damage, int heavy, int adaptive, AdaptiveType adaptiveType, int slow, int accuracy, int crit, List<Ability2> abilities, int[] ranges,
 			int[] counterR)
 	{
-		super(code, damage, heavy, slow, accuracy, crit, abilities, ranges, counterR);
+		super(code, damage, heavy, adaptive, adaptiveType, slow, accuracy, crit, abilities, ranges, counterR);
 		attackModes = List.of(new FinesseMode(this));
 	}
 
@@ -32,9 +32,9 @@ public class SpearItem extends AttackItem2
 		return IMAGE;
 	}
 
-	public static SpearItem create(int code, int damage, int heavy, int slow, int accuracy, int crit, Ability2... extraAbilities)
+	public static SpearItem create(int code, int damage, int heavy, int adaptive, AdaptiveType adaptiveType, int slow, int accuracy, int crit, Ability2... extraAbilities)
 	{
 		ArrayList<Ability2> abilities = new ArrayList<>(Arrays.asList(extraAbilities));
-		return new SpearItem(code, damage, heavy, slow, accuracy, crit, abilities);
+		return new SpearItem(code, damage, heavy, adaptive, adaptiveType, slow, accuracy, crit, abilities);
 	}
 }
