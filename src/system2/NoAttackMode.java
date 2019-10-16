@@ -6,9 +6,11 @@ import system2.content.*;
 
 public class NoAttackMode extends AttackMode2
 {
+	private static final int[] RANGES = new int[]{};
+
 	public NoAttackMode()
 	{
-		super(null, 0);
+		super(null, EvadeMode.INSTANCE);
 	}
 
 	@Override
@@ -76,7 +78,7 @@ public class NoAttackMode extends AttackMode2
 	@Override
 	public int[] getRanges(boolean counter)
 	{
-		return new int[0];
+		return RANGES;
 	}
 
 	@Override

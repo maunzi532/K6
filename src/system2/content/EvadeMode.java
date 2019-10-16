@@ -3,14 +3,14 @@ package system2.content;
 import java.util.*;
 import system2.*;
 
-public class StandardMode implements AM2Type
+public class EvadeMode implements AM2Type
 {
-	public static final StandardMode INSTANCE = new StandardMode();
+	public static final EvadeMode INSTANCE = new EvadeMode();
 
 	@Override
 	public int code()
 	{
-		return 1;
+		return 0;
 	}
 
 	@Override

@@ -2,48 +2,53 @@ package system2;
 
 import item.*;
 import java.util.*;
+import java.util.stream.*;
+import javafx.scene.image.*;
 import system2.content.*;
 
-public abstract class AttackItem2 implements Item
+public class AttackItem2 implements Item
 {
-	private final int code;
+	public final AI2Class itemClass;
+	private final Image image;
 	private final int damage;
 	private final int heavy;
-	private final int adaptive;
-	private final AdaptiveType adaptiveType;
-	private final int slow;
 	private final int accuracy;
 	private final int crit;
+	private final int slow;
+	private final int adaptive;
+	private final AdaptiveType adaptiveType;
+	private final AdvantageType advantageType;
+	private final boolean magical;
 	private final int[] ranges;
 	private final int[] counterR;
 	private final List<Ability2> abilities;
-	protected List<AttackMode2> attackModes;
+	private final List<AttackMode2> attackModes;
 
-	public AttackItem2(int code, int damage, int heavy, int adaptive, AdaptiveType adaptiveType, int slow,
-			int accuracy, int crit, List<Ability2> abilities, int... ranges)
+	public AttackItem2(AI2Class itemClass, Image image, int damage, int heavy, int accuracy,
+			int crit, int slow, int adaptive, AdaptiveType adaptiveType, AdvantageType advantageType,
+			boolean magical, int[] ranges, int[] counterR, List<Ability2> abilities, List<AM2Type> attackModes)
 	{
-		this(code, damage, heavy, adaptive, adaptiveType, slow, accuracy, crit, abilities, ranges, ranges);
-	}
-
-	public AttackItem2(int code, int damage, int heavy, int adaptive, AdaptiveType adaptiveType, int slow,
-			int accuracy, int crit, List<Ability2> abilities, int[] ranges, int[] counterR)
-	{
-		this.code = code;
+		this.itemClass = itemClass;
+		this.image = image;
 		this.damage = damage;
 		this.heavy = heavy;
-		this.adaptive = adaptive;
-		this.adaptiveType = adaptiveType;
-		this.slow = slow;
 		this.accuracy = accuracy;
 		this.crit = crit;
-		this.abilities = abilities;
+		this.slow = slow;
+		this.adaptive = adaptive;
+		this.adaptiveType = adaptiveType;
+		this.advantageType = advantageType;
+		this.magical = magical;
 		this.ranges = ranges;
 		this.counterR = counterR;
+		this.abilities = abilities;
+		this.attackModes = attackModes.stream().map(e -> new AttackMode2(this, e)).collect(Collectors.toList());
 	}
 
-	public List<AttackMode2> attackModes()
+	@Override
+	public boolean canContain(Item item)
 	{
-		return attackModes;
+		return false;
 	}
 
 	@Override
@@ -53,9 +58,9 @@ public abstract class AttackItem2 implements Item
 	}
 
 	@Override
-	public boolean canContain(Item item)
+	public Image image()
 	{
-		return false;
+		return image;
 	}
 
 	public int getDamage()
@@ -68,21 +73,6 @@ public abstract class AttackItem2 implements Item
 		return heavy;
 	}
 
-	public int getAdaptive()
-	{
-		return adaptive;
-	}
-
-	public AdaptiveType getAdaptiveType()
-	{
-		return adaptiveType;
-	}
-
-	public int getSlow()
-	{
-		return slow;
-	}
-
 	public int getAccuracy()
 	{
 		return accuracy;
@@ -93,9 +83,29 @@ public abstract class AttackItem2 implements Item
 		return crit;
 	}
 
-	public List<Ability2> getAbilities()
+	public int getSlow()
 	{
-		return abilities;
+		return slow;
+	}
+
+	public int getAdaptive()
+	{
+		return adaptive;
+	}
+
+	public AdaptiveType getAdaptiveType()
+	{
+		return adaptiveType;
+	}
+
+	public AdvantageType getAdvType()
+	{
+		return advantageType;
+	}
+
+	public boolean magical()
+	{
+		return magical;
 	}
 
 	public int[] getRanges(boolean counter)
@@ -103,11 +113,14 @@ public abstract class AttackItem2 implements Item
 		return counter ? counterR : ranges;
 	}
 
-	public abstract AdvantageType getAdvType();
-
-	public boolean magical()
+	public List<Ability2> getAbilities()
 	{
-		return false;
+		return abilities;
+	}
+
+	public List<AttackMode2> attackModes()
+	{
+		return attackModes;
 	}
 
 	@Override

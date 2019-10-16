@@ -3,35 +3,41 @@ package system2;
 import item.*;
 import java.util.*;
 import javafx.scene.image.*;
-import system2.content.*;
 
-public class AttackItem2Slot extends AttackItem2
+public class AttackItem2Slot implements Item
 {
 	private List<Class> itemTypes;
 
 	public AttackItem2Slot(List<Class> itemTypes)
 	{
-		super(0, 0, 0, 0, AdaptiveType.NONE, 0, 0, 0, List.of());
-		attackModes = List.of();
 		this.itemTypes = itemTypes;
 	}
 
 	@Override
 	public Image image()
 	{
-		return null;
+		return null; //TODO
 	}
 
 	@Override
 	public boolean canContain(Item item)
 	{
-		return itemTypes.stream().anyMatch(e -> e.isInstance(item));
+		if(item instanceof AttackItem2)
+			return itemTypes.stream().anyMatch(e -> e.isInstance(((AttackItem2) item).itemClass));
+		else
+			return false;
 	}
 
 	@Override
-	public AdvantageType getAdvType()
+	public List<String> info()
 	{
-		throw new RuntimeException();
+		return List.of(); //TODO
+	}
+
+	@Override
+	public int weight()
+	{
+		return 1;
 	}
 
 	public List<Class> getItemTypes()

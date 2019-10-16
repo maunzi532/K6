@@ -96,7 +96,6 @@ public class MainState
 	//TODO LevelEditor edit Building inv (inputInv/outputInv)
 	//TODO BuildGUI show if there are more recipes
 
-	//TODO change item weight mechanics
 	//TODO change speed effects
 	//TODO levelup essence formula
 	//TODO use PlayerLevelSystem

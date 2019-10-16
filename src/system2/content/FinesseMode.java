@@ -3,11 +3,19 @@ package system2.content;
 import java.util.*;
 import system2.*;
 
-public class FinesseMode extends AttackMode2
+public class FinesseMode implements AM2Type
 {
-	public FinesseMode(AttackItem2 item)
+	public static final FinesseMode INSTANCE = new FinesseMode();
+
+	@Override
+	public int code()
 	{
-		super(item, 2);
-		abilities = List.of(Ability2.TWO_HANDED);
+		return 2;
+	}
+
+	@Override
+	public List<Ability2> abilities()
+	{
+		return List.of(Ability2.TWO_HANDED);
 	}
 }

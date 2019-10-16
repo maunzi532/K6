@@ -5,16 +5,17 @@ import java.util.*;
 import javafx.scene.image.*;
 import system2.content.*;
 
-public abstract class AttackMode2 implements XMode
+public class AttackMode2 implements XMode
 {
-	protected AttackItem2 item;
+	public final AttackItem2 item;
 	public final int code;
-	protected List<Ability2> abilities;
+	public final AM2Type type;
 
-	public AttackMode2(AttackItem2 item, int code)
+	public AttackMode2(AttackItem2 item, AM2Type type)
 	{
 		this.item = item;
-		this.code = code;
+		code = type.code();
+		this.type = type;
 	}
 
 	@Override
@@ -68,7 +69,7 @@ public abstract class AttackMode2 implements XMode
 		ArrayList<Ability2> allAbilities = new ArrayList<>();
 		//allAbilities.addAll(stats)
 		allAbilities.addAll(item.getAbilities());
-		allAbilities.addAll(abilities);
+		allAbilities.addAll(type.abilities());
 		return allAbilities;
 	}
 
