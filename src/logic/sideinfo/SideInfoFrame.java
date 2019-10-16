@@ -8,6 +8,7 @@ public class SideInfoFrame
 {
 	private final SideInfoHolder l0;
 	private final SideInfoHolder r0;
+	public boolean xhR;
 
 	public SideInfoFrame(SideInfoHolder l0, SideInfoHolder r0)
 	{
@@ -37,29 +38,30 @@ public class SideInfoFrame
 		r0.setSideInfo(null);
 	}
 
+	private boolean isInverted(XEntity e1, XEntity e2)
+	{
+		return (!(e1 instanceof XHero) && e2 instanceof XHero) != xhR;
+	}
+
 	public void sidedInfo(XEntity e1, XEntity e2)
 	{
-		e1.location();
-		e2.location();
-		boolean inverted = false;
+		boolean inverted = isInverted(e1, e2);
 		l0.setSideInfo((inverted ? e2 : e1).standardSideInfo());
 		r0.setSideInfo((inverted ? e1 : e2).standardSideInfo());
 	}
 
 	public void attackInfo(AttackInfo aI)
 	{
-		aI.entity.location();
-		aI.entityT.location();
-		boolean inverted = false;
+		boolean inverted = isInverted(aI.entity, aI.entityT);
 		l0.setSideInfo(new SideInfo(aI.getEntity(inverted), 0, ImageLoader.getImage(aI.getStats(inverted).imagePath()),
 				StatBar.forEntity(aI.getEntity(inverted)), aI.getSideInfos(inverted)));
 		r0.setSideInfo(new SideInfo(aI.getEntity(!inverted), 0, ImageLoader.getImage(aI.getStats(!inverted).imagePath()),
 				StatBar.forEntity(aI.getEntity(!inverted)), aI.getSideInfos(!inverted)));
 	}
 
-	public void setSideInfoXH(SideInfo sideInfo, boolean l)
+	public void setSideInfoXH(SideInfo sideInfo, XEntity e1)
 	{
-		if(l)
+		if((e1 instanceof XHero) != xhR)
 		{
 			l0.setSideInfo(sideInfo);
 			r0.setSideInfo(null);

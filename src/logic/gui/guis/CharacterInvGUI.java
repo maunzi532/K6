@@ -18,7 +18,7 @@ public class CharacterInvGUI extends Inv1GUI
 	@Override
 	public void onEnter(MainState mainState)
 	{
-		mainState.sideInfoFrame.setSideInfoXH(character.standardSideInfo(), character instanceof XHero);
+		mainState.sideInfoFrame.setSideInfoXH(character.standardSideInfo(), character);
 		super.onEnter(mainState);
 	}
 

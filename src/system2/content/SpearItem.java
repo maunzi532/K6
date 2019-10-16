@@ -10,24 +10,6 @@ public class SpearItem implements AI2Class
 	private static final int[] RANGES = new int[]{1, 2};
 	public static final SpearItem INSTANCE = new SpearItem();
 
-	/*private SpearItem(int code, int damage, int heavy, int adaptive, AdaptiveType adaptiveType, int slow, int accuracy, int crit, List<Ability2> abilities)
-	{
-		this(code, damage, heavy, adaptive, adaptiveType, slow, accuracy, crit, abilities, new int[]{1, 2}, new int[]{1, 2});
-	}
-
-	private SpearItem(int code, int damage, int heavy, int adaptive, AdaptiveType adaptiveType, int slow, int accuracy, int crit, List<Ability2> abilities, int[] ranges,
-			int[] counterR)
-	{
-		super(code, damage, heavy, adaptive, adaptiveType, slow, accuracy, crit, abilities, ranges, counterR);
-		attackModes = List.of(new FinesseMode(this));
-	}
-
-	@Override
-	public AdvantageType getAdvType()
-	{
-		return AdvantageType.SPEAR;
-	}*/
-
 	@Override
 	public Image image()
 	{
@@ -81,10 +63,4 @@ public class SpearItem implements AI2Class
 	{
 		return List.of(FinesseMode.INSTANCE);
 	}
-
-	/*public static SpearItem create(int code, int damage, int heavy, int adaptive, AdaptiveType adaptiveType, int slow, int accuracy, int crit, Ability2... extraAbilities)
-	{
-		ArrayList<Ability2> abilities = new ArrayList<>(Arrays.asList(extraAbilities));
-		return new SpearItem(code, damage, heavy, adaptive, adaptiveType, slow, accuracy, crit, abilities);
-	}*/
 }

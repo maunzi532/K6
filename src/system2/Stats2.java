@@ -125,7 +125,8 @@ public class Stats2 implements Stats
 
 	public void addExp(int amount)
 	{
-		exp += amount;
+		if(level < getLevelSystem().levelCap())
+			exp += amount;
 	}
 
 	public LevelSystem getLevelSystem()
@@ -455,7 +456,10 @@ public class Stats2 implements Stats
 			info.add("Ability\n" + ability.name);
 		}*/
 		level++;
-		exp = (exp - GetExpAnim.LEVELUP_EXP) / 2;
+		if(level < getLevelSystem().levelCap())
+			exp = (exp - GetExpAnim.LEVELUP_EXP) / 2;
+		else
+			exp = 0;
 		strength = strength + levelup[0];
 		finesse = finesse + levelup[1];
 		skill = skill + levelup[2];

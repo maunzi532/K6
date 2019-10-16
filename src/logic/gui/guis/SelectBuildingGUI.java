@@ -32,7 +32,7 @@ public class SelectBuildingGUI extends XGUIState
 	{
 		if(builder instanceof XHero)
 		{
-			mainState.sideInfoFrame.setSideInfo(((XHero) builder).standardSideInfo(), null);
+			mainState.sideInfoFrame.setSideInfoXH(((XHero) builder).standardSideInfo(), (XHero) builder);
 		}
 		BlueprintCache<BuildingBlueprint> blueprintCache = mainState.buildingBlueprintCache;
 		ScrollList<BuildingBlueprint> buildingsView = new ScrollList<>(0, 1, 6, 5, 2, 1,

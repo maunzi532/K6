@@ -85,20 +85,19 @@ public class MainState
 
 	//TODO Build a real level
 
+	//TODO Better stat view
 	//TODO equip weapon and choose mode without attacking
-	//TODO always show xhero characters on the same side
 	//TODO show enemy reach (all enemies)
 	//TODO save transporter history
-	//TODO get inv back when removing building
-	//TODO fix WeightInv weight calculation
 
 	//TODO LevelEditor create XEntity
 	//TODO LevelEditor edit Building inv (inputInv/outputInv)
 	//TODO BuildGUI show if there are more recipes
 
+	//TODO PlayerLevelSystem fix 4stat levelup
+	//TODO LevelSystem invoke limit
 	//TODO change speed effects
 	//TODO levelup essence formula
-	//TODO use PlayerLevelSystem
 	//TODO add upgraded classes
 
 	//TODO add item storage
@@ -114,6 +113,7 @@ public class MainState
 	//TODO add configurable keybindings
 	//TODO show better controls info
 	//TODO show better SideInfo
+	//TODO fix healthbar bug
 
 	//LK char - move/attack
 	//RK char - inv/trade

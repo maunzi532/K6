@@ -27,7 +27,7 @@ public class GiveOrTakeState implements NMarkState
 	@Override
 	public void onEnter(MainState mainState)
 	{
-		mainState.sideInfoFrame.setSideInfo(character.standardSideInfo(), null);
+		mainState.sideInfoFrame.setSideInfoXH(character.standardSideInfo(), character);
 		boolean levelStarted = mainState.turnCounter > 0;
 		List<Tile> range = mainState.y1.range(character.location(), 0, character.maxAccessRange());
 		possibleTargets = Stream.concat(range.stream().map(mainState.levelMap::getBuilding)

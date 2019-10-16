@@ -76,9 +76,9 @@ public class WeightInv implements Inv
 	{
 		stacks.forEach(InvStack::commit);
 		stacks.removeIf(InvStack::removable);
-		currentW += increaseW - decreaseW;
 		decreaseW = 0;
 		increaseW = 0;
+		currentW = stacks.stream().mapToInt(e -> e.item.weight() * e.getCountC()).sum();
 	}
 
 	@Override
@@ -147,7 +147,6 @@ public class WeightInv implements Inv
 
 	public WeightInv(JrsObject data, ItemLoader itemLoader)
 	{
-		currentW = ((JrsNumber) data.get("WCurrent")).getValue().intValue();
 		limitW = ((JrsNumber) data.get("WLimit")).getValue().intValue();
 		stacks = new ArrayList<>();
 		((JrsArray) data.get("Stacks")).elements().forEachRemaining(object1 -> stacks.add(new InvStack(new ItemStack((JrsObject) object1, itemLoader))));
@@ -157,8 +156,7 @@ public class WeightInv implements Inv
 	@Override
 	public <T extends ComposerBase> ObjectComposer<T> save(ObjectComposer<T> a1, ItemLoader itemLoader) throws IOException
 	{
-		var a2 = a1.put("WCurrent", currentW)
-				.put("WLimit", limitW)
+		var a2 = a1.put("WLimit", limitW)
 				.startArrayField("Stacks");
 		for(InvStack invStack : stacks)
 		{

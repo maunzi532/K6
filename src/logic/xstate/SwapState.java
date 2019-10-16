@@ -23,7 +23,7 @@ public class SwapState implements NMarkState
 	@Override
 	public void onEnter(MainState mainState)
 	{
-		mainState.sideInfoFrame.setSideInfo(character.standardSideInfo(), null);
+		mainState.sideInfoFrame.setSideInfoXH(character.standardSideInfo(), character);
 		if(character.isStartLocked())
 		{
 			swapTargets = List.of();
@@ -61,6 +61,7 @@ public class SwapState implements NMarkState
 		if(entity instanceof XHero && swapTargets.contains(entity))
 		{
 			mainState.levelMap.swapEntities(character, entity);
+			visMarked = swapTargets.stream().map(e -> new VisMark(e.location(), Color.YELLOW, VisMark.d1)).collect(Collectors.toList());
 		}
 		else
 		{

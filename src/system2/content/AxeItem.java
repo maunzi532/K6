@@ -11,24 +11,6 @@ public class AxeItem implements AI2Class
 	private static final int[] COUNTER = new int[]{1, 2};
 	public static final AxeItem INSTANCE = new AxeItem();
 
-	/*private AxeItem(int code, int damage, int heavy, int adaptive, AdaptiveType adaptiveType, int slow, int accuracy, int crit, List<Ability2> abilities)
-	{
-		this(code, damage, heavy, adaptive, adaptiveType, slow, accuracy, crit, abilities, new int[]{1}, new int[]{1, 2});
-	}
-
-	private AxeItem(int code, int damage, int heavy, int adaptive, AdaptiveType adaptiveType, int slow, int accuracy, int crit, List<Ability2> abilities, int[] ranges,
-			int[] counterR)
-	{
-		super(code, damage, heavy, adaptive, adaptiveType, slow, accuracy, crit, abilities, ranges, counterR);
-		attackModes = List.of(new FinesseMode(this));
-	}
-
-	@Override
-	public AdvantageType getAdvType()
-	{
-		return AdvantageType.AXE;
-	}*/
-
 	@Override
 	public Image image()
 	{
@@ -82,12 +64,4 @@ public class AxeItem implements AI2Class
 	{
 		return List.of(FinesseMode.INSTANCE);
 	}
-
-	/*public static AxeItem create(int code, int damage, int heavy, int adaptive, AdaptiveType adaptiveType, int slow, int accuracy, int crit, Ability2... extraAbilities)
-	{
-		ArrayList<Ability2> abilities = new ArrayList<>();
-		abilities.add(Ability2.MELTING);
-		abilities.addAll(Arrays.asList(extraAbilities));
-		return new AxeItem(code, damage, heavy, adaptive, adaptiveType, slow, accuracy, crit, abilities);
-	}*/
 }

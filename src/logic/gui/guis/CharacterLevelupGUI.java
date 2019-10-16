@@ -19,7 +19,7 @@ public class CharacterLevelupGUI extends Inv1GUI
 	@Override
 	public void onEnter(MainState mainState)
 	{
-		mainState.sideInfoFrame.setSideInfoXH(character.standardSideInfo(), character instanceof XHero);
+		mainState.sideInfoFrame.setSideInfoXH(character.standardSideInfo(), character);
 		baseInfo = character.getStats().levelup();
 		super.onEnter(mainState);
 	}

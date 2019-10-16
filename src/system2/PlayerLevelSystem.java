@@ -78,9 +78,12 @@ public class PlayerLevelSystem implements LevelSystem
 	public int[] randomLevelup(int[] percent, Random r)
 	{
 		int[] levelup = new int[STAT_COUNT];
-		for(int i = 0; i < STAT_COUNT; i++)
+		while(Arrays.stream(levelup).sum() <= 0)
 		{
-			levelup[i] = r.nextInt(100) < percent[i] ? 1 : 0;
+			for(int i = 0; i < STAT_COUNT; i++)
+			{
+				levelup[i] = r.nextInt(100) < percent[i] ? 1 : 0;
+			}
 		}
 		int missedChances = IntStream.range(0, STAT_COUNT).map(i -> levelup[i] == 0 ? percent[i] : 0).sum();
 		int[] get = IntStream.range(0, STAT_COUNT).filter(i -> levelup[i] == 1).toArray();

@@ -24,7 +24,7 @@ public class AdvMoveState implements NMarkState
 	@Override
 	public void onEnter(MainState mainState)
 	{
-		mainState.sideInfoFrame.setSideInfo(character.standardSideInfo(), null);
+		mainState.sideInfoFrame.setSideInfoXH(character.standardSideInfo(), character);
 		movement = new ArrayList<>();
 		attack = new ArrayList<>();
 		if(character.canMove())

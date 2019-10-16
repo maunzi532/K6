@@ -23,7 +23,7 @@ public class ReachViewState implements NMarkState
 	@Override
 	public void onEnter(MainState mainState)
 	{
-		mainState.sideInfoFrame.setSideInfo(null, character.standardSideInfo());
+		mainState.sideInfoFrame.setSideInfoXH(character.standardSideInfo(), character);
 		List<Tile> movement = new Pathing(mainState.y1, character, character.movement(), mainState.levelMap, null).start().getEndpoints();
 		allTargets = new ArrayList<>();
 		movement.forEach(e -> allTargets.add(new VisMark(e, Color.MEDIUMVIOLETRED, VisMark.d1)));

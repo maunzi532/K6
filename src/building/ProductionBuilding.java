@@ -100,6 +100,12 @@ public class ProductionBuilding extends Buildable implements DoubleInv
 		}
 	}
 
+	@Override
+	public ItemList getRefundable()
+	{
+		return super.getRefundable().add(inputInv.allItems()).add(outputInv.allItems());
+	}
+
 	public List<Tile> getClaimed()
 	{
 		return claimed;
@@ -205,6 +211,7 @@ public class ProductionBuilding extends Buildable implements DoubleInv
 						((JrsNumber) ((JrsObject) e).get("sy")).getValue().intValue())));
 	}
 
+	@Override
 	public <T extends ComposerBase> ObjectComposer<T> save(ObjectComposer<T> a1, ItemLoader itemLoader, TileType y1) throws IOException
 	{
 		a1 = super.save(a1, itemLoader, y1);

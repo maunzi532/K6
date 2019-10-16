@@ -27,7 +27,7 @@ public class RemoveBuildingGUI extends XGUIState
 	@Override
 	public void onEnter(MainState mainState)
 	{
-		mainState.sideInfoFrame.setSideInfo(character.standardSideInfo(), null);
+		mainState.sideInfoFrame.setSideInfoXH(character.standardSideInfo(), character);
 		building = (Buildable) mainState.levelMap.getBuilding(character.location());
 		ItemList refunds = building.getRefundable();
 		character.inputInv().tryAdd(refunds, true, CommitType.LEAVE);

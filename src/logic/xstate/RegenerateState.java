@@ -20,7 +20,7 @@ public class RegenerateState implements NAutoState
 	@Override
 	public void onEnter(MainState mainState)
 	{
-		mainState.sideInfoFrame.setSideInfo(entity.standardSideInfo(), null);
+		mainState.sideInfoFrame.setSideInfoXH(entity.standardSideInfo(), entity);
 		arrow = mainState.combatSystem.createRegenerationAnimation(entity, mainState);
 	}
 
