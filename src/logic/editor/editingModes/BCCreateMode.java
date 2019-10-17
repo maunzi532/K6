@@ -1,6 +1,5 @@
 package logic.editor.editingModes;
 
-import entity.*;
 import geom.f1.*;
 import levelMap.*;
 import logic.*;
@@ -31,14 +30,14 @@ public class BCCreateMode implements EditingMode
 			}
 			else if(advTile.getEntity() == null)
 			{
-				mainState.stateHolder.setState(new EntityEditGUI((InvEntity) advTile.getEntity()));
+				mainState.stateHolder.setState(new EntityCreateGUI(tile));
 			}
 		}
 		else
 		{
 			if(advTile.getEntity() == null)
 			{
-				mainState.stateHolder.setState(new EntityEditGUI((InvEntity) advTile.getEntity()));
+				mainState.stateHolder.setState(new EntityCreateGUI(tile));
 			}
 			else if(advTile.getBuilding() == null)
 			{

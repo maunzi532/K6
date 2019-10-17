@@ -50,4 +50,6 @@ public interface CombatSystem<T extends Stats, A extends AttackInfo, I extends I
 	XEntity loadEntity(TileType y1, MainState mainState, JrsObject data, ItemLoader itemLoader);
 
 	XEntity loadEntityOrStartLoc(TileType y1, MainState mainState, JrsObject data, ItemLoader itemLoader, Map<String, JrsObject> characters, Inv storage);
+
+	Stats defaultStats(boolean xh);
 }

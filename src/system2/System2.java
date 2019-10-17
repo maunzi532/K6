@@ -176,4 +176,10 @@ public class System2 implements CombatSystem<Stats2, AttackInfo2, AttackItem2>
 			return new XEntity(location, mainState, stats);
 		}
 	}
+
+	@Override
+	public Stats defaultStats(boolean xh)
+	{
+		return new Stats2(XClasses.mageClass(), 0, xh ? new PlayerLevelSystem(0, IntStream.range(0, 8).toArray(), 40) : null);
+	}
 }
