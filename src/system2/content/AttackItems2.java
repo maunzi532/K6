@@ -1,6 +1,7 @@
 package system2.content;
 
 import item.*;
+import item.items.*;
 import java.util.*;
 import java.util.stream.*;
 import system2.*;
@@ -11,7 +12,7 @@ public class AttackItems2
 
 	public final AttackItem2[] items;
 	public final List<Item> itemListA;
-	public final List<Item> itemList;
+	public final List<Item> allItemsList;
 
 	public AttackItems2()
 	{
@@ -38,7 +39,7 @@ public class AttackItems2
 		items[502] = new AI2Builder(CrossbowItem.INSTANCE, 16, 15, 50).crit(20).slow(6).adaptive(5, AdaptiveType.SKILL).build();
 
 		itemListA = Arrays.asList(items);
-		itemList = Arrays.stream(items).filter(Objects::nonNull).collect(Collectors.toList());
+		allItemsList = Stream.concat(Arrays.stream(Items.values()), Arrays.stream(items).filter(Objects::nonNull)).collect(Collectors.toList());
 	}
 
 	public static AttackItem2 standardDagger()

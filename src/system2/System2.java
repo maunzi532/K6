@@ -81,7 +81,7 @@ public class System2 implements CombatSystem<Stats2, AttackInfo2, AttackItem2>
 	@Override
 	public List<Item> allItems()
 	{
-		return AttackItems2.INSTANCE.itemList;
+		return AttackItems2.INSTANCE.allItemsList;
 	}
 
 	@Override

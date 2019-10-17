@@ -8,7 +8,7 @@ import logic.*;
 import system2.*;
 import system2.analysis.*;
 
-public class GetExpAnim implements AnimTimer, Supplier<boolean[]>
+public class GetExpAnim implements AnimTimer, Supplier<boolean[]>, Runnable
 {
 	private static final int SPEED = 2;
 	private static final int DELAY = 20;
@@ -17,12 +17,18 @@ public class GetExpAnim implements AnimTimer, Supplier<boolean[]>
 
 	private XEntity entity;
 	private XEntity entityT;
+	private Stats2 stats;
+	private Stats2 statsT;
 	private InfoArrow expBar;
 	private InfoArrow expBarT;
 	private boolean levelup;
 	private boolean levelupT;
 	private int expAmount;
 	private int expAmountT;
+	private int startExp;
+	private int startExpT;
+	private int endExp;
+	private int endExpT;
 	private boolean finished;
 	private int counter;
 
@@ -30,15 +36,14 @@ public class GetExpAnim implements AnimTimer, Supplier<boolean[]>
 	{
 		entity = aI.entity;
 		entityT = aI.entityT;
-		Stats2 stats = (Stats2) entity.getStats();
-		Stats2 statsT = (Stats2) entityT.getStats();
+		stats = (Stats2) entity.getStats();
+		statsT = (Stats2) entityT.getStats();
 		if(entity instanceof XHero)
 		{
 			levelup = stats.getExp() >= LEVELUP_EXP;
 			expAmount = 20;
 			expBar = new InfoArrow(entity.location(), Color.PURPLE, Color.BLACK, Color.WHITE, stats.getExp(), LEVELUP_EXP);
 			mainState.levelMap.addArrow(expBar);
-			stats.addExp(expAmount);
 		}
 		if(entityT instanceof XHero)
 		{
@@ -46,10 +51,28 @@ public class GetExpAnim implements AnimTimer, Supplier<boolean[]>
 			expAmountT = 20;
 			expBarT = new InfoArrow(entityT.location(), Color.PURPLE, Color.BLACK, Color.WHITE, statsT.getExp(), LEVELUP_EXP);
 			mainState.levelMap.addArrow(expBarT);
-			statsT.addExp(expAmountT);
 		}
 		if(expAmount <= 0 && expAmountT <= 0)
 			finished = true;
+	}
+
+	@Override
+	public void run()
+	{
+		if(entity instanceof XHero)
+		{
+			startExp = stats.getExp();
+			expBar.statBar().setData(startExp);
+			stats.addExp(expAmount);
+			endExp = stats.getExp();
+		}
+		if(entityT instanceof XHero)
+		{
+			startExpT = statsT.getExp();
+			expBarT.statBar().setData(startExpT);
+			statsT.addExp(expAmountT);
+			endExpT = statsT.getExp();
+		}
 	}
 
 	@Override
@@ -70,9 +93,9 @@ public class GetExpAnim implements AnimTimer, Supplier<boolean[]>
 		counter++;
 		if(counter % SPEED == 0)
 		{
-			if(counter / SPEED <= expAmount)
+			if(counter / SPEED <= endExp - startExp)
 				expBar.statBar().setData(expBar.statBar().getData() + 1);
-			if(counter / SPEED <= expAmountT)
+			if(counter / SPEED <= endExpT - startExpT)
 				expBarT.statBar().setData(expBarT.statBar().getData() + 1);
 		}
 		if(counter / SPEED >= expAmount + DELAY && counter / SPEED >= expAmountT + DELAY)

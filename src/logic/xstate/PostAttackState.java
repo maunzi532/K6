@@ -43,6 +43,10 @@ public class PostAttackState extends AttackState
 			levelupT = false;
 			mainState.stateHolder.setState(new CharacterLevelupGUI((InvEntity) aI.entityT, this));
 		}
+		else
+		{
+			((Runnable) arrow).run();
+		}
 	}
 
 	@Override

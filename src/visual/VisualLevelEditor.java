@@ -37,7 +37,7 @@ public class VisualLevelEditor
 			for(int i = 0; i < LevelEditor.SLOT_COUNT; i++)
 			{
 				EditorSlot editorSlot = levelEditor.editorSlots.get(i);
-				editorSlot.gui.setTile(editorSlot.mode.guiTile());
+				editorSlot.gui.setTile(editorSlot.mode.guiTile(), levelEditor.getCurrentSlot() == i);
 				visualSlots.get(i).draw(editorSlot.gui);
 			}
 		}

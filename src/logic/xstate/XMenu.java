@@ -1,7 +1,9 @@
 package logic.xstate;
 
 import building.*;
+import building.transport.*;
 import entity.*;
+import levelMap.*;
 import logic.editor.xgui.*;
 import logic.editor.xstate.*;
 import logic.gui.guis.*;
@@ -69,6 +71,19 @@ public class XMenu
 		else
 		{
 			return new XMenu(new EditMoveState(entity), new EditCopyState(entity), new EditDeleteState(entity));
+		}
+	}
+
+	public static XMenu buildingEditMenu(MBuilding building)
+	{
+		if(building instanceof DoubleInv)
+		{
+			return new XMenu(new BuildingInvEditGUI((DoubleInv) building, false),
+					new BuildingInvEditGUI((DoubleInv) building, true));
+		}
+		else
+		{
+			return new XMenu();
 		}
 	}
 

@@ -82,7 +82,7 @@ public class StateControl2 implements XStateHolder, ConvInputConsumer
 				}
 				else if(menuOption >= 0)
 				{
-					onMenuClick(menuOption, mouseKey);
+					onMenuTarget(menuOption, mouseKey);
 				}
 				else
 				{
@@ -93,13 +93,14 @@ public class StateControl2 implements XStateHolder, ConvInputConsumer
 		}
 		else if(menuOption >= 0)
 		{
-			onMenuClick(menuOption, mouseKey);
+			//menu
+			onMenuTarget(menuOption, mouseKey);
 			cursorMarker = null;
 		}
 		else if(state.editMode() && editorOption >= 0)
 		{
 			//editor
-			levelEditor.onEditorClick(editorOption, mouseKey);
+			levelEditor.onEditorTarget(editorOption, mouseKey);
 			cursorMarker = null;
 		}
 		else
@@ -116,7 +117,7 @@ public class StateControl2 implements XStateHolder, ConvInputConsumer
 		cursorMarker = null;
 	}
 
-	private void onMenuClick(int menuOption, int mouseKey)
+	private void onMenuTarget(int menuOption, int mouseKey)
 	{
 		if(mouseKey >= 0)
 		{

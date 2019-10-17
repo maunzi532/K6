@@ -19,10 +19,10 @@ public class BuildGUI extends XGUIState
 	private static final CTile textTiles = new CTile(0, 1, new GuiTile("Floor Req."), 2, 1);
 	private static final CTile textRequired = new CTile(3, 1, new GuiTile("Required"), 2, 1);
 	private static final CTile textReturned = new CTile(6, 1, new GuiTile("When removed"), 2, 1);
-	private static final CTile prev = new CTile(2, 1, new GuiTile("Prev"));
-	private static final CTile next = new CTile(5, 1, new GuiTile("Next"));
-	private static final CTile lessTiles = new CTile(0, 0, new GuiTile("Less Tiles"));
-	private static final CTile moreTiles = new CTile(1, 0, new GuiTile("More Tiles"));
+	private static final CTile prev = new CTile(2, 1);
+	private static final CTile next = new CTile(5, 1);
+	private static final CTile lessTiles = new CTile(0, 0);
+	private static final CTile moreTiles = new CTile(1, 0);
 	private static final CTile build = new CTile(6, 0, 2, 1);
 
 	private XBuilder builder;
@@ -34,6 +34,10 @@ public class BuildGUI extends XGUIState
 	private ScrollList<RequiresFloorTiles> floorTiles;
 	private ScrollList<ItemStack> required;
 	private ScrollList<ItemStack> returned;
+	private CElement prevElement;
+	private CElement nextElement;
+	private CElement lessTilesElement;
+	private CElement moreTilesElement;
 	private CElement buildElement;
 
 	public BuildGUI(XBuilder builder, BuildingBlueprint blueprint)
@@ -65,10 +69,14 @@ public class BuildGUI extends XGUIState
 		elements.add(new CElement(textTiles));
 		elements.add(new CElement(textRequired));
 		elements.add(new CElement(textReturned));
-		elements.add(new CElement(prev, true, null, this::clickPrev));
-		elements.add(new CElement(next, true, null, this::clickNext));
-		elements.add(new CElement(lessTiles, true, null, this::clickLessTiles));
-		elements.add(new CElement(moreTiles, true, null, this::clickMoreTiles));
+		prevElement = new CElement(prev, true, null, this::clickPrev);
+		elements.add(prevElement);
+		nextElement = new CElement(next, true, null, this::clickNext);
+		elements.add(nextElement);
+		lessTilesElement = new CElement(lessTiles, true, null, this::clickLessTiles);
+		elements.add(lessTilesElement);
+		moreTilesElement = new CElement(moreTiles, true, null, this::clickMoreTiles);
+		elements.add(moreTilesElement);
 		buildElement = new CElement(build, true, null, () -> clickBuild(mainState));
 		elements.add(buildElement);
 		update();
@@ -102,14 +110,24 @@ public class BuildGUI extends XGUIState
 	@Override
 	protected void updateBeforeDraw()
 	{
-		CostBlueprint cost = blueprint.constructionBlueprint.blueprints.get(costNum).get(tileCostNum);
+		List<List<CostBlueprint>> blueprints = blueprint.constructionBlueprint.blueprints;
+		CostBlueprint cost = blueprints.get(costNum).get(tileCostNum);
 		floorTiles.elements = cost.requiredFloorTiles;
 		required.elements = cost.required.items;
 		returned.elements = cost.refundable.items;
-		if(builder.tryBuildingCosts(cost, CommitType.ROLLBACK).isPresent())
-			buildElement.fillTile = new GuiTile("Build", null, false, Color.CYAN);
+		prevElement.fillTile = activeIf("Prev", costNum > 0, Color.LIGHTCYAN);
+		nextElement.fillTile = activeIf("Next", costNum < blueprints.size() - 1, Color.LIGHTCYAN);
+		lessTilesElement.fillTile = activeIf("Less Tiles", tileCostNum > 0, Color.LIGHTCYAN);
+		moreTilesElement.fillTile = activeIf("More Tiles", tileCostNum < blueprints.get(costNum).size() - 1, Color.LIGHTCYAN);
+		buildElement.fillTile = activeIf("Build", builder.tryBuildingCosts(cost, CommitType.ROLLBACK).isPresent(), Color.CYAN);
+	}
+
+	private GuiTile activeIf(String text, boolean active, Color color)
+	{
+		if(active)
+			return new GuiTile(text, null, false, color);
 		else
-			buildElement.fillTile = new GuiTile("Build");
+			return new GuiTile(text);
 	}
 
 	private GuiTile[] itemView0(RequiresFloorTiles rft)

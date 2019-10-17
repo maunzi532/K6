@@ -16,7 +16,7 @@ public class LevelEditor
 	private int currentSlot;
 	private List<EditingMode> modes;
 	public List<EditorSlot> editorSlots;
-	private EditorSlotModeGUI editorSLotModeGUI;
+	private EditorSlotModeGUI editorSlotModeGUI;
 
 	public LevelEditor(MainState mainState)
 	{
@@ -35,7 +35,7 @@ public class LevelEditor
 		{
 			editorSlots.add(new EditorSlot(modes.get(i % modes.size())));
 		}
-		editorSLotModeGUI = new EditorSlotModeGUI(this);
+		editorSlotModeGUI = new EditorSlotModeGUI(this);
 	}
 
 	public List<EditingMode> getModes()
@@ -43,22 +43,30 @@ public class LevelEditor
 		return modes;
 	}
 
-	public void onEditorClick(int num, int mouseKey)
+	public int getCurrentSlot()
+	{
+		return currentSlot;
+	}
+
+	public void onEditorTarget(int num, int mouseKey)
 	{
 		if(mouseKey == 1 && num == currentSlot)
 		{
 			editorSlots.get(currentSlot).onClick(mainState, mouseKey);
 		}
-		if(currentSlot != num)
+		if(mouseKey > 0)
 		{
-			editorSlots.get(num).onEnter(mainState);
+			if(currentSlot != num)
+			{
+				editorSlots.get(num).onEnter(mainState);
+			}
+			currentSlot = num;
 		}
-		currentSlot = num;
 		if(mouseKey == 3)
 		{
-			mainState.stateHolder.setState(editorSLotModeGUI);
+			mainState.stateHolder.setState(editorSlotModeGUI);
 		}
-		else if(!(mainState.stateHolder.getState() instanceof EditingState))
+		else if(mouseKey > 0 && !(mainState.stateHolder.getState() instanceof EditingState))
 		{
 			mainState.stateHolder.setState(EditingState.INSTANCE);
 		}
