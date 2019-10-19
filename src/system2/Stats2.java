@@ -233,8 +233,8 @@ public class Stats2 implements Stats
 	@Override
 	public void autoEquip(InvEntity entity)
 	{
-		setLastUsed(((AttackItem2) entity.outputInv().viewRecipeItem(getItemFilter()).item).attackModes()
-				.stream().findFirst().orElse(new NoAttackMode()));
+		lastUsed = ((AttackItem2) entity.outputInv().viewRecipeItem(getItemFilter()).item).attackModes()
+				.stream().findFirst().orElse(new NoAttackMode());
 	}
 
 	@Override
@@ -246,6 +246,28 @@ public class Stats2 implements Stats
 		{
 			lastUsed = new NoAttackMode();
 		}
+	}
+
+	@Override
+	public void equip(Item item, XMode mode)
+	{
+		if(mode != null)
+		{
+			lastUsed = (AttackMode2) mode;
+		}
+		else
+		{
+			lastUsed = new NoAttackMode();
+		}
+	}
+
+	@Override
+	public XMode getEquippedMode()
+	{
+		if(lastUsed instanceof NoAttackMode)
+			return null;
+		else
+			return lastUsed;
 	}
 
 	@Override

@@ -24,6 +24,18 @@ public class AttackMode2 implements XMode
 		return item.image();
 	}
 
+	@Override
+	public String tile()
+	{
+		return type.tile();
+	}
+
+	@Override
+	public List<String> info()
+	{
+		return type.info();
+	}
+
 	public int getDamage()
 	{
 		return item.getDamage();

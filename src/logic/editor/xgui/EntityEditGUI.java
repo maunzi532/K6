@@ -87,7 +87,7 @@ public class EntityEditGUI extends XGUIState
 	@Override
 	protected void updateBeforeDraw()
 	{
-		if(invView.getTargeted() != null)
+		if(invView.getTargeted() != null && !invView.getTargeted().item.info().isEmpty())
 			info = invView.getTargeted().item.info();
 		else
 			info = entity.getStats().infoEdit();

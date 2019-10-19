@@ -127,7 +127,7 @@ public class AttackItem2 implements Item
 	public List<String> info()
 	{
 		List<String> info = new ArrayList<>();
-		info.add("Type\n" + getClass().getSimpleName().replace("Item", ""));
+		info.add("Type\n" + itemClass.getClass().getSimpleName().replace("Item", ""));
 		info.add("Damage\n" + damage);
 		info.add("Heavy\n" + heavy);
 		info.add(slow > 0 ? "Slow\n" + slow : "");

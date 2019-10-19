@@ -18,4 +18,16 @@ public class FinesseMode implements AM2Type
 	{
 		return List.of(Ability2.TWO_HANDED);
 	}
+
+	@Override
+	public String tile()
+	{
+		return "FinesseMode";
+	}
+
+	@Override
+	public List<String> info()
+	{
+		return List.of("Ability\nTwo-Handed");
+	}
 }

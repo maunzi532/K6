@@ -91,10 +91,10 @@ public class MainState
 	//TODO Refactor sectors
 
 	//TODO LevelEditor edit PlayerLevelSystem
-	//TODO Equipment view
 	//TODO LevelSystem view
-	//TODO equip weapon and choose mode without attacking
 	//TODO show better SideInfo
+	//TODO CharacterCombatGUI view stats with equip
+	//TODO CharacterCombatGUI view stats without equip
 
 	//TODO change speed effects
 	//TODO levelup essence formula

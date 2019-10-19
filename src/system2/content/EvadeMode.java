@@ -18,4 +18,16 @@ public class EvadeMode implements AM2Type
 	{
 		return List.of();
 	}
+
+	@Override
+	public String tile()
+	{
+		throw new RuntimeException();
+	}
+
+	@Override
+	public List<String> info()
+	{
+		throw new RuntimeException();
+	}
 }

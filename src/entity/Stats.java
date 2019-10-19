@@ -19,6 +19,10 @@ public interface Stats
 
 	void afterTrading(InvEntity entity);
 
+	void equip(Item item, XMode mode);
+
+	XMode getEquippedMode();
+
 	Item getItemFilter();
 
 	String getName();

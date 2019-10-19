@@ -79,6 +79,14 @@ public class System2 implements CombatSystem<Stats2, AttackInfo2, AttackItem2>
 	}
 
 	@Override
+	public List<XMode> modesForItem(Item item)
+	{
+		if(item instanceof AttackItem2)
+			return new ArrayList<>(((AttackItem2) item).attackModes());
+		return List.of();
+	}
+
+	@Override
 	public List<Item> allItems()
 	{
 		return AttackItems2.INSTANCE.allItemsList;

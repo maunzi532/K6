@@ -77,11 +77,11 @@ public class InvEditGUI extends XGUIState
 			else
 				infoView.elements = List.of("+", "-", "X");
 		}
-		else if(invView.getTargeted() != null)
+		else if(invView.getTargeted() != null && !invView.getTargeted().item.info().isEmpty())
 		{
 			infoView.elements = invView.getTargeted().item.info();
 		}
-		else if(allItemsView.getTargeted() != null)
+		else if(allItemsView.getTargeted() != null && !allItemsView.getTargeted().info().isEmpty())
 		{
 			infoView.elements = allItemsView.getTargeted().info();
 		}
