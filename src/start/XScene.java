@@ -47,6 +47,7 @@ public class XScene extends Application
 		s.setOnMouseDragged(xTimer::onMouseMove);
 		s.setOnMouseExited(xTimer::onMouseExit);
 		s.setOnKeyPressed(xTimer::onKeyEvent);
+		s.setOnKeyReleased(xTimer::onKeyUp);
 		s.widthProperty().addListener((e, f, g) ->
 		{
 			canvas.setWidth(g.doubleValue());

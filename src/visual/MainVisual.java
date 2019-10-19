@@ -1,10 +1,8 @@
 package visual;
 
-import file.*;
 import geom.*;
 import geom.f1.*;
 import javafx.geometry.*;
-import javafx.scene.input.*;
 import javafx.scene.paint.*;
 import javafx.scene.text.*;
 import logic.*;
@@ -12,7 +10,6 @@ import logic.editor.*;
 import logic.sideinfo.*;
 import logic.xstate.*;
 import visual.gui.*;
-import visual.keybind.*;
 import visual.sideinfo.*;
 
 public class MainVisual implements XInputInterface
@@ -21,7 +18,6 @@ public class MainVisual implements XInputInterface
 	private static final double BORDER2 = 0.75;
 
 	private XGraphics graphics;
-	private KeybindFile keybindFile;
 	private VisualTile visualTile;
 	private TileCamera mapCamera;
 	private VisualMenu visualMenu;
@@ -37,7 +33,6 @@ public class MainVisual implements XInputInterface
 	{
 		this.graphics = graphics;
 		this.mapCamera = mapCamera;
-		keybindFile = new KeybindFile(ImageLoader.loadTextResource("Keybinds"));
 		TileType y1 = mapCamera.getDoubleType();
 		SideInfoViewer sivL = new SideInfoViewer(graphics, false);
 		SideInfoViewer sivR = new SideInfoViewer(graphics, true);
@@ -64,7 +59,7 @@ public class MainVisual implements XInputInterface
 	}
 
 	@Override
-	public void mousePosition(double xMouse, double yMouse, boolean inside, boolean moved, boolean drag, int mouseKey)
+	public void mousePosition(double xMouse, double yMouse, boolean inside, boolean moved, boolean drag, XKey key)
 	{
 		if(inside)
 		{
@@ -82,7 +77,7 @@ public class MainVisual implements XInputInterface
 			{
 				convInputConsumer.mousePosition(visualGUI.inside(xMouse, yMouse, mainState.stateHolder.getGUI()),
 						visualGUI.offsetClickLocation(xMouse, yMouse), visualMenu.coordinatesToOption(xMouse, yMouse),
-						visualLevelEditor.editorClickNum(xMouse, yMouse, levelEditor), targetedTile(xMouse, yMouse), moved, drag, mouseKey);
+						visualLevelEditor.editorClickNum(xMouse, yMouse, levelEditor), targetedTile(xMouse, yMouse), moved, drag, key);
 			}
 		}
 		else
@@ -101,41 +96,38 @@ public class MainVisual implements XInputInterface
 
 	@Override
 	public void dragPosition(boolean active, double xStart, double yStart,
-			double xMoved, double yMoved, int mouseKey, boolean finished)
+			double xMoved, double yMoved, XKey key, boolean finished)
 	{
 		if(paused)
 			return;
 		if(active)
-			convInputConsumer.dragPosition(targetedTile(xStart, yStart), targetedTile(xMoved, yMoved), mouseKey, finished);
+			convInputConsumer.dragPosition(targetedTile(xStart, yStart), targetedTile(xMoved, yMoved), key, finished);
 		else
 			convInputConsumer.noDrag();
 	}
 
 	@Override
-	public void handleKey(KeyCode keyCode)
+	public void handleKey(XKey key)
 	{
-		if(keyCode.isArrowKey())
-		{
-			if(keyCode == KeyCode.RIGHT)
-				mapCamera.setXShift(mapCamera.getXShift() + 3);
-			if(keyCode == KeyCode.DOWN)
-				mapCamera.setYShift(mapCamera.getYShift() + 3);
-			if(keyCode == KeyCode.LEFT)
-				mapCamera.setXShift(mapCamera.getXShift() - 3);
-			if(keyCode == KeyCode.UP)
-				mapCamera.setYShift(mapCamera.getYShift() - 3);
-		}
+		if(key.hasFunction("Camera Left"))
+			mapCamera.setXShift(mapCamera.getXShift() - 3);
+		if(key.hasFunction("Camera Up"))
+			mapCamera.setYShift(mapCamera.getYShift() - 3);
+		if(key.hasFunction("Camera Right"))
+			mapCamera.setXShift(mapCamera.getXShift() + 3);
+		if(key.hasFunction("Camera Down"))
+			mapCamera.setYShift(mapCamera.getYShift() + 3);
 		if(paused)
 		{
-			if(keyCode == KeyCode.P)
+			if(key.hasFunction("Pause"))
 				paused = false;
 		}
 		else
 		{
-			if(keyCode == KeyCode.P)
+			if(key.hasFunction("Pause"))
 				paused = true;
 			else
-				convInputConsumer.handleKey(keyCode);
+				convInputConsumer.handleKey(key);
 		}
 	}
 

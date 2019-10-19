@@ -1,19 +1,18 @@
 package logic;
 
 import geom.f1.*;
-import javafx.scene.input.*;
 
 public interface ConvInputConsumer
 {
-	void mousePosition(boolean insideGUI, Tile offsetGUITile, int menuOption, int editorOption, Tile mapTile, boolean moved, boolean drag, int mouseKey);
+	void mousePosition(boolean insideGUI, Tile offsetGUITile, int menuOption, int editorOption, Tile mapTile, boolean moved, boolean drag, XKey key);
 
 	void mouseOutside();
 
-	void dragPosition(Tile startTile, Tile endTile, int mouseKey, boolean finished);
+	void dragPosition(Tile startTile, Tile endTile, XKey key, boolean finished);
 
 	void noDrag();
 
-	void handleKey(KeyCode keyCode);
+	void handleKey(XKey key);
 
 	void tick();
 

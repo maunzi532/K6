@@ -24,18 +24,18 @@ public class EditorSlot
 		mode.onEnter(mainState);
 	}
 
-	public void onClick(MainState mainState, int mouseKey)
+	public void onClick(MainState mainState, XKey key)
 	{
-		mode.onClick(mainState, mouseKey);
+		mode.onClick(mainState, key);
 	}
 
-	public void onMapClick(MainState mainState, Tile tile, int mouseKey)
+	public void onMapClick(MainState mainState, Tile tile, XKey key)
 	{
-		mode.onMapClick(mainState, tile, mouseKey);
+		mode.onMapClick(mainState, tile, key);
 	}
 
-	public void onMapDrag(MainState mainState, Tile tile1, Tile tile2, int mouseKey)
+	public void onMapDrag(MainState mainState, Tile tile1, Tile tile2, XKey key)
 	{
-		mode.onMapDrag(mainState, tile1, tile2, mouseKey);
+		mode.onMapDrag(mainState, tile1, tile2, key);
 	}
 }

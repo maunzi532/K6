@@ -4,7 +4,6 @@ import entity.*;
 import item.view.*;
 import java.util.*;
 import java.util.stream.*;
-import javafx.scene.input.*;
 import logic.*;
 import logic.gui.*;
 import logic.xstate.*;
@@ -62,9 +61,9 @@ public class EntityEditGUI extends XGUIState
 	}
 
 	@Override
-	public KeyCode keybind()
+	public String keybind()
 	{
-		return KeyCode.E;
+		return "Entity Edit";
 	}
 
 	@Override

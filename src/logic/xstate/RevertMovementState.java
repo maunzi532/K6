@@ -1,7 +1,6 @@
 package logic.xstate;
 
 import entity.*;
-import javafx.scene.input.*;
 import logic.*;
 
 public class RevertMovementState implements NAutoState
@@ -27,9 +26,9 @@ public class RevertMovementState implements NAutoState
 	}
 
 	@Override
-	public KeyCode keybind()
+	public String keybind()
 	{
-		return KeyCode.BACK_SPACE;
+		return "Revert";
 	}
 
 	@Override

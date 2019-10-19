@@ -3,7 +3,6 @@ package logic.xstate;
 import entity.*;
 import geom.f1.*;
 import java.util.*;
-import javafx.scene.input.*;
 import javafx.scene.paint.*;
 import levelMap.*;
 import logic.*;
@@ -39,9 +38,9 @@ public class ReachViewState implements NMarkState
 	}
 
 	@Override
-	public KeyCode keybind()
+	public String keybind()
 	{
-		return enemy ? KeyCode.M : KeyCode.R;
+		return enemy ? "View Reach" : "Enemy Reach";
 	}
 
 	@Override
@@ -51,7 +50,7 @@ public class ReachViewState implements NMarkState
 	}
 
 	@Override
-	public void onClick(Tile mapTile, MainState mainState, XStateHolder stateHolder, int key)
+	public void onClick(Tile mapTile, MainState mainState, XStateHolder stateHolder, XKey key)
 	{
 		stateHolder.setState(NoneState.INSTANCE);
 	}

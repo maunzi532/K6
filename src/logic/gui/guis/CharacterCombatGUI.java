@@ -2,7 +2,6 @@ package logic.gui.guis;
 
 import entity.*;
 import item.view.*;
-import javafx.scene.input.*;
 import logic.*;
 import logic.gui.*;
 
@@ -52,9 +51,9 @@ public class CharacterCombatGUI extends XGUIState
 	}
 
 	@Override
-	public KeyCode keybind()
+	public String keybind()
 	{
-		return KeyCode.C;
+		return "Combat Info";
 	}
 
 	@Override

@@ -109,7 +109,8 @@ public class MainState
 	//TODO Make menu bar not overlap with SideInfo
 	//TODO improve camera
 	//TODO show pause menu
-	//TODO add configurable keybindings
+	//TODO add all keybindings
+	//TODO re-add keybind info to menu
 
 	//LK char - move/attack
 	//RK char - inv/trade

@@ -27,7 +27,7 @@ public class SaveMode implements EditingMode
 	}
 
 	@Override
-	public void onClick(MainState mainState, int mouseKey)
+	public void onClick(MainState mainState, XKey key)
 	{
 		try
 		{
@@ -42,5 +42,5 @@ public class SaveMode implements EditingMode
 	}
 
 	@Override
-	public void onMapClick(MainState mainState, Tile tile, int mouseKey){}
+	public void onMapClick(MainState mainState, Tile tile, XKey key){}
 }

@@ -5,7 +5,6 @@ import building.blueprint.*;
 import item.*;
 import item.inv.*;
 import item.view.*;
-import javafx.scene.input.*;
 import logic.*;
 import logic.gui.*;
 import logic.xstate.*;
@@ -53,9 +52,9 @@ public class RecipeGUI extends XGUIState
 	}
 
 	@Override
-	public KeyCode keybind()
+	public String keybind()
 	{
-		return KeyCode.V;
+		return "Recipe view";
 	}
 
 	@Override

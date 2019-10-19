@@ -1,28 +1,34 @@
 package start;
 
-import visual.*;
+import file.*;
 import javafx.animation.*;
 import javafx.scene.input.*;
+import visual.*;
+import visual.keybind.*;
 
 public class XTimer extends AnimationTimer
 {
 	private XInputInterface inputInterface;
+	private KeybindFile keybindFile;
 	private long lastNanoTime;
 	private boolean mouseDown;
 	private boolean isDrag;
 	private double xStart, yStart;
 	private boolean clicked;
+	private boolean clickedK;
 	private boolean dragged;
 	private double xClicked, yClicked;
 	private boolean moved;
 	private boolean inside;
 	private double xMoved, yMoved;
 	private MouseButton mouseKey;
+	private MouseButton mouseKeyD;
 	private KeyCode keyCode;
 
 	XTimer(XInputInterface inputInterface)
 	{
 		this.inputInterface = inputInterface;
+		keybindFile = new KeybindFile(ImageLoader.loadTextResource("Keybinds"));
 	}
 
 	public void onMouseDown(MouseEvent mouseEvent)
@@ -31,6 +37,7 @@ public class XTimer extends AnimationTimer
 		xStart = mouseEvent.getSceneX();
 		yStart = mouseEvent.getSceneY();
 		mouseKey = mouseEvent.getButton();
+		mouseKeyD = mouseEvent.getButton();
 	}
 
 	public void onDragDetected(MouseEvent mouseEvent)
@@ -44,13 +51,20 @@ public class XTimer extends AnimationTimer
 		{
 			mouseDown = false;
 			if(isDrag)
-				dragged = true;
+			{
+				if(keybindFile.mouseKeys.get(mouseEvent.getButton()).canDrag())
+					dragged = true;
+			}
 			else
-				clicked = true;
+			{
+				if(keybindFile.mouseKeys.get(mouseEvent.getButton()).canClick())
+					clicked = true;
+			}
 			isDrag = false;
 			xClicked = mouseEvent.getSceneX();
 			yClicked = mouseEvent.getSceneY();
 			mouseKey = mouseEvent.getButton();
+			mouseKeyD = mouseEvent.getButton();
 		}
 	}
 
@@ -76,6 +90,15 @@ public class XTimer extends AnimationTimer
 		keyCode = keyEvent.getCode();
 	}
 
+	public void onKeyUp(KeyEvent keyEvent)
+	{
+		if(keybindFile.keyboardKeys.get(keyEvent.getCode()).canClick())
+		{
+			clickedK = true;
+			keyCode = keyEvent.getCode();
+		}
+	}
+
 	@Override
 	public void handle(long currentNanoTime)
 	{
@@ -85,36 +108,53 @@ public class XTimer extends AnimationTimer
 		lastNanoTime = currentNanoTime;
 		if(clicked && inside)
 		{
-			inputInterface.mousePosition(xClicked, yClicked, true, moved, isDrag, mouseKey.ordinal());
+			inputInterface.mousePosition(xClicked, yClicked, true, moved, isDrag, keybindFile.mouseKeys.getOrDefault(mouseKeyD, KeybindFile.NONE));
 			moved = false;
 			clicked = false;
 		}
+		else if(clickedK && inside)
+		{
+			inputInterface.mousePosition(xClicked, yClicked, true, moved, isDrag, keybindFile.keyboardKeys.getOrDefault(keyCode, KeybindFile.NONE));
+			moved = false;
+			clickedK = false;
+			keyCode = null;
+		}
 		else if(inside)
 		{
-			inputInterface.mousePosition(xMoved, yMoved, true, moved, isDrag, -1);
+			inputInterface.mousePosition(xMoved, yMoved, true, moved, isDrag, KeybindFile.NONE);
 			moved = false;
 		}
 		else
 		{
-			inputInterface.mousePosition(0, 0, false, moved, isDrag, -1);
+			inputInterface.mousePosition(0, 0, false, moved, isDrag, KeybindFile.NONE);
+			clicked = false;
+			clickedK = false;
 		}
 		if(dragged)
 		{
-			inputInterface.dragPosition(true, xStart, yStart, xClicked, yClicked, mouseKey.ordinal(), true);
+			inputInterface.dragPosition(true, xStart, yStart, xClicked, yClicked, keybindFile.mouseKeys.getOrDefault(mouseKeyD, KeybindFile.NONE), true);
 			dragged = false;
 		}
 		else if(isDrag)
 		{
-			inputInterface.dragPosition(true, xStart, yStart, xMoved, yMoved, mouseKey.ordinal(), false);
+			inputInterface.dragPosition(true, xStart, yStart, xMoved, yMoved, keybindFile.mouseKeys.getOrDefault(mouseKeyD, KeybindFile.NONE), false);
 		}
 		else
 		{
-			inputInterface.dragPosition(false, 0, 0, 0, 0, 0, false);
+			inputInterface.dragPosition(false, 0, 0, 0, 0, KeybindFile.NONE, false);
 		}
-		if(!clicked && !dragged && keyCode != null)
+		if(!clicked && !clickedK && !dragged)
 		{
-			inputInterface.handleKey(keyCode);
-			keyCode = null;
+			if(keyCode != null)
+			{
+				inputInterface.handleKey(keybindFile.keyboardKeys.getOrDefault(keyCode, KeybindFile.NONE));
+				keyCode = null;
+			}
+			else if(mouseKey != null)
+			{
+				inputInterface.handleKey(keybindFile.mouseKeys.getOrDefault(mouseKeyD, KeybindFile.NONE));
+				mouseKey = null;
+			}
 		}
 		inputInterface.tick();
 	}

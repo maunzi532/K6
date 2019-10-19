@@ -2,7 +2,6 @@ package logic.editor.xgui;
 
 import building.transport.*;
 import java.util.*;
-import javafx.scene.input.*;
 import levelMap.*;
 import logic.xstate.*;
 
@@ -31,9 +30,9 @@ public class BuildingInvEditGUI extends InvEditGUI
 	}
 
 	@Override
-	public KeyCode keybind()
+	public String keybind()
 	{
-		return editOutput ? KeyCode.O : KeyCode.I;
+		return editOutput ? "Edit Output" : "Edit Input";
 	}
 
 	@Override

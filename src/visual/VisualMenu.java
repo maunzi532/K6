@@ -66,8 +66,8 @@ public class VisualMenu
 					midPoint.v[0], midPoint.v[1], layout.size().v[0] * 1.4);
 			gd.setFill(Color.DARKSLATEGRAY);
 			gd.setFont(new Font(layout.size().v[1] * 0.3));
-			gd.fillText(menuEntry.keybind().getName(),
-					midPoint.v[0], midPoint.v[1] - layout.size().v[1] * 0.5, layout.size().v[0] * 1.4);
+			/*gd.fillText(menuEntry.keybind().getName(),
+					midPoint.v[0], midPoint.v[1] - layout.size().v[1] * 0.5, layout.size().v[0] * 1.4);*/ //TODO
 		}
 		else
 		{

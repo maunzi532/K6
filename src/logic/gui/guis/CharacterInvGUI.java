@@ -1,7 +1,6 @@
 package logic.gui.guis;
 
 import entity.*;
-import javafx.scene.input.*;
 import logic.*;
 import logic.xstate.*;
 
@@ -29,9 +28,9 @@ public class CharacterInvGUI extends Inv1GUI
 	}
 
 	@Override
-	public KeyCode keybind()
+	public String keybind()
 	{
-		return KeyCode.I;
+		return "Character Inv";
 	}
 
 	@Override

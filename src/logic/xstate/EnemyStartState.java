@@ -1,7 +1,6 @@
 package logic.xstate;
 
 import entity.*;
-import javafx.scene.input.*;
 import logic.*;
 
 public class EnemyStartState implements NAutoState
@@ -25,9 +24,9 @@ public class EnemyStartState implements NAutoState
 	}
 
 	@Override
-	public KeyCode keybind()
+	public String keybind()
 	{
-		return KeyCode.ENTER;
+		return "End Turn";
 	}
 
 	@Override

@@ -24,26 +24,26 @@ public class FloorSetMode implements EditingMode
 	}
 
 	@Override
-	public void onMapClick(MainState mainState, Tile tile, int mouseKey)
+	public void onMapClick(MainState mainState, Tile tile, XKey key)
 	{
-		if(mouseKey == 1)
+		if(key.hasFunction("Clear Tile"))
 		{
 			mainState.levelMap.clearTile(tile);
 		}
-		if(mouseKey == 3)
+		if(key.hasFunction("Set Tile"))
 		{
 			mainState.levelMap.setFloorTile(tile, new FloorTile(0, tileType));
 		}
 	}
 
 	@Override
-	public void onMapDrag(MainState mainState, Tile tile1, Tile tile2, int mouseKey)
+	public void onMapDrag(MainState mainState, Tile tile1, Tile tile2, XKey key)
 	{
-		if(mouseKey == 1)
+		if(key.hasFunction("Clear Tile"))
 		{
 			mainState.y1.betweenArea(tile1, tile2).forEach(mainState.levelMap::clearTile);
 		}
-		if(mouseKey == 3)
+		if(key.hasFunction("Set Tile"))
 		{
 			mainState.y1.betweenArea(tile1, tile2)
 					.forEach(tile -> mainState.levelMap.setFloorTile(tile, new FloorTile(0, tileType)));

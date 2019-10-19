@@ -1,7 +1,6 @@
 package logic.editor.xgui;
 
 import entity.*;
-import javafx.scene.input.*;
 import logic.*;
 import logic.gui.*;
 import logic.xstate.*;
@@ -34,9 +33,9 @@ public class EnemyEditGUI extends XGUIState
 	}
 
 	@Override
-	public KeyCode keybind()
+	public String keybind()
 	{
-		return KeyCode.S;
+		return "Enemy Settings";
 	}
 
 	@Override

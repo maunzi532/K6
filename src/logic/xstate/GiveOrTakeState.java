@@ -1,15 +1,14 @@
 package logic.xstate;
 
+import building.transport.*;
 import entity.*;
 import geom.f1.*;
-import building.transport.*;
-import logic.gui.guis.*;
 import java.util.*;
 import java.util.stream.*;
-import javafx.scene.input.*;
 import javafx.scene.paint.*;
 import levelMap.*;
 import logic.*;
+import logic.gui.guis.*;
 
 public class GiveOrTakeState implements NMarkState
 {
@@ -45,9 +44,9 @@ public class GiveOrTakeState implements NMarkState
 	}
 
 	@Override
-	public KeyCode keybind()
+	public String keybind()
 	{
-		return give ? KeyCode.G : KeyCode.T;
+		return give ? "Give" : "Take";
 	}
 
 	@Override
@@ -70,7 +69,7 @@ public class GiveOrTakeState implements NMarkState
 	}
 
 	@Override
-	public void onClick(Tile mapTile, MainState mainState, XStateHolder stateHolder, int key)
+	public void onClick(Tile mapTile, MainState mainState, XStateHolder stateHolder, XKey key)
 	{
 		boolean levelStarted = mainState.turnCounter > 0;
 		List<DoubleInv> list = possibleTargets.stream().filter(e -> mapTile.equals(e.location())).collect(Collectors.toList());

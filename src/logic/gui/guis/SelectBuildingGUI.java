@@ -4,7 +4,6 @@ import building.*;
 import building.blueprint.*;
 import entity.*;
 import file.*;
-import javafx.scene.input.*;
 import levelMap.*;
 import logic.*;
 import logic.gui.*;
@@ -50,9 +49,9 @@ public class SelectBuildingGUI extends XGUIState
 	}
 
 	@Override
-	public KeyCode keybind()
+	public String keybind()
 	{
-		return KeyCode.B;
+		return "Select Building";
 	}
 
 	@Override

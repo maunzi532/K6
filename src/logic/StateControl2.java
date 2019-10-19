@@ -3,15 +3,14 @@ package logic;
 import building.*;
 import entity.*;
 import geom.f1.*;
-import logic.editor.xstate.*;
-import logic.gui.*;
-import logic.gui.guis.*;
 import java.util.*;
 import java.util.stream.*;
-import javafx.scene.input.*;
 import javafx.scene.paint.*;
 import levelMap.*;
 import logic.editor.*;
+import logic.editor.xstate.*;
+import logic.gui.*;
+import logic.gui.guis.*;
 import logic.xstate.*;
 
 public class StateControl2 implements XStateHolder, ConvInputConsumer
@@ -62,7 +61,7 @@ public class StateControl2 implements XStateHolder, ConvInputConsumer
 
 	@Override
 	public void mousePosition(boolean insideGUI, Tile offsetGUITile, int menuOption,
-			int editorOption, Tile mapTile, boolean moved, boolean drag, int mouseKey)
+			int editorOption, Tile mapTile, boolean moved, boolean drag, XKey key)
 	{
 		if(state instanceof XGUIState)
 		{
@@ -74,19 +73,19 @@ public class StateControl2 implements XStateHolder, ConvInputConsumer
 					xguiState.target(offsetGUITile.v[0], offsetGUITile.v[1]);
 				}
 			}
-			if(mouseKey >= 0)
+			if(key.canClick())
 			{
 				if(insideGUI)
 				{
-					xguiState.click(offsetGUITile.v[0], offsetGUITile.v[1], mouseKey, this);
+					xguiState.click(offsetGUITile.v[0], offsetGUITile.v[1], key, this);
 				}
 				else if(menuOption >= 0)
 				{
-					onMenuTarget(menuOption, mouseKey);
+					onMenuTarget(menuOption, key);
 				}
 				else
 				{
-					xguiState.clickOutside(mouseKey, this);
+					xguiState.clickOutside(key, this);
 				}
 			}
 			cursorMarker = null;
@@ -94,19 +93,19 @@ public class StateControl2 implements XStateHolder, ConvInputConsumer
 		else if(menuOption >= 0)
 		{
 			//menu
-			onMenuTarget(menuOption, mouseKey);
+			onMenuTarget(menuOption, key);
 			cursorMarker = null;
 		}
 		else if(state.editMode() && editorOption >= 0)
 		{
 			//editor
-			levelEditor.onEditorTarget(editorOption, mouseKey);
+			levelEditor.onEditorTarget(editorOption, key);
 			cursorMarker = null;
 		}
 		else
 		{
 			//tile
-			handleMapTarget(mapTile, mouseKey);
+			handleMapTarget(mapTile, key);
 			cursorMarker = new VisMark(mapTile, Color.ORANGE, VisMark.d2);
 		}
 	}
@@ -117,9 +116,9 @@ public class StateControl2 implements XStateHolder, ConvInputConsumer
 		cursorMarker = null;
 	}
 
-	private void onMenuTarget(int menuOption, int mouseKey)
+	private void onMenuTarget(int menuOption, XKey key)
 	{
-		if(mouseKey >= 0)
+		if(key.canClick())
 		{
 			if(state instanceof NAutoState)
 				return;
@@ -131,51 +130,51 @@ public class StateControl2 implements XStateHolder, ConvInputConsumer
 		}
 	}
 
-	private void handleMapTarget(Tile mapTile, int mouseKey)
+	private void handleMapTarget(Tile mapTile, XKey key)
 	{
 		if(state instanceof NAutoState)
 			return;
-		if(state instanceof NMarkState && mouseKey >= 0)
+		if(state instanceof NMarkState && key.canClick())
 		{
-			((NMarkState) state).onClick(mapTile, mainState, this, mouseKey);
+			((NMarkState) state).onClick(mapTile, mainState, this, key);
 		}
-		else if(state.editMode() && mouseKey >= 0)
+		else if(state.editMode() && key.canClick())
 		{
-			levelEditor.onMapClick(mapTile, mouseKey);
+			levelEditor.onMapClick(mapTile, key);
 		}
-		else if(mouseKey >= 0)
+		else if(key.canClick())
 		{
 			AdvTile advTile = mainState.levelMap.advTile(mapTile);
 			if(mainState.preferBuildings)
 			{
 				if(advTile.getBuilding() != null)
 				{
-					onClickBuilding(advTile.getBuilding(), mouseKey);
+					onClickBuilding(advTile.getBuilding(), key);
 				}
 				else if(advTile.getEntity() != null)
 				{
-					onClickEntity(advTile.getEntity(), mainState.turnCounter > 0, mouseKey);
+					onClickEntity(advTile.getEntity(), mainState.turnCounter > 0, key);
 				}
 			}
 			else
 			{
 				if(advTile.getEntity() != null)
 				{
-					onClickEntity(advTile.getEntity(), mainState.turnCounter > 0, mouseKey);
+					onClickEntity(advTile.getEntity(), mainState.turnCounter > 0, key);
 				}
 				else if(advTile.getBuilding() != null)
 				{
-					onClickBuilding(advTile.getBuilding(), mouseKey);
+					onClickBuilding(advTile.getBuilding(), key);
 				}
 			}
 		}
 	}
 
-	private void onClickEntity(XEntity entity, boolean levelStarted, int mouseKey)
+	private void onClickEntity(XEntity entity, boolean levelStarted, XKey key)
 	{
 		if(entity instanceof XHero)
 		{
-			if(mouseKey == 1)
+			if(key.hasFunction("Choose"))
 			{
 				if(levelStarted)
 				{
@@ -186,44 +185,44 @@ public class StateControl2 implements XStateHolder, ConvInputConsumer
 					setState(new SwapState((XHero) entity));
 				}
 			}
-			else if(mouseKey == 3)
+			else if(key.hasFunction("Menu"))
 			{
 				setState(new CharacterInvGUI((XHero) entity));
 			}
 		}
 		else if(entity instanceof XEnemy)
 		{
-			if(mouseKey == 1)
+			if(key.hasFunction("Choose"))
 			{
 				setState(new ReachViewState(entity, true));
 			}
-			else if(mouseKey == 3)
+			else if(key.hasFunction("Menu"))
 			{
 				setState(new CharacterInvGUI((XEnemy) entity));
 			}
 		}
 	}
 
-	private void onClickBuilding(MBuilding building, int mouseKey)
+	private void onClickBuilding(MBuilding building, XKey key)
 	{
 		if(building instanceof ProductionBuilding)
 		{
-			if(mouseKey == 1)
+			if(key.hasFunction("Choose"))
 			{
 				setState(new ProductionFloorsState((ProductionBuilding) building));
 			}
-			else if(mouseKey == 3)
+			else if(key.hasFunction("Menu"))
 			{
 				setState(new ProductionInvGUI((ProductionBuilding) building));
 			}
 		}
 		else if(building instanceof Transporter)
 		{
-			if(mouseKey == 1)
+			if(key.hasFunction("Choose"))
 			{
 				setState(new TransportTargetsState((Transporter) building));
 			}
-			else if(mouseKey == 3)
+			else if(key.hasFunction("Menu"))
 			{
 				//setState(new TransportTargetsState((Transporter) building));
 			}
@@ -231,15 +230,15 @@ public class StateControl2 implements XStateHolder, ConvInputConsumer
 	}
 
 	@Override
-	public void dragPosition(Tile startTile, Tile endTile, int mouseKey, boolean finished)
+	public void dragPosition(Tile startTile, Tile endTile, XKey key, boolean finished)
 	{
 		if(!(state instanceof XGUIState))
 		{
 			dragMarker = mainState.y1.betweenArea(startTile, endTile).stream()
 					.map(e -> new VisMark(e, Color.CYAN, VisMark.d3)).collect(Collectors.toList());
-			if(finished && state.editMode() && mouseKey >= 0)
+			if(finished && state.editMode() && key.canDrag())
 			{
-				levelEditor.onMapDrag(startTile, endTile, mouseKey);
+				levelEditor.onMapDrag(startTile, endTile, key);
 			}
 		}
 		else
@@ -255,9 +254,9 @@ public class StateControl2 implements XStateHolder, ConvInputConsumer
 	}
 
 	@Override
-	public void handleKey(KeyCode keyCode)
+	public void handleKey(XKey key)
 	{
-		if(keyCode == KeyCode.Q)
+		if(key.hasFunction("Editor Mode"))
 		{
 			if(state instanceof NoneState)
 			{
@@ -268,15 +267,15 @@ public class StateControl2 implements XStateHolder, ConvInputConsumer
 				setState(NoneState.INSTANCE);
 			}
 		}
-		else if(keyCode == KeyCode.TAB)
+		else if(key.hasFunction("Click Mode"))
 		{
 			mainState.preferBuildings = !mainState.preferBuildings;
 		}
-		else if(keyCode == KeyCode.ESCAPE)
+		else if(key.hasFunction("Escape"))
 		{
 			if(state instanceof XGUIState)
 			{
-				((XGUIState) state).clickOutside(1, this);
+				((XGUIState) state).clickOutside(key, this);
 			}
 			else if(state instanceof NMarkState)
 			{
@@ -287,7 +286,7 @@ public class StateControl2 implements XStateHolder, ConvInputConsumer
 		{
 			for(NState menuEntry : menu)
 			{
-				if(keyCode == menuEntry.keybind())
+				if(key.hasFunction(menuEntry.keybind()))
 				{
 					if(menuEntry != state)
 					{

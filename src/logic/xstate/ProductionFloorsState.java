@@ -4,7 +4,6 @@ import building.*;
 import geom.f1.*;
 import java.util.*;
 import java.util.stream.*;
-import javafx.scene.input.*;
 import javafx.scene.paint.*;
 import levelMap.*;
 import logic.*;
@@ -41,9 +40,9 @@ public class ProductionFloorsState implements NMarkState
 	}
 
 	@Override
-	public KeyCode keybind()
+	public String keybind()
 	{
-		return KeyCode.F;
+		return "Production Floors";
 	}
 
 	@Override
@@ -53,7 +52,7 @@ public class ProductionFloorsState implements NMarkState
 	}
 
 	@Override
-	public void onClick(Tile mapTile, MainState mainState, XStateHolder stateHolder, int key)
+	public void onClick(Tile mapTile, MainState mainState, XStateHolder stateHolder, XKey key)
 	{
 		if(targetableTiles.contains(mapTile))
 		{

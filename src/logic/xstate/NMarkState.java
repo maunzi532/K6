@@ -8,7 +8,7 @@ import logic.editor.xstate.*;
 
 public interface NMarkState extends NState
 {
-	void onClick(Tile mapTile, MainState mainState, XStateHolder stateHolder, int key);
+	void onClick(Tile mapTile, MainState mainState, XStateHolder stateHolder, XKey key);
 
 	List<VisMark> visMarked(MainState mainState);
 

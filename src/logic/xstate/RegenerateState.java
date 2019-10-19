@@ -2,7 +2,6 @@ package logic.xstate;
 
 import arrow.*;
 import entity.*;
-import javafx.scene.input.*;
 import logic.*;
 
 public class RegenerateState implements NAutoState
@@ -31,9 +30,9 @@ public class RegenerateState implements NAutoState
 	}
 
 	@Override
-	public KeyCode keybind()
+	public String keybind()
 	{
-		return KeyCode.R;
+		return "Regenerate";
 	}
 
 	@Override

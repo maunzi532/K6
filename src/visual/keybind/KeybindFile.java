@@ -9,18 +9,9 @@ import logic.*;
 
 public class KeybindFile
 {
-	private Map<KeyCode, FXKey> keyboardKeys;
-	private Map<MouseButton, FXKey> mouseKeys;
-
-	public XKey getKeyForKeyboard(KeyCode keyCode)
-	{
-		return keyboardKeys.get(keyCode);
-	}
-
-	public XKey getKeyForMouse(MouseButton keyCode)
-	{
-		return mouseKeys.get(keyCode);
-	}
+	public static final XKey NONE = new FXKey();
+	public final Map<KeyCode, XKey> keyboardKeys;
+	public final Map<MouseButton, XKey> mouseKeys;
 
 	public KeybindFile(String input)
 	{
@@ -52,24 +43,26 @@ public class KeybindFile
 			KeyCode keyCode = KeyCode.valueOf(input.substring(1));
 			if(!keyboardKeys.containsKey(keyCode))
 				keyboardKeys.put(keyCode, new FXKey());
+			FXKey key = (FXKey) keyboardKeys.get(keyCode);
 			if(t2 != null)
-				keyboardKeys.get(keyCode).functions.add(t2);
+				key.functions.add(t2);
 			else if(d)
-				keyboardKeys.get(keyCode).canDrag = true;
+				key.canDrag = true;
 			else
-				keyboardKeys.get(keyCode).canClick = true;
+				key.canClick = true;
 		}
 		else if(input.charAt(0) == 'M')
 		{
 			MouseButton keyCode = MouseButton.valueOf(input.substring(1));
 			if(!mouseKeys.containsKey(keyCode))
 				mouseKeys.put(keyCode, new FXKey());
+			FXKey key = (FXKey) mouseKeys.get(keyCode);
 			if(t2 != null)
-				mouseKeys.get(keyCode).functions.add(t2);
+				key.functions.add(t2);
 			else if(d)
-				mouseKeys.get(keyCode).canDrag = true;
+				key.canDrag = true;
 			else
-				mouseKeys.get(keyCode).canClick = true;
+				key.canClick = true;
 		}
 	}
 

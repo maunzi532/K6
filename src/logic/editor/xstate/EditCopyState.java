@@ -3,7 +3,6 @@ package logic.editor.xstate;
 import entity.*;
 import geom.f1.*;
 import java.util.*;
-import javafx.scene.input.*;
 import levelMap.*;
 import logic.*;
 import logic.xstate.*;
@@ -33,9 +32,9 @@ public class EditCopyState implements NMarkState
 	}
 
 	@Override
-	public KeyCode keybind()
+	public String keybind()
 	{
-		return KeyCode.C;
+		return "Entity Copy";
 	}
 
 	@Override
@@ -45,7 +44,7 @@ public class EditCopyState implements NMarkState
 	}
 
 	@Override
-	public void onClick(Tile mapTile, MainState mainState, XStateHolder stateHolder, int key)
+	public void onClick(Tile mapTile, MainState mainState, XStateHolder stateHolder, XKey key)
 	{
 		if(mainState.levelMap.getEntity(mapTile) == null)
 		{

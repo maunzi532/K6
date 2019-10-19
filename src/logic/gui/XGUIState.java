@@ -3,6 +3,7 @@ package logic.gui;
 import java.util.*;
 import javafx.scene.image.*;
 import javafx.scene.paint.*;
+import logic.*;
 import logic.editor.xstate.*;
 import logic.xstate.*;
 
@@ -96,7 +97,7 @@ public abstract class XGUIState implements NState
 			update();
 	}
 
-	public void click(int x, int y, int key, XStateHolder stateHolder)
+	public void click(int x, int y, XKey key, XStateHolder stateHolder)
 	{
 		for(GuiElement element : elements)
 		{
@@ -112,7 +113,7 @@ public abstract class XGUIState implements NState
 		}
 	}
 
-	public void clickOutside(int key, XStateHolder stateHolder)
+	public void clickOutside(XKey key, XStateHolder stateHolder)
 	{
 		close(stateHolder);
 	}

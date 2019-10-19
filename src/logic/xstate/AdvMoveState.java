@@ -2,12 +2,11 @@ package logic.xstate;
 
 import entity.*;
 import geom.f1.*;
-import logic.gui.guis.*;
 import java.util.*;
-import javafx.scene.input.*;
 import javafx.scene.paint.*;
 import levelMap.*;
 import logic.*;
+import logic.gui.guis.*;
 
 public class AdvMoveState implements NMarkState
 {
@@ -49,9 +48,9 @@ public class AdvMoveState implements NMarkState
 	}
 
 	@Override
-	public KeyCode keybind()
+	public String keybind()
 	{
-		return KeyCode.M;
+		return "Movement";
 	}
 
 	@Override
@@ -61,7 +60,7 @@ public class AdvMoveState implements NMarkState
 	}
 
 	@Override
-	public void onClick(Tile mapTile, MainState mainState, XStateHolder stateHolder, int key)
+	public void onClick(Tile mapTile, MainState mainState, XStateHolder stateHolder, XKey key)
 	{
 		if(attack.contains(mapTile))
 		{

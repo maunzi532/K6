@@ -5,7 +5,6 @@ import entity.*;
 import item.*;
 import item.inv.*;
 import item.view.*;
-import javafx.scene.input.*;
 import logic.*;
 import logic.gui.*;
 import logic.xstate.*;
@@ -48,9 +47,9 @@ public class RemoveBuildingGUI extends XGUIState
 	}
 
 	@Override
-	public KeyCode keybind()
+	public String keybind()
 	{
-		return KeyCode.R;
+		return "Remove Building";
 	}
 
 	@Override

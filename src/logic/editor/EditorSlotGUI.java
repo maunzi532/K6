@@ -39,5 +39,5 @@ public class EditorSlotGUI extends XGUIState
 	public void target(int x, int y){}
 
 	@Override
-	public void click(int x, int y, int key, XStateHolder stateHolder){}
+	public void click(int x, int y, XKey key, XStateHolder stateHolder){}
 }

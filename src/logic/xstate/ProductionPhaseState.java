@@ -1,6 +1,5 @@
 package logic.xstate;
 
-import javafx.scene.input.*;
 import logic.*;
 
 public class ProductionPhaseState implements NAutoState
@@ -23,9 +22,9 @@ public class ProductionPhaseState implements NAutoState
 	}
 
 	@Override
-	public KeyCode keybind()
+	public String keybind()
 	{
-		return KeyCode.P;
+		return "Production Phase";
 	}
 
 	@Override

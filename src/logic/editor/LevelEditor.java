@@ -48,13 +48,13 @@ public class LevelEditor
 		return currentSlot;
 	}
 
-	public void onEditorTarget(int num, int mouseKey)
+	public void onEditorTarget(int num, XKey key)
 	{
-		if(mouseKey == 1 && num == currentSlot)
+		if(key.hasFunction("Choose") && num == currentSlot)
 		{
-			editorSlots.get(currentSlot).onClick(mainState, mouseKey);
+			editorSlots.get(currentSlot).onClick(mainState, key);
 		}
-		if(mouseKey > 0)
+		if(key.canClick())
 		{
 			if(currentSlot != num)
 			{
@@ -62,29 +62,29 @@ public class LevelEditor
 			}
 			currentSlot = num;
 		}
-		if(mouseKey == 3)
+		if(key.hasFunction("Menu"))
 		{
 			mainState.stateHolder.setState(editorSlotModeGUI);
 		}
-		else if(mouseKey > 0 && !(mainState.stateHolder.getState() instanceof EditingState))
+		else if(key.canClick() && !(mainState.stateHolder.getState() instanceof EditingState))
 		{
 			mainState.stateHolder.setState(EditingState.INSTANCE);
 		}
 	}
 
-	public void onMapClick(Tile tile, int mouseKey)
+	public void onMapClick(Tile tile, XKey key)
 	{
 		if(currentSlot >= 0)
 		{
-			editorSlots.get(currentSlot).onMapClick(mainState, tile, mouseKey);
+			editorSlots.get(currentSlot).onMapClick(mainState, tile, key);
 		}
 	}
 
-	public void onMapDrag(Tile tile1, Tile tile2, int mouseKey)
+	public void onMapDrag(Tile tile1, Tile tile2, XKey key)
 	{
 		if(currentSlot >= 0)
 		{
-			editorSlots.get(currentSlot).onMapDrag(mainState, tile1, tile2, mouseKey);
+			editorSlots.get(currentSlot).onMapDrag(mainState, tile1, tile2, key);
 		}
 	}
 

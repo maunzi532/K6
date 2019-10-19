@@ -1,6 +1,5 @@
 package logic.xstate;
 
-import javafx.scene.input.*;
 import logic.*;
 
 public interface NState
@@ -17,7 +16,7 @@ public interface NState
 		throw new RuntimeException();
 	}
 
-	default KeyCode keybind()
+	default String keybind()
 	{
 		throw new RuntimeException();
 	}

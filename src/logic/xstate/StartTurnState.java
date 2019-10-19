@@ -1,7 +1,6 @@
 package logic.xstate;
 
 import entity.*;
-import javafx.scene.input.*;
 import logic.*;
 
 public class StartTurnState implements NAutoState
@@ -26,9 +25,9 @@ public class StartTurnState implements NAutoState
 	}
 
 	@Override
-	public KeyCode keybind()
+	public String keybind()
 	{
-		return KeyCode.ENTER;
+		return "Start Level";
 	}
 
 	@Override

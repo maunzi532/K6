@@ -1,7 +1,6 @@
 package logic.editor.xgui;
 
 import entity.*;
-import javafx.scene.input.*;
 import javafx.scene.paint.*;
 import logic.*;
 import logic.gui.*;
@@ -51,9 +50,9 @@ public class HeroEditGUI extends XGUIState
 	}
 
 	@Override
-	public KeyCode keybind()
+	public String keybind()
 	{
-		return KeyCode.S;
+		return "Hero Settings";
 	}
 
 	@Override

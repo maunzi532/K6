@@ -4,7 +4,6 @@ import entity.*;
 import geom.f1.*;
 import java.util.*;
 import java.util.stream.*;
-import javafx.scene.input.*;
 import javafx.scene.paint.*;
 import levelMap.*;
 import logic.*;
@@ -43,9 +42,9 @@ public class SwapState implements NMarkState
 	}
 
 	@Override
-	public KeyCode keybind()
+	public String keybind()
 	{
-		return KeyCode.M;
+		return "Swap";
 	}
 
 	@Override
@@ -55,7 +54,7 @@ public class SwapState implements NMarkState
 	}
 
 	@Override
-	public void onClick(Tile mapTile, MainState mainState, XStateHolder stateHolder, int key)
+	public void onClick(Tile mapTile, MainState mainState, XStateHolder stateHolder, XKey key)
 	{
 		XEntity entity = mainState.levelMap.getEntity(mapTile);
 		if(entity instanceof XHero && swapTargets.contains(entity))

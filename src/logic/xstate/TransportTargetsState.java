@@ -1,11 +1,10 @@
 package logic.xstate;
 
 import building.*;
-import geom.f1.*;
 import building.transport.*;
+import geom.f1.*;
 import java.util.*;
 import java.util.stream.*;
-import javafx.scene.input.*;
 import javafx.scene.paint.*;
 import levelMap.*;
 import logic.*;
@@ -42,9 +41,9 @@ public class TransportTargetsState implements NMarkState
 	}
 
 	@Override
-	public KeyCode keybind()
+	public String keybind()
 	{
-		return KeyCode.T;
+		return "Transport Targets";
 	}
 
 	@Override
@@ -54,7 +53,7 @@ public class TransportTargetsState implements NMarkState
 	}
 
 	@Override
-	public void onClick(Tile mapTile, MainState mainState, XStateHolder stateHolder, int key)
+	public void onClick(Tile mapTile, MainState mainState, XStateHolder stateHolder, XKey key)
 	{
 		List<DoubleInv> list = possibleTargets.stream().filter(e -> mapTile.equals(e.location())).collect(Collectors.toList());
 		if(list.isEmpty())

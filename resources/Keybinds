@@ -13,11 +13,15 @@
   "Functions" : [
     "KENTER,End Turn",
     "KBACK_SPACE,Revert",
-    "KTAB,CM",
+    "KTAB,Click Mode",
     "KESCAPE,Escape",
     "KLEFT,Camera Left",
     "KUP,Camera Up",
     "KRIGHT,Camera Right",
-    "KDOWN,Camera Down"
+    "KDOWN,Camera Down",
+    "KP,Pause",
+    "MPRIMARY,Choose",
+    "MSECONDARY,Menu",
+    "KQ,Editor Mode"
   ]
 }

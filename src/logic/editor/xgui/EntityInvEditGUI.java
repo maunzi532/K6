@@ -1,7 +1,6 @@
 package logic.editor.xgui;
 
 import entity.*;
-import javafx.scene.input.*;
 import logic.xstate.*;
 
 public class EntityInvEditGUI extends InvEditGUI
@@ -21,9 +20,9 @@ public class EntityInvEditGUI extends InvEditGUI
 	}
 
 	@Override
-	public KeyCode keybind()
+	public String keybind()
 	{
-		return KeyCode.I;
+		return "Entity Inv Edit";
 	}
 
 	@Override
