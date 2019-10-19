@@ -69,9 +69,10 @@ public class SideInfoViewer implements SideInfoHolder
 			drawStatBar(sideInfo.getStatBar(), xstart + xlen * 0.4, ystart + xlen * 0.32, xlen * 0.25, xlen * 0.04);
 		graphics.gd().setFill(Color.BLACK);
 		graphics.gd().setFont(new Font(xlen * 0.05));
-		for(int i = 0; i < sideInfo.getTexts().length; i++)
+		String[] texts = sideInfo.getTexts();
+		for(int i = 0; i < texts.length; i++)
 		{
-			graphics.gd().fillText(sideInfo.getTexts()[i], xstart + xlen * 0.1 + xlen * 0.6 / sideInfo.getTexts().length * i, ystart + xlen * 0.4);
+			graphics.gd().fillText(texts[i], xstart + xlen * 0.1 + xlen * 0.6 / texts.length * i, ystart + xlen * 0.4);
 		}
 	}
 
@@ -89,9 +90,10 @@ public class SideInfoViewer implements SideInfoHolder
 			drawStatBar(sideInfo.getStatBar(), xstart + xlen * 0.35, ystart + xlen * 0.32, xlen * 0.25, xlen * 0.04);
 		graphics.gd().setFill(Color.BLACK);
 		graphics.gd().setFont(new Font(xlen * 0.05));
-		for(int i = 0; i < sideInfo.getTexts().length; i++)
+		String[] texts = sideInfo.getTexts();
+		for(int i = 0; i < texts.length; i++)
 		{
-			graphics.gd().fillText(sideInfo.getTexts()[i], xstart + xlen * 0.4 + xlen * 0.6 / sideInfo.getTexts().length * i, ystart + xlen * 0.4);
+			graphics.gd().fillText(texts[i], xstart + xlen * 0.4 + xlen * 0.6 / texts.length * i, ystart + xlen * 0.4);
 		}
 	}
 

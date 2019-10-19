@@ -10,6 +10,10 @@ public class PlayerLevelSystem implements LevelSystem
 {
 	private static final Random RANDOM = new Random();
 	private static final int STAT_COUNT = 8;
+	private static final int MODIFIER_MULTIPLIER = 5;
+	private static final int MODIFIER_DIVIDER = 1;
+	private static final int MODIFIER_ALL_MULTIPLIER = 5;
+	private static final int MODIFIER_ALL_DIVIDER = 8;
 
 	private int baseLevel;
 	private int[] baseLevelStats;
@@ -37,7 +41,8 @@ public class PlayerLevelSystem implements LevelSystem
 
 	private void setAssumedIncrease()
 	{
-		assumedIncrease = Arrays.stream(baseIncrease).map(e -> e * 3 / 2).toArray();
+		//assumedIncrease = Arrays.stream(baseIncrease).map(e -> e * 3 / 2).toArray();
+		assumedIncrease = baseIncrease;
 	}
 
 	@Override
@@ -55,7 +60,7 @@ public class PlayerLevelSystem implements LevelSystem
 	@Override
 	public int[] getLevelup(Stats2 current)
 	{
-		return randomLevelup(levelupPercent(current), RANDOM);
+		return randomLevelup2(levelupPercent(current), RANDOM);
 	}
 
 	public int[] levelupPercent(Stats2 current)
@@ -70,7 +75,11 @@ public class PlayerLevelSystem implements LevelSystem
 			int assumedStat = assumedIncrease[i] * levelDiff / 100 + baseLevelStats[i];
 			int currentStat = current.getStat1(i);
 			int statModifier = assumedStat - currentStat;
-			percent[i] = Math.max(0, Math.min(100, baseIncrease[i] + statModifier + statsModifier / STAT_COUNT));
+			/*percent[i] = Math.max(0, Math.min(100, baseIncrease[i]
+					+ statModifier * MODIFIER_MULTIPLIER / MODIFIER_DIVIDER
+					+ statsModifier * MODIFIER_ALL_MULTIPLIER / MODIFIER_ALL_DIVIDER));*/
+			percent[i] = baseIncrease[i] + statModifier * MODIFIER_MULTIPLIER / MODIFIER_DIVIDER
+					+ statsModifier * MODIFIER_ALL_MULTIPLIER / MODIFIER_ALL_DIVIDER;
 		}
 		return percent;
 	}
@@ -92,6 +101,23 @@ public class PlayerLevelSystem implements LevelSystem
 		for(int i = 0; i < amount2; i++)
 		{
 			levelup[get[r.nextInt(get.length)]]++;
+		}
+		return levelup;
+	}
+
+	public int[] randomLevelup2(int[] percent, Random r)
+	{
+		int[] levelup = new int[STAT_COUNT];
+		while(Arrays.stream(levelup).sum() <= 0 && Arrays.stream(percent).map(e -> Math.floorMod(e, 100)).sum() > 0)
+		{
+			for(int i = 0; i < STAT_COUNT; i++)
+			{
+				levelup[i] = r.nextInt(100) < Math.floorMod(percent[i], 100) ? 1 : 0;
+			}
+		}
+		for(int i = 0; i < STAT_COUNT; i++)
+		{
+			levelup[i] += Math.floorDiv(percent[i], 100);
 		}
 		return levelup;
 	}

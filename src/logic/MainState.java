@@ -85,17 +85,17 @@ public class MainState
 
 	//TODO Build a real level
 
+	//TODO add EndTurnState
 	//TODO show enemy reach (all enemies)
 	//TODO save transporter history
 	//TODO Refactor sectors
 
 	//TODO LevelEditor edit PlayerLevelSystem
-	//TODO Better stat view
+	//TODO Equipment view
+	//TODO LevelSystem view
 	//TODO equip weapon and choose mode without attacking
 	//TODO show better SideInfo
 
-	//TODO PlayerLevelSystem fix 4stat levelup
-	//TODO fix defeated without 0 health bug
 	//TODO change speed effects
 	//TODO levelup essence formula
 	//TODO add upgraded classes
@@ -110,7 +110,6 @@ public class MainState
 	//TODO improve camera
 	//TODO show pause menu
 	//TODO add configurable keybindings
-	//TODO show better controls info
 
 	//LK char - move/attack
 	//RK char - inv/trade

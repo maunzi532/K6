@@ -103,7 +103,7 @@ public class RNGDivider2 extends RNGDivider
 			if(hitrate > 0 && critrate < 100)
 			{
 				//hit
-				int damageDealt = aI.calc.melting1 ? aI.calc.meltDamage : aI.calc.damage;
+				int damageDealt = aI.calc.melting1 && attacked1 == 0 ? aI.calc.meltDamage : aI.calc.damage;
 				List<String> events3 = new ArrayList<>(events2);
 				if(damageDealt > 0)
 				{
@@ -124,7 +124,7 @@ public class RNGDivider2 extends RNGDivider
 			if(hitrate > 0 && critrate > 0)
 			{
 				//crit
-				int damageDealt = aI.calc.melting1 ? aI.calc.meltCritDamage : aI.calc.critDamage;
+				int damageDealt = aI.calc.melting1 && attacked1 == 0 ? aI.calc.meltCritDamage : aI.calc.critDamage;
 				List<String> events3 = new ArrayList<>(events2);
 				if(damageDealt > 0)
 				{
@@ -177,7 +177,7 @@ public class RNGDivider2 extends RNGDivider
 			if(hitrate > 0 && critrate < 100)
 			{
 				//hit
-				int damageDealt = aI.calcT.melting1 ? aI.calcT.meltDamage : aI.calcT.damage;
+				int damageDealt = aI.calcT.melting1 && attacked2 == 0 ? aI.calcT.meltDamage : aI.calcT.damage;
 				List<String> events3 = new ArrayList<>(events2);
 				if(damageDealt > 0)
 				{
@@ -197,7 +197,7 @@ public class RNGDivider2 extends RNGDivider
 			if(hitrate > 0 && critrate > 0)
 			{
 				//crit
-				int damageDealt = aI.calcT.melting1 ? aI.calcT.meltCritDamage : aI.calcT.critDamage;
+				int damageDealt = aI.calcT.melting1 && attacked2 == 0 ? aI.calcT.meltCritDamage : aI.calcT.critDamage;
 				List<String> events3 = new ArrayList<>(events2);
 				if(damageDealt > 0)
 				{

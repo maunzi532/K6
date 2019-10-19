@@ -1,16 +1,18 @@
 package visual;
 
+import file.*;
 import geom.*;
 import geom.f1.*;
 import javafx.geometry.*;
 import javafx.scene.input.*;
 import javafx.scene.paint.*;
 import javafx.scene.text.*;
-import logic.editor.*;
 import logic.*;
+import logic.editor.*;
 import logic.sideinfo.*;
 import logic.xstate.*;
 import visual.gui.*;
+import visual.keybind.*;
 import visual.sideinfo.*;
 
 public class MainVisual implements XInputInterface
@@ -19,6 +21,7 @@ public class MainVisual implements XInputInterface
 	private static final double BORDER2 = 0.75;
 
 	private XGraphics graphics;
+	private KeybindFile keybindFile;
 	private VisualTile visualTile;
 	private TileCamera mapCamera;
 	private VisualMenu visualMenu;
@@ -34,6 +37,7 @@ public class MainVisual implements XInputInterface
 	{
 		this.graphics = graphics;
 		this.mapCamera = mapCamera;
+		keybindFile = new KeybindFile(ImageLoader.loadTextResource("Keybinds"));
 		TileType y1 = mapCamera.getDoubleType();
 		SideInfoViewer sivL = new SideInfoViewer(graphics, false);
 		SideInfoViewer sivR = new SideInfoViewer(graphics, true);
