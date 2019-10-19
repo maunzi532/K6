@@ -18,6 +18,7 @@ public class MainVisual implements XInputInterface
 	private static final double BORDER2 = 0.75;
 
 	private XGraphics graphics;
+	private XKeyMap keyMap;
 	private VisualTile visualTile;
 	private TileCamera mapCamera;
 	private VisualMenu visualMenu;
@@ -29,9 +30,10 @@ public class MainVisual implements XInputInterface
 	private ConvInputConsumer convInputConsumer;
 	private boolean paused;
 
-	public MainVisual(XGraphics graphics, TileCamera mapCamera, TileCamera menuCamera, TileCamera guiCamera, String loadFile, String loadFile2)
+	public MainVisual(XGraphics graphics, XKeyMap keyMap, TileCamera mapCamera, TileCamera menuCamera, TileCamera guiCamera, String loadFile, String loadFile2)
 	{
 		this.graphics = graphics;
+		this.keyMap = keyMap;
 		this.mapCamera = mapCamera;
 		TileType y1 = mapCamera.getDoubleType();
 		SideInfoViewer sivL = new SideInfoViewer(graphics, false);
@@ -47,7 +49,7 @@ public class MainVisual implements XInputInterface
 		convInputConsumer = new StateControl2(mainState, levelEditor, new StartTurnState());
 		mainState.stateHolder = (XStateHolder) convInputConsumer;
 		visualTile = new VisualTile(y1, new ArrowViewer(mapCamera.getDoubleType()), mainState.levelMap, mainState.visMarked, graphics.gd());
-		visualMenu = new VisualMenu(graphics, mainState.stateHolder, menuCamera);
+		visualMenu = new VisualMenu(graphics, mainState.stateHolder, menuCamera, keyMap);
 		visualGUI = VisualGUI.forCamera(graphics, guiCamera);
 		draw();
 	}

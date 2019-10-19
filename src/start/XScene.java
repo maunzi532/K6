@@ -1,6 +1,6 @@
 package start;
 
-import visual.*;
+import file.*;
 import geom.*;
 import geom.d1.*;
 import javafx.application.*;
@@ -9,6 +9,8 @@ import javafx.scene.canvas.*;
 import javafx.scene.image.*;
 import javafx.scene.paint.*;
 import javafx.stage.*;
+import visual.*;
+import visual.keybind.*;
 
 public class XScene extends Application
 {
@@ -33,13 +35,14 @@ public class XScene extends Application
 		stage.setTitle("K6");
 		stage.getIcons().add(new Image("Tech.png"));
 		XGraphics graphics = new XGraphics(canvas.getGraphicsContext2D(), WIDTH, HEIGHT);
-		MainVisual mainVisual = new MainVisual(graphics,
+		KeybindFile keybindFile = new KeybindFile(ImageLoader.loadTextResource("Keybinds"));
+		MainVisual mainVisual = new MainVisual(graphics, keybindFile,
 				mapCamera(args0, graphics),
 				menuCamera(args0, graphics),
 				guiCamera(args0, graphics),
 				args0.length > 3 ? args0[3] : null,
 				args0.length > 4 ? args0[4] : null);
-		XTimer xTimer = new XTimer(mainVisual);
+		XTimer xTimer = new XTimer(mainVisual, keybindFile);
 		s.setOnMousePressed(xTimer::onMouseDown);
 		s.setOnDragDetected(xTimer::onDragDetected);
 		s.setOnMouseReleased(xTimer::onMouseUp);

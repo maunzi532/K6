@@ -7,16 +7,28 @@ import java.util.*;
 import javafx.scene.input.*;
 import logic.*;
 
-public class KeybindFile
+public class KeybindFile implements XKeyMap
 {
 	public static final XKey NONE = new FXKey();
+	private static final String[] mouseButtonNames = new String[]
+			{
+					"None",
+					"Left Click",
+					"Middle Click",
+					"Right Click",
+					"Mouse Back",
+					"Mouse Forward"
+			};
+
 	public final Map<KeyCode, XKey> keyboardKeys;
 	public final Map<MouseButton, XKey> mouseKeys;
+	private final Map<String, String> info;
 
 	public KeybindFile(String input)
 	{
 		keyboardKeys = new HashMap<>();
 		mouseKeys = new HashMap<>();
+		info = new HashMap<>();
 		try
 		{
 			var a1 = JSON.std.with(new JacksonJrsTreeCodec()).treeFrom(input);
@@ -45,7 +57,10 @@ public class KeybindFile
 				keyboardKeys.put(keyCode, new FXKey());
 			FXKey key = (FXKey) keyboardKeys.get(keyCode);
 			if(t2 != null)
+			{
 				key.functions.add(t2);
+				infoAdd(t2, keyCode.getName());
+			}
 			else if(d)
 				key.canDrag = true;
 			else
@@ -58,7 +73,10 @@ public class KeybindFile
 				mouseKeys.put(keyCode, new FXKey());
 			FXKey key = (FXKey) mouseKeys.get(keyCode);
 			if(t2 != null)
+			{
 				key.functions.add(t2);
+				infoAdd(t2, mouseButtonNames[keyCode.ordinal()]);
+			}
 			else if(d)
 				key.canDrag = true;
 			else
@@ -66,20 +84,21 @@ public class KeybindFile
 		}
 	}
 
-	/*
-	CanClick:
-	[
-	Ka Md Kf
-	]
-	CanDrag:
-	[
-	Md
-	]
-	Functions:
-	[
-		"Ka,b"
-		"Ka,c"
-		"Md,e"
-	]
-	 */
+	private void infoAdd(String function, String text)
+	{
+		if(info.containsKey(function))
+		{
+			info.put(function, info.get(function) + ", " + text);
+		}
+		else
+		{
+			info.put(function, text);
+		}
+	}
+
+	@Override
+	public String info(String function)
+	{
+		return info.get(function);
+	}
 }

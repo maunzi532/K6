@@ -1,6 +1,5 @@
 package start;
 
-import file.*;
 import javafx.animation.*;
 import javafx.scene.input.*;
 import visual.*;
@@ -25,10 +24,10 @@ public class XTimer extends AnimationTimer
 	private MouseButton mouseKeyD;
 	private KeyCode keyCode;
 
-	XTimer(XInputInterface inputInterface)
+	XTimer(XInputInterface inputInterface, KeybindFile keybindFile)
 	{
 		this.inputInterface = inputInterface;
-		keybindFile = new KeybindFile(ImageLoader.loadTextResource("Keybinds"));
+		this.keybindFile = keybindFile;
 	}
 
 	public void onMouseDown(MouseEvent mouseEvent)

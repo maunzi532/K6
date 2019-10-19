@@ -7,6 +7,7 @@ import java.util.*;
 import javafx.scene.canvas.*;
 import javafx.scene.paint.*;
 import javafx.scene.text.*;
+import logic.*;
 import logic.xstate.*;
 
 public class VisualMenu
@@ -15,13 +16,15 @@ public class VisualMenu
 	private final GraphicsContext gd;
 	private final TileCamera camera;
 	private final XStateHolder stateHolder;
+	private final XKeyMap keyMap;
 
-	public VisualMenu(XGraphics graphics, XStateHolder stateHolder, TileCamera camera)
+	public VisualMenu(XGraphics graphics, XStateHolder stateHolder, TileCamera camera, XKeyMap keyMap)
 	{
 		gd = graphics.gd();
 		this.camera = camera;
 		y2 = camera.getDoubleType();
 		this.stateHolder = stateHolder;
+		this.keyMap = keyMap;
 	}
 
 	public int coordinatesToOption(double x, double y)
@@ -66,8 +69,7 @@ public class VisualMenu
 					midPoint.v[0], midPoint.v[1], layout.size().v[0] * 1.4);
 			gd.setFill(Color.DARKSLATEGRAY);
 			gd.setFont(new Font(layout.size().v[1] * 0.3));
-			/*gd.fillText(menuEntry.keybind().getName(),
-					midPoint.v[0], midPoint.v[1] - layout.size().v[1] * 0.5, layout.size().v[0] * 1.4);*/ //TODO
+			gd.fillText(keyMap.info(menuEntry.keybind()), midPoint.v[0], midPoint.v[1] - layout.size().v[1] * 0.5, layout.size().v[0] * 1.4);
 		}
 		else
 		{
