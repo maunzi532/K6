@@ -54,22 +54,23 @@ public class System2 implements CombatSystem<Stats2, AttackInfo2, AttackItem2>
 			XEntity entityT, Tile locT, Stats2 statsT)
 	{
 		int distance = mainState.y1.distance(loc, locT);
-		return distanceAttackModes(entity, stats, distance)
-				.map(mode -> new AttackInfo2(entity, loc, stats, mode,
-						entityT, locT, statsT, statsT.getLastUsed(), distance).addAnalysis(this))
-				.collect(Collectors.toList());
-	}
-
-	public Stream<AttackMode2> distanceAttackModes(XEntity entity, Stats2 stats, int distance)
-	{
 		if(entity instanceof InvEntity)
 		{
-			return ((InvEntity) entity).outputInv().viewItems(false)
-					.stream().filter(e -> stats.getItemFilter().canContain(e.item))
+			return ((InvEntity) entity).outputInv()
+					.viewItems(false)
+					.stream()
+					.filter(e -> stats.getItemFilter().canContain(e.item))
 					.flatMap(e -> ((AttackItem2) e.item).attackModes().stream())
-					.filter(e -> Arrays.stream(e.getRanges(false)).anyMatch(f -> f == distance));
+					.map(mode -> new AttackInfo2(entity, loc, stats, mode,
+							entityT, locT, statsT, statsT.getLastUsed(), distance))
+					.filter(e -> e.canInitiate)
+					.map(e -> e.addAnalysis(this))
+					.collect(Collectors.toList());
 		}
-		return Stream.of();
+		else
+		{
+			return List.of();
+		}
 	}
 
 	@Override

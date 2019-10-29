@@ -4,19 +4,21 @@ import entity.*;
 import geom.f1.*;
 import java.util.*;
 
-public class AttackInfo2 extends AttackInfo<Stats2, AttackMode2>
+public class AttackInfo2 extends AttackInfo<Stats2, AttackMode4>
 {
+	public final boolean canInitiate;
+	public final AttackInfoPart3 calc;
+	public final AttackInfoPart3 calcT;
 	private final String[] infos;
-	public final AttackInfoPart2 calc;
-	public final AttackInfoPart2 calcT;
 
-	public AttackInfo2(XEntity entity, Tile loc, Stats2 stats, AttackMode2 mode, XEntity entityT, Tile locT, Stats2 statsT, AttackMode2 modeT, int distance)
+	public AttackInfo2(XEntity entity, Tile loc, Stats2 stats, AttackMode4 mode, XEntity entityT, Tile locT, Stats2 statsT, AttackMode4 modeT, int distance)
 	{
 		super(entity, loc, stats, mode, entityT, locT, statsT, modeT, distance);
-		boolean rangeOk = Arrays.stream(mode.getRanges(false)).anyMatch(e -> e == distance);
-		boolean rangeOkT = Arrays.stream(modeT.getRanges(true)).anyMatch(e -> e == distance);
-		calc = new AttackInfoPart2(stats, mode, rangeOk, statsT, modeT, rangeOkT);
-		calcT = new AttackInfoPart2(statsT, modeT, rangeOkT, stats, mode, rangeOk);
+		AttackMode3 attackMode = AttackMode3.convert(stats, mode);
+		AttackMode3 attackModeT = AttackMode3.convert(statsT, modeT);
+		canInitiate = Arrays.stream(attackMode.ranges).anyMatch(e -> e == distance);
+		calc = new AttackInfoPart3(attackMode, attackModeT, distance, false);
+		calcT = new AttackInfoPart3(attackModeT, attackMode, distance, true);
 		String[] i1 = calc.infos();
 		String[] i2 = calcT.infos();
 		infos = new String[i1.length * 2];
@@ -34,7 +36,7 @@ public class AttackInfo2 extends AttackInfo<Stats2, AttackMode2>
 		return this;
 	}
 
-	public AttackInfoPart2 getCalc(boolean inverse)
+	public AttackInfoPart3 getCalc(boolean inverse)
 	{
 		return inverse ? calcT : calc;
 	}

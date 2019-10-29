@@ -22,7 +22,8 @@ public class AttackItem2 implements Item, ModifierAspect
 	private final int[] ranges;
 	private final int[] counterR;
 	private final List<Ability2> abilities;
-	private final List<AttackMode2> attackModes;
+	private final List<AM2Type> attackModes;
+	private final List<AttackMode4> attackModes4;
 
 	public AttackItem2(AI2Class itemClass, Image image, int damage, int heavy, int accuracy,
 			int crit, int slow, int adaptive, AdaptiveType adaptiveType, AdvantageType advantageType,
@@ -42,7 +43,8 @@ public class AttackItem2 implements Item, ModifierAspect
 		this.ranges = ranges;
 		this.counterR = counterR;
 		this.abilities = abilities;
-		this.attackModes = attackModes.stream().map(e -> new AttackMode2(this, e)).collect(Collectors.toList());
+		this.attackModes = attackModes;
+		attackModes4 = attackModes.stream().map(e -> new AttackMode4(this, e)).collect(Collectors.toList());
 	}
 
 	@Override
@@ -184,9 +186,9 @@ public class AttackItem2 implements Item, ModifierAspect
 		return abilities;
 	}
 
-	public List<AttackMode2> attackModes()
+	public List<AttackMode4> attackModes()
 	{
-		return attackModes;
+		return attackModes4;
 	}
 
 	@Override

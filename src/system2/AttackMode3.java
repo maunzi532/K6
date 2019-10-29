@@ -4,8 +4,9 @@ import java.util.*;
 import java.util.stream.*;
 import system2.content.*;
 
-public class StatsInfo3
+public class AttackMode3
 {
+	private static final int[] NO_RANGES = new int[]{};
 	private static final int[] DEFENDER_RANGES = new int[]{1, 2, 3, 4, 5, 6};
 	private static final int PHYSICAL_ACCURACY_MULTIPLIER = 3;
 	private static final int MAGICAL_ACCURACY_MULTIPLIER = 3;
@@ -18,7 +19,7 @@ public class StatsInfo3
 	public final int[] ranges;
 	public final int[] counter;
 	public final boolean magical;
-	public final int baseAttackCount;
+	public final int attackCount;
 	public final AdvantageType advType;
 	private final int strength1;
 	private final int weightDiff;
@@ -44,17 +45,17 @@ public class StatsInfo3
 	public final int evasionMagical;
 	public final int critProtection;
 
-	public StatsInfo3(Stats2 stats, AttackMode2 mode1)
+	public AttackMode3(Stats2 stats, AttackMode4 mode4)
 	{
 		this.stats = stats;
-		item = mode1.item;
-		mode = mode1.type;
+		item = mode4.item;
+		mode = mode4.mode;
 		List<ModifierAspect> modifiers = List.of(stats, item, mode);
 		abilities = modifiers.stream().flatMap(e -> e.abilities().stream()).collect(Collectors.toSet());
 		ranges = abilities.contains(Ability2.DEFENDER) ? DEFENDER_RANGES : item.getRanges(false);
 		counter = abilities.contains(Ability2.DEFENDER) ? DEFENDER_RANGES : item.getRanges(true);
 		magical = item.magical() != mode.inverseMagical();
-		baseAttackCount = mode.attackCount() + (abilities.contains(Ability2.FAST) ? 1 : 0);
+		attackCount = mode.attackCount() + (abilities.contains(Ability2.FAST) ? 1 : 0);
 		advType = item.getAdvType();
 		exhausted = stats.getExhaustion();
 		strength1 = stats.getStrength() - exhausted;
@@ -116,5 +117,72 @@ public class StatsInfo3
 		evasionPhysical = evasionPhysical1;
 		evasionMagical = evasionMagical1;
 		critProtection = critProtection1;
+	}
+
+	public AttackMode3(Stats2 stats)
+	{
+		this.stats = stats;
+		item = null;
+		mode = null;
+		List<ModifierAspect> modifiers = List.of(stats);
+		abilities = modifiers.stream().flatMap(e -> e.abilities().stream()).collect(Collectors.toSet());
+		ranges = NO_RANGES;
+		counter = NO_RANGES;
+		magical = false;
+		attackCount = 0;
+		advType = AdvantageType.DEFEND;
+		exhausted = stats.getExhaustion();
+		strength1 = stats.getStrength() - exhausted;
+		weightDiff = 0;
+		adaptiveType = AdaptiveType.NONE;
+		maxAdaptive = 0;
+		adaptive = 0;
+		tooHeavy = 0;
+		healthCost = 0;
+		finesse1 = stats.getFinesse() - exhausted;
+		skill1 = stats.getSkill() - exhausted;
+		speed1 = stats.getSpeed() - exhausted;
+		luck1 = stats.getLuck();
+		defense1 = stats.getDefense() - exhausted;
+		evasion1 = stats.getEvasion() - exhausted;
+		int speedMod1 = modifiers.stream().mapToInt(ModifierAspect::speedMod).sum();
+		int defensePhysical1 = modifiers.stream().mapToInt(ModifierAspect::defensePhysical).sum();
+		int defenseMagical1 = modifiers.stream().mapToInt(ModifierAspect::defenseMagical).sum();
+		int evasionPhysical1 = modifiers.stream().mapToInt(ModifierAspect::evasionPhysical).sum();
+		int evasionMagical1 = modifiers.stream().mapToInt(ModifierAspect::evasionMagical).sum();
+		int critProtection1 = modifiers.stream().mapToInt(ModifierAspect::critProtection).sum();
+		speedMod1 += speed1;
+		defensePhysical1 += defense1;
+		defenseMagical1 += evasion1;
+		evasionPhysical1 += evasion1 * PHYSICAL_ACCURACY_MULTIPLIER;
+		evasionMagical1 += luck1 * MAGICAL_ACCURACY_MULTIPLIER;
+		critProtection1 += luck1 * CRIT_MULTIPLIER;
+		attackPower = 0;
+		finalSpeed = speedMod1;
+		accuracy = 0;
+		crit = 0;
+		defensePhysical = defensePhysical1;
+		defenseMagical = defenseMagical1;
+		evasionPhysical = evasionPhysical1;
+		evasionMagical = evasionMagical1;
+		critProtection = critProtection1;
+	}
+
+	public int defense(boolean magical)
+	{
+		return magical ? defenseMagical : defensePhysical;
+	}
+
+	public int evasion(boolean magical)
+	{
+		return magical ? evasionMagical : defenseMagical;
+	}
+
+	public static AttackMode3 convert(Stats2 stats, AttackMode4 mode4)
+	{
+		if(mode4.active)
+			return new AttackMode3(stats, mode4);
+		else
+			return new AttackMode3(stats);
 	}
 }

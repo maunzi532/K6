@@ -74,9 +74,9 @@ public class RNGDivider2 extends RNGDivider
 			//1
 			List<String> events2 = new ArrayList<>();
 			int health1a = health1;
-			if(attacked1 == 0 && aI.calc.cost > 0)
+			if(attacked1 == 0 && aI.calc.healthCost > 0)
 			{
-				if(aI.calc.cost >= health1)
+				if(aI.calc.healthCost >= health1)
 				{
 					//cost too high
 					paths.add(new RNGDivider2(this, 1, 0, aI, health1a,
@@ -86,7 +86,7 @@ public class RNGDivider2 extends RNGDivider
 				else
 				{
 					events2.add("healthcost1");
-					health1a -= aI.calc.cost;
+					health1a -= aI.calc.healthCost;
 				}
 			}
 			events2.add("attack1");
@@ -148,9 +148,9 @@ public class RNGDivider2 extends RNGDivider
 			//2
 			List<String> events2 = new ArrayList<>();
 			int health2a = health2;
-			if(attacked2 == 0 && aI.calcT.cost > 0)
+			if(attacked2 == 0 && aI.calcT.healthCost > 0)
 			{
-				if(aI.calcT.cost >= health2)
+				if(aI.calcT.healthCost >= health2)
 				{
 					//cost too high
 					paths.add(new RNGDivider2(this, 1, 0, aI, health1,
@@ -160,7 +160,7 @@ public class RNGDivider2 extends RNGDivider
 				else
 				{
 					events2.add("healthcost2");
-					health2a -= aI.calcT.cost;
+					health2a -= aI.calcT.healthCost;
 				}
 			}
 			events2.add("attack2");

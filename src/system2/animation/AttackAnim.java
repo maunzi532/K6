@@ -92,7 +92,7 @@ public class AttackAnim implements AnimTimer, Supplier<RNGOutcome>
 	{
 		switch(eventType)
 		{
-			case "healthcost" -> linked.add(new AnimPartHealthCost(aI.getCalc(inverse).cost,
+			case "healthcost" -> linked.add(new AnimPartHealthCost(aI.getCalc(inverse).healthCost,
 						aI.getStats(inverse), healthBar(inverse).statBar()));
 			case "attack" -> linked.add(new AnimPartAttack(aI.getEntity(inverse), aI.getEntity(!inverse), mainState));
 			case "miss" -> linked.add(new AnimPartDodge(aI.getEntity(inverse), aI.getEntity(!inverse), aI.distance, mainState));

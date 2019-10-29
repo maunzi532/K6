@@ -4,6 +4,7 @@ import com.fasterxml.jackson.jr.ob.comp.*;
 import com.fasterxml.jackson.jr.stree.*;
 import entity.*;
 import item.*;
+import item.view.*;
 import java.io.*;
 import java.util.*;
 import java.util.stream.*;
@@ -33,7 +34,7 @@ public class Stats2 implements Stats, ModifierAspect
 	private int movement;
 	private int currentHealth;
 	private int exhaustion;
-	private AttackMode2 lastUsed;
+	private AttackMode4 lastUsed;
 	private AttackItem2Slot slot;
 
 	public Stats2(XClass xClass, int level, int exp, String customName,
@@ -57,7 +58,7 @@ public class Stats2 implements Stats, ModifierAspect
 		this.toughness = toughness;
 		currentHealth = maxHealth();
 		this.movement = movement;
-		lastUsed = new NoAttackMode();
+		lastUsed = AttackMode4.EVADE_MODE;
 		slot = new AttackItem2Slot(xClass.usableItems);
 	}
 
@@ -72,7 +73,7 @@ public class Stats2 implements Stats, ModifierAspect
 		this.customImage = customImage;
 		currentHealth = maxHealth();
 		this.movement = movement;
-		lastUsed = new NoAttackMode();
+		lastUsed = AttackMode4.EVADE_MODE;
 		slot = new AttackItem2Slot(xClass.usableItems);
 	}
 
@@ -82,7 +83,7 @@ public class Stats2 implements Stats, ModifierAspect
 		this.level = level;
 		this.playerLevelSystem = playerLevelSystem;
 		autoStats();
-		lastUsed = new NoAttackMode();
+		lastUsed = AttackMode4.EVADE_MODE;
 		slot = new AttackItem2Slot(xClass.usableItems);
 	}
 
@@ -226,12 +227,12 @@ public class Stats2 implements Stats, ModifierAspect
 		return exhaustion;
 	}
 
-	public AttackMode2 getLastUsed()
+	public AttackMode4 getLastUsed()
 	{
 		return lastUsed;
 	}
 
-	public void setLastUsed(AttackMode2 lastUsed)
+	public void setLastUsed(AttackMode4 lastUsed)
 	{
 		this.lastUsed = lastUsed;
 	}
@@ -239,18 +240,26 @@ public class Stats2 implements Stats, ModifierAspect
 	@Override
 	public void autoEquip(InvEntity entity)
 	{
-		lastUsed = ((AttackItem2) entity.outputInv().viewRecipeItem(getItemFilter()).item).attackModes()
-				.stream().findFirst().orElse(new NoAttackMode());
+		ItemView itemView = entity.outputInv().viewRecipeItem(getItemFilter());
+		if(itemView.base == 0 || !(itemView.item instanceof AttackItem2))
+		{
+			lastUsed = AttackMode4.EVADE_MODE;
+		}
+		else
+		{
+			lastUsed = ((AttackItem2) itemView.item).attackModes()
+					.stream().findFirst().orElse(AttackMode4.EVADE_MODE);
+		}
 	}
 
 	@Override
 	public void afterTrading(InvEntity entity)
 	{
-		if(lastUsed instanceof NoAttackMode)
+		if(!lastUsed.active)
 			return;
 		if(!entity.outputInv().canGive(new ItemStack(lastUsed.item, 1), false))
 		{
-			lastUsed = new NoAttackMode();
+			lastUsed = AttackMode4.EVADE_MODE;
 		}
 	}
 
@@ -259,18 +268,18 @@ public class Stats2 implements Stats, ModifierAspect
 	{
 		if(mode != null)
 		{
-			lastUsed = (AttackMode2) mode;
+			lastUsed = (AttackMode4) mode; //TODO
 		}
 		else
 		{
-			lastUsed = new NoAttackMode();
+			lastUsed = AttackMode4.EVADE_MODE;
 		}
 	}
 
 	@Override
 	public XMode getEquippedMode()
 	{
-		if(lastUsed instanceof NoAttackMode)
+		if(!lastUsed.active)
 			return null;
 		else
 			return lastUsed;
@@ -373,12 +382,13 @@ public class Stats2 implements Stats, ModifierAspect
 		exhaustion = ((JrsNumber) data.get("Exhaustion")).getValue().intValue();
 		if(data.get("LastUsed") != null)
 		{
-			lastUsed = ((AttackItem2) itemLoader.loadItem((JrsObject) data.get("LastUsedItem"))).attackModes()
-					.stream().filter(e -> e.code == ((JrsNumber) data.get("LastUsed")).getValue().intValue()).findFirst().orElseThrow();
+			AttackItem2 item1 = ((AttackItem2) itemLoader.loadItem((JrsObject) data.get("LastUsedItem")));
+			lastUsed = item1.attackModes().stream().filter(e -> e.mode.code() == ((JrsNumber) data.get("LastUsed")).getValue().intValue())
+					.findFirst().orElseThrow();
 		}
 		else
 		{
-			lastUsed = new NoAttackMode();
+			lastUsed = AttackMode4.EVADE_MODE;
 		}
 	}
 
@@ -411,9 +421,9 @@ public class Stats2 implements Stats, ModifierAspect
 				.put("Movement", movement)
 				.put("CurrentHealth", currentHealth)
 				.put("Exhaustion", exhaustion);
-		if(!(lastUsed instanceof NoAttackMode))
+		if(lastUsed.active)
 		{
-			var a4 = a3.put("LastUsed", lastUsed.code).startObjectField("LastUsedItem");
+			var a4 = a3.put("LastUsed", lastUsed.mode.code()).startObjectField("LastUsedItem");
 			a3 = itemLoader.saveItem(a4, lastUsed.item).end();
 		}
 		return a3;
@@ -437,7 +447,7 @@ public class Stats2 implements Stats, ModifierAspect
 		info.add("CPower\n" + getCPower());
 		info.add("Move\n" + movement);
 		info.add(exhaustion > 0 ? "Exhausted\n" + exhaustion : "");
-		info.add("Defend\n" + (lastUsed instanceof NoAttackMode ? "None" : lastUsed.item.info().get(0).replace("Type\n", "")));
+		info.add("Defend\n" + (lastUsed.active ? lastUsed.item.info().get(0).replace("Type\n", "") : "None"));
 		for(Class e : slot.getItemTypes())
 		{
 			info.add("ItemType\n" + e.getSimpleName().replace("Item", ""));
@@ -547,7 +557,7 @@ public class Stats2 implements Stats, ModifierAspect
 		info.add("Health\n" + currentHealth + "/" + maxHealth());
 		info.add("Exhaustion\n" + exhaustion);
 		info.add("Move\n" + movement);
-		info.add("Defend\n" + (lastUsed instanceof NoAttackMode ? "None" : lastUsed.item.info().get(0).replace("Type\n", "")));
+		info.add("Defend\n" + (lastUsed.active ? lastUsed.item.info().get(0).replace("Type\n", "") : "None"));
 		info.add("ItemTypes\n" + slot.getItemTypes().stream().map(e -> e.getSimpleName().replace("Item", ""))
 				.collect(Collectors.joining("\n")));
 		return info;
