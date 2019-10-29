@@ -55,4 +55,47 @@ public interface ModifierAspect
 	{
 		return 0;
 	}
+
+	List<String> extraText();
+
+	boolean p();
+
+	default List<String> detailedInfo()
+	{
+		List<String> list = new ArrayList<>(extraText());
+		abilities().forEach(e -> list.add("Ability\n" + e.name));
+		add(list, "Weight", heavy(), p());
+		add(list, "Damage", attackPower(), p());
+		add(list, "Speed", speedMod(), p());
+		add(list, "Accuracy", accuracy(), p());
+		add(list, "Crit", crit(), p());
+		if(defensePhysical() == defenseMagical())
+		{
+			add(list, "Def (all)", defensePhysical(), p());
+		}
+		else
+		{
+			add(list, "Def (phy)", defensePhysical(), p());
+			add(list, "Def (mag)", defenseMagical(), p());
+		}
+		if(evasionPhysical() == evasionMagical())
+		{
+			add(list, "Evade (all)", evasionPhysical(), p());
+		}
+		else
+		{
+			add(list, "Evade (phy)", evasionPhysical(), p());
+			add(list, "Evade (mag)", evasionMagical(), p());
+		}
+		add(list, "Prevent Crit", critProtection(), p());
+		return list;
+	}
+
+	private static void add(List list, String prefix, int num, boolean p)
+	{
+		if(num > 0 && p)
+			list.add(prefix + "\n+" + num);
+		else if(num != 0)
+			list.add(prefix + "\n" + num);
+	}
 }

@@ -65,31 +65,6 @@ public class AttackItem2 implements Item, ModifierAspect
 		return image;
 	}
 
-	public int getDamage()
-	{
-		return damage;
-	}
-
-	public int getHeavy()
-	{
-		return heavy;
-	}
-
-	public int getAccuracy()
-	{
-		return accuracy;
-	}
-
-	public int getCrit()
-	{
-		return crit;
-	}
-
-	public int getSlow()
-	{
-		return slow;
-	}
-
 	@Override
 	public List<Ability2> abilities()
 	{
@@ -156,6 +131,27 @@ public class AttackItem2 implements Item, ModifierAspect
 		return 0;
 	}
 
+	@Override
+	public boolean p()
+	{
+		return false;
+	}
+
+	@Override
+	public List<String> extraText()
+	{
+		List<String> list = new ArrayList<>();
+		list.add((magical ? "Magical\n" : "Physical\n") + itemClass.getClass().getSimpleName().replace("Item", ""));
+		list.add("Adv. Type\n" + advantageType.name);
+		if(adaptive > 0)
+		{
+			list.add("Adaptive\n" + adaptiveType.name + " " + adaptive);
+		}
+		list.add("Range\n" + displayRange(ranges));
+		list.add("Counter\n" + displayRange(counterR));
+		return list;
+	}
+
 	public int getAdaptive()
 	{
 		return adaptive;
@@ -194,7 +190,7 @@ public class AttackItem2 implements Item, ModifierAspect
 	@Override
 	public List<String> info()
 	{
-		List<String> info = new ArrayList<>();
+		/*List<String> info = new ArrayList<>();
 		info.add("Type\n" + itemClass.getClass().getSimpleName().replace("Item", ""));
 		info.add("Damage\n" + damage);
 		info.add("Heavy\n" + heavy);
@@ -208,7 +204,8 @@ public class AttackItem2 implements Item, ModifierAspect
 		{
 			info.add("Ability\n" + ability.name);
 		}
-		return info;
+		return info;*/
+		return detailedInfo();
 	}
 
 	private static String displayRange(int[] ranges)

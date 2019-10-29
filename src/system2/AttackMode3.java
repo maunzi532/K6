@@ -1,10 +1,12 @@
 package system2;
 
+import entity.*;
 import java.util.*;
 import java.util.stream.*;
+import javafx.scene.image.*;
 import system2.content.*;
 
-public class AttackMode3
+public class AttackMode3 implements XMode
 {
 	private static final int[] NO_RANGES = new int[]{};
 	private static final int[] DEFENDER_RANGES = new int[]{1, 2, 3, 4, 5, 6};
@@ -176,6 +178,30 @@ public class AttackMode3
 	public int evasion(boolean magical)
 	{
 		return magical ? evasionMagical : defenseMagical;
+	}
+
+	@Override
+	public XMode shortVersion()
+	{
+		return item == null || mode == null ? AttackMode4.EVADE_MODE : new AttackMode4(item, mode);
+	}
+
+	@Override
+	public Image image()
+	{
+		return item != null ? item.image() : null;
+	}
+
+	@Override
+	public String tile()
+	{
+		return mode != null ? mode.tile() : "Evade";
+	}
+
+	@Override
+	public List<String> modeInfo()
+	{
+		return mode.detailedInfo();
 	}
 
 	public static AttackMode3 convert(Stats2 stats, AttackMode4 mode4)

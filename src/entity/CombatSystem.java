@@ -33,7 +33,7 @@ public interface CombatSystem<T extends Stats, A extends AttackInfo, I extends I
 
 	void preAttack(A attackInfo);
 
-	List<XMode> modesForItem(Item item);
+	List<XMode> modesForItem(Stats stats, Item item);
 
 	List<Item> allItems();
 

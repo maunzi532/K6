@@ -80,10 +80,11 @@ public class System2 implements CombatSystem<Stats2, AttackInfo2, AttackItem2>
 	}
 
 	@Override
-	public List<XMode> modesForItem(Item item)
+	public List<XMode> modesForItem(Stats stats, Item item)
 	{
 		if(item instanceof AttackItem2)
-			return new ArrayList<>(((AttackItem2) item).attackModes());
+			return ((AttackItem2) item).attackModes().stream().map(e -> AttackMode3.convert((Stats2) stats, e))
+					.collect(Collectors.toList());
 		return List.of();
 	}
 

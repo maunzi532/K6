@@ -55,7 +55,7 @@ public class CharacterCombatGUI extends XGUIState
 		}
 		else if(modeChooseView.getTargeted() != null)
 		{
-			statsView.elements = modeChooseView.getTargeted().info();
+			statsView.elements = modeChooseView.getTargeted().modeInfo();
 		}
 		else
 		{
@@ -63,7 +63,7 @@ public class CharacterCombatGUI extends XGUIState
 		}
 		if(chosenItem != null && character.getStats().getItemFilter().canContain(chosenItem))
 		{
-			modeChooseView.elements = combatSystem.modesForItem(chosenItem);
+			modeChooseView.elements = combatSystem.modesForItem(character.getStats(), chosenItem);
 		}
 		else
 		{
@@ -73,7 +73,7 @@ public class CharacterCombatGUI extends XGUIState
 
 	private void onClickMode(XMode mode)
 	{
-		character.getStats().equip(chosenItem, mode);
+		character.getStats().equip(chosenItem, mode.shortVersion());
 		chosenItem = null;
 	}
 

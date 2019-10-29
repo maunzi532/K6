@@ -27,6 +27,12 @@ public class AttackMode4 implements XMode
 	}
 
 	@Override
+	public XMode shortVersion()
+	{
+		return this;
+	}
+
+	@Override
 	public Image image()
 	{
 		return null;
@@ -39,7 +45,7 @@ public class AttackMode4 implements XMode
 	}
 
 	@Override
-	public List<String> info()
+	public List<String> modeInfo()
 	{
 		return null;
 	}

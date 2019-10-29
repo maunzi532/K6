@@ -98,10 +98,10 @@ public class MainState
 	//TODO show better SideInfo
 	//TODO CharacterCombatGUI view stats with equip
 	//TODO CharacterCombatGUI view stats without equip
+	//TODO CharacterCombatGUI show stat calculation
+	//TODO AttackInfoGUI show stat calculation
 
 	//TODO change speed effects
-	//TODO StatsInfo3
-	//TODO StatsInfo3 show stat calculation
 	//TODO levelup essence formula
 	//TODO add upgraded classes
 

@@ -157,6 +157,18 @@ public class Stats2 implements Stats, ModifierAspect
 		return List.of();
 	}
 
+	@Override
+	public boolean p()
+	{
+		return true;
+	}
+
+	@Override
+	public List<String> extraText()
+	{
+		return List.of();
+	}
+
 	public int getToughness()
 	{
 		return toughness;
@@ -268,7 +280,7 @@ public class Stats2 implements Stats, ModifierAspect
 	{
 		if(mode != null)
 		{
-			lastUsed = (AttackMode4) mode; //TODO
+			lastUsed = (AttackMode4) mode;
 		}
 		else
 		{

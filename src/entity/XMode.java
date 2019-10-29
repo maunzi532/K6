@@ -5,9 +5,11 @@ import javafx.scene.image.*;
 
 public interface XMode
 {
+	XMode shortVersion();
+
 	Image image();
 
 	String tile();
 
-	List<String> info();
+	List<String> modeInfo();
 }
