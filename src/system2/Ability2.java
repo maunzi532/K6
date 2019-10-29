@@ -4,7 +4,8 @@ public enum Ability2
 {
 	TWO_HANDED("Two-handed"),
 	FAST("Fast"),
-	MELTING("Melting");
+	MELTING("Melting"),
+	DEFENDER("Defender");
 
 	public final String name;
 

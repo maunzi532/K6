@@ -6,7 +6,7 @@ import java.util.stream.*;
 import javafx.scene.image.*;
 import system2.content.*;
 
-public class AttackItem2 implements Item
+public class AttackItem2 implements Item, ModifierAspect
 {
 	public final AI2Class itemClass;
 	private final Image image;
@@ -86,6 +86,72 @@ public class AttackItem2 implements Item
 	public int getSlow()
 	{
 		return slow;
+	}
+
+	@Override
+	public List<Ability2> abilities()
+	{
+		return abilities;
+	}
+
+	@Override
+	public int heavy()
+	{
+		return heavy;
+	}
+
+	@Override
+	public int attackPower()
+	{
+		return damage;
+	}
+
+	@Override
+	public int speedMod()
+	{
+		return -slow;
+	}
+
+	@Override
+	public int accuracy()
+	{
+		return accuracy;
+	}
+
+	@Override
+	public int crit()
+	{
+		return crit;
+	}
+
+	@Override
+	public int defensePhysical()
+	{
+		return 0;
+	}
+
+	@Override
+	public int defenseMagical()
+	{
+		return 0;
+	}
+
+	@Override
+	public int evasionPhysical()
+	{
+		return 0;
+	}
+
+	@Override
+	public int evasionMagical()
+	{
+		return 0;
+	}
+
+	@Override
+	public int critProtection()
+	{
+		return 0;
 	}
 
 	public int getAdaptive()

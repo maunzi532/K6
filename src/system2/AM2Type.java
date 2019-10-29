@@ -2,11 +2,19 @@ package system2;
 
 import java.util.*;
 
-public interface AM2Type
+public interface AM2Type extends ModifierAspect
 {
 	int code();
 
-	List<Ability2> abilities();
+	default boolean inverseMagical()
+	{
+		return false;
+	}
+
+	default int attackCount()
+	{
+		return 2;
+	}
 
 	String tile();
 

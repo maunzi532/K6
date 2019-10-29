@@ -12,7 +12,7 @@ import javafx.stage.*;
 import system2.animation.*;
 import system2.content.*;
 
-public class Stats2 implements Stats
+public class Stats2 implements Stats, ModifierAspect
 {
 	public static final int HEALTH_MULTIPLIER = 5;
 
@@ -148,6 +148,12 @@ public class Stats2 implements Stats
 			case 7 -> toughness;
 			default -> 0;
 		};
+	}
+
+	@Override
+	public List<Ability2> abilities()
+	{
+		return List.of();
 	}
 
 	public int getToughness()
@@ -440,6 +446,28 @@ public class Stats2 implements Stats
 		{
 			info.add("Ability\n" + ability.name);
 		}
+		return info;
+	}
+
+	@Override
+	public List<String> infoWithoutEquip()
+	{
+		List<String> info = new ArrayList<>();
+		info.add("Strength\n" + strength);
+		info.add("Finesse\n" + finesse);
+		info.add("Skill\n" + skill);
+		info.add("Speed\n" + speed);
+		info.add("Luck\n" + luck);
+		info.add("Defense\n" + defense);
+		info.add("Evasion\n" + evasion);
+		info.add("Toughness\n" + toughness);
+		return info;
+	}
+
+	@Override
+	public List<String> infoWithEquip()
+	{
+		List<String> info = new ArrayList<>();
 		return info;
 	}
 

@@ -85,6 +85,14 @@ public class AttackMode2 implements XMode
 		return allAbilities;
 	}
 
+	public List<Ability2> getAbilities()
+	{
+		ArrayList<Ability2> allAbilities = new ArrayList<>();
+		allAbilities.addAll(item.getAbilities());
+		allAbilities.addAll(type.abilities());
+		return allAbilities;
+	}
+
 	public int[] getRanges(boolean counter)
 	{
 		return item.getRanges(counter);

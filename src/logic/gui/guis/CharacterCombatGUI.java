@@ -11,7 +11,7 @@ public class CharacterCombatGUI extends XGUIState
 {
 	private static final CTile NAME = new CTile(2, 0, 3, 1);
 	private static final CTile UNEQUIP = new CTile(1, 6, new GuiTile("Unequip"), 2, 1);
-	private static final CTile OTHER_VIEW = new CTile(4, 6, 2, 1);
+	private static final CTile HIDE_EQUIP = new CTile(4, 6, 2, 1);
 
 	private InvEntity character;
 	private CombatSystem combatSystem;
@@ -28,6 +28,7 @@ public class CharacterCombatGUI extends XGUIState
 	@Override
 	public void onEnter(MainState mainState)
 	{
+		mainState.sideInfoFrame.setSideInfoXH(character.standardSideInfo(), character);
 		combatSystem = mainState.combatSystem;
 		elements.add(new CElement(NAME, new GuiTile(character.name())));
 		elements.add(new CElement(UNEQUIP, true, () -> character.getStats().getEquippedMode() != null,

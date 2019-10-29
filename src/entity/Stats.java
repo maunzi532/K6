@@ -33,6 +33,10 @@ public interface Stats
 
 	List<String> info();
 
+	List<String> infoWithoutEquip();
+
+	List<String> infoWithEquip();
+
 	List<String> levelup();
 
 	String[] sideInfoText();

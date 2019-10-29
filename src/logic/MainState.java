@@ -86,9 +86,12 @@ public class MainState
 	//TODO Build a real level
 
 	//TODO add EndTurnState
+	//TODO add dash action
+	//TODO add item storage (access by using give/take on current character)
+
 	//TODO show enemy reach (all enemies)
-	//TODO save transporter history
-	//TODO Refactor sectors
+	//TODO turn limit
+	//TODO enemy reinforcements (starting delay)
 
 	//TODO LevelEditor edit PlayerLevelSystem
 	//TODO LevelSystem view
@@ -97,13 +100,17 @@ public class MainState
 	//TODO CharacterCombatGUI view stats without equip
 
 	//TODO change speed effects
+	//TODO StatsInfo3
+	//TODO StatsInfo3 show stat calculation
 	//TODO levelup essence formula
 	//TODO add upgraded classes
 
-	//TODO add item storage
-	//TODO enemy reinforcements
 	//TODO Enemy AI types
+	//TODO Enemy AI type: Activate
+	//TODO Enemy AI type: Stationary
 	//TODO complicated levelup system
+	//TODO save transporter history
+	//TODO Refactor sectors
 
 	//TODO scale tiles, menubar, gui when resizing
 	//TODO Make menu bar not overlap with SideInfo
