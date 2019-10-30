@@ -14,7 +14,7 @@ import system2.analysis.*;
 import system2.animation.*;
 import system2.content.*;
 
-public class System2 implements CombatSystem<Stats2, AttackInfo2, AttackItem2>
+public class System2 implements CombatSystem<Stats2, AttackInfo2>
 {
 	@Override
 	public int movement(MainState mainState, XEntity entity, Stats2 stats)
@@ -86,6 +86,12 @@ public class System2 implements CombatSystem<Stats2, AttackInfo2, AttackItem2>
 			return ((AttackItem2) item).attackModes().stream().map(e -> AttackMode3.convert((Stats2) stats, e))
 					.collect(Collectors.toList());
 		return List.of();
+	}
+
+	@Override
+	public Optional<Item> equippedItem(Stats stats)
+	{
+		return Optional.ofNullable(((Stats2) stats).getLastUsed()).map(e -> e.item);
 	}
 
 	@Override

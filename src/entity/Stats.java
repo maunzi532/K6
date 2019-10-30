@@ -33,7 +33,7 @@ public interface Stats
 
 	List<String> info();
 
-	List<String> infoWithoutEquip();
+	List<String> statsInfo();
 
 	List<String> infoWithEquip();
 

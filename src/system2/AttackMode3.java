@@ -212,7 +212,7 @@ public class AttackMode3 implements XMode
 		List<String> list = new ArrayList<>();
 		if(attackCount > 0)
 		{
-			list.add((magical ? "Magical\n" : "Physical\n") + attackCount + " attacks");
+			list.add(attackCount + " attacks\n" + (magical ? "Magical" : "Physical"));
 		}
 		else
 		{
@@ -221,24 +221,21 @@ public class AttackMode3 implements XMode
 		list.add("Range\n" + AttackItem2.displayRange(ranges));
 		list.add("Counter\n" + AttackItem2.displayRange(counter));
 		list.add("Adv. Type\n" + advType.name);
-		if(adaptiveType == AdaptiveType.COST)
-		{
-			list.add("Cast with\n" + healthCost + " health");
-		}
-		else
-		{
-			list.add("");
-		}
 		if(attackCount > 0)
 		{
+			if(adaptiveType == AdaptiveType.COST)
+			{
+				list.add("Cast with\n" + healthCost + " health");
+			}
+			else
+			{
+				list.add("");
+			}
 			list.add("Attack\n" + attackPower);
-		}
-		list.add("Speed\n" + finalSpeed);
-		if(attackCount > 0)
-		{
 			list.add("Acc%\n" + accuracy);
 			list.add("Crit%\n" + crit);
 		}
+		list.add("Speed\n" + finalSpeed);
 		list.add("Def (phy)\n" + defensePhysical);
 		list.add("Def (mag)\n" + defenseMagical);
 		list.add("Evade (phy)\n" + evasionPhysical);

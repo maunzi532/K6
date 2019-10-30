@@ -26,7 +26,7 @@ public class XMenu
 
 	public static XMenu characterGUIMenu(XHero character)
 	{
-		return new XMenu(new CharacterInvGUI(character), new CharacterCombatGUI(character),
+		return new XMenu(new CharacterInvGUI(character), new CharacterCombatGUI(character, 0),
 				new GiveOrTakeState(true, character), new GiveOrTakeState(false, character),
 				new SelectBuildingGUI(character), new RemoveBuildingGUI(character), new EnemyStartState());
 	}

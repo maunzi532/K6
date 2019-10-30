@@ -466,9 +466,15 @@ public class Stats2 implements Stats, ModifierAspect
 	}
 
 	@Override
-	public List<String> infoWithoutEquip()
+	public List<String> statsInfo()
 	{
-		/*List<String> info = new ArrayList<>();
+		List<String> info = new ArrayList<>();
+		info.add("Class\n" + xClass.className);
+		info.add("Level\n" + level);
+		info.add("Exp\n" + exp);
+		info.add("Health\n" + currentHealth + "/" + maxHealth());
+		info.add("Move\n" + movement);
+		info.add(exhaustion > 0 ? "Exhausted\n" + exhaustion : exhaustion < 0 ? "Boosted\n" + (-exhaustion) : "");
 		info.add("Strength\n" + strength);
 		info.add("Finesse\n" + finesse);
 		info.add("Skill\n" + skill);
@@ -477,8 +483,8 @@ public class Stats2 implements Stats, ModifierAspect
 		info.add("Defense\n" + defense);
 		info.add("Evasion\n" + evasion);
 		info.add("Toughness\n" + toughness);
-		return info;*/
-		return new AttackMode3(this).info();
+		info.add("CPower\n" + getCPower());
+		return info;
 	}
 
 	@Override

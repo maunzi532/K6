@@ -10,7 +10,7 @@ import java.util.*;
 import java.util.stream.*;
 import logic.*;
 
-public interface CombatSystem<T extends Stats, A extends AttackInfo, I extends Item>
+public interface CombatSystem<T extends Stats, A extends AttackInfo>
 {
 	int movement(MainState mainState, XEntity entity, T stats);
 
@@ -34,6 +34,8 @@ public interface CombatSystem<T extends Stats, A extends AttackInfo, I extends I
 	void preAttack(A attackInfo);
 
 	List<XMode> modesForItem(Stats stats, Item item);
+
+	Optional<Item> equippedItem(Stats stats);
 
 	List<Item> allItems();
 

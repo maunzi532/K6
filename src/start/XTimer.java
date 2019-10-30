@@ -2,6 +2,7 @@ package start;
 
 import javafx.animation.*;
 import javafx.scene.input.*;
+import logic.*;
 import visual.*;
 import visual.keybind.*;
 
@@ -48,15 +49,16 @@ public class XTimer extends AnimationTimer
 	{
 		if(mouseDown)
 		{
+			XKey key = keybindFile.mouseKeys.get(mouseEvent.getButton());
 			mouseDown = false;
 			if(isDrag)
 			{
-				if(keybindFile.mouseKeys.get(mouseEvent.getButton()).canDrag())
+				if(key != null && key.canDrag())
 					dragged = true;
 			}
 			else
 			{
-				if(keybindFile.mouseKeys.get(mouseEvent.getButton()).canClick())
+				if(key != null && key.canClick())
 					clicked = true;
 			}
 			isDrag = false;
@@ -91,7 +93,8 @@ public class XTimer extends AnimationTimer
 
 	public void onKeyUp(KeyEvent keyEvent)
 	{
-		if(keybindFile.keyboardKeys.get(keyEvent.getCode()).canClick())
+		XKey key = keybindFile.keyboardKeys.get(keyEvent.getCode());
+		if(key != null && key.canClick())
 		{
 			clickedK = true;
 			keyCode = keyEvent.getCode();
