@@ -35,7 +35,7 @@ public class AttackMode4 implements XMode
 	@Override
 	public Image image()
 	{
-		return null;
+		return item != null ? item.image() : null;
 	}
 
 	@Override

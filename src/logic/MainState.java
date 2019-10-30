@@ -95,9 +95,7 @@ public class MainState
 
 	//TODO LevelEditor edit PlayerLevelSystem
 	//TODO LevelSystem view
-	//TODO show better SideInfo
 	//TODO CharacterCombatGUI show stat calculation
-	//TODO AttackInfoGUI show data
 	//TODO AttackInfoGUI show stat calculation
 
 	//TODO change speed effects
@@ -115,6 +113,7 @@ public class MainState
 	//TODO Make menu bar not overlap with SideInfo
 	//TODO improve camera
 	//TODO show pause menu
+	//TODO show better SideInfo
 
 	//LK char - move/attack
 	//RK char - inv/trade

@@ -52,4 +52,10 @@ public class AttackInfo2 extends AttackInfo<Stats2, AttackMode4>
 	{
 		return inverse ? calcT.sideInfos() : calc.sideInfos();
 	}
+
+	@Override
+	public String getSideInfoX1T(boolean inverse)
+	{
+		return inverse ? (calcT.healthCost > 0 ? "(-" + calcT.healthCost + ")" : "") : (calc.healthCost > 0 ? "(-" + calc.healthCost + ")" : "");
+	}
 }

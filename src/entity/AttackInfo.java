@@ -56,6 +56,8 @@ public abstract class AttackInfo<T extends Stats, I extends XMode>
 
 	public abstract String[] getSideInfos(boolean inverse);
 
+	public abstract String getSideInfoX1T(boolean inverse);
+
 	@Override
 	public boolean equals(Object o)
 	{

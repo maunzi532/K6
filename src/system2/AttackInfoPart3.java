@@ -43,12 +43,37 @@ public class AttackInfoPart3
 
 	public String[] infos()
 	{
-		return new String[0];
+		String[] info = new String[6];
+		if(healthCost > 0)
+			info[0] = "Health\n" + attackMode.stats.getCurrentHealth() + "(-" + healthCost + ")/" + attackMode.stats.maxHealth();
+		else
+			info[0] = "Health\n" + attackMode.stats.getCurrentHealth() + "/" + attackMode.stats.maxHealth();
+		if(attackCount > 0)
+		{
+			if(melting1)
+				info[1] = "Damage\n" + meltDamage + "+" + damage + (attackCount > 2 ? "x" + (attackCount - 1) : "");
+			else
+				info[1] = "Damage\n" + damage + (attackCount > 1 ? "x" + attackCount : "");
+			info[2] = "Acc%\n" + hitrate + (autohit1 ? "*" : "");
+			info[3] = "Crit%\n" + critrate;
+			info[4] = advantage > 0 ? "+" : "";
+		}
+		return info;
 	}
 
 	public String[] sideInfos()
 	{
-		return new String[0];
+		String[] info = new String[3];
+		if(attackCount > 0)
+		{
+			if(melting1)
+				info[0] = "Damage\n" + meltDamage + "+" + damage + (attackCount > 2 ? "x" + (attackCount - 1) : "");
+			else
+				info[0] = "Damage\n" + damage + (attackCount > 1 ? "x" + attackCount : "");
+			info[1] = "Acc%\n" + hitrate + (autohit1 ? "*" : "");
+			info[2] = "Crit%\n" + critrate;
+		}
+		return info;
 	}
 
 	private int attackCount()

@@ -55,6 +55,11 @@ public class StatBar
 		this.maxData = maxData;
 	}
 
+	public String getText()
+	{
+		return data + "/" + maxData;
+	}
+
 	public static StatBar forEntity(XEntity entity)
 	{
 		return new StatBar(entity instanceof XHero ? Color.GREEN : Color.GRAY, Color.BLACK, Color.WHITE,
