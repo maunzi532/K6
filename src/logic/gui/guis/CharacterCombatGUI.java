@@ -59,7 +59,7 @@ public class CharacterCombatGUI extends XGUIState
 		}
 		else
 		{
-			statsView.elements = List.of();
+			statsView.elements = character.getStats().infoWithEquip();
 		}
 		if(chosenItem != null && character.getStats().getItemFilter().canContain(chosenItem))
 		{

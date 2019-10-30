@@ -4,6 +4,12 @@ import java.util.*;
 
 public interface AM2Type extends ModifierAspect
 {
+	@Override
+	default String nameForAbility()
+	{
+		return "Mode";
+	}
+
 	int code();
 
 	default boolean inverseMagical()
@@ -16,24 +22,16 @@ public interface AM2Type extends ModifierAspect
 		return 2;
 	}
 
-	@Override
-	default boolean p()
-	{
-		return true;
-	}
+	String tile();
 
-	@Override
-	default List<String> extraText()
+	default List<String> info()
 	{
 		List<String> list = new ArrayList<>();
 		if(inverseMagical())
 			list.add("Magic\nInvert");
 		if(attackCount() != 2)
 			list.add("Attacks\n" + attackCount());
+		list.addAll(detailedInfo(true));
 		return list;
 	}
-
-	String tile();
-
-	List<String> info();
 }

@@ -24,10 +24,4 @@ public class FinesseMode implements AM2Type
 	{
 		return "FinesseMode";
 	}
-
-	@Override
-	public List<String> info()
-	{
-		return List.of("Ability\nTwo-Handed");
-	}
 }

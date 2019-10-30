@@ -96,9 +96,9 @@ public class MainState
 	//TODO LevelEditor edit PlayerLevelSystem
 	//TODO LevelSystem view
 	//TODO show better SideInfo
-	//TODO CharacterCombatGUI view stats with equip
 	//TODO CharacterCombatGUI view stats without equip
 	//TODO CharacterCombatGUI show stat calculation
+	//TODO AttackInfoGUI show data
 	//TODO AttackInfoGUI show stat calculation
 
 	//TODO change speed effects

@@ -18,6 +18,7 @@ public class AttackMode3 implements XMode
 	public final AttackItem2 item;
 	public final AM2Type mode;
 	public final Set<Ability2> abilities;
+	private final List<AbilityText> abilityTexts;
 	public final int[] ranges;
 	public final int[] counter;
 	public final boolean magical;
@@ -29,7 +30,6 @@ public class AttackMode3 implements XMode
 	private final int maxAdaptive;
 	private final int adaptive;
 	private final int tooHeavy;
-	public final int healthCost;
 	private final int exhausted;
 	private final int finesse1;
 	private final int skill1;
@@ -37,6 +37,7 @@ public class AttackMode3 implements XMode
 	private final int luck1;
 	private final int defense1;
 	private final int evasion1;
+	public final int healthCost;
 	public final int attackPower;
 	public final int finalSpeed;
 	public final int accuracy;
@@ -54,6 +55,7 @@ public class AttackMode3 implements XMode
 		mode = mode4.mode;
 		List<ModifierAspect> modifiers = List.of(stats, item, mode);
 		abilities = modifiers.stream().flatMap(e -> e.abilities().stream()).collect(Collectors.toSet());
+		abilityTexts = modifiers.stream().flatMap(e -> e.abilities().stream().map(f -> new AbilityText(e, f))).collect(Collectors.toList());
 		ranges = abilities.contains(Ability2.DEFENDER) ? DEFENDER_RANGES : item.getRanges(false);
 		counter = abilities.contains(Ability2.DEFENDER) ? DEFENDER_RANGES : item.getRanges(true);
 		magical = item.magical() != mode.inverseMagical();
@@ -128,6 +130,7 @@ public class AttackMode3 implements XMode
 		mode = null;
 		List<ModifierAspect> modifiers = List.of(stats);
 		abilities = modifiers.stream().flatMap(e -> e.abilities().stream()).collect(Collectors.toSet());
+		abilityTexts = modifiers.stream().flatMap(e -> e.abilities().stream().map(f -> new AbilityText(e, f))).collect(Collectors.toList());
 		ranges = NO_RANGES;
 		counter = NO_RANGES;
 		magical = false;
@@ -201,7 +204,48 @@ public class AttackMode3 implements XMode
 	@Override
 	public List<String> modeInfo()
 	{
-		return mode.detailedInfo();
+		return mode.info();
+	}
+
+	public List<String> info()
+	{
+		List<String> list = new ArrayList<>();
+		if(attackCount > 0)
+		{
+			list.add((magical ? "Magical\n" : "Physical\n") + attackCount + " attacks");
+		}
+		else
+		{
+			list.add("");
+		}
+		list.add("Range\n" + AttackItem2.displayRange(ranges));
+		list.add("Counter\n" + AttackItem2.displayRange(counter));
+		list.add("Adv. Type\n" + advType.name);
+		if(adaptiveType == AdaptiveType.COST)
+		{
+			list.add("Cast with\n" + healthCost + " health");
+		}
+		else
+		{
+			list.add("");
+		}
+		if(attackCount > 0)
+		{
+			list.add("Attack\n" + attackPower);
+		}
+		list.add("Speed\n" + finalSpeed);
+		if(attackCount > 0)
+		{
+			list.add("Acc%\n" + accuracy);
+			list.add("Crit%\n" + crit);
+		}
+		list.add("Def (phy)\n" + defensePhysical);
+		list.add("Def (mag)\n" + defenseMagical);
+		list.add("Evade (phy)\n" + evasionPhysical);
+		list.add("Evade (mag)\n" + evasionMagical);
+		list.add("Prevent Crit\n" + critProtection);
+		abilityTexts.forEach(e -> list.add(e.text()));
+		return list;
 	}
 
 	public static AttackMode3 convert(Stats2 stats, AttackMode4 mode4)

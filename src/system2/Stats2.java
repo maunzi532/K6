@@ -152,19 +152,13 @@ public class Stats2 implements Stats, ModifierAspect
 	}
 
 	@Override
+	public String nameForAbility()
+	{
+		return customName != null ? customName : "Char";
+	}
+
+	@Override
 	public List<Ability2> abilities()
-	{
-		return List.of();
-	}
-
-	@Override
-	public boolean p()
-	{
-		return true;
-	}
-
-	@Override
-	public List<String> extraText()
 	{
 		return List.of();
 	}
@@ -474,7 +468,7 @@ public class Stats2 implements Stats, ModifierAspect
 	@Override
 	public List<String> infoWithoutEquip()
 	{
-		List<String> info = new ArrayList<>();
+		/*List<String> info = new ArrayList<>();
 		info.add("Strength\n" + strength);
 		info.add("Finesse\n" + finesse);
 		info.add("Skill\n" + skill);
@@ -483,14 +477,14 @@ public class Stats2 implements Stats, ModifierAspect
 		info.add("Defense\n" + defense);
 		info.add("Evasion\n" + evasion);
 		info.add("Toughness\n" + toughness);
-		return info;
+		return info;*/
+		return new AttackMode3(this).info();
 	}
 
 	@Override
 	public List<String> infoWithEquip()
 	{
-		List<String> info = new ArrayList<>();
-		return info;
+		return AttackMode3.convert(this, lastUsed).info();
 	}
 
 	@Override
@@ -501,12 +495,6 @@ public class Stats2 implements Stats, ModifierAspect
 		info.add("Class\n" + xClass.className);
 		info.add("Level\n" + level + " -> " + (level + 1));
 		info.add("Exp\n" + exp + " -> " + ((exp - GetExpAnim.LEVELUP_EXP) / 2));
-		int changedHealth = currentHealth;
-		if(levelup[7] > 0)
-			changedHealth += levelup[7] * HEALTH_MULTIPLIER;
-		if(changedHealth > (toughness + levelup[7]) * HEALTH_MULTIPLIER)
-			changedHealth = (toughness + levelup[7]) * HEALTH_MULTIPLIER;
-		info.add("Health\n" + currentHealth + " -> " + changedHealth);
 		info.add("Strength\n" + strength + " -> " + (strength + levelup[0]));
 		info.add("Finesse\n" + finesse + " -> " + (finesse + levelup[1]));
 		info.add("Skill\n" + skill + " -> " + (skill + levelup[2]));
@@ -516,17 +504,14 @@ public class Stats2 implements Stats, ModifierAspect
 		info.add("Evasion\n" + evasion + " -> " + (evasion + levelup[6]));
 		info.add("Toughness\n" + toughness + " -> " + (toughness + levelup[7]));
 		info.add("CPower\n" + getCPower() + " -> " + (getCPower() + Arrays.stream(levelup).sum()));
+		int changedHealth = currentHealth;
+		if(levelup[7] > 0)
+			changedHealth += levelup[7] * HEALTH_MULTIPLIER;
+		if(changedHealth > (toughness + levelup[7]) * HEALTH_MULTIPLIER)
+			changedHealth = (toughness + levelup[7]) * HEALTH_MULTIPLIER;
+		info.add("Health\n" + currentHealth + " -> " + changedHealth);
 		info.add("Move\n" + movement);
 		info.add(exhaustion > 0 ? "Exhausted\n" + exhaustion : "");
-		/*info.add("Defend\n" + (lastUsed instanceof NoAttackMode ? "None" : lastUsed.item.info().get(0).replace("Type\n", "")));
-		for(Class e : slot.getItemTypes())
-		{
-			info.add("ItemType\n" + e.getSimpleName().replace("Item", ""));
-		}
-		for(Ability2 ability : xClass.abilities)
-		{
-			info.add("Ability\n" + ability.name);
-		}*/
 		level++;
 		if(level < getLevelSystem().levelCap())
 			exp = (exp - GetExpAnim.LEVELUP_EXP) / 2;

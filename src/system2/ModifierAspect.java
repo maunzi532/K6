@@ -4,6 +4,8 @@ import java.util.*;
 
 public interface ModifierAspect
 {
+	String nameForAbility();
+
 	List<Ability2> abilities();
 
 	default int heavy()
@@ -56,38 +58,34 @@ public interface ModifierAspect
 		return 0;
 	}
 
-	List<String> extraText();
-
-	boolean p();
-
-	default List<String> detailedInfo()
+	default List<String> detailedInfo(boolean p)
 	{
-		List<String> list = new ArrayList<>(extraText());
-		abilities().forEach(e -> list.add("Ability\n" + e.name));
-		add(list, "Weight", heavy(), p());
-		add(list, "Damage", attackPower(), p());
-		add(list, "Speed", speedMod(), p());
-		add(list, "Accuracy", accuracy(), p());
-		add(list, "Crit", crit(), p());
+		List<String> list = new ArrayList<>();
+		add(list, "Weight", heavy(), p);
+		add(list, "Damage", attackPower(), p);
+		add(list, "Speed", speedMod(), p);
+		add(list, "Accuracy", accuracy(), p);
+		add(list, "Crit", crit(), p);
 		if(defensePhysical() == defenseMagical())
 		{
-			add(list, "Def (all)", defensePhysical(), p());
+			add(list, "Def (all)", defensePhysical(), p);
 		}
 		else
 		{
-			add(list, "Def (phy)", defensePhysical(), p());
-			add(list, "Def (mag)", defenseMagical(), p());
+			add(list, "Def (phy)", defensePhysical(), p);
+			add(list, "Def (mag)", defenseMagical(), p);
 		}
 		if(evasionPhysical() == evasionMagical())
 		{
-			add(list, "Evade (all)", evasionPhysical(), p());
+			add(list, "Evade (all)", evasionPhysical(), p);
 		}
 		else
 		{
-			add(list, "Evade (phy)", evasionPhysical(), p());
-			add(list, "Evade (mag)", evasionMagical(), p());
+			add(list, "Evade (phy)", evasionPhysical(), p);
+			add(list, "Evade (mag)", evasionMagical(), p);
 		}
-		add(list, "Prevent Crit", critProtection(), p());
+		add(list, "Prevent Crit", critProtection(), p);
+		abilities().forEach(e -> list.add("Ability\n" + e.name));
 		return list;
 	}
 

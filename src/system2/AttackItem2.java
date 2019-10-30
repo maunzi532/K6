@@ -66,6 +66,12 @@ public class AttackItem2 implements Item, ModifierAspect
 	}
 
 	@Override
+	public String nameForAbility()
+	{
+		return "Equip";
+	}
+
+	@Override
 	public List<Ability2> abilities()
 	{
 		return abilities;
@@ -131,27 +137,6 @@ public class AttackItem2 implements Item, ModifierAspect
 		return 0;
 	}
 
-	@Override
-	public boolean p()
-	{
-		return false;
-	}
-
-	@Override
-	public List<String> extraText()
-	{
-		List<String> list = new ArrayList<>();
-		list.add((magical ? "Magical\n" : "Physical\n") + itemClass.getClass().getSimpleName().replace("Item", ""));
-		list.add("Adv. Type\n" + advantageType.name);
-		if(adaptive > 0)
-		{
-			list.add("Adaptive\n" + adaptiveType.name + " " + adaptive);
-		}
-		list.add("Range\n" + displayRange(ranges));
-		list.add("Counter\n" + displayRange(counterR));
-		return list;
-	}
-
 	public int getAdaptive()
 	{
 		return adaptive;
@@ -190,25 +175,20 @@ public class AttackItem2 implements Item, ModifierAspect
 	@Override
 	public List<String> info()
 	{
-		/*List<String> info = new ArrayList<>();
-		info.add("Type\n" + itemClass.getClass().getSimpleName().replace("Item", ""));
-		info.add("Damage\n" + damage);
-		info.add("Heavy\n" + heavy);
-		info.add(slow > 0 ? "Slow\n" + slow : "");
-		info.add("Acc%\n" + accuracy);
-		info.add("Crit%\n" + crit);
-		info.add("Range\n" + displayRange(ranges));
-		info.add("Counter\n" + displayRange(counterR));
-		info.add("");
-		for(Ability2 ability : abilities)
+		List<String> list = new ArrayList<>();
+		list.add((magical ? "Magical\n" : "Physical\n") + itemClass.getClass().getSimpleName().replace("Item", ""));
+		list.add("Range\n" + displayRange(ranges));
+		list.add("Counter\n" + displayRange(counterR));
+		list.add("Adv. Type\n" + advantageType.name);
+		if(adaptive > 0)
 		{
-			info.add("Ability\n" + ability.name);
+			list.add("Adaptive\n" + adaptiveType.name + " " + adaptive);
 		}
-		return info;*/
-		return detailedInfo();
+		list.addAll(detailedInfo(false));
+		return list;
 	}
 
-	private static String displayRange(int[] ranges)
+	public static String displayRange(int[] ranges)
 	{
 		if(ranges.length == 0)
 			return "-";

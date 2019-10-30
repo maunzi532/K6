@@ -24,10 +24,4 @@ public class EvadeMode implements AM2Type
 	{
 		throw new RuntimeException();
 	}
-
-	@Override
-	public List<String> info()
-	{
-		throw new RuntimeException();
-	}
 }

@@ -24,10 +24,4 @@ public class StandardMode implements AM2Type
 	{
 		return "Standard";
 	}
-
-	@Override
-	public List<String> info()
-	{
-		return List.of();
-	}
 }
