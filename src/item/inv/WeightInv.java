@@ -68,7 +68,7 @@ public class WeightInv implements Inv
 	@Override
 	public boolean ok()
 	{
-		return currentW + increaseW <= limitW && stacks.stream().allMatch(InvStack::ok);
+		return (limitW < 0 || currentW + increaseW <= limitW) && stacks.stream().allMatch(InvStack::ok);
 	}
 
 	@Override
@@ -127,7 +127,7 @@ public class WeightInv implements Inv
 	@Override
 	public boolean canAdd(ItemStack itemStack, boolean unlimited)
 	{
-		return unlimited || currentW + increaseW + itemStack.weight() <= limitW;
+		return unlimited || limitW < 0 || currentW + increaseW + itemStack.weight() <= limitW;
 	}
 
 	@Override

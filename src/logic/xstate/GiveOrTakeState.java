@@ -32,7 +32,7 @@ public class GiveOrTakeState implements NMarkState
 		possibleTargets = Stream.concat(range.stream().map(mainState.levelMap::getBuilding)
 				.filter(DoubleInv::isTargetable).map(e -> (DoubleInv) e),
 				range.stream().map(mainState.levelMap::getEntity)
-						.filter(target -> DoubleInv.isTargetable(target) && target != character).map(e -> (DoubleInv) e))
+						.filter(DoubleInv::isTargetable).map(e -> (DoubleInv) e))
 				.filter(e -> e.playerTradeable(levelStarted)).collect(Collectors.toList());
 		visMarked = possibleTargets.stream().map(e -> new VisMark(e.location(), Color.YELLOW, e instanceof XEntity ? VisMark.d2 : VisMark.d1)).collect(Collectors.toList());
 	}
@@ -79,7 +79,7 @@ public class GiveOrTakeState implements NMarkState
 		}
 		else if(list.size() == 1)
 		{
-			startTradeState(stateHolder, list.get(0), levelStarted);
+			startTradeState(mainState, stateHolder, list.get(0), levelStarted);
 		}
 		else
 		{
@@ -89,7 +89,7 @@ public class GiveOrTakeState implements NMarkState
 				{
 					if(inv1 instanceof MBuilding)
 					{
-						startTradeState(stateHolder, inv1, levelStarted);
+						startTradeState(mainState, stateHolder, inv1, levelStarted);
 						break;
 					}
 				}
@@ -100,7 +100,7 @@ public class GiveOrTakeState implements NMarkState
 				{
 					if(inv1 instanceof XEntity)
 					{
-						startTradeState(stateHolder, inv1, levelStarted);
+						startTradeState(mainState, stateHolder, inv1, levelStarted);
 						break;
 					}
 				}
@@ -108,12 +108,29 @@ public class GiveOrTakeState implements NMarkState
 		}
 	}
 
-	private void startTradeState(XStateHolder stateHolder, DoubleInv inv1, boolean levelStarted)
+	private void startTradeState(MainState mainState, XStateHolder stateHolder, DoubleInv inv1, boolean levelStarted)
 	{
-		if(give)
-			stateHolder.setState(new DirectedTradeGUI(character, inv1, levelStarted ? character : null));
+		if(inv1 == character)
+		{
+			if(!levelStarted)
+			{
+				if(give)
+					stateHolder.setState(new DirectedTradeGUI(character, mainState.storage, null));
+				else
+					stateHolder.setState(new DirectedTradeGUI(mainState.storage, character, null));
+			}
+			else
+			{
+				stateHolder.setState(NoneState.INSTANCE);
+			}
+		}
 		else
-			stateHolder.setState(new DirectedTradeGUI(inv1, character, levelStarted ? character : null));
+		{
+			if(give)
+				stateHolder.setState(new DirectedTradeGUI(character, inv1, levelStarted ? character : null));
+			else
+				stateHolder.setState(new DirectedTradeGUI(inv1, character, levelStarted ? character : null));
+		}
 	}
 
 	@Override

@@ -16,29 +16,29 @@ public class XMenu
 	public static XMenu characterMoveMenu(XHero character)
 	{
 		return new XMenu(new AdvMoveState(character), new RegenerateState(character, new AdvMoveState(character)),
-				new RevertMovementState(character), new EnemyStartState());
+				new RevertMovementState(character), new EndTurnState());
 	}
 
 	public static XMenu characterStartMoveMenu(XHero character)
 	{
-		return new XMenu(new SwapState(character), new ReachViewState(character, false), new StartTurnState());
+		return new XMenu(new SwapState(character), new ReachViewState(character, false), new EndTurnState());
 	}
 
 	public static XMenu characterGUIMenu(XHero character)
 	{
 		return new XMenu(new CharacterInvGUI(character), new CharacterCombatGUI(character, 0),
 				new GiveOrTakeState(true, character), new GiveOrTakeState(false, character),
-				new SelectBuildingGUI(character), new RemoveBuildingGUI(character), new EnemyStartState());
+				new SelectBuildingGUI(character), new RemoveBuildingGUI(character), new EndTurnState());
 	}
 
 	public static XMenu enemyMoveMenu(XEnemy character)
 	{
-		return new XMenu(new ReachViewState(character, true), new EnemyStartState());
+		return new XMenu(new ReachViewState(character, true), new EndTurnState());
 	}
 
 	public static XMenu enemyGUIMenu(InvEntity enemy)
 	{
-		return new XMenu(new CharacterInvGUI(enemy), new EnemyStartState());
+		return new XMenu(new CharacterInvGUI(enemy), new EndTurnState());
 	}
 
 	public static XMenu productionMenu(ProductionBuilding building)
@@ -58,7 +58,7 @@ public class XMenu
 		{
 			if(entity instanceof XHero)
 			{
-				return new XMenu(new EntityEditGUI((InvEntity) entity), new EntityInvEditGUI((InvEntity) entity), new HeroEditGUI((XHero) entity),
+				return new XMenu(new EntityEditGUI((XHero) entity), new EntityInvEditGUI((XHero) entity), new HeroEditGUI((XHero) entity),
 						new EditMoveState(entity), new EditCopyState(entity), new EditDeleteState(entity));
 			}
 			if(entity instanceof XEnemy)

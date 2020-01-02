@@ -1,5 +1,6 @@
 package visual.keybind;
 
+import com.fasterxml.jackson.core.TreeNode;
 import com.fasterxml.jackson.jr.ob.*;
 import com.fasterxml.jackson.jr.stree.*;
 import java.io.*;
@@ -31,7 +32,7 @@ public class KeybindFile implements XKeyMap
 		info = new HashMap<>();
 		try
 		{
-			var a1 = JSON.std.with(new JacksonJrsTreeCodec()).treeFrom(input);
+			TreeNode a1 = JSON.std.with(new JacksonJrsTreeCodec()).treeFrom(input);
 			((JrsArray) a1.get("CanClick")).elements().forEachRemaining(e -> decipher2(e.asText(), null, false));
 			((JrsArray) a1.get("CanDrag")).elements().forEachRemaining(e -> decipher2(e.asText(), null, true));
 			((JrsArray) a1.get("Functions")).elements().forEachRemaining(this::decipher1);

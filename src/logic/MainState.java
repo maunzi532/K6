@@ -1,6 +1,7 @@
 package logic;
 
 import building.blueprint.*;
+import building.transport.*;
 import entity.*;
 import file.*;
 import geom.f1.*;
@@ -22,6 +23,7 @@ public class MainState
 	public int screenshake;
 	public boolean preferBuildings;
 	public final LevelMap levelMap;
+	public final DoubleInv storage;
 	public final List<VisMark> visMarked;
 	public final BlueprintCache<BuildingBlueprint> buildingBlueprintCache;
 	public XStateHolder stateHolder;
@@ -34,6 +36,7 @@ public class MainState
 		itemLoader = new ItemLoader2();
 		turnCounter = -1;
 		levelMap = new LevelMap(y1);
+		storage = new Storage();
 		visMarked = new ArrayList<>();
 		buildingBlueprintCache = new BlueprintCache<>("BuildingBlueprints", e -> new BuildingBlueprint(e, itemLoader));
 		combatSystem = new System2();
@@ -85,9 +88,7 @@ public class MainState
 
 	//TODO Build a real level
 
-	//TODO add EndTurnState
 	//TODO add dash action
-	//TODO add item storage (access by using give/take on current character)
 
 	//TODO show enemy reach (all enemies)
 	//TODO turn limit
@@ -114,6 +115,7 @@ public class MainState
 	//TODO improve camera
 	//TODO show pause menu
 	//TODO show better SideInfo
+	//TODO update images
 
 	//LK char - move/attack
 	//RK char - inv/trade
