@@ -11,7 +11,7 @@ import logic.gui.guis.*;
 public class AdvMoveState implements NMarkState
 {
 	private XHero character;
-	private List<Tile> movement;
+	private List<PathLocation> movement;
 	private List<Tile> attack;
 	private List<VisMark> allTargets;
 
@@ -28,7 +28,11 @@ public class AdvMoveState implements NMarkState
 		attack = new ArrayList<>();
 		if(character.canMove())
 		{
-			movement.addAll(new Pathing(mainState.y1, character, character.movement(), mainState.levelMap, null).start().getEndpoints());
+			movement.addAll(new Pathing(mainState.y1, character, character.movement(), mainState.levelMap, null).start().getEndpaths());
+		}
+		else if(character.ready(2) && character.dashMovement() > 0)
+		{
+			movement.addAll(new Pathing(mainState.y1, character, character.dashMovement(), mainState.levelMap, null).start().getEndpaths());
 		}
 		if(character.ready(2))
 		{
@@ -37,7 +41,10 @@ public class AdvMoveState implements NMarkState
 					.forEach(e -> attack.add(e.location()));
 		}
 		allTargets = new ArrayList<>();
-		movement.stream().map(e -> new VisMark(e, Color.YELLOW, VisMark.d1)).forEach(allTargets::add);
+		if(character.canMove())
+			movement.stream().map(e -> new VisMark(e.tile, Color.YELLOW, VisMark.d1)).forEach(allTargets::add);
+		else
+			movement.stream().map(e -> new VisMark(e.tile, Color.WHITE, VisMark.d1)).forEach(allTargets::add);
 		attack.stream().map(e -> new VisMark(e, Color.RED, VisMark.d1)).forEach(allTargets::add);
 	}
 
@@ -66,15 +73,30 @@ public class AdvMoveState implements NMarkState
 		{
 			stateHolder.setState(new AttackInfoGUI(character, mainState.levelMap.getEntity(mapTile)));
 		}
-		else if(movement.contains(mapTile))
-		{
-			character.setMoved();
-			mainState.levelMap.moveEntity(character, mapTile);
-			stateHolder.setState(new AdvMoveState(character));
-		}
 		else
 		{
-			stateHolder.setState(NoneState.INSTANCE);
+			Optional<PathLocation> pathLocation = movement.stream().filter(e -> e.tile.equals(mapTile)).findFirst();
+			if(pathLocation.isPresent())
+			{
+				if(character.canMove())
+				{
+					character.setMoved(pathLocation.get().cost);
+					mainState.levelMap.moveEntity(character, mapTile);
+					stateHolder.setState(new AdvMoveState(character));
+				}
+				else
+				{
+					character.setMoved(pathLocation.get().cost);
+					character.takeAp(2);
+					character.mainActionTaken();
+					mainState.levelMap.moveEntity(character, mapTile);
+					stateHolder.setState(NoneState.INSTANCE);
+				}
+			}
+			else
+			{
+				stateHolder.setState(NoneState.INSTANCE);
+			}
 		}
 	}
 

@@ -23,6 +23,12 @@ public class System2 implements CombatSystem<Stats2, AttackInfo2>
 	}
 
 	@Override
+	public int dashMovement(MainState mainState, XEntity entity, Stats2 stats)
+	{
+		return 12;
+	}
+
+	@Override
 	public int maxAccessRange(MainState mainState, XEntity entity, Stats2 stats)
 	{
 		return 4;

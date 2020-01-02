@@ -88,7 +88,8 @@ public class MainState
 
 	//TODO Build a real level
 
-	//TODO add dash action
+	//TODO save storage contents
+	//TODO put invlocked characters items into storage
 
 	//TODO show enemy reach (all enemies)
 	//TODO turn limit

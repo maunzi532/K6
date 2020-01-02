@@ -17,6 +17,7 @@ public class XHero extends InvEntity implements XBuilder
 	private static final Image IMAGE_S = new Image("S.png");
 
 	private boolean canMove;
+	private int usedMovement;
 	private int ap;
 	private boolean mainAction;
 	private Tile revertLocation;
@@ -94,6 +95,11 @@ public class XHero extends InvEntity implements XBuilder
 		return canMove && mainAction;
 	}
 
+	public int dashMovement()
+	{
+		return Math.max(0, mainState.combatSystem.dashMovement(mainState, this, stats) - usedMovement);
+	}
+
 	public boolean ready(int apCost)
 	{
 		return mainAction && apCost <= ap;
@@ -129,8 +135,9 @@ public class XHero extends InvEntity implements XBuilder
 		startInvLocked = !startInvLocked;
 	}
 
-	public void setMoved()
+	public void setMoved(int used)
 	{
+		usedMovement += used;
 		canMove = false;
 	}
 

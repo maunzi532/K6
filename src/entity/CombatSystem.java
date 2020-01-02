@@ -14,6 +14,8 @@ public interface CombatSystem<T extends Stats, A extends AttackInfo>
 {
 	int movement(MainState mainState, XEntity entity, T stats);
 
+	int dashMovement(MainState mainState, XEntity entity, T stats);
+
 	int maxAccessRange(MainState mainState, XEntity entity, T stats);
 
 	List<Integer> attackRanges(MainState mainState, XEntity entity, T stats, boolean counter);
