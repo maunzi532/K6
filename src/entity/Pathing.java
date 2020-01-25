@@ -43,15 +43,15 @@ public class Pathing
 			PathLocation first = lA.get(counter);
 			if(first == null)
 				continue;
-			for(Tile neighbor : y1.neighbors(first.tile))
+			for(Tile neighbor : y1.neighbors(first.tile()))
 			{
-				PathLocation pl = pathLocation(neighbor, map.advTile(neighbor), first.cost, maxMovementCost, entity, first, movingAllies);
+				PathLocation pl = pathLocation(neighbor, map.advTile(neighbor), first.cost(), maxMovementCost, entity, first, movingAllies);
 				if(pl != null)
 				{
 					int prevIndex = lA.indexOf(pl);
 					if(prevIndex >= 0)
 					{
-						if(pl.cost < lA.get(prevIndex).cost)
+						if(pl.cost() < lA.get(prevIndex).cost())
 						{
 							lA.set(prevIndex, null);
 							lA.add(pl);
@@ -60,13 +60,13 @@ public class Pathing
 					else
 					{
 						lA.add(pl);
-						if(pl.canEnd)
+						if(pl.canEnd())
 							endpoints.add(neighbor);
 					}
 				}
 			}
 		}
-		endpaths = lA.stream().filter(e -> e != null && endpoints.contains(e.tile)).collect(Collectors.toList());
+		endpaths = lA.stream().filter(e -> e != null && endpoints.contains(e.tile())).collect(Collectors.toList());
 		return this;
 	}
 

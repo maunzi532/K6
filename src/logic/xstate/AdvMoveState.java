@@ -42,9 +42,9 @@ public class AdvMoveState implements NMarkState
 		}
 		allTargets = new ArrayList<>();
 		if(character.canMove())
-			movement.stream().map(e -> new VisMark(e.tile, Color.YELLOW, VisMark.d1)).forEach(allTargets::add);
+			movement.stream().map(e -> new VisMark(e.tile(), Color.YELLOW, VisMark.d1)).forEach(allTargets::add);
 		else
-			movement.stream().map(e -> new VisMark(e.tile, Color.WHITE, VisMark.d1)).forEach(allTargets::add);
+			movement.stream().map(e -> new VisMark(e.tile(), Color.WHITE, VisMark.d1)).forEach(allTargets::add);
 		attack.stream().map(e -> new VisMark(e, Color.RED, VisMark.d1)).forEach(allTargets::add);
 	}
 
@@ -75,18 +75,18 @@ public class AdvMoveState implements NMarkState
 		}
 		else
 		{
-			Optional<PathLocation> pathLocation = movement.stream().filter(e -> e.tile.equals(mapTile)).findFirst();
+			Optional<PathLocation> pathLocation = movement.stream().filter(e -> e.tile().equals(mapTile)).findFirst();
 			if(pathLocation.isPresent())
 			{
 				if(character.canMove())
 				{
-					character.setMoved(pathLocation.get().cost);
+					character.setMoved(pathLocation.get().cost());
 					mainState.levelMap.moveEntity(character, mapTile);
 					stateHolder.setState(new AdvMoveState(character));
 				}
 				else
 				{
-					character.setMoved(pathLocation.get().cost);
+					character.setMoved(pathLocation.get().cost());
 					character.takeAp(2);
 					character.mainActionTaken();
 					mainState.levelMap.moveEntity(character, mapTile);

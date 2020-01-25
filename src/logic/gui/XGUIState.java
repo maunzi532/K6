@@ -81,12 +81,12 @@ public abstract class XGUIState implements NState
 		for(GuiElement element : elements)
 		{
 			ElementTargetResult result = element.target(x, y, false);
-			if(result.inside)
+			if(result.inside())
 			{
 				found = true;
-				targeted = result.targetTile;
+				targeted = result.targetTile();
 			}
-			if(result.requiresUpdate)
+			if(result.requiresUpdate())
 			{
 				requireUpdate = true;
 			}
@@ -102,9 +102,9 @@ public abstract class XGUIState implements NState
 		for(GuiElement element : elements)
 		{
 			ElementTargetResult result = element.target(x, y, true);
-			if(result.inside)
+			if(result.inside())
 			{
-				if(result.requiresUpdate)
+				if(result.requiresUpdate())
 				{
 					update();
 				}

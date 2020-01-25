@@ -22,6 +22,7 @@ public class MainState
 	public int turnCounter;
 	public int screenshake;
 	public boolean preferBuildings;
+	public boolean showAllEnemyReach;
 	public final LevelMap levelMap;
 	public final DoubleInv storage;
 	public final List<VisMark> visMarked;
@@ -90,8 +91,10 @@ public class MainState
 
 	//TODO save storage contents
 	//TODO put invlocked characters items into storage
+	//TODO class names in classes
 
-	//TODO show enemy reach (all enemies)
+	//TODO update all enemy reach only when needed
+	//TODO all enemy reach show amount of enemies
 	//TODO turn limit
 	//TODO enemy reinforcements (starting delay)
 
@@ -103,6 +106,8 @@ public class MainState
 	//TODO change speed effects
 	//TODO levelup essence formula
 	//TODO add upgraded classes
+	//TODO add class abilities (0/6)
+	//TODO add items of upgraded classes
 
 	//TODO Enemy AI types
 	//TODO Enemy AI type: Activate
@@ -110,6 +115,7 @@ public class MainState
 	//TODO complicated levelup system
 	//TODO save transporter history
 	//TODO Refactor sectors
+	//TODO remove MarkType class
 
 	//TODO scale tiles, menubar, gui when resizing
 	//TODO Make menu bar not overlap with SideInfo

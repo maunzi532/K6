@@ -51,7 +51,7 @@ public class InvTransporter
 		}
 		List<PossibleTransport> transports = new ArrayList<>();
 		possibleItems.forEach((item, info) -> transports.addAll(info.getTransports(item)));
-		return transports.stream().max(Comparator.comparingInt((PossibleTransport e) -> e.priorityFrom + e.priorityTo)
+		return transports.stream().max(Comparator.comparingInt((PossibleTransport e) -> e.priorityFrom() + e.priorityTo())
 				.thenComparingInt((PossibleTransport e) -> -lastTransported.getOrDefault(e, -1)));
 	}
 
@@ -59,8 +59,8 @@ public class InvTransporter
 	{
 		lastTransported.put(theTransport, transportNumber);
 		transportNumber++;
-		ItemStack itemStack = new ItemStack(theTransport.item, amount);
-		theTransport.from.outputInv().give(itemStack, false);
-		theTransport.to.inputInv().add(itemStack, false);
+		ItemStack itemStack = new ItemStack(theTransport.item(), amount);
+		theTransport.from().outputInv().give(itemStack, false);
+		theTransport.to().inputInv().add(itemStack, false);
 	}
 }

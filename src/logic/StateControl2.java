@@ -4,6 +4,7 @@ import building.*;
 import entity.*;
 import geom.f1.*;
 import java.util.*;
+import java.util.function.*;
 import java.util.stream.*;
 import javafx.scene.paint.*;
 import levelMap.*;
@@ -70,14 +71,14 @@ public class StateControl2 implements XStateHolder, ConvInputConsumer
 			{
 				if(insideGUI)
 				{
-					xguiState.target(offsetGUITile.v[0], offsetGUITile.v[1]);
+					xguiState.target(offsetGUITile.v()[0], offsetGUITile.v()[1]);
 				}
 			}
 			if(key.canClick())
 			{
 				if(insideGUI)
 				{
-					xguiState.click(offsetGUITile.v[0], offsetGUITile.v[1], key, this);
+					xguiState.click(offsetGUITile.v()[0], offsetGUITile.v()[1], key, this);
 				}
 				else if(menuOption >= 0)
 				{
@@ -271,6 +272,10 @@ public class StateControl2 implements XStateHolder, ConvInputConsumer
 		{
 			mainState.preferBuildings = !mainState.preferBuildings;
 		}
+		else if(key.hasFunction("All Enemy Reach"))
+		{
+			mainState.showAllEnemyReach = !mainState.showAllEnemyReach;
+		}
 		else if(key.hasFunction("Escape"))
 		{
 			if(state instanceof XGUIState)
@@ -312,6 +317,16 @@ public class StateControl2 implements XStateHolder, ConvInputConsumer
 		}
 		List<VisMark> visMarked = mainState.visMarked;
 		visMarked.clear();
+		if(mainState.showAllEnemyReach)
+		{
+			Map<Tile, Long> v = mainState.levelMap.getEntitiesE().stream().flatMap(character ->
+				new Pathing(mainState.y1, character, character.movement(),
+						mainState.levelMap, null).start().getEndpoints()
+						.stream().flatMap(loc -> character.attackRanges(false).stream()
+						.flatMap(e -> mainState.y1.range(loc, e, e).stream())).distinct())
+					.collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
+			v.forEach((t, n) -> visMarked.add(new VisMark(t, Color.BLACK, 0.8)));
+		}
 		if(state instanceof NMarkState)
 		{
 			visMarked.addAll(((NMarkState) state).visMarked(mainState));

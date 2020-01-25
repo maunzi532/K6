@@ -2,21 +2,13 @@ package geom.d1;
 
 import java.util.*;
 
-public class DoubleTile
+public record DoubleTile(double[] v)
 {
-	public final double[] v;
-
-	public DoubleTile(double[] v)
-	{
-		this.v = v;
-	}
-
 	@Override
 	public boolean equals(Object o)
 	{
 		if(this == o) return true;
-		if(!(o instanceof DoubleTile)) return false;
-		DoubleTile that = (DoubleTile) o;
+		if(!(o instanceof DoubleTile that)) return false;
 		return Arrays.equals(v, that.v);
 	}
 

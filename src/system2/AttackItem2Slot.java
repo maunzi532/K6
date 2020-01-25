@@ -6,9 +6,9 @@ import javafx.scene.image.*;
 
 public class AttackItem2Slot implements Item
 {
-	private List<Class> itemTypes;
+	private List<AI2Class> itemTypes;
 
-	public AttackItem2Slot(List<Class> itemTypes)
+	public AttackItem2Slot(List<AI2Class> itemTypes)
 	{
 		this.itemTypes = itemTypes;
 	}
@@ -23,7 +23,7 @@ public class AttackItem2Slot implements Item
 	public boolean canContain(Item item)
 	{
 		if(item instanceof AttackItem2)
-			return itemTypes.stream().anyMatch(e -> e.isInstance(((AttackItem2) item).itemClass));
+			return itemTypes.stream().anyMatch(e -> e == ((AttackItem2) item).itemClass); //TODO check
 		else
 			return false;
 	}
@@ -40,7 +40,7 @@ public class AttackItem2Slot implements Item
 		return 1;
 	}
 
-	public List<Class> getItemTypes()
+	public List<AI2Class> getItemTypes()
 	{
 		return itemTypes;
 	}

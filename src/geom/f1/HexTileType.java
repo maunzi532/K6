@@ -18,25 +18,25 @@ public class HexTileType implements TileType
 	@Override
 	public Tile add(Tile t1, Tile t2)
 	{
-		return create3(t1.v[0] + t2.v[0], t1.v[1] + t2.v[1], t1.v[2] + t2.v[2]);
+		return create3(t1.v()[0] + t2.v()[0], t1.v()[1] + t2.v()[1], t1.v()[2] + t2.v()[2]);
 	}
 
 	@Override
 	public Tile subtract(Tile t1, Tile minus)
 	{
-		return create3(t1.v[0] - minus.v[0], t1.v[1] - minus.v[1], t1.v[2] - minus.v[2]);
+		return create3(t1.v()[0] - minus.v()[0], t1.v()[1] - minus.v()[1], t1.v()[2] - minus.v()[2]);
 	}
 
 	@Override
 	public Tile multiply(Tile t1, int scalar)
 	{
-		return create3(t1.v[0] * scalar, t1.v[1] * scalar, t1.v[2] * scalar);
+		return create3(t1.v()[0] * scalar, t1.v()[1] * scalar, t1.v()[2] * scalar);
 	}
 
 	@Override
 	public int length(Tile t1)
 	{
-		return (Math.abs(t1.v[0]) + Math.abs(t1.v[1]) + Math.abs(t1.v[2])) / 2;
+		return (Math.abs(t1.v()[0]) + Math.abs(t1.v()[1]) + Math.abs(t1.v()[2])) / 2;
 	}
 
 	@Override
@@ -85,18 +85,18 @@ public class HexTileType implements TileType
 	@Override
 	public Tile toOffset(Tile t1)
 	{
-		return new Tile(new int[]{Math.floorDiv(t1.v[0] - t1.v[1], 2), t1.v[2]});
+		return new Tile(new int[]{Math.floorDiv(t1.v()[0] - t1.v()[1], 2), t1.v()[2]});
 	}
 
 	@Override
 	public int sx(Tile t1)
 	{
-		return t1.v[0];
+		return t1.v()[0];
 	}
 
 	@Override
 	public int sy(Tile t1)
 	{
-		return t1.v[2];
+		return t1.v()[2];
 	}
 }

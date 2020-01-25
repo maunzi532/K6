@@ -1,12 +1,10 @@
 package geom.d1;
 
-public class PointD
+public record PointD(double[] v)
 {
-	public final double[] v;
-
 	public PointD(double x, double y)
 	{
-		v = new double[]{x, y};
+		this(new double[]{x, y});
 	}
 
 	public PointD add(PointD p1)

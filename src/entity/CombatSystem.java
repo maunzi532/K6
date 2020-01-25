@@ -10,7 +10,7 @@ import java.util.*;
 import java.util.stream.*;
 import logic.*;
 
-public interface CombatSystem<T extends Stats, A extends AttackInfo>
+public interface CombatSystem<T extends Stats, A extends AttackInfo<T, ?>>
 {
 	int movement(MainState mainState, XEntity entity, T stats);
 
@@ -51,7 +51,7 @@ public interface CombatSystem<T extends Stats, A extends AttackInfo>
 
 	AnimTimer createRegenerationAnimation(XEntity entity, MainState mainState);
 
-	AnimTimer createPostAttackAnimation(AttackInfo aI, RNGOutcome result, MainState mainState);
+	AnimTimer createPostAttackAnimation(AttackInfo<T, ?> aI, RNGOutcome result, MainState mainState);
 
 	XEntity loadEntity(TileType y1, MainState mainState, JrsObject data, ItemLoader itemLoader);
 

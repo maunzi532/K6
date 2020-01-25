@@ -454,9 +454,9 @@ public class Stats2 implements Stats, ModifierAspect
 		info.add("Move\n" + movement);
 		info.add(exhaustion > 0 ? "Exhausted\n" + exhaustion : "");
 		info.add("Defend\n" + (lastUsed.active ? lastUsed.item.info().get(0).replace("Type\n", "") : "None"));
-		for(Class e : slot.getItemTypes())
+		for(AI2Class e : slot.getItemTypes())
 		{
-			info.add("ItemType\n" + e.getSimpleName().replace("Item", ""));
+			info.add("ItemType\n" + e.getClass().getSimpleName().replace("Item", ""));
 		}
 		for(Ability2 ability : xClass.abilities)
 		{
@@ -561,7 +561,7 @@ public class Stats2 implements Stats, ModifierAspect
 		info.add("Exhaustion\n" + exhaustion);
 		info.add("Move\n" + movement);
 		info.add("Defend\n" + (lastUsed.active ? lastUsed.item.info().get(0).replace("Type\n", "") : "None"));
-		info.add("ItemTypes\n" + slot.getItemTypes().stream().map(e -> e.getSimpleName().replace("Item", ""))
+		info.add("ItemTypes\n" + slot.getItemTypes().stream().map(e -> e.getClass().getSimpleName().replace("Item", ""))
 				.collect(Collectors.joining("\n")));
 		return info;
 	}

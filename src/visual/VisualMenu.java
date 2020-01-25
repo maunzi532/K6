@@ -30,9 +30,9 @@ public class VisualMenu
 	public int coordinatesToOption(double x, double y)
 	{
 		Tile offset = y2.toOffset(y2.cast(camera.clickLocation(x, y)));
-		if(offset.v[0] != 0 || offset.v[1] < 0 || offset.v[1] >= stateHolder.getMenu().size())
+		if(offset.v()[0] != 0 || offset.v()[1] < 0 || offset.v()[1] >= stateHolder.getMenu().size())
 			return -1;
-		return offset.v[1];
+		return offset.v()[1];
 	}
 
 	public void draw()
@@ -62,18 +62,18 @@ public class VisualMenu
 		gd.fillPolygon(points[0], points[1], y2.directionCount());
 		PointD midPoint = layout.tileToPixel(h1);
 		gd.setFill(Color.BLACK);
-		gd.setFont(new Font(layout.size().v[1] * 0.5));
+		gd.setFont(new Font(layout.size().v()[1] * 0.5));
 		if(menuEntry.keybind() != null)
 		{
 			gd.fillText(menuEntry.text(),
-					midPoint.v[0], midPoint.v[1], layout.size().v[0] * 1.4);
+					midPoint.v()[0], midPoint.v()[1], layout.size().v()[0] * 1.4);
 			gd.setFill(Color.DARKSLATEGRAY);
-			gd.setFont(new Font(layout.size().v[1] * 0.3));
-			gd.fillText(keyMap.info(menuEntry.keybind()), midPoint.v[0], midPoint.v[1] - layout.size().v[1] * 0.5, layout.size().v[0] * 1.4);
+			gd.setFont(new Font(layout.size().v()[1] * 0.3));
+			gd.fillText(keyMap.info(menuEntry.keybind()), midPoint.v()[0], midPoint.v()[1] - layout.size().v()[1] * 0.5, layout.size().v()[0] * 1.4);
 		}
 		else
 		{
-			gd.fillText(menuEntry.text(), midPoint.v[0], midPoint.v[1], layout.size().v[0] * 1.4);
+			gd.fillText(menuEntry.text(), midPoint.v()[0], midPoint.v()[1], layout.size().v()[0] * 1.4);
 		}
 	}
 }

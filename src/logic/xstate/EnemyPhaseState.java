@@ -14,11 +14,11 @@ public class EnemyPhaseState implements NAutoState
 	{
 		mainState.sideInfoFrame.clearSideInfo();
 		initiativeMove = mainState.levelMap.getEntitiesE().stream().filter(XEnemy::canAttack).map(e -> e.preferredMove(false, 0))
-				.max(Comparator.comparingInt(EnemyMove::getInitiative)).filter(e -> e.getInitiative() >= 0).orElse(null);
-		if(initiativeMove != null && initiativeMove.moveTo() != null && initiativeMove.moveTo().movingAlly != null)
+				.max(Comparator.comparingInt(EnemyMove::initiative)).filter(e -> e.initiative() >= 0).orElse(null);
+		if(initiativeMove != null && initiativeMove.moveTo() != null && initiativeMove.moveTo().movingAlly() != null)
 		{
-			EnemyMove initiativeMove2 = ((XEnemy) initiativeMove.moveTo().movingAlly).preferredMove(true, initiativeMove.getTileAdvantage());
-			if(initiativeMove2.getInitiative() >= 0)
+			EnemyMove initiativeMove2 = ((XEnemy) initiativeMove.moveTo().movingAlly()).preferredMove(true, initiativeMove.tileAdvantage());
+			if(initiativeMove2.initiative() >= 0)
 				initiativeMove = initiativeMove2;
 		}
 	}
@@ -37,22 +37,22 @@ public class EnemyPhaseState implements NAutoState
 	{
 		if(initiativeMove != null)
 		{
-			Tile moveTo = initiativeMove.moveTo().tile;
+			Tile moveTo = initiativeMove.moveTo().tile();
 			AttackInfo attackInfo = initiativeMove.attackInfo();
 			if(moveTo != null)
-				initiativeMove.getEntity().setMoved();
+				initiativeMove.entity().setMoved();
 			if(attackInfo != null)
 			{
-				initiativeMove.getEntity().setAttacked();
+				initiativeMove.entity().setAttacked();
 				if(moveTo != null)
-					return new MoveAnimState(new PreAttackState(this, attackInfo), initiativeMove.getEntity(), moveTo);
+					return new MoveAnimState(new PreAttackState(this, attackInfo), initiativeMove.entity(), moveTo);
 				else
 					return new PreAttackState(this, attackInfo);
 			}
 			else
 			{
 				if(moveTo != null)
-					return new MoveAnimState(this, initiativeMove.getEntity(), moveTo);
+					return new MoveAnimState(this, initiativeMove.entity(), moveTo);
 				else
 					return new ProductionPhaseState();
 			}

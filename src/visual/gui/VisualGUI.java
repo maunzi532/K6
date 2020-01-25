@@ -77,8 +77,8 @@ public abstract class VisualGUI
 		Color bg2 = xgui.background().brighter();
 		PointD p0 = layout.tileToPixel(lu);
 		PointD p1 = layout.tileToPixel(rl);
-		gd.fillRect(p0.v[0], p0.v[1], p1.v[0] - p0.v[0], p1.v[1] - p0.v[1]);
-		gd.strokeRect(p0.v[0], p0.v[1], p1.v[0] - p0.v[0], p1.v[1] - p0.v[1]);
+		gd.fillRect(p0.v()[0], p0.v()[1], p1.v()[0] - p0.v()[0], p1.v()[1] - p0.v()[1]);
+		gd.strokeRect(p0.v()[0], p0.v()[1], p1.v()[0] - p0.v()[0], p1.v()[1] - p0.v()[1]);
 		GuiTile[][] guiTiles = xgui.tiles;
 		for(int ix = 0; ix < xgui.xw(); ix++)
 		{
@@ -113,26 +113,26 @@ public abstract class VisualGUI
 			if(guiTile.flipped)
 				gd.drawImage(guiTile.image, guiTile.image.widthProperty().get(), 0,
 						-guiTile.image.widthProperty().get(), guiTile.image.heightProperty().get(),
-						midPoint.v[0] - layout.size().v[0] * imgSize, midPoint.v[1] - layout.size().v[1] * imgSize,
-						layout.size().v[0] * 2 * imgSize, layout.size().v[1] * 2 * imgSize);
+						midPoint.v()[0] - layout.size().v()[0] * imgSize, midPoint.v()[1] - layout.size().v()[1] * imgSize,
+						layout.size().v()[0] * 2 * imgSize, layout.size().v()[1] * 2 * imgSize);
 			else
-				gd.drawImage(guiTile.image, midPoint.v[0] - layout.size().v[0] * imgSize,
-						midPoint.v[1] - layout.size().v[1] * imgSize,
-						layout.size().v[0] * 2 * imgSize, layout.size().v[1] * 2 * imgSize);
+				gd.drawImage(guiTile.image, midPoint.v()[0] - layout.size().v()[0] * imgSize,
+						midPoint.v()[1] - layout.size().v()[1] * imgSize,
+						layout.size().v()[0] * 2 * imgSize, layout.size().v()[1] * 2 * imgSize);
 		}
 		if(guiTile.text != null)
 		{
 			PointD midPoint = layout.tileToPixel(y2.add(y2.fromTile(t1), y2.fromOffsetD(guiTile.l * -0.5, guiTile.u * -0.5)));
 			PointD rEnd = layout.tileToPixel(t1);
 			double ld = Math.max(0.5, guiTile.text.chars().filter(e -> e == '\n').count()) + 0.5;
-			gd.setFont(new Font(layout.size().v[1] * fontSize / ld));
+			gd.setFont(new Font(layout.size().v()[1] * fontSize / ld));
 			if(guiTile.image != null)
 			{
 				gd.setStroke(Color.WHITE);
-				gd.strokeText(guiTile.text, midPoint.v[0], midPoint.v[1], rEnd.v[0] - midPoint.v[0] + layout.size().v[0] * textWidth);
+				gd.strokeText(guiTile.text, midPoint.v()[0], midPoint.v()[1], rEnd.v()[0] - midPoint.v()[0] + layout.size().v()[0] * textWidth);
 			}
 			gd.setFill(Color.BLACK);
-			gd.fillText(guiTile.text, midPoint.v[0], midPoint.v[1], rEnd.v[0] - midPoint.v[0] + layout.size().v[0] * textWidth);
+			gd.fillText(guiTile.text, midPoint.v()[0], midPoint.v()[1], rEnd.v()[0] - midPoint.v()[0] + layout.size().v()[0] * textWidth);
 		}
 	}
 

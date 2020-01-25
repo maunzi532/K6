@@ -72,8 +72,8 @@ public class Transporter extends Buildable
 		{
 			PossibleTransport transport = transportOpt.get();
 			invTransporter.doTheTransport(transport);
-			levelMap.addArrow(ShineArrow.factory(transport.from.location(), transport.to.location(),
-					TransportPhaseState.TRANSPORT_TIME, false, transport.item.image()));
+			levelMap.addArrow(ShineArrow.factory(transport.from().location(), transport.to().location(),
+					TransportPhaseState.TRANSPORT_TIME, false, transport.item().image()));
 		}
 	}
 

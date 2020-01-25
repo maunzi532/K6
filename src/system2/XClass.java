@@ -8,11 +8,11 @@ public class XClass
 	public final String className;
 	public final StaticLevelSystem levelSystem;
 	public final int movement;
-	public final List<Class> usableItems;
+	public final List<AI2Class> usableItems;
 	public final List<Ability2> abilities;
 
 	public XClass(int code, String className, int baseLevel, int[] baseStats, int[] increase, int movement,
-			List<Class> usableItems, List<Ability2> abilities)
+			List<AI2Class> usableItems, List<Ability2> abilities)
 	{
 		this.code = code;
 		this.className = className;
@@ -23,7 +23,7 @@ public class XClass
 	}
 
 	public XClass(int code, String className, int baseLevel, int[] baseStats, int movement,
-			List<Class> usableItems, List<Ability2> abilities)
+			List<AI2Class> usableItems, List<Ability2> abilities)
 	{
 		this.code = code;
 		this.className = className;

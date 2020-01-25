@@ -8,12 +8,13 @@ public class SideInfoFrame
 {
 	private final SideInfoHolder l0;
 	private final SideInfoHolder r0;
-	public boolean xhR;
+	public final boolean xhR;
 
 	public SideInfoFrame(SideInfoHolder l0, SideInfoHolder r0)
 	{
 		this.l0 = l0;
 		this.r0 = r0;
+		xhR = false;
 	}
 
 	public void setSideInfo(SideInfo sideInfoL, SideInfo sideInfoR)

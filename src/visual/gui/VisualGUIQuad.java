@@ -30,7 +30,7 @@ public class VisualGUIQuad extends VisualGUI
 		if(xgui.xw() <= 0 || xgui.yw() <= 0)
 			return false;
 		DoubleTile rl = rl(xgui);
-		return h1.v[0] >= LU.v[0] && h1.v[0] <= rl.v[0] && h1.v[1] >= LU.v[1] && h1.v[1] <= rl.v[1];
+		return h1.v()[0] >= LU.v()[0] && h1.v()[0] <= rl.v()[0] && h1.v()[1] >= LU.v()[1] && h1.v()[1] <= rl.v()[1];
 	}
 
 	@Override

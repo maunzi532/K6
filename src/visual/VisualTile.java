@@ -62,7 +62,7 @@ public class VisualTile
 			PointD mid = layout.tileToPixel(t1);
 			PointD offset = layout.imageOffset();
 			gd.setFill(new ImagePattern(advTile.getFloorTile().type.image,
-					mid.v[0] - offset.v[0], mid.v[1] - offset.v[1], offset.v[0] * 2, offset.v[1] * 2, false));
+					mid.v()[0] - offset.v()[0], mid.v()[1] - offset.v()[1], offset.v()[0] * 2, offset.v()[1] * 2, false));
 		}
 		else
 		{
@@ -74,8 +74,8 @@ public class VisualTile
 			if(advTile.getBuilding() != null)
 			{
 				PointD midPoint = layout.tileToPixel(t1);
-				gd.drawImage(MBuilding.IMAGE, midPoint.v[0] - layout.size().v[0], midPoint.v[1] - layout.size().v[1],
-						layout.size().v[0] * 2, layout.size().v[1] * 2);
+				gd.drawImage(MBuilding.IMAGE, midPoint.v()[0] - layout.size().v()[0], midPoint.v()[1] - layout.size().v()[1],
+						layout.size().v()[0] * 2, layout.size().v()[1] * 2);
 			}
 		}
 	}
@@ -95,8 +95,8 @@ public class VisualTile
 	{
 		for(VisMark vm : visMarked)
 		{
-			double[][] points = layout.tileCorners(vm.getLocation(), vm.getMidDistance());
-			gd.setStroke(vm.getColor());
+			double[][] points = layout.tileCorners(vm.location(), vm.midDistance());
+			gd.setStroke(vm.color());
 			gd.strokePolygon(points[0], points[1], y1.directionCount());
 		}
 	}
@@ -109,8 +109,8 @@ public class VisualTile
 			if(advTile.getEntity() != null && advTile.getEntity().isVisible())
 			{
 				PointD midPoint = layout.tileToPixel(t1);
-				gd.drawImage(advTile.getEntity().getImage(), midPoint.v[0] - layout.size().v[0], midPoint.v[1] - layout.size().v[1],
-						layout.size().v[0] * 2, layout.size().v[1] * 2);
+				gd.drawImage(advTile.getEntity().getImage(), midPoint.v()[0] - layout.size().v()[0], midPoint.v()[1] - layout.size().v()[1],
+						layout.size().v()[0] * 2, layout.size().v()[1] * 2);
 			}
 		}
 	}
@@ -120,17 +120,17 @@ public class VisualTile
 		levelMap.getArrows().stream().filter(arrow -> arrow.image() != null && av.isVisible(arrow, mid, range)).forEach(arrow ->
 				{
 					PointD midPoint = layout.tileToPixel(av.imageLocation(arrow));
-					gd.drawImage(arrow.image(), midPoint.v[0] - layout.size().v[0], midPoint.v[1] - layout.size().v[1],
-							layout.size().v[0] * 2, layout.size().v[1] * 2);
+					gd.drawImage(arrow.image(), midPoint.v()[0] - layout.size().v()[0], midPoint.v()[1] - layout.size().v()[1],
+							layout.size().v()[0] * 2, layout.size().v()[1] * 2);
 				});
 		levelMap.getArrows().stream().filter(arrow -> arrow instanceof InfoArrow && av.isVisible(arrow, mid, range)).forEach(arrow ->
 		{
 			StatBar statBar = ((InfoArrow) arrow).statBar();
 			PointD midPoint = layout.tileToPixel(av.dataLocation((InfoArrow) arrow, layout));
-			double xw = layout.size().v[0] * ArrowViewer.DATA_WIDTH;
-			double yw = layout.size().v[1] * ArrowViewer.DATA_HEIGHT;
-			double xs = midPoint.v[0] - xw / 2;
-			double ys = midPoint.v[1] - yw / 2;
+			double xw = layout.size().v()[0] * ArrowViewer.DATA_WIDTH;
+			double yw = layout.size().v()[1] * ArrowViewer.DATA_HEIGHT;
+			double xs = midPoint.v()[0] - xw / 2;
+			double ys = midPoint.v()[1] - yw / 2;
 			gd.setFill(statBar.getBg());
 			gd.fillRect(xs, ys, xw, yw);
 			gd.setFill(statBar.getFg());

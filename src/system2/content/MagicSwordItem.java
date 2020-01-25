@@ -4,12 +4,12 @@ import java.util.*;
 import javafx.scene.image.*;
 import system2.*;
 
-public class SpellItem implements AI2Class
+public class MagicSwordItem implements AI2Class
 {
-	private static final Image IMAGE = new Image("SpellItem.png");
-	private static final int[] RANGES = new int[]{1, 2, 3, 4};
-	private static final int[] COUNTER = new int[]{1, 2, 3, 4, 5, 6};
-	public static final SpellItem INSTANCE = new SpellItem();
+	private static final Image IMAGE = null;//new Image("MagicSwordItem.png");
+	private static final int[] RANGES = new int[]{1};
+	private static final int[] COUNTER = new int[]{1, 2};
+	public static final MagicSwordItem INSTANCE = new MagicSwordItem();
 
 	@Override
 	public Image image()
@@ -20,19 +20,19 @@ public class SpellItem implements AI2Class
 	@Override
 	public int adaptive()
 	{
-		return 0;
+		return 10;
 	}
 
 	@Override
 	public AdaptiveType adaptiveType()
 	{
-		return AdaptiveType.COST;
+		return AdaptiveType.LUCK;
 	}
 
 	@Override
 	public AdvantageType advType()
 	{
-		return AdvantageType.SPELL;
+		return AdvantageType.DAGGER;
 	}
 
 	@Override
@@ -62,6 +62,6 @@ public class SpellItem implements AI2Class
 	@Override
 	public List<AM2Type> attackModes()
 	{
-		return List.of(StandardMode.INSTANCE);
+		return List.of(FinesseMode.INSTANCE);
 	}
 }

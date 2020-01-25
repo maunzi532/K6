@@ -32,10 +32,10 @@ public class VisualGUIHex extends VisualGUI
 	{
 		if(xgui.xw() <= 0 || xgui.yw() <= 0)
 			return false;
-		double xc = h1.v[0] - h1.v[1];
-		double yc = h1.v[2];
+		double xc = h1.v()[0] - h1.v()[1];
+		double yc = h1.v()[2];
 		DoubleTile rl = rl(xgui);
-		return xc >= LU.v[0] - LU.v[1] && xc <= rl.v[0] - rl.v[1] && yc >= LU.v[2] && yc <= rl.v[2];
+		return xc >= LU.v()[0] - LU.v()[1] && xc <= rl.v()[0] - rl.v()[1] && yc >= LU.v()[2] && yc <= rl.v()[2];
 	}
 
 	@Override

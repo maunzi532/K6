@@ -51,8 +51,7 @@ public class SideInfo
 	public boolean equals(Object o)
 	{
 		if(this == o) return true;
-		if(!(o instanceof SideInfo)) return false;
-		SideInfo sideInfo = (SideInfo) o;
+		if(!(o instanceof SideInfo sideInfo)) return false;
 		return Objects.equals(character, sideInfo.character);
 	}
 

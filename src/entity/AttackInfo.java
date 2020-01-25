@@ -31,7 +31,7 @@ public abstract class AttackInfo<T extends Stats, I extends XMode>
 		this.distance = distance;
 	}
 
-	public AttackInfo addAnalysis(CombatSystem combatSystem)
+	public AttackInfo<T, I> addAnalysis(CombatSystem combatSystem)
 	{
 		analysis = new RNGInfoAnalysis(combatSystem.supplyDivider(this)).create();
 		return this;

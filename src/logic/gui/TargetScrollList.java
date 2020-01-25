@@ -38,7 +38,7 @@ public class TargetScrollList<T> extends ScrollList<T>
 				{
 					targeted = targeted2;
 					targeted2 = null;
-					return new ElementTargetResult(result.inside, true, result.targetTile);
+					return new ElementTargetResult(result.inside(), true, result.targetTile());
 				}
 				else
 				{
@@ -51,7 +51,7 @@ public class TargetScrollList<T> extends ScrollList<T>
 				if(targeted != null)
 				{
 					targeted = null;
-					return new ElementTargetResult(result.inside, true, result.targetTile);
+					return new ElementTargetResult(result.inside(), true, result.targetTile());
 				}
 				else
 				{

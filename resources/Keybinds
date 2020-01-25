@@ -15,6 +15,7 @@
     "KENTER,Start Level",
     "KBACK_SPACE,Revert",
     "KTAB,Click Mode",
+    "KA,All Enemy Reach",
     "KESCAPE,Escape",
     "KLEFT,Camera Left",
     "KUP,Camera Up",
