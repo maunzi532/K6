@@ -12,7 +12,7 @@ import java.util.*;
 import javafx.scene.image.*;
 import logic.*;
 
-public class XHero extends InvEntity implements XBuilder
+public class XHero extends XEntity implements XBuilder
 {
 	private static final Image IMAGE_S = new Image("S.png");
 

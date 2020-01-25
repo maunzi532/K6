@@ -51,7 +51,7 @@ public class Entity2Builder
 
 	public void create(boolean player)
 	{
-		InvEntity entity;
+		XEntity entity;
 		if(player)
 		{
 			entity = new XHero(location, mainState, stats, false, false, weightLimit, itemList);

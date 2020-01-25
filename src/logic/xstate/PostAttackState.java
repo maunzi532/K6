@@ -36,12 +36,12 @@ public class PostAttackState extends AttackState
 		if(levelup)
 		{
 			levelup = false;
-			mainState.stateHolder.setState(new CharacterLevelupGUI((InvEntity) aI.entity, this));
+			mainState.stateHolder.setState(new CharacterLevelupGUI(aI.entity, this));
 		}
 		else if(levelupT)
 		{
 			levelupT = false;
-			mainState.stateHolder.setState(new CharacterLevelupGUI((InvEntity) aI.entityT, this));
+			mainState.stateHolder.setState(new CharacterLevelupGUI(aI.entityT, this));
 		}
 		else
 		{

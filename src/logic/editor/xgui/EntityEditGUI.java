@@ -13,7 +13,7 @@ public class EntityEditGUI extends XGUIState
 	private static final CTile textInv = new CTile(2, 0, 2, 1);
 	private static final CTile weight = new CTile(0, 0);
 
-	private InvEntity entity;
+	private XEntity entity;
 	private List<String> info;
 	private TargetScrollList<ItemView> invView;
 	private ScrollList<Integer> infoView;
@@ -22,7 +22,7 @@ public class EntityEditGUI extends XGUIState
 	private List<String> changeOptions;
 	private CElement textInvE;
 
-	public EntityEditGUI(InvEntity entity)
+	public EntityEditGUI(XEntity entity)
 	{
 		this.entity = entity;
 	}

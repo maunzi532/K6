@@ -36,7 +36,7 @@ public class XMenu
 		return new XMenu(new ReachViewState(character, true), new EndTurnState());
 	}
 
-	public static XMenu enemyGUIMenu(InvEntity enemy)
+	public static XMenu enemyGUIMenu(XEntity enemy)
 	{
 		return new XMenu(new CharacterInvGUI(enemy), new EndTurnState());
 	}
@@ -54,24 +54,17 @@ public class XMenu
 
 	public static XMenu entityEditMenu(XEntity entity)
 	{
-		if(entity instanceof InvEntity)
+		if(entity instanceof XHero)
 		{
-			if(entity instanceof XHero)
-			{
-				return new XMenu(new EntityEditGUI((XHero) entity), new EntityInvEditGUI((XHero) entity), new HeroEditGUI((XHero) entity),
-						new EditMoveState(entity), new EditCopyState(entity), new EditDeleteState(entity));
-			}
-			if(entity instanceof XEnemy)
-			{
-				return new XMenu(new EntityEditGUI((InvEntity) entity), new EntityInvEditGUI((InvEntity) entity), new EnemyEditGUI((XEnemy) entity),
-						new EditMoveState(entity), new EditCopyState(entity), new EditDeleteState(entity));
-			}
-			throw new RuntimeException();
+			return new XMenu(new EntityEditGUI(entity), new EntityInvEditGUI(entity), new HeroEditGUI((XHero) entity),
+					new EditMoveState(entity), new EditCopyState(entity), new EditDeleteState(entity));
 		}
-		else
+		if(entity instanceof XEnemy)
 		{
-			return new XMenu(new EditMoveState(entity), new EditCopyState(entity), new EditDeleteState(entity));
+			return new XMenu(new EntityEditGUI(entity), new EntityInvEditGUI(entity), new EnemyEditGUI((XEnemy) entity),
+					new EditMoveState(entity), new EditCopyState(entity), new EditDeleteState(entity));
 		}
+		throw new RuntimeException();
 	}
 
 	public static XMenu buildingEditMenu(MBuilding building)

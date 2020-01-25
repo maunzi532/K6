@@ -37,22 +37,18 @@ public class System2 implements CombatSystem<Stats2, AttackInfo2>
 	@Override
 	public List<Integer> attackRanges(MainState mainState, XEntity entity, Stats2 stats, boolean counter)
 	{
-		if(entity instanceof InvEntity)
+		List<int[]> v = entity.outputInv().viewItems(false)
+				.stream().filter(e -> stats.getItemFilter().canContain(e.item))
+				.map(e -> ((AttackItem2) e.item).getRanges(counter)).collect(Collectors.toList());
+		HashSet<Integer> ints2 = new HashSet<>();
+		for(int[] ints : v)
 		{
-			List<int[]> v = ((InvEntity) entity).outputInv().viewItems(false)
-					.stream().filter(e -> stats.getItemFilter().canContain(e.item))
-					.map(e -> ((AttackItem2) e.item).getRanges(counter)).collect(Collectors.toList());
-			HashSet<Integer> ints2 = new HashSet<>();
-			for(int[] ints : v)
+			for(int i = 0; i < ints.length; i++)
 			{
-				for(int i = 0; i < ints.length; i++)
-				{
-					ints2.add(ints[i]);
-				}
+				ints2.add(ints[i]);
 			}
-			return ints2.stream().sorted().collect(Collectors.toList());
 		}
-		return List.of();
+		return ints2.stream().sorted().collect(Collectors.toList());
 	}
 
 	@Override
@@ -60,23 +56,16 @@ public class System2 implements CombatSystem<Stats2, AttackInfo2>
 			XEntity entityT, Tile locT, Stats2 statsT)
 	{
 		int distance = mainState.y1.distance(loc, locT);
-		if(entity instanceof InvEntity)
-		{
-			return ((InvEntity) entity).outputInv()
-					.viewItems(false)
-					.stream()
-					.filter(e -> stats.getItemFilter().canContain(e.item))
-					.flatMap(e -> ((AttackItem2) e.item).attackModes().stream())
-					.map(mode -> new AttackInfo2(entity, loc, stats, mode,
-							entityT, locT, statsT, statsT.getLastUsed(), distance))
-					.filter(e -> e.canInitiate)
-					.map(e -> e.addAnalysis(this))
-					.collect(Collectors.toList());
-		}
-		else
-		{
-			return List.of();
-		}
+		return entity.outputInv()
+				.viewItems(false)
+				.stream()
+				.filter(e -> stats.getItemFilter().canContain(e.item))
+				.flatMap(e -> ((AttackItem2) e.item).attackModes().stream())
+				.map(mode -> new AttackInfo2(entity, loc, stats, mode,
+						entityT, locT, statsT, statsT.getLastUsed(), distance))
+				.filter(e -> e.canInitiate)
+				.map(e -> e.addAnalysis(this))
+				.collect(Collectors.toList());
 	}
 
 	@Override
@@ -148,15 +137,13 @@ public class System2 implements CombatSystem<Stats2, AttackInfo2>
 		int classCode = ((JrsNumber) data.get("Type")).getValue().intValue();
 		Tile location = y1.create2(((JrsNumber) data.get("sx")).getValue().intValue(), ((JrsNumber) data.get("sy")).getValue().intValue());
 		Stats2 stats = new Stats2(((JrsObject) data.get("Stats")), itemLoader);
-		if(classCode > 0)
-		{
-			Inv inv = new WeightInv(((JrsObject) data.get("Inventory")), itemLoader);
-			if(classCode == 1)
-				return new XHero(location, mainState, stats, false, false, inv);
-			else
-				return new XEnemy(location, mainState, stats, new StandardAI(), inv);
-		}
-		return new XEntity(location, mainState, stats);
+		Inv inv = new WeightInv(((JrsObject) data.get("Inventory")), itemLoader);
+		return switch(classCode)
+				{
+					case 1 -> new XHero(location, mainState, stats, false, false, inv);
+					case 2 -> new XEnemy(location, mainState, stats, new StandardAI(), inv);
+					default -> throw new RuntimeException();
+				};
 	}
 
 	@Override
@@ -187,15 +174,13 @@ public class System2 implements CombatSystem<Stats2, AttackInfo2>
 		{
 			int classCode = ((JrsNumber) data.get("Type")).getValue().intValue();
 			Stats2 stats = new Stats2(((JrsObject) data.get("Stats")), itemLoader);
-			if(classCode > 0)
-			{
 				Inv inv = new WeightInv(((JrsObject) data.get("Inventory")), itemLoader);
-				if(classCode == 1)
-					return new XHero(location, mainState, stats, false, false, inv);
-				else
-					return new XEnemy(location, mainState, stats, new StandardAI(), inv);
-			}
-			return new XEntity(location, mainState, stats);
+			return switch(classCode)
+					{
+						case 1 -> new XHero(location, mainState, stats, false, false, inv);
+						case 2 -> new XEnemy(location, mainState, stats, new StandardAI(), inv);
+						default -> throw new RuntimeException();
+					};
 		}
 	}
 

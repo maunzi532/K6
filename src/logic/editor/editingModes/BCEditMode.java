@@ -1,7 +1,6 @@
 package logic.editor.editingModes;
 
 import building.transport.*;
-import entity.*;
 import geom.f1.*;
 import levelMap.*;
 import logic.*;
@@ -34,20 +33,14 @@ public class BCEditMode implements EditingMode
 			}
 			else if(advTile.getEntity() != null)
 			{
-				if(advTile.getEntity() instanceof InvEntity)
-				{
-					mainState.stateHolder.setState(new EntityEditGUI((InvEntity) advTile.getEntity()));
-				}
+				mainState.stateHolder.setState(new EntityEditGUI(advTile.getEntity()));
 			}
 		}
 		else
 		{
 			if(advTile.getEntity() != null)
 			{
-				if(advTile.getEntity() instanceof InvEntity)
-				{
-					mainState.stateHolder.setState(new EntityEditGUI((InvEntity) advTile.getEntity()));
-				}
+				mainState.stateHolder.setState(new EntityEditGUI(advTile.getEntity()));
 			}
 			else if(advTile.getBuilding() != null)
 			{

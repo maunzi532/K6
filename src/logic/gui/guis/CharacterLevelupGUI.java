@@ -6,10 +6,10 @@ import logic.xstate.*;
 
 public class CharacterLevelupGUI extends Inv1GUI
 {
-	private InvEntity character;
+	private XEntity character;
 	private NState nextState;
 
-	public CharacterLevelupGUI(InvEntity character, NState nextState)
+	public CharacterLevelupGUI(XEntity character, NState nextState)
 	{
 		super(character.inputInv(), character.name(), null);
 		this.character = character;

@@ -5,7 +5,7 @@ import item.*;
 import item.inv.*;
 import logic.*;
 
-public class XEnemy extends InvEntity
+public class XEnemy extends XEntity
 {
 	private EnemyAI think;
 	private boolean canMove;

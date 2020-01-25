@@ -244,7 +244,7 @@ public class Stats2 implements Stats, ModifierAspect
 	}
 
 	@Override
-	public void autoEquip(InvEntity entity)
+	public void autoEquip(XEntity entity)
 	{
 		ItemView itemView = entity.outputInv().viewRecipeItem(getItemFilter());
 		if(itemView.base == 0 || !(itemView.item instanceof AttackItem2))
@@ -259,7 +259,7 @@ public class Stats2 implements Stats, ModifierAspect
 	}
 
 	@Override
-	public void afterTrading(InvEntity entity)
+	public void afterTrading(XEntity entity)
 	{
 		if(!lastUsed.active)
 			return;
@@ -653,7 +653,7 @@ public class Stats2 implements Stats, ModifierAspect
 			case 0xe0 -> movement++;
 			case 0xe1 -> movement--;
 			case 0xe2 -> movement = xClass.movement;
-			case 0xf0 -> autoEquip((InvEntity) entity);
+			case 0xf0 -> autoEquip(entity);
 		}
 	}
 }

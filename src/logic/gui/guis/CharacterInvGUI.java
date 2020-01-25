@@ -6,9 +6,9 @@ import logic.xstate.*;
 
 public class CharacterInvGUI extends Inv1GUI
 {
-	private InvEntity character;
+	private XEntity character;
 
-	public CharacterInvGUI(InvEntity character)
+	public CharacterInvGUI(XEntity character)
 	{
 		super(character.inputInv(), character.name(), character.getStats().info());
 		this.character = character;

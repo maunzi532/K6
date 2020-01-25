@@ -5,9 +5,9 @@ import logic.xstate.*;
 
 public class EntityInvEditGUI extends InvEditGUI
 {
-	private InvEntity invEntity;
+	private XEntity invEntity;
 
-	public EntityInvEditGUI(InvEntity invEntity)
+	public EntityInvEditGUI(XEntity invEntity)
 	{
 		super(invEntity.inputInv(), invEntity.name(), invEntity.getStats().infoEdit());
 		this.invEntity = invEntity;

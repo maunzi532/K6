@@ -15,9 +15,9 @@ public interface Stats
 
 	void regenerating();
 
-	void autoEquip(InvEntity entity);
+	void autoEquip(XEntity entity);
 
-	void afterTrading(InvEntity entity);
+	void afterTrading(XEntity entity);
 
 	void equip(Item item, XMode mode);
 
