@@ -81,8 +81,8 @@ public class RecipeGUI extends XGUIState
 	protected void updateBeforeDraw()
 	{
 		Recipe recipe = processInv.recipes().get(recipeNum);
-		requireView.elements = recipe.required.items;
-		resultView.elements = recipe.results.items;
+		requireView.elements = recipe.required().items;
+		resultView.elements = recipe.results().items;
 	}
 
 	public GuiTile[] elementViewRequired(ItemStack stack)

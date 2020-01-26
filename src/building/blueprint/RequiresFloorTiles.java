@@ -5,27 +5,15 @@ import com.fasterxml.jackson.jr.stree.*;
 import java.io.*;
 import levelMap.*;
 
-public class RequiresFloorTiles
+public record RequiresFloorTiles(FloorTileType floorTileType, int amount, int minRange, int maxRange)
 {
-	public final FloorTileType floorTileType;
-	public final int amount;
-	public final int minRange;
-	public final int maxRange;
-
-	public RequiresFloorTiles(FloorTileType floorTileType, int amount, int minRange, int maxRange)
+	public static RequiresFloorTiles create(JrsObject data)
 	{
-		this.floorTileType = floorTileType;
-		this.amount = amount;
-		this.minRange = minRange;
-		this.maxRange = maxRange;
-	}
-
-	public RequiresFloorTiles(JrsObject data)
-	{
-		floorTileType = FloorTileType.valueOf(data.get("Type").asText().toUpperCase());
-		amount = ((JrsNumber) data.get("Amount")).getValue().intValue();
-		minRange = ((JrsNumber) data.get("MinRange")).getValue().intValue();
-		maxRange = ((JrsNumber) data.get("MaxRange")).getValue().intValue();
+		FloorTileType floorTileType = FloorTileType.valueOf(data.get("Type").asText().toUpperCase());
+		int amount = ((JrsNumber) data.get("Amount")).getValue().intValue();
+		int minRange = ((JrsNumber) data.get("MinRange")).getValue().intValue();
+		int maxRange = ((JrsNumber) data.get("MaxRange")).getValue().intValue();
+		return new RequiresFloorTiles(floorTileType, amount, minRange, maxRange);
 	}
 
 	public <T extends ComposerBase> ObjectComposer<T> save(ObjectComposer<T> a1) throws IOException

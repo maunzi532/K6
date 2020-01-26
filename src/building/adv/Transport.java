@@ -35,8 +35,8 @@ public class Transport implements BuildingFunction
 	public Transport(String name, TransporterBlueprint blueprint)
 	{
 		this.name = name;
-		range = blueprint.range;
-		amount = blueprint.amount;
+		range = blueprint.range();
+		amount = blueprint.amount();
 		targets = new ArrayList<>();
 		invTransporter = new InvTransporter(targets, targets, amount);
 	}
@@ -105,6 +105,8 @@ public class Transport implements BuildingFunction
 		List<DoubleInv> list = targets.stream().map(e -> ((PreConnectMapObject) e).restore(levelMap)).collect(Collectors.toList());
 		targets.clear();
 		targets.addAll(list);
+		invTransporter.transportHistory().replaceAll(e -> new PossibleTransport(e.item(),
+				((PreConnectMapObject) e.from()).restore(levelMap), ((PreConnectMapObject) e.to()).restore(levelMap), 0, 0));
 	}
 
 	public boolean isTarget(DoubleInv target)
@@ -130,22 +132,30 @@ public class Transport implements BuildingFunction
 		range = ((JrsNumber) data.get("Range")).getValue().intValue();
 		amount = ((JrsNumber) data.get("Amount")).getValue().intValue();
 		targets = new ArrayList<>();
-		((JrsArray) data.get("Targets")).elements().forEachRemaining(e -> targets.add(new PreConnectMapObject((JrsObject) e, y1)));
-		invTransporter = new InvTransporter(targets, targets, amount);
+		((JrsArray) data.get("Targets")).elements().forEachRemaining(e -> targets.add(PreConnectMapObject.create((JrsObject) e, y1)));
+		ArrayList<PossibleTransport> history = new ArrayList<>();
+		((JrsArray) data.get("Targets")).elements().forEachRemaining(e -> history.add(PossibleTransport.create((JrsObject) e, itemLoader, y1)));
+		invTransporter = new InvTransporter(targets, targets, amount, history);
 	}
 
 	@Override
 	public <T extends ComposerBase> ObjectComposer<T> save(ObjectComposer<T> a1, ItemLoader itemLoader, TileType y1)
 			throws IOException
 	{
-		a1 = a1.put("Name", name);
-		a1 = a1.put("Range", range);
-		a1 = a1.put("Amount", amount);
+		a1.put("Name", name);
+		a1.put("Range", range);
+		a1.put("Amount", amount);
 		var a2 = a1.startArrayField("Targets");
 		for(DoubleInv target : targets)
 		{
-			a2 = new PreConnectMapObject(target.location(), target.type()).save(a2.startObject(), y1).end();
+			new PreConnectMapObject(target.location(), target.type()).save(a2.startObject(), y1).end();
 		}
-		return a2.end();
+		a2.end();
+		var a3 = a1.startArrayField("History");
+		for(PossibleTransport entry : invTransporter.transportHistory())
+		{
+			entry.save(a3.startObject(), itemLoader, y1).end();
+		}
+		return a1;
 	}
 }

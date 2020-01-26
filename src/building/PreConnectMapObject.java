@@ -8,17 +8,8 @@ import building.transport.*;
 import java.io.*;
 import levelMap.*;
 
-public class PreConnectMapObject implements DoubleInv
+public record PreConnectMapObject(Tile location, DoubleInvType type) implements DoubleInv
 {
-	public Tile location;
-	public DoubleInvType type;
-
-	public PreConnectMapObject(Tile location, DoubleInvType type)
-	{
-		this.location = location;
-		this.type = type;
-	}
-
 	@Override
 	public DoubleInvType type()
 	{
@@ -64,10 +55,11 @@ public class PreConnectMapObject implements DoubleInv
 		};
 	}
 
-	public PreConnectMapObject(JrsObject data, TileType y1)
+	public static PreConnectMapObject create(JrsObject data, TileType y1)
 	{
-		location = y1.create2(((JrsNumber) data.get("sx")).getValue().intValue(), ((JrsNumber) data.get("sy")).getValue().intValue());
-		type = DoubleInvType.valueOf(data.get("Type").asText().toUpperCase());
+		Tile location = y1.create2(((JrsNumber) data.get("sx")).getValue().intValue(), ((JrsNumber) data.get("sy")).getValue().intValue());
+		DoubleInvType type = DoubleInvType.valueOf(data.get("Type").asText().toUpperCase());
+		return new PreConnectMapObject(location, type);
 	}
 
 	public <T extends ComposerBase> ObjectComposer<T> save(ObjectComposer<T> a1, TileType y1) throws IOException

@@ -1,6 +1,5 @@
 package logic.xstate;
 
-import arrow.*;
 import entity.*;
 import logic.*;
 

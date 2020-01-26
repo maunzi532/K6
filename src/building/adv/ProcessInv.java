@@ -32,9 +32,9 @@ public class ProcessInv implements BuildingFunction
 	public ProcessInv(String name, ProductionBlueprint blueprint)
 	{
 		this.name = name;
-		inputInv = new SlotInv(blueprint.inputLimits);
-		outputInv = new SlotInv(blueprint.outputLimits);
-		recipes = blueprint.recipes;
+		inputInv = new SlotInv(blueprint.inputLimits());
+		outputInv = new SlotInv(blueprint.outputLimits());
+		recipes = blueprint.recipes();
 		lastViewedRecipeNum = 0;
 	}
 
@@ -77,13 +77,13 @@ public class ProcessInv implements BuildingFunction
 		{
 			for(Recipe recipe : recipes)
 			{
-				if(inputInv.tryProvide(recipe.required, false, CommitType.LEAVE).isPresent())
+				if(inputInv.tryProvide(recipe.required(), false, CommitType.LEAVE).isPresent())
 				{
-					if(outputInv.tryAdd(recipe.results, false, CommitType.COMMIT))
+					if(outputInv.tryAdd(recipe.results(), false, CommitType.COMMIT))
 					{
 						inputInv.commit();
 						levelMap.addArrow(ShineArrow.factory(location, null,
-								ProductionPhaseState.ARROW_TIME, false, recipe.results.items.get(0).item.image()));
+								ProductionPhaseState.ARROW_TIME, false, recipe.results().items.get(0).item.image()));
 						return;
 					}
 					else
@@ -121,7 +121,7 @@ public class ProcessInv implements BuildingFunction
 		inputInv = new SlotInv((JrsObject) data.get("InputInv"), itemLoader);
 		outputInv = new SlotInv((JrsObject) data.get("OutputInv"), itemLoader);
 		recipes = new ArrayList<>();
-		((JrsArray) data.get("Recipes")).elements().forEachRemaining(e -> recipes.add(new Recipe((JrsObject) e, itemLoader)));
+		((JrsArray) data.get("Recipes")).elements().forEachRemaining(e -> recipes.add(Recipe.create((JrsObject) e, itemLoader)));
 		lastViewedRecipeNum = 0;
 	}
 

@@ -5,21 +5,13 @@ import com.fasterxml.jackson.jr.stree.*;
 import item.*;
 import java.io.*;
 
-public class Recipe
+public record Recipe(ItemList required, ItemList results)
 {
-	public final ItemList required;
-	public final ItemList results;
-
-	public Recipe(ItemList required, ItemList results)
+	public static Recipe create(JrsObject data, ItemLoader itemLoader)
 	{
-		this.required = required;
-		this.results = results;
-	}
-
-	public Recipe(JrsObject data, ItemLoader itemLoader)
-	{
-		required = new ItemList((JrsArray) data.get("Required"), itemLoader);
-		results = new ItemList((JrsArray) data.get("Results"), itemLoader);
+		ItemList required = new ItemList((JrsArray) data.get("Required"), itemLoader);
+		ItemList results = new ItemList((JrsArray) data.get("Results"), itemLoader);
+		return new Recipe(required, results);
 	}
 
 	public <T extends ComposerBase> ObjectComposer<T> save(ObjectComposer<T> a1, ItemLoader itemLoader) throws IOException

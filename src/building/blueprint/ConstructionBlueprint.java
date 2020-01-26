@@ -6,26 +6,18 @@ import item.*;
 import java.io.*;
 import java.util.*;
 
-public class ConstructionBlueprint
+public record ConstructionBlueprint(List<List<CostBlueprint>> blueprints)
 {
-	public final List<List<CostBlueprint>> blueprints;
-
-	public ConstructionBlueprint(List<List<CostBlueprint>> blueprints)
+	public static ConstructionBlueprint create(JrsArray data, ItemLoader itemLoader)
 	{
-		this.blueprints = blueprints;
-	}
-
-	public ConstructionBlueprint(JrsArray data, ItemLoader itemLoader)
-	{
-		blueprints = new ArrayList<>();
-		data.elements().forEachRemaining(e -> l1((JrsArray) e, itemLoader));
-	}
-
-	private void l1(JrsArray d1, ItemLoader itemLoader)
-	{
-		List<CostBlueprint> b1 = new ArrayList<>();
-		d1.elements().forEachRemaining(e -> b1.add(new CostBlueprint((JrsObject) e, itemLoader)));
-		blueprints.add(b1);
+		List<List<CostBlueprint>> blueprints = new ArrayList<>();
+		data.elements().forEachRemaining(e ->
+		{
+			List<CostBlueprint> b1 = new ArrayList<>();
+			((JrsArray) e).elements().forEachRemaining(f -> b1.add(CostBlueprint.create((JrsObject) f, itemLoader)));
+			blueprints.add(b1);
+		});
+		return new ConstructionBlueprint(blueprints);
 	}
 
 	public <T extends ComposerBase> ArrayComposer<T> save(ArrayComposer<T> a1, ItemLoader itemLoader) throws IOException

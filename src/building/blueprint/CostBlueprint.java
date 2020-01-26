@@ -6,30 +6,16 @@ import item.*;
 import java.io.*;
 import java.util.*;
 
-public class CostBlueprint
+public record CostBlueprint(ItemList refundable, ItemList costs, ItemList required, List<RequiresFloorTiles> requiredFloorTiles)
 {
-	public final ItemList refundable;
-	public final ItemList costs;
-	public final ItemList required;
-	public final List<RequiresFloorTiles> requiredFloorTiles;
-
-	public CostBlueprint(ItemList refundable, ItemList costs,
-			List<RequiresFloorTiles> requiredFloorTiles)
+	public static CostBlueprint create(JrsObject data, ItemLoader itemLoader)
 	{
-		this.refundable = refundable;
-		this.costs = costs;
-		required = refundable.add(costs);
-		this.requiredFloorTiles = requiredFloorTiles;
-	}
-
-	public CostBlueprint(JrsObject data, ItemLoader itemLoader)
-	{
-		refundable = new ItemList((JrsArray) data.get("Refundable"), itemLoader);
-		costs = new ItemList((JrsArray) data.get("Costs"), itemLoader);
-		required = refundable.add(costs);
-		requiredFloorTiles = new ArrayList<>();
-		((JrsArray) data.get("FloorTiles")).elements()
-				.forEachRemaining(e -> requiredFloorTiles.add(new RequiresFloorTiles((JrsObject) e)));
+		ItemList refundable = new ItemList((JrsArray) data.get("Refundable"), itemLoader);
+		ItemList costs = new ItemList((JrsArray) data.get("Costs"), itemLoader);
+		ItemList required = refundable.add(costs);
+		List<RequiresFloorTiles> requiredFloorTiles = new ArrayList<>();
+		((JrsArray) data.get("FloorTiles")).elements().forEachRemaining(e -> requiredFloorTiles.add(RequiresFloorTiles.create((JrsObject) e)));
+		return new CostBlueprint(refundable, costs, required, requiredFloorTiles);
 	}
 
 	public <T extends ComposerBase> ObjectComposer<T> save(ObjectComposer<T> a1, ItemLoader itemLoader) throws IOException

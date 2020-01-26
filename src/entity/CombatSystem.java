@@ -1,6 +1,5 @@
 package entity;
 
-import arrow.*;
 import com.fasterxml.jackson.jr.stree.*;
 import entity.analysis.*;
 import geom.f1.*;

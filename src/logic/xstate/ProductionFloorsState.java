@@ -24,9 +24,9 @@ public class ProductionFloorsState implements NMarkState
 	@Override
 	public void onEnter(MainState mainState)
 	{
-		targetableTiles = building.costBlueprint().requiredFloorTiles.stream().flatMap(flt -> mainState.y1
-				.range(building.location(), flt.minRange, flt.maxRange).stream()
-				.filter(e -> mainState.levelMap.getFloor(e) != null && mainState.levelMap.getFloor(e).type == flt.floorTileType)).collect(Collectors.toList());
+		targetableTiles = building.costBlueprint().requiredFloorTiles().stream().flatMap(flt -> mainState.y1
+				.range(building.location(), flt.minRange(), flt.maxRange()).stream()
+				.filter(e -> mainState.levelMap.getFloor(e) != null && mainState.levelMap.getFloor(e).type == flt.floorTileType())).collect(Collectors.toList());
 		createVisMarked();
 	}
 

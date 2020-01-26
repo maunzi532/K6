@@ -36,13 +36,13 @@ public class XBuilding implements DoubleInv
 		this.costBlueprint = costBlueprint;
 		this.refundable = refundable;
 		claimed = new ArrayList<>();
-		if(blueprint.productionBlueprint != null)
+		if(blueprint.productionBlueprint() != null)
 		{
-			function = new ProcessInv(blueprint.name, blueprint.productionBlueprint);
+			function = new ProcessInv(blueprint.name(), blueprint.productionBlueprint());
 		}
-		else if(blueprint.transporterBlueprint != null)
+		else if(blueprint.transporterBlueprint() != null)
 		{
-			function = new Transport(blueprint.name, blueprint.transporterBlueprint);
+			function = new Transport(blueprint.name(), blueprint.transporterBlueprint());
 		}
 		else
 		{
@@ -162,8 +162,8 @@ public class XBuilding implements DoubleInv
 
 	public boolean canWork(LevelMap levelMap, boolean unclaimed)
 	{
-		return costBlueprint.requiredFloorTiles.stream().noneMatch(rft -> levelMap.y1.range(location, rft.minRange, rft.maxRange).stream()
-				.filter(e -> okTile(e, levelMap, rft, unclaimed)).count() < rft.amount);
+		return costBlueprint.requiredFloorTiles().stream().noneMatch(rft -> levelMap.y1.range(location, rft.minRange(), rft.maxRange()).stream()
+				.filter(e -> okTile(e, levelMap, rft, unclaimed)).count() < rft.amount());
 	}
 
 	public ItemList allRefundable()
@@ -195,17 +195,17 @@ public class XBuilding implements DoubleInv
 
 	public void autoClaimFloor(LevelMap levelMap)
 	{
-		for(RequiresFloorTiles rft : costBlueprint.requiredFloorTiles)
+		for(RequiresFloorTiles rft : costBlueprint.requiredFloorTiles())
 		{
 			int count = 0;
-			for(Tile t1 : levelMap.y1.range(location, rft.minRange, rft.maxRange))
+			for(Tile t1 : levelMap.y1.range(location, rft.minRange(), rft.maxRange()))
 			{
 				if(okTile(t1, levelMap, rft, true))
 				{
 					levelMap.addOwner(t1, this);
 					claimed.add(t1);
 					count++;
-					if(count >= rft.amount)
+					if(count >= rft.amount())
 						break;
 				}
 			}
@@ -214,7 +214,7 @@ public class XBuilding implements DoubleInv
 
 	private boolean okTile(Tile t1, LevelMap levelMap, RequiresFloorTiles rft, boolean unclaimed)
 	{
-		return levelMap.getFloor(t1) != null && levelMap.getFloor(t1).type == rft.floorTileType
+		return levelMap.getFloor(t1) != null && levelMap.getFloor(t1).type == rft.floorTileType()
 				&& ((unclaimed && levelMap.getOwner(t1) == null) || levelMap.getOwner(t1) == this);
 	}
 
@@ -222,7 +222,7 @@ public class XBuilding implements DoubleInv
 	{
 		active = true;
 		location = y1.create2(((JrsNumber) data.get("sx")).getValue().intValue(), ((JrsNumber) data.get("sy")).getValue().intValue());
-		costBlueprint = new CostBlueprint((JrsObject) data.get("Costs"), itemLoader);
+		costBlueprint = CostBlueprint.create((JrsObject) data.get("Costs"), itemLoader);
 		refundable = new ItemList((JrsArray) data.get("Refundable"), itemLoader);
 		claimed = new ArrayList<>();
 		if(data.get("Claimed") != null)

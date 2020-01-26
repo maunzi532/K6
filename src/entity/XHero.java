@@ -76,9 +76,9 @@ public class XHero extends XEntity implements XBuilder
 	@Override
 	public Optional<ItemList> tryBuildingCosts(CostBlueprint cost, CommitType commitType)
 	{
-		if(inv.tryProvide(cost.costs, false, CommitType.LEAVE).isEmpty())
+		if(inv.tryProvide(cost.costs(), false, CommitType.LEAVE).isEmpty())
 			return Optional.empty();
-		return inv.tryProvide(cost.refundable, false, commitType);
+		return inv.tryProvide(cost.refundable(), false, commitType);
 	}
 
 	public void startTurn()

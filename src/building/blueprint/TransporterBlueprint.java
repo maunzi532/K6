@@ -4,21 +4,13 @@ import com.fasterxml.jackson.jr.ob.comp.*;
 import com.fasterxml.jackson.jr.stree.*;
 import java.io.*;
 
-public class TransporterBlueprint
+public record TransporterBlueprint(int range, int amount)
 {
-	public final int range;
-	public final int amount;
-
-	public TransporterBlueprint(int range, int amount)
+	public static TransporterBlueprint create(JrsObject data)
 	{
-		this.range = range;
-		this.amount = amount;
-	}
-
-	public TransporterBlueprint(JrsObject data)
-	{
-		range = ((JrsNumber) data.get("Range")).getValue().intValue();
-		amount = ((JrsNumber) data.get("Amount")).getValue().intValue();
+		int range = ((JrsNumber) data.get("Range")).getValue().intValue();
+		int amount = ((JrsNumber) data.get("Amount")).getValue().intValue();
+		return new TransporterBlueprint(range, amount);
 	}
 
 	public <T extends ComposerBase> ObjectComposer<T> save(ObjectComposer<T> a1) throws IOException

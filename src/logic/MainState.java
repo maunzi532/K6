@@ -39,7 +39,7 @@ public class MainState
 		levelMap = new LevelMap(y1);
 		storage = new Storage();
 		visMarked = new ArrayList<>();
-		buildingBlueprintCache = new BlueprintCache<>("BuildingBlueprints", e -> new BuildingBlueprint(e, itemLoader));
+		buildingBlueprintCache = new BlueprintCache<>("BuildingBlueprints", e -> BuildingBlueprint.create(e, itemLoader));
 		combatSystem = new System2();
 		this.sideInfoFrame = sideInfoFrame;
 	}
@@ -116,7 +116,7 @@ public class MainState
 
 	//TODO save transporter history
 	//TODO Refactor sectors
-	//TODO XHero and XEnemy not extending XEnemy
+	//TODO XHero and XEnemy not extending XEntity
 
 	//TODO scale tiles, menubar, gui when resizing
 	//TODO Make menu bar not overlap with SideInfo

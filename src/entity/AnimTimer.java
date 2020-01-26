@@ -1,4 +1,4 @@
-package arrow;
+package entity;
 
 public interface AnimTimer
 {

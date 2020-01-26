@@ -90,7 +90,7 @@ public class SelectBuildingGUI extends XGUIState
 	{
 		return new GuiTile[]
 				{
-						new GuiTile(blueprint.name),
+						new GuiTile(blueprint.name()),
 						new GuiTile(null, BUILDING, false, null)
 				};
 	}

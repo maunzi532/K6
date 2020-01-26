@@ -6,38 +6,30 @@ import file.*;
 import item.*;
 import java.io.*;
 
-public class BuildingBlueprint implements FullBlueprint
+public record BuildingBlueprint(String name, ConstructionBlueprint constructionBlueprint,
+		ProductionBlueprint productionBlueprint, TransporterBlueprint transporterBlueprint) implements FullBlueprint
 {
-	public final String name;
-	public final ConstructionBlueprint constructionBlueprint;
-	public final ProductionBlueprint productionBlueprint;
-	public final TransporterBlueprint transporterBlueprint;
-
-	public BuildingBlueprint(String name, ConstructionBlueprint constructionBlueprint,
-			ProductionBlueprint productionBlueprint, TransporterBlueprint transporterBlueprint)
+	public static BuildingBlueprint create(JrsObject data, ItemLoader itemLoader)
 	{
-		this.name = name;
-		this.constructionBlueprint = constructionBlueprint;
-		this.productionBlueprint = productionBlueprint;
-		this.transporterBlueprint = transporterBlueprint;
-	}
-
-	public BuildingBlueprint(JrsObject data, ItemLoader itemLoader)
-	{
-		name = data.get("Name").asText();
-		constructionBlueprint = new ConstructionBlueprint((JrsArray) data.get("Construction"), itemLoader);
+		String name = data.get("Name").asText();
+		ConstructionBlueprint constructionBlueprint = ConstructionBlueprint.create((JrsArray) data.get("Construction"), itemLoader);
+		ProductionBlueprint productionBlueprint;
+		TransporterBlueprint transporterBlueprint;
 		if(data.get("Production") != null)
 		{
-			productionBlueprint = new ProductionBlueprint((JrsObject) data.get("Production"), itemLoader);
+			productionBlueprint = ProductionBlueprint.create((JrsObject) data.get("Production"), itemLoader);
 			transporterBlueprint = null;
 		}
 		else if(data.get("Transporter") != null)
 		{
 			productionBlueprint = null;
-			transporterBlueprint = new TransporterBlueprint((JrsObject) data.get("Transporter"));
+			transporterBlueprint = TransporterBlueprint.create((JrsObject) data.get("Transporter"));
 		}
 		else
+		{
 			throw new RuntimeException();
+		}
+		return new BuildingBlueprint(name, constructionBlueprint, productionBlueprint, transporterBlueprint);
 	}
 
 	@Override

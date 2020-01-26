@@ -44,7 +44,7 @@ public class BuildGUI extends XGUIState
 	{
 		this.builder = builder;
 		this.blueprint = blueprint;
-		costBlueprints = blueprint.constructionBlueprint.blueprints;
+		costBlueprints = blueprint.constructionBlueprint().blueprints();
 	}
 
 	@Override
@@ -110,11 +110,11 @@ public class BuildGUI extends XGUIState
 	@Override
 	protected void updateBeforeDraw()
 	{
-		List<List<CostBlueprint>> blueprints = blueprint.constructionBlueprint.blueprints;
+		List<List<CostBlueprint>> blueprints = blueprint.constructionBlueprint().blueprints();
 		CostBlueprint cost = blueprints.get(costNum).get(tileCostNum);
-		floorTiles.elements = cost.requiredFloorTiles;
-		required.elements = cost.required.items;
-		returned.elements = cost.refundable.items;
+		floorTiles.elements = cost.requiredFloorTiles();
+		required.elements = cost.required().items;
+		returned.elements = cost.refundable().items;
 		prevElement.fillTile = activeIf("Prev", costNum > 0, Color.LIGHTCYAN);
 		nextElement.fillTile = activeIf("Next", costNum < blueprints.size() - 1, Color.LIGHTCYAN);
 		lessTilesElement.fillTile = activeIf("Less Tiles", tileCostNum > 0, Color.LIGHTCYAN);
@@ -134,8 +134,8 @@ public class BuildGUI extends XGUIState
 	{
 		return new GuiTile[]
 				{
-						new GuiTile("R " + rft.minRange + " - " + rft.maxRange),
-						new GuiTile(rft.floorTileType.name() + " x" + rft.amount)
+						new GuiTile("R " + rft.minRange() + " - " + rft.maxRange()),
+						new GuiTile(rft.floorTileType().name() + " x" + rft.amount())
 				};
 	}
 

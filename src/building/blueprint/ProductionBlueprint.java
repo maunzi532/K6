@@ -6,26 +6,15 @@ import item.*;
 import java.io.*;
 import java.util.*;
 
-public class ProductionBlueprint
+public record ProductionBlueprint(ItemList inputLimits, ItemList outputLimits, List<Recipe> recipes)
 {
-	public final ItemList inputLimits;
-	public final ItemList outputLimits;
-	public final List<Recipe> recipes;
-
-	public ProductionBlueprint(ItemList inputLimits, ItemList outputLimits,
-			List<Recipe> recipes)
+	public static ProductionBlueprint create(JrsObject data, ItemLoader itemLoader)
 	{
-		this.inputLimits = inputLimits;
-		this.outputLimits = outputLimits;
-		this.recipes = recipes;
-	}
-
-	public ProductionBlueprint(JrsObject data, ItemLoader itemLoader)
-	{
-		inputLimits = new ItemList((JrsArray) data.get("InputLimits"), itemLoader);
-		outputLimits = new ItemList((JrsArray) data.get("OutputLimits"), itemLoader);
-		recipes = new ArrayList<>();
-		((JrsArray) data.get("Recipes")).elements().forEachRemaining(e -> recipes.add(new Recipe((JrsObject) e, itemLoader)));
+		ItemList inputLimits = new ItemList((JrsArray) data.get("InputLimits"), itemLoader);
+		ItemList outputLimits = new ItemList((JrsArray) data.get("OutputLimits"), itemLoader);
+		List<Recipe> recipes = new ArrayList<>();
+		((JrsArray) data.get("Recipes")).elements().forEachRemaining(e -> recipes.add(Recipe.create((JrsObject) e, itemLoader)));
+		return new ProductionBlueprint(inputLimits, outputLimits, recipes);
 	}
 
 	public <T extends ComposerBase> ObjectComposer<T> save(ObjectComposer<T> a1, ItemLoader itemLoader) throws IOException

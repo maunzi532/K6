@@ -9,15 +9,27 @@ public class InvTransporter
 	private List<DoubleInv> providingTargets;
 	private List<DoubleInv> receivingTargets;
 	private int amount;
-	private Map<PossibleTransport, Integer> lastTransported;
-	private int transportNumber;
+	private List<PossibleTransport> transportHistory;
 
 	public InvTransporter(List<DoubleInv> providingTargets, List<DoubleInv> receivingTargets, int amount)
 	{
 		this.providingTargets = providingTargets;
 		this.receivingTargets = receivingTargets;
 		this.amount = amount;
-		lastTransported = new HashMap<>();
+		transportHistory = new ArrayList<>();
+	}
+
+	public InvTransporter(List<DoubleInv> providingTargets, List<DoubleInv> receivingTargets, int amount, List<PossibleTransport> transportHistory)
+	{
+		this.providingTargets = providingTargets;
+		this.receivingTargets = receivingTargets;
+		this.amount = amount;
+		this.transportHistory = transportHistory;
+	}
+
+	public List<PossibleTransport> transportHistory()
+	{
+		return transportHistory;
 	}
 
 	public Optional<PossibleTransport> transport()
@@ -52,13 +64,13 @@ public class InvTransporter
 		List<PossibleTransport> transports = new ArrayList<>();
 		possibleItems.forEach((item, info) -> transports.addAll(info.getTransports(item)));
 		return transports.stream().max(Comparator.comparingInt((PossibleTransport e) -> e.priorityFrom() + e.priorityTo())
-				.thenComparingInt((PossibleTransport e) -> -lastTransported.getOrDefault(e, -1)));
+				.thenComparingInt((PossibleTransport e) -> -transportHistory.indexOf(e)));
 	}
 
 	public void doTheTransport(PossibleTransport theTransport)
 	{
-		lastTransported.put(theTransport, transportNumber);
-		transportNumber++;
+		transportHistory.remove(theTransport);
+		transportHistory.add(theTransport);
 		ItemStack itemStack = new ItemStack(theTransport.item(), amount);
 		theTransport.from().outputInv().give(itemStack, false);
 		theTransport.to().inputInv().add(itemStack, false);

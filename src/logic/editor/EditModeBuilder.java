@@ -32,6 +32,6 @@ public class EditModeBuilder implements XBuilder
 	@Override
 	public Optional<ItemList> tryBuildingCosts(CostBlueprint cost, CommitType commitType)
 	{
-		return Optional.of(cost.refundable);
+		return Optional.of(cost.refundable());
 	}
 }
