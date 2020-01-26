@@ -1,6 +1,5 @@
 package building.transport;
 
-import building.*;
 import com.fasterxml.jackson.jr.ob.comp.*;
 import com.fasterxml.jackson.jr.stree.*;
 import geom.f1.*;

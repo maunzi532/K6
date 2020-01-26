@@ -1,6 +1,6 @@
 package logic.gui.guis;
 
-import building.*;
+import building.adv.*;
 import building.blueprint.*;
 import entity.*;
 import levelMap.*;

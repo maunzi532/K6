@@ -1,6 +1,6 @@
 package entity;
 
-import building.*;
+import building.adv.*;
 import building.blueprint.*;
 import com.fasterxml.jackson.jr.ob.comp.*;
 import geom.f1.*;

@@ -8,7 +8,6 @@ import geom.f1.*;
 import item.*;
 import java.util.*;
 import levelMap.*;
-import levelMap.importX.*;
 import logic.sideinfo.*;
 import logic.xstate.*;
 import system2.*;
@@ -73,7 +72,6 @@ public class MainState
 		}
 		else
 		{
-			//new TestImportSector(y2, 8).generate().importIntoMap(levelMap);
 			new Entity2Builder(this).setLocation(y1.create2(2, -1)).setStats(new Stats2(XClasses.hexerClass(), 0, null))
 					.addItem(AttackItems2.standardSpell()).create(false);
 			Chapter1.createCharacters(this, y1.create2(-2, 1), y1.create2(-2, -1), y1.create2(-4, 1),
@@ -90,8 +88,7 @@ public class MainState
 	//TODO Build a real level
 
 	//TODO save storage contents
-	//TODO put invlocked characters items into storage
-	//TODO class names in classes
+	//TODO savestate during map
 
 	//TODO update all enemy reach only when needed
 	//TODO all enemy reach show amount of enemies
@@ -107,14 +104,14 @@ public class MainState
 	//TODO levelup essence formula
 	//TODO add upgraded classes
 	//TODO add class abilities (0/6)
-	//TODO add items of upgraded classes
+	//TODO add images of items of upgraded classes
 
 	//TODO Enemy AI types
 	//TODO Enemy AI type: Activate
 	//TODO Enemy AI type: Stationary
 	//TODO complicated levelup system
 
-	//TODO save transporter history
+	//TODO class names in classes
 	//TODO Refactor sectors
 	//TODO XHero and XEnemy not extending XEntity
 
@@ -123,7 +120,6 @@ public class MainState
 	//TODO improve camera
 	//TODO show pause menu
 	//TODO show better SideInfo
-	//TODO update images
 
 	//LK char - move/attack
 	//RK char - inv/trade

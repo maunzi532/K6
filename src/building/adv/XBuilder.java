@@ -1,4 +1,4 @@
-package building;
+package building.adv;
 
 import building.adv.*;
 import building.blueprint.*;

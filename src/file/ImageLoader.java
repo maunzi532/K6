@@ -13,9 +13,16 @@ public class ImageLoader
 		Image image = images.get(path);
 		if(image != null)
 			return image;
-		Image image2 = new Image(path);
-		images.put(path, image2);
-		return image2;
+		try
+		{
+			Image image2 = new Image(path);
+			images.put(path, image2);
+			return image2;
+		}
+		catch(Exception e)
+		{
+			return null;
+		}
 	}
 
 	public static String loadTextResource(String resource)

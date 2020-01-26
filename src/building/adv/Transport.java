@@ -1,7 +1,6 @@
 package building.adv;
 
 import arrow.*;
-import building.*;
 import building.blueprint.*;
 import building.transport.*;
 import com.fasterxml.jackson.jr.ob.comp.*;

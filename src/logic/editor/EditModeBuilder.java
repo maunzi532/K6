@@ -1,6 +1,6 @@
 package logic.editor;
 
-import building.*;
+import building.adv.*;
 import building.blueprint.*;
 import geom.f1.*;
 import item.*;
