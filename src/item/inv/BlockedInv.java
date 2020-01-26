@@ -8,6 +8,8 @@ import java.util.*;
 
 public class BlockedInv implements Inv
 {
+	public static final BlockedInv INSTANCE = new BlockedInv();
+
 	@Override
 	public List<Item> providedItemTypesX()
 	{

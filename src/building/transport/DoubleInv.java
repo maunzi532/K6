@@ -25,6 +25,8 @@ public interface DoubleInv
 		return true;
 	}
 
+	default void afterTrading(){}
+
 	default int inputPriority()
 	{
 		return 0;
@@ -34,6 +36,4 @@ public interface DoubleInv
 	{
 		return 0;
 	}
-
-	default void afterTrading(){}
 }
