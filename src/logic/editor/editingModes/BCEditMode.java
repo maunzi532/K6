@@ -1,6 +1,5 @@
 package logic.editor.editingModes;
 
-import building.transport.*;
 import geom.f1.*;
 import levelMap.*;
 import logic.*;
@@ -26,10 +25,7 @@ public class BCEditMode implements EditingMode
 		{
 			if(advTile.getBuilding() != null)
 			{
-				if(advTile.getBuilding() instanceof DoubleInv)
-				{
-					mainState.stateHolder.setState(new BuildingInvEditGUI((DoubleInv) advTile.getBuilding(), false));
-				}
+				mainState.stateHolder.setState(new BuildingInvEditGUI(advTile.getBuilding(), false));
 			}
 			else if(advTile.getEntity() != null)
 			{
@@ -44,10 +40,7 @@ public class BCEditMode implements EditingMode
 			}
 			else if(advTile.getBuilding() != null)
 			{
-				if(advTile.getBuilding() instanceof DoubleInv)
-				{
-					mainState.stateHolder.setState(new BuildingInvEditGUI((DoubleInv) advTile.getBuilding(), false));
-				}
+				mainState.stateHolder.setState(new BuildingInvEditGUI(advTile.getBuilding(), false));
 			}
 		}
 	}

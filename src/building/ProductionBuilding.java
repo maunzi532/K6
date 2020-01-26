@@ -14,7 +14,7 @@ import java.util.stream.*;
 import levelMap.*;
 import logic.xstate.*;
 
-public class ProductionBuilding extends Buildable implements DoubleInv
+public class ProductionBuilding extends Buildable
 {
 	private SlotInv inputInv;
 	private SlotInv outputInv;

@@ -64,9 +64,8 @@ public class StateControl2 implements XStateHolder, ConvInputConsumer
 	public void mousePosition(boolean insideGUI, Tile offsetGUITile, int menuOption,
 			int editorOption, Tile mapTile, boolean moved, boolean drag, XKey key)
 	{
-		if(state instanceof XGUIState)
+		if(state instanceof XGUIState xguiState)
 		{
-			XGUIState xguiState = (XGUIState) state;
 			if(moved)
 			{
 				if(insideGUI)
@@ -188,7 +187,7 @@ public class StateControl2 implements XStateHolder, ConvInputConsumer
 			}
 			else if(key.hasFunction("Menu"))
 			{
-				setState(new CharacterInvGUI((XHero) entity));
+				setState(new CharacterInvGUI(entity));
 			}
 		}
 		else if(entity instanceof XEnemy)
@@ -199,7 +198,7 @@ public class StateControl2 implements XStateHolder, ConvInputConsumer
 			}
 			else if(key.hasFunction("Menu"))
 			{
-				setState(new CharacterInvGUI((XEnemy) entity));
+				setState(new CharacterInvGUI(entity));
 			}
 		}
 	}
@@ -306,9 +305,8 @@ public class StateControl2 implements XStateHolder, ConvInputConsumer
 	@Override
 	public void tick()
 	{
-		if(state instanceof NAutoState)
+		if(state instanceof NAutoState autoState)
 		{
-			NAutoState autoState = (NAutoState) state;
 			autoState.tick(mainState);
 			if(autoState.finished())
 			{

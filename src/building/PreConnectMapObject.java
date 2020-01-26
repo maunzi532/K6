@@ -59,8 +59,8 @@ public class PreConnectMapObject implements DoubleInv
 	{
 		return switch(type)
 		{
-			case BUILDING -> (DoubleInv) levelMap.getBuilding(location);
-			case ENTITY -> (DoubleInv) levelMap.getEntity(location);
+			case BUILDING -> levelMap.getBuilding(location);
+			case ENTITY -> levelMap.getEntity(location);
 		};
 	}
 

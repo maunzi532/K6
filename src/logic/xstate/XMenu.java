@@ -1,13 +1,12 @@
 package logic.xstate;
 
 import building.*;
-import building.transport.*;
 import entity.*;
+import java.util.*;
 import levelMap.*;
 import logic.editor.xgui.*;
 import logic.editor.xstate.*;
 import logic.gui.guis.*;
-import java.util.*;
 
 public class XMenu
 {
@@ -69,15 +68,8 @@ public class XMenu
 
 	public static XMenu buildingEditMenu(MBuilding building)
 	{
-		if(building instanceof DoubleInv)
-		{
-			return new XMenu(new BuildingInvEditGUI((DoubleInv) building, false),
-					new BuildingInvEditGUI((DoubleInv) building, true));
-		}
-		else
-		{
-			return new XMenu();
-		}
+		return new XMenu(new BuildingInvEditGUI(building, false),
+				new BuildingInvEditGUI(building, true));
 	}
 
 	private List<NState> entries;

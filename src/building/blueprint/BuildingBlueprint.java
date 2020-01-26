@@ -10,8 +10,8 @@ public class BuildingBlueprint implements FullBlueprint
 {
 	public final String name;
 	public final ConstructionBlueprint constructionBlueprint;
-	public ProductionBlueprint productionBlueprint;
-	public TransporterBlueprint transporterBlueprint;
+	public final ProductionBlueprint productionBlueprint;
+	public final TransporterBlueprint transporterBlueprint;
 
 	public BuildingBlueprint(String name, ConstructionBlueprint constructionBlueprint,
 			ProductionBlueprint productionBlueprint, TransporterBlueprint transporterBlueprint)
@@ -29,9 +29,11 @@ public class BuildingBlueprint implements FullBlueprint
 		if(data.get("Production") != null)
 		{
 			productionBlueprint = new ProductionBlueprint((JrsObject) data.get("Production"), itemLoader);
+			transporterBlueprint = null;
 		}
 		else if(data.get("Transporter") != null)
 		{
+			productionBlueprint = null;
 			transporterBlueprint = new TransporterBlueprint((JrsObject) data.get("Transporter"));
 		}
 		else

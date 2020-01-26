@@ -30,9 +30,9 @@ public class GiveOrTakeState implements NMarkState
 		boolean levelStarted = mainState.turnCounter > 0;
 		List<Tile> range = mainState.y1.range(character.location(), 0, character.maxAccessRange());
 		possibleTargets = Stream.concat(range.stream().map(mainState.levelMap::getBuilding)
-				.filter(DoubleInv::isTargetable).map(e -> (DoubleInv) e),
+				.filter(DoubleInv::active).map(e -> (DoubleInv) e),
 				range.stream().map(mainState.levelMap::getEntity)
-						.filter(DoubleInv::isTargetable).map(e -> (DoubleInv) e))
+						.filter(DoubleInv::active).map(e -> (DoubleInv) e))
 				.filter(e -> e.playerTradeable(levelStarted)).collect(Collectors.toList());
 		visMarked = possibleTargets.stream().map(e -> new VisMark(e.location(), Color.YELLOW, e instanceof XEntity ? VisMark.d2 : VisMark.d1)).collect(Collectors.toList());
 	}

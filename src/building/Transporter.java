@@ -7,6 +7,7 @@ import com.fasterxml.jackson.jr.stree.*;
 import geom.f1.*;
 import item.*;
 import building.transport.*;
+import item.inv.*;
 import java.io.*;
 import java.util.*;
 import java.util.stream.*;
@@ -19,6 +20,7 @@ public class Transporter extends Buildable
 	private int range;
 	private int amount;
 	private InvTransporter invTransporter;
+	private BlockedInv inv;
 
 	public Transporter(Tile location, BuildingBlueprint blueprint)
 	{
@@ -28,6 +30,7 @@ public class Transporter extends Buildable
 		amount = blueprint.transporterBlueprint.amount;
 		targets = new ArrayList<>();
 		invTransporter = new InvTransporter(targets, targets, amount);
+		inv = new BlockedInv();
 	}
 
 	public Transporter(Tile location, CostBlueprint costs, ItemList refundable, BuildingBlueprint blueprint)
@@ -44,14 +47,14 @@ public class Transporter extends Buildable
 		return range;
 	}
 
-	public boolean isTarget(Object target)
+	public boolean isTarget(DoubleInv target)
 	{
-		return DoubleInv.isTargetable(target) && targets.contains(target);
+		return target.active() && targets.contains(target);
 	}
 
 	public Map<Tile, MarkType> targets(LevelMap levelMap)
 	{
-		return levelMap.y1.range(location(), 0, range).stream().filter(e -> levelMap.getBuilding(e) instanceof DoubleInv)
+		return levelMap.y1.range(location(), 0, range).stream().filter(e -> levelMap.getBuilding(e) != null)
 				.collect(Collectors.toMap(e -> e, e -> isTarget(levelMap.getBuilding(e)) ? MarkType.ON : MarkType.OFF));
 	}
 
@@ -91,8 +94,10 @@ public class Transporter extends Buildable
 		range = ((JrsNumber) data.get("Range")).getValue().intValue();
 		amount = ((JrsNumber) data.get("Amount")).getValue().intValue();
 		invTransporter = new InvTransporter(targets, targets, amount);
+		inv = new BlockedInv();
 	}
 
+	@Override
 	public <T extends ComposerBase> ObjectComposer<T> save(ObjectComposer<T> a1, ItemLoader itemLoader, TileType y1) throws
 			IOException
 	{
@@ -103,5 +108,23 @@ public class Transporter extends Buildable
 			a2 = new PreConnectMapObject(target.location(), target.type()).save(a2.startObject(), y1).end();
 		}
 		return a2.end().put("Range", range).put("Amount", amount);
+	}
+
+	@Override
+	public DoubleInvType type()
+	{
+		return DoubleInvType.BUILDING;
+	}
+
+	@Override
+	public Inv inputInv()
+	{
+		return inv;
+	}
+
+	@Override
+	public Inv outputInv()
+	{
+		return inv;
 	}
 }

@@ -24,7 +24,7 @@ public class TransportTargetsState implements NMarkState
 	public void onEnter(MainState mainState)
 	{
 		possibleTargets = mainState.y1.range(transporter.location(), 0, transporter.getRange()).stream()
-				.filter(e -> DoubleInv.isTargetable(mainState.levelMap.getBuilding(e)))
+				.filter(e -> mainState.levelMap.getBuilding(e).active())
 				.map(e -> (DoubleInv) mainState.levelMap.getBuilding(e)).collect(Collectors.toList());
 		createVisMarked();
 	}

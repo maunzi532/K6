@@ -5,11 +5,6 @@ import item.inv.*;
 
 public interface DoubleInv
 {
-	static boolean isTargetable(Object target)
-	{
-		return target instanceof DoubleInv && ((DoubleInv) target).active();
-	}
-
 	DoubleInvType type();
 
 	String name();
