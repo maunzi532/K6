@@ -1,5 +1,6 @@
 package levelMap;
 
+import building.adv.*;
 import entity.*;
 
 public class AdvTile
@@ -7,9 +8,9 @@ public class AdvTile
 	public static final AdvTile EMPTY = new AdvTile(null);
 
 	private FloorTile floorTile;
-	private MBuilding building;
+	private XBuilding building;
 	private XEntity entity;
-	private MBuilding owned;
+	private XBuilding owned;
 
 	public AdvTile(FloorTile floorTile)
 	{
@@ -21,7 +22,7 @@ public class AdvTile
 		return floorTile;
 	}
 
-	public MBuilding getBuilding()
+	public XBuilding getBuilding()
 	{
 		if(building != null && building.active())
 			return building;
@@ -33,7 +34,7 @@ public class AdvTile
 		return entity;
 	}
 
-	public MBuilding getOwned()
+	public XBuilding getOwned()
 	{
 		if(owned != null && owned.active())
 			return owned;
@@ -45,7 +46,7 @@ public class AdvTile
 		this.floorTile = floorTile;
 	}
 
-	public void setBuilding(MBuilding building)
+	public void setBuilding(XBuilding building)
 	{
 		this.building = building;
 	}
@@ -55,7 +56,7 @@ public class AdvTile
 		this.entity = entity;
 	}
 
-	public void setOwned(MBuilding owned)
+	public void setOwned(XBuilding owned)
 	{
 		this.owned = owned;
 	}

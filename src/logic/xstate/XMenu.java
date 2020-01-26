@@ -1,9 +1,8 @@
 package logic.xstate;
 
-import building.*;
+import building.adv.*;
 import entity.*;
 import java.util.*;
-import levelMap.*;
 import logic.editor.xgui.*;
 import logic.editor.xstate.*;
 import logic.gui.guis.*;
@@ -40,15 +39,15 @@ public class XMenu
 		return new XMenu(new CharacterInvGUI(enemy), new EndTurnState());
 	}
 
-	public static XMenu productionMenu(ProductionBuilding building)
+	public static XMenu productionMenu(XBuilding building, ProcessInv processInv)
 	{
-		return new XMenu(new ProductionFloorsState(building), new RecipeGUI(building),
-				new ProductionInvGUI(building));
+		return new XMenu(new ProductionFloorsState(building, processInv), new RecipeGUI(building, processInv),
+				new ProductionInvGUI(building, processInv));
 	}
 
-	public static XMenu transportMenu(Transporter transporter)
+	public static XMenu transportMenu(XBuilding building, Transport transport)
 	{
-		return new XMenu(new TransportTargetsState(transporter), new ProductionPhaseState());
+		return new XMenu(new TransportTargetsState(building, transport), new ProductionPhaseState());
 	}
 
 	public static XMenu entityEditMenu(XEntity entity)
@@ -66,7 +65,7 @@ public class XMenu
 		throw new RuntimeException();
 	}
 
-	public static XMenu buildingEditMenu(MBuilding building)
+	public static XMenu buildingEditMenu(XBuilding building)
 	{
 		return new XMenu(new BuildingInvEditGUI(building, false),
 				new BuildingInvEditGUI(building, true));

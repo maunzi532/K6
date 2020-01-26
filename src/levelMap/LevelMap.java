@@ -1,6 +1,7 @@
 package levelMap;
 
 import arrow.*;
+import building.adv.*;
 import com.fasterxml.jackson.jr.ob.*;
 import entity.*;
 import geom.f1.*;
@@ -14,7 +15,7 @@ public class LevelMap
 	public final TileType y1;
 	private final HashMap<Tile, AdvTile> advTiles;
 	private final List<Boolean> visibleSectors;
-	private final ArrayList<MBuilding> buildings;
+	private final ArrayList<XBuilding> buildings;
 	private final ArrayList<XHero> entitiesH;
 	private final ArrayList<XEnemy> entitiesE;
 	private final ArrayList<XEntity> entities3;
@@ -99,23 +100,23 @@ public class LevelMap
 			advTiles.put(t1, new AdvTile(floorTile));
 	}
 
-	public MBuilding getBuilding(Tile t1)
+	public XBuilding getBuilding(Tile t1)
 	{
 		return advTile(t1).getBuilding();
 	}
 
-	public void addBuilding(MBuilding building)
+	public void addBuilding(XBuilding building)
 	{
 		advTile(building.location()).setBuilding(building);
 		buildings.add(building);
 	}
 
-	public MBuilding getOwner(Tile t1)
+	public XBuilding getOwner(Tile t1)
 	{
 		return advTile(t1).getOwned();
 	}
 
-	public void addOwner(Tile t1, MBuilding building)
+	public void addOwner(Tile t1, XBuilding building)
 	{
 		advTile(t1).setOwned(building);
 	}
@@ -248,7 +249,7 @@ public class LevelMap
 			}
 			var a2 = a1.put("FloorTiles", Base64.getEncoder().encodeToString(sb.array()))
 					.startArrayField("Buildings");
-			for(MBuilding building : buildings)
+			for(XBuilding building : buildings)
 			{
 				if(building.active())
 					a2 = building.save(a2.startObject(), itemLoader, y1).end();

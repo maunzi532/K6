@@ -3,6 +3,7 @@ package building.adv;
 import building.blueprint.*;
 import building.transport.*;
 import com.fasterxml.jackson.jr.ob.comp.*;
+import com.fasterxml.jackson.jr.stree.*;
 import geom.f1.*;
 import item.*;
 import item.inv.*;
@@ -10,7 +11,7 @@ import java.io.*;
 import java.util.*;
 import levelMap.*;
 
-public class XBuilding implements MBuilding, DoubleInv
+public class XBuilding implements DoubleInv
 {
 	private final Tile location;
 	private final CostBlueprint costBlueprint;
@@ -27,6 +28,42 @@ public class XBuilding implements MBuilding, DoubleInv
 		claimed = new ArrayList<>();
 		this.function = function;
 		active = true;
+	}
+
+	public XBuilding(Tile location, CostBlueprint costBlueprint, ItemList refundable, BuildingBlueprint blueprint)
+	{
+		this.location = location;
+		this.costBlueprint = costBlueprint;
+		this.refundable = refundable;
+		claimed = new ArrayList<>();
+		if(blueprint.productionBlueprint != null)
+		{
+			function = new ProcessInv(blueprint.name, blueprint.productionBlueprint);
+		}
+		else if(blueprint.transporterBlueprint != null)
+		{
+			function = new Transport(blueprint.name, blueprint.transporterBlueprint);
+		}
+		else
+		{
+			throw new RuntimeException();
+		}
+		active = true;
+	}
+
+	public BuildingFunction function()
+	{
+		return function;
+	}
+
+	public CostBlueprint costBlueprint()
+	{
+		return costBlueprint;
+	}
+
+	public List<Tile> claimed()
+	{
+		return claimed;
 	}
 
 	@Override
@@ -89,37 +126,31 @@ public class XBuilding implements MBuilding, DoubleInv
 		return function.outputPriority();
 	}
 
-	@Override
 	public void remove()
 	{
 		active = false;
 	}
 
-	@Override
 	public void productionPhase(LevelMap levelMap)
 	{
 		function.productionPhase(canWork(levelMap, false), levelMap, location);
 	}
 
-	@Override
 	public void transportPhase(LevelMap levelMap)
 	{
 		function.transportPhase(canWork(levelMap, false), levelMap);
 	}
 
-	@Override
 	public void afterProduction()
 	{
 		function.afterProduction();
 	}
 
-	@Override
 	public void afterTransport()
 	{
 		function.afterTransport();
 	}
 
-	@Override
 	public void loadConnect(LevelMap levelMap)
 	{
 		for(Tile tile : claimed)
@@ -149,7 +180,7 @@ public class XBuilding implements MBuilding, DoubleInv
 
 	public void toggleTargetClaimed(Tile target, LevelMap levelMap)
 	{
-		MBuilding owner = levelMap.getOwner(target);
+		XBuilding owner = levelMap.getOwner(target);
 		if(owner == this)
 		{
 			levelMap.removeOwner(target);
@@ -187,10 +218,45 @@ public class XBuilding implements MBuilding, DoubleInv
 				&& ((unclaimed && levelMap.getOwner(t1) == null) || levelMap.getOwner(t1) == this);
 	}
 
-	@Override
-	public <T extends ComposerBase> ObjectComposer<T> save(ObjectComposer<T> a1, ItemLoader itemLoader, TileType y1)
-			throws IOException
+	public XBuilding(JrsObject data, ItemLoader itemLoader, TileType y1)
 	{
-		return null;
+		active = true;
+		location = y1.create2(((JrsNumber) data.get("sx")).getValue().intValue(), ((JrsNumber) data.get("sy")).getValue().intValue());
+		costBlueprint = new CostBlueprint((JrsObject) data.get("Costs"), itemLoader);
+		refundable = new ItemList((JrsArray) data.get("Refundable"), itemLoader);
+		claimed = new ArrayList<>();
+		if(data.get("Claimed") != null)
+		{
+			((JrsArray) data.get("Claimed")).elements().forEachRemaining(e ->
+					claimed.add(y1.create2(((JrsNumber) ((JrsObject) e).get("sx")).getValue().intValue(),
+							((JrsNumber) ((JrsObject) e).get("sy")).getValue().intValue())));
+		}
+		if(data.get("Recipes") != null)
+		{
+			function = new ProcessInv(data, itemLoader, y1);
+		}
+		else if(data.get("Amount") != null)
+		{
+			function = new Transport(data, itemLoader, y1);
+		}
+		else
+		{
+			throw new RuntimeException();
+		}
+	}
+
+	public <T extends ComposerBase> ObjectComposer<T> save(ObjectComposer<T> a1, ItemLoader itemLoader, TileType y1) throws IOException
+	{
+		var a2 = a1.put("sx", y1.sx(location))
+				.put("sy", y1.sy(location));
+		a2 = costBlueprint.save(a2.startObjectField("Costs"), itemLoader).end();
+		a2 = refundable.save(a2.startArrayField("Refundable"), itemLoader).end();
+		var a3 = a2.startArrayField("Claimed");
+		for(Tile tile : claimed)
+		{
+			a3 = a3.startObject().put("sx", y1.sx(tile)).put("sy", y1.sy(tile)).end();
+		}
+		a2 = a3.end();
+		return function.save(a2, itemLoader, y1);
 	}
 }

@@ -1,5 +1,6 @@
 package logic.xstate;
 
+import building.adv.*;
 import building.transport.*;
 import entity.*;
 import geom.f1.*;
@@ -29,11 +30,11 @@ public class GiveOrTakeState implements NMarkState
 		mainState.sideInfoFrame.setSideInfoXH(character.standardSideInfo(), character);
 		boolean levelStarted = mainState.turnCounter > 0;
 		List<Tile> range = mainState.y1.range(character.location(), 0, character.maxAccessRange());
-		possibleTargets = Stream.concat(range.stream().map(mainState.levelMap::getBuilding)
-				.filter(DoubleInv::active).map(e -> (DoubleInv) e),
-				range.stream().map(mainState.levelMap::getEntity)
-						.filter(DoubleInv::active).map(e -> (DoubleInv) e))
-				.filter(e -> e.playerTradeable(levelStarted)).collect(Collectors.toList());
+		possibleTargets = new ArrayList<>();
+		range.stream().map(e -> (DoubleInv) mainState.levelMap.getBuilding(e))
+				.filter(e -> e != null && e.active() && e.playerTradeable(levelStarted)).forEachOrdered(possibleTargets::add);
+		range.stream().map(e -> (DoubleInv) mainState.levelMap.getEntity(e))
+				.filter(e -> e != null && e.active() && e.playerTradeable(levelStarted)).forEachOrdered(possibleTargets::add);
 		visMarked = possibleTargets.stream().map(e -> new VisMark(e.location(), Color.YELLOW, e instanceof XEntity ? VisMark.d2 : VisMark.d1)).collect(Collectors.toList());
 	}
 
@@ -87,7 +88,7 @@ public class GiveOrTakeState implements NMarkState
 			{
 				for(DoubleInv inv1 : list)
 				{
-					if(inv1 instanceof MBuilding)
+					if(inv1 instanceof XBuilding)
 					{
 						startTradeState(mainState, stateHolder, inv1, levelStarted);
 						break;

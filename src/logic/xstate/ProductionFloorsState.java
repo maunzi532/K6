@@ -1,6 +1,6 @@
 package logic.xstate;
 
-import building.*;
+import building.adv.*;
 import geom.f1.*;
 import java.util.*;
 import java.util.stream.*;
@@ -10,19 +10,21 @@ import logic.*;
 
 public class ProductionFloorsState implements NMarkState
 {
-	private ProductionBuilding building;
+	private final XBuilding building;
+	private final ProcessInv processInv;
 	private List<Tile> targetableTiles;
 	private List<VisMark> visMarked;
 
-	public ProductionFloorsState(ProductionBuilding building)
+	public ProductionFloorsState(XBuilding building, ProcessInv processInv)
 	{
 		this.building = building;
+		this.processInv = processInv;
 	}
 
 	@Override
 	public void onEnter(MainState mainState)
 	{
-		targetableTiles = building.getCosts().requiredFloorTiles.stream().flatMap(flt -> mainState.y1
+		targetableTiles = building.costBlueprint().requiredFloorTiles.stream().flatMap(flt -> mainState.y1
 				.range(building.location(), flt.minRange, flt.maxRange).stream()
 				.filter(e -> mainState.levelMap.getFloor(e) != null && mainState.levelMap.getFloor(e).type == flt.floorTileType)).collect(Collectors.toList());
 		createVisMarked();
@@ -30,7 +32,7 @@ public class ProductionFloorsState implements NMarkState
 
 	private void createVisMarked()
 	{
-		visMarked = targetableTiles.stream().map(e -> new VisMark(e, building.getClaimed().contains(e) ? Color.BLUE : Color.YELLOW, VisMark.d1)).collect(Collectors.toList());
+		visMarked = targetableTiles.stream().map(e -> new VisMark(e, building.claimed().contains(e) ? Color.BLUE : Color.YELLOW, VisMark.d1)).collect(Collectors.toList());
 	}
 
 	@Override
@@ -48,7 +50,7 @@ public class ProductionFloorsState implements NMarkState
 	@Override
 	public XMenu menu()
 	{
-		return XMenu.productionMenu(building);
+		return XMenu.productionMenu(building, processInv);
 	}
 
 	@Override
@@ -56,7 +58,7 @@ public class ProductionFloorsState implements NMarkState
 	{
 		if(targetableTiles.contains(mapTile))
 		{
-			building.toggleTarget(mapTile, mainState.levelMap);
+			building.toggleTargetClaimed(mapTile, mainState.levelMap);
 			createVisMarked();
 		}
 		else

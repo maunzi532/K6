@@ -1,5 +1,6 @@
 package building;
 
+import building.adv.*;
 import building.blueprint.*;
 import geom.f1.*;
 import item.*;
@@ -18,15 +19,8 @@ public interface XBuilder
 
 	default void buildBuilding(LevelMap levelMap, CostBlueprint costs, ItemList refundable, BuildingBlueprint blueprint)
 	{
-		if(blueprint.productionBlueprint != null)
-		{
-			ProductionBuilding building = new ProductionBuilding(location(), costs, refundable, blueprint);
-			levelMap.addBuilding(building);
-			building.claimFloor(levelMap);
-		}
-		else if(blueprint.transporterBlueprint != null)
-		{
-			levelMap.addBuilding(new Transporter(location(), costs, refundable, blueprint));
-		}
+		XBuilding building = new XBuilding(location(), costs, refundable, blueprint);
+		levelMap.addBuilding(building);
+		building.autoClaimFloor(levelMap);
 	}
 }

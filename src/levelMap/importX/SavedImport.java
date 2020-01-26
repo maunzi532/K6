@@ -1,17 +1,14 @@
 package levelMap.importX;
 
-import building.*;
+import building.adv.*;
 import com.fasterxml.jackson.jr.ob.*;
 import com.fasterxml.jackson.jr.stree.*;
-import geom.f1.*;
-import item.*;
 import item.inv.*;
 import java.io.*;
 import java.nio.*;
 import java.nio.file.*;
 import java.util.*;
 import javafx.stage.*;
-import levelMap.*;
 import logic.*;
 
 public class SavedImport
@@ -51,10 +48,10 @@ public class SavedImport
 				{
 					mainState.levelMap.createTile(sb.get(), sb.get(), sb.get(), sb.get());
 				}
-				List<MBuilding> buildings = new ArrayList<>();
+				List<XBuilding> buildings = new ArrayList<>();
 				((JrsArray) tree.get("Buildings")).elements().forEachRemaining(e ->
 				{
-					MBuilding building = loadBuilding((JrsObject) e, mainState.itemLoader, mainState.y1);
+					XBuilding building = new XBuilding((JrsObject) e, mainState.itemLoader, mainState.y1);
 					buildings.add(building);
 					mainState.levelMap.addBuilding(building);
 				});
@@ -70,18 +67,5 @@ public class SavedImport
 		{
 			throw new RuntimeException(e);
 		}
-	}
-
-	private MBuilding loadBuilding(JrsObject data, ItemLoader itemLoader, TileType y1)
-	{
-		if(data.get("Recipes") != null)
-		{
-			return new ProductionBuilding(data, itemLoader, y1);
-		}
-		if(data.get("Amount") != null)
-		{
-			return new Transporter(data, itemLoader, y1);
-		}
-		throw new RuntimeException();
 	}
 }

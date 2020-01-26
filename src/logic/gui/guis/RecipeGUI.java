@@ -1,6 +1,6 @@
 package logic.gui.guis;
 
-import building.*;
+import building.adv.*;
 import building.blueprint.*;
 import item.*;
 import item.inv.*;
@@ -17,20 +17,22 @@ public class RecipeGUI extends XGUIState
 	private static final CTile next = new CTile(6, 1, new GuiTile("Next"));
 	private static final CTile arrow = new CTile(3, 1, new GuiTile(null, XGUIState.ARROW, false, null));
 
-	private ProductionBuilding building;
+	private final XBuilding building;
+	private final ProcessInv processInv;
 	private int recipeNum;
 	private ScrollList<ItemStack> requireView;
 	private ScrollList<ItemStack> resultView;
 
-	public RecipeGUI(ProductionBuilding building)
+	public RecipeGUI(XBuilding building, ProcessInv processInv)
 	{
 		this.building = building;
+		this.processInv = processInv;
 	}
 
 	@Override
 	public void onEnter(MainState mainState)
 	{
-		recipeNum = building.lastViewedRecipeNum;
+		recipeNum = processInv.lastViewedRecipeNum;
 		requireView = new ScrollList<>(1, 1, 2, 5, 2, 1, null,
 				this::elementViewRequired, null);
 		elements.add(requireView);
@@ -40,7 +42,7 @@ public class RecipeGUI extends XGUIState
 		elements.add(new CElement(textRequires));
 		elements.add(new CElement(textResults));
 		elements.add(new CElement(prev, true, () -> recipeNum > 0, () -> recipeNum--));
-		elements.add(new CElement(next, true, () -> recipeNum < building.getRecipes().size() - 1, () -> recipeNum++));
+		elements.add(new CElement(next, true, () -> recipeNum < processInv.recipes().size() - 1, () -> recipeNum++));
 		elements.add(new CElement(arrow));
 		update();
 	}
@@ -60,7 +62,7 @@ public class RecipeGUI extends XGUIState
 	@Override
 	public XMenu menu()
 	{
-		return XMenu.productionMenu(building);
+		return XMenu.productionMenu(building, processInv);
 	}
 
 	@Override
@@ -78,14 +80,14 @@ public class RecipeGUI extends XGUIState
 	@Override
 	protected void updateBeforeDraw()
 	{
-		Recipe recipe = building.getRecipes().get(recipeNum);
+		Recipe recipe = processInv.recipes().get(recipeNum);
 		requireView.elements = recipe.required.items;
 		resultView.elements = recipe.results.items;
 	}
 
 	public GuiTile[] elementViewRequired(ItemStack stack)
 	{
-		Inv inv = building.getInputInv();
+		Inv inv = building.inputInv();
 		ItemView itemView = inv.viewRecipeItem(stack.item);
 		return new GuiTile[]
 				{
@@ -96,7 +98,7 @@ public class RecipeGUI extends XGUIState
 
 	public GuiTile[] elementViewResults(ItemStack stack)
 	{
-		Inv inv = building.getOutputInv();
+		Inv inv = building.outputInv();
 		ItemView itemView = inv.viewRecipeItem(stack.item);
 		return new GuiTile[]
 				{
@@ -108,7 +110,7 @@ public class RecipeGUI extends XGUIState
 	@Override
 	public void close(XStateHolder stateHolder)
 	{
-		building.lastViewedRecipeNum = recipeNum;
+		processInv.lastViewedRecipeNum = recipeNum;
 		super.close(stateHolder);
 	}
 }

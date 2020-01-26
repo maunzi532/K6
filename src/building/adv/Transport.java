@@ -2,9 +2,14 @@ package building.adv;
 
 import arrow.*;
 import building.*;
+import building.blueprint.*;
 import building.transport.*;
+import com.fasterxml.jackson.jr.ob.comp.*;
+import com.fasterxml.jackson.jr.stree.*;
 import geom.f1.*;
+import item.*;
 import item.inv.*;
+import java.io.*;
 import java.util.*;
 import java.util.stream.*;
 import levelMap.*;
@@ -25,6 +30,20 @@ public class Transport implements BuildingFunction
 		this.amount = amount;
 		targets = new ArrayList<>();
 		invTransporter = new InvTransporter(targets, targets, amount);
+	}
+
+	public Transport(String name, TransporterBlueprint blueprint)
+	{
+		this.name = name;
+		range = blueprint.range;
+		amount = blueprint.amount;
+		targets = new ArrayList<>();
+		invTransporter = new InvTransporter(targets, targets, amount);
+	}
+
+	public int range()
+	{
+		return range;
 	}
 
 	@Override
@@ -103,5 +122,30 @@ public class Transport implements BuildingFunction
 		{
 			targets.add(target);
 		}
+	}
+
+	public Transport(JrsObject data, ItemLoader itemLoader, TileType y1)
+	{
+		name = data.get("Name").asText();
+		range = ((JrsNumber) data.get("Range")).getValue().intValue();
+		amount = ((JrsNumber) data.get("Amount")).getValue().intValue();
+		targets = new ArrayList<>();
+		((JrsArray) data.get("Targets")).elements().forEachRemaining(e -> targets.add(new PreConnectMapObject((JrsObject) e, y1)));
+		invTransporter = new InvTransporter(targets, targets, amount);
+	}
+
+	@Override
+	public <T extends ComposerBase> ObjectComposer<T> save(ObjectComposer<T> a1, ItemLoader itemLoader, TileType y1)
+			throws IOException
+	{
+		a1 = a1.put("Name", name);
+		a1 = a1.put("Range", range);
+		a1 = a1.put("Amount", amount);
+		var a2 = a1.startArrayField("Targets");
+		for(DoubleInv target : targets)
+		{
+			a2 = new PreConnectMapObject(target.location(), target.type()).save(a2.startObject(), y1).end();
+		}
+		return a2.end();
 	}
 }

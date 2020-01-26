@@ -1,7 +1,10 @@
 package building.adv;
 
+import com.fasterxml.jackson.jr.ob.comp.*;
 import geom.f1.*;
+import item.*;
 import item.inv.*;
+import java.io.*;
 import levelMap.*;
 
 public interface BuildingFunction
@@ -35,4 +38,6 @@ public interface BuildingFunction
 	void afterTransport();
 
 	void loadConnect(LevelMap levelMap, XBuilding connectTo);
+
+	<T extends ComposerBase> ObjectComposer<T> save(ObjectComposer<T> a1, ItemLoader itemLoader, TileType y1) throws IOException;
 }

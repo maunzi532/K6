@@ -116,9 +116,7 @@ public class MainState
 
 	//TODO save transporter history
 	//TODO Refactor sectors
-	//TODO remove MarkType class
 	//TODO XHero and XEnemy not extending XEnemy
-	//TODO ProductionBuilding and Transporter not extending Buildable
 
 	//TODO scale tiles, menubar, gui when resizing
 	//TODO Make menu bar not overlap with SideInfo

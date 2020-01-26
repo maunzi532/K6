@@ -1,17 +1,19 @@
 package logic.gui.guis;
 
-import building.*;
+import building.adv.*;
 import logic.*;
 import logic.xstate.*;
 
 public class ProductionInvGUI extends Inv2GUI
 {
-	private ProductionBuilding building;
+	private final XBuilding building;
+	private final ProcessInv processInv;
 
-	public ProductionInvGUI(ProductionBuilding building)
+	public ProductionInvGUI(XBuilding building, ProcessInv processInv)
 	{
 		super(building);
 		this.building = building;
+		this.processInv = processInv;
 	}
 
 	@Override
@@ -36,6 +38,6 @@ public class ProductionInvGUI extends Inv2GUI
 	@Override
 	public XMenu menu()
 	{
-		return XMenu.productionMenu(building);
+		return XMenu.productionMenu(building, processInv);
 	}
 }

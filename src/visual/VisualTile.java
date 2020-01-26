@@ -6,12 +6,15 @@ import geom.d1.*;
 import geom.f1.*;
 import java.util.*;
 import javafx.scene.canvas.*;
+import javafx.scene.image.*;
 import javafx.scene.paint.*;
 import javafx.scene.text.*;
 import levelMap.*;
 
 public class VisualTile
 {
+	private static final Image BUILDING = new Image("H.png");
+
 	private final TileType y1;
 	private final ArrowViewer av;
 	private LevelMap levelMap;
@@ -74,7 +77,7 @@ public class VisualTile
 			if(advTile.getBuilding() != null)
 			{
 				PointD midPoint = layout.tileToPixel(t1);
-				gd.drawImage(MBuilding.IMAGE, midPoint.v()[0] - layout.size().v()[0], midPoint.v()[1] - layout.size().v()[1],
+				gd.drawImage(BUILDING, midPoint.v()[0] - layout.size().v()[0], midPoint.v()[1] - layout.size().v()[1],
 						layout.size().v()[0] * 2, layout.size().v()[1] * 2);
 			}
 		}

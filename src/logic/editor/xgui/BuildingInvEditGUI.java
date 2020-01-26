@@ -1,16 +1,16 @@
 package logic.editor.xgui;
 
+import building.adv.*;
 import building.transport.*;
 import java.util.*;
-import levelMap.*;
 import logic.xstate.*;
 
 public class BuildingInvEditGUI extends InvEditGUI
 {
-	private DoubleInv doubleInv;
+	private XBuilding doubleInv;
 	private boolean editOutput;
 
-	public BuildingInvEditGUI(DoubleInv doubleInv, boolean editOutput)
+	public BuildingInvEditGUI(XBuilding doubleInv, boolean editOutput)
 	{
 		super(editOutput ? doubleInv.outputInv() : doubleInv.inputInv(), doubleInv.name(), List.of());
 		this.doubleInv = doubleInv;
@@ -38,6 +38,6 @@ public class BuildingInvEditGUI extends InvEditGUI
 	@Override
 	public XMenu menu()
 	{
-		return XMenu.buildingEditMenu((MBuilding) doubleInv);
+		return XMenu.buildingEditMenu(doubleInv);
 	}
 }

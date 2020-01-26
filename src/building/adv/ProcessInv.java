@@ -2,8 +2,12 @@ package building.adv;
 
 import arrow.*;
 import building.blueprint.*;
+import com.fasterxml.jackson.jr.ob.comp.*;
+import com.fasterxml.jackson.jr.stree.*;
 import geom.f1.*;
+import item.*;
 import item.inv.*;
+import java.io.*;
 import java.util.*;
 import levelMap.*;
 import logic.xstate.*;
@@ -23,6 +27,20 @@ public class ProcessInv implements BuildingFunction
 		this.outputInv = outputInv;
 		this.recipes = recipes;
 		lastViewedRecipeNum = 0;
+	}
+
+	public ProcessInv(String name, ProductionBlueprint blueprint)
+	{
+		this.name = name;
+		inputInv = new SlotInv(blueprint.inputLimits);
+		outputInv = new SlotInv(blueprint.outputLimits);
+		recipes = blueprint.recipes;
+		lastViewedRecipeNum = 0;
+	}
+
+	public List<Recipe> recipes()
+	{
+		return recipes;
 	}
 
 	@Override
@@ -96,4 +114,29 @@ public class ProcessInv implements BuildingFunction
 
 	@Override
 	public void loadConnect(LevelMap levelMap, XBuilding connectTo){}
+
+	public ProcessInv(JrsObject data, ItemLoader itemLoader, TileType y1)
+	{
+		name = data.get("Name").asText();
+		inputInv = new SlotInv((JrsObject) data.get("InputInv"), itemLoader);
+		outputInv = new SlotInv((JrsObject) data.get("OutputInv"), itemLoader);
+		recipes = new ArrayList<>();
+		((JrsArray) data.get("Recipes")).elements().forEachRemaining(e -> recipes.add(new Recipe((JrsObject) e, itemLoader)));
+		lastViewedRecipeNum = 0;
+	}
+
+	@Override
+	public <T extends ComposerBase> ObjectComposer<T> save(ObjectComposer<T> a1, ItemLoader itemLoader, TileType y1)
+			throws IOException
+	{
+		a1 = a1.put("Name", name);
+		a1 = inputInv.save(a1.startObjectField("InputInv"), itemLoader).end();
+		a1 = outputInv.save(a1.startObjectField("OutputInv"), itemLoader).end();
+		var a2 = a1.startArrayField("Recipes");
+		for(Recipe recipe : recipes)
+		{
+			a2 = recipe.save(a2.startObject(), itemLoader).end();
+		}
+		return a2.end();
+	}
 }

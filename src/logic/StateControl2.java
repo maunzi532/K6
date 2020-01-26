@@ -1,6 +1,6 @@
 package logic;
 
-import building.*;
+import building.adv.*;
 import entity.*;
 import geom.f1.*;
 import java.util.*;
@@ -203,28 +203,28 @@ public class StateControl2 implements XStateHolder, ConvInputConsumer
 		}
 	}
 
-	private void onClickBuilding(MBuilding building, XKey key)
+	private void onClickBuilding(XBuilding building, XKey key)
 	{
-		if(building instanceof ProductionBuilding)
+		if(building.function() instanceof ProcessInv processInv)
 		{
 			if(key.hasFunction("Choose"))
 			{
-				setState(new ProductionFloorsState((ProductionBuilding) building));
+				setState(new ProductionFloorsState(building, processInv));
 			}
 			else if(key.hasFunction("Menu"))
 			{
-				setState(new ProductionInvGUI((ProductionBuilding) building));
+				setState(new ProductionInvGUI(building, processInv));
 			}
 		}
-		else if(building instanceof Transporter)
+		else if(building.function() instanceof Transport transport)
 		{
 			if(key.hasFunction("Choose"))
 			{
-				setState(new TransportTargetsState((Transporter) building));
+				setState(new TransportTargetsState(building, transport));
 			}
 			else if(key.hasFunction("Menu"))
 			{
-				//setState(new TransportTargetsState((Transporter) building));
+				//setState(new TransportTargetsState(building, transport));
 			}
 		}
 	}

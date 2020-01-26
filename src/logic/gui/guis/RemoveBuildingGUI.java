@@ -1,6 +1,6 @@
 package logic.gui.guis;
 
-import building.*;
+import building.adv.*;
 import entity.*;
 import item.*;
 import item.inv.*;
@@ -16,7 +16,7 @@ public class RemoveBuildingGUI extends XGUIState
 	private static final CTile remove = new CTile(2, 5, new GuiTile("Remove"), 2, 1);
 
 	private final XHero character;
-	private Buildable building;
+	private XBuilding building;
 
 	public RemoveBuildingGUI(XHero character)
 	{
@@ -27,8 +27,8 @@ public class RemoveBuildingGUI extends XGUIState
 	public void onEnter(MainState mainState)
 	{
 		mainState.sideInfoFrame.setSideInfoXH(character.standardSideInfo(), character);
-		building = (Buildable) mainState.levelMap.getBuilding(character.location());
-		ItemList refunds = building.getRefundable();
+		building = mainState.levelMap.getBuilding(character.location());
+		ItemList refunds = building.allRefundable();
 		character.inputInv().tryAdd(refunds, true, CommitType.LEAVE);
 		InvNumView weightView = character.inputInv().viewInvWeight();
 		ScrollList<ItemView> invView = new ScrollList<>(0, 1, 3, 4, 2, 1,
@@ -55,7 +55,7 @@ public class RemoveBuildingGUI extends XGUIState
 	@Override
 	public boolean keepInMenu(MainState mainState)
 	{
-		return character.ready(1) && mainState.levelMap.getBuilding(character.location()) instanceof Buildable;
+		return character.ready(1) && mainState.levelMap.getBuilding(character.location()) != null;
 	}
 
 	@Override

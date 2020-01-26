@@ -4,13 +4,14 @@ import building.*;
 import building.blueprint.*;
 import entity.*;
 import file.*;
-import levelMap.*;
+import javafx.scene.image.*;
 import logic.*;
 import logic.gui.*;
 import logic.xstate.*;
 
 public class SelectBuildingGUI extends XGUIState
 {
+	private static final Image BUILDING = new Image("H.png");
 	private static final CTile textInv = new CTile(2, 0, new GuiTile("Buildings"), 2, 1);
 
 	private final XBuilder builder;
@@ -90,7 +91,7 @@ public class SelectBuildingGUI extends XGUIState
 		return new GuiTile[]
 				{
 						new GuiTile(blueprint.name),
-						new GuiTile(null, MBuilding.IMAGE, false, null)
+						new GuiTile(null, BUILDING, false, null)
 				};
 	}
 }

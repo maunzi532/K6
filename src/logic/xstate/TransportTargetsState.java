@@ -1,6 +1,6 @@
 package logic.xstate;
 
-import building.*;
+import building.adv.*;
 import building.transport.*;
 import geom.f1.*;
 import java.util.*;
@@ -11,27 +11,29 @@ import logic.*;
 
 public class TransportTargetsState implements NMarkState
 {
-	private Transporter transporter;
+	private final XBuilding building;
+	private final Transport transport;
 	private List<DoubleInv> possibleTargets;
 	private List<VisMark> visMarked;
 
-	public TransportTargetsState(Transporter transporter)
+	public TransportTargetsState(XBuilding building, Transport transport)
 	{
-		this.transporter = transporter;
+		this.building = building;
+		this.transport = transport;
 	}
 
 	@Override
 	public void onEnter(MainState mainState)
 	{
-		possibleTargets = mainState.y1.range(transporter.location(), 0, transporter.getRange()).stream()
-				.filter(e -> mainState.levelMap.getBuilding(e).active())
-				.map(e -> (DoubleInv) mainState.levelMap.getBuilding(e)).collect(Collectors.toList());
+		possibleTargets = mainState.y1.range(building.location(), 0, transport.range()).stream()
+				.map(e -> (DoubleInv) mainState.levelMap.getBuilding(e))
+				.filter(e -> e != null && e.active()).collect(Collectors.toList());
 		createVisMarked();
 	}
 
 	private void createVisMarked()
 	{
-		visMarked = possibleTargets.stream().map(e -> new VisMark(e.location(), transporter.isTarget(e) ? Color.BLUE : Color.YELLOW, VisMark.d1)).collect(Collectors.toList());
+		visMarked = possibleTargets.stream().map(e -> new VisMark(e.location(), transport.isTarget(e) ? Color.BLUE : Color.YELLOW, VisMark.d1)).collect(Collectors.toList());
 	}
 
 	@Override
@@ -49,7 +51,7 @@ public class TransportTargetsState implements NMarkState
 	@Override
 	public XMenu menu()
 	{
-		return XMenu.transportMenu(transporter);
+		return XMenu.transportMenu(building, transport);
 	}
 
 	@Override
@@ -62,7 +64,7 @@ public class TransportTargetsState implements NMarkState
 		}
 		else
 		{
-			list.forEach(e -> transporter.toggleTarget(e));
+			list.forEach(transport::toggleTarget);
 			createVisMarked();
 		}
 	}
