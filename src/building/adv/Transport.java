@@ -2,7 +2,6 @@ package building.adv;
 
 import arrow.*;
 import building.*;
-import building.blueprint.*;
 import building.transport.*;
 import geom.f1.*;
 import item.inv.*;
@@ -56,24 +55,27 @@ public class Transport implements BuildingFunction
 	public void afterTrading(){}
 
 	@Override
-	public void productionPhase(LevelMap levelMap, CostBlueprint costBlueprint, Tile location){}
+	public void productionPhase(boolean canWork, LevelMap levelMap, Tile location){}
+
+	@Override
+	public void transportPhase(boolean canWork, LevelMap levelMap)
+	{
+		targets.removeIf(e -> !e.active());
+		if(canWork)
+		{
+			Optional<PossibleTransport> transportOpt = invTransporter.transport();
+			if(transportOpt.isPresent())
+			{
+				PossibleTransport transport = transportOpt.get();
+				invTransporter.doTheTransport(transport);
+				levelMap.addArrow(ShineArrow.factory(transport.from().location(), transport.to().location(),
+						TransportPhaseState.TRANSPORT_TIME, false, transport.item().image()));
+			}
+		}
+	}
 
 	@Override
 	public void afterProduction(){}
-
-	@Override
-	public void transportPhase(LevelMap levelMap)
-	{
-		targets.removeIf(e -> !e.active());
-		Optional<PossibleTransport> transportOpt = invTransporter.transport();
-		if(transportOpt.isPresent())
-		{
-			PossibleTransport transport = transportOpt.get();
-			invTransporter.doTheTransport(transport);
-			levelMap.addArrow(ShineArrow.factory(transport.from().location(), transport.to().location(),
-					TransportPhaseState.TRANSPORT_TIME, false, transport.item().image()));
-		}
-	}
 
 	@Override
 	public void afterTransport(){}

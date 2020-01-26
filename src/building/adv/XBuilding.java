@@ -7,6 +7,7 @@ import geom.f1.*;
 import item.*;
 import item.inv.*;
 import java.io.*;
+import java.util.*;
 import levelMap.*;
 
 public class XBuilding implements MBuilding, DoubleInv
@@ -14,6 +15,7 @@ public class XBuilding implements MBuilding, DoubleInv
 	private final Tile location;
 	private final CostBlueprint costBlueprint;
 	private final ItemList refundable;
+	private final List<Tile> claimed;
 	private final BuildingFunction function;
 	private boolean active;
 
@@ -22,6 +24,7 @@ public class XBuilding implements MBuilding, DoubleInv
 		this.location = location;
 		this.costBlueprint = costBlueprint;
 		this.refundable = refundable;
+		claimed = new ArrayList<>();
 		this.function = function;
 		active = true;
 	}
@@ -95,19 +98,19 @@ public class XBuilding implements MBuilding, DoubleInv
 	@Override
 	public void productionPhase(LevelMap levelMap)
 	{
-		function.productionPhase(levelMap, costBlueprint, location);
+		function.productionPhase(canWork(levelMap, false), levelMap, location);
+	}
+
+	@Override
+	public void transportPhase(LevelMap levelMap)
+	{
+		function.transportPhase(canWork(levelMap, false), levelMap);
 	}
 
 	@Override
 	public void afterProduction()
 	{
 		function.afterProduction();
-	}
-
-	@Override
-	public void transportPhase(LevelMap levelMap)
-	{
-		function.transportPhase(levelMap);
 	}
 
 	@Override
@@ -119,7 +122,17 @@ public class XBuilding implements MBuilding, DoubleInv
 	@Override
 	public void loadConnect(LevelMap levelMap)
 	{
+		for(Tile tile : claimed)
+		{
+			levelMap.addOwner(tile, this);
+		}
 		function.loadConnect(levelMap, this);
+	}
+
+	public boolean canWork(LevelMap levelMap, boolean unclaimed)
+	{
+		return costBlueprint.requiredFloorTiles.stream().noneMatch(rft -> levelMap.y1.range(location, rft.minRange, rft.maxRange).stream()
+				.filter(e -> okTile(e, levelMap, rft, unclaimed)).count() < rft.amount);
 	}
 
 	public ItemList allRefundable()
@@ -132,6 +145,46 @@ public class XBuilding implements MBuilding, DoubleInv
 		{
 			return refundable.add(function.inputInv().allItems()).add(function.outputInv().allItems());
 		}
+	}
+
+	public void toggleTargetClaimed(Tile target, LevelMap levelMap)
+	{
+		MBuilding owner = levelMap.getOwner(target);
+		if(owner == this)
+		{
+			levelMap.removeOwner(target);
+			claimed.remove(target);
+		}
+		else if(owner == null)
+		{
+			levelMap.addOwner(target, this);
+			claimed.add(target);
+		}
+	}
+
+	public void autoClaimFloor(LevelMap levelMap)
+	{
+		for(RequiresFloorTiles rft : costBlueprint.requiredFloorTiles)
+		{
+			int count = 0;
+			for(Tile t1 : levelMap.y1.range(location, rft.minRange, rft.maxRange))
+			{
+				if(okTile(t1, levelMap, rft, true))
+				{
+					levelMap.addOwner(t1, this);
+					claimed.add(t1);
+					count++;
+					if(count >= rft.amount)
+						break;
+				}
+			}
+		}
+	}
+
+	private boolean okTile(Tile t1, LevelMap levelMap, RequiresFloorTiles rft, boolean unclaimed)
+	{
+		return levelMap.getFloor(t1) != null && levelMap.getFloor(t1).type == rft.floorTileType
+				&& ((unclaimed && levelMap.getOwner(t1) == null) || levelMap.getOwner(t1) == this);
 	}
 
 	@Override

@@ -15,9 +15,9 @@ public interface MBuilding extends DoubleInv
 
 	default void productionPhase(LevelMap levelMap){}
 
-	default void afterProduction(){}
-
 	default void transportPhase(LevelMap levelMap){}
+
+	default void afterProduction(){}
 
 	default void afterTransport(){}
 

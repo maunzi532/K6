@@ -14,16 +14,14 @@ public class ProcessInv implements BuildingFunction
 	private final Inv inputInv;
 	private final Inv outputInv;
 	private final List<Recipe> recipes;
-	private final List<Tile> claimed;
 	public int lastViewedRecipeNum;
 
-	public ProcessInv(String name, Inv inputInv, Inv outputInv, List<Recipe> recipes, List<Tile> claimed)
+	public ProcessInv(String name, Inv inputInv, Inv outputInv, List<Recipe> recipes)
 	{
 		this.name = name;
 		this.inputInv = inputInv;
 		this.outputInv = outputInv;
 		this.recipes = recipes;
-		this.claimed = claimed;
 		lastViewedRecipeNum = 0;
 	}
 
@@ -55,9 +53,9 @@ public class ProcessInv implements BuildingFunction
 	public void afterTrading(){}
 
 	@Override
-	public void productionPhase(LevelMap levelMap, CostBlueprint costBlueprint, Tile location)
+	public void productionPhase(boolean canWork, LevelMap levelMap, Tile location)
 	{
-		if(canWork(levelMap, costBlueprint, location, false))
+		if(canWork)
 		{
 			for(Recipe recipe : recipes)
 			{
@@ -80,14 +78,14 @@ public class ProcessInv implements BuildingFunction
 	}
 
 	@Override
+	public void transportPhase(boolean canWork, LevelMap levelMap){}
+
+	@Override
 	public void afterProduction()
 	{
 		inputInv.commit();
 		outputInv.commit();
 	}
-
-	@Override
-	public void transportPhase(LevelMap levelMap){}
 
 	@Override
 	public void afterTransport()
@@ -97,57 +95,5 @@ public class ProcessInv implements BuildingFunction
 	}
 
 	@Override
-	public void loadConnect(LevelMap levelMap, XBuilding connectTo)
-	{
-		for(Tile tile : claimed)
-		{
-			levelMap.addOwner(tile, connectTo);
-		}
-	}
-
-	public void claimFloor(LevelMap levelMap, CostBlueprint costBlueprint, Tile location, XBuilding connectTo)
-	{
-		for(RequiresFloorTiles rft : costBlueprint.requiredFloorTiles)
-		{
-			int count = 0;
-			for(Tile t1 : levelMap.y1.range(location, rft.minRange, rft.maxRange))
-			{
-				if(okTile(t1, levelMap, rft, true))
-				{
-					levelMap.addOwner(t1, connectTo);
-					claimed.add(t1);
-					count++;
-					if(count >= rft.amount)
-						break;
-				}
-			}
-		}
-	}
-
-	public boolean canWork(LevelMap levelMap, CostBlueprint costBlueprint, Tile location, boolean unclaimed)
-	{
-		return costBlueprint.requiredFloorTiles.stream().noneMatch(rft -> levelMap.y1.range(location, rft.minRange, rft.maxRange).stream()
-				.filter(e -> okTile(e, levelMap, rft, unclaimed)).count() < rft.amount);
-	}
-
-	private boolean okTile(Tile t1, LevelMap levelMap, RequiresFloorTiles rft, boolean unclaimed)
-	{
-		return levelMap.getFloor(t1) != null && levelMap.getFloor(t1).type == rft.floorTileType
-				&& ((unclaimed && levelMap.getOwner(t1) == null) || levelMap.getOwner(t1) == this);
-	}
-
-	public void toggleTarget(Tile target, LevelMap levelMap, XBuilding connectTo)
-	{
-		MBuilding owner = levelMap.getOwner(target);
-		if(owner == connectTo)
-		{
-			levelMap.removeOwner(target);
-			claimed.remove(target);
-		}
-		else if(owner == null)
-		{
-			levelMap.addOwner(target, connectTo);
-			claimed.add(target);
-		}
-	}
+	public void loadConnect(LevelMap levelMap, XBuilding connectTo){}
 }

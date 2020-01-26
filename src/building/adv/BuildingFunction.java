@@ -1,6 +1,5 @@
 package building.adv;
 
-import building.blueprint.*;
 import geom.f1.*;
 import item.inv.*;
 import levelMap.*;
@@ -27,11 +26,11 @@ public interface BuildingFunction
 		return 0;
 	}
 
-	void productionPhase(LevelMap levelMap, CostBlueprint costBlueprint, Tile location);
+	void productionPhase(boolean canWork, LevelMap levelMap, Tile location);
+
+	void transportPhase(boolean canWork, LevelMap levelMap);
 
 	void afterProduction();
-
-	void transportPhase(LevelMap levelMap);
 
 	void afterTransport();
 
