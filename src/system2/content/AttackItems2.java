@@ -1,7 +1,6 @@
 package system2.content;
 
 import item.*;
-import item.items.*;
 import java.util.*;
 import java.util.stream.*;
 import system2.*;

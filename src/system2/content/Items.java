@@ -1,4 +1,4 @@
-package item.items;
+package system2.content;
 
 import item.*;
 import java.util.*;

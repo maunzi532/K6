@@ -58,36 +58,49 @@ public class MainState
 		return preferBuildings ? "BCM" : "ECM";
 	}
 
+	//content
 	//TODO Build a real level
+	//TODO add images of items of upgraded classes
 
+	//save/load
 	//TODO save storage contents
 	//TODO savestate during map
+	//TODO save maps and saves in folders
+	//TODO advanced loading system
 
+	//engine mechanics
 	//TODO update all enemy reach only when needed
 	//TODO all enemy reach show amount of enemies
 	//TODO turn limit
 	//TODO enemy reinforcements (starting delay)
 
+	//GUI
 	//TODO LevelEditor edit PlayerLevelSystem
 	//TODO LevelSystem view
 	//TODO CharacterCombatGUI show stat calculation
 	//TODO AttackInfoGUI show stat calculation
 
+	//combat system (rules)
 	//TODO change speed effects
 	//TODO levelup essence formula
 	//TODO add upgraded classes
 	//TODO add class abilities (0/6)
-	//TODO add images of items of upgraded classes
 
+	//combat system (systems)
 	//TODO Enemy AI types
 	//TODO Enemy AI type: Activate
 	//TODO Enemy AI type: Stationary
 	//TODO complicated levelup system
 
-	//TODO class names in classes
-	//TODO Refactor sectors
-	//TODO XHero and XEnemy not extending XEntity
+	//code
+	//TODO Initialize somewhere else than in MainVisual
+	//TODO character class names in classes
+	//TODO Refactor or remove sectors
+	//TODO Make XHero and XEnemy not extend XEntity
+	//TODO BlueprintCache is weird
+	//TODO rename or split ImageLoader
 
+	//visual engine mechanics
 	//TODO scale tiles, menubar, gui when resizing
 	//TODO Make menu bar not overlap with SideInfo
 	//TODO improve camera
