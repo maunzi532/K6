@@ -1,5 +1,7 @@
 package entity;
 
+import entity.*;
+
 public class PathAttackX
 {
 	public final PathLocation path;

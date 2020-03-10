@@ -1,7 +1,6 @@
 package logic.editor;
 
-import building.adv.*;
-import building.blueprint.*;
+import doubleinv.*;
 import geom.f1.*;
 import item.*;
 import item.inv.*;
@@ -30,8 +29,8 @@ public class EditModeBuilder implements XBuilder
 	}
 
 	@Override
-	public Optional<ItemList> tryBuildingCosts(CostBlueprint cost, CommitType commitType)
+	public Optional<ItemList> tryBuildingCosts(ItemList refundable, ItemList costs, CommitType commitType)
 	{
-		return Optional.of(cost.refundable());
+		return Optional.of(refundable);
 	}
 }

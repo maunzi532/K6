@@ -2,8 +2,8 @@ package building.blueprint;
 
 import com.fasterxml.jackson.jr.ob.comp.*;
 import com.fasterxml.jackson.jr.stree.*;
+import doubleinv.*;
 import java.io.*;
-import levelMap.*;
 
 public record RequiresFloorTiles(FloorTileType floorTileType, int amount, int minRange, int maxRange)
 {

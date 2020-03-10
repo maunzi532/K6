@@ -1,4 +1,4 @@
-package levelMap;
+package doubleinv;
 
 import javafx.scene.image.*;
 

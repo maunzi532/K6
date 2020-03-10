@@ -1,6 +1,5 @@
-package logic.sideinfo;
+package entity.sideinfo;
 
-import arrow.*;
 import entity.*;
 import file.*;
 
@@ -55,9 +54,9 @@ public class SideInfoFrame
 	{
 		boolean inverted = isInverted(aI.entity, aI.entityT);
 		l0.setSideInfo(new SideInfo(aI.getEntity(inverted), 0, ImageLoader.getImage(aI.getStats(inverted).imagePath()),
-				StatBarX1.forEntityX1(aI.getEntity(inverted), aI.getSideInfoX1T(inverted)), aI.getSideInfos(inverted)));
+				aI.getEntity(inverted).statBarX1(aI.getSideInfoX1T(inverted)), aI.getSideInfos(inverted)));
 		r0.setSideInfo(new SideInfo(aI.getEntity(!inverted), 0, ImageLoader.getImage(aI.getStats(!inverted).imagePath()),
-				StatBarX1.forEntityX1(aI.getEntity(!inverted), aI.getSideInfoX1T(!inverted)), aI.getSideInfos(!inverted)));
+				aI.getEntity(!inverted).statBarX1(aI.getSideInfoX1T(!inverted)), aI.getSideInfos(!inverted)));
 	}
 
 	public void setSideInfoXH(SideInfo sideInfo, XEntity e1)

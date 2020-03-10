@@ -1,8 +1,7 @@
 package entity;
 
-import building.adv.*;
-import building.blueprint.*;
 import com.fasterxml.jackson.jr.ob.comp.*;
+import doubleinv.*;
 import geom.f1.*;
 import item.*;
 import item.inv.*;
@@ -10,7 +9,6 @@ import item.view.*;
 import java.io.*;
 import java.util.*;
 import javafx.scene.image.*;
-import logic.*;
 
 public class XHero extends XEntity implements XBuilder
 {
@@ -25,18 +23,18 @@ public class XHero extends XEntity implements XBuilder
 	private boolean startLocked;
 	private boolean startInvLocked;
 
-	public XHero(Tile location, MainState mainState, Stats stats, boolean startLocked, boolean startInvLocked,
+	public XHero(Tile location, CombatSystem combatSystem, Stats stats, boolean startLocked, boolean startInvLocked,
 			int weightLimit,
 			ItemList itemList)
 	{
-		super(location, mainState, stats, weightLimit, itemList);
+		super(location, combatSystem, stats, weightLimit, itemList);
 		this.startLocked = startLocked;
 		this.startInvLocked = startInvLocked;
 	}
 
-	public XHero(Tile location, MainState mainState, Stats stats, boolean startLocked, boolean startInvLocked, Inv inv)
+	public XHero(Tile location, CombatSystem combatSystem, Stats stats, boolean startLocked, boolean startInvLocked, Inv inv)
 	{
-		super(location, mainState, stats, inv);
+		super(location, combatSystem, stats, inv);
 		this.startLocked = startLocked;
 		this.startInvLocked = startInvLocked;
 	}
@@ -44,7 +42,7 @@ public class XHero extends XEntity implements XBuilder
 	@Override
 	public XEntity copy(Tile copyLocation)
 	{
-		XHero copy = new XHero(copyLocation, mainState, stats, startLocked, startInvLocked, inv.copy());
+		XHero copy = new XHero(copyLocation, combatSystem, stats, startLocked, startInvLocked, inv.copy());
 		copy.stats.autoEquip(copy);
 		return copy;
 	}
@@ -74,11 +72,11 @@ public class XHero extends XEntity implements XBuilder
 	}
 
 	@Override
-	public Optional<ItemList> tryBuildingCosts(CostBlueprint cost, CommitType commitType)
+	public Optional<ItemList> tryBuildingCosts(ItemList refundable, ItemList costs, CommitType commitType)
 	{
-		if(inv.tryProvide(cost.costs(), false, CommitType.LEAVE).isEmpty())
+		if(inv.tryProvide(costs, false, CommitType.LEAVE).isEmpty())
 			return Optional.empty();
-		return inv.tryProvide(cost.refundable(), false, commitType);
+		return inv.tryProvide(refundable, false, commitType);
 	}
 
 	public void startTurn()
@@ -97,7 +95,7 @@ public class XHero extends XEntity implements XBuilder
 
 	public int dashMovement()
 	{
-		return Math.max(0, mainState.combatSystem.dashMovement(mainState, this, stats) - usedMovement);
+		return Math.max(0, combatSystem.dashMovement(this, stats) - usedMovement);
 	}
 
 	public boolean ready(int apCost)
@@ -159,9 +157,8 @@ public class XHero extends XEntity implements XBuilder
 			canRevert = false;
 	}
 
-	public void revertMovement()
+	public void reactivateMovement()
 	{
-		mainState.levelMap.moveEntity(this, revertLocation);
 		canMove = true;
 	}
 

@@ -2,7 +2,9 @@ package levelMap;
 
 import arrow.*;
 import building.adv.*;
+import building.blueprint.*;
 import com.fasterxml.jackson.jr.ob.*;
+import doubleinv.*;
 import entity.*;
 import geom.f1.*;
 import item.*;
@@ -10,7 +12,7 @@ import java.io.*;
 import java.nio.*;
 import java.util.*;
 
-public class LevelMap
+public class LevelMap implements ConnectRestore, Arrows
 {
 	public final TileType y1;
 	private final HashMap<Tile, AdvTile> advTiles;
@@ -20,6 +22,7 @@ public class LevelMap
 	private final ArrayList<XEnemy> entitiesE;
 	private final ArrayList<XEntity> entities3;
 	private final ArrayList<XArrow> arrows;
+	private final ArrayList<Integer> screenshake;
 
 	public LevelMap(TileType y1)
 	{
@@ -31,6 +34,7 @@ public class LevelMap
 		entitiesE = new ArrayList<>();
 		entities3 = new ArrayList<>();
 		arrows = new ArrayList<>();
+		screenshake = new ArrayList<>();
 	}
 
 	public AdvTile advTile(Tile t1)
@@ -42,13 +46,15 @@ public class LevelMap
 	{
 		for(AdvTile advTile : advTiles.values())
 		{
-			if(advTile.getBuilding() != null)
-				advTile.getBuilding().productionPhase(this);
+			XBuilding building = advTile.getBuilding();
+			if(building != null)
+				building.productionPhase(this, buildingCanWork(building, false));
 		}
 		for(AdvTile advTile : advTiles.values())
 		{
-			if(advTile.getBuilding() != null)
-				advTile.getBuilding().afterProduction();
+			XBuilding building = advTile.getBuilding();
+			if(building != null)
+				building.afterProduction();
 		}
 	}
 
@@ -56,14 +62,84 @@ public class LevelMap
 	{
 		for(AdvTile advTile : advTiles.values())
 		{
-			if(advTile.getBuilding() != null)
-				advTile.getBuilding().transportPhase(this);
+			XBuilding building = advTile.getBuilding();
+			if(building != null)
+				building.transportPhase(this, buildingCanWork(building, false));
 		}
 		for(AdvTile advTile : advTiles.values())
 		{
-			if(advTile.getBuilding() != null)
-				advTile.getBuilding().afterTransport();
+			XBuilding building = advTile.getBuilding();
+			if(building != null)
+				building.afterTransport();
 		}
+	}
+
+	public boolean buildingCanWork(XBuilding building, boolean unclaimed)
+	{
+		return building.costBlueprint().requiredFloorTiles().stream().noneMatch(rft -> y1.range(building.location(), rft.minRange(), rft.maxRange()).stream()
+				.filter(e -> okTile(building, e, rft, unclaimed)).count() < rft.amount());
+	}
+
+	private boolean okTile(XBuilding building, Tile t1, RequiresFloorTiles rft, boolean unclaimed)
+	{
+		return getFloor(t1) != null && getFloor(t1).type == rft.floorTileType()
+				&& ((unclaimed && getOwner(t1) == null) || getOwner(t1) == building);
+	}
+
+	public void toggleTargetClaimed(Tile target, XBuilding building)
+	{
+		XBuilding owner = getOwner(target);
+		if(owner == building)
+		{
+			removeOwner(target);
+			building.removeClaimed(target);
+		}
+		else if(owner == null)
+		{
+			addOwner(target, building);
+			building.addClaimed(target);
+		}
+	}
+
+	public void loadConnectBuilding(XBuilding building)
+	{
+		for(Tile tile : building.claimed())
+		{
+			addOwner(tile, building);
+		}
+		building.function().loadConnect(this, building);
+	}
+
+	public void autoClaimFloor(XBuilding building)
+	{
+		for(RequiresFloorTiles rft : building.costBlueprint().requiredFloorTiles())
+		{
+			int count = 0;
+			for(Tile t1 : y1.range(building.location(), rft.minRange(), rft.maxRange()))
+			{
+				if(okTile(building, t1, rft, true))
+				{
+					addOwner(t1, building);
+					building.addClaimed(t1);
+					count++;
+					if(count >= rft.amount())
+						break;
+				}
+			}
+		}
+	}
+
+	public void buildBuilding(XBuilder builder, CostBlueprint costs, ItemList refundable, BuildingBlueprint blueprint)
+	{
+		XBuilding building = new XBuilding(builder.location(), costs, refundable, blueprint);
+		addBuilding(building);
+		autoClaimFloor(building);
+	}
+
+	public void revertMovement(XHero xh)
+	{
+		moveEntity(xh, xh.getRevertLocation());
+		xh.reactivateMovement();
 	}
 
 	public void clearTile(Tile t1)
@@ -210,15 +286,44 @@ public class LevelMap
 		return arrows;
 	}
 
+	@Override
 	public void addArrow(XArrow arrow)
 	{
 		arrows.add(arrow);
+	}
+
+	@Override
+	public void addScreenshake(int power)
+	{
+		screenshake.add(power);
+	}
+
+	public int removeFirstScreenshake()
+	{
+		if(screenshake.isEmpty())
+			return 0;
+		else
+			return screenshake.remove(0);
 	}
 
 	public void tickArrows()
 	{
 		arrows.forEach(XArrow::tick);
 		arrows.removeIf(XArrow::finished);
+	}
+
+	@Override
+	public DoubleInv restoreConnection(DoubleInv toConnect)
+	{
+		if(toConnect instanceof PreConnectMapObject toConnect1)
+		{
+			return switch(toConnect1.type())
+					{
+						case BUILDING -> getBuilding(toConnect1.location());
+						case ENTITY -> getEntity(toConnect1.location());
+					};
+		}
+		throw new RuntimeException();
 	}
 
 	public String[] saveDataJSON(ItemLoader itemLoader)

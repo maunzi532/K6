@@ -1,11 +1,12 @@
 package building.adv;
 
+import arrow.*;
 import com.fasterxml.jackson.jr.ob.comp.*;
+import doubleinv.*;
 import geom.f1.*;
 import item.*;
 import item.inv.*;
 import java.io.*;
-import levelMap.*;
 
 public interface BuildingFunction
 {
@@ -29,15 +30,15 @@ public interface BuildingFunction
 		return 0;
 	}
 
-	void productionPhase(boolean canWork, LevelMap levelMap, Tile location);
+	void productionPhase(boolean canWork, Arrows arrows, Tile location);
 
-	void transportPhase(boolean canWork, LevelMap levelMap);
+	void transportPhase(boolean canWork, Arrows arrows);
 
 	void afterProduction();
 
 	void afterTransport();
 
-	void loadConnect(LevelMap levelMap, XBuilding connectTo);
+	void loadConnect(ConnectRestore cr, XBuilding connectTo);
 
 	<T extends ComposerBase> ObjectComposer<T> save(ObjectComposer<T> a1, ItemLoader itemLoader, TileType y1) throws IOException;
 }

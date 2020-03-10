@@ -1,11 +1,10 @@
-package building.transport;
+package doubleinv;
 
 import com.fasterxml.jackson.jr.ob.comp.*;
 import com.fasterxml.jackson.jr.stree.*;
 import geom.f1.*;
 import item.inv.*;
 import java.io.*;
-import levelMap.*;
 
 public record PreConnectMapObject(Tile location, DoubleInvType type) implements DoubleInv
 {
@@ -43,15 +42,6 @@ public record PreConnectMapObject(Tile location, DoubleInvType type) implements 
 	public boolean active()
 	{
 		return false;
-	}
-
-	public DoubleInv restore(LevelMap levelMap)
-	{
-		return switch(type)
-		{
-			case BUILDING -> levelMap.getBuilding(location);
-			case ENTITY -> levelMap.getEntity(location);
-		};
 	}
 
 	public static PreConnectMapObject create(JrsObject data, TileType y1)

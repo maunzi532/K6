@@ -3,7 +3,6 @@ package entity;
 import geom.f1.*;
 import item.*;
 import item.inv.*;
-import logic.*;
 
 public class XEnemy extends XEntity
 {
@@ -11,22 +10,22 @@ public class XEnemy extends XEntity
 	private boolean canMove;
 	private boolean canAttack;
 
-	public XEnemy(Tile location, MainState mainState, Stats stats, EnemyAI think, int weightLimit, ItemList itemList)
+	public XEnemy(Tile location, CombatSystem combatSystem, Stats stats, EnemyAI think, int weightLimit, ItemList itemList)
 	{
-		super(location, mainState, stats, weightLimit, itemList);
+		super(location, combatSystem, stats, weightLimit, itemList);
 		this.think = think;
 	}
 
-	public XEnemy(Tile location, MainState mainState, Stats stats, EnemyAI think, Inv inv)
+	public XEnemy(Tile location, CombatSystem combatSystem, Stats stats, EnemyAI think, Inv inv)
 	{
-		super(location, mainState, stats, inv);
+		super(location, combatSystem, stats, inv);
 		this.think = think;
 	}
 
 	@Override
 	public XEntity copy(Tile copyLocation)
 	{
-		XEnemy copy = new XEnemy(copyLocation, mainState, stats, think.copy(), inv.copy());
+		XEnemy copy = new XEnemy(copyLocation, combatSystem, stats, think.copy(), inv.copy());
 		copy.stats.autoEquip(copy);
 		return copy;
 	}
@@ -68,7 +67,7 @@ public class XEnemy extends XEntity
 	{
 		if(!canAttack)
 			return new EnemyMove(this, -1, null, null, 0);
-		return think.preferredMove(mainState, this, canMove, hasToMove, moveAway);
+		return think.preferredMove(this, canMove, hasToMove, moveAway);
 	}
 
 	@Override

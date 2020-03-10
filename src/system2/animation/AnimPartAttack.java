@@ -2,7 +2,6 @@ package system2.animation;
 
 import arrow.*;
 import entity.*;
-import logic.*;
 
 public class AnimPartAttack implements AnimPart
 {
@@ -16,12 +15,12 @@ public class AnimPartAttack implements AnimPart
 	private ManualXArrow arrow;
 	private int counter;
 
-	public AnimPartAttack(XEntity attacker, XEntity target, MainState mainState)
+	public AnimPartAttack(XEntity attacker, XEntity target, Arrows arrows)
 	{
 		this.attacker = attacker;
 		this.target = target;
 		arrow = new ManualXArrow(XArrow.convert(attacker.location(), target.location()), LEN, attacker.getImage());
-		mainState.levelMap.addArrow(arrow);
+		arrows.addArrow(arrow);
 		attacker.setReplacementArrow(arrow);
 	}
 

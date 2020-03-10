@@ -1,6 +1,6 @@
 package logic.gui.guis;
 
-import building.transport.*;
+import doubleinv.*;
 import entity.*;
 import item.*;
 import item.view.*;

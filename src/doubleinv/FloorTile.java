@@ -1,4 +1,4 @@
-package levelMap;
+package doubleinv;
 
 public class FloorTile
 {
@@ -10,11 +10,6 @@ public class FloorTile
 
 	public final int sector;
 	public final FloorTileType type;
-
-	public boolean visible(LevelMap levelMap)
-	{
-		return levelMap.sectorVisible(sector);
-	}
 
 	public boolean blocked()
 	{

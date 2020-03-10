@@ -2,7 +2,6 @@ package system2.animation;
 
 import arrow.*;
 import entity.*;
-import logic.*;
 import system2.*;
 
 public class AnimPartHit implements AnimPart
@@ -13,7 +12,7 @@ public class AnimPartHit implements AnimPart
 
 	private final XEntity target;
 	private final StatBar statBar;
-	private final MainState mainState;
+	private final Arrows arrows;
 	private final int reduction;
 	private final boolean crit;
 	private final boolean melt;
@@ -21,13 +20,13 @@ public class AnimPartHit implements AnimPart
 	private int counter;
 
 	public AnimPartHit(XEntity target, Stats2 statsT, int damage, StatBar statBar,
-			boolean crit, boolean melt, MainState mainState)
+			boolean crit, boolean melt, Arrows arrows)
 	{
 		this.target = target;
 		this.statBar = statBar;
 		this.crit = crit;
 		this.melt = melt;
-		this.mainState = mainState;
+		this.arrows = arrows;
 		arrow = new BlinkArrow(target.location(), DURATION, false, target.getImage(), BLINKTIME);
 		reduction = Math.min(statsT.getCurrentHealth(), damage);
 		statsT.setCurrentHealth(Math.max(0, statsT.getCurrentHealth() - damage));
@@ -53,9 +52,9 @@ public class AnimPartHit implements AnimPart
 		{
 			if(crit)
 			{
-				mainState.screenshake = 20;
+				arrows.addScreenshake(20);
 			}
-			mainState.levelMap.addArrow(arrow);
+			arrows.addArrow(arrow);
 			target.setReplacementArrow(arrow);
 		}
 		if(counter <= AnimPartAttack.DODGETIME)

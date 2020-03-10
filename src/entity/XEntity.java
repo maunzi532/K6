@@ -1,8 +1,8 @@
 package entity;
 
 import arrow.*;
-import building.transport.*;
 import com.fasterxml.jackson.jr.ob.comp.*;
+import doubleinv.*;
 import entity.analysis.*;
 import file.*;
 import geom.f1.*;
@@ -11,8 +11,8 @@ import item.inv.*;
 import java.io.*;
 import java.util.*;
 import javafx.scene.image.*;
-import logic.*;
-import logic.sideinfo.*;
+import javafx.scene.paint.*;
+import entity.sideinfo.*;
 
 public class XEntity implements DoubleInv
 {
@@ -20,21 +20,21 @@ public class XEntity implements DoubleInv
 
 	protected Tile location;
 	private XArrow replace;
-	protected MainState mainState;
+	protected CombatSystem combatSystem;
 	protected Stats stats;
 	protected Inv inv;
 
-	public XEntity(Tile location, MainState mainState, Stats stats, Inv inv)
+	public XEntity(Tile location, CombatSystem combatSystem, Stats stats, Inv inv)
 	{
 		this.location = location;
-		this.mainState = mainState;
+		this.combatSystem = combatSystem;
 		this.stats = stats;
 		this.inv = inv;
 	}
 
-	public XEntity(Tile location, MainState mainState, Stats stats, int weightLimit, ItemList itemList)
+	public XEntity(Tile location, CombatSystem combatSystem, Stats stats, int weightLimit, ItemList itemList)
 	{
-		this(location, mainState, stats, new WeightInv(weightLimit));
+		this(location, combatSystem, stats, new WeightInv(weightLimit));
 		addItems(itemList);
 	}
 
@@ -77,22 +77,22 @@ public class XEntity implements DoubleInv
 
 	public int movement()
 	{
-		return mainState.combatSystem.movement(mainState, this, stats);
+		return combatSystem.movement(this, stats);
 	}
 
 	public int maxAccessRange()
 	{
-		return mainState.combatSystem.maxAccessRange(mainState, this, stats);
+		return combatSystem.maxAccessRange(this, stats);
 	}
 
 	public List<Integer> attackRanges(boolean counter)
 	{
-		return mainState.combatSystem.attackRanges(mainState, this, stats, counter);
+		return combatSystem.attackRanges(this, stats, counter);
 	}
 
 	public List<AttackInfo> attackInfo(XEntity target)
 	{
-		return mainState.combatSystem.attackInfo(mainState, this, stats, target, target.stats);
+		return combatSystem.attackInfo(this, stats, target, target.stats);
 	}
 
 	public List<RNGOutcome> outcomes(AttackInfo attackInfo)
@@ -107,7 +107,19 @@ public class XEntity implements DoubleInv
 
 	public SideInfo standardSideInfo()
 	{
-		return new SideInfo(this, 1, ImageLoader.getImage(stats.imagePath()), StatBar.forEntity(this), stats.sideInfoText());
+		return new SideInfo(this, 1, ImageLoader.getImage(stats.imagePath()), statBar(), stats.sideInfoText());
+	}
+
+	public StatBar statBar()
+	{
+		return new StatBar(this instanceof XHero ? Color.GREEN : Color.GRAY, Color.BLACK, Color.WHITE,
+				stats.getVisualStat(0), stats.getMaxVisualStat(0));
+	}
+
+	public StatBar statBarX1(String extraText)
+	{
+		return new StatBarX1(this instanceof XHero ? Color.GREEN : Color.GRAY, Color.BLACK, Color.WHITE,
+				stats.getVisualStat(0), stats.getMaxVisualStat(0), extraText);
 	}
 
 	@Override
@@ -141,7 +153,7 @@ public class XEntity implements DoubleInv
 
 	public XEntity copy(Tile copyLocation)
 	{
-		return new XEntity(copyLocation, mainState, stats.copy(), inv.copy());
+		return new XEntity(copyLocation, combatSystem, stats.copy(), inv.copy());
 	}
 
 	public int classSave()

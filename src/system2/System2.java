@@ -8,33 +8,40 @@ import item.*;
 import item.inv.*;
 import java.util.*;
 import java.util.stream.*;
-import logic.*;
+import levelMap.*;
 import system2.analysis.*;
 import system2.animation.*;
 import system2.content.*;
 
 public class System2 implements CombatSystem<Stats2, AttackInfo2>
 {
+	private LevelMap levelMap;
+
+	public void setLevelMap(LevelMap levelMap)
+	{
+		this.levelMap = levelMap;
+	}
+
 	@Override
-	public int movement(MainState mainState, XEntity entity, Stats2 stats)
+	public int movement(XEntity entity, Stats2 stats)
 	{
 		return stats.getMovement();
 	}
 
 	@Override
-	public int dashMovement(MainState mainState, XEntity entity, Stats2 stats)
+	public int dashMovement(XEntity entity, Stats2 stats)
 	{
 		return 12;
 	}
 
 	@Override
-	public int maxAccessRange(MainState mainState, XEntity entity, Stats2 stats)
+	public int maxAccessRange(XEntity entity, Stats2 stats)
 	{
 		return 4;
 	}
 
 	@Override
-	public List<Integer> attackRanges(MainState mainState, XEntity entity, Stats2 stats, boolean counter)
+	public List<Integer> attackRanges(XEntity entity, Stats2 stats, boolean counter)
 	{
 		List<int[]> v = entity.outputInv().viewItems(false)
 				.stream().filter(e -> stats.getItemFilter().canContain(e.item))
@@ -51,10 +58,10 @@ public class System2 implements CombatSystem<Stats2, AttackInfo2>
 	}
 
 	@Override
-	public List<AttackInfo2> attackInfo(MainState mainState, XEntity entity, Tile loc, Stats2 stats,
+	public List<AttackInfo2> attackInfo(XEntity entity, Tile loc, Stats2 stats,
 			XEntity entityT, Tile locT, Stats2 statsT)
 	{
-		int distance = mainState.y1.distance(loc, locT);
+		int distance = levelMap.y1.distance(loc, locT);
 		return entity.outputInv()
 				.viewItems(false)
 				.stream()
@@ -109,29 +116,29 @@ public class System2 implements CombatSystem<Stats2, AttackInfo2>
 	@Override
 	public EnemyAI standardAI()
 	{
-		return new StandardAI();
+		return new StandardAI(levelMap, this);
 	}
 
 	@Override
-	public AnimTimer createAnimationTimer(RNGDivider divider, MainState mainState)
+	public AnimTimer createAnimationTimer(RNGDivider divider)
 	{
-		return new AttackAnim((RNGDivider2) divider, mainState);
+		return new AttackAnim((RNGDivider2) divider, levelMap, levelMap);
 	}
 
 	@Override
-	public AnimTimer createRegenerationAnimation(XEntity entity, MainState mainState)
+	public AnimTimer createRegenerationAnimation(XEntity entity)
 	{
-		return new RegenerationAnim(entity, mainState.levelMap);
+		return new RegenerationAnim(entity, levelMap);
 	}
 
 	@Override
-	public AnimTimer createPostAttackAnimation(AttackInfo aI, RNGOutcome result, MainState mainState)
+	public AnimTimer createPostAttackAnimation(AttackInfo aI, RNGOutcome result)
 	{
-		return new GetExpAnim((AttackInfo2) aI, (RNGOutcome2) result, mainState);
+		return new GetExpAnim((AttackInfo2) aI, (RNGOutcome2) result, levelMap);
 	}
 
 	@Override
-	public XEntity loadEntity(TileType y1, MainState mainState, JrsObject data, ItemLoader itemLoader)
+	public XEntity loadEntity(TileType y1, JrsObject data, ItemLoader itemLoader)
 	{
 		int classCode = ((JrsNumber) data.get("Type")).getValue().intValue();
 		Tile location = y1.create2(((JrsNumber) data.get("sx")).getValue().intValue(), ((JrsNumber) data.get("sy")).getValue().intValue());
@@ -139,14 +146,14 @@ public class System2 implements CombatSystem<Stats2, AttackInfo2>
 		Inv inv = new WeightInv(((JrsObject) data.get("Inventory")), itemLoader);
 		return switch(classCode)
 				{
-					case 1 -> new XHero(location, mainState, stats, false, false, inv);
-					case 2 -> new XEnemy(location, mainState, stats, new StandardAI(), inv);
+					case 1 -> new XHero(location, this, stats, false, false, inv);
+					case 2 -> new XEnemy(location, this, stats, new StandardAI(levelMap, this), inv);
 					default -> throw new RuntimeException();
 				};
 	}
 
 	@Override
-	public XEntity loadEntityOrStartLoc(TileType y1, MainState mainState, JrsObject data, ItemLoader itemLoader, Map<String, JrsObject> characters, Inv storage)
+	public XEntity loadEntityOrStartLoc(TileType y1, JrsObject data, ItemLoader itemLoader, Map<String, JrsObject> characters, Inv storage)
 	{
 		Tile location = y1.create2(((JrsNumber) data.get("sx")).getValue().intValue(), ((JrsNumber) data.get("sy")).getValue().intValue());
 		if(data.get("StartName") != null)
@@ -167,7 +174,7 @@ public class System2 implements CombatSystem<Stats2, AttackInfo2>
 			{
 				inv = new WeightInv(((JrsObject) char1.get("Inventory")), itemLoader);
 			}
-			return new XHero(location, mainState, stats, locked, invLocked, inv);
+			return new XHero(location, this, stats, locked, invLocked, inv);
 		}
 		else
 		{
@@ -176,8 +183,8 @@ public class System2 implements CombatSystem<Stats2, AttackInfo2>
 				Inv inv = new WeightInv(((JrsObject) data.get("Inventory")), itemLoader);
 			return switch(classCode)
 					{
-						case 1 -> new XHero(location, mainState, stats, false, false, inv);
-						case 2 -> new XEnemy(location, mainState, stats, new StandardAI(), inv);
+						case 1 -> new XHero(location, this, stats, false, false, inv);
+						case 2 -> new XEnemy(location, this, stats, new StandardAI(levelMap, this), inv);
 						default -> throw new RuntimeException();
 					};
 		}

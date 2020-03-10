@@ -1,21 +1,22 @@
-package building.adv;
+package building.transport;
 
 import arrow.*;
+import building.adv.*;
 import building.blueprint.*;
-import building.transport.*;
 import com.fasterxml.jackson.jr.ob.comp.*;
 import com.fasterxml.jackson.jr.stree.*;
+import doubleinv.*;
 import geom.f1.*;
 import item.*;
 import item.inv.*;
 import java.io.*;
 import java.util.*;
 import java.util.stream.*;
-import levelMap.*;
-import logic.xstate.*;
 
 public class Transport implements BuildingFunction
 {
+	public static final int TRANSPORT_TIME = 60;
+
 	private final String name;
 	private final int range;
 	private final int amount;
@@ -73,10 +74,10 @@ public class Transport implements BuildingFunction
 	public void afterTrading(){}
 
 	@Override
-	public void productionPhase(boolean canWork, LevelMap levelMap, Tile location){}
+	public void productionPhase(boolean canWork, Arrows arrows, Tile location){}
 
 	@Override
-	public void transportPhase(boolean canWork, LevelMap levelMap)
+	public void transportPhase(boolean canWork, Arrows arrows)
 	{
 		targets.removeIf(e -> !e.active());
 		if(canWork)
@@ -86,8 +87,8 @@ public class Transport implements BuildingFunction
 			{
 				PossibleTransport transport = transportOpt.get();
 				invTransporter.doTheTransport(transport);
-				levelMap.addArrow(ShineArrow.factory(transport.from().location(), transport.to().location(),
-						TransportPhaseState.TRANSPORT_TIME, false, transport.item().image()));
+				arrows.addArrow(ShineArrow.factory(transport.from().location(), transport.to().location(),
+						TRANSPORT_TIME, false, transport.item().image()));
 			}
 		}
 	}
@@ -99,13 +100,14 @@ public class Transport implements BuildingFunction
 	public void afterTransport(){}
 
 	@Override
-	public void loadConnect(LevelMap levelMap, XBuilding connectTo)
+	public void loadConnect(ConnectRestore cr, XBuilding connectTo)
 	{
-		List<DoubleInv> list = targets.stream().map(e -> ((PreConnectMapObject) e).restore(levelMap)).collect(Collectors.toList());
+		List<DoubleInv> list = targets.stream().map(cr::restoreConnection).collect(Collectors.toList());
 		targets.clear();
 		targets.addAll(list);
 		invTransporter.transportHistory().replaceAll(e -> new PossibleTransport(e.item(),
-				((PreConnectMapObject) e.from()).restore(levelMap), ((PreConnectMapObject) e.to()).restore(levelMap), 0, 0));
+				cr.restoreConnection(e.from()),
+				cr.restoreConnection(e.to()), 0, 0));
 	}
 
 	public boolean isTarget(DoubleInv target)

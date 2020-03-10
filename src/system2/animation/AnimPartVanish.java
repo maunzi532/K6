@@ -2,7 +2,7 @@ package system2.animation;
 
 import arrow.*;
 import entity.*;
-import logic.*;
+import levelMap.*;
 
 public class AnimPartVanish implements AnimPart
 {
@@ -12,12 +12,12 @@ public class AnimPartVanish implements AnimPart
 	private final XEntity target;
 	private BlinkArrow arrow;
 
-	public AnimPartVanish(XEntity target, MainState mainState)
+	public AnimPartVanish(XEntity target, Arrows arrows, LevelMap levelMap)
 	{
 		this.target = target;
 		arrow = new BlinkArrow(target.location(), DURATION, false, target.getImage(), BLINKTIME);
-		mainState.levelMap.addArrow(arrow);
-		mainState.levelMap.removeEntity(target);
+		arrows.addArrow(arrow);
+		levelMap.removeEntity(target);
 	}
 
 	@Override

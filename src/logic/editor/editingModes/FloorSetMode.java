@@ -1,8 +1,8 @@
 package logic.editor.editingModes;
 
+import doubleinv.*;
 import geom.f1.*;
 import logic.gui.*;
-import levelMap.*;
 import logic.editor.*;
 import logic.*;
 

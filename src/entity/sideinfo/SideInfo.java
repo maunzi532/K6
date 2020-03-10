@@ -1,4 +1,4 @@
-package logic.sideinfo;
+package entity.sideinfo;
 
 import arrow.*;
 import entity.*;

@@ -4,16 +4,17 @@ import arrow.*;
 import building.blueprint.*;
 import com.fasterxml.jackson.jr.ob.comp.*;
 import com.fasterxml.jackson.jr.stree.*;
+import doubleinv.*;
 import geom.f1.*;
 import item.*;
 import item.inv.*;
 import java.io.*;
 import java.util.*;
-import levelMap.*;
-import logic.xstate.*;
 
 public class ProcessInv implements BuildingFunction
 {
+	public static final int ARROW_TIME = 30;
+
 	private final String name;
 	private final Inv inputInv;
 	private final Inv outputInv;
@@ -71,7 +72,7 @@ public class ProcessInv implements BuildingFunction
 	public void afterTrading(){}
 
 	@Override
-	public void productionPhase(boolean canWork, LevelMap levelMap, Tile location)
+	public void productionPhase(boolean canWork, Arrows arrows, Tile location)
 	{
 		if(canWork)
 		{
@@ -82,8 +83,8 @@ public class ProcessInv implements BuildingFunction
 					if(outputInv.tryAdd(recipe.results(), false, CommitType.COMMIT))
 					{
 						inputInv.commit();
-						levelMap.addArrow(ShineArrow.factory(location, null,
-								ProductionPhaseState.ARROW_TIME, false, recipe.results().items.get(0).item.image()));
+						arrows.addArrow(ShineArrow.factory(location, null,
+								ARROW_TIME, false, recipe.results().items.get(0).item.image()));
 						return;
 					}
 					else
@@ -96,7 +97,7 @@ public class ProcessInv implements BuildingFunction
 	}
 
 	@Override
-	public void transportPhase(boolean canWork, LevelMap levelMap){}
+	public void transportPhase(boolean canWork, Arrows arrows){}
 
 	@Override
 	public void afterProduction()
@@ -113,7 +114,7 @@ public class ProcessInv implements BuildingFunction
 	}
 
 	@Override
-	public void loadConnect(LevelMap levelMap, XBuilding connectTo){}
+	public void loadConnect(ConnectRestore cr, XBuilding connectTo){}
 
 	public ProcessInv(JrsObject data, ItemLoader itemLoader, TileType y1)
 	{

@@ -1,4 +1,4 @@
-package building.transport;
+package doubleinv;
 
 public enum DoubleInvType
 {

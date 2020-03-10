@@ -1,10 +1,10 @@
 package logic.editor;
 
+import doubleinv.*;
 import geom.f1.*;
 import logic.editor.xgui.*;
 import logic.editor.xstate.*;
 import java.util.*;
-import levelMap.*;
 import logic.editor.editingModes.*;
 import logic.*;
 

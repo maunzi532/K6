@@ -1,10 +1,10 @@
 package logic.xstate;
 
+import building.transport.*;
 import logic.*;
 
 public class TransportPhaseState implements NAutoState
 {
-	public static final int TRANSPORT_TIME = 60;
 	public static final int WAIT = 30;
 
 	private int counter;
@@ -25,7 +25,7 @@ public class TransportPhaseState implements NAutoState
 	@Override
 	public boolean finished()
 	{
-		return counter >= TRANSPORT_TIME + WAIT;
+		return counter >= Transport.TRANSPORT_TIME + WAIT;
 	}
 
 	@Override

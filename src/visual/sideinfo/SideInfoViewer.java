@@ -4,7 +4,7 @@ import arrow.*;
 import java.util.*;
 import javafx.scene.paint.*;
 import javafx.scene.text.*;
-import logic.sideinfo.*;
+import entity.sideinfo.*;
 import visual.*;
 
 public class SideInfoViewer implements SideInfoHolder

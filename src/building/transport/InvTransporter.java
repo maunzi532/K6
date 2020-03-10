@@ -1,5 +1,6 @@
 package building.transport;
 
+import doubleinv.*;
 import item.*;
 import item.inv.*;
 import java.util.*;

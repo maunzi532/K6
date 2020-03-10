@@ -1,10 +1,10 @@
 package logic.xstate;
 
+import building.adv.*;
 import logic.*;
 
 public class ProductionPhaseState implements NAutoState
 {
-	public static final int ARROW_TIME = 30;
 	public static final int WAIT = 30;
 
 	private int counter;
@@ -40,7 +40,7 @@ public class ProductionPhaseState implements NAutoState
 	@Override
 	public boolean finished()
 	{
-		return counter >= ARROW_TIME + WAIT;
+		return counter >= ProcessInv.ARROW_TIME + WAIT;
 	}
 
 	@Override

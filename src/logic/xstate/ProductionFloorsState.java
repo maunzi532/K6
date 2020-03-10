@@ -58,7 +58,7 @@ public class ProductionFloorsState implements NMarkState
 	{
 		if(targetableTiles.contains(mapTile))
 		{
-			building.toggleTargetClaimed(mapTile, mainState.levelMap);
+			mainState.levelMap.toggleTargetClaimed(mapTile, building);
 			createVisMarked();
 		}
 		else

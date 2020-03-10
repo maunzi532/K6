@@ -8,7 +8,7 @@ import logic.*;
 public class AttackAnimState2 extends AttackState
 {
 	private RNGDivider divider;
-	private AnimTimer arrow;
+	private AnimTimer animTimer;
 	private Supplier<RNGOutcome> outcomeSupplier;
 
 	public AttackAnimState2(NState nextState, AttackInfo aI)
@@ -20,20 +20,20 @@ public class AttackAnimState2 extends AttackState
 	@Override
 	public void onEnter(MainState mainState)
 	{
-		arrow = mainState.combatSystem.createAnimationTimer(divider, mainState);
-		outcomeSupplier = (Supplier<RNGOutcome>) arrow;
+		animTimer = mainState.combatSystem.createAnimationTimer(divider);
+		outcomeSupplier = (Supplier<RNGOutcome>) animTimer;
 	}
 
 	@Override
 	public void tick(MainState mainState)
 	{
-		arrow.tick();
+		animTimer.tick();
 	}
 
 	@Override
 	public boolean finished()
 	{
-		return arrow.finished();
+		return animTimer.finished();
 	}
 
 	@Override

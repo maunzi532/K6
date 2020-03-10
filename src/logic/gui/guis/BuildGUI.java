@@ -1,7 +1,7 @@
 package logic.gui.guis;
 
-import building.adv.*;
 import building.blueprint.*;
+import doubleinv.*;
 import entity.*;
 import levelMap.*;
 import logic.editor.xstate.*;
@@ -119,7 +119,7 @@ public class BuildGUI extends XGUIState
 		nextElement.fillTile = activeIf("Next", costNum < blueprints.size() - 1, Color.LIGHTCYAN);
 		lessTilesElement.fillTile = activeIf("Less Tiles", tileCostNum > 0, Color.LIGHTCYAN);
 		moreTilesElement.fillTile = activeIf("More Tiles", tileCostNum < blueprints.get(costNum).size() - 1, Color.LIGHTCYAN);
-		buildElement.fillTile = activeIf("Build", builder.tryBuildingCosts(cost, CommitType.ROLLBACK).isPresent(), Color.CYAN);
+		buildElement.fillTile = activeIf("Build", builder.tryBuildingCosts(cost.refundable(), cost.costs(), CommitType.ROLLBACK).isPresent(), Color.CYAN);
 	}
 
 	private GuiTile activeIf(String text, boolean active, Color color)
@@ -196,7 +196,7 @@ public class BuildGUI extends XGUIState
 	private void clickBuild(MainState mainState)
 	{
 		CostBlueprint cost = costBlueprints.get(costNum).get(tileCostNum);
-		Optional<ItemList> refundable = builder.tryBuildingCosts(cost, CommitType.COMMIT);
+		Optional<ItemList> refundable = builder.tryBuildingCosts(cost.refundable(), cost.costs(), CommitType.COMMIT);
 		if(refundable.isPresent())
 		{
 			if(builder instanceof XHero)
@@ -204,7 +204,7 @@ public class BuildGUI extends XGUIState
 				((XHero) builder).takeAp(1);
 				((XHero) builder).mainActionTaken();
 			}
-			builder.buildBuilding(levelMap, cost, refundable.get(), blueprint);
+			levelMap.buildBuilding(builder, cost, refundable.get(), blueprint);
 			if(builder instanceof XHero)
 				mainState.stateHolder.setState(NoneState.INSTANCE);
 			else

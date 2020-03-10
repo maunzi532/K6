@@ -1,22 +1,24 @@
 package system2;
 
+import doubleinv.*;
 import entity.*;
 import geom.f1.*;
 import item.*;
 import levelMap.*;
-import logic.*;
 
 public class Entity2Builder
 {
-	private final MainState mainState;
+	private final LevelMap levelMap;
+	private final CombatSystem combatSystem;
 	private Tile location;
 	private Stats2 stats;
 	private int weightLimit = 20;
 	private ItemList itemList = new ItemList();
 
-	public Entity2Builder(MainState mainState)
+	public Entity2Builder(LevelMap levelMap, CombatSystem combatSystem)
 	{
-		this.mainState = mainState;
+		this.levelMap = levelMap;
+		this.combatSystem = combatSystem;
 	}
 
 	public Entity2Builder setLocation(Tile location)
@@ -54,15 +56,15 @@ public class Entity2Builder
 		XEntity entity;
 		if(player)
 		{
-			entity = new XHero(location, mainState, stats, false, false, weightLimit, itemList);
+			entity = new XHero(location, combatSystem, stats, false, false, weightLimit, itemList);
 		}
 		else
 		{
-			entity = new XEnemy(location, mainState, stats, mainState.combatSystem.standardAI(), weightLimit, itemList);
+			entity = new XEnemy(location, combatSystem, stats, combatSystem.standardAI(), weightLimit, itemList);
 		}
 		stats.autoEquip(entity);
-		if(mainState.levelMap.getFloor(location) == null)
-			mainState.levelMap.setFloorTile(location, new FloorTile(0, FloorTileType.TECH));
-		mainState.levelMap.addEntity(entity);
+		if(levelMap.getFloor(location) == null)
+			levelMap.setFloorTile(location, new FloorTile(0, FloorTileType.TECH));
+		levelMap.addEntity(entity);
 	}
 }

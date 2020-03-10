@@ -1,6 +1,5 @@
 package arrow;
 
-import entity.*;
 import javafx.scene.paint.*;
 
 public class StatBar
@@ -58,11 +57,5 @@ public class StatBar
 	public String getText()
 	{
 		return data + "/" + maxData;
-	}
-
-	public static StatBar forEntity(XEntity entity)
-	{
-		return new StatBar(entity instanceof XHero ? Color.GREEN : Color.GRAY, Color.BLACK, Color.WHITE,
-				entity.getStats().getVisualStat(0), entity.getStats().getMaxVisualStat(0));
 	}
 }

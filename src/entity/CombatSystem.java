@@ -7,30 +7,29 @@ import item.*;
 import item.inv.*;
 import java.util.*;
 import java.util.stream.*;
-import logic.*;
 
 public interface CombatSystem<T extends Stats, A extends AttackInfo<T, ?>>
 {
-	int movement(MainState mainState, XEntity entity, T stats);
+	int movement(XEntity entity, T stats);
 
-	int dashMovement(MainState mainState, XEntity entity, T stats);
+	int dashMovement(XEntity entity, T stats);
 
-	int maxAccessRange(MainState mainState, XEntity entity, T stats);
+	int maxAccessRange(XEntity entity, T stats);
 
-	List<Integer> attackRanges(MainState mainState, XEntity entity, T stats, boolean counter);
+	List<Integer> attackRanges(XEntity entity, T stats, boolean counter);
 
-	default List<PathAttackX> pathAttackInfo(MainState mainState, XEntity entity, Tile loc, T stats, List<XEntity> possibleTargets, PathLocation pl)
+	default List<PathAttackX> pathAttackInfo(XEntity entity, Tile loc, T stats, List<XEntity> possibleTargets, PathLocation pl)
 	{
-		return possibleTargets.stream().flatMap(e -> attackInfo(mainState, entity, loc, stats, e, e.location(), (T) e.stats).stream())
+		return possibleTargets.stream().flatMap(e -> attackInfo(entity, loc, stats, e, e.location(), (T) e.stats).stream())
 				.map(e -> new PathAttackX(pl, e)).collect(Collectors.toList());
 	}
 
-	default List<A> attackInfo(MainState mainState, XEntity entity, T stats, XEntity entityT, T statsT)
+	default List<A> attackInfo(XEntity entity, T stats, XEntity entityT, T statsT)
 	{
-		return attackInfo(mainState, entity, entity.location, stats, entityT, entityT.location, statsT);
+		return attackInfo(entity, entity.location, stats, entityT, entityT.location, statsT);
 	}
 
-	List<A> attackInfo(MainState mainState, XEntity entity, Tile loc, T stats, XEntity entityT, Tile locT, T statsT);
+	List<A> attackInfo(XEntity entity, Tile loc, T stats, XEntity entityT, Tile locT, T statsT);
 
 	void preAttack(A attackInfo);
 
@@ -46,15 +45,15 @@ public interface CombatSystem<T extends Stats, A extends AttackInfo<T, ?>>
 
 	EnemyAI standardAI();
 
-	AnimTimer createAnimationTimer(RNGDivider divider, MainState mainState);
+	AnimTimer createAnimationTimer(RNGDivider divider);
 
-	AnimTimer createRegenerationAnimation(XEntity entity, MainState mainState);
+	AnimTimer createRegenerationAnimation(XEntity entity);
 
-	AnimTimer createPostAttackAnimation(AttackInfo<T, ?> aI, RNGOutcome result, MainState mainState);
+	AnimTimer createPostAttackAnimation(AttackInfo<T, ?> aI, RNGOutcome result);
 
-	XEntity loadEntity(TileType y1, MainState mainState, JrsObject data, ItemLoader itemLoader);
+	XEntity loadEntity(TileType y1, JrsObject data, ItemLoader itemLoader);
 
-	XEntity loadEntityOrStartLoc(TileType y1, MainState mainState, JrsObject data, ItemLoader itemLoader, Map<String, JrsObject> characters, Inv storage);
+	XEntity loadEntityOrStartLoc(TileType y1, JrsObject data, ItemLoader itemLoader, Map<String, JrsObject> characters, Inv storage);
 
 	Stats defaultStats(boolean xh);
 }

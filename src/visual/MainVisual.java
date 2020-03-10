@@ -1,14 +1,20 @@
 package visual;
 
+import building.blueprint.*;
+import entity.sideinfo.*;
+import file.*;
 import geom.*;
 import geom.f1.*;
+import item.*;
 import javafx.geometry.*;
 import javafx.scene.paint.*;
 import javafx.scene.text.*;
+import levelMap.*;
 import logic.*;
 import logic.editor.*;
-import logic.sideinfo.*;
 import logic.xstate.*;
+import system2.*;
+import system2.content.*;
 import visual.gui.*;
 import visual.sideinfo.*;
 
@@ -39,8 +45,11 @@ public class MainVisual implements XInputInterface
 		SideInfoViewer sivL = new SideInfoViewer(graphics, false);
 		SideInfoViewer sivR = new SideInfoViewer(graphics, true);
 		visualSideInfo = new VisualSideInfo(sivL, sivR);
-		mainState = new MainState(y1, new SideInfoFrame(sivL, sivR));
-		mainState.initialize(loadFile, loadFile2);
+		ItemLoader itemLoader = new ItemLoader2();
+		mainState = new MainState(y1, itemLoader, new SideInfoFrame(sivL, sivR), new System2(),
+				new BlueprintCache<>("BuildingBlueprints", e -> BuildingBlueprint.create(e, itemLoader)));
+		((System2) mainState.combatSystem).setLevelMap(mainState.levelMap);
+		loadLevel(loadFile, loadFile2);
 		graphics.gd().setImageSmoothing(false);
 		graphics.gd().setTextAlign(TextAlignment.CENTER);
 		graphics.gd().setTextBaseline(VPos.CENTER);
@@ -52,6 +61,30 @@ public class MainVisual implements XInputInterface
 		visualMenu = new VisualMenu(graphics, mainState.stateHolder, menuCamera, keyMap);
 		visualGUI = VisualGUI.forCamera(graphics, guiCamera);
 		draw();
+	}
+
+	public void loadLevel(String loadFile, String loadFile2)
+	{
+		SavedImport savedImport = loadFile != null ? new SavedImport(loadFile, loadFile2) : new SavedImport();
+		if(savedImport.hasFile())
+		{
+			savedImport.importIntoMap3(mainState.levelMap, mainState.combatSystem, mainState.itemLoader, mainState.storage.inputInv());
+		}
+		else
+		{
+			TileType y1 = mainState.y1;
+			new Entity2Builder(mainState.levelMap, mainState.combatSystem).setLocation(y1.create2(2, -1))
+					.setStats(new Stats2(XClasses.hexerClass(), 0, null))
+					.addItem(AttackItems2.standardSpell()).create(false);
+			Chapter1.createCharacters(mainState.levelMap, mainState.combatSystem, y1.create2(-2, 1), y1.create2(-2, -1), y1.create2(-4, 1),
+					y1.create2(-3, 1), y1.create2(-3, -1), y1.create2(-5, 1));
+		}
+		/*levelMap.addArrow(new ShineArrow(List.of(y2.create2(2, 0), y2.create2(4, 1)), 120, true, null, true));
+		levelMap.addArrow(new ShineArrow(List.of(y2.create2(-2, 0), y2.create2(4, -4)), 120, true, null, true));
+		levelMap.addArrow(new ShineArrow(List.of(y2.create2(-3, 0)), 120, true, null, true));*/
+		/*levelMap.addBuilding2(new ProductionBuilding(y2.create2(-2, -2), buildingBlueprintCache.get("BLUE1")));
+		levelMap.addBuilding2(new ProductionBuilding(y2.create2(-3, -3), buildingBlueprintCache.get("GSL1")));
+		levelMap.addBuilding(new Transporter(y2.create2(-3, -2), buildingBlueprintCache.get("Transporter1")));*/
 	}
 
 	@Override
@@ -146,6 +179,7 @@ public class MainVisual implements XInputInterface
 			convInputConsumer.tick();
 			visualSideInfo.tick();
 		}
+		mainState.screenshake = Math.max(mainState.screenshake, mainState.levelMap.removeFirstScreenshake());
 		if(mainState.screenshake > 0)
 		{
 			mainState.screenshake--;

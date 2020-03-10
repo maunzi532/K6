@@ -1,4 +1,4 @@
-package building.transport;
+package doubleinv;
 
 import geom.f1.*;
 import item.inv.*;

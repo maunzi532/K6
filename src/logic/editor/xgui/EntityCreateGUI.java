@@ -36,7 +36,7 @@ public class EntityCreateGUI extends XGUIState
 	{
 		Stats stats = mainState.combatSystem.defaultStats(true);
 		Inv inv = new WeightInv(20);
-		XHero entity = new XHero(location, mainState, stats, false, false, inv);
+		XHero entity = new XHero(location, mainState.combatSystem, stats, false, false, inv);
 		mainState.levelMap.addEntity(entity);
 		mainState.stateHolder.setState(new EntityEditGUI(entity));
 	}
@@ -46,7 +46,7 @@ public class EntityCreateGUI extends XGUIState
 		Stats stats = mainState.combatSystem.defaultStats(false);
 		EnemyAI standardAI = mainState.combatSystem.standardAI();
 		Inv inv = new WeightInv(20);
-		XEnemy entity = new XEnemy(location, mainState, stats, standardAI, inv);
+		XEnemy entity = new XEnemy(location, mainState.combatSystem, stats, standardAI, inv);
 		mainState.levelMap.addEntity(entity);
 		mainState.stateHolder.setState(new EntityEditGUI(entity));
 	}

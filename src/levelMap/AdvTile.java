@@ -1,6 +1,7 @@
 package levelMap;
 
 import building.adv.*;
+import doubleinv.*;
 import entity.*;
 
 public class AdvTile
@@ -63,6 +64,6 @@ public class AdvTile
 
 	public boolean visible(LevelMap levelMap)
 	{
-		return floorTile != null && floorTile.visible(levelMap);
+		return floorTile != null && levelMap.sectorVisible(floorTile.sector);
 	}
 }

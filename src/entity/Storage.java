@@ -1,6 +1,6 @@
 package entity;
 
-import building.transport.*;
+import doubleinv.*;
 import geom.f1.*;
 import item.inv.*;
 

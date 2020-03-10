@@ -26,7 +26,7 @@ public class PostAttackState extends AttackState
 	{
 		if(firstEnter)
 		{
-			arrow = mainState.combatSystem.createPostAttackAnimation(aI, result, mainState);
+			arrow = mainState.combatSystem.createPostAttackAnimation(aI, result);
 			firstEnter = false;
 			boolean[] v = ((Supplier<boolean[]>) arrow).get();
 			levelup = v[0];

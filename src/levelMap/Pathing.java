@@ -1,9 +1,9 @@
-package entity;
+package levelMap;
 
+import entity.*;
 import geom.f1.*;
 import java.util.*;
 import java.util.stream.*;
-import levelMap.*;
 
 public class Pathing
 {
