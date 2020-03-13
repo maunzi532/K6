@@ -8,14 +8,12 @@ public class AnimPartHealthCost implements AnimPart
 	private static final int SPEED = 2;
 
 	private final int healthCost;
-	private final Stats2 stats;
 	private final StatBar statBar;
 	private int counter;
 
 	public AnimPartHealthCost(int healthCost, Stats2 stats, StatBar statBar)
 	{
 		this.healthCost = healthCost;
-		this.stats = stats;
 		this.statBar = statBar;
 		stats.setCurrentHealth(stats.getCurrentHealth() - healthCost);
 	}

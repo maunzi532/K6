@@ -6,7 +6,7 @@ import javafx.scene.image.*;
 
 public class AttackItem2Slot implements Item
 {
-	private List<AI2Class> itemTypes;
+	private final List<AI2Class> itemTypes;
 
 	public AttackItem2Slot(List<AI2Class> itemTypes)
 	{

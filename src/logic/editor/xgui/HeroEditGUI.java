@@ -11,7 +11,7 @@ public class HeroEditGUI extends XGUIState
 	private static final CTile isLocationLocked = new CTile(0, 1, 2, 1);
 	private static final CTile isInventoryLocked = new CTile(2, 1, 2, 1);
 
-	private XHero hero;
+	private final XHero hero;
 	private CElement locationLockedElement;
 	private CElement inventoryLockedElement;
 
@@ -29,9 +29,9 @@ public class HeroEditGUI extends XGUIState
 	@Override
 	public void onEnter(MainState mainState)
 	{
-		locationLockedElement = new CElement(isLocationLocked, true, null, () -> hero.toggleStartLocked());
+		locationLockedElement = new CElement(isLocationLocked, true, null, hero::toggleStartLocked);
 		elements.add(locationLockedElement);
-		inventoryLockedElement = new CElement(isInventoryLocked, true, null, () -> hero.toggleStartInvLocked());
+		inventoryLockedElement = new CElement(isInventoryLocked, true, null, hero::toggleStartInvLocked);
 		elements.add(inventoryLockedElement);
 		update();
 	}

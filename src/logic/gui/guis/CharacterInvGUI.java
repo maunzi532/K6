@@ -6,7 +6,7 @@ import logic.xstate.*;
 
 public class CharacterInvGUI extends Inv1GUI
 {
-	private XEntity character;
+	private final XEntity character;
 
 	public CharacterInvGUI(XEntity character)
 	{

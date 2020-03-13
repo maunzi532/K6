@@ -10,8 +10,8 @@ public class InvSlot implements Inv0
 {
 	private InvStack stack;
 	private boolean stackExists;
-	private Item type;
-	private int limit;
+	private final Item type;
+	private final int limit;
 
 	public InvSlot(ItemStack limits)
 	{

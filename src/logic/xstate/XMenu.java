@@ -72,7 +72,7 @@ public class XMenu
 				new BuildingInvEditGUI(building, true));
 	}
 
-	private List<NState> entries;
+	private final List<NState> entries;
 
 	public XMenu(NState... allEntries)
 	{

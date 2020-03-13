@@ -11,7 +11,7 @@ public class EntityCreateGUI extends XGUIState
 	private static final CTile addXHero = new CTile(4, 0, new GuiTile("Add Character"), 2, 1);
 	private static final CTile addXEnemy = new CTile(4, 2, new GuiTile("Add Enemy"), 2, 1);
 
-	private Tile location;
+	private final Tile location;
 
 	public EntityCreateGUI(Tile location)
 	{

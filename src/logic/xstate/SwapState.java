@@ -10,7 +10,7 @@ import logic.*;
 
 public class SwapState implements NMarkState
 {
-	private XHero character;
+	private final XHero character;
 	private List<XHero> swapTargets;
 	private List<VisMark> visMarked;
 

@@ -19,9 +19,9 @@ public class DirectedTradeGUI extends XGUIState
 	private static final CTile transfer = new CTile(4, 2);
 	private static final CTile ok = new CTile(4, 4, new GuiTile("OK"));
 
-	private DoubleInv provide;
-	private DoubleInv receive;
-	private XHero takeAp;
+	private final DoubleInv provide;
+	private final DoubleInv receive;
+	private final XHero takeAp;
 	private ScrollList<ItemView> provideView;
 	private ScrollList<ItemView> receiveView;
 	private CElement transferElement;

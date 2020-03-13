@@ -5,7 +5,7 @@ import logic.xstate.*;
 
 public class EntityInvEditGUI extends InvEditGUI
 {
-	private XEntity invEntity;
+	private final XEntity invEntity;
 
 	public EntityInvEditGUI(XEntity invEntity)
 	{

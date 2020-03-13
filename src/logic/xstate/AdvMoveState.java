@@ -10,7 +10,7 @@ import logic.gui.guis.*;
 
 public class AdvMoveState implements NMarkState
 {
-	private XHero character;
+	private final XHero character;
 	private List<PathLocation> movement;
 	private List<Tile> attack;
 	private List<VisMark> allTargets;
@@ -37,7 +37,7 @@ public class AdvMoveState implements NMarkState
 		if(character.ready(2))
 		{
 			character.attackRanges(false).stream().map(e -> mainState.y1.range(character.location(), e, e))
-					.flatMap(Collection::stream).map(mainState.levelMap::getEntity).filter(e -> character.isEnemy(e))
+					.flatMap(Collection::stream).map(mainState.levelMap::getEntity).filter(character::isEnemy)
 					.forEach(e -> attack.add(e.location()));
 		}
 		allTargets = new ArrayList<>();

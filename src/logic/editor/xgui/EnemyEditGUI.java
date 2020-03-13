@@ -7,7 +7,7 @@ import logic.xstate.*;
 
 public class EnemyEditGUI extends XGUIState
 {
-	private XEnemy enemy;
+	private final XEnemy enemy;
 
 	public EnemyEditGUI(XEnemy enemy)
 	{

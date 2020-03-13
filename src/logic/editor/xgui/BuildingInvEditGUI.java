@@ -1,14 +1,13 @@
 package logic.editor.xgui;
 
 import building.adv.*;
-import building.transport.*;
 import java.util.*;
 import logic.xstate.*;
 
 public class BuildingInvEditGUI extends InvEditGUI
 {
-	private XBuilding doubleInv;
-	private boolean editOutput;
+	private final XBuilding doubleInv;
+	private final boolean editOutput;
 
 	public BuildingInvEditGUI(XBuilding doubleInv, boolean editOutput)
 	{

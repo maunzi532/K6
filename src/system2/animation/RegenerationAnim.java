@@ -10,8 +10,6 @@ public class RegenerationAnim implements AnimTimer
 {
 	private static final int SPEED = 2;
 
-	private XEntity entity;
-	private LevelMap levelMap;
 	private InfoArrow healthBar;
 	private int regenerateAmount;
 	private boolean finished;
@@ -19,8 +17,6 @@ public class RegenerationAnim implements AnimTimer
 
 	public RegenerationAnim(XEntity entity, LevelMap levelMap)
 	{
-		this.entity = entity;
-		this.levelMap = levelMap;
 		Stats2 stats = (Stats2) entity.getStats();
 		healthBar = new InfoArrow(entity.location(),
 				entity instanceof XHero ? Color.GREEN : Color.GRAY, Color.BLACK, Color.WHITE,

@@ -4,7 +4,7 @@ import java.util.function.*;
 
 public class CElement implements GuiElement
 {
-	private CTile tile;
+	private final CTile tile;
 	public GuiTile fillTile;
 	private boolean targetable;
 	private Supplier<Boolean> exists;

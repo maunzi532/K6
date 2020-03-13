@@ -9,7 +9,7 @@ import logic.xstate.*;
 
 public class EditMoveState implements NMarkState
 {
-	private XEntity entity;
+	private final XEntity entity;
 
 	public EditMoveState(XEntity entity)
 	{

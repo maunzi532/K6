@@ -14,7 +14,7 @@ public class CharacterCombatGUI extends XGUIState
 	private static final CTile UNEQUIP = new CTile(1, 6, new GuiTile("Unequip"), 2, 1);
 	private static final CTile VIEW_MODE = new CTile(4, 6, 2, 1);
 
-	private XEntity character;
+	private final XEntity character;
 	private int viewMode;
 	private CombatSystem combatSystem;
 	private Item equippedItem;

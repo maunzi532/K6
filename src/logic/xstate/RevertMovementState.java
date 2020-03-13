@@ -5,7 +5,7 @@ import logic.*;
 
 public class RevertMovementState implements NAutoState
 {
-	private XHero character;
+	private final XHero character;
 
 	public RevertMovementState(XHero character)
 	{

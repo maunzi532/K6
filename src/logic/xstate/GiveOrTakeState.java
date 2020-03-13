@@ -13,8 +13,8 @@ import logic.gui.guis.*;
 
 public class GiveOrTakeState implements NMarkState
 {
-	private boolean give;
-	private XHero character;
+	private final boolean give;
+	private final XHero character;
 	private List<DoubleInv> possibleTargets;
 	private List<VisMark> visMarked;
 

@@ -9,8 +9,8 @@ import logic.*;
 
 public class ReachViewState implements NMarkState
 {
-	private XEntity character;
-	private boolean enemy;
+	private final XEntity character;
+	private final boolean enemy;
 	private List<VisMark> allTargets;
 
 	public ReachViewState(XEntity character, boolean enemy)

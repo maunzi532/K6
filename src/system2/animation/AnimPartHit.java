@@ -16,7 +16,7 @@ public class AnimPartHit implements AnimPart
 	private final int reduction;
 	private final boolean crit;
 	private final boolean melt;
-	private BlinkArrow arrow;
+	private final BlinkArrow arrow;
 	private int counter;
 
 	public AnimPartHit(XEntity target, Stats2 statsT, int damage, StatBar statBar,

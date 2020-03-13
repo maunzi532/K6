@@ -25,9 +25,9 @@ public class BuildGUI extends XGUIState
 	private static final CTile moreTiles = new CTile(1, 0);
 	private static final CTile build = new CTile(6, 0, 2, 1);
 
-	private XBuilder builder;
-	private BuildingBlueprint blueprint;
-	private List<List<CostBlueprint>> costBlueprints;
+	private final XBuilder builder;
+	private final BuildingBlueprint blueprint;
+	private final List<List<CostBlueprint>> costBlueprints;
 	private LevelMap levelMap;
 	private int costNum = 0;
 	private int tileCostNum = 0;

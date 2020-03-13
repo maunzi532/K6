@@ -10,7 +10,7 @@ import java.util.function.*;
 
 public class BlueprintCache<T extends FullBlueprint>
 {
-	private HashMap<String, T> blueprints;
+	private final HashMap<String, T> blueprints;
 
 	public BlueprintCache(String filename, Function<JrsObject, T> initializer)
 	{

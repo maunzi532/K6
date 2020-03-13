@@ -16,12 +16,12 @@ public class ArrowViewer
 	public static final double DATA_WIDTH = 2;
 	public static final double DATA_HEIGHT = 0.3;
 
+	private final DoubleType y2;
+
 	public ArrowViewer(DoubleType y2)
 	{
 		this.y2 = y2;
 	}
-
-	private DoubleType y2;
 
 	public boolean isVisible(XArrow arrow, Tile mid, int range)
 	{

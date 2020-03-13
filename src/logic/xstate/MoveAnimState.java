@@ -7,9 +7,9 @@ import logic.*;
 
 public class MoveAnimState implements NAutoState
 {
-	private NState nextState;
-	private XEntity entity;
-	private Tile newLocation;
+	private final NState nextState;
+	private final XEntity entity;
+	private final Tile newLocation;
 	private int counter;
 	private int finish;
 

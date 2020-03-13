@@ -13,8 +13,8 @@ public class Inv2GUI extends XGUIState
 	private static final CTile weightInput = new CTile(3, 0);
 	private static final CTile weightOutput = new CTile(8, 0);
 
-	private Inv inputInv;
-	private Inv outputInv;
+	private final Inv inputInv;
+	private final Inv outputInv;
 
 	public Inv2GUI(DoubleInv doubleInv)
 	{

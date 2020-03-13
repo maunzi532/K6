@@ -8,8 +8,8 @@ import logic.xstate.*;
 
 public class AttackInfoGUI extends XGUIState
 {
-	private XHero attacker;
-	private XEntity target;
+	private final XHero attacker;
+	private final XEntity target;
 	private SideInfoFrame sideInfoFrame;
 	private TargetScrollList<AttackInfo> attacksView;
 

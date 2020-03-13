@@ -5,8 +5,8 @@ import logic.*;
 
 public class RegenerateState implements NAutoState
 {
-	private XEntity entity;
-	private NState nextState;
+	private final XEntity entity;
+	private final NState nextState;
 	private AnimTimer arrow;
 
 	public RegenerateState(XEntity entity, NState nextState)

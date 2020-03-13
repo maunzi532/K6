@@ -10,15 +10,11 @@ public class AnimPartAttack implements AnimPart
 	private static final int FORWARD = 20;
 	private static final int BACKWARD = 10;
 
-	private final XEntity attacker;
-	private final XEntity target;
-	private ManualXArrow arrow;
+	private final ManualXArrow arrow;
 	private int counter;
 
 	public AnimPartAttack(XEntity attacker, XEntity target, Arrows arrows)
 	{
-		this.attacker = attacker;
-		this.target = target;
 		arrow = new ManualXArrow(XArrow.convert(attacker.location(), target.location()), LEN, attacker.getImage());
 		arrows.addArrow(arrow);
 		attacker.setReplacementArrow(arrow);

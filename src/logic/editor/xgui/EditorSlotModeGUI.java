@@ -9,7 +9,7 @@ public class EditorSlotModeGUI extends XGUIState
 {
 	private static final CTile textInv = new CTile(2, 0, new GuiTile("Editing modes"), 2, 1);
 
-	private LevelEditor editor;
+	private final LevelEditor editor;
 
 	public EditorSlotModeGUI(LevelEditor editor)
 	{

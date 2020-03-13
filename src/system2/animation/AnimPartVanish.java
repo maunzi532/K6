@@ -10,7 +10,7 @@ public class AnimPartVanish implements AnimPart
 	private static final int BLINKTIME = 3;
 
 	private final XEntity target;
-	private BlinkArrow arrow;
+	private final BlinkArrow arrow;
 
 	public AnimPartVanish(XEntity target, Arrows arrows, LevelMap levelMap)
 	{

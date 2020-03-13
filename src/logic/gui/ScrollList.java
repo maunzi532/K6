@@ -20,10 +20,8 @@ public class ScrollList<T> implements GuiElement
 	public List<T> elements;
 	private int currentScroll;
 	private boolean skipScroll1;
-	private int elementLinesY;
 	private boolean canScrollUp;
 	private boolean canScrollDown;
-	private int elementCountY;
 	private int shownLinesY;
 
 	public ScrollList(int locationX, int locationY, int sizeX, int sizeY, int elementSizeX, int elementSizeY, List<T> elements,
@@ -51,7 +49,7 @@ public class ScrollList<T> implements GuiElement
 	@Override
 	public void update()
 	{
-		elementLinesY = -Math.floorDiv(-elements.size(), elementCountX);
+		int elementLinesY = -Math.floorDiv(-elements.size(), elementCountX);
 		if(elementLinesY <= elementCountYm0)
 		{
 			skipScroll1 = false;
@@ -68,7 +66,7 @@ public class ScrollList<T> implements GuiElement
 			canScrollUp = currentScroll > 0;
 			canScrollDown = canScrollDownAt(elementLinesY, currentScroll);
 		}
-		elementCountY = elementCountY(elementLinesY, currentScroll);
+		int elementCountY = elementCountY(elementLinesY, currentScroll);
 		shownLinesY = Math.min(elementLinesY - currentScroll, elementCountY);
 	}
 
