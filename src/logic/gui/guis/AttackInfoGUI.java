@@ -1,10 +1,11 @@
 package logic.gui.guis;
 
 import entity.*;
+import entity.sideinfo.*;
 import logic.*;
 import logic.gui.*;
-import entity.sideinfo.*;
 import logic.xstate.*;
+import system2.*;
 
 public class AttackInfoGUI extends XGUIState
 {

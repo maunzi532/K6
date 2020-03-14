@@ -7,49 +7,51 @@ import item.*;
 import item.inv.*;
 import java.util.*;
 import java.util.stream.*;
+import system2.*;
+import system2.analysis.*;
 
-public interface CombatSystem<T extends Stats, A extends AttackInfo<T, ?>>
+public interface CombatSystem
 {
-	int movement(XEntity entity, T stats);
+	int movement(XEntity entity, Stats stats);
 
-	int dashMovement(XEntity entity, T stats);
+	int dashMovement(XEntity entity, Stats stats);
 
-	int maxAccessRange(XEntity entity, T stats);
+	int maxAccessRange(XEntity entity, Stats stats);
 
-	List<Integer> attackRanges(XEntity entity, T stats, boolean counter);
+	List<Integer> attackRanges(XEntity entity, Stats stats, boolean counter);
 
-	default List<PathAttackX> pathAttackInfo(XEntity entity, Tile loc, T stats, List<XEntity> possibleTargets, PathLocation pl)
+	default List<PathAttackX> pathAttackInfo(XEntity entity, Tile loc, Stats stats, List<XEntity> possibleTargets, PathLocation pl)
 	{
-		return possibleTargets.stream().flatMap(e -> attackInfo(entity, loc, stats, e, e.location(), (T) e.stats).stream())
+		return possibleTargets.stream().flatMap(e -> attackInfo(entity, loc, stats, e, e.location(), e.stats).stream())
 				.map(e -> new PathAttackX(pl, e)).collect(Collectors.toList());
 	}
 
-	default List<A> attackInfo(XEntity entity, T stats, XEntity entityT, T statsT)
+	default List<AttackInfo> attackInfo(XEntity entity, Stats stats, XEntity entityT, Stats statsT)
 	{
 		return attackInfo(entity, entity.location, stats, entityT, entityT.location, statsT);
 	}
 
-	List<A> attackInfo(XEntity entity, Tile loc, T stats, XEntity entityT, Tile locT, T statsT);
+	List<AttackInfo> attackInfo(XEntity entity, Tile loc, Stats stats, XEntity entityT, Tile locT, Stats statsT);
 
-	void preAttack(A attackInfo);
+	void preAttack(AttackInfo attackInfo);
 
-	List<XMode> modesForItem(Stats stats, Item item);
+	List<AttackMode3> modesForItem(Stats stats, Item item);
 
 	Optional<Item> equippedItem(Stats stats);
 
 	List<Item> allItems();
 
-	RNGDivider supplyDivider(A attackInfo);
+	RNGDivider2 supplyDivider(AttackInfo attackInfo);
 
 	double enemyAIScore(List<RNGOutcome> outcomes);
 
 	EnemyAI standardAI();
 
-	AnimTimer createAnimationTimer(RNGDivider divider);
+	AnimTimer createAnimationTimer(RNGDivider2 divider);
 
 	AnimTimer createRegenerationAnimation(XEntity entity);
 
-	AnimTimer createPostAttackAnimation(AttackInfo<T, ?> aI, RNGOutcome result);
+	AnimTimer createPostAttackAnimation(AttackInfo aI, RNGOutcome result);
 
 	XEntity loadEntity(TileType y1, JrsObject data, ItemLoader itemLoader);
 

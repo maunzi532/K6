@@ -13,7 +13,7 @@ import system2.analysis.*;
 import system2.animation.*;
 import system2.content.*;
 
-public class System2 implements CombatSystem<Stats2, AttackInfo2>
+public class System2 implements CombatSystem
 {
 	private LevelMap levelMap;
 
@@ -23,25 +23,25 @@ public class System2 implements CombatSystem<Stats2, AttackInfo2>
 	}
 
 	@Override
-	public int movement(XEntity entity, Stats2 stats)
+	public int movement(XEntity entity, Stats stats)
 	{
 		return stats.getMovement();
 	}
 
 	@Override
-	public int dashMovement(XEntity entity, Stats2 stats)
+	public int dashMovement(XEntity entity, Stats stats)
 	{
 		return 12;
 	}
 
 	@Override
-	public int maxAccessRange(XEntity entity, Stats2 stats)
+	public int maxAccessRange(XEntity entity, Stats stats)
 	{
 		return 4;
 	}
 
 	@Override
-	public List<Integer> attackRanges(XEntity entity, Stats2 stats, boolean counter)
+	public List<Integer> attackRanges(XEntity entity, Stats stats, boolean counter)
 	{
 		List<int[]> v = entity.outputInv().viewItems(false)
 				.stream().filter(e -> stats.getItemFilter().canContain(e.item))
@@ -58,8 +58,8 @@ public class System2 implements CombatSystem<Stats2, AttackInfo2>
 	}
 
 	@Override
-	public List<AttackInfo2> attackInfo(XEntity entity, Tile loc, Stats2 stats,
-			XEntity entityT, Tile locT, Stats2 statsT)
+	public List<AttackInfo> attackInfo(XEntity entity, Tile loc, Stats stats,
+			XEntity entityT, Tile locT, Stats statsT)
 	{
 		int distance = levelMap.y1.distance(loc, locT);
 		return entity.outputInv()
@@ -67,7 +67,7 @@ public class System2 implements CombatSystem<Stats2, AttackInfo2>
 				.stream()
 				.filter(e -> stats.getItemFilter().canContain(e.item))
 				.flatMap(e -> ((AttackItem2) e.item).attackModes().stream())
-				.map(mode -> new AttackInfo2(entity, loc, stats, mode,
+				.map(mode -> new AttackInfo(entity, loc, stats, mode,
 						entityT, locT, statsT, statsT.getLastUsed(), distance))
 				.filter(e -> e.canInitiate)
 				.map(e -> e.addAnalysis(this))
@@ -75,16 +75,16 @@ public class System2 implements CombatSystem<Stats2, AttackInfo2>
 	}
 
 	@Override
-	public void preAttack(AttackInfo2 attackInfo)
+	public void preAttack(AttackInfo attackInfo)
 	{
 		attackInfo.stats.setLastUsed(attackInfo.mode);
 	}
 
 	@Override
-	public List<XMode> modesForItem(Stats stats, Item item)
+	public List<AttackMode3> modesForItem(Stats stats, Item item)
 	{
 		if(item instanceof AttackItem2)
-			return ((AttackItem2) item).attackModes().stream().map(e -> AttackMode3.convert((Stats2) stats, e))
+			return ((AttackItem2) item).attackModes().stream().map(e -> AttackMode3.convert(stats, e))
 					.collect(Collectors.toList());
 		return List.of();
 	}
@@ -92,7 +92,7 @@ public class System2 implements CombatSystem<Stats2, AttackInfo2>
 	@Override
 	public Optional<Item> equippedItem(Stats stats)
 	{
-		return Optional.ofNullable(((Stats2) stats).getLastUsed()).map(e -> e.item);
+		return Optional.ofNullable((stats).getLastUsed()).map(e -> e.item);
 	}
 
 	@Override
@@ -102,7 +102,7 @@ public class System2 implements CombatSystem<Stats2, AttackInfo2>
 	}
 
 	@Override
-	public RNGDivider supplyDivider(AttackInfo2 attackInfo)
+	public RNGDivider2 supplyDivider(AttackInfo attackInfo)
 	{
 		return new RNGDivider2(attackInfo);
 	}
@@ -120,9 +120,9 @@ public class System2 implements CombatSystem<Stats2, AttackInfo2>
 	}
 
 	@Override
-	public AnimTimer createAnimationTimer(RNGDivider divider)
+	public AnimTimer createAnimationTimer(RNGDivider2 divider)
 	{
-		return new AttackAnim((RNGDivider2) divider, levelMap, levelMap);
+		return new AttackAnim(divider, levelMap, levelMap);
 	}
 
 	@Override
@@ -134,7 +134,7 @@ public class System2 implements CombatSystem<Stats2, AttackInfo2>
 	@Override
 	public AnimTimer createPostAttackAnimation(AttackInfo aI, RNGOutcome result)
 	{
-		return new GetExpAnim((AttackInfo2) aI, (RNGOutcome2) result, levelMap);
+		return new GetExpAnim(aI, (RNGOutcome2) result, levelMap);
 	}
 
 	@Override
@@ -142,7 +142,7 @@ public class System2 implements CombatSystem<Stats2, AttackInfo2>
 	{
 		int classCode = ((JrsNumber) data.get("Type")).getValue().intValue();
 		Tile location = y1.create2(((JrsNumber) data.get("sx")).getValue().intValue(), ((JrsNumber) data.get("sy")).getValue().intValue());
-		Stats2 stats = new Stats2(((JrsObject) data.get("Stats")), itemLoader);
+		Stats stats = new Stats(((JrsObject) data.get("Stats")), itemLoader);
 		Inv inv = new WeightInv(((JrsObject) data.get("Inventory")), itemLoader);
 		return switch(classCode)
 				{
@@ -162,7 +162,7 @@ public class System2 implements CombatSystem<Stats2, AttackInfo2>
 			boolean locked = ((JrsBoolean) data.get("Locked")).booleanValue();
 			boolean invLocked = ((JrsBoolean) data.get("InvLocked")).booleanValue();
 			JrsObject char1 = characters.get(startName);
-			Stats2 stats = new Stats2(((JrsObject) char1.get("Stats")), itemLoader);
+			Stats stats = new Stats(((JrsObject) char1.get("Stats")), itemLoader);
 			Inv inv;
 			if(invLocked)
 			{
@@ -179,7 +179,7 @@ public class System2 implements CombatSystem<Stats2, AttackInfo2>
 		else
 		{
 			int classCode = ((JrsNumber) data.get("Type")).getValue().intValue();
-			Stats2 stats = new Stats2(((JrsObject) data.get("Stats")), itemLoader);
+			Stats stats = new Stats(((JrsObject) data.get("Stats")), itemLoader);
 				Inv inv = new WeightInv(((JrsObject) data.get("Inventory")), itemLoader);
 			return switch(classCode)
 					{
@@ -190,9 +190,55 @@ public class System2 implements CombatSystem<Stats2, AttackInfo2>
 		}
 	}
 
+	public XCharacter loadCharacterOrStartLoc(TileType y1, JrsObject data, ItemLoader itemLoader, Map<String, JrsObject> characters, Inv storage)
+	{
+		Tile location = y1.create2(((JrsNumber) data.get("sx")).getValue().intValue(), ((JrsNumber) data.get("sy")).getValue().intValue());
+		int classCode = ((JrsNumber) data.get("Type")).getValue().intValue();
+		if(data.get("StartName") != null)
+		{
+			String startName = data.get("StartName").asText();
+			boolean locked = ((JrsBoolean) data.get("Locked")).booleanValue();
+			boolean invLocked = ((JrsBoolean) data.get("InvLocked")).booleanValue();
+			JrsObject char1 = characters.get(startName);
+			Stats stats = new Stats(((JrsObject) char1.get("Stats")), itemLoader);
+			Inv inv;
+			if(invLocked)
+			{
+				inv = new WeightInv(((JrsObject) data.get("Inventory")), itemLoader);
+				Inv inv2 = new WeightInv(((JrsObject) char1.get("Inventory")), itemLoader);
+				storage.tryAdd(inv2.allItems(), false, CommitType.COMMIT);
+			}
+			else
+			{
+				inv = new WeightInv(((JrsObject) char1.get("Inventory")), itemLoader);
+			}
+			return switch(classCode)
+					{
+						case 1 -> new XCharacter(CharacterTeam.HERO, 0, location, stats, inv,
+								null, null, new CharacterSave(locked, invLocked));
+						case 2 -> new XCharacter(CharacterTeam.ENEMY, 0, location, stats, inv,
+								null, null, new CharacterSave(locked, invLocked));
+						default -> throw new RuntimeException();
+					};
+		}
+		else
+		{
+			Stats stats = new Stats(((JrsObject) data.get("Stats")), itemLoader);
+			Inv inv = new WeightInv(((JrsObject) data.get("Inventory")), itemLoader);
+			return switch(classCode)
+					{
+						case 1 -> new XCharacter(CharacterTeam.HERO, 0, location, stats, inv,
+							null, null, null);
+						case 2 -> new XCharacter(CharacterTeam.ENEMY, 0, location, stats, inv,
+							new StandardAI(levelMap, this), null, null);
+						default -> throw new RuntimeException();
+					};
+		}
+	}
+
 	@Override
 	public Stats defaultStats(boolean xh)
 	{
-		return new Stats2(XClasses.mageClass(), 0, xh ? new PlayerLevelSystem(0, IntStream.range(0, 8).toArray(), 40) : null);
+		return new Stats(XClasses.mageClass(), 0, xh ? new PlayerLevelSystem(0, IntStream.range(0, 8).toArray(), 40) : null);
 	}
 }

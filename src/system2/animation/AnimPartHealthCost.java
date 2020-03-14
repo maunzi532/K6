@@ -11,7 +11,7 @@ public class AnimPartHealthCost implements AnimPart
 	private final StatBar statBar;
 	private int counter;
 
-	public AnimPartHealthCost(int healthCost, Stats2 stats, StatBar statBar)
+	public AnimPartHealthCost(int healthCost, Stats stats, StatBar statBar)
 	{
 		this.healthCost = healthCost;
 		this.statBar = statBar;

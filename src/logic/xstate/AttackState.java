@@ -1,6 +1,6 @@
 package logic.xstate;
 
-import entity.*;
+import system2.*;
 
 public abstract class AttackState implements NAutoState
 {

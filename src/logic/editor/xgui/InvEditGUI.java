@@ -44,7 +44,7 @@ public class InvEditGUI extends XGUIState
 		infoView = new ScrollList<>(2, 1, 3, 5, 1, 1, null,
 				GuiTile::textView, this::onClickInfoView);
 		elements.add(infoView);
-		allItemsView = new TargetScrollList<Item>(5, 1, 3, 5, 1, 1,
+		allItemsView = new TargetScrollList<>(5, 1, 3, 5, 1, 1,
 				mainState.combatSystem.allItems(), e -> GuiTile.cast(new GuiTile(null, e.image(), false, null)),
 				this::itemClick2);
 		elements.add(allItemsView);

@@ -16,7 +16,7 @@ public class AttackAnim implements AnimTimer, Supplier<RNGOutcome>
 	private RNGDivider2 lastDivider;
 	private Arrows arrows;
 	private LevelMap levelMap;
-	private AttackInfo2 aI;
+	private AttackInfo aI;
 	private List<String> events;
 	private int eventCounter;
 	private List<AnimPart> linked;

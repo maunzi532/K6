@@ -20,12 +20,9 @@ public interface DoubleInv
 
 	Inv outputInv();
 
-	default boolean active()
-	{
-		return true;
-	}
+	boolean active();
 
-	default void afterTrading(){}
+	void afterTrading();
 
 	default int inputPriority()
 	{

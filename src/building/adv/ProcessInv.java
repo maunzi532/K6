@@ -116,7 +116,7 @@ public class ProcessInv implements BuildingFunction
 	@Override
 	public void loadConnect(ConnectRestore cr, XBuilding connectTo){}
 
-	public ProcessInv(JrsObject data, ItemLoader itemLoader, TileType y1)
+	public ProcessInv(JrsObject data, ItemLoader itemLoader)
 	{
 		name = data.get("Name").asText();
 		inputInv = new SlotInv((JrsObject) data.get("InputInv"), itemLoader);

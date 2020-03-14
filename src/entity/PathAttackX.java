@@ -1,6 +1,6 @@
 package entity;
 
-import entity.*;
+import system2.*;
 
 public class PathAttackX
 {

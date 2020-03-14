@@ -4,10 +4,12 @@ import entity.*;
 import entity.analysis.*;
 import java.util.function.*;
 import logic.*;
+import system2.*;
+import system2.analysis.*;
 
 public class AttackAnimState2 extends AttackState
 {
-	private RNGDivider divider;
+	private RNGDivider2 divider;
 	private AnimTimer animTimer;
 	private Supplier<RNGOutcome> outcomeSupplier;
 

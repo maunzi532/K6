@@ -7,6 +7,7 @@ import java.util.*;
 import javafx.scene.paint.*;
 import logic.*;
 import logic.gui.*;
+import system2.*;
 
 public class CharacterCombatGUI extends XGUIState
 {
@@ -20,7 +21,7 @@ public class CharacterCombatGUI extends XGUIState
 	private Item equippedItem;
 	private CElement viewModeElement;
 	private TargetScrollList<ItemView> invView;
-	private TargetScrollList<XMode> modeChooseView;
+	private TargetScrollList<AttackMode3> modeChooseView;
 	private ScrollList<String> statsView;
 	private Item chosenItem;
 
@@ -35,7 +36,7 @@ public class CharacterCombatGUI extends XGUIState
 	{
 		mainState.sideInfoFrame.setSideInfoXH(character.standardSideInfo(), character);
 		combatSystem = mainState.combatSystem;
-		equippedItem = (Item) combatSystem.equippedItem(character.getStats()).orElse(null);
+		equippedItem = combatSystem.equippedItem(character.getStats()).orElse(null);
 		elements.add(new CElement(NAME, new GuiTile(character.name())));
 		elements.add(new CElement(UNEQUIP, true, () -> character.getStats().getEquippedMode() != null,
 				this::unequip));
@@ -84,16 +85,16 @@ public class CharacterCombatGUI extends XGUIState
 		}
 	}
 
-	private void onClickMode(XMode mode)
+	private void onClickMode(AttackMode3 mode)
 	{
-		character.getStats().equip(chosenItem, mode.shortVersion());
+		character.getStats().equip(mode.shortVersion());
 		equippedItem = chosenItem;
 		chosenItem = null;
 	}
 
 	private void unequip()
 	{
-		character.getStats().equip(null, null);
+		character.getStats().equip(null);
 		equippedItem = null;
 		chosenItem = null;
 	}

@@ -17,7 +17,7 @@ public class RegenerationAnim implements AnimTimer
 
 	public RegenerationAnim(XEntity entity, LevelMap levelMap)
 	{
-		Stats2 stats = (Stats2) entity.getStats();
+		Stats stats = entity.getStats();
 		healthBar = new InfoArrow(entity.location(),
 				entity instanceof XHero ? Color.GREEN : Color.GRAY, Color.BLACK, Color.WHITE,
 				stats.getCurrentHealth(), stats.maxHealth());

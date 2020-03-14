@@ -4,6 +4,7 @@ import entity.*;
 import geom.f1.*;
 import java.util.*;
 import logic.*;
+import system2.*;
 
 public class EnemyPhaseState implements NAutoState
 {

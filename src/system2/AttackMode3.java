@@ -1,12 +1,11 @@
 package system2;
 
-import entity.*;
 import java.util.*;
 import java.util.stream.*;
 import javafx.scene.image.*;
 import system2.content.*;
 
-public class AttackMode3 implements XMode
+public class AttackMode3
 {
 	private static final int[] NO_RANGES = new int[]{};
 	private static final int[] DEFENDER_RANGES = new int[]{1, 2, 3, 4, 5, 6};
@@ -14,7 +13,7 @@ public class AttackMode3 implements XMode
 	private static final int MAGICAL_ACCURACY_MULTIPLIER = 3;
 	private static final int CRIT_MULTIPLIER = 2;
 
-	public final Stats2 stats;
+	public final Stats stats;
 	public final AttackItem2 item;
 	public final AM2Type mode;
 	public final Set<Ability2> abilities;
@@ -48,7 +47,7 @@ public class AttackMode3 implements XMode
 	public final int evasionMagical;
 	public final int critProtection;
 
-	public AttackMode3(Stats2 stats, AttackMode4 mode4)
+	public AttackMode3(Stats stats, AttackMode4 mode4)
 	{
 		this.stats = stats;
 		item = mode4.item;
@@ -123,12 +122,12 @@ public class AttackMode3 implements XMode
 		critProtection = critProtection1;
 	}
 
-	public AttackMode3(Stats2 stats)
+	public AttackMode3(Stats stats)
 	{
 		this.stats = stats;
 		item = null;
-		mode = null;
-		List<ModifierAspect> modifiers = List.of(stats);
+		mode = EvadeMode.INSTANCE;
+		List<ModifierAspect> modifiers = List.of(stats, mode);
 		abilities = modifiers.stream().flatMap(e -> e.abilities().stream()).collect(Collectors.toSet());
 		abilityTexts = modifiers.stream().flatMap(e -> e.abilities().stream().map(f -> new AbilityText(e, f))).collect(Collectors.toList());
 		ranges = NO_RANGES;
@@ -183,25 +182,21 @@ public class AttackMode3 implements XMode
 		return magical ? evasionMagical : defenseMagical;
 	}
 
-	@Override
-	public XMode shortVersion()
+	public AttackMode4 shortVersion()
 	{
 		return item == null || mode == null ? AttackMode4.EVADE_MODE : new AttackMode4(item, mode);
 	}
 
-	@Override
 	public Image image()
 	{
 		return item != null ? item.image() : null;
 	}
 
-	@Override
 	public String tile()
 	{
 		return mode != null ? mode.tile() : "Evade";
 	}
 
-	@Override
 	public List<String> modeInfo()
 	{
 		return mode.info();
@@ -245,7 +240,7 @@ public class AttackMode3 implements XMode
 		return list;
 	}
 
-	public static AttackMode3 convert(Stats2 stats, AttackMode4 mode4)
+	public static AttackMode3 convert(Stats stats, AttackMode4 mode4)
 	{
 		if(mode4.active)
 			return new AttackMode3(stats, mode4);

@@ -3,6 +3,7 @@ package entity;
 import geom.f1.*;
 import item.*;
 import item.inv.*;
+import system2.*;
 
 public class XEnemy extends XEntity
 {

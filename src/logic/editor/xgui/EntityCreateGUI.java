@@ -5,6 +5,7 @@ import geom.f1.*;
 import item.inv.*;
 import logic.*;
 import logic.gui.*;
+import system2.*;
 
 public class EntityCreateGUI extends XGUIState
 {

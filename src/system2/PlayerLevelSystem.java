@@ -58,12 +58,12 @@ public class PlayerLevelSystem implements LevelSystem
 	}
 
 	@Override
-	public int[] getLevelup(Stats2 current)
+	public int[] getLevelup(Stats current)
 	{
 		return randomLevelup2(levelupPercent(current), RANDOM);
 	}
 
-	public int[] levelupPercent(Stats2 current)
+	public int[] levelupPercent(Stats current)
 	{
 		int levelDiff = current.getLevel() - baseLevel;
 		int assumedStats = Arrays.stream(assumedIncrease).sum() * levelDiff / 100 + Arrays.stream(baseLevelStats).sum();

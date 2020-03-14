@@ -1,10 +1,10 @@
 package system2;
 
-import entity.*;
 import java.util.*;
 import javafx.scene.image.*;
+import system2.content.*;
 
-public class AttackMode4 implements XMode
+public class AttackMode4
 {
 	public static final AttackMode4 EVADE_MODE = new AttackMode4();
 
@@ -23,28 +23,24 @@ public class AttackMode4 implements XMode
 	{
 		active = false;
 		item = null;
-		mode = null;
+		mode = EvadeMode.INSTANCE;
 	}
 
-	@Override
-	public XMode shortVersion()
+	public AttackMode4 shortVersion()
 	{
 		return this;
 	}
 
-	@Override
 	public Image image()
 	{
 		return item != null ? item.image() : null;
 	}
 
-	@Override
 	public String tile()
 	{
 		return null;
 	}
 
-	@Override
 	public List<String> modeInfo()
 	{
 		return null;

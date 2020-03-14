@@ -42,4 +42,13 @@ public class Storage implements DoubleInv
 	{
 		return inv;
 	}
+
+	@Override
+	public boolean active()
+	{
+		return true;
+	}
+
+	@Override
+	public void afterTrading(){}
 }

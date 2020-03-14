@@ -4,6 +4,7 @@ import entity.*;
 import java.util.*;
 import java.util.stream.*;
 import levelMap.*;
+import system2.*;
 
 public class StandardAI implements EnemyAI
 {
@@ -32,7 +33,7 @@ public class StandardAI implements EnemyAI
 			locations.add(new PathLocation(user.location()));
 		for(PathLocation pl : locations)
 		{
-			pathsX.addAll(combatSystem.pathAttackInfo(user, pl.tile(), user.getStats(), levelMap.getEntitiesH(), pl));
+			pathsX.addAll(combatSystem.pathAttackInfo(user, pl.tile(), user.getStats(), new ArrayList<>(levelMap.getEntitiesH()), pl));
 			if(user.canMove())
 				pathsX.add(new PathAttackX(pl, null));
 		}

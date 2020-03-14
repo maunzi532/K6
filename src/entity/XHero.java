@@ -9,6 +9,7 @@ import item.view.*;
 import java.io.*;
 import java.util.*;
 import javafx.scene.image.*;
+import system2.*;
 
 public class XHero extends XEntity implements XBuilder
 {

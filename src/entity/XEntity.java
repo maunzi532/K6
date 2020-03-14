@@ -4,6 +4,7 @@ import arrow.*;
 import com.fasterxml.jackson.jr.ob.comp.*;
 import doubleinv.*;
 import entity.analysis.*;
+import entity.sideinfo.*;
 import file.*;
 import geom.f1.*;
 import item.*;
@@ -12,7 +13,7 @@ import java.io.*;
 import java.util.*;
 import javafx.scene.image.*;
 import javafx.scene.paint.*;
-import entity.sideinfo.*;
+import system2.*;
 
 public class XEntity implements DoubleInv
 {
@@ -138,6 +139,12 @@ public class XEntity implements DoubleInv
 	public Inv outputInv()
 	{
 		return inv;
+	}
+
+	@Override
+	public boolean active()
+	{
+		return true;
 	}
 
 	@Override

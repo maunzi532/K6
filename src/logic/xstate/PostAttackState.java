@@ -5,6 +5,7 @@ import entity.analysis.*;
 import java.util.function.*;
 import logic.*;
 import logic.gui.guis.*;
+import system2.*;
 
 public class PostAttackState extends AttackState
 {

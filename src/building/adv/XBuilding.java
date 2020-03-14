@@ -191,7 +191,7 @@ public class XBuilding implements DoubleInv
 		}
 		if(data.get("Recipes") != null)
 		{
-			function = new ProcessInv(data, itemLoader, y1);
+			function = new ProcessInv(data, itemLoader);
 		}
 		else if(data.get("Amount") != null)
 		{

@@ -7,7 +7,7 @@ import system2.*;
 
 public class RNGDivider2 extends RNGDivider
 {
-	private AttackInfo2 aI;
+	private AttackInfo aI;
 	private int health1;
 	private int health2;
 	private int attacks1;
@@ -19,7 +19,7 @@ public class RNGDivider2 extends RNGDivider
 	private boolean end;
 	private List<String> events;
 
-	public RNGDivider2(AttackInfo2 aI)
+	public RNGDivider2(AttackInfo aI)
 	{
 		super(null, 1, 0);
 		this.aI = aI;
@@ -34,7 +34,7 @@ public class RNGDivider2 extends RNGDivider
 		events = List.of();
 	}
 
-	public RNGDivider2(RNGDivider prev, long chance, long divider, AttackInfo2 aI, int health1, int health2,
+	public RNGDivider2(RNGDivider2 prev, long chance, long divider, AttackInfo aI, int health1, int health2,
 			int attacks1, int attacks2, int attacked1, int attacked2, int crits1, int crits2, boolean end,
 			List<String> events)
 	{
@@ -57,7 +57,7 @@ public class RNGDivider2 extends RNGDivider
 		return events;
 	}
 
-	public AttackInfo2 getAttackInfo()
+	public AttackInfo getAttackInfo()
 	{
 		return aI;
 	}

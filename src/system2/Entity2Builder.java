@@ -11,7 +11,7 @@ public class Entity2Builder
 	private final LevelMap levelMap;
 	private final CombatSystem combatSystem;
 	private Tile location;
-	private Stats2 stats;
+	private Stats stats;
 	private int weightLimit = 20;
 	private ItemList itemList = new ItemList();
 
@@ -27,7 +27,7 @@ public class Entity2Builder
 		return this;
 	}
 
-	public Entity2Builder setStats(Stats2 stats)
+	public Entity2Builder setStats(Stats stats)
 	{
 		this.stats = stats;
 		return this;

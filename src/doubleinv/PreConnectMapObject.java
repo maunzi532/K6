@@ -44,6 +44,9 @@ public record PreConnectMapObject(Tile location, DoubleInvType type) implements 
 		return false;
 	}
 
+	@Override
+	public void afterTrading(){}
+
 	public static PreConnectMapObject create(JrsObject data, TileType y1)
 	{
 		Tile location = y1.create2(((JrsNumber) data.get("sx")).getValue().intValue(), ((JrsNumber) data.get("sy")).getValue().intValue());

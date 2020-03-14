@@ -18,7 +18,7 @@ public class RNGInfoAnalysis<Divider extends RNGDivider>
 		outcomes = new ArrayList<>();
 	}
 
-	public RNGInfoAnalysis<?> create()
+	public RNGInfoAnalysis<Divider> create()
 	{
 		stack.add(start);
 		snum.add(0);

@@ -17,7 +17,7 @@ public class RNGOutcome2 extends RNGOutcome
 	public boolean win;
 
 	public RNGOutcome2(BigInteger chance, long divider,
-			List<String> compareText, AttackInfo2 sourceaI, int health, int healthT)
+			List<String> compareText, AttackInfo sourceaI, int health, int healthT)
 	{
 		super(chance, divider, compareText);
 		damageTaken = sourceaI.stats.getCurrentHealth() - health;

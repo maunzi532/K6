@@ -74,7 +74,7 @@ public class MainVisual implements XInputInterface
 		{
 			TileType y1 = mainState.y1;
 			new Entity2Builder(mainState.levelMap, mainState.combatSystem).setLocation(y1.create2(2, -1))
-					.setStats(new Stats2(XClasses.hexerClass(), 0, null))
+					.setStats(new Stats(XClasses.hexerClass(), 0, null))
 					.addItem(AttackItems2.standardSpell()).create(false);
 			Chapter1.createCharacters(mainState.levelMap, mainState.combatSystem, y1.create2(-2, 1), y1.create2(-2, -1), y1.create2(-4, 1),
 					y1.create2(-3, 1), y1.create2(-3, -1), y1.create2(-5, 1));

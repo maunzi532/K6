@@ -13,7 +13,7 @@ import javafx.stage.*;
 import system2.animation.*;
 import system2.content.*;
 
-public class Stats2 implements Stats, ModifierAspect
+public class Stats implements ModifierAspect
 {
 	public static final int HEALTH_MULTIPLIER = 5;
 
@@ -37,7 +37,7 @@ public class Stats2 implements Stats, ModifierAspect
 	private AttackMode4 lastUsed;
 	private AttackItem2Slot slot;
 
-	public Stats2(XClass xClass, int level, int exp, String customName,
+	public Stats(XClass xClass, int level, int exp, String customName,
 			String customImage, int strength, int finesse, int skill, int speed,
 			int luck, int defense, int evasion, int toughness,
 			int movement, PlayerLevelSystem playerLevelSystem)
@@ -62,7 +62,7 @@ public class Stats2 implements Stats, ModifierAspect
 		slot = new AttackItem2Slot(xClass.usableItems);
 	}
 
-	public Stats2(XClass xClass, int level, String customName,
+	public Stats(XClass xClass, int level, String customName,
 			String customImage, int movement, PlayerLevelSystem playerLevelSystem)
 	{
 		this.xClass = xClass;
@@ -77,7 +77,7 @@ public class Stats2 implements Stats, ModifierAspect
 		slot = new AttackItem2Slot(xClass.usableItems);
 	}
 
-	public Stats2(XClass xClass, int level, PlayerLevelSystem playerLevelSystem)
+	public Stats(XClass xClass, int level, PlayerLevelSystem playerLevelSystem)
 	{
 		this.xClass = xClass;
 		this.level = level;
@@ -243,7 +243,6 @@ public class Stats2 implements Stats, ModifierAspect
 		this.lastUsed = lastUsed;
 	}
 
-	@Override
 	public void autoEquip(XEntity entity)
 	{
 		ItemView itemView = entity.outputInv().viewRecipeItem(getItemFilter());
@@ -258,7 +257,6 @@ public class Stats2 implements Stats, ModifierAspect
 		}
 	}
 
-	@Override
 	public void afterTrading(XEntity entity)
 	{
 		if(!lastUsed.active)
@@ -269,12 +267,11 @@ public class Stats2 implements Stats, ModifierAspect
 		}
 	}
 
-	@Override
-	public void equip(Item item, XMode mode)
+	public void equip(AttackMode4 mode)
 	{
 		if(mode != null)
 		{
-			lastUsed = (AttackMode4) mode;
+			lastUsed = mode;
 		}
 		else
 		{
@@ -282,8 +279,7 @@ public class Stats2 implements Stats, ModifierAspect
 		}
 	}
 
-	@Override
-	public XMode getEquippedMode()
+	public AttackMode4 getEquippedMode()
 	{
 		if(!lastUsed.active)
 			return null;
@@ -291,13 +287,11 @@ public class Stats2 implements Stats, ModifierAspect
 			return lastUsed;
 	}
 
-	@Override
 	public Item getItemFilter()
 	{
 		return slot;
 	}
 
-	@Override
 	public int getVisualStat(int num)
 	{
 		return switch(num)
@@ -308,7 +302,6 @@ public class Stats2 implements Stats, ModifierAspect
 				};
 	}
 
-	@Override
 	public int getMaxVisualStat(int num)
 	{
 		return switch(num)
@@ -319,25 +312,21 @@ public class Stats2 implements Stats, ModifierAspect
 				};
 	}
 
-	@Override
 	public int getRegenerateChange()
 	{
 		return maxHealth() - currentHealth;
 	}
 
-	@Override
 	public void regenerating()
 	{
 		exhaustion++;
 	}
 
-	@Override
 	public String getName()
 	{
 		return customName != null ? customName : xClass.className + " lv" + level;
 	}
 
-	@Override
 	public String imagePath()
 	{
 		if(customImage != null)
@@ -346,17 +335,16 @@ public class Stats2 implements Stats, ModifierAspect
 			return "Enemy_0.png";
 	}
 
-	@Override
 	public Stats copy()
 	{
-		Stats2 copy = new Stats2(xClass, level, exp, customName, customImage, strength, finesse, skill, speed, luck, defense,
+		Stats copy = new Stats(xClass, level, exp, customName, customImage, strength, finesse, skill, speed, luck, defense,
 				evasion, toughness, movement, playerLevelSystem);
 		copy.currentHealth = currentHealth;
 		copy.exhaustion = exhaustion;
 		return copy;
 	}
 
-	public Stats2(JrsObject data, ItemLoader itemLoader)
+	public Stats(JrsObject data, ItemLoader itemLoader)
 	{
 		xClass = XClasses.INSTANCE.xClasses[((JrsNumber) data.get("Class")).getValue().intValue()];
 		slot = new AttackItem2Slot(xClass.usableItems);
@@ -398,7 +386,6 @@ public class Stats2 implements Stats, ModifierAspect
 		}
 	}
 
-	@Override
 	public <T extends ComposerBase> ObjectComposer<T> save(ObjectComposer<T> a1, ItemLoader itemLoader) throws IOException
 	{
 		var a2 = a1.put("Class", xClass.code)
@@ -435,7 +422,6 @@ public class Stats2 implements Stats, ModifierAspect
 		return a3;
 	}
 
-	@Override
 	public List<String> info()
 	{
 		List<String> info = new ArrayList<>();
@@ -465,7 +451,6 @@ public class Stats2 implements Stats, ModifierAspect
 		return info;
 	}
 
-	@Override
 	public List<String> statsInfo()
 	{
 		List<String> info = new ArrayList<>();
@@ -487,13 +472,11 @@ public class Stats2 implements Stats, ModifierAspect
 		return info;
 	}
 
-	@Override
 	public List<String> infoWithEquip()
 	{
 		return AttackMode3.convert(this, lastUsed).info();
 	}
 
-	@Override
 	public List<String> levelup()
 	{
 		int[] levelup = getLevelSystem().getLevelup(this);
@@ -535,13 +518,11 @@ public class Stats2 implements Stats, ModifierAspect
 		return info;
 	}
 
-	@Override
 	public String[] sideInfoText()
 	{
 		return new String[]{customName != null ? customName : "Enemy", xClass.className + " lv" + level};
 	}
 
-	@Override
 	public List<String> infoEdit()
 	{
 		List<String> info = new ArrayList<>();
@@ -566,7 +547,6 @@ public class Stats2 implements Stats, ModifierAspect
 		return info;
 	}
 
-	@Override
 	public List<String> editOptions(int num)
 	{
 		if(num == 0)
@@ -582,7 +562,6 @@ public class Stats2 implements Stats, ModifierAspect
 		return List.of();
 	}
 
-	@Override
 	public void applyEditOption(int num, int option, XEntity entity)
 	{
 		switch((num << 4) + option)

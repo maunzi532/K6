@@ -19,7 +19,7 @@ public class AnimPartHit implements AnimPart
 	private final BlinkArrow arrow;
 	private int counter;
 
-	public AnimPartHit(XEntity target, Stats2 statsT, int damage, StatBar statBar,
+	public AnimPartHit(XEntity target, Stats statsT, int damage, StatBar statBar,
 			boolean crit, boolean melt, Arrows arrows)
 	{
 		this.target = target;

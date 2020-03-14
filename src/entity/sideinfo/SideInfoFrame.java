@@ -2,6 +2,7 @@ package entity.sideinfo;
 
 import entity.*;
 import file.*;
+import system2.*;
 
 public class SideInfoFrame
 {

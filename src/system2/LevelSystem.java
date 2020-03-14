@@ -6,5 +6,5 @@ public interface LevelSystem
 
 	int levelCap();
 
-	int[] getLevelup(Stats2 current);
+	int[] getLevelup(Stats current);
 }

@@ -16,8 +16,8 @@ public class GetExpAnim implements AnimTimer, Supplier<boolean[]>, Runnable
 
 	private XEntity entity;
 	private XEntity entityT;
-	private Stats2 stats;
-	private Stats2 statsT;
+	private Stats stats;
+	private Stats statsT;
 	private InfoArrow expBar;
 	private InfoArrow expBarT;
 	private boolean levelup;
@@ -31,12 +31,12 @@ public class GetExpAnim implements AnimTimer, Supplier<boolean[]>, Runnable
 	private boolean finished;
 	private int counter;
 
-	public GetExpAnim(AttackInfo2 aI, RNGOutcome2 result, Arrows arrows)
+	public GetExpAnim(AttackInfo aI, RNGOutcome2 result, Arrows arrows)
 	{
 		entity = aI.entity;
 		entityT = aI.entityT;
-		stats = (Stats2) entity.getStats();
-		statsT = (Stats2) entityT.getStats();
+		stats = entity.getStats();
+		statsT = entityT.getStats();
 		if(entity instanceof XHero)
 		{
 			levelup = stats.getExp() >= LEVELUP_EXP;
