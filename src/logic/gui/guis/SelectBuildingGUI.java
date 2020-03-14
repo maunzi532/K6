@@ -24,15 +24,15 @@ public class SelectBuildingGUI extends XGUIState
 	@Override
 	public boolean editMode()
 	{
-		return !(builder instanceof XHero);
+		return !(builder instanceof XCharacter);
 	}
 
 	@Override
 	public void onEnter(MainState mainState)
 	{
-		if(builder instanceof XHero)
+		if(builder instanceof XCharacter character)
 		{
-			mainState.sideInfoFrame.setSideInfoXH(((XHero) builder).standardSideInfo(), (XHero) builder);
+			mainState.sideInfoFrame.setSideInfoXH(character.standardSideInfo(), character);
 		}
 		BlueprintCache<BuildingBlueprint> blueprintCache = mainState.buildingBlueprintCache;
 		ScrollList<BuildingBlueprint> buildingsView = new ScrollList<>(0, 1, 6, 5, 2, 1,
@@ -58,15 +58,15 @@ public class SelectBuildingGUI extends XGUIState
 	@Override
 	public boolean keepInMenu(MainState mainState)
 	{
-		return !(builder instanceof XHero) || (((XHero) builder).ready(1) && mainState.levelMap.getBuilding(builder.location()) == null);
+		return !(builder instanceof XCharacter character) || (character.resources().ready(1) && mainState.levelMap.getBuilding(builder.location()) == null);
 	}
 
 	@Override
 	public XMenu menu()
 	{
-		if(builder instanceof XHero)
+		if(builder instanceof XCharacter character)
 		{
-			return XMenu.characterGUIMenu((XHero) builder);
+			return XMenu.characterGUIMenu(character);
 		}
 		else
 		{

@@ -10,7 +10,7 @@ public class AnimPartHit implements AnimPart
 	private static final int BLINKTIME = 5;
 	private static final int SPEED = 2;
 
-	private final XEntity target;
+	private final XCharacter target;
 	private final StatBar statBar;
 	private final Arrows arrows;
 	private final int reduction;
@@ -19,7 +19,7 @@ public class AnimPartHit implements AnimPart
 	private final BlinkArrow arrow;
 	private int counter;
 
-	public AnimPartHit(XEntity target, Stats statsT, int damage, StatBar statBar,
+	public AnimPartHit(XCharacter target, Stats statsT, int damage, StatBar statBar,
 			boolean crit, boolean melt, Arrows arrows)
 	{
 		this.target = target;
@@ -27,7 +27,7 @@ public class AnimPartHit implements AnimPart
 		this.crit = crit;
 		this.melt = melt;
 		this.arrows = arrows;
-		arrow = new BlinkArrow(target.location(), DURATION, false, target.getImage(), BLINKTIME);
+		arrow = new BlinkArrow(target.location(), DURATION, false, /*target.getImage()*/XCharacter.IMAGE, BLINKTIME);
 		reduction = Math.min(statsT.getCurrentHealth(), damage);
 		statsT.setCurrentHealth(Math.max(0, statsT.getCurrentHealth() - damage));
 	}
@@ -55,7 +55,7 @@ public class AnimPartHit implements AnimPart
 				arrows.addScreenshake(20);
 			}
 			arrows.addArrow(arrow);
-			target.setReplacementArrow(arrow);
+			target.replaceVisual(arrow);
 		}
 		if(counter <= AnimPartAttack.DODGETIME)
 			return false;

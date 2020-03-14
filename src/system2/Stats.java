@@ -243,7 +243,7 @@ public class Stats implements ModifierAspect
 		this.lastUsed = lastUsed;
 	}
 
-	public void autoEquip(XEntity entity)
+	public void autoEquip(XCharacter entity)
 	{
 		ItemView itemView = entity.outputInv().viewRecipeItem(getItemFilter());
 		if(itemView.base == 0 || !(itemView.item instanceof AttackItem2))
@@ -257,7 +257,7 @@ public class Stats implements ModifierAspect
 		}
 	}
 
-	public void afterTrading(XEntity entity)
+	public void afterTrading(XCharacter entity)
 	{
 		if(!lastUsed.active)
 			return;
@@ -562,7 +562,7 @@ public class Stats implements ModifierAspect
 		return List.of();
 	}
 
-	public void applyEditOption(int num, int option, XEntity entity)
+	public void applyEditOption(int num, int option, XCharacter entity)
 	{
 		switch((num << 4) + option)
 		{

@@ -5,9 +5,9 @@ import logic.*;
 
 public class RevertMovementState implements NAutoState
 {
-	private final XHero character;
+	private final XCharacter character;
 
-	public RevertMovementState(XHero character)
+	public RevertMovementState(XCharacter character)
 	{
 		this.character = character;
 	}
@@ -34,7 +34,7 @@ public class RevertMovementState implements NAutoState
 	@Override
 	public boolean keepInMenu(MainState mainState)
 	{
-		return character.canRevert();
+		return character.resources().revertMoveAction();
 	}
 
 	@Override

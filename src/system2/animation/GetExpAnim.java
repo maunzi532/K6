@@ -14,8 +14,8 @@ public class GetExpAnim implements AnimTimer, Supplier<boolean[]>, Runnable
 
 	public static final int LEVELUP_EXP = 100;
 
-	private XEntity entity;
-	private XEntity entityT;
+	private XCharacter entity;
+	private XCharacter entityT;
 	private Stats stats;
 	private Stats statsT;
 	private InfoArrow expBar;
@@ -35,16 +35,16 @@ public class GetExpAnim implements AnimTimer, Supplier<boolean[]>, Runnable
 	{
 		entity = aI.entity;
 		entityT = aI.entityT;
-		stats = entity.getStats();
-		statsT = entityT.getStats();
-		if(entity instanceof XHero)
+		stats = entity.stats();
+		statsT = entityT.stats();
+		if(entity.team() == CharacterTeam.HERO)
 		{
 			levelup = stats.getExp() >= LEVELUP_EXP;
 			expAmount = 20;
 			expBar = new InfoArrow(entity.location(), Color.PURPLE, Color.BLACK, Color.WHITE, stats.getExp(), LEVELUP_EXP);
 			arrows.addArrow(expBar);
 		}
-		if(entityT instanceof XHero)
+		if(entityT.team() == CharacterTeam.HERO)
 		{
 			levelupT = statsT.getExp() >= LEVELUP_EXP;
 			expAmountT = 20;
@@ -58,14 +58,14 @@ public class GetExpAnim implements AnimTimer, Supplier<boolean[]>, Runnable
 	@Override
 	public void run()
 	{
-		if(entity instanceof XHero)
+		if(entity.team() == CharacterTeam.HERO)
 		{
 			startExp = stats.getExp();
 			expBar.statBar().setData(startExp);
 			stats.addExp(expAmount);
 			endExp = stats.getExp();
 		}
-		if(entityT instanceof XHero)
+		if(entityT.team() == CharacterTeam.HERO)
 		{
 			startExpT = statsT.getExp();
 			expBarT.statBar().setData(startExpT);

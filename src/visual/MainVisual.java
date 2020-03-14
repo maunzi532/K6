@@ -14,7 +14,6 @@ import logic.*;
 import logic.editor.*;
 import logic.xstate.*;
 import system2.*;
-import system2.content.*;
 import visual.gui.*;
 import visual.sideinfo.*;
 
@@ -70,7 +69,7 @@ public class MainVisual implements XInputInterface
 		{
 			savedImport.importIntoMap3(mainState.levelMap, mainState.combatSystem, mainState.itemLoader, mainState.storage.inputInv());
 		}
-		else
+		/*else
 		{
 			TileType y1 = mainState.y1;
 			new Entity2Builder(mainState.levelMap, mainState.combatSystem).setLocation(y1.create2(2, -1))
@@ -78,7 +77,7 @@ public class MainVisual implements XInputInterface
 					.addItem(AttackItems2.standardSpell()).create(false);
 			Chapter1.createCharacters(mainState.levelMap, mainState.combatSystem, y1.create2(-2, 1), y1.create2(-2, -1), y1.create2(-4, 1),
 					y1.create2(-3, 1), y1.create2(-3, -1), y1.create2(-5, 1));
-		}
+		}*/
 		/*levelMap.addArrow(new ShineArrow(List.of(y2.create2(2, 0), y2.create2(4, 1)), 120, true, null, true));
 		levelMap.addArrow(new ShineArrow(List.of(y2.create2(-2, 0), y2.create2(4, -4)), 120, true, null, true));
 		levelMap.addArrow(new ShineArrow(List.of(y2.create2(-3, 0)), 120, true, null, true));*/

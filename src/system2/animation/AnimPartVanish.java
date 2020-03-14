@@ -9,13 +9,13 @@ public class AnimPartVanish implements AnimPart
 	private static final int DURATION = 20;
 	private static final int BLINKTIME = 3;
 
-	private final XEntity target;
+	private final XCharacter target;
 	private final BlinkArrow arrow;
 
-	public AnimPartVanish(XEntity target, Arrows arrows, LevelMap levelMap)
+	public AnimPartVanish(XCharacter target, Arrows arrows, LevelMap levelMap)
 	{
 		this.target = target;
-		arrow = new BlinkArrow(target.location(), DURATION, false, target.getImage(), BLINKTIME);
+		arrow = new BlinkArrow(target.location(), DURATION, false, /*target.getImage()*/XCharacter.IMAGE, BLINKTIME);
 		arrows.addArrow(arrow);
 		levelMap.removeEntity(target);
 	}

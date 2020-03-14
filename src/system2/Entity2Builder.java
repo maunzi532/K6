@@ -4,6 +4,7 @@ import doubleinv.*;
 import entity.*;
 import geom.f1.*;
 import item.*;
+import item.inv.*;
 import levelMap.*;
 
 public class Entity2Builder
@@ -53,14 +54,18 @@ public class Entity2Builder
 
 	public void create(boolean player)
 	{
-		XEntity entity;
+		Inv inv = new WeightInv(weightLimit);
+		inv.tryAdd(itemList, false, CommitType.COMMIT);
+		XCharacter entity;
 		if(player)
 		{
-			entity = new XHero(location, combatSystem, stats, false, false, weightLimit, itemList);
+			entity = new XCharacter(CharacterTeam.HERO, 0, location, stats, inv,
+					null, new TurnResources(location), new SaveSettings(false, false));
 		}
 		else
 		{
-			entity = new XEnemy(location, combatSystem, stats, combatSystem.standardAI(), weightLimit, itemList);
+			entity = new XCharacter(CharacterTeam.ENEMY, 0, location, stats, inv,
+					combatSystem.standardAI(), new TurnResources(location), null);
 		}
 		stats.autoEquip(entity);
 		if(levelMap.getFloor(location) == null)

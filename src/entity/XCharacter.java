@@ -3,16 +3,22 @@ package entity;
 import arrow.*;
 import com.fasterxml.jackson.jr.ob.comp.*;
 import doubleinv.*;
+import entity.sideinfo.*;
+import file.*;
 import geom.f1.*;
 import item.*;
 import item.inv.*;
 import item.view.*;
 import java.io.*;
 import java.util.*;
+import javafx.scene.image.*;
+import javafx.scene.paint.*;
 import system2.*;
 
 public class XCharacter implements DoubleInv, XBuilder
 {
+	public static final Image IMAGE = new Image("GSL1_0.png");
+
 	private CharacterTeam team;
 	private int startingDelay;
 	private boolean defeated;
@@ -22,10 +28,10 @@ public class XCharacter implements DoubleInv, XBuilder
 	private Inv inv;
 	private EnemyAI enemyAI;
 	private TurnResources resources;
-	private CharacterSave save;
+	private SaveSettings saveSettings;
 
 	public XCharacter(CharacterTeam team, int initialStartingDelay, Tile location, Stats stats, Inv inv,
-			EnemyAI enemyAI, TurnResources resources, CharacterSave save)
+			EnemyAI enemyAI, TurnResources resources, SaveSettings saveSettings)
 	{
 		this.team = team;
 		startingDelay = initialStartingDelay;
@@ -36,11 +42,11 @@ public class XCharacter implements DoubleInv, XBuilder
 		this.inv = inv;
 		this.enemyAI = enemyAI;
 		this.resources = resources;
-		this.save = save;
+		this.saveSettings = saveSettings;
 	}
 
 	private XCharacter(CharacterTeam team, int startingDelay, boolean defeated, Tile location,
-			Stats stats, Inv inv, EnemyAI enemyAI, TurnResources resources, CharacterSave save)
+			Stats stats, Inv inv, EnemyAI enemyAI, TurnResources resources, SaveSettings saveSettings)
 	{
 		this.team = team;
 		this.startingDelay = startingDelay;
@@ -51,15 +57,20 @@ public class XCharacter implements DoubleInv, XBuilder
 		this.inv = inv;
 		this.enemyAI = enemyAI;
 		this.resources = resources;
-		this.save = save;
+		this.saveSettings = saveSettings;
 	}
 
 	public XCharacter copy(Tile copyLocation)
 	{
 		XCharacter copy = new XCharacter(team, startingDelay, defeated, copyLocation,
-				stats.copy(), inv.copy(), enemyAI.copy(), resources.copy(copyLocation), CharacterSave.copy(save));
-		//copy.stats.autoEquip(copy);
+				stats.copy(), inv.copy(), enemyAI == null ? null : enemyAI.copy(), resources.copy(copyLocation), SaveSettings.copy(saveSettings));
+		copy.stats.autoEquip(copy);
 		return copy;
+	}
+
+	public CharacterTeam team()
+	{
+		return team;
 	}
 
 	public void setLocation(Tile location)
@@ -82,22 +93,37 @@ public class XCharacter implements DoubleInv, XBuilder
 		return stats;
 	}
 
-	/*public SideInfo standardSideInfo()
+	public TurnResources resources()
+	{
+		return resources;
+	}
+
+	public void newResources(TurnResources resources)
+	{
+		this.resources = resources;
+	}
+
+	public SaveSettings saveSettings()
+	{
+		return saveSettings;
+	}
+
+	public SideInfo standardSideInfo()
 	{
 		return new SideInfo(this, 1, ImageLoader.getImage(stats.imagePath()), statBar(), stats.sideInfoText());
 	}
 
 	public StatBar statBar()
 	{
-		return new StatBar(this instanceof XHero ? Color.GREEN : Color.GRAY, Color.BLACK, Color.WHITE,
+		return new StatBar(team == CharacterTeam.HERO ? Color.GREEN : Color.GRAY, Color.BLACK, Color.WHITE,
 				stats.getVisualStat(0), stats.getMaxVisualStat(0));
 	}
 
 	public StatBar statBarX1(String extraText)
 	{
-		return new StatBarX1(this instanceof XHero ? Color.GREEN : Color.GRAY, Color.BLACK, Color.WHITE,
+		return new StatBarX1(team == CharacterTeam.HERO ? Color.GREEN : Color.GRAY, Color.BLACK, Color.WHITE,
 				stats.getVisualStat(0), stats.getMaxVisualStat(0), extraText);
-	}*/
+	}
 
 	public void addItems(ItemList itemList)
 	{
@@ -148,21 +174,21 @@ public class XCharacter implements DoubleInv, XBuilder
 	@Override
 	public void afterTrading()
 	{
-		//stats.afterTrading(this);
+		stats.afterTrading(this);
 	}
 
-	/*@Override
+	@Override
 	public boolean playerTradeable(boolean levelStarted)
 	{
-		return !levelStarted && !startInvLocked;
-	}*/
+		return !levelStarted && (saveSettings == null || !saveSettings.startInvLocked);
+	}
 
-	/*public EnemyMove preferredMove(boolean hasToMove, int moveAway)
+	public EnemyMove preferredMove(boolean hasToMove, int moveAway)
 	{
-		if(!canAttack)
+		if(!resources.ready(2))
 			return new EnemyMove(this, -1, null, null, 0);
-		return think.preferredMove(this, canMove, hasToMove, moveAway);
-	}*/
+		return enemyAI.preferredMove(this, resources.moveAction(), hasToMove, moveAway);
+	}
 
 	@Override
 	public ItemView viewRecipeItem(Item item)

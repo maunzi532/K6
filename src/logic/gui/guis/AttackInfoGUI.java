@@ -9,12 +9,12 @@ import system2.*;
 
 public class AttackInfoGUI extends XGUIState
 {
-	private final XHero attacker;
-	private final XEntity target;
+	private final XCharacter attacker;
+	private final XCharacter target;
 	private SideInfoFrame sideInfoFrame;
 	private TargetScrollList<AttackInfo> attacksView;
 
-	public AttackInfoGUI(XHero attacker, XEntity target)
+	public AttackInfoGUI(XCharacter attacker, XCharacter target)
 	{
 		this.attacker = attacker;
 		this.target = target;
@@ -26,7 +26,7 @@ public class AttackInfoGUI extends XGUIState
 		sideInfoFrame = mainState.sideInfoFrame;
 		sideInfoFrame.sidedInfo(attacker, target);
 		attacksView = new TargetScrollList<>(0, 1, 6, 6, 6, 2,
-				attacker.attackInfo(target), this::itemView, target1 -> clickAttack(mainState, target1));
+				mainState.combatSystem.attackInfo(attacker, target), this::itemView, target1 -> clickAttack(mainState, target1));
 		elements.add(attacksView);
 		elements.add(new CElement(new CTile(0, 0, new GuiTile(attacker.name()), 2, 1)));
 		elements.add(new CElement(new CTile(4, 0, new GuiTile(target.name()), 2, 1)));
@@ -35,8 +35,7 @@ public class AttackInfoGUI extends XGUIState
 
 	private void clickAttack(MainState mainState, AttackInfo target1)
 	{
-		attacker.takeAp(2);
-		attacker.mainActionTaken();
+		attacker.resources().action(true, 2);
 		mainState.stateHolder.setState(new PreAttackState(NoneState.INSTANCE, target1));
 	}
 

@@ -15,7 +15,7 @@ public class CharacterCombatGUI extends XGUIState
 	private static final CTile UNEQUIP = new CTile(1, 6, new GuiTile("Unequip"), 2, 1);
 	private static final CTile VIEW_MODE = new CTile(4, 6, 2, 1);
 
-	private final XEntity character;
+	private final XCharacter character;
 	private int viewMode;
 	private CombatSystem combatSystem;
 	private Item equippedItem;
@@ -25,7 +25,7 @@ public class CharacterCombatGUI extends XGUIState
 	private ScrollList<String> statsView;
 	private Item chosenItem;
 
-	public CharacterCombatGUI(XEntity character, int viewMode)
+	public CharacterCombatGUI(XCharacter character, int viewMode)
 	{
 		this.character = character;
 		this.viewMode = viewMode;
@@ -36,9 +36,9 @@ public class CharacterCombatGUI extends XGUIState
 	{
 		mainState.sideInfoFrame.setSideInfoXH(character.standardSideInfo(), character);
 		combatSystem = mainState.combatSystem;
-		equippedItem = combatSystem.equippedItem(character.getStats()).orElse(null);
+		equippedItem = combatSystem.equippedItem(character.stats()).orElse(null);
 		elements.add(new CElement(NAME, new GuiTile(character.name())));
-		elements.add(new CElement(UNEQUIP, true, () -> character.getStats().getEquippedMode() != null,
+		elements.add(new CElement(UNEQUIP, true, () -> character.stats().getEquippedMode() != null,
 				this::unequip));
 		viewModeElement = new CElement(VIEW_MODE, true, null, () -> viewMode = (viewMode + 1) % 2);
 		elements.add(viewModeElement);
@@ -69,15 +69,15 @@ public class CharacterCombatGUI extends XGUIState
 		}
 		else if(viewMode == 1)
 		{
-			statsView.elements = character.getStats().statsInfo();
+			statsView.elements = character.stats().statsInfo();
 		}
 		else
 		{
-			statsView.elements = character.getStats().infoWithEquip();
+			statsView.elements = character.stats().infoWithEquip();
 		}
-		if(chosenItem != null && character.getStats().getItemFilter().canContain(chosenItem))
+		if(chosenItem != null && character.stats().getItemFilter().canContain(chosenItem))
 		{
-			modeChooseView.elements = combatSystem.modesForItem(character.getStats(), chosenItem);
+			modeChooseView.elements = combatSystem.modesForItem(character.stats(), chosenItem);
 		}
 		else
 		{
@@ -87,14 +87,14 @@ public class CharacterCombatGUI extends XGUIState
 
 	private void onClickMode(AttackMode3 mode)
 	{
-		character.getStats().equip(mode.shortVersion());
+		character.stats().equip(mode.shortVersion());
 		equippedItem = chosenItem;
 		chosenItem = null;
 	}
 
 	private void unequip()
 	{
-		character.getStats().equip(null);
+		character.stats().equip(null);
 		equippedItem = null;
 		chosenItem = null;
 	}

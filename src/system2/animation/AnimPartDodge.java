@@ -13,12 +13,13 @@ public class AnimPartDodge implements AnimPart
 	private final ManualXArrow arrow;
 	private int counter;
 
-	public AnimPartDodge(XEntity attacker, XEntity target, int distance, Arrows arrows)
+	public AnimPartDodge(XCharacter attacker, XCharacter target, int distance, Arrows arrows)
 	{
 		this.distance = distance;
-		arrow = new ManualXArrow(XArrow.convert(target.location(), attacker.location()), LEN, target.getImage());
+		arrow = new ManualXArrow(XArrow.convert(target.location(), attacker.location()), LEN, /*target.getImage()*/
+				XCharacter.IMAGE);
 		arrows.addArrow(arrow);
-		target.setReplacementArrow(arrow);
+		target.replaceVisual(arrow);
 	}
 
 	@Override

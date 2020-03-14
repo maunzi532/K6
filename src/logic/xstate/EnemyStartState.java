@@ -11,9 +11,11 @@ public class EnemyStartState implements NAutoState
 	public void onEnter(MainState mainState)
 	{
 		mainState.sideInfoFrame.clearSideInfo();
-		for(XEnemy xEnemy : mainState.levelMap.getEntitiesE())
+		for(XCharacter xEnemy : mainState.levelMap.teamCharacters(CharacterTeam.ENEMY))
 		{
-			xEnemy.startTurn();
+			xEnemy.newResources(new TurnResources(xEnemy.location(),
+					mainState.combatSystem.movement(xEnemy),
+					mainState.combatSystem.dashMovement(xEnemy), 2));
 		}
 	}
 

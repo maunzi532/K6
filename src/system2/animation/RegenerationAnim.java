@@ -15,11 +15,11 @@ public class RegenerationAnim implements AnimTimer
 	private boolean finished;
 	private int counter;
 
-	public RegenerationAnim(XEntity entity, LevelMap levelMap)
+	public RegenerationAnim(XCharacter entity, LevelMap levelMap)
 	{
-		Stats stats = entity.getStats();
+		Stats stats = entity.stats();
 		healthBar = new InfoArrow(entity.location(),
-				entity instanceof XHero ? Color.GREEN : Color.GRAY, Color.BLACK, Color.WHITE,
+				entity.team() == CharacterTeam.HERO ? Color.GREEN : Color.GRAY, Color.BLACK, Color.WHITE,
 				stats.getCurrentHealth(), stats.maxHealth());
 		levelMap.addArrow(healthBar);
 		regenerateAmount = stats.maxHealth() - stats.getCurrentHealth();

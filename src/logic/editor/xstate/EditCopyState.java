@@ -9,9 +9,9 @@ import logic.xstate.*;
 
 public class EditCopyState implements NMarkState
 {
-	private final XEntity entity;
+	private final XCharacter entity;
 
-	public EditCopyState(XEntity entity)
+	public EditCopyState(XCharacter entity)
 	{
 		this.entity = entity;
 	}

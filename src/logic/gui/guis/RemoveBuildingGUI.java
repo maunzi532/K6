@@ -15,10 +15,10 @@ public class RemoveBuildingGUI extends XGUIState
 	private static final CTile weight = new CTile(4, 0, 2, 1);
 	private static final CTile remove = new CTile(2, 5, new GuiTile("Remove"), 2, 1);
 
-	private final XHero character;
+	private final XCharacter character;
 	private XBuilding building;
 
-	public RemoveBuildingGUI(XHero character)
+	public RemoveBuildingGUI(XCharacter character)
 	{
 		this.character = character;
 	}
@@ -55,7 +55,7 @@ public class RemoveBuildingGUI extends XGUIState
 	@Override
 	public boolean keepInMenu(MainState mainState)
 	{
-		return character.ready(1) && mainState.levelMap.getBuilding(character.location()) != null;
+		return character.resources().ready(1) && mainState.levelMap.getBuilding(character.location()) != null;
 	}
 
 	@Override
@@ -90,8 +90,8 @@ public class RemoveBuildingGUI extends XGUIState
 	{
 		if(character.inputInv().ok())
 		{
-			character.takeAp(1);
-			character.irreversible();
+			character.resources().action(false, 1);
+			character.resources().irreversible();
 			character.inputInv().commit();
 			building.remove();
 			mainState.stateHolder.setState(NoneState.INSTANCE);

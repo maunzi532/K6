@@ -6,11 +6,11 @@ import logic.xstate.*;
 
 public class CharacterInvGUI extends Inv1GUI
 {
-	private final XEntity character;
+	private final XCharacter character;
 
-	public CharacterInvGUI(XEntity character)
+	public CharacterInvGUI(XCharacter character)
 	{
-		super(character.inputInv(), character.name(), character.getStats().info());
+		super(character.inputInv(), character.name(), character.stats().info());
 		this.character = character;
 	}
 
@@ -36,8 +36,8 @@ public class CharacterInvGUI extends Inv1GUI
 	@Override
 	public XMenu menu()
 	{
-		if(character instanceof XHero)
-			return XMenu.characterGUIMenu((XHero) character);
+		if(character.team() == CharacterTeam.HERO)
+			return XMenu.characterGUIMenu(character);
 		else
 			return XMenu.enemyGUIMenu(character);
 	}

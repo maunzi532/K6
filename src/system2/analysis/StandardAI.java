@@ -20,21 +20,22 @@ public class StandardAI implements EnemyAI
 	}
 
 	@Override
-	public EnemyMove preferredMove(XEnemy user, boolean canMove, boolean hasToMove, int moveAway)
+	public EnemyMove preferredMove(XCharacter user, boolean canMove, boolean hasToMove, int moveAway)
 	{
 		List<PathLocation> locations = new ArrayList<>();
 		List<PathAttackX> pathsX = new ArrayList<>();
 		if(canMove)
 		{
-			List<XEntity> allies = hasToMove ? null : levelMap.getEntitiesE().stream().filter(e -> e != user && e.canMove()).collect(Collectors.toList());
-			locations.addAll(new Pathing(levelMap.y1, user, user.movement(), levelMap, allies).start().getEndpaths());
+			List<XCharacter> allies = hasToMove ? null :
+					levelMap.teamCharacters(CharacterTeam.ENEMY).stream().filter(e -> e != user && e.resources().moveAction()).collect(Collectors.toList());
+			locations.addAll(new Pathing(levelMap.y1, user, user.resources().movement(), levelMap, allies).start().getEndpaths());
 		}
 		else
 			locations.add(new PathLocation(user.location()));
 		for(PathLocation pl : locations)
 		{
-			pathsX.addAll(combatSystem.pathAttackInfo(user, pl.tile(), user.getStats(), new ArrayList<>(levelMap.getEntitiesH()), pl));
-			if(user.canMove())
+			pathsX.addAll(combatSystem.pathAttackInfo(user, pl.tile(), levelMap.teamCharacters(CharacterTeam.HERO), pl));
+			if(user.resources().moveAction())
 				pathsX.add(new PathAttackX(pl, null));
 		}
 		if(pathsX.isEmpty())
@@ -49,14 +50,14 @@ public class StandardAI implements EnemyAI
 				px.score += analysis.get(px.attack) * 1000;
 			if(!px.path.tile().equals(user.location()))
 				px.score += moveAway;
-			px.score += levelMap.getEntitiesH().stream().mapToInt(e -> levelMap.y1
+			px.score += levelMap.teamCharacters(CharacterTeam.HERO).stream().mapToInt(e -> levelMap.y1
 					.distance(e.location(), user.location())).max().orElse(0) * 20;
 		}
 		if(analysis.isEmpty())
 		{
-			PathLocation doubledPath = new Pathing(levelMap.y1, user, user.movement() * 2,
+			PathLocation doubledPath = new Pathing(levelMap.y1, user, user.resources().movement() * 2,
 					levelMap, null).start().getEndpaths().stream().min(Comparator.comparingInt((PathLocation f) ->
-					levelMap.getEntitiesH().stream().mapToInt(e -> levelMap.y1.distance(e.location(), f.tile())).min().orElse(0))
+					levelMap.teamCharacters(CharacterTeam.HERO).stream().mapToInt(e -> levelMap.y1.distance(e.location(), f.tile())).min().orElse(0))
 					.thenComparingInt(PathLocation::cost)).orElseThrow();
 			int len = 0;
 			PathLocation doubledPath2 = doubledPath;

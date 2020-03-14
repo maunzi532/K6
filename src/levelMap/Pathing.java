@@ -8,21 +8,21 @@ import java.util.stream.*;
 public class Pathing
 {
 	public final TileType y1;
-	private final XEntity entity;
+	private final XCharacter entity;
 	private final Tile startLocation;
 	private final int maxMovementCost;
 	private final LevelMap map;
-	private final List<XEntity> movingAllies;
+	private final List<XCharacter> movingAllies;
 	private List<Tile> endpoints;
 	private List<PathLocation> endpaths;
 
-	public Pathing(TileType y1, XEntity entity, int maxMovementCost, LevelMap map, List<XEntity> movingAllies)
+	public Pathing(TileType y1, XCharacter entity, int maxMovementCost, LevelMap map, List<XCharacter> movingAllies)
 	{
 		this(y1, entity, entity.location(), maxMovementCost, map, movingAllies);
 	}
 
-	public Pathing(TileType y1, XEntity entity, Tile startLocation,
-			int maxMovementCost, LevelMap map, List<XEntity> movingAllies)
+	public Pathing(TileType y1, XCharacter entity, Tile startLocation,
+			int maxMovementCost, LevelMap map, List<XCharacter> movingAllies)
 	{
 		this.y1 = y1;
 		this.entity = entity;
@@ -81,12 +81,12 @@ public class Pathing
 	}
 
 	private static PathLocation pathLocation(Tile t1, AdvTile advTile, int currentCost, int maxCost,
-			XEntity entity, PathLocation from, List<XEntity> movingAllies)
+			XCharacter entity, PathLocation from, List<XCharacter> movingAllies)
 	{
 		if(advTile.getFloorTile() == null || advTile.getFloorTile().blocked())
 			return null;
 		boolean canEnd = advTile.getFloorTile().canMovementEnd();
-		XEntity movingAlly = null;
+		XCharacter movingAlly = null;
 		if(advTile.getEntity() != null && advTile.getEntity() != entity)
 		{
 			if(entity.isEnemy(advTile.getEntity()))

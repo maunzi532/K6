@@ -1,6 +1,7 @@
 package visual;
 
 import arrow.*;
+import entity.*;
 import geom.*;
 import geom.d1.*;
 import geom.f1.*;
@@ -112,7 +113,8 @@ public class VisualTile
 			if(advTile.getEntity() != null && advTile.getEntity().isVisible())
 			{
 				PointD midPoint = layout.tileToPixel(t1);
-				gd.drawImage(advTile.getEntity().getImage(), midPoint.v()[0] - layout.size().v()[0], midPoint.v()[1] - layout.size().v()[1],
+				gd.drawImage(/*advTile.getEntity().getImage()*/XCharacter.IMAGE,
+						midPoint.v()[0] - layout.size().v()[0], midPoint.v()[1] - layout.size().v()[1],
 						layout.size().v()[0] * 2, layout.size().v()[1] * 2);
 			}
 		}

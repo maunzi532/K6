@@ -3,7 +3,7 @@ package entity;
 import geom.f1.*;
 import java.util.*;
 
-public record PathLocation(Tile tile, int cost, boolean canEnd, PathLocation from, XEntity movingAlly)
+public record PathLocation(Tile tile, int cost, boolean canEnd, PathLocation from, XCharacter movingAlly)
 {
 	public PathLocation(Tile tile)
 	{

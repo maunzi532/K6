@@ -8,12 +8,12 @@ import logic.*;
 public class MoveAnimState implements NAutoState
 {
 	private final NState nextState;
-	private final XEntity entity;
+	private final XCharacter entity;
 	private final Tile newLocation;
 	private int counter;
 	private int finish;
 
-	public MoveAnimState(NState nextState, XEntity entity, Tile newLocation)
+	public MoveAnimState(NState nextState, XCharacter entity, Tile newLocation)
 	{
 		this.nextState = nextState;
 		this.entity = entity;

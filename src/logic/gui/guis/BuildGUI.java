@@ -50,7 +50,7 @@ public class BuildGUI extends XGUIState
 	@Override
 	public boolean editMode()
 	{
-		return !(builder instanceof XHero);
+		return !(builder instanceof XCharacter);
 	}
 
 	@Override
@@ -85,9 +85,9 @@ public class BuildGUI extends XGUIState
 	@Override
 	public XMenu menu()
 	{
-		if(builder instanceof XHero)
+		if(builder instanceof XCharacter character)
 		{
-			return XMenu.characterGUIMenu((XHero) builder);
+			return XMenu.characterGUIMenu(character);
 		}
 		else
 		{
@@ -199,13 +199,12 @@ public class BuildGUI extends XGUIState
 		Optional<ItemList> refundable = builder.tryBuildingCosts(cost.refundable(), cost.costs(), CommitType.COMMIT);
 		if(refundable.isPresent())
 		{
-			if(builder instanceof XHero)
+			if(builder instanceof XCharacter character)
 			{
-				((XHero) builder).takeAp(1);
-				((XHero) builder).mainActionTaken();
+				character.resources().action(true, 1);
 			}
 			levelMap.buildBuilding(builder, cost, refundable.get(), blueprint);
-			if(builder instanceof XHero)
+			if(builder instanceof XCharacter)
 				mainState.stateHolder.setState(NoneState.INSTANCE);
 			else
 				mainState.stateHolder.setState(EditingState.INSTANCE);

@@ -18,9 +18,10 @@ public class LevelMap implements ConnectRestore, Arrows
 	private final HashMap<Tile, AdvTile> advTiles;
 	private final List<Boolean> visibleSectors;
 	private final ArrayList<XBuilding> buildings;
-	private final ArrayList<XHero> entitiesH;
-	private final ArrayList<XEnemy> entitiesE;
-	private final ArrayList<XEntity> entities3;
+	private final HashMap<CharacterTeam, List<XCharacter>> characters;
+	/*private final ArrayList<XCharacter> entitiesH;
+	private final ArrayList<XCharacter> entitiesE;
+	private final ArrayList<XCharacter> entities3;*/
 	private final ArrayList<XArrow> arrows;
 	private final ArrayList<Integer> screenshake;
 
@@ -30,9 +31,10 @@ public class LevelMap implements ConnectRestore, Arrows
 		advTiles = new HashMap<>();
 		visibleSectors = new ArrayList<>();
 		buildings = new ArrayList<>();
-		entitiesH = new ArrayList<>();
+		characters = new HashMap<>();
+		/*entitiesH = new ArrayList<>();
 		entitiesE = new ArrayList<>();
-		entities3 = new ArrayList<>();
+		entities3 = new ArrayList<>();*/
 		arrows = new ArrayList<>();
 		screenshake = new ArrayList<>();
 	}
@@ -136,23 +138,33 @@ public class LevelMap implements ConnectRestore, Arrows
 		autoClaimFloor(building);
 	}
 
-	public void revertMovement(XHero xh)
+	private void charactersAdd(XCharacter character)
 	{
-		moveEntity(xh, xh.getRevertLocation());
-		xh.reactivateMovement();
+		if(!characters.containsKey(character.team()))
+		{
+			characters.put(character.team(), new ArrayList<>());
+		}
+		characters.get(character.team()).add(character);
+	}
+
+	public void revertMovement(XCharacter xh)
+	{
+		xh.resources().revertMovement();
+		moveEntity(xh, xh.resources().startLocation());
 	}
 
 	public void clearTile(Tile t1)
 	{
 		if(advTiles.containsKey(t1))
 		{
-			XEntity entity = advTiles.get(t1).getEntity();
-			if(entity instanceof XHero)
+			XCharacter entity = advTiles.get(t1).getEntity();
+			charactersAdd(entity);
+			/*if(entity.team() == CharacterTeam.HERO)
 				entitiesH.remove(entity);
-			else if(entity instanceof XEnemy)
+			else if(entity.team() == CharacterTeam.ENEMY)
 				entitiesE.remove(entity);
 			else
-				entities3.remove(entity);
+				entities3.remove(entity);*/
 			if(advTiles.get(t1).getBuilding() != null)
 				advTiles.get(t1).getBuilding().remove();
 			advTiles.remove(t1);
@@ -202,72 +214,79 @@ public class LevelMap implements ConnectRestore, Arrows
 		advTile(t1).setOwned(null);
 	}
 
-	public XEntity getEntity(Tile t1)
+	public XCharacter getEntity(Tile t1)
 	{
 		return advTile(t1).getEntity();
 	}
 
-	public void addEntity(XEntity entity)
+	public void addEntity(XCharacter entity)
 	{
 		advTile(entity.location()).setEntity(entity);
-		if(entity instanceof XHero)
-			entitiesH.add((XHero) entity);
-		else if(entity instanceof XEnemy)
-			entitiesE.add((XEnemy) entity);
+		charactersAdd(entity);
+		/*if(entity.team() == CharacterTeam.HERO)
+			entitiesH.add(entity);
+		else if(entity.team() == CharacterTeam.ENEMY)
+			entitiesE.add(entity);
 		else
-			entities3.add(entity);
+			entities3.add(entity);*/
 	}
 
-	public void removeEntity(XEntity entity)
+	public void removeEntity(XCharacter entity)
 	{
 		advTile(entity.location()).setEntity(null);
-		if(entity instanceof XHero)
+		characters.get(entity.team()).remove(entity);
+		/*if(entity.team() == CharacterTeam.HERO)
 			entitiesH.remove(entity);
-		else if(entity instanceof XEnemy)
+		else if(entity.team() == CharacterTeam.ENEMY)
 			entitiesE.remove(entity);
 		else
-			entities3.remove(entity);
+			entities3.remove(entity);*/
 	}
 
-	public void moveEntity(XEntity entity, Tile newLocation)
+	public void moveEntity(XCharacter entity, Tile newLocation)
 	{
-		XArrow arrow = XArrow.factory(entity.location(), newLocation, y1, false, entity.getImage());
+		XArrow arrow = XArrow.factory(entity.location(), newLocation, y1, false, /*entity.getImage()*/XCharacter.IMAGE); //TODO
 		addArrow(arrow);
-		entity.setReplacementArrow(arrow);
+		entity.replaceVisual(arrow);
 		advTile(entity.location()).setEntity(null);
 		entity.setLocation(newLocation);
 		advTile(newLocation).setEntity(entity);
 	}
 
-	public void swapEntities(XEntity entity1, XEntity entity2)
+	public void swapEntities(XCharacter entity1, XCharacter entity2)
 	{
 		Tile location1 = entity1.location();
 		Tile location2 = entity2.location();
-		XArrow arrow1 = XArrow.factory(location1, location2, y1, false, entity1.getImage());
+		XArrow arrow1 = XArrow.factory(location1, location2, y1, false, /*entity.getImage()*/XCharacter.IMAGE);
 		addArrow(arrow1);
-		entity1.setReplacementArrow(arrow1);
-		XArrow arrow2 = XArrow.factory(location2, location1, y1, false, entity2.getImage());
+		entity1.replaceVisual(arrow1);
+		XArrow arrow2 = XArrow.factory(location2, location1, y1, false, /*entity.getImage()*/XCharacter.IMAGE);
 		addArrow(arrow2);
-		entity2.setReplacementArrow(arrow2);
+		entity2.replaceVisual(arrow2);
 		advTile(location1).setEntity(entity2);
 		advTile(location2).setEntity(entity1);
 		entity1.setLocation(location2);
 		entity2.setLocation(location1);
 	}
 
-	public ArrayList<XHero> getEntitiesH()
+	/*public ArrayList<XCharacter> getEntitiesH()
 	{
 		return entitiesH;
 	}
 
-	public ArrayList<XEnemy> getEntitiesE()
+	public ArrayList<XCharacter> getEntitiesE()
 	{
 		return entitiesE;
 	}
 
-	public ArrayList<XEntity> getEntities3()
+	public ArrayList<XCharacter> getEntities3()
 	{
 		return entities3;
+	}*/
+
+	public List<XCharacter> teamCharacters(CharacterTeam team)
+	{
+		return characters.getOrDefault(team, List.of());
 	}
 
 	public int createSector(boolean visible)
@@ -360,18 +379,27 @@ public class LevelMap implements ConnectRestore, Arrows
 					a2 = building.save(a2.startObject(), itemLoader, y1).end();
 			}
 			var a3 = a2.end().startArrayField("XEntities");
-			for(XEntity entity : entitiesH)
+			/*for(XCharacter entity : entitiesH)
 			{
 				a3 = entity.save(a3.startObject(), itemLoader, y1).end();
 				xheroSave = entity.save3(xheroSave.startObject(), itemLoader).end();
 			}
-			for(XEntity entity : entitiesE)
+			for(XCharacter entity : entitiesE)
 			{
 				a3 = entity.save(a3.startObject(), itemLoader, y1).end();
 			}
-			for(XEntity entity : entities3)
+			for(XCharacter entity : entities3)
 			{
 				a3 = entity.save(a3.startObject(), itemLoader, y1).end();
+			}*/
+			for(List<XCharacter> c1 : characters.values())
+			{
+				for(XCharacter character : c1)
+				{
+					a3 = character.save(a3.startObject(), itemLoader, y1).end();
+					if(character.saveSettings() != null)
+						xheroSave = character.save3(xheroSave.startObject(), itemLoader).end();
+				}
 			}
 			return new String[]{a3.end().end().finish(), xheroSave.end().end().finish()};
 		}catch(IOException e)

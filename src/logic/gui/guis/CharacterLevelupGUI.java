@@ -6,10 +6,10 @@ import logic.xstate.*;
 
 public class CharacterLevelupGUI extends Inv1GUI
 {
-	private final XEntity character;
+	private final XCharacter character;
 	private final NState nextState;
 
-	public CharacterLevelupGUI(XEntity character, NState nextState)
+	public CharacterLevelupGUI(XCharacter character, NState nextState)
 	{
 		super(character.inputInv(), character.name(), null);
 		this.character = character;
@@ -20,7 +20,7 @@ public class CharacterLevelupGUI extends Inv1GUI
 	public void onEnter(MainState mainState)
 	{
 		mainState.sideInfoFrame.setSideInfoXH(character.standardSideInfo(), character);
-		baseInfo = character.getStats().levelup();
+		baseInfo = character.stats().levelup();
 		super.onEnter(mainState);
 	}
 

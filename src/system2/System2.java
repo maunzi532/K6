@@ -23,28 +23,28 @@ public class System2 implements CombatSystem
 	}
 
 	@Override
-	public int movement(XEntity entity, Stats stats)
+	public int movement(XCharacter entity)
 	{
-		return stats.getMovement();
+		return entity.stats().getMovement();
 	}
 
 	@Override
-	public int dashMovement(XEntity entity, Stats stats)
+	public int dashMovement(XCharacter entity)
 	{
 		return 12;
 	}
 
 	@Override
-	public int maxAccessRange(XEntity entity, Stats stats)
+	public int maxAccessRange(XCharacter entity)
 	{
 		return 4;
 	}
 
 	@Override
-	public List<Integer> attackRanges(XEntity entity, Stats stats, boolean counter)
+	public List<Integer> attackRanges(XCharacter entity, boolean counter)
 	{
 		List<int[]> v = entity.outputInv().viewItems(false)
-				.stream().filter(e -> stats.getItemFilter().canContain(e.item))
+				.stream().filter(e -> entity.stats().getItemFilter().canContain(e.item))
 				.map(e -> ((AttackItem2) e.item).getRanges(counter)).collect(Collectors.toList());
 		HashSet<Integer> ints2 = new HashSet<>();
 		for(int[] ints : v)
@@ -58,17 +58,15 @@ public class System2 implements CombatSystem
 	}
 
 	@Override
-	public List<AttackInfo> attackInfo(XEntity entity, Tile loc, Stats stats,
-			XEntity entityT, Tile locT, Stats statsT)
+	public List<AttackInfo> attackInfo(XCharacter entity, Tile loc, XCharacter entityT, Tile locT)
 	{
 		int distance = levelMap.y1.distance(loc, locT);
 		return entity.outputInv()
 				.viewItems(false)
 				.stream()
-				.filter(e -> stats.getItemFilter().canContain(e.item))
+				.filter(e -> entity.stats().getItemFilter().canContain(e.item))
 				.flatMap(e -> ((AttackItem2) e.item).attackModes().stream())
-				.map(mode -> new AttackInfo(entity, loc, stats, mode,
-						entityT, locT, statsT, statsT.getLastUsed(), distance))
+				.map(mode -> new AttackInfo(entity, loc, mode, entityT, locT, entityT.stats().getLastUsed(), distance))
 				.filter(e -> e.canInitiate)
 				.map(e -> e.addAnalysis(this))
 				.collect(Collectors.toList());
@@ -126,7 +124,7 @@ public class System2 implements CombatSystem
 	}
 
 	@Override
-	public AnimTimer createRegenerationAnimation(XEntity entity)
+	public AnimTimer createRegenerationAnimation(XCharacter entity)
 	{
 		return new RegenerationAnim(entity, levelMap);
 	}
@@ -137,23 +135,7 @@ public class System2 implements CombatSystem
 		return new GetExpAnim(aI, (RNGOutcome2) result, levelMap);
 	}
 
-	@Override
-	public XEntity loadEntity(TileType y1, JrsObject data, ItemLoader itemLoader)
-	{
-		int classCode = ((JrsNumber) data.get("Type")).getValue().intValue();
-		Tile location = y1.create2(((JrsNumber) data.get("sx")).getValue().intValue(), ((JrsNumber) data.get("sy")).getValue().intValue());
-		Stats stats = new Stats(((JrsObject) data.get("Stats")), itemLoader);
-		Inv inv = new WeightInv(((JrsObject) data.get("Inventory")), itemLoader);
-		return switch(classCode)
-				{
-					case 1 -> new XHero(location, this, stats, false, false, inv);
-					case 2 -> new XEnemy(location, this, stats, new StandardAI(levelMap, this), inv);
-					default -> throw new RuntimeException();
-				};
-	}
-
-	@Override
-	public XEntity loadEntityOrStartLoc(TileType y1, JrsObject data, ItemLoader itemLoader, Map<String, JrsObject> characters, Inv storage)
+	/*public XEntity loadEntityOrStartLoc(TileType y1, JrsObject data, ItemLoader itemLoader, Map<String, JrsObject> characters, Inv storage)
 	{
 		Tile location = y1.create2(((JrsNumber) data.get("sx")).getValue().intValue(), ((JrsNumber) data.get("sy")).getValue().intValue());
 		if(data.get("StartName") != null)
@@ -188,14 +170,15 @@ public class System2 implements CombatSystem
 						default -> throw new RuntimeException();
 					};
 		}
-	}
+	}*/
 
+	@Override
 	public XCharacter loadCharacterOrStartLoc(TileType y1, JrsObject data, ItemLoader itemLoader, Map<String, JrsObject> characters, Inv storage)
 	{
 		Tile location = y1.create2(((JrsNumber) data.get("sx")).getValue().intValue(), ((JrsNumber) data.get("sy")).getValue().intValue());
-		int classCode = ((JrsNumber) data.get("Type")).getValue().intValue();
 		if(data.get("StartName") != null)
 		{
+			int classCode = 1;
 			String startName = data.get("StartName").asText();
 			boolean locked = ((JrsBoolean) data.get("Locked")).booleanValue();
 			boolean invLocked = ((JrsBoolean) data.get("InvLocked")).booleanValue();
@@ -215,14 +198,15 @@ public class System2 implements CombatSystem
 			return switch(classCode)
 					{
 						case 1 -> new XCharacter(CharacterTeam.HERO, 0, location, stats, inv,
-								null, null, new CharacterSave(locked, invLocked));
+								null, null, new SaveSettings(locked, invLocked));
 						case 2 -> new XCharacter(CharacterTeam.ENEMY, 0, location, stats, inv,
-								null, null, new CharacterSave(locked, invLocked));
+								null, null, new SaveSettings(locked, invLocked));
 						default -> throw new RuntimeException();
 					};
 		}
 		else
 		{
+			int classCode = ((JrsNumber) data.get("Type")).getValue().intValue();
 			Stats stats = new Stats(((JrsObject) data.get("Stats")), itemLoader);
 			Inv inv = new WeightInv(((JrsObject) data.get("Inventory")), itemLoader);
 			return switch(classCode)

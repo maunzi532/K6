@@ -10,11 +10,11 @@ import logic.*;
 
 public class SwapState implements NMarkState
 {
-	private final XHero character;
-	private List<XHero> swapTargets;
+	private final XCharacter character;
+	private List<XCharacter> swapTargets;
 	private List<VisMark> visMarked;
 
-	public SwapState(XHero character)
+	public SwapState(XCharacter character)
 	{
 		this.character = character;
 	}
@@ -23,14 +23,14 @@ public class SwapState implements NMarkState
 	public void onEnter(MainState mainState)
 	{
 		mainState.sideInfoFrame.setSideInfoXH(character.standardSideInfo(), character);
-		if(character.isStartLocked())
+		if(character.saveSettings() != null && character.saveSettings().startLocked)
 		{
 			swapTargets = List.of();
 		}
 		else
 		{
-			swapTargets = mainState.levelMap.getEntitiesH().stream()
-					.filter(e -> e != character && !e.isStartLocked()).collect(Collectors.toList());
+			swapTargets = mainState.levelMap.teamCharacters(CharacterTeam.HERO).stream()
+					.filter(e -> e != character && (e.saveSettings() == null || !e.saveSettings().startLocked)).collect(Collectors.toList());
 		}
 		visMarked = swapTargets.stream().map(e -> new VisMark(e.location(), Color.YELLOW, VisMark.d1)).collect(Collectors.toList());
 	}
@@ -56,8 +56,8 @@ public class SwapState implements NMarkState
 	@Override
 	public void onClick(Tile mapTile, MainState mainState, XStateHolder stateHolder, XKey key)
 	{
-		XEntity entity = mainState.levelMap.getEntity(mapTile);
-		if(entity instanceof XHero && swapTargets.contains(entity))
+		XCharacter entity = mainState.levelMap.getEntity(mapTile);
+		if(entity != null && entity.team() == CharacterTeam.HERO && swapTargets.contains(entity))
 		{
 			mainState.levelMap.swapEntities(character, entity);
 			visMarked = swapTargets.stream().map(e -> new VisMark(e.location(), Color.YELLOW, VisMark.d1)).collect(Collectors.toList());

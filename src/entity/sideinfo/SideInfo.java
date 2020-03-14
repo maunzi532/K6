@@ -7,13 +7,13 @@ import javafx.scene.image.*;
 
 public class SideInfo
 {
-	private final XEntity character;
+	private final XCharacter character;
 	private final int type;
 	private Image charImage;
 	private final StatBar statBar;
 	private String[] texts;
 
-	public SideInfo(XEntity character, int type, Image charImage, StatBar statBar, String... texts)
+	public SideInfo(XCharacter character, int type, Image charImage, StatBar statBar, String... texts)
 	{
 		this.character = character;
 		this.type = type;

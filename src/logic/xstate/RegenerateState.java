@@ -5,11 +5,11 @@ import logic.*;
 
 public class RegenerateState implements NAutoState
 {
-	private final XEntity entity;
+	private final XCharacter entity;
 	private final NState nextState;
 	private AnimTimer arrow;
 
-	public RegenerateState(XEntity entity, NState nextState)
+	public RegenerateState(XCharacter entity, NState nextState)
 	{
 		this.entity = entity;
 		this.nextState = nextState;
@@ -37,8 +37,8 @@ public class RegenerateState implements NAutoState
 	@Override
 	public boolean keepInMenu(MainState mainState)
 	{
-		if(entity instanceof XHero)
-			return ((XHero) entity).ready(0) && entity.getStats().getRegenerateChange() > 0;
+		if(entity.team() == CharacterTeam.HERO)
+			return entity.resources().ready(0) && entity.stats().getRegenerateChange() > 0;
 		return false;
 	}
 

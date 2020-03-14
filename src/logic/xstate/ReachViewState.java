@@ -9,11 +9,11 @@ import logic.*;
 
 public class ReachViewState implements NMarkState
 {
-	private final XEntity character;
+	private final XCharacter character;
 	private final boolean enemy;
 	private List<VisMark> allTargets;
 
-	public ReachViewState(XEntity character, boolean enemy)
+	public ReachViewState(XCharacter character, boolean enemy)
 	{
 		this.character = character;
 		this.enemy = enemy;
@@ -23,10 +23,10 @@ public class ReachViewState implements NMarkState
 	public void onEnter(MainState mainState)
 	{
 		mainState.sideInfoFrame.setSideInfoXH(character.standardSideInfo(), character);
-		List<Tile> movement = new Pathing(mainState.y1, character, character.movement(), mainState.levelMap, null).start().getEndpoints();
+		List<Tile> movement = new Pathing(mainState.y1, character, character.resources().movement(), mainState.levelMap, null).start().getEndpoints();
 		allTargets = new ArrayList<>();
 		movement.forEach(e -> allTargets.add(new VisMark(e, Color.MEDIUMVIOLETRED, VisMark.d1)));
-		movement.stream().flatMap(loc -> character.attackRanges(false).stream()
+		movement.stream().flatMap(loc -> mainState.combatSystem.attackRanges(character, false).stream()
 				.flatMap(e -> mainState.y1.range(loc, e, e).stream())).distinct()
 				.forEach(e -> allTargets.add(new VisMark(e, Color.RED, VisMark.d1)));
 	}
@@ -46,7 +46,7 @@ public class ReachViewState implements NMarkState
 	@Override
 	public XMenu menu()
 	{
-		return enemy ? XMenu.enemyMoveMenu((XEnemy) character) : XMenu.characterStartMoveMenu((XHero) character);
+		return enemy ? XMenu.enemyMoveMenu(character) : XMenu.characterStartMoveMenu(character);
 	}
 
 	@Override

@@ -13,11 +13,12 @@ public class AnimPartAttack implements AnimPart
 	private final ManualXArrow arrow;
 	private int counter;
 
-	public AnimPartAttack(XEntity attacker, XEntity target, Arrows arrows)
+	public AnimPartAttack(XCharacter attacker, XCharacter target, Arrows arrows)
 	{
-		arrow = new ManualXArrow(XArrow.convert(attacker.location(), target.location()), LEN, attacker.getImage());
+		arrow = new ManualXArrow(XArrow.convert(attacker.location(), target.location()), LEN, /*attacker.getImage()*/
+				XCharacter.IMAGE);
 		arrows.addArrow(arrow);
-		attacker.setReplacementArrow(arrow);
+		attacker.replaceVisual(arrow);
 	}
 
 	@Override

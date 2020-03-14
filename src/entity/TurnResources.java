@@ -59,4 +59,70 @@ public class TurnResources
 		return new TurnResources(copyLocation, startMovement, startDashMovement, startMovement,
 				startDashMovement, actionPoints, moveAction, moveAction, mainAction);
 	}
+
+	public Tile startLocation()
+	{
+		return startLocation;
+	}
+
+	public int movement()
+	{
+		return movement;
+	}
+
+	public int dashMovement()
+	{
+		return dashMovement;
+	}
+
+	public int actionPoints()
+	{
+		return actionPoints;
+	}
+
+	public boolean moveAction()
+	{
+		return moveAction;
+	}
+
+	public boolean revertMoveAction()
+	{
+		return revertMoveAction;
+	}
+
+	public boolean mainAction()
+	{
+		return mainAction;
+	}
+
+	public boolean ready(int apCost)
+	{
+		return mainAction && actionPoints >= apCost;
+	}
+
+	public void move(int cost)
+	{
+		moveAction = false;
+		movement -= cost;
+		dashMovement -= cost;
+	}
+
+	public void action(boolean main, int ap)
+	{
+		if(main)
+			mainAction = false;
+		actionPoints -= ap;
+	}
+
+	public void revertMovement()
+	{
+		movement = startMovement;
+		dashMovement = startDashMovement;
+		moveAction = true;
+	}
+
+	public void irreversible()
+	{
+		revertMoveAction = false;
+	}
 }

@@ -14,11 +14,11 @@ import logic.gui.guis.*;
 public class GiveOrTakeState implements NMarkState
 {
 	private final boolean give;
-	private final XHero character;
+	private final XCharacter character;
 	private List<DoubleInv> possibleTargets;
 	private List<VisMark> visMarked;
 
-	public GiveOrTakeState(boolean give, XHero character)
+	public GiveOrTakeState(boolean give, XCharacter character)
 	{
 		this.give = give;
 		this.character = character;
@@ -29,13 +29,14 @@ public class GiveOrTakeState implements NMarkState
 	{
 		mainState.sideInfoFrame.setSideInfoXH(character.standardSideInfo(), character);
 		boolean levelStarted = mainState.turnCounter > 0;
-		List<Tile> range = mainState.y1.range(character.location(), 0, character.maxAccessRange());
+		List<Tile> range = mainState.y1.range(character.location(), 0, mainState.combatSystem.maxAccessRange(character));
 		possibleTargets = new ArrayList<>();
 		range.stream().map(e -> (DoubleInv) mainState.levelMap.getBuilding(e))
 				.filter(e -> e != null && e.active() && e.playerTradeable(levelStarted)).forEachOrdered(possibleTargets::add);
 		range.stream().map(e -> (DoubleInv) mainState.levelMap.getEntity(e))
 				.filter(e -> e != null && e.active() && e.playerTradeable(levelStarted)).forEachOrdered(possibleTargets::add);
-		visMarked = possibleTargets.stream().map(e -> new VisMark(e.location(), Color.YELLOW, e instanceof XEntity ? VisMark.d2 : VisMark.d1)).collect(Collectors.toList());
+		visMarked = possibleTargets.stream().map(e -> new VisMark(e.location(), Color.YELLOW,
+				e.type() == DoubleInvType.ENTITY ? VisMark.d2 : VisMark.d1)).collect(Collectors.toList());
 	}
 
 	@Override
@@ -55,11 +56,11 @@ public class GiveOrTakeState implements NMarkState
 	{
 		if(mainState.turnCounter == 0)
 		{
-			return !character.isStartInvLocked();
+			return character.saveSettings() == null || !character.saveSettings().startInvLocked;
 		}
 		else
 		{
-			return character.ready(1);
+			return character.resources().ready(1);
 		}
 	}
 
@@ -99,7 +100,7 @@ public class GiveOrTakeState implements NMarkState
 			{
 				for(DoubleInv inv1 : list)
 				{
-					if(inv1 instanceof XEntity)
+					if(inv1.type() == DoubleInvType.ENTITY)
 					{
 						startTradeState(mainState, stateHolder, inv1, levelStarted);
 						break;
@@ -128,9 +129,9 @@ public class GiveOrTakeState implements NMarkState
 		else
 		{
 			if(give)
-				stateHolder.setState(new DirectedTradeGUI(character, inv1, levelStarted ? character : null));
+				stateHolder.setState(new DirectedTradeGUI(character, inv1, levelStarted ? character.resources() : null));
 			else
-				stateHolder.setState(new DirectedTradeGUI(inv1, character, levelStarted ? character : null));
+				stateHolder.setState(new DirectedTradeGUI(inv1, character, levelStarted ? character.resources() : null));
 		}
 	}
 

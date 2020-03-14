@@ -8,11 +8,11 @@ import system2.analysis.*;
 
 public class AttackInfo
 {
-	public final XEntity entity;
+	public final XCharacter entity;
 	public final Tile loc;
 	public final Stats stats;
 	public final AttackMode4 mode;
-	public final XEntity entityT;
+	public final XCharacter entityT;
 	public final Tile locT;
 	public final Stats statsT;
 	public final AttackMode4 modeT;
@@ -24,15 +24,15 @@ public class AttackInfo
 	public final AttackInfoPart3 calcT;
 	private final String[] infos;
 
-	public AttackInfo(XEntity entity, Tile loc, Stats stats, AttackMode4 mode, XEntity entityT, Tile locT, Stats statsT, AttackMode4 modeT, int distance)
+	public AttackInfo(XCharacter entity, Tile loc, AttackMode4 mode, XCharacter entityT, Tile locT, AttackMode4 modeT, int distance)
 	{
 		this.entity = entity;
 		this.loc = loc;
-		this.stats = stats;
+		stats = entity.stats();
 		this.mode = mode;
 		this.entityT = entityT;
 		this.locT = locT;
-		this.statsT = statsT;
+		statsT = entityT.stats();
 		this.modeT = modeT;
 		this.distance = distance;
 		AttackMode3 attackMode = AttackMode3.convert(stats, mode);
@@ -50,7 +50,7 @@ public class AttackInfo
 		}
 	}
 
-	public XEntity getEntity(boolean inverse)
+	public XCharacter getEntity(boolean inverse)
 	{
 		return inverse ? entityT : entity;
 	}

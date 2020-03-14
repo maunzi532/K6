@@ -7,13 +7,13 @@ public class AnimPartNoDamage implements AnimPart
 {
 	private static final int DURATION = 20;
 
-	private final XEntity target;
+	private final XCharacter target;
 	private final Arrows arrows;
 	private final boolean crit;
 	private XArrow arrow;
 	private int counter;
 
-	public AnimPartNoDamage(XEntity target, boolean crit, Arrows arrows)
+	public AnimPartNoDamage(XCharacter target, boolean crit, Arrows arrows)
 	{
 		this.target = target;
 		this.crit = crit;

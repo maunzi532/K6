@@ -10,7 +10,7 @@ public class AdvTile
 
 	private FloorTile floorTile;
 	private XBuilding building;
-	private XEntity entity;
+	private XCharacter entity;
 	private XBuilding owned;
 
 	public AdvTile(FloorTile floorTile)
@@ -30,7 +30,7 @@ public class AdvTile
 		return null;
 	}
 
-	public XEntity getEntity()
+	public XCharacter getEntity()
 	{
 		return entity;
 	}
@@ -52,7 +52,7 @@ public class AdvTile
 		this.building = building;
 	}
 
-	public void setEntity(XEntity entity)
+	public void setEntity(XCharacter entity)
 	{
 		this.entity = entity;
 	}

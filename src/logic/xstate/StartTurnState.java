@@ -12,9 +12,11 @@ public class StartTurnState implements NAutoState
 	{
 		mainState.sideInfoFrame.clearSideInfo();
 		mainState.turnCounter++;
-		for(XHero xHero : mainState.levelMap.getEntitiesH())
+		for(XCharacter xHero : mainState.levelMap.teamCharacters(CharacterTeam.HERO))
 		{
-			xHero.startTurn();
+			xHero.newResources(new TurnResources(xHero.location(),
+					mainState.combatSystem.movement(xHero),
+					mainState.combatSystem.dashMovement(xHero), 2));
 		}
 	}
 

@@ -13,7 +13,7 @@ public class EntityEditGUI extends XGUIState
 	private static final CTile textInv = new CTile(2, 0, 2, 1);
 	private static final CTile weight = new CTile(0, 0);
 
-	private final XEntity entity;
+	private final XCharacter entity;
 	private List<String> info;
 	private TargetScrollList<ItemView> invView;
 	private ScrollList<Integer> infoView;
@@ -22,7 +22,7 @@ public class EntityEditGUI extends XGUIState
 	private List<String> changeOptions;
 	private CElement textInvE;
 
-	public EntityEditGUI(XEntity entity)
+	public EntityEditGUI(XCharacter entity)
 	{
 		this.entity = entity;
 	}
@@ -46,7 +46,7 @@ public class EntityEditGUI extends XGUIState
 		elements.add(infoView);
 		changeView = new ScrollList<>(7, 1, 1, 5, 1, 1, null,
 				e -> GuiTile.textView(changeOptions.get(e)),
-				target -> entity.getStats().applyEditOption(changeStatNum, target, entity));
+				target -> entity.stats().applyEditOption(changeStatNum, target, entity));
 		elements.add(changeView);
 		textInvE = new CElement(textInv);
 		elements.add(textInvE);
@@ -90,7 +90,7 @@ public class EntityEditGUI extends XGUIState
 		if(invView.getTargeted() != null && !invView.getTargeted().item.info().isEmpty())
 			info = invView.getTargeted().item.info();
 		else
-			info = entity.getStats().infoEdit();
+			info = entity.stats().infoEdit();
 		infoView.elements = IntStream.range(0, info.size()).boxed().collect(Collectors.toList());
 		changeView.elements = IntStream.range(0, changeOptions.size()).boxed().collect(Collectors.toList());
 		textInvE.fillTile = new GuiTile(entity.name());
@@ -99,6 +99,6 @@ public class EntityEditGUI extends XGUIState
 	private void clickInfo(int target)
 	{
 		changeStatNum = target;
-		changeOptions = entity.getStats().editOptions(target);
+		changeOptions = entity.stats().editOptions(target);
 	}
 }

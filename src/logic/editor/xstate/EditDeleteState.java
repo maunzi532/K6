@@ -6,9 +6,9 @@ import logic.xstate.*;
 
 public class EditDeleteState implements NAutoState
 {
-	private final XEntity entity;
+	private final XCharacter entity;
 
-	public EditDeleteState(XEntity entity)
+	public EditDeleteState(XCharacter entity)
 	{
 		this.entity = entity;
 	}

@@ -171,19 +171,19 @@ public class StateControl2 implements XStateHolder, ConvInputConsumer
 		}
 	}
 
-	private void onClickEntity(XEntity entity, boolean levelStarted, XKey key)
+	private void onClickEntity(XCharacter entity, boolean levelStarted, XKey key)
 	{
-		if(entity instanceof XHero)
+		if(entity.team() == CharacterTeam.HERO)
 		{
 			if(key.hasFunction("Choose"))
 			{
 				if(levelStarted)
 				{
-					setState(new AdvMoveState((XHero) entity));
+					setState(new AdvMoveState(entity));
 				}
 				else
 				{
-					setState(new SwapState((XHero) entity));
+					setState(new SwapState(entity));
 				}
 			}
 			else if(key.hasFunction("Menu"))
@@ -191,7 +191,7 @@ public class StateControl2 implements XStateHolder, ConvInputConsumer
 				setState(new CharacterInvGUI(entity));
 			}
 		}
-		else if(entity instanceof XEnemy)
+		else if(entity.team() == CharacterTeam.ENEMY)
 		{
 			if(key.hasFunction("Choose"))
 			{
@@ -318,10 +318,10 @@ public class StateControl2 implements XStateHolder, ConvInputConsumer
 		visMarked.clear();
 		if(mainState.showAllEnemyReach)
 		{
-			Map<Tile, Long> v = mainState.levelMap.getEntitiesE().stream().flatMap(character ->
-				new Pathing(mainState.y1, character, character.movement(),
+			Map<Tile, Long> v = mainState.levelMap.teamCharacters(CharacterTeam.ENEMY).stream().flatMap(character ->
+				new Pathing(mainState.y1, character, character.resources().movement(),
 						mainState.levelMap, null).start().getEndpoints()
-						.stream().flatMap(loc -> character.attackRanges(false).stream()
+						.stream().flatMap(loc -> mainState.combatSystem.attackRanges(character, false).stream()
 						.flatMap(e -> mainState.y1.range(loc, e, e).stream())).distinct())
 					.collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
 			v.forEach((t, n) -> visMarked.add(new VisMark(t, Color.BLACK, 0.8)));

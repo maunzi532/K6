@@ -60,7 +60,7 @@ public class SavedImport
 				((JrsArray) tree2.get("Characters")).elements().forEachRemaining(
 						character -> characters.put(((JrsObject) ((JrsObject) character).get("Stats")).get("CustomName").asText(), (JrsObject) character));
 				((JrsArray) tree.get("XEntities")).elements().forEachRemaining(e ->
-						levelMap.addEntity(combatSystem.loadEntityOrStartLoc(levelMap.y1,
+						levelMap.addEntity(combatSystem.loadCharacterOrStartLoc(levelMap.y1,
 								(JrsObject) e, itemLoader, characters, storage)));
 				buildings.forEach(levelMap::loadConnectBuilding);
 			}

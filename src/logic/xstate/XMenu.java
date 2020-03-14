@@ -12,30 +12,30 @@ public class XMenu
 {
 	public static final XMenu NOMENU = new XMenu();
 
-	public static XMenu characterMoveMenu(XHero character)
+	public static XMenu characterMoveMenu(XCharacter character)
 	{
 		return new XMenu(new AdvMoveState(character), new RegenerateState(character, new AdvMoveState(character)),
 				new RevertMovementState(character), new EndTurnState());
 	}
 
-	public static XMenu characterStartMoveMenu(XHero character)
+	public static XMenu characterStartMoveMenu(XCharacter character)
 	{
 		return new XMenu(new SwapState(character), new ReachViewState(character, false), new EndTurnState());
 	}
 
-	public static XMenu characterGUIMenu(XHero character)
+	public static XMenu characterGUIMenu(XCharacter character)
 	{
 		return new XMenu(new CharacterInvGUI(character), new CharacterCombatGUI(character, 0),
 				new GiveOrTakeState(true, character), new GiveOrTakeState(false, character),
 				new SelectBuildingGUI(character), new RemoveBuildingGUI(character), new EndTurnState());
 	}
 
-	public static XMenu enemyMoveMenu(XEnemy character)
+	public static XMenu enemyMoveMenu(XCharacter character)
 	{
 		return new XMenu(new ReachViewState(character, true), new EndTurnState());
 	}
 
-	public static XMenu enemyGUIMenu(XEntity enemy)
+	public static XMenu enemyGUIMenu(XCharacter enemy)
 	{
 		return new XMenu(new CharacterInvGUI(enemy), new EndTurnState());
 	}
@@ -51,19 +51,11 @@ public class XMenu
 		return new XMenu(new TransportTargetsState(building, transport), new ProductionPhaseState());
 	}
 
-	public static XMenu entityEditMenu(XEntity entity)
+	public static XMenu entityEditMenu(XCharacter entity)
 	{
-		if(entity instanceof XHero)
-		{
-			return new XMenu(new EntityEditGUI(entity), new EntityInvEditGUI(entity), new HeroEditGUI((XHero) entity),
-					new EditMoveState(entity), new EditCopyState(entity), new EditDeleteState(entity));
-		}
-		if(entity instanceof XEnemy)
-		{
-			return new XMenu(new EntityEditGUI(entity), new EntityInvEditGUI(entity), new EnemyEditGUI((XEnemy) entity),
-					new EditMoveState(entity), new EditCopyState(entity), new EditDeleteState(entity));
-		}
-		throw new RuntimeException();
+		return new XMenu(new EntityEditGUI(entity), new EntityInvEditGUI(entity),
+				new SaveSettingsEditGUI(entity), new EntityEditGUI(entity),
+				new EditMoveState(entity), new EditCopyState(entity), new EditDeleteState(entity));
 	}
 
 	public static XMenu buildingEditMenu(XBuilding building)

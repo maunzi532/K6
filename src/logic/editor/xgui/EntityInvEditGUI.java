@@ -5,11 +5,11 @@ import logic.xstate.*;
 
 public class EntityInvEditGUI extends InvEditGUI
 {
-	private final XEntity invEntity;
+	private final XCharacter invEntity;
 
-	public EntityInvEditGUI(XEntity invEntity)
+	public EntityInvEditGUI(XCharacter invEntity)
 	{
-		super(invEntity.inputInv(), invEntity.name(), invEntity.getStats().infoEdit());
+		super(invEntity.inputInv(), invEntity.name(), invEntity.stats().infoEdit());
 		this.invEntity = invEntity;
 	}
 

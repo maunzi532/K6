@@ -12,26 +12,26 @@ import system2.analysis.*;
 
 public interface CombatSystem
 {
-	int movement(XEntity entity, Stats stats);
+	int movement(XCharacter entity);
 
-	int dashMovement(XEntity entity, Stats stats);
+	int dashMovement(XCharacter entity);
 
-	int maxAccessRange(XEntity entity, Stats stats);
+	int maxAccessRange(XCharacter entity);
 
-	List<Integer> attackRanges(XEntity entity, Stats stats, boolean counter);
+	List<Integer> attackRanges(XCharacter entity, boolean counter);
 
-	default List<PathAttackX> pathAttackInfo(XEntity entity, Tile loc, Stats stats, List<XEntity> possibleTargets, PathLocation pl)
+	default List<PathAttackX> pathAttackInfo(XCharacter entity, Tile loc, List<XCharacter> possibleTargets, PathLocation pl)
 	{
-		return possibleTargets.stream().flatMap(e -> attackInfo(entity, loc, stats, e, e.location(), e.stats).stream())
+		return possibleTargets.stream().flatMap(e -> attackInfo(entity, loc, e, e.location()).stream())
 				.map(e -> new PathAttackX(pl, e)).collect(Collectors.toList());
 	}
 
-	default List<AttackInfo> attackInfo(XEntity entity, Stats stats, XEntity entityT, Stats statsT)
+	default List<AttackInfo> attackInfo(XCharacter entity, XCharacter entityT)
 	{
-		return attackInfo(entity, entity.location, stats, entityT, entityT.location, statsT);
+		return attackInfo(entity, entity.location(), entityT, entityT.location());
 	}
 
-	List<AttackInfo> attackInfo(XEntity entity, Tile loc, Stats stats, XEntity entityT, Tile locT, Stats statsT);
+	List<AttackInfo> attackInfo(XCharacter entity, Tile loc, XCharacter entityT, Tile locT);
 
 	void preAttack(AttackInfo attackInfo);
 
@@ -49,13 +49,11 @@ public interface CombatSystem
 
 	AnimTimer createAnimationTimer(RNGDivider2 divider);
 
-	AnimTimer createRegenerationAnimation(XEntity entity);
+	AnimTimer createRegenerationAnimation(XCharacter entity);
 
 	AnimTimer createPostAttackAnimation(AttackInfo aI, RNGOutcome result);
 
-	XEntity loadEntity(TileType y1, JrsObject data, ItemLoader itemLoader);
-
-	XEntity loadEntityOrStartLoc(TileType y1, JrsObject data, ItemLoader itemLoader, Map<String, JrsObject> characters, Inv storage);
+	XCharacter loadCharacterOrStartLoc(TileType y1, JrsObject data, ItemLoader itemLoader, Map<String, JrsObject> characters, Inv storage);
 
 	Stats defaultStats(boolean xh);
 }

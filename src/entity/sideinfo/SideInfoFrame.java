@@ -39,12 +39,12 @@ public class SideInfoFrame
 		r0.setSideInfo(null);
 	}
 
-	private boolean isInverted(XEntity e1, XEntity e2)
+	private boolean isInverted(XCharacter e1, XCharacter e2)
 	{
-		return (!(e1 instanceof XHero) && e2 instanceof XHero) != xhR;
+		return (!(e1.team() == CharacterTeam.HERO) && e2.team() == CharacterTeam.HERO) != xhR;
 	}
 
-	public void sidedInfo(XEntity e1, XEntity e2)
+	public void sidedInfo(XCharacter e1, XCharacter e2)
 	{
 		boolean inverted = isInverted(e1, e2);
 		l0.setSideInfo((inverted ? e2 : e1).standardSideInfo());
@@ -60,9 +60,9 @@ public class SideInfoFrame
 				aI.getEntity(!inverted).statBarX1(aI.getSideInfoX1T(!inverted)), aI.getSideInfos(!inverted)));
 	}
 
-	public void setSideInfoXH(SideInfo sideInfo, XEntity e1)
+	public void setSideInfoXH(SideInfo sideInfo, XCharacter e1)
 	{
-		if((e1 instanceof XHero) != xhR)
+		if((e1.team() == CharacterTeam.HERO) != xhR)
 		{
 			l0.setSideInfo(sideInfo);
 			r0.setSideInfo(null);

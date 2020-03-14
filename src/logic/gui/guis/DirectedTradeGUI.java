@@ -21,7 +21,7 @@ public class DirectedTradeGUI extends XGUIState
 
 	private final DoubleInv provide;
 	private final DoubleInv receive;
-	private final XHero takeAp;
+	private final TurnResources takeAp;
 	private ScrollList<ItemView> provideView;
 	private ScrollList<ItemView> receiveView;
 	private CElement transferElement;
@@ -29,7 +29,7 @@ public class DirectedTradeGUI extends XGUIState
 	private int amount;
 	private boolean changed;
 
-	public DirectedTradeGUI(DoubleInv provide, DoubleInv receive, XHero takeAp)
+	public DirectedTradeGUI(DoubleInv provide, DoubleInv receive, TurnResources takeAp)
 	{
 		this.provide = provide;
 		this.receive = receive;
@@ -117,7 +117,7 @@ public class DirectedTradeGUI extends XGUIState
 			receive.afterTrading();
 			if(takeAp != null)
 			{
-				takeAp.takeAp(1);
+				takeAp.action(false, 1);
 				takeAp.irreversible();
 			}
 		}
