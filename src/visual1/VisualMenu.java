@@ -1,4 +1,4 @@
-package visual;
+package visual1;
 
 import geom.*;
 import geom.d1.*;
@@ -13,14 +13,16 @@ import logic.xstate.*;
 public class VisualMenu
 {
 	private final DoubleType y2;
-	private final GraphicsContext gd;
+	private final XGraphics graphics;
 	private final TileCamera camera;
 	private final XStateHolder stateHolder;
 	private final XKeyMap keyMap;
+	private double lastZoom;
+	private double lastShift;
 
 	public VisualMenu(XGraphics graphics, XStateHolder stateHolder, TileCamera camera, XKeyMap keyMap)
 	{
-		gd = graphics.gd();
+		this.graphics = graphics;
 		this.camera = camera;
 		y2 = camera.getDoubleType();
 		this.stateHolder = stateHolder;
@@ -35,18 +37,65 @@ public class VisualMenu
 		return offset.v()[1];
 	}
 
-	public void draw()
+	public void draw(double tLimit, double bLimit)
 	{
 		List<NState> menuEntries = stateHolder.getMenu();
-		camera.setYShift((menuEntries.size() - 1) * 1.5 / 2d);
-		for(int i = 0; i < menuEntries.size(); i++)
+		if(menuEntries.size() > 0)
 		{
-			draw0(camera.layout(0), y2.fromOffset(0, i), menuEntries.get(i), menuEntries.get(i) == stateHolder.getState());
+			double tLimitC = tLimit / camera.ySizeNZ();
+			double bLimitC = bLimit / camera.ySizeNZ();
+			double size1 = 0.75 * menuEntries.size() + 0.25;
+			double zoom = 1;
+			double yShift = 0;
+			if(size1 > tLimitC || size1 > bLimitC)
+			{
+				if(size1 * 2 > tLimitC + bLimitC)
+				{
+					zoom = (tLimitC + bLimitC) / (size1 * 2);
+					size1 = (tLimitC + bLimitC) / 2;
+				}
+				if(tLimitC < bLimitC)
+				{
+					yShift -= size1 - tLimitC;
+				}
+				else
+				{
+					yShift += size1 - bLimitC;
+				}
+			}
+			if(lastZoom <= 0)
+			{
+				lastZoom = zoom;
+				lastShift = yShift;
+			}
+			else
+			{
+				lastZoom = adapt(lastZoom, zoom, 0.02);
+				lastShift = adapt(lastShift, yShift, 0.15);
+			}
+			camera.setZoom(lastZoom);
+			camera.setYShift(lastShift + (menuEntries.size() - 1) * 0.75);
+			for(int i = 0; i < menuEntries.size(); i++)
+			{
+				draw0(camera.layout(0), y2.fromOffset(0, i), menuEntries.get(i),
+						menuEntries.get(i).text().equals(stateHolder.getState().text()));
+			}
 		}
+		else
+		{
+			lastZoom = 0;
+			lastShift = 0;
+		}
+	}
+
+	private static double adapt(double prev, double target, double speed)
+	{
+		return Math.min(Math.max(target, (prev * 0.9 + target * 0.1) - speed), (prev * 0.9 + target * 0.1) + speed);
 	}
 
 	private void draw0(TileLayout layout, Tile h1, NState menuEntry, boolean active)
 	{
+		GraphicsContext gd = graphics.gd();
 		double[][] points = layout.tileCorners(h1);
 		int dch = y2.directionCount() / 2;
 		if(active)

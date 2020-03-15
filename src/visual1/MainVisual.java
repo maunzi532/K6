@@ -1,4 +1,4 @@
-package visual;
+package visual1;
 
 import building.blueprint.*;
 import entity.sideinfo.*;
@@ -7,6 +7,7 @@ import geom.*;
 import geom.f1.*;
 import item.*;
 import javafx.geometry.*;
+import javafx.scene.canvas.*;
 import javafx.scene.paint.*;
 import javafx.scene.text.*;
 import levelMap.*;
@@ -14,8 +15,8 @@ import logic.*;
 import logic.editor.*;
 import logic.xstate.*;
 import system2.*;
-import visual.gui.*;
-import visual.sideinfo.*;
+import visual1.gui.*;
+import visual1.sideinfo.*;
 
 public class MainVisual implements XInputInterface
 {
@@ -175,8 +176,8 @@ public class MainVisual implements XInputInterface
 		{
 			mainState.levelMap.tickArrows();
 			convInputConsumer.tick();
-			visualSideInfo.tick();
 		}
+		visualSideInfo.tick();
 		mainState.screenshake = Math.max(mainState.screenshake, mainState.levelMap.removeFirstScreenshake());
 		if(mainState.screenshake > 0)
 		{
@@ -191,8 +192,9 @@ public class MainVisual implements XInputInterface
 		visualTile.draw(mapCamera, mainState.screenshake);
 		visualSideInfo.draw();
 		visualLevelEditor.draw(levelEditor);
-		visualGUI.draw2(mainState.stateHolder.getGUI());
-		visualMenu.draw();
+		visualGUI.zoomAndDraw(mainState.stateHolder.getGUI());
+		visualMenu.draw(graphics.yHW() - graphics.scaleHW() * 0.08,
+				graphics.yHW() - Math.max(visualSideInfo.takeY2(), visualLevelEditor.takeY(mainState)));
 		drawInfoText();
 	}
 
@@ -206,17 +208,20 @@ public class MainVisual implements XInputInterface
 
 	private void drawInfoText()
 	{
-		graphics.gd().setFill(Color.BLACK);
-		graphics.gd().fillRect(0, 0, graphics.xHW() * 2, graphics.yHW() / 10);
-		graphics.gd().setFill(Color.WHITE);
-		graphics.gd().setFont(new Font(graphics.yHW() / 20));
-		graphics.gd().setTextAlign(TextAlignment.LEFT);
-		graphics.gd().fillText(mainState.turnText(), graphics.xHW() / 20, graphics.yHW() / 20);
-		graphics.gd().fillText(mainState.preferBuildingsText(), graphics.xHW() / 2, graphics.yHW() / 20);
+		double xHW = graphics.xHW();
+		double scale = graphics.scaleHW() * 0.04;
+		GraphicsContext gd = graphics.gd();
+		gd.setFill(Color.BLACK);
+		gd.fillRect(0, 0, xHW * 2, scale * 2);
+		gd.setFill(Color.WHITE);
+		gd.setFont(new Font(scale));
+		gd.setTextAlign(TextAlignment.LEFT);
+		gd.fillText(mainState.turnText(), scale, scale);
+		gd.fillText(mainState.preferBuildingsText(), xHW / 2, scale);
 		if(paused)
-			graphics.gd().fillText("Paused", graphics.xHW(), graphics.yHW() / 20);
-		graphics.gd().setTextAlign(TextAlignment.RIGHT);
-		graphics.gd().fillText("P to open pause menu", graphics.xHW() * 2 - graphics.xHW() / 20, graphics.yHW() / 20);
-		graphics.gd().setTextAlign(TextAlignment.CENTER);
+			gd.fillText("Paused", xHW, scale);
+		gd.setTextAlign(TextAlignment.RIGHT);
+		gd.fillText("P to open pause menu", xHW * 2 - scale, scale);
+		gd.setTextAlign(TextAlignment.CENTER);
 	}
 }

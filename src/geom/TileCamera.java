@@ -53,12 +53,22 @@ public abstract class TileCamera
 
 	public double xSize()
 	{
-		return xSize * zoom;
+		return xSize * dimension.scaleHW() * zoom;
 	}
 
 	public double ySize()
 	{
-		return ySize * zoom;
+		return ySize * dimension.scaleHW() * zoom;
+	}
+
+	public double xSizeNZ()
+	{
+		return xSize * dimension.scaleHW();
+	}
+
+	public double ySizeNZ()
+	{
+		return ySize * dimension.scaleHW();
 	}
 
 	public abstract int getRange();

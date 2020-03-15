@@ -1,4 +1,4 @@
-package visual;
+package visual1;
 
 import geom.*;
 import javafx.scene.canvas.*;

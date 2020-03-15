@@ -1,4 +1,4 @@
-package visual;
+package visual1;
 
 import logic.*;
 

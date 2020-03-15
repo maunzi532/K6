@@ -1,4 +1,4 @@
-package visual.keybind;
+package visual1.keybind;
 
 import java.util.*;
 import logic.*;

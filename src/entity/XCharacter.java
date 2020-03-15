@@ -118,7 +118,7 @@ public class XCharacter implements DoubleInv, XBuilder
 
 	public SideInfo standardSideInfo()
 	{
-		return new SideInfo(this, 1, sideImage(), statBar(), stats.sideInfoText());
+		return new SideInfo(this, sideImage(), statBar(), stats.sideInfoText());
 	}
 
 	public StatBar statBar()

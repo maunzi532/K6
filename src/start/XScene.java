@@ -9,12 +9,15 @@ import javafx.scene.canvas.*;
 import javafx.scene.image.*;
 import javafx.scene.paint.*;
 import javafx.stage.*;
-import visual.*;
-import visual.keybind.*;
+import visual1.*;
+import visual1.keybind.*;
 
 public class XScene extends Application
 {
 	private static final int WIDTH = 1000, HEIGHT = 800;
+	private static final double mapSizeFactor = 0.088;
+	private static final double menuSizeFactor = 0.1;
+	private static final double guiSizeFactor = 0.1;
 
 	private static String[] args0;
 
@@ -68,24 +71,24 @@ public class XScene extends Application
 	private TileCamera mapCamera(String[] args, XGraphics graphics)
 	{
 		if(args.length > 0 && args[0].equals("H"))
-			return new HexCamera(graphics, 1, 1, 44, 44, 0, 0, new HexMatrix(0.5));
+			return new HexCamera(graphics, 1, 1, mapSizeFactor, mapSizeFactor, 0, 0, new HexMatrix(0.5));
 		else
-			return new QuadCamera(graphics, 1, 1, 44, 44, 0, 0);
+			return new QuadCamera(graphics, 1, 1, mapSizeFactor, mapSizeFactor, 0, 0);
 	}
 
 	private TileCamera menuCamera(String[] args, XGraphics graphics)
 	{
 		if(args.length > 1 && args[1].equals("H"))
-			return new HexCamera(graphics, 2, 1, graphics.yHW() / 8, graphics.yHW() / 8, 1.25 * HexMatrix.Q3, 0, HexMatrix.LP);
+			return new HexCamera(graphics, 2, 1, menuSizeFactor, menuSizeFactor, 1.25 * HexMatrix.Q3, 0, HexMatrix.LP);
 		else
-			return new QuadCamera(graphics, 2, 1, graphics.yHW() / 8, graphics.yHW() / 8, 1.25 * HexMatrix.Q3, 0);
+			return new QuadCamera(graphics, 2, 1, menuSizeFactor, menuSizeFactor, 1.25 * HexMatrix.Q3, 0);
 	}
 
 	private TileCamera guiCamera(String[] args, XGraphics graphics)
 	{
 		if(args.length > 2 && args[2].equals("H"))
-			return new HexCamera(graphics, 1, 1, graphics.yHW() / 8, graphics.yHW() / 8, 0, 0, HexMatrix.LP);
+			return new HexCamera(graphics, 1, 1, guiSizeFactor, guiSizeFactor, 0, 0, HexMatrix.LP);
 		else
-			return new QuadCamera(graphics, 1, 1, graphics.yHW() / 8, graphics.yHW() / 8, 0, 0);
+			return new QuadCamera(graphics, 1, 1, guiSizeFactor, guiSizeFactor, 0, 0);
 	}
 }

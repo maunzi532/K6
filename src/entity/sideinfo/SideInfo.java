@@ -2,24 +2,26 @@ package entity.sideinfo;
 
 import arrow.*;
 import entity.*;
-import java.util.*;
 import javafx.scene.image.*;
 
 public class SideInfo
 {
-	private final XCharacter character;
-	private final int type;
+	private final XCharacter identifier;
 	private Image charImage;
 	private final StatBar statBar;
 	private String[] texts;
 
-	public SideInfo(XCharacter character, int type, Image charImage, StatBar statBar, String... texts)
+	public SideInfo(XCharacter identifier, Image charImage, StatBar statBar, String... texts)
 	{
-		this.character = character;
-		this.type = type;
+		this.identifier = identifier;
 		this.charImage = charImage;
 		this.statBar = statBar;
 		this.texts = texts;
+	}
+
+	public XCharacter identifier()
+	{
+		return identifier;
 	}
 
 	public Image getCharImage()
@@ -45,19 +47,5 @@ public class SideInfo
 	public void setTexts(String[] texts)
 	{
 		this.texts = texts;
-	}
-
-	@Override
-	public boolean equals(Object o)
-	{
-		if(this == o) return true;
-		if(!(o instanceof SideInfo sideInfo)) return false;
-		return Objects.equals(character, sideInfo.character);
-	}
-
-	@Override
-	public int hashCode()
-	{
-		return Objects.hash(character, type);
 	}
 }

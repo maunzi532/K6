@@ -1,4 +1,4 @@
-package visual.gui;
+package visual1.gui;
 
 import geom.*;
 import geom.d1.*;
@@ -7,7 +7,7 @@ import logic.gui.*;
 import javafx.scene.canvas.*;
 import javafx.scene.paint.*;
 import javafx.scene.text.*;
-import visual.*;
+import visual1.*;
 
 public abstract class VisualGUI
 {
@@ -15,15 +15,15 @@ public abstract class VisualGUI
 	private static final int FADEOUT = 3;
 
 	public final DoubleType y2;
-	protected final GraphicsContext gd;
+	protected final XGraphics graphics;
 	protected final TileCamera camera;
 	private XGUIState last;
 	private XGUIState last2;
 	private int counter;
 
-	public VisualGUI(GraphicsContext gd, TileCamera camera)
+	public VisualGUI(XGraphics graphics, TileCamera camera)
 	{
-		this.gd = gd;
+		this.graphics = graphics;
 		this.camera = camera;
 		y2 = camera.getDoubleType();
 	}
@@ -40,7 +40,7 @@ public abstract class VisualGUI
 
 	public abstract boolean inside(DoubleTile h1, XGUIState xgui);
 
-	public void draw2(XGUIState xgui)
+	public void zoomAndDraw(XGUIState xgui)
 	{
 		if(xgui != last)
 		{
@@ -53,25 +53,26 @@ public abstract class VisualGUI
 		if(counter < FADEOUT && last2 != null)
 		{
 			camera.setZoom((double) (FADEOUT - counter) / FADEOUT);
-			draw(last2);
+			locateAndDraw(last2);
 		}
 		if(xgui != null)
 		{
 			camera.setZoom((double) counter / FADEIN);
-			draw(xgui);
+			locateAndDraw(xgui);
 		}
 		camera.setZoom(1);
 	}
 
-	public abstract void draw(XGUIState xgui);
+	public abstract void locateAndDraw(XGUIState xgui);
 
-	public void draw1(XGUIState xgui, double cxs, double cys, DoubleTile lu, DoubleTile rl, double imgSize, double fontSize, double textWidth)
+	public void drawGUI(XGUIState xgui, double cxs, double cys, DoubleTile lu, DoubleTile rl, double imgSize, double fontSize, double textWidth)
 	{
 		if(xgui.xw() <= 0 || xgui.yw() <= 0)
 			return;
 		camera.setXShift(cxs);
 		camera.setYShift(cys);
 		TileLayout layout = camera.layout(0);
+		GraphicsContext gd = graphics.gd();
 		gd.setFill(xgui.background());
 		gd.setStroke(xgui.background());
 		Color bg2 = xgui.background().brighter();
@@ -91,6 +92,7 @@ public abstract class VisualGUI
 
 	public void drawElement(TileLayout layout, Tile t1, GuiTile guiTile, boolean targeted, Color bg2, double imgSize, double fontSize, double textWidth)
 	{
+		GraphicsContext gd = graphics.gd();
 		if(guiTile.color != null)
 		{
 			double[][] points = layout.tileCorners(t1);

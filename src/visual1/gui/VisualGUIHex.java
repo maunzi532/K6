@@ -1,9 +1,9 @@
-package visual.gui;
+package visual1.gui;
 
 import geom.*;
 import geom.d1.*;
 import logic.gui.*;
-import visual.*;
+import visual1.*;
 
 public class VisualGUIHex extends VisualGUI
 {
@@ -16,7 +16,7 @@ public class VisualGUIHex extends VisualGUI
 
 	public VisualGUIHex(XGraphics graphics, HexCamera camera)
 	{
-		super(graphics.gd(), camera);
+		super(graphics, camera);
 		LU = y2.createD(-1d / 6d, 5d / 6d, -4d / 6d);
 		RLE = y2.createD(1d / 6d, -5d / 6d, 4d / 6d);
 		RLS = y2.createD(4d / 6d, -8d / 6d, 4d / 6d);
@@ -39,10 +39,10 @@ public class VisualGUIHex extends VisualGUI
 	}
 
 	@Override
-	public void draw(XGUIState xgui)
+	public void locateAndDraw(XGUIState xgui)
 	{
 		double cxs = xgui.xw() - (xgui.yw() > 1 ? 0.5 : 1d) * HexMatrix.Q3 / 2d;
 		double cys = (xgui.yw() - 1) * 1.5 / 2d;
-		draw1(xgui, cxs, cys, LU, rl(xgui), IMAGE_END, FONT_SIZE, TEXT_END);
+		drawGUI(xgui, cxs, cys, LU, rl(xgui), IMAGE_END, FONT_SIZE, TEXT_END);
 	}
 }

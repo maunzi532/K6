@@ -1,9 +1,9 @@
-package visual.gui;
+package visual1.gui;
 
 import geom.*;
 import geom.d1.*;
 import logic.gui.*;
-import visual.*;
+import visual1.*;
 
 public class VisualGUIQuad extends VisualGUI
 {
@@ -14,7 +14,7 @@ public class VisualGUIQuad extends VisualGUI
 
 	public VisualGUIQuad(XGraphics graphics, QuadCamera camera)
 	{
-		super(graphics.gd(), camera);
+		super(graphics, camera);
 		LU = this.y2.createD(-3d / 4d, -3d / 4d);
 		RL = this.y2.createD(-1d / 4d, -1d / 4d);
 	}
@@ -34,10 +34,10 @@ public class VisualGUIQuad extends VisualGUI
 	}
 
 	@Override
-	public void draw(XGUIState xgui)
+	public void locateAndDraw(XGUIState xgui)
 	{
 		double cxs = (xgui.xw() - 1) * QuadLayout.DQ2;
 		double cys = (xgui.yw() - 1) * QuadLayout.DQ2;
-		draw1(xgui, cxs, cys, LU, rl(xgui), QuadLayout.DQ2, FONT_SIZE, TEXT_END);
+		drawGUI(xgui, cxs, cys, LU, rl(xgui), QuadLayout.DQ2, FONT_SIZE, TEXT_END);
 	}
 }

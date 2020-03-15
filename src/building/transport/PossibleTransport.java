@@ -28,7 +28,7 @@ public record PossibleTransport(Item item, DoubleInv from, DoubleInv to, int pri
 
 	public static PossibleTransport create(JrsObject data, ItemLoader itemLoader, TileType y1)
 	{
-		Item item = itemLoader.loadItem(data);
+		Item item = itemLoader.loadItem((JrsObject) data.get("Item"));
 		DoubleInv from = PreConnectMapObject.create((JrsObject) data.get("From"), y1);
 		DoubleInv to = PreConnectMapObject.create((JrsObject) data.get("To"), y1);
 		return new PossibleTransport(item, from, to, 0, 0);
@@ -36,7 +36,7 @@ public record PossibleTransport(Item item, DoubleInv from, DoubleInv to, int pri
 
 	public <T extends ComposerBase> void save(ObjectComposer<T> a1, ItemLoader itemLoader, TileType y1) throws IOException
 	{
-		itemLoader.saveItem(a1, item);
+		itemLoader.saveItem(a1.startObjectField("Item"), item, true);
 		new PreConnectMapObject(from.location(), from.type()).save(a1.startObjectField("From"), y1);
 		new PreConnectMapObject(to.location(), to.type()).save(a1.startObjectField("To"), y1);
 		a1.end();

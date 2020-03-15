@@ -3,8 +3,8 @@ package start;
 import javafx.animation.*;
 import javafx.scene.input.*;
 import logic.*;
-import visual.*;
-import visual.keybind.*;
+import visual1.*;
+import visual1.keybind.*;
 
 public class XTimer extends AnimationTimer
 {

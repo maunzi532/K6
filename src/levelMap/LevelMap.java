@@ -8,6 +8,7 @@ import doubleinv.*;
 import entity.*;
 import geom.f1.*;
 import item.*;
+import item.inv.*;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
@@ -341,7 +342,7 @@ public class LevelMap implements ConnectRestore, Arrows
 		throw new RuntimeException();
 	}
 
-	public String[] saveDataJSON(ItemLoader itemLoader)
+	public String[] saveDataJSON(ItemLoader itemLoader, Inv storage)
 	{
 		try
 		{
@@ -374,6 +375,7 @@ public class LevelMap implements ConnectRestore, Arrows
 					building.save(a2.startObject(), itemLoader, y1);
 			}
 			a2.end();
+			storage.save(h1.startObjectField("Storage"), itemLoader);
 			var a3 = a1.startArrayField("Characters");
 			var h2 = h1.startArrayField("Characters");
 			for(List<XCharacter> c1 : characters.values())

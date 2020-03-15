@@ -4,6 +4,7 @@ public class XDimension
 {
 	private double xHW;
 	private double yHW;
+	private double scaleHW;
 
 	public XDimension(double xW, double yW)
 	{
@@ -21,13 +22,25 @@ public class XDimension
 		return yHW;
 	}
 
+	public double scaleHW()
+	{
+		return scaleHW;
+	}
+
 	public void setxW(double xW)
 	{
-		xHW = xW / 2f;
+		xHW = xW / 2d;
+		updateScale();
 	}
 
 	public void setyW(double yW)
 	{
-		yHW = yW / 2f;
+		yHW = yW / 2d;
+		updateScale();
+	}
+
+	private void updateScale()
+	{
+		scaleHW = Math.min(xHW(), yHW() * 1.5);
 	}
 }

@@ -401,9 +401,7 @@ public class Stats implements ModifierAspect
 		if(lastUsed.active)
 		{
 			a1.put("LastUsed", lastUsed.mode.code());
-			var a3 = a1.startObjectField("LastUsedItem");
-			itemLoader.saveItem(a3, lastUsed.item);
-			a3.end();
+			itemLoader.saveItem(a1.startObjectField("LastUsedItem"), lastUsed.item, true);
 		}
 		a1.end();
 	}

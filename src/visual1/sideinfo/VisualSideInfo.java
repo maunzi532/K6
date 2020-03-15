@@ -1,4 +1,4 @@
-package visual.sideinfo;
+package visual1.sideinfo;
 
 public class VisualSideInfo
 {
@@ -23,5 +23,10 @@ public class VisualSideInfo
 		{
 			viewers[i].draw();
 		}
+	}
+
+	public double takeY2()
+	{
+		return viewers[1].takeY2();
 	}
 }

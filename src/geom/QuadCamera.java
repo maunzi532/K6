@@ -13,15 +13,16 @@ public class QuadCamera extends TileCamera
 	@Override
 	public int getRange()
 	{
-		double yDistance = dimension.yHW() / ySize / QuadLayout.Q2;
-		double xDistance = dimension.xHW() / xSize / QuadLayout.Q2;
+		double yDistance = dimension.yHW() / (ySize * dimension.scaleHW()) / QuadLayout.Q2;
+		double xDistance = dimension.xHW() / (xSize * dimension.scaleHW()) / QuadLayout.Q2;
 		return (int)(Math.max(yDistance, xDistance) + 1);
 	}
 
 	@Override
 	public TileLayout layout(int screenshake)
 	{
-		return new QuadLayout(new PointD(xSize(), ySize()), new PointD(dimension.xHW() * xMid - xShift * xSize() + screenshake, dimension.yHW() * yMid - yShift * ySize()));
+		return new QuadLayout(new PointD(xSize(), ySize()), new PointD(dimension.xHW() * xMid - xShift * xSize() + screenshake,
+				dimension.yHW() * yMid - yShift * ySize()));
 	}
 
 	@Override

@@ -53,9 +53,9 @@ public class SideInfoFrame
 	public void attackInfo(AttackInfo aI)
 	{
 		boolean inverted = isInverted(aI.entity, aI.entityT);
-		l0.setSideInfo(new SideInfo(aI.getEntity(inverted), 0, aI.getEntity(inverted).sideImage(),
+		l0.setSideInfo(new SideInfo(aI.getEntity(inverted), aI.getEntity(inverted).sideImage(),
 				aI.getEntity(inverted).statBarX1(aI.getSideInfoX1T(inverted)), aI.getSideInfos(inverted)));
-		r0.setSideInfo(new SideInfo(aI.getEntity(!inverted), 0, aI.getEntity(!inverted).sideImage(),
+		r0.setSideInfo(new SideInfo(aI.getEntity(!inverted), aI.getEntity(!inverted).sideImage(),
 				aI.getEntity(!inverted).statBarX1(aI.getSideInfoX1T(!inverted)), aI.getSideInfos(!inverted)));
 	}
 

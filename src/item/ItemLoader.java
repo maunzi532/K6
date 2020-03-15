@@ -8,5 +8,5 @@ public interface ItemLoader
 {
 	Item loadItem(JrsObject data);
 
-	<T extends ComposerBase> void saveItem(ObjectComposer<T> a1, Item item) throws IOException;
+	<T extends ComposerBase> void saveItem(ObjectComposer<T> a1, Item item, boolean end) throws IOException;
 }

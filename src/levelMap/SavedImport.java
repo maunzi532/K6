@@ -60,6 +60,8 @@ public class SavedImport
 					buildings.add(building);
 					levelMap.addBuilding(building);
 				});
+				Inv storageLoad = new WeightInv((JrsObject) treeXh.get("Storage"), itemLoader);
+				storage.tryAdd(storageLoad.allItems(), false, CommitType.COMMIT);
 				Map<String, JrsObject> characters = new HashMap<>();
 				((JrsArray) treeXh.get("Characters")).elements().forEachRemaining(
 						character -> characters.put(((JrsObject) ((JrsObject) character).get("Stats")).get("CustomName").asText(), (JrsObject) character));

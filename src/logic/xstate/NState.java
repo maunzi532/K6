@@ -13,7 +13,7 @@ public interface NState
 
 	default String text()
 	{
-		throw new RuntimeException();
+		return null;
 	}
 
 	default String keybind()

@@ -35,7 +35,7 @@ public class ItemStack
 
 	public <T extends ComposerBase> void save(ObjectComposer<T> a1, ItemLoader itemLoader) throws IOException
 	{
-		itemLoader.saveItem(a1, item);
+		itemLoader.saveItem(a1, item, false);
 		if(count != 1)
 		{
 			a1.put("Amount", count);

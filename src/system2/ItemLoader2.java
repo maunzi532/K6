@@ -23,7 +23,7 @@ public class ItemLoader2 implements ItemLoader
 	}
 
 	@Override
-	public <T extends ComposerBase> void saveItem(ObjectComposer<T> a1, Item item) throws IOException
+	public <T extends ComposerBase> void saveItem(ObjectComposer<T> a1, Item item, boolean end) throws IOException
 	{
 		if(item instanceof Items)
 		{
@@ -36,6 +36,10 @@ public class ItemLoader2 implements ItemLoader
 		else
 		{
 			throw new RuntimeException(item.toString());
+		}
+		if(end)
+		{
+			a1.end();
 		}
 	}
 }

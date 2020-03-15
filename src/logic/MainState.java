@@ -61,7 +61,6 @@ public class MainState
 	//TODO add images of items of upgraded classes
 
 	//save/load
-	//TODO save storage contents
 	//TODO savestate during map
 	//TODO save maps and saves in folders
 	//TODO advanced loading system
@@ -98,9 +97,9 @@ public class MainState
 	//TODO AnimPartVanish remove character later
 
 	//visual engine mechanics
-	//TODO scale tiles, menubar, gui when resizing
-	//TODO Make menu bar not overlap with SideInfo
-	//TODO improve camera
+	//TODO move GUI so it does not overlap with SideInfo/LevelEditor
+	//TODO improve camera controls
+	//TODO move camera to view enemies/encounters
 	//TODO show pause menu
 	//TODO show better SideInfo
 
