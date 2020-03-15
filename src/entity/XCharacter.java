@@ -17,7 +17,7 @@ import system2.*;
 
 public class XCharacter implements DoubleInv, XBuilder
 {
-	public static final Image IMAGE = new Image("GSL1_0.png");
+	public static final Image IMAGE = new Image("Enemy_3.png");
 
 	private CharacterTeam team;
 	private int startingDelay;
@@ -92,6 +92,16 @@ public class XCharacter implements DoubleInv, XBuilder
 	{
 		return stats;
 	}
+
+	/*public Image mapImage()
+	{
+		//return stats
+	}
+
+	public Image sideImage()
+	{
+		//return stats
+	}*/
 
 	public TurnResources resources()
 	{

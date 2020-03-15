@@ -6,6 +6,7 @@ import item.view.*;
 import java.util.*;
 import logic.*;
 import logic.gui.*;
+import system2.content.*;
 
 public class InvEditGUI extends XGUIState
 {
@@ -45,7 +46,7 @@ public class InvEditGUI extends XGUIState
 				GuiTile::textView, this::onClickInfoView);
 		elements.add(infoView);
 		allItemsView = new TargetScrollList<>(5, 1, 3, 5, 1, 1,
-				mainState.combatSystem.allItems(), e -> GuiTile.cast(new GuiTile(null, e.image(), false, null)),
+				AttackItems2.INSTANCE.allItemsList, e -> GuiTile.cast(new GuiTile(null, e.image(), false, null)),
 				this::itemClick2);
 		elements.add(allItemsView);
 		elements.add(new CElement(textInv, new GuiTile(name)));

@@ -1,6 +1,7 @@
 package system2.analysis;
 
 import entity.*;
+import entity.analysis.*;
 import java.util.*;
 import java.util.stream.*;
 import levelMap.*;
@@ -11,12 +12,10 @@ public class StandardAI implements EnemyAI
 	private static final Random RANDOM = new Random();
 
 	private final LevelMap levelMap;
-	private final CombatSystem combatSystem;
 
-	public StandardAI(LevelMap levelMap, CombatSystem combatSystem)
+	public StandardAI(LevelMap levelMap)
 	{
 		this.levelMap = levelMap;
-		this.combatSystem = combatSystem;
 	}
 
 	@Override
@@ -34,7 +33,7 @@ public class StandardAI implements EnemyAI
 			locations.add(new PathLocation(user.location()));
 		for(PathLocation pl : locations)
 		{
-			pathsX.addAll(combatSystem.pathAttackInfo(user, pl.tile(), levelMap.teamCharacters(CharacterTeam.HERO), pl));
+			pathsX.addAll(levelMap.pathAttackInfo(user, pl.tile(), levelMap.teamCharacters(CharacterTeam.HERO), pl));
 			if(user.resources().moveAction())
 				pathsX.add(new PathAttackX(pl, null));
 		}
@@ -45,7 +44,7 @@ public class StandardAI implements EnemyAI
 		for(PathAttackX px : pathsX)
 		{
 			if(px.attack != null && !analysis.containsKey(px.attack))
-				analysis.put(px.attack, combatSystem.enemyAIScore(px.attack.analysis.outcomes()));
+				analysis.put(px.attack, enemyAIScore(px.attack.analysis.outcomes()));
 			if(px.attack != null)
 				px.score += analysis.get(px.attack) * 1000;
 			if(!px.path.tile().equals(user.location()))
@@ -87,9 +86,14 @@ public class StandardAI implements EnemyAI
 		return new EnemyMove(user, max.score, max.path, max.attack, max.score - max2.score);
 	}
 
+	private double enemyAIScore(List<RNGOutcome> outcomes)
+	{
+		return new EnemyThoughts2(outcomes).score();
+	}
+
 	@Override
 	public EnemyAI copy()
 	{
-		return new StandardAI(levelMap, combatSystem);
+		return new StandardAI(levelMap);
 	}
 }

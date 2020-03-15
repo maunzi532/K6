@@ -14,8 +14,7 @@ public class EnemyStartState implements NAutoState
 		for(XCharacter xEnemy : mainState.levelMap.teamCharacters(CharacterTeam.ENEMY))
 		{
 			xEnemy.newResources(new TurnResources(xEnemy.location(),
-					mainState.combatSystem.movement(xEnemy),
-					mainState.combatSystem.dashMovement(xEnemy), 2));
+					xEnemy.stats().getMovement(), xEnemy.stats().dashMovement(), 2));
 		}
 	}
 

@@ -6,6 +6,8 @@ import java.util.function.*;
 import logic.*;
 import logic.gui.guis.*;
 import system2.*;
+import system2.analysis.*;
+import system2.animation.*;
 
 public class PostAttackState extends AttackState
 {
@@ -27,7 +29,7 @@ public class PostAttackState extends AttackState
 	{
 		if(firstEnter)
 		{
-			arrow = mainState.combatSystem.createPostAttackAnimation(aI, result);
+			arrow = new GetExpAnim(aI, (RNGOutcome2) result, mainState.levelMap);
 			firstEnter = false;
 			boolean[] v = ((Supplier<boolean[]>) arrow).get();
 			levelup = v[0];

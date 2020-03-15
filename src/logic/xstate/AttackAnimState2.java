@@ -6,6 +6,7 @@ import java.util.function.*;
 import logic.*;
 import system2.*;
 import system2.analysis.*;
+import system2.animation.*;
 
 public class AttackAnimState2 extends AttackState
 {
@@ -22,7 +23,7 @@ public class AttackAnimState2 extends AttackState
 	@Override
 	public void onEnter(MainState mainState)
 	{
-		animTimer = mainState.combatSystem.createAnimationTimer(divider);
+		animTimer = new AttackAnim(divider, mainState.levelMap, mainState.levelMap);
 		outcomeSupplier = (Supplier<RNGOutcome>) animTimer;
 	}
 

@@ -11,6 +11,8 @@ import item.*;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
+import java.util.stream.*;
+import system2.*;
 
 public class LevelMap implements ConnectRestore, Arrows
 {
@@ -329,6 +331,47 @@ public class LevelMap implements ConnectRestore, Arrows
 	{
 		arrows.forEach(XArrow::tick);
 		arrows.removeIf(XArrow::finished);
+	}
+
+	public List<Integer> attackRanges(XCharacter entity, boolean counter)
+	{
+		List<int[]> v = entity.outputInv().viewItems(false)
+				.stream().filter(e -> entity.stats().getItemFilter().canContain(e.item))
+				.map(e -> ((AttackItem2) e.item).getRanges(counter)).collect(Collectors.toList());
+		HashSet<Integer> ints2 = new HashSet<>();
+		for(int[] ints : v)
+		{
+			for(int i = 0; i < ints.length; i++)
+			{
+				ints2.add(ints[i]);
+			}
+		}
+		return ints2.stream().sorted().collect(Collectors.toList());
+	}
+
+	public List<PathAttackX> pathAttackInfo(XCharacter entity, Tile loc, List<XCharacter> possibleTargets, PathLocation pl)
+	{
+		return possibleTargets.stream().flatMap(e -> attackInfo(entity, loc, e, e.location()).stream())
+				.map(e -> new PathAttackX(pl, e)).collect(Collectors.toList());
+	}
+
+	public List<AttackInfo> attackInfo(XCharacter entity, XCharacter entityT)
+	{
+		return attackInfo(entity, entity.location(), entityT, entityT.location());
+	}
+
+	public List<AttackInfo> attackInfo(XCharacter entity, Tile loc, XCharacter entityT, Tile locT)
+	{
+		int distance = y1.distance(loc, locT);
+		return entity.outputInv()
+				.viewItems(false)
+				.stream()
+				.filter(e -> entity.stats().getItemFilter().canContain(e.item))
+				.flatMap(e -> ((AttackItem2) e.item).attackModes().stream())
+				.map(mode -> new AttackInfo(entity, loc, mode, entityT, locT, entityT.stats().getLastUsed(), distance))
+				.filter(e -> e.canInitiate)
+				.map(AttackInfo::addAnalysis)
+				.collect(Collectors.toList());
 	}
 
 	@Override

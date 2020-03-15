@@ -16,7 +16,6 @@ public class MainState
 	public final TileType y1;
 	public final ItemLoader itemLoader;
 	public final SideInfoFrame sideInfoFrame;
-	public final CombatSystem combatSystem;
 	public final BlueprintCache<BuildingBlueprint> buildingBlueprintCache;
 	public final LevelMap levelMap;
 	public final List<VisMark> visMarked;
@@ -28,12 +27,11 @@ public class MainState
 	public XStateHolder stateHolder;
 
 	public MainState(TileType y1, ItemLoader itemLoader, SideInfoFrame sideInfoFrame,
-			CombatSystem combatSystem, BlueprintCache<BuildingBlueprint> buildingBlueprintCache)
+			BlueprintCache<BuildingBlueprint> buildingBlueprintCache)
 	{
 		this.y1 = y1;
 		this.itemLoader = itemLoader;
 		this.sideInfoFrame = sideInfoFrame;
-		this.combatSystem = combatSystem;
 		this.buildingBlueprintCache = buildingBlueprintCache;
 		levelMap = new LevelMap(y1);
 		visMarked = new ArrayList<>();
@@ -96,9 +94,9 @@ public class MainState
 	//TODO Initialize somewhere else than in MainVisual
 	//TODO character class names in classes
 	//TODO Refactor or remove sectors
-	//TODO Make XHero and XEnemy not extend XEntity
 	//TODO BlueprintCache is weird
 	//TODO rename or split ImageLoader
+	//TODO character images
 
 	//visual engine mechanics
 	//TODO scale tiles, menubar, gui when resizing

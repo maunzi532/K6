@@ -14,7 +14,7 @@ public class PreAttackState extends AttackState
 	public void onEnter(MainState mainState)
 	{
 		mainState.sideInfoFrame.attackInfo(aI);
-		mainState.combatSystem.preAttack(aI);
+		aI.stats.equipMode(aI.mode);
 	}
 
 	@Override

@@ -26,7 +26,7 @@ public class ReachViewState implements NMarkState
 		List<Tile> movement = new Pathing(mainState.y1, character, character.resources().movement(), mainState.levelMap, null).start().getEndpoints();
 		allTargets = new ArrayList<>();
 		movement.forEach(e -> allTargets.add(new VisMark(e, Color.MEDIUMVIOLETRED, VisMark.d1)));
-		movement.stream().flatMap(loc -> mainState.combatSystem.attackRanges(character, false).stream()
+		movement.stream().flatMap(loc -> mainState.levelMap.attackRanges(character, false).stream()
 				.flatMap(e -> mainState.y1.range(loc, e, e).stream())).distinct()
 				.forEach(e -> allTargets.add(new VisMark(e, Color.RED, VisMark.d1)));
 	}

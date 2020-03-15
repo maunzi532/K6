@@ -6,20 +6,19 @@ import geom.f1.*;
 import item.*;
 import item.inv.*;
 import levelMap.*;
+import system2.analysis.*;
 
 public class Entity2Builder
 {
 	private final LevelMap levelMap;
-	private final CombatSystem combatSystem;
 	private Tile location;
 	private Stats stats;
 	private int weightLimit = 20;
 	private ItemList itemList = new ItemList();
 
-	public Entity2Builder(LevelMap levelMap, CombatSystem combatSystem)
+	public Entity2Builder(LevelMap levelMap)
 	{
 		this.levelMap = levelMap;
-		this.combatSystem = combatSystem;
 	}
 
 	public Entity2Builder setLocation(Tile location)
@@ -65,7 +64,7 @@ public class Entity2Builder
 		else
 		{
 			entity = new XCharacter(CharacterTeam.ENEMY, 0, location, stats, inv,
-					combatSystem.standardAI(), new TurnResources(location), null);
+					new StandardAI(levelMap), new TurnResources(location), null);
 		}
 		stats.autoEquip(entity);
 		if(levelMap.getFloor(location) == null)

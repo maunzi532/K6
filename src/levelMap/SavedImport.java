@@ -4,6 +4,7 @@ import building.adv.*;
 import com.fasterxml.jackson.jr.ob.*;
 import com.fasterxml.jackson.jr.stree.*;
 import entity.*;
+import geom.f1.*;
 import item.*;
 import item.inv.*;
 import java.io.*;
@@ -11,6 +12,8 @@ import java.nio.*;
 import java.nio.file.*;
 import java.util.*;
 import javafx.stage.*;
+import system2.*;
+import system2.analysis.*;
 
 public class SavedImport
 {
@@ -34,7 +37,7 @@ public class SavedImport
 		return file != null && file2 != null && file.exists() && file2.exists();
 	}
 
-	public void importIntoMap3(LevelMap levelMap, CombatSystem combatSystem, ItemLoader itemLoader, Inv storage)
+	public void importIntoMap3(LevelMap levelMap, ItemLoader itemLoader, Inv storage)
 	{
 		try
 		{
@@ -60,13 +63,61 @@ public class SavedImport
 				((JrsArray) tree2.get("Characters")).elements().forEachRemaining(
 						character -> characters.put(((JrsObject) ((JrsObject) character).get("Stats")).get("CustomName").asText(), (JrsObject) character));
 				((JrsArray) tree.get("XEntities")).elements().forEachRemaining(e ->
-						levelMap.addEntity(combatSystem.loadCharacterOrStartLoc(levelMap.y1,
+						levelMap.addEntity(loadCharacterOrStartLoc(levelMap,
 								(JrsObject) e, itemLoader, characters, storage)));
 				buildings.forEach(levelMap::loadConnectBuilding);
 			}
 		}catch(IOException e)
 		{
 			throw new RuntimeException(e);
+		}
+	}
+
+	public XCharacter loadCharacterOrStartLoc(LevelMap levelMap,
+			JrsObject data, ItemLoader itemLoader, Map<String, JrsObject> characters, Inv storage)
+	{
+		Tile location = levelMap.y1.create2(((JrsNumber) data.get("sx")).getValue().intValue(), ((JrsNumber) data.get("sy")).getValue().intValue());
+		if(data.get("StartName") != null)
+		{
+			int classCode = 1;
+			String startName = data.get("StartName").asText();
+			boolean locked = ((JrsBoolean) data.get("Locked")).booleanValue();
+			boolean invLocked = ((JrsBoolean) data.get("InvLocked")).booleanValue();
+			JrsObject char1 = characters.get(startName);
+			Stats stats = new Stats(((JrsObject) char1.get("Stats")), itemLoader);
+			Inv inv;
+			if(invLocked)
+			{
+				inv = new WeightInv(((JrsObject) data.get("Inventory")), itemLoader);
+				Inv inv2 = new WeightInv(((JrsObject) char1.get("Inventory")), itemLoader);
+				storage.tryAdd(inv2.allItems(), false, CommitType.COMMIT);
+			}
+			else
+			{
+				inv = new WeightInv(((JrsObject) char1.get("Inventory")), itemLoader);
+			}
+			return switch(classCode)
+					{
+						case 1 -> new XCharacter(CharacterTeam.HERO, 0, location, stats, inv,
+								null, null, new SaveSettings(locked, invLocked));
+						case 2 -> new XCharacter(CharacterTeam.ENEMY, 0, location, stats, inv,
+								null, null, new SaveSettings(locked, invLocked));
+						default -> throw new RuntimeException();
+					};
+		}
+		else
+		{
+			int classCode = ((JrsNumber) data.get("Type")).getValue().intValue();
+			Stats stats = new Stats(((JrsObject) data.get("Stats")), itemLoader);
+			Inv inv = new WeightInv(((JrsObject) data.get("Inventory")), itemLoader);
+			return switch(classCode)
+					{
+						case 1 -> new XCharacter(CharacterTeam.HERO, 0, location, stats, inv,
+								null, null, null);
+						case 2 -> new XCharacter(CharacterTeam.ENEMY, 0, location, stats, inv,
+								new StandardAI(levelMap), null, null);
+						default -> throw new RuntimeException();
+					};
 		}
 	}
 }

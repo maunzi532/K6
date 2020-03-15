@@ -213,6 +213,16 @@ public class Stats implements ModifierAspect
 		return movement;
 	}
 
+	public int dashMovement()
+	{
+		return 12;
+	}
+
+	public int maxAccessRange()
+	{
+		return 4;
+	}
+
 	public int maxHealth()
 	{
 		return toughness * HEALTH_MULTIPLIER;
@@ -238,9 +248,9 @@ public class Stats implements ModifierAspect
 		return lastUsed;
 	}
 
-	public void setLastUsed(AttackMode4 lastUsed)
+	public void equipMode(AttackMode4 mode)
 	{
-		this.lastUsed = lastUsed;
+		lastUsed = mode;
 	}
 
 	public void autoEquip(XCharacter entity)
@@ -265,26 +275,6 @@ public class Stats implements ModifierAspect
 		{
 			lastUsed = AttackMode4.EVADE_MODE;
 		}
-	}
-
-	public void equip(AttackMode4 mode)
-	{
-		if(mode != null)
-		{
-			lastUsed = mode;
-		}
-		else
-		{
-			lastUsed = AttackMode4.EVADE_MODE;
-		}
-	}
-
-	public AttackMode4 getEquippedMode()
-	{
-		if(!lastUsed.active)
-			return null;
-		else
-			return lastUsed;
 	}
 
 	public Item getItemFilter()

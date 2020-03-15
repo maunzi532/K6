@@ -321,7 +321,7 @@ public class StateControl2 implements XStateHolder, ConvInputConsumer
 			Map<Tile, Long> v = mainState.levelMap.teamCharacters(CharacterTeam.ENEMY).stream().flatMap(character ->
 				new Pathing(mainState.y1, character, character.resources().movement(),
 						mainState.levelMap, null).start().getEndpoints()
-						.stream().flatMap(loc -> mainState.combatSystem.attackRanges(character, false).stream()
+						.stream().flatMap(loc -> mainState.levelMap.attackRanges(character, false).stream()
 						.flatMap(e -> mainState.y1.range(loc, e, e).stream())).distinct())
 					.collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
 			v.forEach((t, n) -> visMarked.add(new VisMark(t, Color.BLACK, 0.8)));

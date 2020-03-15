@@ -45,9 +45,8 @@ public class MainVisual implements XInputInterface
 		SideInfoViewer sivR = new SideInfoViewer(graphics, true);
 		visualSideInfo = new VisualSideInfo(sivL, sivR);
 		ItemLoader itemLoader = new ItemLoader2();
-		mainState = new MainState(y1, itemLoader, new SideInfoFrame(sivL, sivR), new System2(),
+		mainState = new MainState(y1, itemLoader, new SideInfoFrame(sivL, sivR),
 				new BlueprintCache<>("BuildingBlueprints", e -> BuildingBlueprint.create(e, itemLoader)));
-		((System2) mainState.combatSystem).setLevelMap(mainState.levelMap);
 		loadLevel(loadFile, loadFile2);
 		graphics.gd().setImageSmoothing(false);
 		graphics.gd().setTextAlign(TextAlignment.CENTER);
@@ -67,7 +66,7 @@ public class MainVisual implements XInputInterface
 		SavedImport savedImport = loadFile != null ? new SavedImport(loadFile, loadFile2) : new SavedImport();
 		if(savedImport.hasFile())
 		{
-			savedImport.importIntoMap3(mainState.levelMap, mainState.combatSystem, mainState.itemLoader, mainState.storage.inputInv());
+			savedImport.importIntoMap3(mainState.levelMap, mainState.itemLoader, mainState.storage.inputInv());
 		}
 		/*else
 		{

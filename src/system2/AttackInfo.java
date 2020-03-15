@@ -65,9 +65,9 @@ public class AttackInfo
 		return inverse ? modeT : mode;
 	}
 
-	public AttackInfo addAnalysis(CombatSystem combatSystem)
+	public AttackInfo addAnalysis()
 	{
-		analysis = new RNGInfoAnalysis<>(combatSystem.supplyDivider(this)).create();
+		analysis = new RNGInfoAnalysis<>(new RNGDivider2(this)).create();
 		return this;
 	}
 

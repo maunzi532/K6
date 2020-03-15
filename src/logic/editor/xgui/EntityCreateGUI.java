@@ -3,9 +3,12 @@ package logic.editor.xgui;
 import entity.*;
 import geom.f1.*;
 import item.inv.*;
+import java.util.stream.*;
 import logic.*;
 import logic.gui.*;
 import system2.*;
+import system2.analysis.*;
+import system2.content.*;
 
 public class EntityCreateGUI extends XGUIState
 {
@@ -35,7 +38,7 @@ public class EntityCreateGUI extends XGUIState
 
 	private void createXHero(MainState mainState)
 	{
-		Stats stats = mainState.combatSystem.defaultStats(true);
+		Stats stats = defaultStats(true);
 		Inv inv = new WeightInv(20);
 		XCharacter entity = new XCharacter(CharacterTeam.HERO, 0, location, stats, inv,
 				null, new TurnResources(location), new SaveSettings(false, false));
@@ -45,13 +48,18 @@ public class EntityCreateGUI extends XGUIState
 
 	private void createXEnemy(MainState mainState)
 	{
-		Stats stats = mainState.combatSystem.defaultStats(false);
-		EnemyAI standardAI = mainState.combatSystem.standardAI();
+		Stats stats = defaultStats(false);
+		EnemyAI standardAI = new StandardAI(mainState.levelMap);
 		Inv inv = new WeightInv(20);
 		XCharacter entity = new XCharacter(CharacterTeam.ENEMY, 0, location, stats, inv,
 				standardAI, new TurnResources(location), null);
 		mainState.levelMap.addEntity(entity);
 		mainState.stateHolder.setState(new EntityEditGUI(entity));
+	}
+
+	private static Stats defaultStats(boolean xh)
+	{
+		return new Stats(XClasses.mageClass(), 0, xh ? new PlayerLevelSystem(0, IntStream.range(0, 8).toArray(), 40) : null);
 	}
 
 	@Override

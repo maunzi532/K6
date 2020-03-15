@@ -36,7 +36,7 @@ public class AdvMoveState implements NMarkState
 		}
 		if(character.resources().ready(2))
 		{
-			mainState.combatSystem.attackRanges(character, false).stream().map(e -> mainState.y1.range(character.location(), e, e))
+			mainState.levelMap.attackRanges(character, false).stream().map(e -> mainState.y1.range(character.location(), e, e))
 					.flatMap(Collection::stream).map(mainState.levelMap::getEntity).filter(e -> e != null && e.team() == CharacterTeam.ENEMY)
 					.forEach(e -> attack.add(e.location()));
 		}

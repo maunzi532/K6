@@ -29,7 +29,7 @@ public class GiveOrTakeState implements NMarkState
 	{
 		mainState.sideInfoFrame.setSideInfoXH(character.standardSideInfo(), character);
 		boolean levelStarted = mainState.turnCounter > 0;
-		List<Tile> range = mainState.y1.range(character.location(), 0, mainState.combatSystem.maxAccessRange(character));
+		List<Tile> range = mainState.y1.range(character.location(), 0, character.stats().maxAccessRange());
 		possibleTargets = new ArrayList<>();
 		range.stream().map(e -> (DoubleInv) mainState.levelMap.getBuilding(e))
 				.filter(e -> e != null && e.active() && e.playerTradeable(levelStarted)).forEachOrdered(possibleTargets::add);

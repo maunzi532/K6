@@ -4,6 +4,7 @@ import entity.*;
 import item.*;
 import item.view.*;
 import java.util.*;
+import java.util.stream.*;
 import javafx.scene.paint.*;
 import logic.*;
 import logic.gui.*;
@@ -17,7 +18,6 @@ public class CharacterCombatGUI extends XGUIState
 
 	private final XCharacter character;
 	private int viewMode;
-	private CombatSystem combatSystem;
 	private Item equippedItem;
 	private CElement viewModeElement;
 	private TargetScrollList<ItemView> invView;
@@ -35,11 +35,9 @@ public class CharacterCombatGUI extends XGUIState
 	public void onEnter(MainState mainState)
 	{
 		mainState.sideInfoFrame.setSideInfoXH(character.standardSideInfo(), character);
-		combatSystem = mainState.combatSystem;
-		equippedItem = combatSystem.equippedItem(character.stats()).orElse(null);
+		equippedItem = character.stats().getLastUsed().item;
 		elements.add(new CElement(NAME, new GuiTile(character.name())));
-		elements.add(new CElement(UNEQUIP, true, () -> character.stats().getEquippedMode() != null,
-				this::unequip));
+		elements.add(new CElement(UNEQUIP, true, () -> character.stats().getLastUsed().active, this::unequip));
 		viewModeElement = new CElement(VIEW_MODE, true, null, () -> viewMode = (viewMode + 1) % 2);
 		elements.add(viewModeElement);
 		invView = new TargetScrollList<>(1, 1, 2, 5, 2, 1,
@@ -77,7 +75,7 @@ public class CharacterCombatGUI extends XGUIState
 		}
 		if(chosenItem != null && character.stats().getItemFilter().canContain(chosenItem))
 		{
-			modeChooseView.elements = combatSystem.modesForItem(character.stats(), chosenItem);
+			modeChooseView.elements = modesForItem(character.stats(), chosenItem);
 		}
 		else
 		{
@@ -85,16 +83,23 @@ public class CharacterCombatGUI extends XGUIState
 		}
 	}
 
+	private static List<AttackMode3> modesForItem(Stats stats, Item item)
+	{
+		if(item instanceof AttackItem2 item2)
+			return item2.attackModes().stream().map(e -> AttackMode3.convert(stats, e)).collect(Collectors.toList());
+		return List.of();
+	}
+
 	private void onClickMode(AttackMode3 mode)
 	{
-		character.stats().equip(mode.shortVersion());
+		character.stats().equipMode(mode.shortVersion());
 		equippedItem = chosenItem;
 		chosenItem = null;
 	}
 
 	private void unequip()
 	{
-		character.stats().equip(null);
+		character.stats().equipMode(AttackMode4.EVADE_MODE);
 		equippedItem = null;
 		chosenItem = null;
 	}
