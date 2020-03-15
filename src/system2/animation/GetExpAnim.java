@@ -39,16 +39,16 @@ public class GetExpAnim implements AnimTimer, Supplier<boolean[]>, Runnable
 		statsT = entityT.stats();
 		if(entity.team() == CharacterTeam.HERO)
 		{
-			levelup = stats.getExp() >= LEVELUP_EXP;
+			levelup = stats.exp() >= LEVELUP_EXP;
 			expAmount = 20;
-			expBar = new InfoArrow(entity.location(), Color.PURPLE, Color.BLACK, Color.WHITE, stats.getExp(), LEVELUP_EXP);
+			expBar = new InfoArrow(entity.location(), Color.PURPLE, Color.BLACK, Color.WHITE, stats.exp(), LEVELUP_EXP);
 			arrows.addArrow(expBar);
 		}
 		if(entityT.team() == CharacterTeam.HERO)
 		{
-			levelupT = statsT.getExp() >= LEVELUP_EXP;
+			levelupT = statsT.exp() >= LEVELUP_EXP;
 			expAmountT = 20;
-			expBarT = new InfoArrow(entityT.location(), Color.PURPLE, Color.BLACK, Color.WHITE, statsT.getExp(), LEVELUP_EXP);
+			expBarT = new InfoArrow(entityT.location(), Color.PURPLE, Color.BLACK, Color.WHITE, statsT.exp(), LEVELUP_EXP);
 			arrows.addArrow(expBarT);
 		}
 		if(expAmount <= 0 && expAmountT <= 0)
@@ -60,17 +60,17 @@ public class GetExpAnim implements AnimTimer, Supplier<boolean[]>, Runnable
 	{
 		if(entity.team() == CharacterTeam.HERO)
 		{
-			startExp = stats.getExp();
+			startExp = stats.exp();
 			expBar.statBar().setData(startExp);
 			stats.addExp(expAmount);
-			endExp = stats.getExp();
+			endExp = stats.exp();
 		}
 		if(entityT.team() == CharacterTeam.HERO)
 		{
-			startExpT = statsT.getExp();
+			startExpT = statsT.exp();
 			expBarT.statBar().setData(startExpT);
 			statsT.addExp(expAmountT);
-			endExpT = statsT.getExp();
+			endExpT = statsT.exp();
 		}
 	}
 

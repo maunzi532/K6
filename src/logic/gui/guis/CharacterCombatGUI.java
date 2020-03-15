@@ -35,9 +35,9 @@ public class CharacterCombatGUI extends XGUIState
 	public void onEnter(MainState mainState)
 	{
 		mainState.sideInfoFrame.setSideInfoXH(character.standardSideInfo(), character);
-		equippedItem = character.stats().getLastUsed().item;
+		equippedItem = character.stats().lastUsed().item;
 		elements.add(new CElement(NAME, new GuiTile(character.name())));
-		elements.add(new CElement(UNEQUIP, true, () -> character.stats().getLastUsed().active, this::unequip));
+		elements.add(new CElement(UNEQUIP, true, () -> character.stats().lastUsed().active, this::unequip));
 		viewModeElement = new CElement(VIEW_MODE, true, null, () -> viewMode = (viewMode + 1) % 2);
 		elements.add(viewModeElement);
 		invView = new TargetScrollList<>(1, 1, 2, 5, 2, 1,

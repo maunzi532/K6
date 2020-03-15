@@ -16,6 +16,10 @@ import system2.content.*;
 public class Stats implements ModifierAspect
 {
 	public static final int HEALTH_MULTIPLIER = 5;
+	public static final String[] statNames = new String[]
+			{
+					"Strength", "Finesse", "Skill", "Speed", "Luck", "Defense", "Evasion", "Toughness"
+			};
 
 	private XClass xClass;
 	private int level;
@@ -23,44 +27,12 @@ public class Stats implements ModifierAspect
 	private PlayerLevelSystem playerLevelSystem;
 	private String customName;
 	private String customImage;
-	private int strength;
-	private int finesse;
-	private int skill;
-	private int speed;
-	private int luck;
-	private int defense;
-	private int evasion;
-	private int toughness;
+	private int[] lvStats;
 	private int movement;
 	private int currentHealth;
 	private int exhaustion;
 	private AttackMode4 lastUsed;
 	private AttackItem2Slot slot;
-
-	public Stats(XClass xClass, int level, int exp, String customName,
-			String customImage, int strength, int finesse, int skill, int speed,
-			int luck, int defense, int evasion, int toughness,
-			int movement, PlayerLevelSystem playerLevelSystem)
-	{
-		this.xClass = xClass;
-		this.level = level;
-		this.exp = exp;
-		this.playerLevelSystem = playerLevelSystem;
-		this.customName = customName;
-		this.customImage = customImage;
-		this.strength = strength;
-		this.finesse = finesse;
-		this.skill = skill;
-		this.speed = speed;
-		this.luck = luck;
-		this.defense = defense;
-		this.evasion = evasion;
-		this.toughness = toughness;
-		currentHealth = maxHealth();
-		this.movement = movement;
-		lastUsed = AttackMode4.EVADE_MODE;
-		slot = new AttackItem2Slot(xClass.usableItems);
-	}
 
 	public Stats(XClass xClass, int level, String customName,
 			String customImage, int movement, PlayerLevelSystem playerLevelSystem)
@@ -68,6 +40,7 @@ public class Stats implements ModifierAspect
 		this.xClass = xClass;
 		this.level = level;
 		this.playerLevelSystem = playerLevelSystem;
+		lvStats = new int[8];
 		autoStats();
 		this.customName = customName;
 		this.customImage = customImage;
@@ -87,68 +60,70 @@ public class Stats implements ModifierAspect
 		slot = new AttackItem2Slot(xClass.usableItems);
 	}
 
+	public Stats(XClass xClass, int level, int exp, String customName, String customImage, int[] lvStats,
+			int movement, int currentHealth, int exhaustion, PlayerLevelSystem playerLevelSystem)
+	{
+		this.xClass = xClass;
+		this.level = level;
+		this.exp = exp;
+		this.playerLevelSystem = playerLevelSystem;
+		this.customName = customName;
+		this.customImage = customImage;
+		this.lvStats = Arrays.copyOf(lvStats, 8);
+		this.movement = movement;
+		this.currentHealth = currentHealth;
+		this.exhaustion = exhaustion;
+		lastUsed = AttackMode4.EVADE_MODE;
+		slot = new AttackItem2Slot(xClass.usableItems);
+	}
+
+	public Stats copy()
+	{
+		return new Stats(xClass, level, exp, customName, customImage, lvStats, movement, currentHealth, exhaustion, playerLevelSystem);
+	}
+
 	public void autoStats()
 	{
-		strength = autoStat1(0);
-		finesse = autoStat1(1);
-		skill = autoStat1(2);
-		speed = autoStat1(3);
-		luck = autoStat1(4);
-		defense = autoStat1(5);
-		evasion = autoStat1(6);
-		toughness = autoStat1(7);
+		for(int i = 0; i < lvStats.length; i++)
+		{
+			if(playerLevelSystem != null)
+				lvStats[i] = playerLevelSystem.forLevel(i, level);
+			else
+				lvStats[i] = xClass.getStat(i, level);
+		}
 		currentHealth = maxHealth();
 		movement = xClass.movement;
 	}
 
-	private int autoStat1(int num)
-	{
-		if(playerLevelSystem != null)
-			return playerLevelSystem.forLevel(num, level);
-		else
-			return xClass.getStat(num, level);
-	}
-
-	public XClass getxClass()
+	public XClass xClass()
 	{
 		return xClass;
 	}
 
-	public int getLevel()
+	public int level()
 	{
 		return level;
 	}
 
-	public int getExp()
+	public int exp()
 	{
 		return exp;
 	}
 
 	public void addExp(int amount)
 	{
-		if(level < getLevelSystem().levelCap())
+		if(level < levelSystem().levelCap())
 			exp += amount;
 	}
 
-	public LevelSystem getLevelSystem()
+	public LevelSystem levelSystem()
 	{
 		return playerLevelSystem != null ? playerLevelSystem : xClass.levelSystem;
 	}
 
 	public int getStat1(int num)
 	{
-		return switch(num)
-		{
-			case 0 -> strength;
-			case 1 -> finesse;
-			case 2 -> skill;
-			case 3 -> speed;
-			case 4 -> luck;
-			case 5 -> defense;
-			case 6 -> evasion;
-			case 7 -> toughness;
-			default -> 0;
-		};
+		return lvStats[num];
 	}
 
 	@Override
@@ -163,52 +138,52 @@ public class Stats implements ModifierAspect
 		return List.of();
 	}
 
-	public int getToughness()
+	public int toughness()
 	{
-		return toughness;
+		return lvStats[7];
 	}
 
-	public int getStrength()
+	public int strength()
 	{
-		return strength;
+		return lvStats[0];
 	}
 
-	public int getFinesse()
+	public int finesse()
 	{
-		return finesse;
+		return lvStats[1];
 	}
 
-	public int getSkill()
+	public int skill()
 	{
-		return skill;
+		return lvStats[2];
 	}
 
-	public int getSpeed()
+	public int speed()
 	{
-		return speed;
+		return lvStats[3];
 	}
 
-	public int getLuck()
+	public int luck()
 	{
-		return luck;
+		return lvStats[4];
 	}
 
-	public int getDefense()
+	public int defense()
 	{
-		return defense;
+		return lvStats[5];
 	}
 
-	public int getEvasion()
+	public int evasion()
 	{
-		return evasion;
+		return lvStats[6];
 	}
 
-	public int getCPower()
+	public int calcCPower()
 	{
-		return toughness + strength + finesse + skill + speed + luck + defense + evasion;
+		return Arrays.stream(lvStats).sum();
 	}
 
-	public int getMovement()
+	public int movement()
 	{
 		return movement;
 	}
@@ -225,10 +200,10 @@ public class Stats implements ModifierAspect
 
 	public int maxHealth()
 	{
-		return toughness * HEALTH_MULTIPLIER;
+		return lvStats[7] * HEALTH_MULTIPLIER;
 	}
 
-	public int getCurrentHealth()
+	public int currentHealth()
 	{
 		return currentHealth;
 	}
@@ -238,12 +213,12 @@ public class Stats implements ModifierAspect
 		this.currentHealth = currentHealth;
 	}
 
-	public int getExhaustion()
+	public int exhaustion()
 	{
 		return exhaustion;
 	}
 
-	public AttackMode4 getLastUsed()
+	public AttackMode4 lastUsed()
 	{
 		return lastUsed;
 	}
@@ -325,15 +300,6 @@ public class Stats implements ModifierAspect
 			return "Enemy_0.png";
 	}
 
-	public Stats copy()
-	{
-		Stats copy = new Stats(xClass, level, exp, customName, customImage, strength, finesse, skill, speed, luck, defense,
-				evasion, toughness, movement, playerLevelSystem);
-		copy.currentHealth = currentHealth;
-		copy.exhaustion = exhaustion;
-		return copy;
-	}
-
 	public Stats(JrsObject data, ItemLoader itemLoader)
 	{
 		xClass = XClasses.INSTANCE.xClasses[((JrsNumber) data.get("Class")).getValue().intValue()];
@@ -353,14 +319,15 @@ public class Stats implements ModifierAspect
 		{
 			customImage = data.get("CustomImage").asText();
 		}
-		strength = ((JrsNumber) data.get("Strength")).getValue().intValue();
-		finesse = ((JrsNumber) data.get("Finesse")).getValue().intValue();
-		skill = ((JrsNumber) data.get("Skill")).getValue().intValue();
-		speed = ((JrsNumber) data.get("Speed")).getValue().intValue();
-		luck = ((JrsNumber) data.get("Luck")).getValue().intValue();
-		defense = ((JrsNumber) data.get("Defense")).getValue().intValue();
-		evasion = ((JrsNumber) data.get("Evasion")).getValue().intValue();
-		toughness = ((JrsNumber) data.get("Toughness")).getValue().intValue();
+		lvStats = new int[8];
+		lvStats[0] = ((JrsNumber) data.get("Strength")).getValue().intValue();
+		lvStats[1] = ((JrsNumber) data.get("Finesse")).getValue().intValue();
+		lvStats[2] = ((JrsNumber) data.get("Skill")).getValue().intValue();
+		lvStats[3] = ((JrsNumber) data.get("Speed")).getValue().intValue();
+		lvStats[4] = ((JrsNumber) data.get("Luck")).getValue().intValue();
+		lvStats[5] = ((JrsNumber) data.get("Defense")).getValue().intValue();
+		lvStats[6] = ((JrsNumber) data.get("Evasion")).getValue().intValue();
+		lvStats[7] = ((JrsNumber) data.get("Toughness")).getValue().intValue();
 		movement = ((JrsNumber) data.get("Movement")).getValue().intValue();
 		currentHealth = ((JrsNumber) data.get("CurrentHealth")).getValue().intValue();
 		exhaustion = ((JrsNumber) data.get("Exhaustion")).getValue().intValue();
@@ -393,14 +360,14 @@ public class Stats implements ModifierAspect
 		{
 			a2 = a2.put("CustomImage", customImage);
 		}
-		var a3 = a2.put("Strength", strength)
-				.put("Finesse", finesse)
-				.put("Skill", skill)
-				.put("Speed", speed)
-				.put("Luck", luck)
-				.put("Defense", defense)
-				.put("Evasion", evasion)
-				.put("Toughness", toughness)
+		var a3 = a2.put("Strength", lvStats[0])
+				.put("Finesse", lvStats[1])
+				.put("Skill", lvStats[2])
+				.put("Speed", lvStats[3])
+				.put("Luck", lvStats[4])
+				.put("Defense", lvStats[5])
+				.put("Evasion", lvStats[6])
+				.put("Toughness", lvStats[7])
 				.put("Movement", movement)
 				.put("CurrentHealth", currentHealth)
 				.put("Exhaustion", exhaustion);
@@ -419,14 +386,11 @@ public class Stats implements ModifierAspect
 		info.add("Level\n" + level);
 		info.add("Exp\n" + exp);
 		info.add("Health\n" + currentHealth + "/" + maxHealth());
-		info.add("Strength\n" + strength);
-		info.add("Finesse\n" + finesse);
-		info.add("Skill\n" + skill);
-		info.add("Speed\n" + speed);
-		info.add("Luck\n" + luck);
-		info.add("Defense\n" + defense);
-		info.add("Evasion\n" + evasion);
-		info.add("CPower\n" + getCPower());
+		for(int i = 0; i < 7; i++)
+		{
+			info.add(statNames[i] + "\n" + lvStats[i]);
+		}
+		info.add("CPower\n" + calcCPower());
 		info.add("Move\n" + movement);
 		info.add(exhaustion > 0 ? "Exhausted\n" + exhaustion : "");
 		info.add("Defend\n" + (lastUsed.active ? lastUsed.item.info().get(0).replace("Type\n", "") : "None"));
@@ -450,15 +414,11 @@ public class Stats implements ModifierAspect
 		info.add("Health\n" + currentHealth + "/" + maxHealth());
 		info.add("Move\n" + movement);
 		info.add(exhaustion > 0 ? "Exhausted\n" + exhaustion : exhaustion < 0 ? "Boosted\n" + (-exhaustion) : "");
-		info.add("Strength\n" + strength);
-		info.add("Finesse\n" + finesse);
-		info.add("Skill\n" + skill);
-		info.add("Speed\n" + speed);
-		info.add("Luck\n" + luck);
-		info.add("Defense\n" + defense);
-		info.add("Evasion\n" + evasion);
-		info.add("Toughness\n" + toughness);
-		info.add("CPower\n" + getCPower());
+		for(int i = 0; i < 8; i++)
+		{
+			info.add(statNames[i] + "\n" + lvStats[i]);
+		}
+		info.add("CPower\n" + calcCPower());
 		return info;
 	}
 
@@ -469,41 +429,33 @@ public class Stats implements ModifierAspect
 
 	public List<String> levelup()
 	{
-		int[] levelup = getLevelSystem().getLevelup(this);
+		int[] levelup = levelSystem().getLevelup(this);
 		List<String> info = new ArrayList<>();
 		info.add("Class\n" + xClass.className);
 		info.add("Level\n" + level + " -> " + (level + 1));
 		info.add("Exp\n" + exp + " -> " + ((exp - GetExpAnim.LEVELUP_EXP) / 2));
-		info.add("Strength\n" + strength + " -> " + (strength + levelup[0]));
-		info.add("Finesse\n" + finesse + " -> " + (finesse + levelup[1]));
-		info.add("Skill\n" + skill + " -> " + (skill + levelup[2]));
-		info.add("Speed\n" + speed + " -> " + (speed + levelup[3]));
-		info.add("Luck\n" + luck + " -> " + (luck + levelup[4]));
-		info.add("Defense\n" + defense + " -> " + (defense + levelup[5]));
-		info.add("Evasion\n" + evasion + " -> " + (evasion + levelup[6]));
-		info.add("Toughness\n" + toughness + " -> " + (toughness + levelup[7]));
-		info.add("CPower\n" + getCPower() + " -> " + (getCPower() + Arrays.stream(levelup).sum()));
+		for(int i = 0; i < 8; i++)
+		{
+			info.add(statNames[i] + "\n" + lvStats[i] + " -> " + (lvStats[i] + levelup[i]));
+		}
+		info.add("CPower\n" + calcCPower() + " -> " + (calcCPower() + Arrays.stream(levelup).sum()));
 		int changedHealth = currentHealth;
 		if(levelup[7] > 0)
 			changedHealth += levelup[7] * HEALTH_MULTIPLIER;
-		if(changedHealth > (toughness + levelup[7]) * HEALTH_MULTIPLIER)
-			changedHealth = (toughness + levelup[7]) * HEALTH_MULTIPLIER;
+		if(changedHealth > (lvStats[7] + levelup[7]) * HEALTH_MULTIPLIER)
+			changedHealth = (lvStats[7] + levelup[7]) * HEALTH_MULTIPLIER;
 		info.add("Health\n" + currentHealth + " -> " + changedHealth);
 		info.add("Move\n" + movement);
 		info.add(exhaustion > 0 ? "Exhausted\n" + exhaustion : "");
 		level++;
-		if(level < getLevelSystem().levelCap())
+		if(level < levelSystem().levelCap())
 			exp = (exp - GetExpAnim.LEVELUP_EXP) / 2;
 		else
 			exp = 0;
-		strength = strength + levelup[0];
-		finesse = finesse + levelup[1];
-		skill = skill + levelup[2];
-		speed = speed + levelup[3];
-		luck = luck + levelup[4];
-		defense = defense + levelup[5];
-		evasion = evasion + levelup[6];
-		toughness = toughness + levelup[7];
+		for(int i = 0; i < 8; i++)
+		{
+			lvStats[i] = lvStats[i] + levelup[i];
+		}
 		currentHealth = changedHealth;
 		return info;
 	}
@@ -520,14 +472,10 @@ public class Stats implements ModifierAspect
 		info.add("Class\n" + xClass.className);
 		info.add("Level\n" + level);
 		info.add("Exp\n" + exp);
-		info.add("Strength\n" + strength);
-		info.add("Finesse\n" + finesse);
-		info.add("Skill\n" + skill);
-		info.add("Speed\n" + speed);
-		info.add("Luck\n" + luck);
-		info.add("Defense\n" + defense);
-		info.add("Evasion\n" + evasion);
-		info.add("Toughness\n" + toughness);
+		for(int i = 0; i < 8; i++)
+		{
+			info.add(statNames[i] + "\n" + lvStats[i]);
+		}
 		info.add("Health\n" + currentHealth + "/" + maxHealth());
 		info.add("Exhaustion\n" + exhaustion);
 		info.add("Move\n" + movement);
@@ -589,30 +537,6 @@ public class Stats implements ModifierAspect
 			case 0x30 -> exp++;
 			case 0x31 -> exp--;
 			case 0x32 -> exp = 0;
-			case 0x40 -> strength++;
-			case 0x41 -> strength--;
-			case 0x42 -> strength = xClass.getStat(0, level);
-			case 0x50 -> finesse++;
-			case 0x51 -> finesse--;
-			case 0x52 -> finesse = xClass.getStat(1, level);
-			case 0x60 -> skill++;
-			case 0x61 -> skill--;
-			case 0x62 -> skill = xClass.getStat(2, level);
-			case 0x70 -> speed++;
-			case 0x71 -> speed--;
-			case 0x72 -> speed = xClass.getStat(3, level);
-			case 0x80 -> luck++;
-			case 0x81 -> luck--;
-			case 0x82 -> luck = xClass.getStat(4, level);
-			case 0x90 -> defense++;
-			case 0x91 -> defense--;
-			case 0x92 -> defense = xClass.getStat(5, level);
-			case 0xa0 -> evasion++;
-			case 0xa1 -> evasion--;
-			case 0xa2 -> evasion = xClass.getStat(6, level);
-			case 0xb0 -> toughness++;
-			case 0xb1 -> toughness--;
-			case 0xb2 -> toughness = xClass.getStat(7, level);
 			case 0xc0 -> currentHealth++;
 			case 0xc1 -> currentHealth--;
 			case 0xc2 -> currentHealth = maxHealth();
@@ -623,6 +547,16 @@ public class Stats implements ModifierAspect
 			case 0xe1 -> movement--;
 			case 0xe2 -> movement = xClass.movement;
 			case 0xf0 -> autoEquip(entity);
+		}
+		int i = num - 4;
+		if(i >= 0 && i < 8)
+		{
+			switch(option)
+			{
+				case 0 -> lvStats[i]++;
+				case 1 -> lvStats[i]--;
+				case 2 -> lvStats[i] = xClass.getStat(i, level);
+			}
 		}
 	}
 }

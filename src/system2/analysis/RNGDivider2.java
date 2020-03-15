@@ -23,8 +23,8 @@ public class RNGDivider2 extends RNGDivider
 	{
 		super(null, 1, 0);
 		this.aI = aI;
-		health1 = aI.stats.getCurrentHealth();
-		health2 = aI.statsT.getCurrentHealth();
+		health1 = aI.stats.currentHealth();
+		health2 = aI.statsT.currentHealth();
 		attacks1 = aI.calc.attackCount;
 		attacks2 = aI.calcT.attackCount;
 		attacked1 = 0;

@@ -45,9 +45,9 @@ public class AttackInfoPart3
 	{
 		String[] info = new String[6];
 		if(healthCost > 0)
-			info[0] = "Health\n" + attackMode.stats.getCurrentHealth() + "(-" + healthCost + ")/" + attackMode.stats.maxHealth();
+			info[0] = "Health\n" + attackMode.stats.currentHealth() + "(-" + healthCost + ")/" + attackMode.stats.maxHealth();
 		else
-			info[0] = "Health\n" + attackMode.stats.getCurrentHealth() + "/" + attackMode.stats.maxHealth();
+			info[0] = "Health\n" + attackMode.stats.currentHealth() + "/" + attackMode.stats.maxHealth();
 		if(attackCount > 0)
 		{
 			if(melting1)

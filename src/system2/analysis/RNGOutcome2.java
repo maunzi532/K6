@@ -20,11 +20,11 @@ public class RNGOutcome2 extends RNGOutcome
 			List<String> compareText, AttackInfo sourceaI, int health, int healthT)
 	{
 		super(chance, divider, compareText);
-		damageTaken = sourceaI.stats.getCurrentHealth() - health;
+		damageTaken = sourceaI.stats.currentHealth() - health;
 		remainingHealth = health;
 		maxHealth = sourceaI.stats.maxHealth();
 		lose = health <= 0;
-		damageDealtT = sourceaI.statsT.getCurrentHealth() - healthT;
+		damageDealtT = sourceaI.statsT.currentHealth() - healthT;
 		remainingHealthT = healthT;
 		maxHealthT = sourceaI.statsT.maxHealth();
 		win = healthT <= 0;

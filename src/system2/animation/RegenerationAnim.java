@@ -20,9 +20,9 @@ public class RegenerationAnim implements AnimTimer
 		Stats stats = entity.stats();
 		healthBar = new InfoArrow(entity.location(),
 				entity.team() == CharacterTeam.HERO ? Color.GREEN : Color.GRAY, Color.BLACK, Color.WHITE,
-				stats.getCurrentHealth(), stats.maxHealth());
+				stats.currentHealth(), stats.maxHealth());
 		levelMap.addArrow(healthBar);
-		regenerateAmount = stats.maxHealth() - stats.getCurrentHealth();
+		regenerateAmount = stats.maxHealth() - stats.currentHealth();
 		stats.regenerating();
 		stats.setCurrentHealth(stats.maxHealth());
 	}

@@ -15,7 +15,7 @@ public class AnimPartHealthCost implements AnimPart
 	{
 		this.healthCost = healthCost;
 		this.statBar = statBar;
-		stats.setCurrentHealth(stats.getCurrentHealth() - healthCost);
+		stats.setCurrentHealth(stats.currentHealth() - healthCost);
 	}
 
 	@Override

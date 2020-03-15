@@ -15,7 +15,7 @@ public class StartTurnState implements NAutoState
 		for(XCharacter xHero : mainState.levelMap.teamCharacters(CharacterTeam.HERO))
 		{
 			xHero.newResources(new TurnResources(xHero.location(),
-					xHero.stats().getMovement(), xHero.stats().dashMovement(), 2));
+					xHero.stats().movement(), xHero.stats().dashMovement(), 2));
 		}
 	}
 

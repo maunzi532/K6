@@ -65,9 +65,9 @@ public class PlayerLevelSystem implements LevelSystem
 
 	public int[] levelupPercent(Stats current)
 	{
-		int levelDiff = current.getLevel() - baseLevel;
+		int levelDiff = current.level() - baseLevel;
 		int assumedStats = Arrays.stream(assumedIncrease).sum() * levelDiff / 100 + Arrays.stream(baseLevelStats).sum();
-		int currentStats = current.getCPower();
+		int currentStats = current.calcCPower();
 		int statsModifier = assumedStats - currentStats;
 		int[] percent = new int[STAT_COUNT];
 		for(int i = 0; i < STAT_COUNT; i++)

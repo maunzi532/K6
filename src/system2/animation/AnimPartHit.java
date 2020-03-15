@@ -28,8 +28,8 @@ public class AnimPartHit implements AnimPart
 		this.melt = melt;
 		this.arrows = arrows;
 		arrow = new BlinkArrow(target.location(), DURATION, false, /*target.getImage()*/XCharacter.IMAGE, BLINKTIME);
-		reduction = Math.min(statsT.getCurrentHealth(), damage);
-		statsT.setCurrentHealth(Math.max(0, statsT.getCurrentHealth() - damage));
+		reduction = Math.min(statsT.currentHealth(), damage);
+		statsT.setCurrentHealth(Math.max(0, statsT.currentHealth() - damage));
 	}
 
 	@Override

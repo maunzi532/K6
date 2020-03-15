@@ -35,10 +35,10 @@ public class AttackAnim implements AnimTimer, Supplier<RNGOutcome>
 		linked = new ArrayList<>();
 		healthBar1 = new InfoArrow(aI.entity.location(), aI.entityT.location(),
 				aI.entity.team() == CharacterTeam.HERO ? Color.GREEN : Color.GRAY, Color.BLACK, Color.WHITE,
-				aI.getStats(false).getCurrentHealth(), aI.getStats(false).maxHealth());
+				aI.getStats(false).currentHealth(), aI.getStats(false).maxHealth());
 		healthBar2 = new InfoArrow(aI.entityT.location(), aI.entity.location(),
 				aI.entityT.team() == CharacterTeam.HERO ? Color.GREEN : Color.GRAY, Color.BLACK, Color.WHITE,
-				aI.getStats(true).getCurrentHealth(), aI.getStats(true).maxHealth());
+				aI.getStats(true).currentHealth(), aI.getStats(true).maxHealth());
 		arrows.addArrow(healthBar1);
 		arrows.addArrow(healthBar2);
 	}
