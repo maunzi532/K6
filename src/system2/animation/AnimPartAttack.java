@@ -15,8 +15,7 @@ public class AnimPartAttack implements AnimPart
 
 	public AnimPartAttack(XCharacter attacker, XCharacter target, Arrows arrows)
 	{
-		arrow = new ManualXArrow(XArrow.convert(attacker.location(), target.location()), LEN, /*attacker.getImage()*/
-				XCharacter.IMAGE);
+		arrow = new ManualXArrow(XArrow.convert(attacker.location(), target.location()), LEN, attacker.mapImage());
 		arrows.addArrow(arrow);
 		attacker.replaceVisual(arrow);
 	}

@@ -11,34 +11,34 @@ public class AdvTile
 	private FloorTile floorTile;
 	private XBuilding building;
 	private XCharacter entity;
-	private XBuilding owned;
+	private XBuilding ownedBy;
 
 	public AdvTile(FloorTile floorTile)
 	{
 		this.floorTile = floorTile;
 	}
 
-	public FloorTile getFloorTile()
+	public FloorTile floorTile()
 	{
 		return floorTile;
 	}
 
-	public XBuilding getBuilding()
+	public XBuilding building()
 	{
 		if(building != null && building.active())
 			return building;
 		return null;
 	}
 
-	public XCharacter getEntity()
+	public XCharacter entity()
 	{
 		return entity;
 	}
 
-	public XBuilding getOwned()
+	public XBuilding ownedBy()
 	{
-		if(owned != null && owned.active())
-			return owned;
+		if(ownedBy != null && ownedBy.active())
+			return ownedBy;
 		return null;
 	}
 
@@ -57,13 +57,13 @@ public class AdvTile
 		this.entity = entity;
 	}
 
-	public void setOwned(XBuilding owned)
+	public void setOwnedBy(XBuilding ownedBy)
 	{
-		this.owned = owned;
+		this.ownedBy = ownedBy;
 	}
 
-	public boolean visible(LevelMap levelMap)
+	public boolean visible()
 	{
-		return floorTile != null && levelMap.sectorVisible(floorTile.sector);
+		return floorTile != null;
 	}
 }

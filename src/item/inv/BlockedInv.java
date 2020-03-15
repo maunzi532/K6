@@ -3,6 +3,7 @@ package item.inv;
 import com.fasterxml.jackson.jr.ob.comp.*;
 import item.*;
 import item.view.*;
+import java.io.*;
 import java.util.*;
 
 public class BlockedInv implements Inv
@@ -94,8 +95,8 @@ public class BlockedInv implements Inv
 	}
 
 	@Override
-	public <T extends ComposerBase> ObjectComposer<T> save(ObjectComposer<T> a1, ItemLoader itemLoader)
+	public <T extends ComposerBase> void save(ObjectComposer<T> a1, ItemLoader itemLoader) throws IOException
 	{
-		return a1;
+		a1.end();
 	}
 }

@@ -23,24 +23,24 @@ public class BCEditMode implements EditingMode
 		AdvTile advTile = mainState.levelMap.advTile(tile);
 		if(mainState.preferBuildings)
 		{
-			if(advTile.getBuilding() != null)
+			if(advTile.building() != null)
 			{
-				mainState.stateHolder.setState(new BuildingInvEditGUI(advTile.getBuilding(), false));
+				mainState.stateHolder.setState(new BuildingInvEditGUI(advTile.building(), false));
 			}
-			else if(advTile.getEntity() != null)
+			else if(advTile.entity() != null)
 			{
-				mainState.stateHolder.setState(new EntityEditGUI(advTile.getEntity()));
+				mainState.stateHolder.setState(new EntityEditGUI(advTile.entity()));
 			}
 		}
 		else
 		{
-			if(advTile.getEntity() != null)
+			if(advTile.entity() != null)
 			{
-				mainState.stateHolder.setState(new EntityEditGUI(advTile.getEntity()));
+				mainState.stateHolder.setState(new EntityEditGUI(advTile.entity()));
 			}
-			else if(advTile.getBuilding() != null)
+			else if(advTile.building() != null)
 			{
-				mainState.stateHolder.setState(new BuildingInvEditGUI(advTile.getBuilding(), false));
+				mainState.stateHolder.setState(new BuildingInvEditGUI(advTile.building(), false));
 			}
 		}
 	}

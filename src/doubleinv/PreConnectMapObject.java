@@ -54,10 +54,11 @@ public record PreConnectMapObject(Tile location, DoubleInvType type) implements 
 		return new PreConnectMapObject(location, type);
 	}
 
-	public <T extends ComposerBase> ObjectComposer<T> save(ObjectComposer<T> a1, TileType y1) throws IOException
+	public <T extends ComposerBase> void save(ObjectComposer<T> a1, TileType y1) throws IOException
 	{
-		return a1.put("sx", y1.sx(location))
-				.put("sy", y1.sy(location))
-				.put("Type", type.name());
+		a1.put("sx", y1.sx(location));
+		a1.put("sy", y1.sy(location));
+		a1.put("Type", type.name());
+		a1.end();
 	}
 }

@@ -127,17 +127,17 @@ public class ProcessInv implements BuildingFunction
 	}
 
 	@Override
-	public <T extends ComposerBase> ObjectComposer<T> save(ObjectComposer<T> a1, ItemLoader itemLoader, TileType y1)
-			throws IOException
+	public <T extends ComposerBase> void save(ObjectComposer<T> a1, ItemLoader itemLoader, TileType y1) throws IOException
 	{
-		a1 = a1.put("Name", name);
-		a1 = inputInv.save(a1.startObjectField("InputInv"), itemLoader).end();
-		a1 = outputInv.save(a1.startObjectField("OutputInv"), itemLoader).end();
+		a1.put("Name", name);
+		inputInv.save(a1.startObjectField("InputInv"), itemLoader);
+		outputInv.save(a1.startObjectField("OutputInv"), itemLoader);
 		var a2 = a1.startArrayField("Recipes");
 		for(Recipe recipe : recipes)
 		{
-			a2 = recipe.save(a2.startObject(), itemLoader).end();
+			recipe.save(a2.startObject(), itemLoader);
 		}
-		return a2.end();
+		a2.end();
+		a1.end();
 	}
 }

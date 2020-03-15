@@ -17,8 +17,6 @@ import system2.*;
 
 public class XCharacter implements DoubleInv, XBuilder
 {
-	public static final Image IMAGE = new Image("Enemy_3.png");
-
 	private CharacterTeam team;
 	private int startingDelay;
 	private boolean defeated;
@@ -93,15 +91,15 @@ public class XCharacter implements DoubleInv, XBuilder
 		return stats;
 	}
 
-	/*public Image mapImage()
+	public Image mapImage()
 	{
-		//return stats
+		return ImageLoader.getImage(stats.mapImagePath());
 	}
 
 	public Image sideImage()
 	{
-		//return stats
-	}*/
+		return ImageLoader.getImage(stats.sideImagePath());
+	}
 
 	public TurnResources resources()
 	{
@@ -120,7 +118,7 @@ public class XCharacter implements DoubleInv, XBuilder
 
 	public SideInfo standardSideInfo()
 	{
-		return new SideInfo(this, 1, ImageLoader.getImage(stats.imagePath()), statBar(), stats.sideInfoText());
+		return new SideInfo(this, 1, sideImage(), statBar(), stats.sideInfoText());
 	}
 
 	public StatBar statBar()
@@ -214,40 +212,35 @@ public class XCharacter implements DoubleInv, XBuilder
 		return inv.tryProvide(refundable, false, commitType);
 	}
 
-	public <T extends ComposerBase> ObjectComposer<T> save(ObjectComposer<T> a1, ItemLoader itemLoader, TileType y1) throws
-			IOException
+	public <T extends ComposerBase, H extends ComposerBase> void save(ObjectComposer<T> a1,
+			ArrayComposer<H> xhList, ItemLoader itemLoader, TileType y1) throws IOException
 	{
-		var a2 = a1.put("Type", team.name())
-				.put("sx", y1.sx(location))
-				.put("sy", y1.sy(location))
-				.startObjectField("Stats");
-		var a3 = stats.save(a2, itemLoader);
-		return save2(a3.end(), itemLoader);
-	}
-
-	public <T extends ComposerBase> ObjectComposer<T> save2(ObjectComposer<T> a1, ItemLoader itemLoader) throws IOException
-	{
-		return inv.save(a1.startObjectField("Inventory"), itemLoader).end();
-	}
-
-	public <T extends ComposerBase> ObjectComposer<T> save3(ObjectComposer<T> a1, ItemLoader itemLoader) throws IOException
-	{
-		var a2 = a1.startObjectField("Stats");
-		var a3 = stats.save(a2, itemLoader);
-		return save2(a3.end(), itemLoader);
-	}
-
-	/*public <T extends ComposerBase> ObjectComposer<T> save4(ObjectComposer<T> a1, ItemLoader itemLoader, TileType y1) throws IOException
-	{
-		var a2 = a1.put("StartName", stats.getName())
-				.put("Locked", startLocked)
-				.put("InvLocked", startInvLocked)
-				.put("sx", y1.sx(location))
-				.put("sy", y1.sy(location));
-		if(startInvLocked)
+		if(saveSettings != null)
 		{
-			a2 = inv.save(a2.startObjectField("Inventory"), itemLoader).end();
+			a1.put("StartName", stats.getName());
+			a1.put("Locked", saveSettings.startLocked);
+			a1.put("InvLocked", saveSettings.startInvLocked);
+			a1.put("sx", y1.sx(location));
+			a1.put("sy", y1.sy(location));
+			if(saveSettings.startLocked)
+			{
+				inv.save(a1.startObjectField("Inventory"), itemLoader);
+			}
+			a1.end();
+
+			var h1 = xhList.startObject();
+			stats.save(h1.startObjectField("Stats"), itemLoader);
+			inv.save(h1.startObjectField("Inventory"), itemLoader);
+			h1.end();
 		}
-		return a2;
-	}*/
+		else
+		{
+			a1.put("Type", team.name());
+			a1.put("sx", y1.sx(location));
+			a1.put("sy", y1.sy(location));
+			stats.save(a1.startObjectField("Stats"), itemLoader);
+			inv.save(a1.startObjectField("Inventory"), itemLoader);
+			a1.end();
+		}
+	}
 }

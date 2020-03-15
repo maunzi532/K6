@@ -18,7 +18,6 @@ public class LevelMap implements ConnectRestore, Arrows
 {
 	public final TileType y1;
 	private final HashMap<Tile, AdvTile> advTiles;
-	private final List<Boolean> visibleSectors;
 	private final ArrayList<XBuilding> buildings;
 	private final HashMap<CharacterTeam, List<XCharacter>> characters;
 	private final ArrayList<XArrow> arrows;
@@ -28,7 +27,6 @@ public class LevelMap implements ConnectRestore, Arrows
 	{
 		this.y1 = y1;
 		advTiles = new HashMap<>();
-		visibleSectors = new ArrayList<>();
 		buildings = new ArrayList<>();
 		characters = new HashMap<>();
 		arrows = new ArrayList<>();
@@ -44,13 +42,13 @@ public class LevelMap implements ConnectRestore, Arrows
 	{
 		for(AdvTile advTile : advTiles.values())
 		{
-			XBuilding building = advTile.getBuilding();
+			XBuilding building = advTile.building();
 			if(building != null)
 				building.productionPhase(this, buildingCanWork(building, false));
 		}
 		for(AdvTile advTile : advTiles.values())
 		{
-			XBuilding building = advTile.getBuilding();
+			XBuilding building = advTile.building();
 			if(building != null)
 				building.afterProduction();
 		}
@@ -60,13 +58,13 @@ public class LevelMap implements ConnectRestore, Arrows
 	{
 		for(AdvTile advTile : advTiles.values())
 		{
-			XBuilding building = advTile.getBuilding();
+			XBuilding building = advTile.building();
 			if(building != null)
 				building.transportPhase(this, buildingCanWork(building, false));
 		}
 		for(AdvTile advTile : advTiles.values())
 		{
-			XBuilding building = advTile.getBuilding();
+			XBuilding building = advTile.building();
 			if(building != null)
 				building.afterTransport();
 		}
@@ -153,23 +151,23 @@ public class LevelMap implements ConnectRestore, Arrows
 	{
 		if(advTiles.containsKey(t1))
 		{
-			XCharacter entity = advTiles.get(t1).getEntity();
-			charactersAdd(entity);
-			if(advTiles.get(t1).getBuilding() != null)
-				advTiles.get(t1).getBuilding().remove();
+			XCharacter entity = advTiles.get(t1).entity();
+			if(entity != null)
+				characters.get(entity.team()).remove(entity);
+			XBuilding building = advTiles.get(t1).building();
+			if(building != null)
+				building.remove();
 			advTiles.remove(t1);
 		}
 	}
 
 	public FloorTile getFloor(Tile t1)
 	{
-		return advTile(t1).getFloorTile();
+		return advTile(t1).floorTile();
 	}
 
 	public void setFloorTile(Tile t1, FloorTile floorTile)
 	{
-		while(floorTile.sector >= visibleSectors.size())
-			visibleSectors.add(true);
 		if(advTiles.containsKey(t1))
 		{
 			advTile(t1).setFloorTile(floorTile);
@@ -180,7 +178,7 @@ public class LevelMap implements ConnectRestore, Arrows
 
 	public XBuilding getBuilding(Tile t1)
 	{
-		return advTile(t1).getBuilding();
+		return advTile(t1).building();
 	}
 
 	public void addBuilding(XBuilding building)
@@ -191,22 +189,22 @@ public class LevelMap implements ConnectRestore, Arrows
 
 	public XBuilding getOwner(Tile t1)
 	{
-		return advTile(t1).getOwned();
+		return advTile(t1).ownedBy();
 	}
 
 	public void addOwner(Tile t1, XBuilding building)
 	{
-		advTile(t1).setOwned(building);
+		advTile(t1).setOwnedBy(building);
 	}
 
 	public void removeOwner(Tile t1)
 	{
-		advTile(t1).setOwned(null);
+		advTile(t1).setOwnedBy(null);
 	}
 
 	public XCharacter getEntity(Tile t1)
 	{
-		return advTile(t1).getEntity();
+		return advTile(t1).entity();
 	}
 
 	public void addEntity(XCharacter entity)
@@ -223,7 +221,7 @@ public class LevelMap implements ConnectRestore, Arrows
 
 	public void moveEntity(XCharacter entity, Tile newLocation)
 	{
-		XArrow arrow = XArrow.factory(entity.location(), newLocation, y1, false, /*entity.getImage()*/XCharacter.IMAGE); //TODO
+		XArrow arrow = XArrow.factory(entity.location(), newLocation, y1, false, entity.mapImage());
 		addArrow(arrow);
 		entity.replaceVisual(arrow);
 		advTile(entity.location()).setEntity(null);
@@ -235,10 +233,10 @@ public class LevelMap implements ConnectRestore, Arrows
 	{
 		Tile location1 = entity1.location();
 		Tile location2 = entity2.location();
-		XArrow arrow1 = XArrow.factory(location1, location2, y1, false, /*entity.getImage()*/XCharacter.IMAGE);
+		XArrow arrow1 = XArrow.factory(location1, location2, y1, false, entity1.mapImage());
 		addArrow(arrow1);
 		entity1.replaceVisual(arrow1);
-		XArrow arrow2 = XArrow.factory(location2, location1, y1, false, /*entity.getImage()*/XCharacter.IMAGE);
+		XArrow arrow2 = XArrow.factory(location2, location1, y1, false, entity2.mapImage());
 		addArrow(arrow2);
 		entity2.replaceVisual(arrow2);
 		advTile(location1).setEntity(entity2);
@@ -250,17 +248,6 @@ public class LevelMap implements ConnectRestore, Arrows
 	public List<XCharacter> teamCharacters(CharacterTeam team)
 	{
 		return characters.getOrDefault(team, List.of());
-	}
-
-	public int createSector(boolean visible)
-	{
-		visibleSectors.add(visible);
-		return visibleSectors.size() - 1;
-	}
-
-	public boolean sectorVisible(int sector)
-	{
-		return visibleSectors.get(sector);
 	}
 
 	public List<XArrow> getArrows()
@@ -335,6 +322,11 @@ public class LevelMap implements ConnectRestore, Arrows
 				.collect(Collectors.toList());
 	}
 
+	public void createTile(byte x, byte y, byte s, byte t)
+	{
+		advTiles.put(y1.create2(x, y), new AdvTile(new FloorTile(s, FloorTileType.values()[t])));
+	}
+
 	@Override
 	public DoubleInv restoreConnection(DoubleInv toConnect)
 	{
@@ -357,52 +349,46 @@ public class LevelMap implements ConnectRestore, Arrows
 					.composeString()
 					.startObject()
 					.put("code", 0xA4D2839F);
-			var xheroSave = JSON.std.with(JSON.Feature.PRETTY_PRINT_OUTPUT)
+			var h1 = JSON.std.with(JSON.Feature.PRETTY_PRINT_OUTPUT)
 					.composeString()
 					.startObject()
-					.put("code", 0xA4D2839F)
-					.startArrayField("Characters");
+					.put("code", 0xA4D2839F);
 			ByteBuffer sb = ByteBuffer.allocate(advTiles.size() * 4);
 			for(Map.Entry<Tile, AdvTile> entry : advTiles.entrySet())
 			{
 				Tile t1 = entry.getKey();
 				AdvTile adv = entry.getValue();
-				if(adv.getFloorTile() != null)
+				if(adv.floorTile() != null)
 				{
 					sb.put((byte) y1.sx(t1));
 					sb.put((byte) y1.sy(t1));
-					sb.put((byte) adv.getFloorTile().sector);
-					sb.put((byte) adv.getFloorTile().type.ordinal());
+					sb.put((byte) adv.floorTile().sector);
+					sb.put((byte) adv.floorTile().type.ordinal());
 				}
 			}
-			var a2 = a1.put("FloorTiles", Base64.getEncoder().encodeToString(sb.array()))
-					.startArrayField("Buildings");
+			a1.put("FloorTiles", Base64.getEncoder().encodeToString(sb.array()));
+			var a2 = a1.startArrayField("Buildings");
 			for(XBuilding building : buildings)
 			{
 				if(building.active())
-					a2 = building.save(a2.startObject(), itemLoader, y1).end();
+					building.save(a2.startObject(), itemLoader, y1);
 			}
-			var a3 = a2.end().startArrayField("XEntities");
+			a2.end();
+			var a3 = a1.startArrayField("Characters");
+			var h2 = h1.startArrayField("Characters");
 			for(List<XCharacter> c1 : characters.values())
 			{
 				for(XCharacter character : c1)
 				{
-					a3 = character.save(a3.startObject(), itemLoader, y1).end();
-					if(character.saveSettings() != null)
-						xheroSave = character.save3(xheroSave.startObject(), itemLoader).end();
+					character.save(a3.startObject(), h2, itemLoader, y1);
 				}
 			}
-			return new String[]{a3.end().end().finish(), xheroSave.end().end().finish()};
+			a3.end();
+			h2.end();
+			return new String[]{a1.end().finish(), h1.end().finish()};
 		}catch(IOException e)
 		{
 			throw new RuntimeException(e);
 		}
-	}
-
-	public void createTile(byte x, byte y, byte s, byte t)
-	{
-		while(s >= visibleSectors.size())
-			visibleSectors.add(true);
-		advTiles.put(y1.create2(x, y), new AdvTile(new FloorTile(s, FloorTileType.values()[t])));
 	}
 }

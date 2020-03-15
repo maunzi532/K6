@@ -189,13 +189,14 @@ public class XBuilding implements DoubleInv
 					claimed.add(y1.create2(((JrsNumber) ((JrsObject) e).get("sx")).getValue().intValue(),
 							((JrsNumber) ((JrsObject) e).get("sy")).getValue().intValue())));
 		}
-		if(data.get("Recipes") != null)
+		JrsObject data2 = (JrsObject) data.get("Function");
+		if(data2.get("Recipes") != null)
 		{
-			function = new ProcessInv(data, itemLoader);
+			function = new ProcessInv(data2, itemLoader);
 		}
-		else if(data.get("Amount") != null)
+		else if(data2.get("Amount") != null)
 		{
-			function = new Transport(data, itemLoader, y1);
+			function = new Transport(data2, itemLoader, y1);
 		}
 		else
 		{
@@ -203,18 +204,22 @@ public class XBuilding implements DoubleInv
 		}
 	}
 
-	public <T extends ComposerBase> ObjectComposer<T> save(ObjectComposer<T> a1, ItemLoader itemLoader, TileType y1) throws IOException
+	public <T extends ComposerBase> void save(ObjectComposer<T> a1, ItemLoader itemLoader, TileType y1) throws IOException
 	{
-		var a2 = a1.put("sx", y1.sx(location))
-				.put("sy", y1.sy(location));
-		a2 = costBlueprint.save(a2.startObjectField("Costs"), itemLoader).end();
-		a2 = refundable.save(a2.startArrayField("Refundable"), itemLoader).end();
-		var a3 = a2.startArrayField("Claimed");
+		a1.put("sx", y1.sx(location));
+		a1.put("sy", y1.sy(location));
+		costBlueprint.save(a1.startObjectField("Costs"), itemLoader);
+		refundable.save(a1.startArrayField("Refundable"), itemLoader);
+		var a2 = a1.startArrayField("Claimed");
 		for(Tile tile : claimed)
 		{
-			a3 = a3.startObject().put("sx", y1.sx(tile)).put("sy", y1.sy(tile)).end();
+			var a3 = a2.startObject();
+			a3.put("sx", y1.sx(tile));
+			a3.put("sy", y1.sy(tile));
+			a3.end();
 		}
-		a2 = a3.end();
-		return function.save(a2, itemLoader, y1);
+		a2.end();
+		function.save(a1.startObjectField("Function"), itemLoader, y1);
+		a1.end();
 	}
 }

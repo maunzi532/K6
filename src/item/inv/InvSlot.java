@@ -160,13 +160,13 @@ public class InvSlot implements Inv0
 		}
 	}
 
-	public <T extends ComposerBase> ObjectComposer<T> save(ObjectComposer<T> a1, ItemLoader itemLoader) throws IOException
+	public <T extends ComposerBase> void save(ObjectComposer<T> a1, ItemLoader itemLoader) throws IOException
 	{
-		a1 = new ItemStack(type, limit).save(a1.startObjectField("Restrictions"), itemLoader).end();
+		new ItemStack(type, limit).save(a1.startObjectField("Restrictions"), itemLoader);
 		if(stackExists)
 		{
-			a1 = stack.toItemStack().save(a1.startObjectField("Inside"), itemLoader).end();
+			stack.toItemStack().save(a1.startObjectField("Inside"), itemLoader);
 		}
-		return a1;
+		a1.end();
 	}
 }

@@ -55,9 +55,10 @@ public class BlueprintCache<T extends FullBlueprint>
 			var a2 = a1.startArrayField("Blueprints");
 			for(String key : blueprints.keySet())
 			{
-				a2 = get(key).save(a2.startObject(), itemLoader).end();
+				get(key).save(a2.startObject(), itemLoader);
 			}
-			String text = a2.end().end().finish();
+			a2.end();
+			String text = a1.end().finish();
 			Files.write(new File(filename).toPath(), text.getBytes());
 		}catch(IOException e)
 		{

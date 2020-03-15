@@ -34,11 +34,11 @@ public record PossibleTransport(Item item, DoubleInv from, DoubleInv to, int pri
 		return new PossibleTransport(item, from, to, 0, 0);
 	}
 
-	public <T extends ComposerBase> ObjectComposer<T> save(ObjectComposer<T> a1, ItemLoader itemLoader, TileType y1) throws IOException
+	public <T extends ComposerBase> void save(ObjectComposer<T> a1, ItemLoader itemLoader, TileType y1) throws IOException
 	{
 		itemLoader.saveItem(a1, item);
-		new PreConnectMapObject(from.location(), from.type()).save(a1.startObjectField("From"), y1).end();
-		new PreConnectMapObject(to.location(), to.type()).save(a1.startObjectField("To"), y1).end();
-		return a1;
+		new PreConnectMapObject(from.location(), from.type()).save(a1.startObjectField("From"), y1);
+		new PreConnectMapObject(to.location(), to.type()).save(a1.startObjectField("To"), y1);
+		a1.end();
 	}
 }

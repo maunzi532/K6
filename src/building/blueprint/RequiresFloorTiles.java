@@ -16,11 +16,12 @@ public record RequiresFloorTiles(FloorTileType floorTileType, int amount, int mi
 		return new RequiresFloorTiles(floorTileType, amount, minRange, maxRange);
 	}
 
-	public <T extends ComposerBase> ObjectComposer<T> save(ObjectComposer<T> a1) throws IOException
+	public <T extends ComposerBase> void save(ObjectComposer<T> a1) throws IOException
 	{
-		return a1.put("Type", floorTileType.name())
-				.put("Amount", amount)
-				.put("MinRange", minRange)
-				.put("MaxRange", maxRange);
+		a1.put("Type", floorTileType.name());
+		a1.put("Amount", amount);
+		a1.put("MinRange", minRange);
+		a1.put("MaxRange", maxRange);
+		a1.end();
 	}
 }

@@ -13,8 +13,10 @@ public record TransporterBlueprint(int range, int amount)
 		return new TransporterBlueprint(range, amount);
 	}
 
-	public <T extends ComposerBase> ObjectComposer<T> save(ObjectComposer<T> a1) throws IOException
+	public <T extends ComposerBase> void save(ObjectComposer<T> a1) throws IOException
 	{
-		return a1.put("Range", range).put("Amount", amount);
+		a1.put("Range", range);
+		a1.put("Amount", amount);
+		a1.end();
 	}
 }

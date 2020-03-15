@@ -23,16 +23,19 @@ public class ItemLoader2 implements ItemLoader
 	}
 
 	@Override
-	public <T extends ComposerBase> ObjectComposer<T> saveItem(ObjectComposer<T> a1, Item item) throws IOException
+	public <T extends ComposerBase> void saveItem(ObjectComposer<T> a1, Item item) throws IOException
 	{
 		if(item instanceof Items)
 		{
-			return a1.put("ItemCode", ((Items) item).ordinal());
+			a1.put("ItemCode", ((Items) item).ordinal());
 		}
-		if(item instanceof AttackItem2)
+		else if(item instanceof AttackItem2)
 		{
-			return a1.put("AttackItemCode", AttackItems2.INSTANCE.itemListA.indexOf(item));
+			a1.put("AttackItemCode", AttackItems2.INSTANCE.itemListA.indexOf(item));
 		}
-		throw new RuntimeException();
+		else
+		{
+			throw new RuntimeException(item.toString());
+		}
 	}
 }

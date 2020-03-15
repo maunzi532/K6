@@ -15,7 +15,7 @@ public class AnimPartVanish implements AnimPart
 	public AnimPartVanish(XCharacter target, Arrows arrows, LevelMap levelMap)
 	{
 		this.target = target;
-		arrow = new BlinkArrow(target.location(), DURATION, false, /*target.getImage()*/XCharacter.IMAGE, BLINKTIME);
+		arrow = new BlinkArrow(target.location(), DURATION, false, target.mapImage(), BLINKTIME);
 		arrows.addArrow(arrow);
 		levelMap.removeEntity(target);
 	}

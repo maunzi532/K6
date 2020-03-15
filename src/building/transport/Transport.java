@@ -140,8 +140,7 @@ public class Transport implements BuildingFunction
 	}
 
 	@Override
-	public <T extends ComposerBase> ObjectComposer<T> save(ObjectComposer<T> a1, ItemLoader itemLoader, TileType y1)
-			throws IOException
+	public <T extends ComposerBase> void save(ObjectComposer<T> a1, ItemLoader itemLoader, TileType y1) throws IOException
 	{
 		a1.put("Name", name);
 		a1.put("Range", range);
@@ -149,14 +148,15 @@ public class Transport implements BuildingFunction
 		var a2 = a1.startArrayField("Targets");
 		for(DoubleInv target : targets)
 		{
-			new PreConnectMapObject(target.location(), target.type()).save(a2.startObject(), y1).end();
+			new PreConnectMapObject(target.location(), target.type()).save(a2.startObject(), y1);
 		}
 		a2.end();
 		var a3 = a1.startArrayField("History");
 		for(PossibleTransport entry : invTransporter.transportHistory())
 		{
-			entry.save(a3.startObject(), itemLoader, y1).end();
+			entry.save(a3.startObject(), itemLoader, y1);
 		}
-		return a1;
+		a3.end();
+		a1.end();
 	}
 }

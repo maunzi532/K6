@@ -148,24 +148,24 @@ public class StateControl2 implements XStateHolder, ConvInputConsumer
 			AdvTile advTile = mainState.levelMap.advTile(mapTile);
 			if(mainState.preferBuildings)
 			{
-				if(advTile.getBuilding() != null)
+				if(advTile.building() != null)
 				{
-					onClickBuilding(advTile.getBuilding(), key);
+					onClickBuilding(advTile.building(), key);
 				}
-				else if(advTile.getEntity() != null)
+				else if(advTile.entity() != null)
 				{
-					onClickEntity(advTile.getEntity(), mainState.turnCounter > 0, key);
+					onClickEntity(advTile.entity(), mainState.turnCounter > 0, key);
 				}
 			}
 			else
 			{
-				if(advTile.getEntity() != null)
+				if(advTile.entity() != null)
 				{
-					onClickEntity(advTile.getEntity(), mainState.turnCounter > 0, key);
+					onClickEntity(advTile.entity(), mainState.turnCounter > 0, key);
 				}
-				else if(advTile.getBuilding() != null)
+				else if(advTile.building() != null)
 				{
-					onClickBuilding(advTile.getBuilding(), key);
+					onClickBuilding(advTile.building(), key);
 				}
 			}
 		}

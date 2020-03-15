@@ -1,6 +1,7 @@
 package levelMap;
 
 import building.adv.*;
+import com.fasterxml.jackson.core.*;
 import com.fasterxml.jackson.jr.ob.*;
 import com.fasterxml.jackson.jr.stree.*;
 import entity.*;
@@ -18,33 +19,33 @@ import system2.analysis.*;
 public class SavedImport
 {
 	private File file;
-	private File file2;
+	private File fileXh;
 
 	public SavedImport()
 	{
 		file = new FileChooser().showOpenDialog(null);
-		file2 = new FileChooser().showOpenDialog(null);
+		fileXh = new FileChooser().showOpenDialog(null);
 	}
 
-	public SavedImport(String loadFile, String loadFile2)
+	public SavedImport(String loadFile, String loadFileXh)
 	{
 		file = new File(loadFile);
-		file2 = new File(loadFile2);
+		fileXh = new File(loadFileXh);
 	}
 
 	public boolean hasFile()
 	{
-		return file != null && file2 != null && file.exists() && file2.exists();
+		return file != null && fileXh != null && file.exists() && fileXh.exists();
 	}
 
 	public void importIntoMap3(LevelMap levelMap, ItemLoader itemLoader, Inv storage)
 	{
 		try
 		{
-			var tree = JSON.std.with(new JacksonJrsTreeCodec()).treeFrom(new String(Files.readAllBytes(file.toPath())));
-			var tree2 = JSON.std.with(new JacksonJrsTreeCodec()).treeFrom(new String(Files.readAllBytes(file2.toPath())));
+			TreeNode tree = JSON.std.with(new JacksonJrsTreeCodec()).treeFrom(new String(Files.readAllBytes(file.toPath())));
+			TreeNode treeXh = JSON.std.with(new JacksonJrsTreeCodec()).treeFrom(new String(Files.readAllBytes(fileXh.toPath())));
 			if(((JrsNumber) tree.get("code")).getValue().intValue() == 0xA4D2839F &&
-					((JrsNumber) tree2.get("code")).getValue().intValue() == 0xA4D2839F)
+					((JrsNumber) treeXh.get("code")).getValue().intValue() == 0xA4D2839F)
 			{
 				ByteBuffer sb = ByteBuffer.wrap(Base64.getDecoder().decode(((JrsString) tree.get("FloorTiles")).getValue()));
 				int lenTiles = sb.remaining() / 4;
@@ -60,9 +61,9 @@ public class SavedImport
 					levelMap.addBuilding(building);
 				});
 				Map<String, JrsObject> characters = new HashMap<>();
-				((JrsArray) tree2.get("Characters")).elements().forEachRemaining(
+				((JrsArray) treeXh.get("Characters")).elements().forEachRemaining(
 						character -> characters.put(((JrsObject) ((JrsObject) character).get("Stats")).get("CustomName").asText(), (JrsObject) character));
-				((JrsArray) tree.get("XEntities")).elements().forEachRemaining(e ->
+				((JrsArray) tree.get("Characters")).elements().forEachRemaining(e ->
 						levelMap.addEntity(loadCharacterOrStartLoc(levelMap,
 								(JrsObject) e, itemLoader, characters, storage)));
 				buildings.forEach(levelMap::loadConnectBuilding);
@@ -77,15 +78,19 @@ public class SavedImport
 			JrsObject data, ItemLoader itemLoader, Map<String, JrsObject> characters, Inv storage)
 	{
 		Tile location = levelMap.y1.create2(((JrsNumber) data.get("sx")).getValue().intValue(), ((JrsNumber) data.get("sy")).getValue().intValue());
+		CharacterTeam team;
+		Stats stats;
+		Inv inv;
+		SaveSettings saveSettings;
 		if(data.get("StartName") != null)
 		{
-			int classCode = 1;
+			team = data.get("Type") != null ? CharacterTeam.valueOf(data.get("Type").asText()) : CharacterTeam.HERO;
 			String startName = data.get("StartName").asText();
 			boolean locked = ((JrsBoolean) data.get("Locked")).booleanValue();
 			boolean invLocked = ((JrsBoolean) data.get("InvLocked")).booleanValue();
+			saveSettings = new SaveSettings(locked, invLocked);
 			JrsObject char1 = characters.get(startName);
-			Stats stats = new Stats(((JrsObject) char1.get("Stats")), itemLoader);
-			Inv inv;
+			stats = new Stats(((JrsObject) char1.get("Stats")), itemLoader);
 			if(invLocked)
 			{
 				inv = new WeightInv(((JrsObject) data.get("Inventory")), itemLoader);
@@ -96,28 +101,15 @@ public class SavedImport
 			{
 				inv = new WeightInv(((JrsObject) char1.get("Inventory")), itemLoader);
 			}
-			return switch(classCode)
-					{
-						case 1 -> new XCharacter(CharacterTeam.HERO, 0, location, stats, inv,
-								null, null, new SaveSettings(locked, invLocked));
-						case 2 -> new XCharacter(CharacterTeam.ENEMY, 0, location, stats, inv,
-								null, null, new SaveSettings(locked, invLocked));
-						default -> throw new RuntimeException();
-					};
 		}
 		else
 		{
-			int classCode = ((JrsNumber) data.get("Type")).getValue().intValue();
-			Stats stats = new Stats(((JrsObject) data.get("Stats")), itemLoader);
-			Inv inv = new WeightInv(((JrsObject) data.get("Inventory")), itemLoader);
-			return switch(classCode)
-					{
-						case 1 -> new XCharacter(CharacterTeam.HERO, 0, location, stats, inv,
-								null, null, null);
-						case 2 -> new XCharacter(CharacterTeam.ENEMY, 0, location, stats, inv,
-								new StandardAI(levelMap), null, null);
-						default -> throw new RuntimeException();
-					};
+			team = CharacterTeam.valueOf(data.get("Type").asText());
+			stats = new Stats(((JrsObject) data.get("Stats")), itemLoader);
+			inv = new WeightInv(((JrsObject) data.get("Inventory")), itemLoader);
+			saveSettings = null;
 		}
+		EnemyAI enemyAI = team == CharacterTeam.ENEMY ? new StandardAI(levelMap) : null;
+		return new XCharacter(team, 0, location, stats, inv, enemyAI, null, saveSettings);
 	}
 }

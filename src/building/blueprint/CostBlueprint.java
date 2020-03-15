@@ -18,15 +18,16 @@ public record CostBlueprint(ItemList refundable, ItemList costs, ItemList requir
 		return new CostBlueprint(refundable, costs, required, requiredFloorTiles);
 	}
 
-	public <T extends ComposerBase> ObjectComposer<T> save(ObjectComposer<T> a1, ItemLoader itemLoader) throws IOException
+	public <T extends ComposerBase> void save(ObjectComposer<T> a1, ItemLoader itemLoader) throws IOException
 	{
-		var a2 = refundable.save(a1.startArrayField("Refundable"), itemLoader).end();
-		a2 = costs.save(a2.startArrayField("Costs"), itemLoader).end();
-		var a3 = a2.startArrayField("FloorTiles");
+		refundable.save(a1.startArrayField("Refundable"), itemLoader);
+		costs.save(a1.startArrayField("Costs"), itemLoader);
+		var a2 = a1.startArrayField("FloorTiles");
 		for(RequiresFloorTiles ft1 : requiredFloorTiles)
 		{
-			a3 = ft1.save(a3.startObject()).end();
+			ft1.save(a2.startObject());
 		}
-		return a3.end();
+		a2.end();
+		a1.end();
 	}
 }

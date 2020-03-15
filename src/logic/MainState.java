@@ -93,10 +93,9 @@ public class MainState
 	//code
 	//TODO Initialize somewhere else than in MainVisual
 	//TODO character class names in classes
-	//TODO Refactor or remove sectors
 	//TODO BlueprintCache is weird
 	//TODO rename or split ImageLoader
-	//TODO character images
+	//TODO AnimPartVanish remove character later
 
 	//visual engine mechanics
 	//TODO scale tiles, menubar, gui when resizing

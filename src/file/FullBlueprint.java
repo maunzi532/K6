@@ -6,5 +6,5 @@ import java.io.*;
 
 public interface FullBlueprint
 {
-	<T extends ComposerBase> ObjectComposer<T> save(ObjectComposer<T> a1, ItemLoader itemLoader) throws IOException;
+	<T extends ComposerBase> void save(ObjectComposer<T> a1, ItemLoader itemLoader) throws IOException;
 }

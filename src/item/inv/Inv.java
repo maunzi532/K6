@@ -77,5 +77,5 @@ public interface Inv extends Inv0
 		return true;
 	}
 
-	<T extends ComposerBase> ObjectComposer<T> save(ObjectComposer<T> a1, ItemLoader itemLoader) throws IOException;
+	<T extends ComposerBase> void save(ObjectComposer<T> a1, ItemLoader itemLoader) throws IOException;
 }

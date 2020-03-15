@@ -1,7 +1,6 @@
 package visual;
 
 import arrow.*;
-import entity.*;
 import geom.*;
 import geom.d1.*;
 import geom.f1.*;
@@ -61,11 +60,11 @@ public class VisualTile
 	{
 		AdvTile advTile = levelMap.advTile(t1);
 		double[][] points = layout.tileCorners(t1);
-		if(advTile.visible(levelMap))
+		if(advTile.visible())
 		{
 			PointD mid = layout.tileToPixel(t1);
 			PointD offset = layout.imageOffset();
-			gd.setFill(new ImagePattern(advTile.getFloorTile().type.image,
+			gd.setFill(new ImagePattern(advTile.floorTile().type.image,
 					mid.v()[0] - offset.v()[0], mid.v()[1] - offset.v()[1], offset.v()[0] * 2, offset.v()[1] * 2, false));
 		}
 		else
@@ -73,9 +72,9 @@ public class VisualTile
 			gd.setFill(Color.BLACK);
 		}
 		gd.fillPolygon(points[0], points[1], y1.directionCount());
-		if(advTile.visible(levelMap))
+		if(advTile.visible())
 		{
-			if(advTile.getBuilding() != null)
+			if(advTile.building() != null)
 			{
 				PointD midPoint = layout.tileToPixel(t1);
 				gd.drawImage(BUILDING, midPoint.v()[0] - layout.size().v()[0], midPoint.v()[1] - layout.size().v()[1],
@@ -108,12 +107,12 @@ public class VisualTile
 	private void draw1(TileLayout layout, Tile t1)
 	{
 		AdvTile advTile = levelMap.advTile(t1);
-		if(advTile.visible(levelMap))
+		if(advTile.visible())
 		{
-			if(advTile.getEntity() != null && advTile.getEntity().isVisible())
+			if(advTile.entity() != null && advTile.entity().isVisible())
 			{
 				PointD midPoint = layout.tileToPixel(t1);
-				gd.drawImage(/*advTile.getEntity().getImage()*/XCharacter.IMAGE,
+				gd.drawImage(advTile.entity().mapImage(),
 						midPoint.v()[0] - layout.size().v()[0], midPoint.v()[1] - layout.size().v()[1],
 						layout.size().v()[0] * 2, layout.size().v()[1] * 2);
 			}

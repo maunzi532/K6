@@ -26,26 +26,32 @@ public class Stats implements ModifierAspect
 	private int exp;
 	private PlayerLevelSystem playerLevelSystem;
 	private String customName;
-	private String customImage;
+	private String customMapImage;
+	private String customSideImage;
 	private int[] lvStats;
 	private int movement;
+	private int dashMovement;
+	private int maxAccessRange;
 	private int currentHealth;
 	private int exhaustion;
 	private AttackMode4 lastUsed;
 	private AttackItem2Slot slot;
 
-	public Stats(XClass xClass, int level, String customName,
-			String customImage, int movement, PlayerLevelSystem playerLevelSystem)
+	public Stats(XClass xClass, int level, String customName, String customMapImage,
+			String customSideImage, int movement, PlayerLevelSystem playerLevelSystem)
 	{
 		this.xClass = xClass;
 		this.level = level;
 		this.playerLevelSystem = playerLevelSystem;
+		this.customName = customName;
+		this.customMapImage = customMapImage;
+		this.customSideImage = customSideImage;
 		lvStats = new int[8];
 		autoStats();
-		this.customName = customName;
-		this.customImage = customImage;
 		currentHealth = maxHealth();
 		this.movement = movement;
+		dashMovement = 12;
+		maxAccessRange = 4;
 		lastUsed = AttackMode4.EVADE_MODE;
 		slot = new AttackItem2Slot(xClass.usableItems);
 	}
@@ -56,30 +62,38 @@ public class Stats implements ModifierAspect
 		this.level = level;
 		this.playerLevelSystem = playerLevelSystem;
 		autoStats();
+		currentHealth = maxHealth();
+		movement = xClass.movement;
+		dashMovement = 12;
+		maxAccessRange = 4;
 		lastUsed = AttackMode4.EVADE_MODE;
 		slot = new AttackItem2Slot(xClass.usableItems);
 	}
 
-	public Stats(XClass xClass, int level, int exp, String customName, String customImage, int[] lvStats,
-			int movement, int currentHealth, int exhaustion, PlayerLevelSystem playerLevelSystem)
+	public Stats(XClass xClass, int level, int exp, String customName, String customMapImage, String customSideImage, int[] lvStats,
+			int currentHealth, int exhaustion, int movement, int dashMovement, int maxAccessRange, PlayerLevelSystem playerLevelSystem)
 	{
 		this.xClass = xClass;
 		this.level = level;
 		this.exp = exp;
 		this.playerLevelSystem = playerLevelSystem;
 		this.customName = customName;
-		this.customImage = customImage;
+		this.customMapImage = customMapImage;
+		this.customSideImage = customSideImage;
 		this.lvStats = Arrays.copyOf(lvStats, 8);
-		this.movement = movement;
 		this.currentHealth = currentHealth;
 		this.exhaustion = exhaustion;
+		this.movement = movement;
+		this.dashMovement = dashMovement;
+		this.maxAccessRange = maxAccessRange;
 		lastUsed = AttackMode4.EVADE_MODE;
 		slot = new AttackItem2Slot(xClass.usableItems);
 	}
 
 	public Stats copy()
 	{
-		return new Stats(xClass, level, exp, customName, customImage, lvStats, movement, currentHealth, exhaustion, playerLevelSystem);
+		return new Stats(xClass, level, exp, customName, customMapImage, customSideImage, lvStats,
+				currentHealth, exhaustion, movement, dashMovement, maxAccessRange, playerLevelSystem);
 	}
 
 	public void autoStats()
@@ -91,8 +105,6 @@ public class Stats implements ModifierAspect
 			else
 				lvStats[i] = xClass.getStat(i, level);
 		}
-		currentHealth = maxHealth();
-		movement = xClass.movement;
 	}
 
 	public XClass xClass()
@@ -183,21 +195,6 @@ public class Stats implements ModifierAspect
 		return Arrays.stream(lvStats).sum();
 	}
 
-	public int movement()
-	{
-		return movement;
-	}
-
-	public int dashMovement()
-	{
-		return 12;
-	}
-
-	public int maxAccessRange()
-	{
-		return 4;
-	}
-
 	public int maxHealth()
 	{
 		return lvStats[7] * HEALTH_MULTIPLIER;
@@ -216,6 +213,21 @@ public class Stats implements ModifierAspect
 	public int exhaustion()
 	{
 		return exhaustion;
+	}
+
+	public int movement()
+	{
+		return movement;
+	}
+
+	public int dashMovement()
+	{
+		return dashMovement;
+	}
+
+	public int maxAccessRange()
+	{
+		return maxAccessRange;
 	}
 
 	public AttackMode4 lastUsed()
@@ -292,10 +304,18 @@ public class Stats implements ModifierAspect
 		return customName != null ? customName : xClass.className + " lv" + level;
 	}
 
-	public String imagePath()
+	public String mapImagePath()
 	{
-		if(customImage != null)
-			return customImage;
+		if(customMapImage != null)
+			return customMapImage;
+		else
+			return "Enemy_3.png";
+	}
+
+	public String sideImagePath()
+	{
+		if(customSideImage != null)
+			return customSideImage;
 		else
 			return "Enemy_0.png";
 	}
@@ -315,22 +335,25 @@ public class Stats implements ModifierAspect
 		{
 			customName = data.get("CustomName").asText();
 		}
-		if(data.get("CustomImage") != null)
+		if(data.get("CustomMapImage") != null)
 		{
-			customImage = data.get("CustomImage").asText();
+			customMapImage = data.get("CustomMapImage").asText();
+		}
+		if(data.get("CustomSideImage") != null)
+		{
+			customSideImage = data.get("CustomSideImage").asText();
 		}
 		lvStats = new int[8];
-		lvStats[0] = ((JrsNumber) data.get("Strength")).getValue().intValue();
-		lvStats[1] = ((JrsNumber) data.get("Finesse")).getValue().intValue();
-		lvStats[2] = ((JrsNumber) data.get("Skill")).getValue().intValue();
-		lvStats[3] = ((JrsNumber) data.get("Speed")).getValue().intValue();
-		lvStats[4] = ((JrsNumber) data.get("Luck")).getValue().intValue();
-		lvStats[5] = ((JrsNumber) data.get("Defense")).getValue().intValue();
-		lvStats[6] = ((JrsNumber) data.get("Evasion")).getValue().intValue();
-		lvStats[7] = ((JrsNumber) data.get("Toughness")).getValue().intValue();
-		movement = ((JrsNumber) data.get("Movement")).getValue().intValue();
+		Iterator<JrsValue> iterator = ((JrsArray) data.get("LvStats")).elements();
+		for(int i = 0; i < 8; i++)
+		{
+			lvStats[i] = ((JrsNumber) iterator.next()).getValue().intValue();
+		}
 		currentHealth = ((JrsNumber) data.get("CurrentHealth")).getValue().intValue();
 		exhaustion = ((JrsNumber) data.get("Exhaustion")).getValue().intValue();
+		movement = ((JrsNumber) data.get("Movement")).getValue().intValue();
+		dashMovement = ((JrsNumber) data.get("DashMovement")).getValue().intValue();
+		maxAccessRange = ((JrsNumber) data.get("MaxAccessRange")).getValue().intValue();
 		if(data.get("LastUsed") != null)
 		{
 			AttackItem2 item1 = ((AttackItem2) itemLoader.loadItem((JrsObject) data.get("LastUsedItem")));
@@ -343,40 +366,46 @@ public class Stats implements ModifierAspect
 		}
 	}
 
-	public <T extends ComposerBase> ObjectComposer<T> save(ObjectComposer<T> a1, ItemLoader itemLoader) throws IOException
+	public <T extends ComposerBase> void save(ObjectComposer<T> a1, ItemLoader itemLoader) throws IOException
 	{
-		var a2 = a1.put("Class", xClass.code)
-				.put("Level", level)
-				.put("Exp", exp);
+		a1.put("Class", xClass.code);
+		a1.put("Level", level);
+		a1.put("Exp", exp);
 		if(playerLevelSystem != null)
 		{
-			a2 = playerLevelSystem.save(a2.startObjectField("LevelSystem")).end();
+			playerLevelSystem.save(a1.startObjectField("LevelSystem"));
 		}
 		if(customName != null)
 		{
-			a2 = a2.put("CustomName", customName);
+			a1.put("CustomName", customName);
 		}
-		if(customImage != null)
+		if(customMapImage != null)
 		{
-			a2 = a2.put("CustomImage", customImage);
+			a1.put("CustomMapImage", customMapImage);
 		}
-		var a3 = a2.put("Strength", lvStats[0])
-				.put("Finesse", lvStats[1])
-				.put("Skill", lvStats[2])
-				.put("Speed", lvStats[3])
-				.put("Luck", lvStats[4])
-				.put("Defense", lvStats[5])
-				.put("Evasion", lvStats[6])
-				.put("Toughness", lvStats[7])
-				.put("Movement", movement)
-				.put("CurrentHealth", currentHealth)
-				.put("Exhaustion", exhaustion);
+		if(customSideImage != null)
+		{
+			a1.put("CustomSideImage", customSideImage);
+		}
+		var a2 = a1.startArrayField("LvStats");
+		for(int i = 0; i < 8; i++)
+		{
+			a2.add(lvStats[i]);
+		}
+		a2.end();
+		a1.put("CurrentHealth", currentHealth);
+		a1.put("Exhaustion", exhaustion);
+		a1.put("Movement", movement);
+		a1.put("DashMovement", dashMovement);
+		a1.put("MaxAccessRange", maxAccessRange);
 		if(lastUsed.active)
 		{
-			var a4 = a3.put("LastUsed", lastUsed.mode.code()).startObjectField("LastUsedItem");
-			a3 = itemLoader.saveItem(a4, lastUsed.item).end();
+			a1.put("LastUsed", lastUsed.mode.code());
+			var a3 = a1.startObjectField("LastUsedItem");
+			itemLoader.saveItem(a3, lastUsed.item);
+			a3.end();
 		}
-		return a3;
+		a1.end();
 	}
 
 	public List<String> info()
@@ -488,7 +517,7 @@ public class Stats implements ModifierAspect
 	public List<String> editOptions(int num)
 	{
 		if(num == 0)
-			return List.of("Name", "Image");
+			return List.of("Name", "Image 1", "Image 2");
 		if(num == 1)
 			return List.of("Prev", "Next");
 		if(num == 2)
@@ -517,9 +546,17 @@ public class Stats implements ModifierAspect
 			{
 				File f = new FileChooser().showOpenDialog(null);
 				if(f != null)
-					customImage = f.getName();
+					customMapImage = f.getName();
 				else
-					customImage = null;
+					customMapImage = null;
+			}
+			case 0x02 ->
+			{
+				File f = new FileChooser().showOpenDialog(null);
+				if(f != null)
+					customSideImage = f.getName();
+				else
+					customSideImage = null;
 			}
 			case 0x10 ->
 			{

@@ -43,12 +43,12 @@ public class ItemList
 		data.elements().forEachRemaining(e -> items.add(new ItemStack((JrsObject) e, itemLoader)));
 	}
 
-	public <T extends ComposerBase> ArrayComposer<T> save(ArrayComposer<T> a1, ItemLoader itemLoader) throws IOException
+	public <T extends ComposerBase> void save(ArrayComposer<T> a1, ItemLoader itemLoader) throws IOException
 	{
 		for(ItemStack stack : items)
 		{
-			a1 = stack.save(a1.startObject(), itemLoader).end();
+			stack.save(a1.startObject(), itemLoader);
 		}
-		return a1;
+		a1.end();
 	}
 }

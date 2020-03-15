@@ -20,17 +20,17 @@ public record ConstructionBlueprint(List<List<CostBlueprint>> blueprints)
 		return new ConstructionBlueprint(blueprints);
 	}
 
-	public <T extends ComposerBase> ArrayComposer<T> save(ArrayComposer<T> a1, ItemLoader itemLoader) throws IOException
+	public <T extends ComposerBase> void save(ArrayComposer<T> a1, ItemLoader itemLoader) throws IOException
 	{
 		for(List<CostBlueprint> l1 : blueprints)
 		{
 			var a2 = a1.startArray();
 			for(CostBlueprint c1 : l1)
 			{
-				a2 = c1.save(a2.startObject(), itemLoader).end();
+				c1.save(a2.startObject(), itemLoader);
 			}
-			a1 = a2.end();
+			a2.end();
 		}
-		return a1;
+		a1.end();
 	}
 }

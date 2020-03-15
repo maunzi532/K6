@@ -154,14 +154,15 @@ public class WeightInv implements Inv
 	}
 
 	@Override
-	public <T extends ComposerBase> ObjectComposer<T> save(ObjectComposer<T> a1, ItemLoader itemLoader) throws IOException
+	public <T extends ComposerBase> void save(ObjectComposer<T> a1, ItemLoader itemLoader) throws IOException
 	{
-		var a2 = a1.put("WLimit", limitW)
-				.startArrayField("Stacks");
+		a1.put("WLimit", limitW);
+		var a2 = a1.startArrayField("Stacks");
 		for(InvStack invStack : stacks)
 		{
-			a2 = invStack.toItemStack().save(a2.startObject(), itemLoader).end();
+			invStack.toItemStack().save(a2.startObject(), itemLoader);
 		}
-		return a2.end();
+		a2.end();
+		a1.end();
 	}
 }

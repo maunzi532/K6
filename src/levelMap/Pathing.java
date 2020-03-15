@@ -83,20 +83,20 @@ public class Pathing
 	private static PathLocation pathLocation(Tile t1, AdvTile advTile, int currentCost, int maxCost,
 			XCharacter entity, PathLocation from, List<XCharacter> movingAllies)
 	{
-		if(advTile.getFloorTile() == null || advTile.getFloorTile().blocked())
+		if(advTile.floorTile() == null || advTile.floorTile().blocked())
 			return null;
-		boolean canEnd = advTile.getFloorTile().canMovementEnd();
+		boolean canEnd = advTile.floorTile().canMovementEnd();
 		XCharacter movingAlly = null;
-		if(advTile.getEntity() != null && advTile.getEntity() != entity)
+		if(advTile.entity() != null && advTile.entity() != entity)
 		{
-			if(entity.isEnemy(advTile.getEntity()))
+			if(entity.isEnemy(advTile.entity()))
 				return null;
-			else if(movingAllies.contains(advTile.getEntity()))
-				movingAlly = advTile.getEntity();
+			else if(movingAllies.contains(advTile.entity()))
+				movingAlly = advTile.entity();
 			else
 				canEnd = false;
 		}
-		int cost = currentCost + advTile.getFloorTile().moveCost();
+		int cost = currentCost + advTile.floorTile().moveCost();
 		if(cost > maxCost)
 			return null;
 		return new PathLocation(t1, cost, canEnd, from, movingAlly);

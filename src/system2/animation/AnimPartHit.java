@@ -27,7 +27,7 @@ public class AnimPartHit implements AnimPart
 		this.crit = crit;
 		this.melt = melt;
 		this.arrows = arrows;
-		arrow = new BlinkArrow(target.location(), DURATION, false, /*target.getImage()*/XCharacter.IMAGE, BLINKTIME);
+		arrow = new BlinkArrow(target.location(), DURATION, false, target.mapImage(), BLINKTIME);
 		reduction = Math.min(statsT.currentHealth(), damage);
 		statsT.setCurrentHealth(Math.max(0, statsT.currentHealth() - damage));
 	}

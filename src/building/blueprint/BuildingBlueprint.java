@@ -33,18 +33,18 @@ public record BuildingBlueprint(String name, ConstructionBlueprint constructionB
 	}
 
 	@Override
-	public <T extends ComposerBase> ObjectComposer<T> save(ObjectComposer<T> a1, ItemLoader itemLoader) throws IOException
+	public <T extends ComposerBase> void save(ObjectComposer<T> a1, ItemLoader itemLoader) throws IOException
 	{
-		var a2 = a1.put("Name", name);
-		a2 = constructionBlueprint.save(a2.startArrayField("Construction"), itemLoader).end();
+		a1.put("Name", name);
+		constructionBlueprint.save(a1.startArrayField("Construction"), itemLoader);
 		if(productionBlueprint != null)
 		{
-			a2 = productionBlueprint.save(a2.startObjectField("Production"), itemLoader).end();
+			productionBlueprint.save(a1.startObjectField("Production"), itemLoader);
 		}
 		if(transporterBlueprint != null)
 		{
-			a2 = transporterBlueprint.save(a2.startObjectField("Transporter")).end();
+			transporterBlueprint.save(a1.startObjectField("Transporter"));
 		}
-		return a2;
+		a1.end();
 	}
 }

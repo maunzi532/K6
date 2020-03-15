@@ -14,9 +14,10 @@ public record Recipe(ItemList required, ItemList results)
 		return new Recipe(required, results);
 	}
 
-	public <T extends ComposerBase> ObjectComposer<T> save(ObjectComposer<T> a1, ItemLoader itemLoader) throws IOException
+	public <T extends ComposerBase> void save(ObjectComposer<T> a1, ItemLoader itemLoader) throws IOException
 	{
-		var a2 = required.save(a1.startArrayField("Required"), itemLoader).end();
-		return results.save(a2.startArrayField("Results"), itemLoader).end();
+		required.save(a1.startArrayField("Required"), itemLoader);
+		results.save(a1.startArrayField("Results"), itemLoader);
+		a1.end();
 	}
 }

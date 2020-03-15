@@ -122,19 +122,23 @@ public class PlayerLevelSystem implements LevelSystem
 		return levelup;
 	}
 
-	public <T extends ComposerBase> ObjectComposer<T> save(ObjectComposer<T> a1) throws IOException
+	public <T extends ComposerBase> void save(ObjectComposer<T> a1) throws IOException
 	{
-		var a2 = a1.put("BaseLevel", baseLevel).startArrayField("BaseLevelStats");
+		a1.put("BaseLevel", baseLevel);
+		var a2 = a1.startArrayField("BaseLevelStats");
 		for(int i = 0; i < STAT_COUNT; i++)
 		{
 			a2.add(baseLevelStats[i]);
 		}
-		var a3 = a2.end().startArrayField("BaseIncrease");
+		a2.end();
+		var a3 = a1.startArrayField("BaseIncrease");
 		for(int i = 0; i < STAT_COUNT; i++)
 		{
 			a3.add(baseIncrease[i]);
 		}
-		return a3.end().put("LevelCap", levelCap);
+		a3.end();
+		a1.put("LevelCap", levelCap);
+		a1.end();
 	}
 
 	public PlayerLevelSystem(JrsObject data)

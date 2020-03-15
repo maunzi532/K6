@@ -124,13 +124,14 @@ public class SlotInv implements Inv
 	}
 
 	@Override
-	public <T extends ComposerBase> ObjectComposer<T> save(ObjectComposer<T> a1, ItemLoader itemLoader) throws IOException
+	public <T extends ComposerBase> void save(ObjectComposer<T> a1, ItemLoader itemLoader) throws IOException
 	{
 		var a2 = a1.startArrayField("Slots");
 		for(InvSlot invSlot : slots)
 		{
-			a2 = invSlot.save(a2.startObject(), itemLoader).end();
+			invSlot.save(a2.startObject(), itemLoader);
 		}
-		return a2.end();
+		a2.end();
+		a1.end();
 	}
 }

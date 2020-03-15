@@ -40,5 +40,5 @@ public interface BuildingFunction
 
 	void loadConnect(ConnectRestore cr, XBuilding connectTo);
 
-	<T extends ComposerBase> ObjectComposer<T> save(ObjectComposer<T> a1, ItemLoader itemLoader, TileType y1) throws IOException;
+	<T extends ComposerBase> void save(ObjectComposer<T> a1, ItemLoader itemLoader, TileType y1) throws IOException;
 }

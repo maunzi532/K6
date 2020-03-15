@@ -17,15 +17,16 @@ public record ProductionBlueprint(ItemList inputLimits, ItemList outputLimits, L
 		return new ProductionBlueprint(inputLimits, outputLimits, recipes);
 	}
 
-	public <T extends ComposerBase> ObjectComposer<T> save(ObjectComposer<T> a1, ItemLoader itemLoader) throws IOException
+	public <T extends ComposerBase> void save(ObjectComposer<T> a1, ItemLoader itemLoader) throws IOException
 	{
-		var a2 = inputLimits.save(a1.startArrayField("InputLimits"), itemLoader).end();
-		a2 = outputLimits.save(a2.startArrayField("OutputLimits"), itemLoader).end();
-		var a3 = a2.startArrayField("Recipes");
+		inputLimits.save(a1.startArrayField("InputLimits"), itemLoader);
+		outputLimits.save(a1.startArrayField("OutputLimits"), itemLoader);
+		var a2 = a1.startArrayField("Recipes");
 		for(Recipe recipe : recipes)
 		{
-			a3 = recipe.save(a3.startObject(), itemLoader).end();
+			recipe.save(a2.startObject(), itemLoader);
 		}
-		return a3.end();
+		a2.end();
+		a1.end();
 	}
 }

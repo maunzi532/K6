@@ -12,7 +12,7 @@ public class Chapter1
 		{
 			new Entity2Builder(levelMap)
 					.setLocation(locations[0])
-					.setStats(new Stats(XClasses.mageClass(), 0, "Anna",
+					.setStats(new Stats(XClasses.mageClass(), 0, "Anna", "Enemy_3.png",
 							"AN_3.png", 6, new PlayerLevelSystem(0, new int[]{11, 12, 14, 9, 10, 12, 11, 8}, 40)))
 					.addItem(AttackItems2.standardDagger())
 					.addItem(AttackItems2.standardSpell())
@@ -22,7 +22,7 @@ public class Chapter1
 		{
 			new Entity2Builder(levelMap)
 					.setLocation(locations[1])
-					.setStats(new Stats(XClasses.banditClass(), 2, "Kate",
+					.setStats(new Stats(XClasses.banditClass(), 2, "Kate", "Enemy_3.png",
 							"KT_4.png", 6, new PlayerLevelSystem(2, new int[]{10, 9, 7, 11, 14, 14, 8, 13}, 40)))
 					.addItem(AttackItems2.standardDagger())
 					.addItem(AttackItems2.standardAxe())
@@ -32,7 +32,7 @@ public class Chapter1
 		{
 			new Entity2Builder(levelMap)
 					.setLocation(locations[2])
-					.setStats(new Stats(XClasses.squireClass(), 0, "John",
+					.setStats(new Stats(XClasses.squireClass(), 0, "John", "Enemy_3.png",
 							"JN_2.png", 6, new PlayerLevelSystem(0, new int[]{7, 15, 9, 13, 11, 11, 11, 10}, 40)))
 					.addItem(AttackItems2.standardDagger())
 					.addItem(AttackItems2.standardSpear())
@@ -42,7 +42,7 @@ public class Chapter1
 		{
 			new Entity2Builder(levelMap)
 					.setLocation(locations[3])
-					.setStats(new Stats(XClasses.soldierClass(), 6, "Arch",
+					.setStats(new Stats(XClasses.soldierClass(), 6, "Arch", "Enemy_3.png",
 							null, 6, new PlayerLevelSystem(6, new int[]{15, 11, 14, 14, 8, 18, 10, 12}, 40)))
 					.addItem(AttackItems2.standardSpear())
 					.addItem(AttackItems2.standardCrossbow())
@@ -52,7 +52,7 @@ public class Chapter1
 		{
 			new Entity2Builder(levelMap)
 					.setLocation(locations[4])
-					.setStats(new Stats(XClasses.hexerClass(), 4, "Selen",
+					.setStats(new Stats(XClasses.hexerClass(), 4, "Selen", "Enemy_3.png",
 							null, 6, new PlayerLevelSystem(4, new int[]{13, 8, 12, 12, 9, 9, 15, 12}, 40)))
 					.addItem(AttackItems2.standardSpell())
 					.create(true);
@@ -61,7 +61,7 @@ public class Chapter1
 		{
 			new Entity2Builder(levelMap)
 					.setLocation(locations[5])
-					.setStats(new Stats(XClasses.pirateClass(), 7, "Zeta",
+					.setStats(new Stats(XClasses.pirateClass(), 7, "Zeta", "Enemy_3.png",
 							null, 6, new PlayerLevelSystem(7, new int[]{15, 14, 12, 14, 12, 16, 13, 11}, 40)))
 					.addItem(AttackItems2.standardAxe())
 					.addItem(AttackItems2.standardCrossbow())

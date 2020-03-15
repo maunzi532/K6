@@ -33,13 +33,13 @@ public class ItemStack
 		}
 	}
 
-	public <T extends ComposerBase> ObjectComposer<T> save(ObjectComposer<T> a1, ItemLoader itemLoader) throws IOException
+	public <T extends ComposerBase> void save(ObjectComposer<T> a1, ItemLoader itemLoader) throws IOException
 	{
-		a1 = itemLoader.saveItem(a1, item);
+		itemLoader.saveItem(a1, item);
 		if(count != 1)
 		{
-			a1 = a1.put("Amount", count);
+			a1.put("Amount", count);
 		}
-		return a1;
+		a1.end();
 	}
 }
