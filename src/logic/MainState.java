@@ -25,6 +25,7 @@ public class MainState
 	public boolean preferBuildings;
 	public boolean showAllEnemyReach;
 	public XStateHolder stateHolder;
+	public Map<Tile, Long> allEnemyReach;
 
 	public MainState(TileType y1, ItemLoader itemLoader, SideInfoFrame sideInfoFrame,
 			BlueprintCache<BuildingBlueprint> buildingBlueprintCache)
@@ -66,7 +67,6 @@ public class MainState
 	//TODO advanced loading system
 
 	//engine mechanics
-	//TODO update all enemy reach only when needed
 	//TODO all enemy reach show amount of enemies
 	//TODO turn limit
 	//TODO enemy reinforcements (starting delay)

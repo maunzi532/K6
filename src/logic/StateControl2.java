@@ -5,7 +5,6 @@ import building.transport.*;
 import entity.*;
 import geom.f1.*;
 import java.util.*;
-import java.util.function.*;
 import java.util.stream.*;
 import javafx.scene.paint.*;
 import levelMap.*;
@@ -275,6 +274,8 @@ public class StateControl2 implements XStateHolder, ConvInputConsumer
 		else if(key.hasFunction("All Enemy Reach"))
 		{
 			mainState.showAllEnemyReach = !mainState.showAllEnemyReach;
+			if(mainState.showAllEnemyReach)
+				mainState.levelMap.requireUpdate();
 		}
 		else if(key.hasFunction("Escape"))
 		{
@@ -318,13 +319,11 @@ public class StateControl2 implements XStateHolder, ConvInputConsumer
 		visMarked.clear();
 		if(mainState.showAllEnemyReach)
 		{
-			Map<Tile, Long> v = mainState.levelMap.teamCharacters(CharacterTeam.ENEMY).stream().flatMap(character ->
-				new Pathing(mainState.y1, character, character.resources().movement(),
-						mainState.levelMap, null).start().getEndpoints()
-						.stream().flatMap(loc -> mainState.levelMap.attackRanges(character, false).stream()
-						.flatMap(e -> mainState.y1.range(loc, e, e).stream())).distinct())
-					.collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
-			v.forEach((t, n) -> visMarked.add(new VisMark(t, Color.BLACK, 0.8)));
+			if(mainState.levelMap.checkUpdate())
+			{
+				mainState.allEnemyReach = mainState.levelMap.allEnemyReach();
+			}
+			mainState.allEnemyReach.forEach((t, n) -> visMarked.add(new VisMark(t, Color.BLACK, 0.8)));
 		}
 		if(state instanceof NMarkState)
 		{

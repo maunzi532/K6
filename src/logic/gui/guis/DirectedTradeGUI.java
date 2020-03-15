@@ -118,7 +118,6 @@ public class DirectedTradeGUI extends XGUIState
 			if(takeAp != null)
 			{
 				takeAp.action(false, 1);
-				takeAp.irreversible();
 			}
 		}
 		mainState.stateHolder.setState(NoneState.INSTANCE);

@@ -112,6 +112,7 @@ public class TurnResources
 		if(main)
 			mainAction = false;
 		actionPoints -= ap;
+		revertMoveAction = false;
 	}
 
 	public void revertMovement()
@@ -119,10 +120,5 @@ public class TurnResources
 		movement = startMovement;
 		dashMovement = startDashMovement;
 		moveAction = true;
-	}
-
-	public void irreversible()
-	{
-		revertMoveAction = false;
 	}
 }

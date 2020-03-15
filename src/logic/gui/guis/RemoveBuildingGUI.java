@@ -91,7 +91,6 @@ public class RemoveBuildingGUI extends XGUIState
 		if(character.inputInv().ok())
 		{
 			character.resources().action(false, 1);
-			character.resources().irreversible();
 			character.inputInv().commit();
 			building.remove();
 			mainState.stateHolder.setState(NoneState.INSTANCE);

@@ -12,6 +12,7 @@ import item.inv.*;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
+import java.util.function.*;
 import java.util.stream.*;
 import system2.*;
 
@@ -23,6 +24,7 @@ public class LevelMap implements ConnectRestore, Arrows
 	private final HashMap<CharacterTeam, List<XCharacter>> characters;
 	private final ArrayList<XArrow> arrows;
 	private final ArrayList<Integer> screenshake;
+	private boolean requiresUpdate;
 
 	public LevelMap(TileType y1)
 	{
@@ -37,6 +39,18 @@ public class LevelMap implements ConnectRestore, Arrows
 	public AdvTile advTile(Tile t1)
 	{
 		return advTiles.getOrDefault(t1, AdvTile.EMPTY);
+	}
+
+	public boolean checkUpdate()
+	{
+		boolean r = requiresUpdate;
+		requiresUpdate = false;
+		return r;
+	}
+
+	public void requireUpdate()
+	{
+		requiresUpdate = true;
 	}
 
 	public void productionPhase()
@@ -131,21 +145,14 @@ public class LevelMap implements ConnectRestore, Arrows
 		XBuilding building = new XBuilding(builder.location(), costs, refundable, blueprint);
 		addBuilding(building);
 		autoClaimFloor(building);
-	}
-
-	private void charactersAdd(XCharacter character)
-	{
-		if(!characters.containsKey(character.team()))
-		{
-			characters.put(character.team(), new ArrayList<>());
-		}
-		characters.get(character.team()).add(character);
+		requireUpdate();
 	}
 
 	public void revertMovement(XCharacter xh)
 	{
 		xh.resources().revertMovement();
 		moveEntity(xh, xh.resources().startLocation());
+		requireUpdate();
 	}
 
 	public void clearTile(Tile t1)
@@ -159,6 +166,7 @@ public class LevelMap implements ConnectRestore, Arrows
 			if(building != null)
 				building.remove();
 			advTiles.remove(t1);
+			requireUpdate();
 		}
 	}
 
@@ -175,6 +183,7 @@ public class LevelMap implements ConnectRestore, Arrows
 		}
 		else
 			advTiles.put(t1, new AdvTile(floorTile));
+		requireUpdate();
 	}
 
 	public XBuilding getBuilding(Tile t1)
@@ -186,6 +195,7 @@ public class LevelMap implements ConnectRestore, Arrows
 	{
 		advTile(building.location()).setBuilding(building);
 		buildings.add(building);
+		requireUpdate();
 	}
 
 	public XBuilding getOwner(Tile t1)
@@ -211,13 +221,19 @@ public class LevelMap implements ConnectRestore, Arrows
 	public void addEntity(XCharacter entity)
 	{
 		advTile(entity.location()).setEntity(entity);
-		charactersAdd(entity);
+		if(!characters.containsKey(entity.team()))
+		{
+			characters.put(entity.team(), new ArrayList<>());
+		}
+		characters.get(entity.team()).add(entity);
+		requireUpdate();
 	}
 
 	public void removeEntity(XCharacter entity)
 	{
 		advTile(entity.location()).setEntity(null);
 		characters.get(entity.team()).remove(entity);
+		requireUpdate();
 	}
 
 	public void moveEntity(XCharacter entity, Tile newLocation)
@@ -228,6 +244,7 @@ public class LevelMap implements ConnectRestore, Arrows
 		advTile(entity.location()).setEntity(null);
 		entity.setLocation(newLocation);
 		advTile(newLocation).setEntity(entity);
+		requireUpdate();
 	}
 
 	public void swapEntities(XCharacter entity1, XCharacter entity2)
@@ -244,11 +261,22 @@ public class LevelMap implements ConnectRestore, Arrows
 		advTile(location2).setEntity(entity1);
 		entity1.setLocation(location2);
 		entity2.setLocation(location1);
+		requireUpdate();
 	}
 
 	public List<XCharacter> teamCharacters(CharacterTeam team)
 	{
 		return characters.getOrDefault(team, List.of());
+	}
+
+	public Map<Tile, Long> allEnemyReach()
+	{
+		return teamCharacters(CharacterTeam.ENEMY).stream().flatMap(character ->
+				new Pathing(y1, character, character.stats().movement(),
+						this, null).start().getEndpoints()
+						.stream().flatMap(loc -> attackRanges(character, false).stream()
+						.flatMap(e -> y1.range(loc, e, e).stream())).distinct())
+				.collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
 	}
 
 	public List<XArrow> getArrows()
