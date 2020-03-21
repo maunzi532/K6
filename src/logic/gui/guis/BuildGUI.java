@@ -115,11 +115,11 @@ public class BuildGUI extends XGUIState
 		floorTiles.elements = cost.requiredFloorTiles();
 		required.elements = cost.required().items;
 		returned.elements = cost.refundable().items;
-		prevElement.fillTile = activeIf("Prev", costNum > 0, Color.LIGHTCYAN);
-		nextElement.fillTile = activeIf("Next", costNum < blueprints.size() - 1, Color.LIGHTCYAN);
-		lessTilesElement.fillTile = activeIf("Less Tiles", tileCostNum > 0, Color.LIGHTCYAN);
-		moreTilesElement.fillTile = activeIf("More Tiles", tileCostNum < blueprints.get(costNum).size() - 1, Color.LIGHTCYAN);
-		buildElement.fillTile = activeIf("Build", builder.tryBuildingCosts(cost.refundable(), cost.costs(), CommitType.ROLLBACK).isPresent(), Color.CYAN);
+		prevElement.fillTile = activeIf("Prev", costNum > 0, ACTIVE);
+		nextElement.fillTile = activeIf("Next", costNum < blueprints.size() - 1, ACTIVE);
+		lessTilesElement.fillTile = activeIf("Less Tiles", tileCostNum > 0, ACTIVE);
+		moreTilesElement.fillTile = activeIf("More Tiles", tileCostNum < blueprints.get(costNum).size() - 1, ACTIVE);
+		buildElement.fillTile = activeIf("Build", builder.tryBuildingCosts(cost.refundable(), cost.costs(), CommitType.ROLLBACK).isPresent(), ACTIVE2);
 	}
 
 	private GuiTile activeIf(String text, boolean active, Color color)
@@ -142,7 +142,7 @@ public class BuildGUI extends XGUIState
 	private GuiTile[] itemView1(ItemStack stack)
 	{
 		ItemView itemView = builder.viewRecipeItem(stack.item);
-		Color color = itemView.base >= stack.count || itemView.base == -1 ? Color.CYAN : null;
+		Color color = itemView.base >= stack.count || itemView.base == -1 ? ACTIVE2 : null;
 		return new GuiTile[]
 				{
 						new GuiTile((itemView.base == -1 ? "-" : itemView.base) + " / " + stack.count, null, false, color),

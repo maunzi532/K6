@@ -14,6 +14,7 @@ import logic.xstate.*;
 public class MainState
 {
 	public final TileType y1;
+	public final ColorScheme colorScheme;
 	public final ItemLoader itemLoader;
 	public final SideInfoFrame sideInfoFrame;
 	public final BlueprintCache<BuildingBlueprint> buildingBlueprintCache;
@@ -27,10 +28,11 @@ public class MainState
 	public XStateHolder stateHolder;
 	public Map<Tile, Long> allEnemyReach;
 
-	public MainState(TileType y1, ItemLoader itemLoader, SideInfoFrame sideInfoFrame,
-			BlueprintCache<BuildingBlueprint> buildingBlueprintCache)
+	public MainState(TileType y1, ColorScheme colorScheme, ItemLoader itemLoader,
+			SideInfoFrame sideInfoFrame, BlueprintCache<BuildingBlueprint> buildingBlueprintCache)
 	{
 		this.y1 = y1;
+		this.colorScheme = colorScheme;
 		this.itemLoader = itemLoader;
 		this.sideInfoFrame = sideInfoFrame;
 		this.buildingBlueprintCache = buildingBlueprintCache;
@@ -58,13 +60,17 @@ public class MainState
 	}
 
 	//content
-	//TODO Build a real level
+	//TODO    Build a real level
+
+	//images
+	//TODO replace floor images
+	//TODO downscale item images
 	//TODO add images of items of upgraded classes
 
 	//save/load
 	//TODO savestate during map
-	//TODO save maps and saves in folders
-	//TODO advanced loading system
+	//TODO    save maps and saves in folders
+	//TODO    advanced loading system
 
 	//engine mechanics
 	//TODO all enemy reach show amount of enemies
@@ -72,36 +78,38 @@ public class MainState
 	//TODO enemy reinforcements (starting delay)
 
 	//GUI
-	//TODO LevelEditor edit PlayerLevelSystem
-	//TODO LevelSystem view
-	//TODO CharacterCombatGUI show stat calculation
-	//TODO AttackInfoGUI show stat calculation
+	//TODO    LevelEditor edit PlayerLevelSystem
+	//TODO    LevelSystem view
+	//TODO    CharacterCombatGUI show stat calculation
+	//TODO    AttackInfoGUI show stat calculation
 
 	//combat system (rules)
-	//TODO change speed effects
-	//TODO levelup essence formula
+	//TODO    change speed effects
+	//TODO    levelup essence formula
 	//TODO add upgraded classes
 	//TODO add class abilities (0/6)
 
 	//combat system (systems)
 	//TODO Enemy AI types
-	//TODO Enemy AI type: Activate
-	//TODO Enemy AI type: Stationary
-	//TODO complicated levelup system
+	//TODO    Enemy AI type: Activate
+	//TODO    Enemy AI type: Stationary
+	//TODO    complicated levelup system
 
 	//code
-	//TODO Initialize somewhere else than in MainVisual
+	//TODO Integrate color scheme file
+	//TODO    Initialize somewhere else than in MainVisual
 	//TODO character class names in classes
 	//TODO BlueprintCache is weird
 	//TODO rename or split ImageLoader
 	//TODO AnimPartVanish remove character later
+	//TODO fix stealing from enemies
 
 	//visual engine mechanics
 	//TODO move GUI so it does not overlap with SideInfo/LevelEditor
-	//TODO improve camera controls
+	//TODO    improve camera controls
 	//TODO move camera to view enemies/encounters
-	//TODO show pause menu
-	//TODO show better SideInfo
+	//TODO    show pause menu
+	//TODO    show better SideInfo
 
 	//LK char - move/attack
 	//RK char - inv/trade

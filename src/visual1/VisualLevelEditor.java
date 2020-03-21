@@ -41,7 +41,7 @@ public class VisualLevelEditor
 		return mainState.stateHolder.getState().editMode() ? graphics.scaleHW() * 0.35 : 0;
 	}
 
-	public void draw(LevelEditor levelEditor)
+	public void draw(LevelEditor levelEditor, ColorScheme cs)
 	{
 		if(levelEditor.mainState.stateHolder.getState().editMode())
 		{
@@ -49,7 +49,7 @@ public class VisualLevelEditor
 			{
 				EditorSlot editorSlot = levelEditor.editorSlots.get(i);
 				editorSlot.gui.setTile(editorSlot.mode.guiTile(), levelEditor.getCurrentSlot() == i);
-				visualSlots.get(i).locateAndDraw(editorSlot.gui);
+				visualSlots.get(i).locateAndDraw(editorSlot.gui, cs);
 			}
 		}
 	}

@@ -2,6 +2,7 @@ package visual1.gui;
 
 import geom.*;
 import geom.d1.*;
+import logic.*;
 import logic.gui.*;
 import visual1.*;
 
@@ -39,10 +40,10 @@ public class VisualGUIHex extends VisualGUI
 	}
 
 	@Override
-	public void locateAndDraw(XGUIState xgui)
+	public void locateAndDraw(XGUIState xgui, ColorScheme cs)
 	{
 		double cxs = xgui.xw() - (xgui.yw() > 1 ? 0.5 : 1d) * HexMatrix.Q3 / 2d;
 		double cys = (xgui.yw() - 1) * 1.5 / 2d;
-		drawGUI(xgui, cxs, cys, LU, rl(xgui), IMAGE_END, FONT_SIZE, TEXT_END);
+		drawGUI(xgui, cs, cxs, cys, LU, rl(xgui), IMAGE_END, FONT_SIZE, TEXT_END);
 	}
 }

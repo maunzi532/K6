@@ -7,6 +7,8 @@ import javafx.scene.paint.*;
 
 public class ArrowViewer
 {
+	public static final Color ARROW = Color.BLUE;
+	public static final Color SHINE = Color.AZURE;
 	private static final double SHINE_WIDTH = 0.65;
 	private static final double ZERO_SHINE = 0.45;
 	public static final double WIDTH = 0.15;
@@ -137,13 +139,13 @@ public class ArrowViewer
 			Stop[] stops = new Stop[shine.length];
 			for(int i = 0; i < shine.length; i++)
 			{
-				stops[i] = new Stop(shine[i], i % 3 == 1 ? Color.AZURE : Color.BLUE);
+				stops[i] = new Stop(shine[i], i % 3 == 1 ? SHINE : ARROW);
 			}
 			return new LinearGradient(gp[0][0], gp[1][0], gp[0][1], gp[1][1], false, CycleMethod.NO_CYCLE, stops);
 		}
 		else
 		{
-			return Color.BLUE;
+			return ARROW;
 		}
 	}
 

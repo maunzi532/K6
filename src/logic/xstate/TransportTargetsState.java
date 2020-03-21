@@ -12,6 +12,9 @@ import logic.*;
 
 public class TransportTargetsState implements NMarkState
 {
+	public static final Color ACTIVE = Color.BLUE;
+	public static final Color INACTIVE = Color.YELLOW;
+
 	private final XBuilding building;
 	private final Transport transport;
 	private List<DoubleInv> possibleTargets;
@@ -34,7 +37,7 @@ public class TransportTargetsState implements NMarkState
 
 	private void createVisMarked()
 	{
-		visMarked = possibleTargets.stream().map(e -> new VisMark(e.location(), transport.isTarget(e) ? Color.BLUE : Color.YELLOW, VisMark.d1)).collect(Collectors.toList());
+		visMarked = possibleTargets.stream().map(e -> new VisMark(e.location(), transport.isTarget(e) ? ACTIVE : INACTIVE, VisMark.d1)).collect(Collectors.toList());
 	}
 
 	@Override

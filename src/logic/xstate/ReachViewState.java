@@ -9,6 +9,9 @@ import logic.*;
 
 public class ReachViewState implements NMarkState
 {
+	public static final Color MOVEMENT_REACH = Color.MEDIUMVIOLETRED;
+	public static final Color ATTACK_REACH = Color.RED;
+
 	private final XCharacter character;
 	private final boolean enemy;
 	private List<VisMark> allTargets;
@@ -23,12 +26,12 @@ public class ReachViewState implements NMarkState
 	public void onEnter(MainState mainState)
 	{
 		mainState.sideInfoFrame.setSideInfoXH(character.standardSideInfo(), character);
-		List<Tile> movement = new Pathing(mainState.y1, character, character.resources().movement(), mainState.levelMap, null).start().getEndpoints();
+		List<Tile> movement = new Pathing(mainState.y1, character, character.stats().movement(), mainState.levelMap, null).start().getEndpoints();
 		allTargets = new ArrayList<>();
-		movement.forEach(e -> allTargets.add(new VisMark(e, Color.MEDIUMVIOLETRED, VisMark.d1)));
+		movement.forEach(e -> allTargets.add(new VisMark(e, MOVEMENT_REACH, VisMark.d1)));
 		movement.stream().flatMap(loc -> mainState.levelMap.attackRanges(character, false).stream()
 				.flatMap(e -> mainState.y1.range(loc, e, e).stream())).distinct()
-				.forEach(e -> allTargets.add(new VisMark(e, Color.RED, VisMark.d1)));
+				.forEach(e -> allTargets.add(new VisMark(e, ATTACK_REACH, VisMark.d1)));
 	}
 
 	@Override

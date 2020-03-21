@@ -5,7 +5,6 @@ import item.*;
 import item.view.*;
 import java.util.*;
 import java.util.stream.*;
-import javafx.scene.paint.*;
 import logic.*;
 import logic.gui.*;
 import system2.*;
@@ -109,8 +108,8 @@ public class CharacterCombatGUI extends XGUIState
 		boolean mark = itemView.item == equippedItem;
 		return new GuiTile[]
 				{
-						new GuiTile(itemView.currentWithLimit(), null, false, mark ? Color.CYAN : null),
-						new GuiTile(null, itemView.item.image(), false, mark ? Color.CYAN : null)
+						new GuiTile(itemView.currentWithLimit(), null, false, mark ? ACTIVE2 : null),
+						new GuiTile(null, itemView.item.image(), false, mark ? ACTIVE2 : null)
 				};
 	}
 

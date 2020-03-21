@@ -10,7 +10,9 @@ import visual1.*;
 
 public class SideInfoViewer implements SideInfoHolder
 {
-	private static final int SHIFT_TIME = 10;
+	private static final Color INFO_BACKGROUND = Color.color(0.4, 0.4, 0.5);
+	private static final Color INFO_TEXT = Color.BLACK;
+	private static final int SHIFT_TIME = 8;
 
 	private final XGraphics graphics;
 	private final boolean flipped;
@@ -57,6 +59,7 @@ public class SideInfoViewer implements SideInfoHolder
 
 	private void drawShifted(SideInfo sideInfo, double shift)
 	{
+		graphics.gd().setImageSmoothing(false);
 		if(flipped)
 			drawR(sideInfo, shift);
 		else
@@ -81,12 +84,12 @@ public class SideInfoViewer implements SideInfoHolder
 		double size = graphics.scaleHW();
 		double lx = -size * shift;
 		double by = graphics.yHW() * 2;
-		gd.setFill(Color.GRAY);
+		gd.setFill(INFO_BACKGROUND);
 		gd.drawImage(sideInfo.getCharImage(), lx + size * XD_I, by - size * (YS_1 + S_I), size * S_I, size * S_I);
 		gd.fillRect(lx, by - size * YS_1, size * XS_1, size * YS_1);
 		if(sideInfo.getStatBar() != null)
 			drawStatBar(sideInfo.getStatBar(), lx + size * XD_S, by - size * (YD_S + YS_T), size * XS_S, size * YS_T);
-		gd.setFill(Color.BLACK);
+		gd.setFill(INFO_TEXT);
 		gd.setFont(new Font(size * YS_T));
 		String[] texts = sideInfo.getTexts();
 		for(int i = 0; i < texts.length; i++)
@@ -101,12 +104,12 @@ public class SideInfoViewer implements SideInfoHolder
 		double size = graphics.scaleHW();
 		double rx = graphics.xHW() * 2 + size * shift;
 		double by = graphics.yHW() * 2;
-		gd.setFill(Color.GRAY);
+		gd.setFill(INFO_BACKGROUND);
 		gd.drawImage(sideInfo.getCharImage(), rx - size * (XD_I + S_I), by - size * (YS_1 + S_I), size * S_I, size * S_I);
 		gd.fillRect(rx - size * XS_1, by - size * YS_1, size * XS_1, size * YS_1);
 		if(sideInfo.getStatBar() != null)
 			drawStatBar(sideInfo.getStatBar(), rx - size * (XD_S + XS_S), by - size * (YD_S + YS_T), size * XS_S, size * YS_T);
-		gd.setFill(Color.BLACK);
+		gd.setFill(INFO_TEXT);
 		gd.setFont(new Font(size * YS_T));
 		String[] texts = sideInfo.getTexts();
 		for(int i = 0; i < texts.length; i++)

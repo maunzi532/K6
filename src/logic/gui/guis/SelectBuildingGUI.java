@@ -11,7 +11,7 @@ import logic.xstate.*;
 
 public class SelectBuildingGUI extends XGUIState
 {
-	private static final Image BUILDING = new Image("H.png");
+	private static final Image BUILDING = new Image("M1.png");
 	private static final CTile textInv = new CTile(2, 0, new GuiTile("Buildings"), 2, 1);
 
 	private final XBuilder builder;

@@ -1,7 +1,6 @@
 package logic.editor.xgui;
 
 import entity.*;
-import javafx.scene.paint.*;
 import logic.*;
 import logic.gui.*;
 import logic.xstate.*;
@@ -41,8 +40,8 @@ public class SaveSettingsEditGUI extends XGUIState
 	@Override
 	protected void updateBeforeDraw()
 	{
-		locationLockedElement.fillTile = new GuiTile("Lock\nLocation", null, false, character.saveSettings().startLocked ? Color.CYAN : null);
-		inventoryLockedElement.fillTile = new GuiTile("Lock\nInventory", null, false, character.saveSettings().startInvLocked ? Color.CYAN : null);
+		locationLockedElement.fillTile = new GuiTile("Lock\nLocation", null, false, character.saveSettings().startLocked ? ACTIVE2 : null);
+		inventoryLockedElement.fillTile = new GuiTile("Lock\nInventory", null, false, character.saveSettings().startInvLocked ? ACTIVE2 : null);
 	}
 
 	@Override

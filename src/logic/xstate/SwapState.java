@@ -10,6 +10,7 @@ import logic.*;
 
 public class SwapState implements NMarkState
 {
+	public static final Color TARGET = Color.YELLOW;
 	private final XCharacter character;
 	private List<XCharacter> swapTargets;
 	private List<VisMark> visMarked;
@@ -32,7 +33,7 @@ public class SwapState implements NMarkState
 			swapTargets = mainState.levelMap.teamCharacters(CharacterTeam.HERO).stream()
 					.filter(e -> e != character && (e.saveSettings() == null || !e.saveSettings().startLocked)).collect(Collectors.toList());
 		}
-		visMarked = swapTargets.stream().map(e -> new VisMark(e.location(), Color.YELLOW, VisMark.d1)).collect(Collectors.toList());
+		visMarked = swapTargets.stream().map(e -> new VisMark(e.location(), TARGET, VisMark.d1)).collect(Collectors.toList());
 	}
 
 	@Override
@@ -60,7 +61,7 @@ public class SwapState implements NMarkState
 		if(entity != null && entity.team() == CharacterTeam.HERO && swapTargets.contains(entity))
 		{
 			mainState.levelMap.swapEntities(character, entity);
-			visMarked = swapTargets.stream().map(e -> new VisMark(e.location(), Color.YELLOW, VisMark.d1)).collect(Collectors.toList());
+			visMarked = swapTargets.stream().map(e -> new VisMark(e.location(), TARGET, VisMark.d1)).collect(Collectors.toList());
 		}
 		else
 		{

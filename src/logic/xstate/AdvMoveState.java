@@ -10,6 +10,10 @@ import logic.gui.guis.*;
 
 public class AdvMoveState implements NMarkState
 {
+	public static final Color CAN_MOVE = Color.YELLOW;
+	public static final Color CAN_DASH = Color.WHITE;
+	public static final Color CAN_ATTACK = Color.RED;
+
 	private final XCharacter character;
 	private List<PathLocation> movement;
 	private List<Tile> attack;
@@ -42,10 +46,10 @@ public class AdvMoveState implements NMarkState
 		}
 		allTargets = new ArrayList<>();
 		if(character.resources().moveAction())
-			movement.stream().map(e -> new VisMark(e.tile(), Color.YELLOW, VisMark.d1)).forEach(allTargets::add);
+			movement.stream().map(e -> new VisMark(e.tile(), CAN_MOVE, VisMark.d1)).forEach(allTargets::add);
 		else
-			movement.stream().map(e -> new VisMark(e.tile(), Color.WHITE, VisMark.d1)).forEach(allTargets::add);
-		attack.stream().map(e -> new VisMark(e, Color.RED, VisMark.d1)).forEach(allTargets::add);
+			movement.stream().map(e -> new VisMark(e.tile(), CAN_DASH, VisMark.d1)).forEach(allTargets::add);
+		attack.stream().map(e -> new VisMark(e, CAN_ATTACK, VisMark.d1)).forEach(allTargets::add);
 	}
 
 	@Override

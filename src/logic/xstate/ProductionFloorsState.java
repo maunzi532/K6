@@ -10,6 +10,9 @@ import logic.*;
 
 public class ProductionFloorsState implements NMarkState
 {
+	public static final Color ACTIVE_TILE = Color.BLUE;
+	public static final Color INACTIVE_TILE = Color.YELLOW;
+
 	private final XBuilding building;
 	private final ProcessInv processInv;
 	private List<Tile> targetableTiles;
@@ -32,7 +35,7 @@ public class ProductionFloorsState implements NMarkState
 
 	private void createVisMarked()
 	{
-		visMarked = targetableTiles.stream().map(e -> new VisMark(e, building.claimed().contains(e) ? Color.BLUE : Color.YELLOW, VisMark.d1)).collect(Collectors.toList());
+		visMarked = targetableTiles.stream().map(e -> new VisMark(e, building.claimed().contains(e) ? ACTIVE_TILE : INACTIVE_TILE, VisMark.d1)).collect(Collectors.toList());
 	}
 
 	@Override

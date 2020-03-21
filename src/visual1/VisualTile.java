@@ -13,7 +13,8 @@ import levelMap.*;
 
 public class VisualTile
 {
-	private static final Image BUILDING = new Image("H.png");
+	private static final Image BUILDING = new Image("M1.png");
+	private static final Image BACKGROUND = new Image("WALL_Tile.png");
 
 	private final TileType y1;
 	private final ArrowViewer av;
@@ -32,6 +33,7 @@ public class VisualTile
 
 	public void draw(TileCamera camera, int screenshake)
 	{
+		gd.setImageSmoothing(true);
 		int range = camera.getRange();
 		TileLayout layout = camera.layout(screenshake);
 		Tile mid = camera.mid(layout);
@@ -60,17 +62,10 @@ public class VisualTile
 	{
 		AdvTile advTile = levelMap.advTile(t1);
 		double[][] points = layout.tileCorners(t1);
-		if(advTile.visible())
-		{
-			PointD mid = layout.tileToPixel(t1);
-			PointD offset = layout.imageOffset();
-			gd.setFill(new ImagePattern(advTile.floorTile().type.image,
-					mid.v()[0] - offset.v()[0], mid.v()[1] - offset.v()[1], offset.v()[0] * 2, offset.v()[1] * 2, false));
-		}
-		else
-		{
-			gd.setFill(Color.BLACK);
-		}
+		PointD mid = layout.tileToPixel(t1);
+		PointD offset = layout.imageOffset();
+		gd.setFill(new ImagePattern(advTile.visible() ? advTile.floorTile().type.image : BACKGROUND,
+				mid.v()[0] - offset.v()[0], mid.v()[1] - offset.v()[1], offset.v()[0] * 2, offset.v()[1] * 2, false));
 		gd.fillPolygon(points[0], points[1], y1.directionCount());
 		if(advTile.visible())
 		{

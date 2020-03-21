@@ -2,7 +2,6 @@ package system2.animation;
 
 import arrow.*;
 import entity.*;
-import javafx.scene.paint.*;
 import system2.*;
 
 public class RegenerationAnim implements AnimTimer
@@ -18,7 +17,7 @@ public class RegenerationAnim implements AnimTimer
 	{
 		Stats stats = entity.stats();
 		healthBar = new InfoArrow(entity.location(),
-				entity.team() == CharacterTeam.HERO ? Color.GREEN : Color.GRAY, Color.BLACK, Color.WHITE,
+				entity.team() == CharacterTeam.HERO ? HERO_HEALTH : ENEMY_HEALTH, ARROW_BACKGROUND, ARROW_TEXT,
 				stats.currentHealth(), stats.maxHealth());
 		arrows.addArrow(healthBar);
 		regenerateAmount = stats.maxHealth() - stats.currentHealth();

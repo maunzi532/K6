@@ -3,7 +3,6 @@ package system2.animation;
 import arrow.*;
 import entity.*;
 import java.util.function.*;
-import javafx.scene.paint.*;
 import system2.*;
 import system2.analysis.*;
 
@@ -41,14 +40,14 @@ public class GetExpAnim implements AnimTimer, Supplier<boolean[]>, Runnable
 		{
 			levelup = stats.exp() >= LEVELUP_EXP;
 			expAmount = 20;
-			expBar = new InfoArrow(entity.location(), Color.PURPLE, Color.BLACK, Color.WHITE, stats.exp(), LEVELUP_EXP);
+			expBar = new InfoArrow(entity.location(), EXP_COLOR, ARROW_BACKGROUND, ARROW_TEXT, stats.exp(), LEVELUP_EXP);
 			arrows.addArrow(expBar);
 		}
 		if(entityT.team() == CharacterTeam.HERO)
 		{
 			levelupT = statsT.exp() >= LEVELUP_EXP;
 			expAmountT = 20;
-			expBarT = new InfoArrow(entityT.location(), Color.PURPLE, Color.BLACK, Color.WHITE, statsT.exp(), LEVELUP_EXP);
+			expBarT = new InfoArrow(entityT.location(), EXP_COLOR, ARROW_BACKGROUND, ARROW_TEXT, statsT.exp(), LEVELUP_EXP);
 			arrows.addArrow(expBarT);
 		}
 		if(expAmount <= 0 && expAmountT <= 0)

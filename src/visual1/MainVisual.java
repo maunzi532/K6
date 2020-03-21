@@ -25,6 +25,7 @@ public class MainVisual implements XInputInterface
 
 	private XGraphics graphics;
 	private XKeyMap keyMap;
+	private ColorScheme colorScheme;
 	private VisualTile visualTile;
 	private TileCamera mapCamera;
 	private VisualMenu visualMenu;
@@ -36,20 +37,21 @@ public class MainVisual implements XInputInterface
 	private ConvInputConsumer convInputConsumer;
 	private boolean paused;
 
-	public MainVisual(XGraphics graphics, XKeyMap keyMap, TileCamera mapCamera, TileCamera menuCamera, TileCamera guiCamera, String loadFile, String loadFile2)
+	public MainVisual(XGraphics graphics, XKeyMap keyMap, ColorScheme colorScheme,
+			TileCamera mapCamera, TileCamera menuCamera, TileCamera guiCamera, String loadFile, String loadFile2)
 	{
 		this.graphics = graphics;
 		this.keyMap = keyMap;
+		this.colorScheme = colorScheme;
 		this.mapCamera = mapCamera;
 		TileType y1 = mapCamera.getDoubleType();
 		SideInfoViewer sivL = new SideInfoViewer(graphics, false);
 		SideInfoViewer sivR = new SideInfoViewer(graphics, true);
 		visualSideInfo = new VisualSideInfo(sivL, sivR);
 		ItemLoader itemLoader = new ItemLoader2();
-		mainState = new MainState(y1, itemLoader, new SideInfoFrame(sivL, sivR),
+		mainState = new MainState(y1, colorScheme, itemLoader, new SideInfoFrame(sivL, sivR),
 				new BlueprintCache<>("BuildingBlueprints", e -> BuildingBlueprint.create(e, itemLoader)));
 		loadLevel(loadFile, loadFile2);
-		graphics.gd().setImageSmoothing(false);
 		graphics.gd().setTextAlign(TextAlignment.CENTER);
 		graphics.gd().setTextBaseline(VPos.CENTER);
 		visualLevelEditor = new VisualLevelEditor(graphics);
@@ -191,8 +193,8 @@ public class MainVisual implements XInputInterface
 		//graphics.gd().clearRect(0, 0, graphics.xHW() * 2, graphics.yHW() * 2);
 		visualTile.draw(mapCamera, mainState.screenshake);
 		visualSideInfo.draw();
-		visualLevelEditor.draw(levelEditor);
-		visualGUI.zoomAndDraw(mainState.stateHolder.getGUI());
+		visualLevelEditor.draw(levelEditor, colorScheme);
+		visualGUI.zoomAndDraw(mainState.stateHolder.getGUI(), colorScheme);
 		visualMenu.draw(graphics.yHW() - graphics.scaleHW() * 0.08,
 				graphics.yHW() - Math.max(visualSideInfo.takeY2(), visualLevelEditor.takeY(mainState)));
 		drawInfoText();

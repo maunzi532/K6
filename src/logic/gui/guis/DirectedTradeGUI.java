@@ -47,8 +47,8 @@ public class DirectedTradeGUI extends XGUIState
 		receiveView = new ScrollList<>(5, 1, 4, 5, 2, 1, null,
 				e -> itemView(e, false), null);
 		elements.add(receiveView);
-		elements.add(new CElement(nameProvide, new GuiTile(provide.name(), null, false, Color.BLUE)));
-		elements.add(new CElement(nameReceive, new GuiTile(receive.name(), null, false, Color.BLUE)));
+		elements.add(new CElement(nameProvide, new GuiTile(provide.name(), null, false, ACTIVE3)));
+		elements.add(new CElement(nameReceive, new GuiTile(receive.name(), null, false, ACTIVE3)));
 		elements.add(new CElement(more, true, null, () -> amount++));
 		transferElement = new CElement(transfer, true, null, this::clickTransfer);
 		elements.add(transferElement);
@@ -80,7 +80,7 @@ public class DirectedTradeGUI extends XGUIState
 
 	private GuiTile[] itemView(ItemView view, boolean provideInv)
 	{
-		Color color = provideInv && view.item == provideMarked ? Color.CYAN : null;
+		Color color = provideInv && view.item == provideMarked ? ACTIVE2 : null;
 		return new GuiTile[]
 				{
 						new GuiTile(view.currentWithLimit(), null, false, color),
