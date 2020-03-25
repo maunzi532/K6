@@ -8,7 +8,6 @@ import geom.f1.*;
 import item.*;
 import javafx.geometry.*;
 import javafx.scene.canvas.*;
-import javafx.scene.paint.*;
 import javafx.scene.text.*;
 import levelMap.*;
 import logic.*;
@@ -191,12 +190,12 @@ public class MainVisual implements XInputInterface
 	private void draw()
 	{
 		//graphics.gd().clearRect(0, 0, graphics.xHW() * 2, graphics.yHW() * 2);
-		visualTile.draw(mapCamera, mainState.screenshake);
-		visualSideInfo.draw();
+		visualTile.draw(mapCamera, mainState.screenshake, colorScheme);
+		visualSideInfo.draw(colorScheme);
 		visualLevelEditor.draw(levelEditor, colorScheme);
 		visualGUI.zoomAndDraw(mainState.stateHolder.getGUI(), colorScheme);
 		visualMenu.draw(graphics.yHW() - graphics.scaleHW() * 0.08,
-				graphics.yHW() - Math.max(visualSideInfo.takeY2(), visualLevelEditor.takeY(mainState)));
+				graphics.yHW() - Math.max(visualSideInfo.takeY2(), visualLevelEditor.takeY(mainState)), colorScheme);
 		drawInfoText();
 	}
 
@@ -213,9 +212,9 @@ public class MainVisual implements XInputInterface
 		double xHW = graphics.xHW();
 		double scale = graphics.scaleHW() * 0.04;
 		GraphicsContext gd = graphics.gd();
-		gd.setFill(Color.BLACK);
+		gd.setFill(colorScheme.color("topbar.background"));
 		gd.fillRect(0, 0, xHW * 2, scale * 2);
-		gd.setFill(Color.WHITE);
+		gd.setFill(colorScheme.color("topbar.text"));
 		gd.setFont(new Font(scale));
 		gd.setTextAlign(TextAlignment.LEFT);
 		gd.fillText(mainState.turnText(), scale, scale);

@@ -13,8 +13,6 @@ import logic.gui.guis.*;
 
 public class GiveOrTakeState implements NMarkState
 {
-	public static final Color TARGET_COLOR = Color.YELLOW;
-
 	private final boolean give;
 	private final XCharacter character;
 	private List<DoubleInv> possibleTargets;
@@ -37,7 +35,8 @@ public class GiveOrTakeState implements NMarkState
 				.filter(e -> e != null && e.active() && e.playerTradeable(levelStarted)).forEachOrdered(possibleTargets::add);
 		range.stream().map(e -> (DoubleInv) mainState.levelMap.getEntity(e))
 				.filter(e -> e != null && e.active() && e.playerTradeable(levelStarted)).forEachOrdered(possibleTargets::add);
-		visMarked = possibleTargets.stream().map(e -> new VisMark(e.location(), TARGET_COLOR,
+		Color targetColor = mainState.colorScheme.color("mark.trade.target");
+		visMarked = possibleTargets.stream().map(e -> new VisMark(e.location(), targetColor,
 				e.type() == DoubleInvType.ENTITY ? VisMark.d2 : VisMark.d1)).collect(Collectors.toList());
 	}
 

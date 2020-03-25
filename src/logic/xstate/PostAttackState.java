@@ -29,7 +29,7 @@ public class PostAttackState extends AttackState
 	{
 		if(firstEnter)
 		{
-			arrow = new GetExpAnim(aI, (RNGOutcome2) result, mainState.levelMap);
+			arrow = new GetExpAnim(aI, (RNGOutcome2) result, mainState.levelMap, mainState.colorScheme);
 			firstEnter = false;
 			boolean[] v = ((Supplier<boolean[]>) arrow).get();
 			levelup = v[0];

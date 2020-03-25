@@ -1,6 +1,7 @@
 package logic.editor.xgui;
 
 import entity.*;
+import javafx.scene.paint.*;
 import logic.*;
 import logic.gui.*;
 import logic.xstate.*;
@@ -11,6 +12,7 @@ public class SaveSettingsEditGUI extends XGUIState
 	private static final CTile isInventoryLocked = new CTile(2, 1, 2, 1);
 
 	private final XCharacter character;
+	private Color activeColor;
 	private CElement locationLockedElement;
 	private CElement inventoryLockedElement;
 
@@ -28,6 +30,7 @@ public class SaveSettingsEditGUI extends XGUIState
 	@Override
 	public void onEnter(MainState mainState)
 	{
+		activeColor = mainState.colorScheme.color("gui.background.active");
 		locationLockedElement = new CElement(isLocationLocked, true, null,
 				() -> character.saveSettings().startLocked = !character.saveSettings().startLocked);
 		elements.add(locationLockedElement);
@@ -40,8 +43,10 @@ public class SaveSettingsEditGUI extends XGUIState
 	@Override
 	protected void updateBeforeDraw()
 	{
-		locationLockedElement.fillTile = new GuiTile("Lock\nLocation", null, false, character.saveSettings().startLocked ? ACTIVE2 : null);
-		inventoryLockedElement.fillTile = new GuiTile("Lock\nInventory", null, false, character.saveSettings().startInvLocked ? ACTIVE2 : null);
+		locationLockedElement.fillTile = new GuiTile("Lock\nLocation", null, false,
+				character.saveSettings().startLocked ? activeColor : null);
+		inventoryLockedElement.fillTile = new GuiTile("Lock\nInventory", null, false,
+				character.saveSettings().startInvLocked ? activeColor : null);
 	}
 
 	@Override

@@ -5,6 +5,7 @@ import entity.*;
 import entity.analysis.*;
 import java.util.*;
 import java.util.function.*;
+import javafx.scene.paint.*;
 import logic.*;
 import system2.*;
 import system2.analysis.*;
@@ -30,11 +31,13 @@ public class AttackAnim implements AnimTimer, Supplier<RNGOutcome>
 		events = divider.getEvents();
 		eventCounter = -1;
 		linked = new ArrayList<>();
+		Color backgroundColor = colorScheme.color("arrow.healthbar.background");
+		Color textColor = colorScheme.color("arrow.healthbar.text");
 		healthBar1 = new InfoArrow(aI.entity.location(), aI.entityT.location(),
-				colorScheme.color(aI.entity.team().healthBarColor), ARROW_BACKGROUND, ARROW_TEXT,
+				colorScheme.color(aI.entity.team().healthBarColor), backgroundColor, textColor,
 				aI.getStats(false).currentHealth(), aI.getStats(false).maxHealth());
 		healthBar2 = new InfoArrow(aI.entityT.location(), aI.entity.location(),
-				colorScheme.color(aI.entityT.team().healthBarColor), ARROW_BACKGROUND, ARROW_TEXT,
+				colorScheme.color(aI.entityT.team().healthBarColor), backgroundColor, textColor,
 				aI.getStats(true).currentHealth(), aI.getStats(true).maxHealth());
 		arrows.addArrow(healthBar1);
 		arrows.addArrow(healthBar2);

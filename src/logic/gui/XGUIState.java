@@ -2,7 +2,6 @@ package logic.gui;
 
 import java.util.*;
 import javafx.scene.image.*;
-import javafx.scene.paint.*;
 import logic.*;
 import logic.editor.xstate.*;
 import logic.xstate.*;
@@ -10,11 +9,6 @@ import logic.xstate.*;
 public abstract class XGUIState implements NState
 {
 	public static final Image ARROW = new Image("Arrow.png");
-	public static final Color BACKGROUND = Color.color(0.4, 0.4, 0.5);
-	public static final Color LIGHTUP = Color.LIGHTGRAY;
-	public static final Color ACTIVE = Color.LIGHTCYAN;
-	public static final Color ACTIVE2 = Color.CYAN;
-	public static final Color ACTIVE3 = Color.BLUE;
 
 	public GuiTile[][] tiles;
 	public List<GuiElement> elements;
@@ -72,11 +66,6 @@ public abstract class XGUIState implements NState
 	public abstract int xw();
 
 	public abstract int yw();
-
-	public Color background()
-	{
-		return BACKGROUND;
-	}
 
 	public void target(int x, int y)
 	{

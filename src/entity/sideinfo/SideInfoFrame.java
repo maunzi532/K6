@@ -2,7 +2,6 @@ package entity.sideinfo;
 
 import arrow.*;
 import entity.*;
-import javafx.scene.paint.*;
 import logic.*;
 import system2.*;
 
@@ -48,7 +47,8 @@ public class SideInfoFrame
 
 	private SideInfo standardSideInfo(XCharacter character, ColorScheme colorScheme)
 	{
-		StatBar statBar = new StatBar(colorScheme.color(character.team().healthBarColor), Color.BLACK, Color.WHITE,
+		StatBar statBar = new StatBar(colorScheme.color(character.team().healthBarColor),
+				colorScheme.color("arrow.healthbar.background"), colorScheme.color("arrow.healthbar.text"),
 				character.stats().getVisualStat(0), character.stats().getMaxVisualStat(0));
 		return new SideInfo(character, character.sideImage(), statBar, character.stats().sideInfoText());
 	}
@@ -62,7 +62,8 @@ public class SideInfoFrame
 
 	private SideInfo attackSideInfo(XCharacter character, String x1Text, String[] text2, ColorScheme colorScheme)
 	{
-		StatBar statBar = new StatBarX1(colorScheme.color(character.team().healthBarColor), Color.BLACK, Color.WHITE,
+		StatBar statBar = new StatBarX1(colorScheme.color(character.team().healthBarColor),
+				colorScheme.color("arrow.healthbar.background"), colorScheme.color("arrow.healthbar.text"),
 				character.stats().getVisualStat(0), character.stats().getMaxVisualStat(0), x1Text);
 		return new SideInfo(character, character.sideImage(), statBar, text2);
 	}

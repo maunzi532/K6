@@ -37,7 +37,7 @@ public class VisualMenu
 		return offset.v()[1];
 	}
 
-	public void draw(double tLimit, double bLimit)
+	public void draw(double tLimit, double bLimit, ColorScheme colorScheme)
 	{
 		List<NState> menuEntries = stateHolder.getMenu();
 		if(menuEntries.size() > 0)
@@ -78,7 +78,7 @@ public class VisualMenu
 			for(int i = 0; i < menuEntries.size(); i++)
 			{
 				draw0(camera.layout(0), y2.fromOffset(0, i), menuEntries.get(i),
-						menuEntries.get(i).text().equals(stateHolder.getState().text()));
+						menuEntries.get(i).text().equals(stateHolder.getState().text()), colorScheme);
 			}
 		}
 		else
@@ -93,7 +93,7 @@ public class VisualMenu
 		return Math.min(Math.max(target, (prev * 0.9 + target * 0.1) - speed), (prev * 0.9 + target * 0.1) + speed);
 	}
 
-	private void draw0(TileLayout layout, Tile h1, NState menuEntry, boolean active)
+	private void draw0(TileLayout layout, Tile h1, NState menuEntry, boolean active, ColorScheme colorScheme)
 	{
 		GraphicsContext gd = graphics.gd();
 		double[][] points = layout.tileCorners(h1);
@@ -101,22 +101,24 @@ public class VisualMenu
 		if(active)
 		{
 			gd.setFill(new LinearGradient(points[0][0], points[1][0], points[0][dch], points[1][dch],
-					false, null, new Stop(0, Color.DARKGREEN), new Stop(1, Color.DARKRED)));
+					false, null, new Stop(0, colorScheme.color("menu.background.active.1")),
+					new Stop(1, colorScheme.color("menu.background.active.2"))));
 		}
 		else
 		{
 			gd.setFill(new LinearGradient(points[0][0], points[1][0], points[0][dch], points[1][dch],
-					false, null, new Stop(0, Color.YELLOWGREEN), new Stop(1, Color.ORANGERED)));
+					false, null, new Stop(0, colorScheme.color("menu.background.1")),
+					new Stop(1, colorScheme.color("menu.background.2"))));
 		}
 		gd.fillPolygon(points[0], points[1], y2.directionCount());
 		PointD midPoint = layout.tileToPixel(h1);
-		gd.setFill(Color.BLACK);
+		gd.setFill(colorScheme.color("menu.text"));
 		gd.setFont(new Font(layout.size().v()[1] * 0.5));
 		if(menuEntry.keybind() != null)
 		{
 			gd.fillText(menuEntry.text(),
 					midPoint.v()[0], midPoint.v()[1], layout.size().v()[0] * 1.4);
-			gd.setFill(Color.DARKSLATEGRAY);
+			gd.setFill(colorScheme.color("menu.text.keybind"));
 			gd.setFont(new Font(layout.size().v()[1] * 0.3));
 			gd.fillText(keyMap.info(menuEntry.keybind()), midPoint.v()[0], midPoint.v()[1] - layout.size().v()[1] * 0.5, layout.size().v()[0] * 1.4);
 		}

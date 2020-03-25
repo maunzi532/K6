@@ -18,7 +18,8 @@ public class RegenerationAnim implements AnimTimer
 	{
 		Stats stats = entity.stats();
 		healthBar = new InfoArrow(entity.location(),
-				colorScheme.color(entity.team().healthBarColor), ARROW_BACKGROUND, ARROW_TEXT,
+				colorScheme.color(entity.team().healthBarColor), colorScheme.color("arrow.healthbar.background"),
+				colorScheme.color("arrow.healthbar.text"),
 				stats.currentHealth(), stats.maxHealth());
 		arrows.addArrow(healthBar);
 		regenerateAmount = stats.maxHealth() - stats.currentHealth();

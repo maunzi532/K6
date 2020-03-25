@@ -41,7 +41,7 @@ public abstract class VisualGUI
 
 	public abstract boolean inside(DoubleTile h1, XGUIState xgui);
 
-	public void zoomAndDraw(XGUIState xgui, ColorScheme cs)
+	public void zoomAndDraw(XGUIState xgui, ColorScheme colorScheme)
 	{
 		if(xgui != last)
 		{
@@ -54,19 +54,19 @@ public abstract class VisualGUI
 		if(counter < FADEOUT && last2 != null)
 		{
 			camera.setZoom((double) (FADEOUT - counter) / FADEOUT);
-			locateAndDraw(last2, cs);
+			locateAndDraw(last2, colorScheme);
 		}
 		if(xgui != null)
 		{
 			camera.setZoom((double) counter / FADEIN);
-			locateAndDraw(xgui, cs);
+			locateAndDraw(xgui, colorScheme);
 		}
 		camera.setZoom(1);
 	}
 
-	public abstract void locateAndDraw(XGUIState xgui, ColorScheme cs);
+	public abstract void locateAndDraw(XGUIState xgui, ColorScheme colorScheme);
 
-	public void drawGUI(XGUIState xgui, ColorScheme cs, double cxs, double cys, DoubleTile lu, DoubleTile rl, double imgSize, double fontSize, double textWidth)
+	public void drawGUI(XGUIState xgui, ColorScheme colorScheme, double cxs, double cys, DoubleTile lu, DoubleTile rl, double imgSize, double fontSize, double textWidth)
 	{
 		if(xgui.xw() <= 0 || xgui.yw() <= 0)
 			return;
@@ -75,10 +75,10 @@ public abstract class VisualGUI
 		TileLayout layout = camera.layout(0);
 		GraphicsContext gd = graphics.gd();
 		gd.setImageSmoothing(true);
-		Color background = cs.color("gui.background");
-		Color hover = cs.color("gui.background.hover");
-		Color text = cs.color("gui.text");
-		Color outline = cs.color("gui.text.outline");
+		Color background = colorScheme.color("gui.background");
+		Color hover = colorScheme.color("gui.background.hover");
+		Color text = colorScheme.color("gui.text");
+		Color outline = colorScheme.color("gui.text.outline");
 		gd.setFill(background);
 		gd.setStroke(background);
 		PointD p0 = layout.tileToPixel(lu);

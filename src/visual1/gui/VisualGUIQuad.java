@@ -35,10 +35,10 @@ public class VisualGUIQuad extends VisualGUI
 	}
 
 	@Override
-	public void locateAndDraw(XGUIState xgui, ColorScheme cs)
+	public void locateAndDraw(XGUIState xgui, ColorScheme colorScheme)
 	{
 		double cxs = (xgui.xw() - 1) * QuadLayout.DQ2;
 		double cys = (xgui.yw() - 1) * QuadLayout.DQ2;
-		drawGUI(xgui, cs, cxs, cys, LU, rl(xgui), QuadLayout.DQ2, FONT_SIZE, TEXT_END);
+		drawGUI(xgui, colorScheme, cxs, cys, LU, rl(xgui), QuadLayout.DQ2, FONT_SIZE, TEXT_END);
 	}
 }

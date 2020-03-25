@@ -10,6 +10,7 @@ import javafx.scene.image.*;
 import javafx.scene.paint.*;
 import javafx.scene.text.*;
 import levelMap.*;
+import logic.*;
 
 public class VisualTile
 {
@@ -31,7 +32,7 @@ public class VisualTile
 		this.gd = gd;
 	}
 
-	public void draw(TileCamera camera, int screenshake)
+	public void draw(TileCamera camera, int screenshake, ColorScheme colorScheme)
 	{
 		gd.setImageSmoothing(true);
 		int range = camera.getRange();
@@ -45,7 +46,7 @@ public class VisualTile
 				draw0(layout, y1.add(mid, y1.create2(j, i)));
 			}
 		}
-		drawArrows0(layout, mid, range);
+		drawArrows0(layout, mid, range, colorScheme);
 		drawMarked0(layout);
 		for(int i = -range; i <= range; i++)
 		{
@@ -78,12 +79,12 @@ public class VisualTile
 		}
 	}
 
-	private void drawArrows0(TileLayout layout, Tile mid, int range)
+	private void drawArrows0(TileLayout layout, Tile mid, int range, ColorScheme colorScheme)
 	{
 		levelMap.getArrows().stream().filter(arrow -> arrow instanceof ShineArrow && av.isVisible(arrow, mid, range)).forEach(arrow ->
 				{
 					ShineArrow arrow1 = (ShineArrow) arrow;
-					gd.setFill(av.shineFill(arrow1, layout));
+					gd.setFill(av.shineFill(arrow1, layout, colorScheme));
 					double[][] points = layout.polygonCorners(av.arrowPoints(arrow1));
 					gd.fillPolygon(points[0], points[1], points[0].length);
 				});

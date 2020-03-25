@@ -1,5 +1,7 @@
 package visual1.sideinfo;
 
+import logic.*;
+
 public class VisualSideInfo
 {
 	private SideInfoViewer[] viewers;
@@ -17,11 +19,11 @@ public class VisualSideInfo
 		}
 	}
 
-	public void draw()
+	public void draw(ColorScheme colorScheme)
 	{
 		for(int i = 0; i < viewers.length; i++)
 		{
-			viewers[i].draw();
+			viewers[i].draw(colorScheme);
 		}
 	}
 

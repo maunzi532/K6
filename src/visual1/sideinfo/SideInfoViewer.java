@@ -1,17 +1,15 @@
 package visual1.sideinfo;
 
 import arrow.*;
+import entity.sideinfo.*;
 import java.util.*;
 import javafx.scene.canvas.*;
-import javafx.scene.paint.*;
 import javafx.scene.text.*;
-import entity.sideinfo.*;
+import logic.*;
 import visual1.*;
 
 public class SideInfoViewer implements SideInfoHolder
 {
-	private static final Color INFO_BACKGROUND = Color.color(0.4, 0.4, 0.5);
-	private static final Color INFO_TEXT = Color.BLACK;
 	private static final int SHIFT_TIME = 8;
 
 	private final XGraphics graphics;
@@ -49,21 +47,21 @@ public class SideInfoViewer implements SideInfoHolder
 		return current != null ? graphics.scaleHW() * (YS_1 + S_I) : 0;
 	}
 
-	public void draw()
+	public void draw(ColorScheme colorScheme)
 	{
 		if(counter > 0 && last != null)
-			drawShifted(last, (SHIFT_TIME - counter) / (double) SHIFT_TIME);
+			drawShifted(last, (SHIFT_TIME - counter) / (double) SHIFT_TIME, colorScheme);
 		if(current != null)
-			drawShifted(current, counter / (double) SHIFT_TIME);
+			drawShifted(current, counter / (double) SHIFT_TIME, colorScheme);
 	}
 
-	private void drawShifted(SideInfo sideInfo, double shift)
+	private void drawShifted(SideInfo sideInfo, double shift, ColorScheme colorScheme)
 	{
 		graphics.gd().setImageSmoothing(false);
 		if(flipped)
-			drawR(sideInfo, shift);
+			drawR(sideInfo, shift, colorScheme);
 		else
-			drawL(sideInfo, shift);
+			drawL(sideInfo, shift, colorScheme);
 	}
 
 	private static final double XD_I = 0.1;
@@ -78,18 +76,18 @@ public class SideInfoViewer implements SideInfoHolder
 	private static final double XS_T = 0.7;
 	private static final double YS_T = 0.04;
 
-	private void drawL(SideInfo sideInfo, double shift)
+	private void drawL(SideInfo sideInfo, double shift, ColorScheme colorScheme)
 	{
 		GraphicsContext gd = graphics.gd();
 		double size = graphics.scaleHW();
 		double lx = -size * shift;
 		double by = graphics.yHW() * 2;
-		gd.setFill(INFO_BACKGROUND);
+		gd.setFill(colorScheme.color("sideinfo.background"));
 		gd.drawImage(sideInfo.getCharImage(), lx + size * XD_I, by - size * (YS_1 + S_I), size * S_I, size * S_I);
 		gd.fillRect(lx, by - size * YS_1, size * XS_1, size * YS_1);
 		if(sideInfo.getStatBar() != null)
 			drawStatBar(sideInfo.getStatBar(), lx + size * XD_S, by - size * (YD_S + YS_T), size * XS_S, size * YS_T);
-		gd.setFill(INFO_TEXT);
+		gd.setFill(colorScheme.color("sideinfo.text"));
 		gd.setFont(new Font(size * YS_T));
 		String[] texts = sideInfo.getTexts();
 		for(int i = 0; i < texts.length; i++)
@@ -98,18 +96,18 @@ public class SideInfoViewer implements SideInfoHolder
 		}
 	}
 
-	private void drawR(SideInfo sideInfo, double shift)
+	private void drawR(SideInfo sideInfo, double shift, ColorScheme colorScheme)
 	{
 		GraphicsContext gd = graphics.gd();
 		double size = graphics.scaleHW();
 		double rx = graphics.xHW() * 2 + size * shift;
 		double by = graphics.yHW() * 2;
-		gd.setFill(INFO_BACKGROUND);
+		gd.setFill(colorScheme.color("sideinfo.background"));
 		gd.drawImage(sideInfo.getCharImage(), rx - size * (XD_I + S_I), by - size * (YS_1 + S_I), size * S_I, size * S_I);
 		gd.fillRect(rx - size * XS_1, by - size * YS_1, size * XS_1, size * YS_1);
 		if(sideInfo.getStatBar() != null)
 			drawStatBar(sideInfo.getStatBar(), rx - size * (XD_S + XS_S), by - size * (YD_S + YS_T), size * XS_S, size * YS_T);
-		gd.setFill(INFO_TEXT);
+		gd.setFill(colorScheme.color("sideinfo.text"));
 		gd.setFont(new Font(size * YS_T));
 		String[] texts = sideInfo.getTexts();
 		for(int i = 0; i < texts.length; i++)

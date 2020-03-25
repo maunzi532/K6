@@ -4,11 +4,10 @@ import arrow.*;
 import geom.d1.*;
 import geom.f1.*;
 import javafx.scene.paint.*;
+import logic.*;
 
 public class ArrowViewer
 {
-	public static final Color ARROW = Color.BLUE;
-	public static final Color SHINE = Color.AZURE;
 	private static final double SHINE_WIDTH = 0.65;
 	private static final double ZERO_SHINE = 0.45;
 	public static final double WIDTH = 0.15;
@@ -130,22 +129,24 @@ public class ArrowViewer
 		}
 	}
 
-	public Paint shineFill(ShineArrow arrow, TileLayout layout)
+	public Paint shineFill(ShineArrow arrow, TileLayout layout, ColorScheme colorScheme)
 	{
+		Color arrowColor = colorScheme.color("arrow.transport");
 		if(arrow.hasShine())
 		{
+			Color shineColor = colorScheme.color("arrow.transport.shine");
 			double[][] gp = layout.polygonCorners(visualStart(arrow), visualEnd(arrow));
 			double[] shine = getShine(arrow, distance(arrow), arrow.loop());
 			Stop[] stops = new Stop[shine.length];
 			for(int i = 0; i < shine.length; i++)
 			{
-				stops[i] = new Stop(shine[i], i % 3 == 1 ? SHINE : ARROW);
+				stops[i] = new Stop(shine[i], i % 3 == 1 ? shineColor : arrowColor);
 			}
 			return new LinearGradient(gp[0][0], gp[1][0], gp[0][1], gp[1][1], false, CycleMethod.NO_CYCLE, stops);
 		}
 		else
 		{
-			return ARROW;
+			return arrowColor;
 		}
 	}
 

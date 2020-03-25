@@ -22,6 +22,7 @@ public class DirectedTradeGUI extends XGUIState
 	private final DoubleInv provide;
 	private final DoubleInv receive;
 	private final TurnResources takeAp;
+	private Color activeColor;
 	private ScrollList<ItemView> provideView;
 	private ScrollList<ItemView> receiveView;
 	private CElement transferElement;
@@ -40,6 +41,7 @@ public class DirectedTradeGUI extends XGUIState
 	public void onEnter(MainState mainState)
 	{
 		mainState.sideInfoFrame.clearSideInfo();
+		activeColor = mainState.colorScheme.color("gui.background.active");
 		amount = 1;
 		provideView = new ScrollList<>(0, 1, 4, 5, 2, 1, null,
 				e -> itemView(e, true), target -> provideMarked = target.item);
@@ -47,8 +49,9 @@ public class DirectedTradeGUI extends XGUIState
 		receiveView = new ScrollList<>(5, 1, 4, 5, 2, 1, null,
 				e -> itemView(e, false), null);
 		elements.add(receiveView);
-		elements.add(new CElement(nameProvide, new GuiTile(provide.name(), null, false, ACTIVE3)));
-		elements.add(new CElement(nameReceive, new GuiTile(receive.name(), null, false, ACTIVE3)));
+		Color nameBackground = mainState.colorScheme.color("gui.trade.name.background");
+		elements.add(new CElement(nameProvide, new GuiTile(provide.name(), null, false, nameBackground)));
+		elements.add(new CElement(nameReceive, new GuiTile(receive.name(), null, false, nameBackground)));
 		elements.add(new CElement(more, true, null, () -> amount++));
 		transferElement = new CElement(transfer, true, null, this::clickTransfer);
 		elements.add(transferElement);
@@ -80,7 +83,7 @@ public class DirectedTradeGUI extends XGUIState
 
 	private GuiTile[] itemView(ItemView view, boolean provideInv)
 	{
-		Color color = provideInv && view.item == provideMarked ? ACTIVE2 : null;
+		Color color = provideInv && view.item == provideMarked ? activeColor : null;
 		return new GuiTile[]
 				{
 						new GuiTile(view.currentWithLimit(), null, false, color),

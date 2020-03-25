@@ -40,10 +40,10 @@ public class VisualGUIHex extends VisualGUI
 	}
 
 	@Override
-	public void locateAndDraw(XGUIState xgui, ColorScheme cs)
+	public void locateAndDraw(XGUIState xgui, ColorScheme colorScheme)
 	{
 		double cxs = xgui.xw() - (xgui.yw() > 1 ? 0.5 : 1d) * HexMatrix.Q3 / 2d;
 		double cys = (xgui.yw() - 1) * 1.5 / 2d;
-		drawGUI(xgui, cs, cxs, cys, LU, rl(xgui), IMAGE_END, FONT_SIZE, TEXT_END);
+		drawGUI(xgui, colorScheme, cxs, cys, LU, rl(xgui), IMAGE_END, FONT_SIZE, TEXT_END);
 	}
 }

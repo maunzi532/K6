@@ -3,6 +3,7 @@ package system2.animation;
 import arrow.*;
 import entity.*;
 import java.util.function.*;
+import logic.*;
 import system2.*;
 import system2.analysis.*;
 
@@ -30,7 +31,7 @@ public class GetExpAnim implements AnimTimer, Supplier<boolean[]>, Runnable
 	private boolean finished;
 	private int counter;
 
-	public GetExpAnim(AttackInfo aI, RNGOutcome2 result, Arrows arrows)
+	public GetExpAnim(AttackInfo aI, RNGOutcome2 result, Arrows arrows, ColorScheme colorScheme)
 	{
 		entity = aI.entity;
 		entityT = aI.entityT;
@@ -40,14 +41,16 @@ public class GetExpAnim implements AnimTimer, Supplier<boolean[]>, Runnable
 		{
 			levelup = stats.exp() >= LEVELUP_EXP;
 			expAmount = 20;
-			expBar = new InfoArrow(entity.location(), EXP_COLOR, ARROW_BACKGROUND, ARROW_TEXT, stats.exp(), LEVELUP_EXP);
+			expBar = new InfoArrow(entity.location(), colorScheme.color("arrow.healthbar.exp"),
+					colorScheme.color("arrow.healthbar.background"), colorScheme.color("arrow.healthbar.text"), stats.exp(), LEVELUP_EXP);
 			arrows.addArrow(expBar);
 		}
 		if(entityT.team() == CharacterTeam.HERO)
 		{
 			levelupT = statsT.exp() >= LEVELUP_EXP;
 			expAmountT = 20;
-			expBarT = new InfoArrow(entityT.location(), EXP_COLOR, ARROW_BACKGROUND, ARROW_TEXT, statsT.exp(), LEVELUP_EXP);
+			expBarT = new InfoArrow(entityT.location(), colorScheme.color("arrow.healthbar.exp"),
+					colorScheme.color("arrow.healthbar.background"), colorScheme.color("arrow.healthbar.text"), statsT.exp(), LEVELUP_EXP);
 			arrows.addArrow(expBarT);
 		}
 		if(expAmount <= 0 && expAmountT <= 0)

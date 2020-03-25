@@ -28,6 +28,8 @@ public class BuildGUI extends XGUIState
 	private final XBuilder builder;
 	private final BuildingBlueprint blueprint;
 	private final List<List<CostBlueprint>> costBlueprints;
+	private Color canViewMoreColor;
+	private Color activeColor;
 	private LevelMap levelMap;
 	private int costNum = 0;
 	private int tileCostNum = 0;
@@ -56,6 +58,8 @@ public class BuildGUI extends XGUIState
 	@Override
 	public void onEnter(MainState mainState)
 	{
+		canViewMoreColor = mainState.colorScheme.color("gui.build.more");
+		activeColor = mainState.colorScheme.color("gui.background.active");
 		levelMap = mainState.levelMap;
 		floorTiles = new ScrollList<>(0, 2, 2, 4, 2, 1, null,
 				this::itemView0, null);
@@ -115,11 +119,11 @@ public class BuildGUI extends XGUIState
 		floorTiles.elements = cost.requiredFloorTiles();
 		required.elements = cost.required().items;
 		returned.elements = cost.refundable().items;
-		prevElement.fillTile = activeIf("Prev", costNum > 0, ACTIVE);
-		nextElement.fillTile = activeIf("Next", costNum < blueprints.size() - 1, ACTIVE);
-		lessTilesElement.fillTile = activeIf("Less Tiles", tileCostNum > 0, ACTIVE);
-		moreTilesElement.fillTile = activeIf("More Tiles", tileCostNum < blueprints.get(costNum).size() - 1, ACTIVE);
-		buildElement.fillTile = activeIf("Build", builder.tryBuildingCosts(cost.refundable(), cost.costs(), CommitType.ROLLBACK).isPresent(), ACTIVE2);
+		prevElement.fillTile = activeIf("Prev", costNum > 0, canViewMoreColor);
+		nextElement.fillTile = activeIf("Next", costNum < blueprints.size() - 1, canViewMoreColor);
+		lessTilesElement.fillTile = activeIf("Less Tiles", tileCostNum > 0, canViewMoreColor);
+		moreTilesElement.fillTile = activeIf("More Tiles", tileCostNum < blueprints.get(costNum).size() - 1, canViewMoreColor);
+		buildElement.fillTile = activeIf("Build", builder.tryBuildingCosts(cost.refundable(), cost.costs(), CommitType.ROLLBACK).isPresent(), activeColor);
 	}
 
 	private GuiTile activeIf(String text, boolean active, Color color)
@@ -142,7 +146,7 @@ public class BuildGUI extends XGUIState
 	private GuiTile[] itemView1(ItemStack stack)
 	{
 		ItemView itemView = builder.viewRecipeItem(stack.item);
-		Color color = itemView.base >= stack.count || itemView.base == -1 ? ACTIVE2 : null;
+		Color color = itemView.base >= stack.count || itemView.base == -1 ? activeColor : null;
 		return new GuiTile[]
 				{
 						new GuiTile((itemView.base == -1 ? "-" : itemView.base) + " / " + stack.count, null, false, color),

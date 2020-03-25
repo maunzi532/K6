@@ -96,7 +96,6 @@ public class MainState
 	//TODO    complicated levelup system
 
 	//code
-	//TODO Integrate color scheme file
 	//TODO    Initialize somewhere else than in MainVisual
 	//TODO character class names in classes
 	//TODO BlueprintCache is weird
