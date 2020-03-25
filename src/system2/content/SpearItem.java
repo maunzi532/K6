@@ -1,19 +1,17 @@
 package system2.content;
 
 import java.util.*;
-import javafx.scene.image.*;
 import system2.*;
 
 public class SpearItem implements AI2Class
 {
-	private static final Image IMAGE = new Image("SpearItem.png");
 	private static final int[] RANGES = new int[]{1, 2};
 	public static final SpearItem INSTANCE = new SpearItem();
 
 	@Override
-	public Image image()
+	public String imageName()
 	{
-		return IMAGE;
+		return "SpearItem.png";
 	}
 
 	@Override

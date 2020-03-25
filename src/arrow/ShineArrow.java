@@ -3,16 +3,15 @@ package arrow;
 import geom.d1.*;
 import geom.f1.*;
 import java.util.*;
-import javafx.scene.image.*;
 
 public class ShineArrow extends XArrow
 {
 	private final boolean hasShine;
 	private DoubleTile[] stored;
 
-	public ShineArrow(List<Tile> locations, int duration, boolean loop, Image image, boolean hasShine)
+	public ShineArrow(List<Tile> locations, int duration, boolean loop, String imageName, boolean hasShine)
 	{
-		super(locations, duration, loop, image);
+		super(locations, duration, loop, imageName);
 		this.hasShine = hasShine;
 	}
 
@@ -31,9 +30,9 @@ public class ShineArrow extends XArrow
 		return stored;
 	}
 
-	public static ShineArrow factory(Tile start, Tile end, int duration, boolean loop, Image image)
+	public static ShineArrow factory(Tile start, Tile end, int duration, boolean loop, String imageName)
 	{
 		List<Tile> locations = convert(start, end);
-		return new ShineArrow(locations, duration, loop, image, true);
+		return new ShineArrow(locations, duration, loop, imageName, true);
 	}
 }

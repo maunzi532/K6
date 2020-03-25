@@ -78,7 +78,7 @@ public class DirectedTradeGUI extends XGUIState
 		setTargeted(CTile.NONE);
 		provideView.elements = provide.outputInv().viewItems(false);
 		receiveView.elements = receive.inputInv().viewItems(true);
-		transferElement.fillTile = new GuiTile(String.valueOf(amount), ARROW, false, null);
+		transferElement.fillTile = new GuiTile(String.valueOf(amount), "Arrow.png", false, null);
 	}
 
 	private GuiTile[] itemView(ItemView view, boolean provideInv)
@@ -87,7 +87,7 @@ public class DirectedTradeGUI extends XGUIState
 		return new GuiTile[]
 				{
 						new GuiTile(view.currentWithLimit(), null, false, color),
-						new GuiTile(null, view.item.image(), false, color)
+						new GuiTile(null, view.item.imageName(), false, color)
 				};
 	}
 

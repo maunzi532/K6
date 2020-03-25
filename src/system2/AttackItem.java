@@ -3,13 +3,12 @@ package system2;
 import item.*;
 import java.util.*;
 import java.util.stream.*;
-import javafx.scene.image.*;
 import system2.content.*;
 
-public class AttackItem2 implements Item, ModifierAspect
+public class AttackItem implements Item, ModifierAspect
 {
 	public final AI2Class itemClass;
-	private final Image image;
+	private final String imageName;
 	private final int damage;
 	private final int heavy;
 	private final int accuracy;
@@ -22,15 +21,14 @@ public class AttackItem2 implements Item, ModifierAspect
 	private final int[] ranges;
 	private final int[] counterR;
 	private final List<Ability2> abilities;
-	private final List<AM2Type> attackModes;
-	private final List<AttackMode4> attackModes4;
+	private final List<AttackMode> attackModes4;
 
-	public AttackItem2(AI2Class itemClass, Image image, int damage, int heavy, int accuracy,
+	public AttackItem(AI2Class itemClass, String imageName, int damage, int heavy, int accuracy,
 			int crit, int slow, int adaptive, AdaptiveType adaptiveType, AdvantageType advantageType,
 			boolean magical, int[] ranges, int[] counterR, List<Ability2> abilities, List<AM2Type> attackModes)
 	{
 		this.itemClass = itemClass;
-		this.image = image;
+		this.imageName = imageName;
 		this.damage = damage;
 		this.heavy = heavy;
 		this.accuracy = accuracy;
@@ -43,8 +41,7 @@ public class AttackItem2 implements Item, ModifierAspect
 		this.ranges = ranges;
 		this.counterR = counterR;
 		this.abilities = abilities;
-		this.attackModes = attackModes;
-		attackModes4 = attackModes.stream().map(e -> new AttackMode4(this, e)).collect(Collectors.toList());
+		attackModes4 = attackModes.stream().map(e -> new AttackMode(this, e)).collect(Collectors.toList());
 	}
 
 	@Override
@@ -60,9 +57,9 @@ public class AttackItem2 implements Item, ModifierAspect
 	}
 
 	@Override
-	public Image image()
+	public String imageName()
 	{
-		return image;
+		return imageName;
 	}
 
 	@Override
@@ -167,7 +164,7 @@ public class AttackItem2 implements Item, ModifierAspect
 		return abilities;
 	}
 
-	public List<AttackMode4> attackModes()
+	public List<AttackMode> attackModes()
 	{
 		return attackModes4;
 	}

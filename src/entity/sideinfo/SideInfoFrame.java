@@ -2,7 +2,7 @@ package entity.sideinfo;
 
 import arrow.*;
 import entity.*;
-import logic.*;
+import file.*;
 import system2.*;
 
 public class SideInfoFrame
@@ -49,8 +49,8 @@ public class SideInfoFrame
 	{
 		StatBar statBar = new StatBar(colorScheme.color(character.team().healthBarColor),
 				colorScheme.color("arrow.healthbar.background"), colorScheme.color("arrow.healthbar.text"),
-				character.stats().getVisualStat(0), character.stats().getMaxVisualStat(0));
-		return new SideInfo(character, character.sideImage(), statBar, character.stats().sideInfoText());
+				character.stats().getVisualStat(0), character.stats().getMaxVisualStat(0), "");
+		return new SideInfo(character, character.sideImageName(), statBar, character.stats().sideInfoText());
 	}
 
 	public void setAttackSideInfo(AttackInfo aI, ColorScheme colorScheme)
@@ -62,10 +62,10 @@ public class SideInfoFrame
 
 	private SideInfo attackSideInfo(XCharacter character, String x1Text, String[] text2, ColorScheme colorScheme)
 	{
-		StatBar statBar = new StatBarX1(colorScheme.color(character.team().healthBarColor),
+		StatBar statBar = new StatBar(colorScheme.color(character.team().healthBarColor),
 				colorScheme.color("arrow.healthbar.background"), colorScheme.color("arrow.healthbar.text"),
 				character.stats().getVisualStat(0), character.stats().getMaxVisualStat(0), x1Text);
-		return new SideInfo(character, character.sideImage(), statBar, text2);
+		return new SideInfo(character, character.sideImageName(), statBar, text2);
 	}
 
 	private boolean isInverted(XCharacter e1, XCharacter e2)

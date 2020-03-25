@@ -118,7 +118,7 @@ public class LevelMap implements ConnectRestore, Arrows
 		{
 			addOwner(tile, building);
 		}
-		building.function().loadConnect(this, building);
+		building.function().loadConnect(this);
 	}
 
 	public void autoClaimFloor(XBuilding building)
@@ -238,7 +238,7 @@ public class LevelMap implements ConnectRestore, Arrows
 
 	public void moveEntity(XCharacter entity, Tile newLocation)
 	{
-		XArrow arrow = XArrow.factory(entity.location(), newLocation, y1, false, entity.mapImage());
+		XArrow arrow = XArrow.factory(entity.location(), newLocation, y1, false, entity.mapImageName());
 		addArrow(arrow);
 		entity.replaceVisual(arrow);
 		advTile(entity.location()).setEntity(null);
@@ -251,10 +251,10 @@ public class LevelMap implements ConnectRestore, Arrows
 	{
 		Tile location1 = entity1.location();
 		Tile location2 = entity2.location();
-		XArrow arrow1 = XArrow.factory(location1, location2, y1, false, entity1.mapImage());
+		XArrow arrow1 = XArrow.factory(location1, location2, y1, false, entity1.mapImageName());
 		addArrow(arrow1);
 		entity1.replaceVisual(arrow1);
-		XArrow arrow2 = XArrow.factory(location2, location1, y1, false, entity2.mapImage());
+		XArrow arrow2 = XArrow.factory(location2, location1, y1, false, entity2.mapImageName());
 		addArrow(arrow2);
 		entity2.replaceVisual(arrow2);
 		advTile(location1).setEntity(entity2);
@@ -325,7 +325,7 @@ public class LevelMap implements ConnectRestore, Arrows
 	{
 		List<int[]> v = entity.outputInv().viewItems(false)
 				.stream().filter(e -> entity.stats().getItemFilter().canContain(e.item))
-				.map(e -> ((AttackItem2) e.item).getRanges(counter)).collect(Collectors.toList());
+				.map(e -> ((AttackItem) e.item).getRanges(counter)).collect(Collectors.toList());
 		HashSet<Integer> ints2 = new HashSet<>();
 		for(int[] ints : v)
 		{
@@ -355,8 +355,8 @@ public class LevelMap implements ConnectRestore, Arrows
 				.viewItems(false)
 				.stream()
 				.filter(e -> entity.stats().getItemFilter().canContain(e.item))
-				.flatMap(e -> ((AttackItem2) e.item).attackModes().stream())
-				.map(mode -> new AttackInfo(entity, loc, mode, entityT, locT, entityT.stats().lastUsed(), distance))
+				.flatMap(e -> ((AttackItem) e.item).attackModes().stream())
+				.map(mode -> new AttackInfo(entity, mode, entityT, entityT.stats().lastUsed(), distance))
 				.filter(e -> e.canInitiate)
 				.map(AttackInfo::addAnalysis)
 				.collect(Collectors.toList());

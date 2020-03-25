@@ -3,10 +3,10 @@ package visual1;
 import com.fasterxml.jackson.core.*;
 import com.fasterxml.jackson.jr.ob.*;
 import com.fasterxml.jackson.jr.stree.*;
+import file.*;
 import java.io.*;
 import java.util.*;
 import javafx.scene.paint.*;
-import logic.*;
 
 public class FileColorScheme implements ColorScheme
 {

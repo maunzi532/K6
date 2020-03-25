@@ -1,6 +1,7 @@
 package visual1;
 
 import arrow.*;
+import file.*;
 import geom.*;
 import geom.d1.*;
 import geom.f1.*;
@@ -10,13 +11,9 @@ import javafx.scene.image.*;
 import javafx.scene.paint.*;
 import javafx.scene.text.*;
 import levelMap.*;
-import logic.*;
 
 public class VisualTile
 {
-	private static final Image BUILDING = new Image("M1.png");
-	private static final Image BACKGROUND = new Image("WALL_Tile.png");
-
 	private final TileType y1;
 	private final ArrowViewer av;
 	private LevelMap levelMap;
@@ -65,15 +62,17 @@ public class VisualTile
 		double[][] points = layout.tileCorners(t1);
 		PointD mid = layout.tileToPixel(t1);
 		PointD offset = layout.imageOffset();
-		gd.setFill(new ImagePattern(advTile.visible() ? advTile.floorTile().type.image : BACKGROUND,
-				mid.v()[0] - offset.v()[0], mid.v()[1] - offset.v()[1], offset.v()[0] * 2, offset.v()[1] * 2, false));
+		Image image = Objects.requireNonNullElse(advTile.visible() ? ImageLoader.getImage(advTile.floorTile().type.imageT) : null,
+				ImageLoader.getImage("WALL_Tile.png"));
+		gd.setFill(new ImagePattern(image, mid.v()[0] - offset.v()[0],
+				mid.v()[1] - offset.v()[1], offset.v()[0] * 2, offset.v()[1] * 2, false));
 		gd.fillPolygon(points[0], points[1], y1.directionCount());
 		if(advTile.visible())
 		{
 			if(advTile.building() != null)
 			{
 				PointD midPoint = layout.tileToPixel(t1);
-				gd.drawImage(BUILDING, midPoint.v()[0] - layout.size().v()[0], midPoint.v()[1] - layout.size().v()[1],
+				gd.drawImage(ImageLoader.getImage("M1.png"), midPoint.v()[0] - layout.size().v()[0], midPoint.v()[1] - layout.size().v()[1],
 						layout.size().v()[0] * 2, layout.size().v()[1] * 2);
 			}
 		}
@@ -108,7 +107,7 @@ public class VisualTile
 			if(advTile.entity() != null && advTile.entity().isVisible())
 			{
 				PointD midPoint = layout.tileToPixel(t1);
-				gd.drawImage(advTile.entity().mapImage(),
+				gd.drawImage(ImageLoader.getImage(advTile.entity().mapImageName()),
 						midPoint.v()[0] - layout.size().v()[0], midPoint.v()[1] - layout.size().v()[1],
 						layout.size().v()[0] * 2, layout.size().v()[1] * 2);
 			}
@@ -117,10 +116,10 @@ public class VisualTile
 
 	private void drawArrows1(TileLayout layout, Tile mid, int range)
 	{
-		levelMap.getArrows().stream().filter(arrow -> arrow.image() != null && av.isVisible(arrow, mid, range)).forEach(arrow ->
+		levelMap.getArrows().stream().filter(arrow -> arrow.imageName() != null && av.isVisible(arrow, mid, range)).forEach(arrow ->
 				{
 					PointD midPoint = layout.tileToPixel(av.imageLocation(arrow));
-					gd.drawImage(arrow.image(), midPoint.v()[0] - layout.size().v()[0], midPoint.v()[1] - layout.size().v()[1],
+					gd.drawImage(ImageLoader.getImage(arrow.imageName()), midPoint.v()[0] - layout.size().v()[0], midPoint.v()[1] - layout.size().v()[1],
 							layout.size().v()[0] * 2, layout.size().v()[1] * 2);
 				});
 		levelMap.getArrows().stream().filter(arrow -> arrow instanceof InfoArrow && av.isVisible(arrow, mid, range)).forEach(arrow ->
@@ -134,12 +133,12 @@ public class VisualTile
 			gd.setFill(statBar.getBg());
 			gd.fillRect(xs, ys, xw, yw);
 			gd.setFill(statBar.getFg());
-			gd.fillRect(xs, ys, xw * statBar.getData() / statBar.getMaxData(), yw);
+			gd.fillRect(xs, ys, xw * statBar.filledPart(), yw);
 			gd.setStroke(statBar.getBg());
 			gd.strokeRect(xs, ys, xw, yw);
 			gd.setFont(new Font(yw * 0.8));
 			gd.setFill(statBar.getTc());
-			gd.fillText(statBar.getData() + "/" + statBar.getMaxData(), xs + xw / 2, ys + yw / 2, xw);
+			gd.fillText(statBar.getText(), xs + xw / 2, ys + yw / 2, xw);
 		});
 	}
 }

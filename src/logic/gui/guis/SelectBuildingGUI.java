@@ -3,15 +3,12 @@ package logic.gui.guis;
 import building.blueprint.*;
 import doubleinv.*;
 import entity.*;
-import file.*;
-import javafx.scene.image.*;
 import logic.*;
 import logic.gui.*;
 import logic.xstate.*;
 
 public class SelectBuildingGUI extends XGUIState
 {
-	private static final Image BUILDING = new Image("M1.png");
 	private static final CTile textInv = new CTile(2, 0, new GuiTile("Buildings"), 2, 1);
 
 	private final XBuilder builder;
@@ -34,9 +31,8 @@ public class SelectBuildingGUI extends XGUIState
 		{
 			mainState.sideInfoFrame.setStandardSideInfo(character, mainState.colorScheme);
 		}
-		BlueprintCache<BuildingBlueprint> blueprintCache = mainState.buildingBlueprintCache;
 		ScrollList<BuildingBlueprint> buildingsView = new ScrollList<>(0, 1, 6, 5, 2, 1,
-				blueprintCache.allBlueprints(), this::itemView,
+				mainState.blueprintFile.allBlueprints(), this::itemView,
 				target -> mainState.stateHolder.setState(new BuildGUI(builder, target)));
 		elements.add(buildingsView);
 		elements.add(new CElement(textInv));
@@ -91,7 +87,7 @@ public class SelectBuildingGUI extends XGUIState
 		return new GuiTile[]
 				{
 						new GuiTile(blueprint.name()),
-						new GuiTile(null, BUILDING, false, null)
+						new GuiTile(null, "M1.png", false, null)
 				};
 	}
 }

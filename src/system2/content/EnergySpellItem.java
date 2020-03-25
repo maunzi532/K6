@@ -1,20 +1,18 @@
 package system2.content;
 
 import java.util.*;
-import javafx.scene.image.*;
 import system2.*;
 
 public class EnergySpellItem implements AI2Class
 {
-	private static final Image IMAGE = new Image("EnergySpellItem.png");
 	private static final int[] RANGES = new int[]{1, 2, 3, 4};
 	private static final int[] COUNTER = new int[]{1, 2, 3, 4, 5, 6};
 	public static final EnergySpellItem INSTANCE = new EnergySpellItem();
 
 	@Override
-	public Image image()
+	public String imageName()
 	{
-		return IMAGE;
+		return "EnergySpellItem.png";
 	}
 
 	@Override

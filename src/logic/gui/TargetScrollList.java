@@ -15,7 +15,7 @@ public class TargetScrollList<T> extends ScrollList<T>
 		this.onTarget = this::onTarget;
 	}
 
-	private boolean onTarget(T target)
+	private Boolean onTarget(T target)
 	{
 		targeted2 = target;
 		return false;

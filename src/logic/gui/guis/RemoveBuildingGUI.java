@@ -82,7 +82,7 @@ public class RemoveBuildingGUI extends XGUIState
 		return new GuiTile[]
 				{
 						new GuiTile(itemView.baseAndCurrentWithLimit()),
-						new GuiTile(null, itemView.item.image(), false, null)
+						new GuiTile(null, itemView.item.imageName(), false, null)
 				};
 	}
 

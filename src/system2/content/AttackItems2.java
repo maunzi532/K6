@@ -9,13 +9,13 @@ public class AttackItems2
 {
 	public static final AttackItems2 INSTANCE = new AttackItems2();
 
-	public final AttackItem2[] items;
+	public final AttackItem[] items;
 	public final List<Item> itemListA;
 	public final List<Item> allItemsList;
 
 	public AttackItems2()
 	{
-		items = new AttackItem2[600];
+		items = new AttackItem[600];
 
 		items[100] = new AI2Builder(DaggerItem.INSTANCE, 7, 7, 70).crit(10).build();
 		items[101] = new AI2Builder(DaggerItem.INSTANCE, 7, 11, 90).crit(30).adaptive(5, AdaptiveType.LUCK).build();
@@ -41,27 +41,27 @@ public class AttackItems2
 		allItemsList = Stream.concat(Arrays.stream(Items.values()), Arrays.stream(items).filter(Objects::nonNull)).collect(Collectors.toList());
 	}
 
-	public static AttackItem2 standardDagger()
+	public static AttackItem standardDagger()
 	{
 		return INSTANCE.items[100];
 	}
 
-	public static AttackItem2 standardSpear()
+	public static AttackItem standardSpear()
 	{
 		return INSTANCE.items[200];
 	}
 
-	public static AttackItem2 standardAxe()
+	public static AttackItem standardAxe()
 	{
 		return INSTANCE.items[300];
 	}
 
-	public static AttackItem2 standardSpell()
+	public static AttackItem standardSpell()
 	{
 		return INSTANCE.items[400];
 	}
 
-	public static AttackItem2 standardCrossbow()
+	public static AttackItem standardCrossbow()
 	{
 		return INSTANCE.items[500];
 	}

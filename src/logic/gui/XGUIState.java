@@ -1,15 +1,12 @@
 package logic.gui;
 
 import java.util.*;
-import javafx.scene.image.*;
 import logic.*;
 import logic.editor.xstate.*;
 import logic.xstate.*;
 
 public abstract class XGUIState implements NState
 {
-	public static final Image ARROW = new Image("Arrow.png");
-
 	public GuiTile[][] tiles;
 	public List<GuiElement> elements;
 	public CTile targeted = CTile.NONE;

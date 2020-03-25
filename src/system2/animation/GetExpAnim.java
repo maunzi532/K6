@@ -2,22 +2,21 @@ package system2.animation;
 
 import arrow.*;
 import entity.*;
-import java.util.function.*;
-import logic.*;
+import file.*;
 import system2.*;
 import system2.analysis.*;
 
-public class GetExpAnim implements AnimTimer, Supplier<boolean[]>, Runnable
+public class GetExpAnim implements AnimTimer
 {
 	private static final int SPEED = 2;
 	private static final int DELAY = 20;
 
 	public static final int LEVELUP_EXP = 100;
 
-	private XCharacter entity;
-	private XCharacter entityT;
-	private Stats stats;
-	private Stats statsT;
+	private final XCharacter entity;
+	private final XCharacter entityT;
+	private final Stats stats;
+	private final Stats statsT;
 	private InfoArrow expBar;
 	private InfoArrow expBarT;
 	private boolean levelup;
@@ -57,20 +56,19 @@ public class GetExpAnim implements AnimTimer, Supplier<boolean[]>, Runnable
 			finished = true;
 	}
 
-	@Override
-	public void run()
+	public void start()
 	{
 		if(entity.team() == CharacterTeam.HERO)
 		{
 			startExp = stats.exp();
-			expBar.statBar().setData(startExp);
+			expBar.statBar().setCurrent(startExp);
 			stats.addExp(expAmount);
 			endExp = stats.exp();
 		}
 		if(entityT.team() == CharacterTeam.HERO)
 		{
 			startExpT = statsT.exp();
-			expBarT.statBar().setData(startExpT);
+			expBarT.statBar().setCurrent(startExpT);
 			statsT.addExp(expAmountT);
 			endExpT = statsT.exp();
 		}
@@ -95,17 +93,21 @@ public class GetExpAnim implements AnimTimer, Supplier<boolean[]>, Runnable
 		if(counter % SPEED == 0)
 		{
 			if(counter / SPEED <= endExp - startExp)
-				expBar.statBar().setData(expBar.statBar().getData() + 1);
+				expBar.statBar().changeCurrent(1);
 			if(counter / SPEED <= endExpT - startExpT)
-				expBarT.statBar().setData(expBarT.statBar().getData() + 1);
+				expBarT.statBar().changeCurrent(1);
 		}
 		if(counter / SPEED >= expAmount + DELAY && counter / SPEED >= expAmountT + DELAY)
 			finished = true;
 	}
 
-	@Override
-	public boolean[] get()
+	public boolean isLevelup()
 	{
-		return new boolean[]{levelup, levelupT};
+		return levelup;
+	}
+
+	public boolean isLevelupT()
+	{
+		return levelupT;
 	}
 }

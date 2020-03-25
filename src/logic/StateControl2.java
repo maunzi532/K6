@@ -224,7 +224,7 @@ public class StateControl2 implements XStateHolder, ConvInputConsumer
 			}
 			else if(key.hasFunction("Menu"))
 			{
-				//setState(new TransportTargetsState(building, transport));
+				setState(new TransportTargetsState(building, transport));
 			}
 		}
 	}

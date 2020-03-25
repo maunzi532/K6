@@ -7,16 +7,18 @@ public class StatBar
 	private final Color fg;
 	private final Color bg;
 	private final Color tc;
-	private int data;
-	private int maxData;
+	private int current;
+	private int max;
+	private String t1;
 
-	public StatBar(Color fg, Color bg, Color tc, int data, int maxData)
+	public StatBar(Color fg, Color bg, Color tc, int current, int max, String t1)
 	{
 		this.fg = fg;
 		this.bg = bg;
 		this.tc = tc;
-		this.data = data;
-		this.maxData = maxData;
+		this.current = current;
+		this.max = max;
+		this.t1 = t1;
 	}
 
 	public Color getFg()
@@ -34,28 +36,33 @@ public class StatBar
 		return tc;
 	}
 
-	public int getData()
+	public double filledPart()
 	{
-		return data;
+		return (double) current / max;
 	}
 
-	public int getMaxData()
+	public void setCurrent(int current)
 	{
-		return maxData;
+		this.current = current;
 	}
 
-	public void setData(int data)
+	public void changeCurrent(int change)
 	{
-		this.data = data;
+		current += change;
 	}
 
-	public void setMaxData(int maxData)
+	public void setMax(int max)
 	{
-		this.maxData = maxData;
+		this.max = max;
+	}
+
+	public void setT1(String t1)
+	{
+		this.t1 = t1;
 	}
 
 	public String getText()
 	{
-		return data + "/" + maxData;
+		return current + t1 + "/" + max;
 	}
 }

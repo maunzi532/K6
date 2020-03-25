@@ -48,8 +48,8 @@ public class MainVisual implements XInputInterface
 		SideInfoViewer sivR = new SideInfoViewer(graphics, true);
 		visualSideInfo = new VisualSideInfo(sivL, sivR);
 		ItemLoader itemLoader = new ItemLoader2();
-		mainState = new MainState(y1, colorScheme, itemLoader, new SideInfoFrame(sivL, sivR),
-				new BlueprintCache<>("BuildingBlueprints", e -> BuildingBlueprint.create(e, itemLoader)));
+		BlueprintFile blueprintFile = new BlueprintFile(ImageLoader.loadTextResource("BuildingBlueprints"), itemLoader);
+		mainState = new MainState(y1, colorScheme, itemLoader, new SideInfoFrame(sivL, sivR), blueprintFile);
 		loadLevel(loadFile, loadFile2);
 		graphics.gd().setTextAlign(TextAlignment.CENTER);
 		graphics.gd().setTextBaseline(VPos.CENTER);

@@ -1,4 +1,4 @@
-package logic;
+package file;
 
 import javafx.scene.paint.*;
 

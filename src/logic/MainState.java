@@ -17,7 +17,7 @@ public class MainState
 	public final ColorScheme colorScheme;
 	public final ItemLoader itemLoader;
 	public final SideInfoFrame sideInfoFrame;
-	public final BlueprintCache<BuildingBlueprint> buildingBlueprintCache;
+	public final BlueprintFile blueprintFile;
 	public final LevelMap levelMap;
 	public final List<VisMark> visMarked;
 	public int turnCounter;
@@ -29,13 +29,13 @@ public class MainState
 	public Map<Tile, Long> allEnemyReach;
 
 	public MainState(TileType y1, ColorScheme colorScheme, ItemLoader itemLoader,
-			SideInfoFrame sideInfoFrame, BlueprintCache<BuildingBlueprint> buildingBlueprintCache)
+			SideInfoFrame sideInfoFrame, BlueprintFile blueprintFile)
 	{
 		this.y1 = y1;
 		this.colorScheme = colorScheme;
 		this.itemLoader = itemLoader;
 		this.sideInfoFrame = sideInfoFrame;
-		this.buildingBlueprintCache = buildingBlueprintCache;
+		this.blueprintFile = blueprintFile;
 		levelMap = new LevelMap(y1);
 		visMarked = new ArrayList<>();
 		turnCounter = -1;
@@ -56,7 +56,7 @@ public class MainState
 
 	public String preferBuildingsText()
 	{
-		return preferBuildings ? "BCM" : "ECM";
+		return preferBuildings ? "BCM" : "CCM";
 	}
 
 	//content
@@ -78,6 +78,7 @@ public class MainState
 	//TODO remove defeated enemies
 
 	//GUI
+	//TODO edit starting delay
 	//TODO    LevelEditor edit PlayerLevelSystem
 	//TODO    LevelSystem view
 	//TODO    CharacterCombatGUI show stat calculation
@@ -98,9 +99,10 @@ public class MainState
 	//code
 	//TODO    Initialize somewhere else than in MainVisual
 	//TODO character class names in classes
-	//TODO BlueprintCache is weird
-	//TODO rename or split ImageLoader
 	//TODO fix stealing from enemies
+	//TODO camera init code is bad
+	//TODO rename or split ImageLoader
+	//TODO ImageLoader non-static
 
 	//visual engine mechanics
 	//TODO move GUI so it does not overlap with SideInfo/LevelEditor
@@ -108,6 +110,7 @@ public class MainState
 	//TODO move camera to view enemies/encounters
 	//TODO    show pause menu
 	//TODO    show better SideInfo
+	//TODO show TurnResources in SideInfo
 
 	//LK char - move/attack
 	//RK char - inv/trade

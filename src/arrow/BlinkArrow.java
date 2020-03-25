@@ -2,22 +2,21 @@ package arrow;
 
 import geom.f1.*;
 import java.util.*;
-import javafx.scene.image.*;
 
 public class BlinkArrow extends XArrow
 {
 	private int blinkTime;
 
-	public BlinkArrow(Tile location, int duration, boolean loop, Image image, int blinkTime)
+	public BlinkArrow(Tile location, int duration, boolean loop, String imageName, int blinkTime)
 	{
-		super(List.of(location), duration, loop, image);
+		super(List.of(location), duration, loop, imageName);
 		this.blinkTime = blinkTime;
 	}
 
 	@Override
-	public Image image()
+	public String imageName()
 	{
-		return (counter / blinkTime) % 2 == 0 ? image : null;
+		return (counter / blinkTime) % 2 == 0 ? imageName : null;
 	}
 
 	@Override

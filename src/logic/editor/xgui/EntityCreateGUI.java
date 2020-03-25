@@ -38,13 +38,13 @@ public class EntityCreateGUI extends XGUIState
 
 	private void createXCharacter(MainState mainState, CharacterTeam team)
 	{
-		Stats stats = defaultStats(true);
+		Stats stats = defaultStats(team == CharacterTeam.HERO);
 		Inv inv = new WeightInv(20);
 		XCharacter entity;
 		if(team == CharacterTeam.HERO)
 		{
 			entity = new XCharacter(team, 0, location, stats, inv,
-					new NoAI(), new TurnResources(location), new SaveSettings(false, false));
+					new NoAI(), new TurnResources(location), new StartingSettings(false, false));
 
 		}
 		else

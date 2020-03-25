@@ -2,7 +2,6 @@ package system2.content;
 
 import item.*;
 import java.util.*;
-import javafx.scene.image.*;
 
 public enum Items implements Item
 {
@@ -14,21 +13,19 @@ public enum Items implements Item
 	Items(String imageName, int weight, String... info)
 	{
 		this.imageName = imageName;
-		image = new Image(imageName);
 		this.weight = weight;
 		this.info = Arrays.asList(info);
 
 	}
 
 	public final String imageName;
-	public final Image image;
 	public final int weight;
 	public final List<String> info;
 
 	@Override
-	public Image image()
+	public String imageName()
 	{
-		return image;
+		return imageName;
 	}
 
 	@Override

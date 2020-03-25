@@ -1,19 +1,17 @@
 package system2.content;
 
 import java.util.*;
-import javafx.scene.image.*;
 import system2.*;
 
 public class CrossbowItem implements AI2Class
 {
-	private static final Image IMAGE = new Image("CrossbowItem.png");
 	private static final int[] RANGES = new int[]{3, 4, 5, 6};
 	public static final CrossbowItem INSTANCE = new CrossbowItem();
 
 	@Override
-	public Image image()
+	public String imageName()
 	{
-		return IMAGE;
+		return "CrossbowItem.png";
 	}
 
 	@Override

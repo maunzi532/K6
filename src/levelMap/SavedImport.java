@@ -84,12 +84,12 @@ public class SavedImport
 		int startingDelay = ((JrsNumber) data.get("StartingDelay")).getValue().intValue();
 		Stats stats;
 		Inv inv;
-		SaveSettings saveSettings;
+		StartingSettings startingSettings;
 		if(data.get("StartName") != null)
 		{
 			boolean locked = ((JrsBoolean) data.get("Locked")).booleanValue();
 			boolean invLocked = ((JrsBoolean) data.get("InvLocked")).booleanValue();
-			saveSettings = new SaveSettings(locked, invLocked);
+			startingSettings = new StartingSettings(locked, invLocked);
 			JrsObject char1 = characters.get(data.get("StartName").asText());
 			stats = new Stats(((JrsObject) char1.get("Stats")), itemLoader);
 			if(invLocked)
@@ -107,9 +107,10 @@ public class SavedImport
 		{
 			stats = new Stats(((JrsObject) data.get("Stats")), itemLoader);
 			inv = new WeightInv(((JrsObject) data.get("Inventory")), itemLoader);
-			saveSettings = null;
+			startingSettings = null;
 		}
 		EnemyAI enemyAI = team == CharacterTeam.ENEMY ? new StandardAI(levelMap) : new NoAI();
-		return new XCharacter(team, startingDelay, location, stats, inv, enemyAI, new TurnResources(location), saveSettings);
+		return new XCharacter(team, startingDelay, location, stats, inv, enemyAI, new TurnResources(location),
+				startingSettings);
 	}
 }

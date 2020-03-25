@@ -1,8 +1,5 @@
 package logic.xstate;
 
-import entity.*;
-import entity.analysis.*;
-import java.util.function.*;
 import logic.*;
 import logic.gui.guis.*;
 import system2.*;
@@ -11,13 +8,13 @@ import system2.animation.*;
 
 public class PostAttackState extends AttackState
 {
-	private RNGOutcome result;
-	private AnimTimer arrow;
+	private final RNGOutcome2 result;
+	private GetExpAnim getExpAnim;
 	private boolean firstEnter;
 	private boolean levelup;
 	private boolean levelupT;
 
-	public PostAttackState(NState nextState, AttackInfo aI, RNGOutcome result)
+	public PostAttackState(NState nextState, AttackInfo aI, RNGOutcome2 result)
 	{
 		super(nextState, aI);
 		this.result = result;
@@ -29,11 +26,10 @@ public class PostAttackState extends AttackState
 	{
 		if(firstEnter)
 		{
-			arrow = new GetExpAnim(aI, (RNGOutcome2) result, mainState.levelMap, mainState.colorScheme);
+			getExpAnim = new GetExpAnim(aI, result, mainState.levelMap, mainState.colorScheme);
 			firstEnter = false;
-			boolean[] v = ((Supplier<boolean[]>) arrow).get();
-			levelup = v[0];
-			levelupT = v[1];
+			levelup = getExpAnim.isLevelup();
+			levelupT = getExpAnim.isLevelupT();
 		}
 		if(levelup)
 		{
@@ -47,20 +43,20 @@ public class PostAttackState extends AttackState
 		}
 		else
 		{
-			((Runnable) arrow).run();
+			getExpAnim.start();
 		}
 	}
 
 	@Override
 	public void tick(MainState mainState)
 	{
-		arrow.tick();
+		getExpAnim.tick();
 	}
 
 	@Override
 	public boolean finished()
 	{
-		return arrow.finished();
+		return getExpAnim.finished();
 	}
 
 	@Override

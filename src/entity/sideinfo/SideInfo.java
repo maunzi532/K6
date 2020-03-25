@@ -2,19 +2,18 @@ package entity.sideinfo;
 
 import arrow.*;
 import entity.*;
-import javafx.scene.image.*;
 
 public class SideInfo
 {
 	private final XCharacter identifier;
-	private Image charImage;
+	private String imageName;
 	private final StatBar statBar;
 	private String[] texts;
 
-	public SideInfo(XCharacter identifier, Image charImage, StatBar statBar, String... texts)
+	public SideInfo(XCharacter identifier, String imageName, StatBar statBar, String... texts)
 	{
 		this.identifier = identifier;
-		this.charImage = charImage;
+		this.imageName = imageName;
 		this.statBar = statBar;
 		this.texts = texts;
 	}
@@ -24,24 +23,24 @@ public class SideInfo
 		return identifier;
 	}
 
-	public Image getCharImage()
+	public String imageName()
 	{
-		return charImage;
+		return imageName;
 	}
 
-	public String[] getTexts()
+	public String[] texts()
 	{
 		return texts;
 	}
 
-	public StatBar getStatBar()
+	public StatBar statBar()
 	{
 		return statBar;
 	}
 
-	public void setCharImage(Image charImage)
+	public void setImageName(String imageName)
 	{
-		this.charImage = charImage;
+		this.imageName = imageName;
 	}
 
 	public void setTexts(String[] texts)

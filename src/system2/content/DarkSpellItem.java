@@ -1,20 +1,18 @@
 package system2.content;
 
 import java.util.*;
-import javafx.scene.image.*;
 import system2.*;
 
 public class DarkSpellItem implements AI2Class
 {
-	private static final Image IMAGE = new Image("DarkSpellItem.png");
 	private static final int[] RANGES = new int[]{1, 2, 3, 4};
 	private static final int[] COUNTER = new int[]{1, 2, 3, 4, 5, 6};
 	public static final DarkSpellItem INSTANCE = new DarkSpellItem();
 
 	@Override
-	public Image image()
+	public String imageName()
 	{
-		return IMAGE;
+		return "DarkSpellItem.png";
 	}
 
 	@Override

@@ -27,7 +27,7 @@ public class AnimPartHit implements AnimPart
 		this.crit = crit;
 		this.melt = melt;
 		this.arrows = arrows;
-		arrow = new BlinkArrow(target.location(), DURATION, false, target.mapImage(), BLINKTIME);
+		arrow = new BlinkArrow(target.location(), DURATION, false, target.mapImageName(), BLINKTIME);
 		reduction = Math.min(statsT.currentHealth(), damage);
 		statsT.setCurrentHealth(Math.max(0, statsT.currentHealth() - damage));
 	}
@@ -61,7 +61,7 @@ public class AnimPartHit implements AnimPart
 			return false;
 		int counter2 = counter - AnimPartAttack.DODGETIME;
 		if(counter2 % SPEED == 0 && counter2 / SPEED <= reduction)
-			statBar.setData(statBar.getData() - 1);
+			statBar.changeCurrent(-1);
 		return counter2 / SPEED >= reduction && arrow.finished();
 	}
 }

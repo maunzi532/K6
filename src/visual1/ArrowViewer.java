@@ -1,10 +1,10 @@
 package visual1;
 
 import arrow.*;
+import file.*;
 import geom.d1.*;
 import geom.f1.*;
 import javafx.scene.paint.*;
-import logic.*;
 
 public class ArrowViewer
 {

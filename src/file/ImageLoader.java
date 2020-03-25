@@ -10,6 +10,8 @@ public class ImageLoader
 
 	public static Image getImage(String path)
 	{
+		if(path == null)
+			return null;
 		Image image = images.get(path);
 		if(image != null)
 			return image;

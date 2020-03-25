@@ -1,20 +1,18 @@
 package system2.content;
 
 import java.util.*;
-import javafx.scene.image.*;
 import system2.*;
 
 public class DaggerItem implements AI2Class
 {
-	private static final Image IMAGE = new Image("DaggerItem.png");
 	private static final int[] RANGES = new int[]{1};
 	private static final int[] COUNTER = new int[]{1, 2};
 	public static final DaggerItem INSTANCE = new DaggerItem();
 
 	@Override
-	public Image image()
+	public String imageName()
 	{
-		return IMAGE;
+		return "DaggerItem.png";
 	}
 
 	@Override

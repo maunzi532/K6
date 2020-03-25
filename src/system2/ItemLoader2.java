@@ -29,7 +29,7 @@ public class ItemLoader2 implements ItemLoader
 		{
 			a1.put("ItemCode", ((Items) item).ordinal());
 		}
-		else if(item instanceof AttackItem2)
+		else if(item instanceof AttackItem)
 		{
 			a1.put("AttackItemCode", AttackItems2.INSTANCE.itemListA.indexOf(item));
 		}

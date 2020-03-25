@@ -1,11 +1,10 @@
 package item;
 
 import java.util.*;
-import javafx.scene.image.*;
 
 public interface Item
 {
-	Image image();
+	String imageName();
 
 	int weight();
 

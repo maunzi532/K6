@@ -1,5 +1,6 @@
 package visual1;
 
+import file.*;
 import geom.*;
 import geom.d1.*;
 import geom.f1.*;

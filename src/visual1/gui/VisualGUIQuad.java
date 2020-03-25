@@ -1,8 +1,8 @@
 package visual1.gui;
 
+import file.*;
 import geom.*;
 import geom.d1.*;
-import logic.*;
 import logic.gui.*;
 import visual1.*;
 

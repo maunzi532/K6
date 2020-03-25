@@ -150,7 +150,7 @@ public class BuildGUI extends XGUIState
 		return new GuiTile[]
 				{
 						new GuiTile((itemView.base == -1 ? "-" : itemView.base) + " / " + stack.count, null, false, color),
-						new GuiTile(null, itemView.item.image(), false, color)
+						new GuiTile(null, itemView.item.imageName(), false, color)
 				};
 	}
 
@@ -159,7 +159,7 @@ public class BuildGUI extends XGUIState
 		return new GuiTile[]
 				{
 						new GuiTile(String.valueOf(stack.count)),
-						new GuiTile(null, stack.item.image(), false, null)
+						new GuiTile(null, stack.item.imageName(), false, null)
 				};
 	}
 

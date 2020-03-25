@@ -1,5 +1,6 @@
 package logic.editor;
 
+import file.*;
 import logic.*;
 import logic.gui.*;
 import logic.xstate.*;
@@ -14,7 +15,7 @@ public class EditorSlotGUI extends XGUIState
 	public void setTile(GuiTile guiTile, boolean active, ColorScheme colorScheme)
 	{
 		if(active)
-			tiles[0][0] = new GuiTile(guiTile.text, guiTile.image, guiTile.flipped, colorScheme.color("gui.editor.slot.active"));
+			tiles[0][0] = new GuiTile(guiTile.text, guiTile.imageName, guiTile.flipped, colorScheme.color("gui.editor.slot.active"));
 		else
 			tiles[0][0] = guiTile;
 	}

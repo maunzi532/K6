@@ -2,20 +2,17 @@ package system2;
 
 import entity.*;
 import entity.analysis.*;
-import geom.f1.*;
 import java.util.*;
 import system2.analysis.*;
 
 public class AttackInfo
 {
 	public final XCharacter entity;
-	public final Tile loc;
 	public final Stats stats;
-	public final AttackMode4 mode;
+	public final AttackMode mode;
 	public final XCharacter entityT;
-	public final Tile locT;
 	public final Stats statsT;
-	public final AttackMode4 modeT;
+	public final AttackMode modeT;
 	public final int distance;
 	public RNGInfoAnalysis<RNGDivider2> analysis;
 
@@ -24,14 +21,12 @@ public class AttackInfo
 	public final AttackInfoPart3 calcT;
 	private final String[] infos;
 
-	public AttackInfo(XCharacter entity, Tile loc, AttackMode4 mode, XCharacter entityT, Tile locT, AttackMode4 modeT, int distance)
+	public AttackInfo(XCharacter entity, AttackMode mode, XCharacter entityT, AttackMode modeT, int distance)
 	{
 		this.entity = entity;
-		this.loc = loc;
 		stats = entity.stats();
 		this.mode = mode;
 		this.entityT = entityT;
-		this.locT = locT;
 		statsT = entityT.stats();
 		this.modeT = modeT;
 		this.distance = distance;
@@ -58,11 +53,6 @@ public class AttackInfo
 	public Stats getStats(boolean inverse)
 	{
 		return inverse ? statsT : stats;
-	}
-
-	public AttackMode4 getMode(boolean inverse)
-	{
-		return inverse ? modeT : mode;
 	}
 
 	public AttackInfo addAnalysis()

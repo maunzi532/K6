@@ -34,8 +34,8 @@ public class Stats implements ModifierAspect
 	private int maxAccessRange;
 	private int currentHealth;
 	private int exhaustion;
-	private AttackMode4 lastUsed;
-	private AttackItem2Slot slot;
+	private AttackMode lastUsed;
+	private AttackItemFilter filter;
 
 	public Stats(XClass xClass, int level, String customName, String customMapImage,
 			String customSideImage, int movement, PlayerLevelSystem playerLevelSystem)
@@ -52,8 +52,8 @@ public class Stats implements ModifierAspect
 		this.movement = movement;
 		dashMovement = 12;
 		maxAccessRange = 4;
-		lastUsed = AttackMode4.EVADE_MODE;
-		slot = new AttackItem2Slot(xClass.usableItems);
+		lastUsed = AttackMode.EVADE_MODE;
+		filter = new AttackItemFilter(xClass.usableItems);
 	}
 
 	public Stats(XClass xClass, int level, PlayerLevelSystem playerLevelSystem)
@@ -66,8 +66,8 @@ public class Stats implements ModifierAspect
 		movement = xClass.movement;
 		dashMovement = 12;
 		maxAccessRange = 4;
-		lastUsed = AttackMode4.EVADE_MODE;
-		slot = new AttackItem2Slot(xClass.usableItems);
+		lastUsed = AttackMode.EVADE_MODE;
+		filter = new AttackItemFilter(xClass.usableItems);
 	}
 
 	public Stats(XClass xClass, int level, int exp, String customName, String customMapImage, String customSideImage, int[] lvStats,
@@ -86,8 +86,8 @@ public class Stats implements ModifierAspect
 		this.movement = movement;
 		this.dashMovement = dashMovement;
 		this.maxAccessRange = maxAccessRange;
-		lastUsed = AttackMode4.EVADE_MODE;
-		slot = new AttackItem2Slot(xClass.usableItems);
+		lastUsed = AttackMode.EVADE_MODE;
+		filter = new AttackItemFilter(xClass.usableItems);
 	}
 
 	public Stats copy()
@@ -133,7 +133,7 @@ public class Stats implements ModifierAspect
 		return playerLevelSystem != null ? playerLevelSystem : xClass.levelSystem;
 	}
 
-	public int getStat1(int num)
+	public int statByNum(int num)
 	{
 		return lvStats[num];
 	}
@@ -230,27 +230,26 @@ public class Stats implements ModifierAspect
 		return maxAccessRange;
 	}
 
-	public AttackMode4 lastUsed()
+	public AttackMode lastUsed()
 	{
 		return lastUsed;
 	}
 
-	public void equipMode(AttackMode4 mode)
+	public void equipMode(AttackMode mode)
 	{
 		lastUsed = mode;
 	}
 
 	public void autoEquip(XCharacter entity)
 	{
-		ItemView itemView = entity.outputInv().viewRecipeItem(getItemFilter());
-		if(itemView.base == 0 || !(itemView.item instanceof AttackItem2))
+		ItemView itemView = entity.outputInv().viewRecipeItem(filter);
+		if(itemView.base != 0 && itemView.item instanceof AttackItem attackItem)
 		{
-			lastUsed = AttackMode4.EVADE_MODE;
+			lastUsed = attackItem.attackModes().stream().findFirst().orElse(AttackMode.EVADE_MODE);
 		}
 		else
 		{
-			lastUsed = ((AttackItem2) itemView.item).attackModes()
-					.stream().findFirst().orElse(AttackMode4.EVADE_MODE);
+			lastUsed = AttackMode.EVADE_MODE;
 		}
 	}
 
@@ -260,13 +259,13 @@ public class Stats implements ModifierAspect
 			return;
 		if(!entity.outputInv().canGive(new ItemStack(lastUsed.item, 1), false))
 		{
-			lastUsed = AttackMode4.EVADE_MODE;
+			lastUsed = AttackMode.EVADE_MODE;
 		}
 	}
 
 	public Item getItemFilter()
 	{
-		return slot;
+		return filter;
 	}
 
 	public int getVisualStat(int num)
@@ -304,7 +303,7 @@ public class Stats implements ModifierAspect
 		return customName != null ? customName : xClass.className + " lv" + level;
 	}
 
-	public String mapImagePath()
+	public String mapImageName()
 	{
 		if(customMapImage != null)
 			return customMapImage;
@@ -312,7 +311,7 @@ public class Stats implements ModifierAspect
 			return "Enemy_3.png";
 	}
 
-	public String sideImagePath()
+	public String sideImageName()
 	{
 		if(customSideImage != null)
 			return customSideImage;
@@ -323,10 +322,9 @@ public class Stats implements ModifierAspect
 	public Stats(JrsObject data, ItemLoader itemLoader)
 	{
 		xClass = XClasses.INSTANCE.xClasses[((JrsNumber) data.get("Class")).getValue().intValue()];
-		slot = new AttackItem2Slot(xClass.usableItems);
+		filter = new AttackItemFilter(xClass.usableItems);
 		level = ((JrsNumber) data.get("Level")).getValue().intValue();
 		exp = ((JrsNumber) data.get("Exp")).getValue().intValue();
-		exp = 100; //TODO
 		if(data.get("LevelSystem") != null)
 		{
 			playerLevelSystem = new PlayerLevelSystem(((JrsObject) data.get("LevelSystem")));
@@ -356,13 +354,13 @@ public class Stats implements ModifierAspect
 		maxAccessRange = ((JrsNumber) data.get("MaxAccessRange")).getValue().intValue();
 		if(data.get("LastUsed") != null)
 		{
-			AttackItem2 item1 = ((AttackItem2) itemLoader.loadItem((JrsObject) data.get("LastUsedItem")));
+			AttackItem item1 = ((AttackItem) itemLoader.loadItem((JrsObject) data.get("LastUsedItem")));
 			lastUsed = item1.attackModes().stream().filter(e -> e.mode.code() == ((JrsNumber) data.get("LastUsed")).getValue().intValue())
 					.findFirst().orElseThrow();
 		}
 		else
 		{
-			lastUsed = AttackMode4.EVADE_MODE;
+			lastUsed = AttackMode.EVADE_MODE;
 		}
 	}
 
@@ -421,7 +419,7 @@ public class Stats implements ModifierAspect
 		info.add("Move\n" + movement);
 		info.add(exhaustion > 0 ? "Exhausted\n" + exhaustion : "");
 		info.add("Defend\n" + (lastUsed.active ? lastUsed.item.info().get(0).replace("Type\n", "") : "None"));
-		for(AI2Class e : slot.getItemTypes())
+		for(AI2Class e : filter.getItemTypes())
 		{
 			info.add("ItemType\n" + e.getClass().getSimpleName().replace("Item", ""));
 		}
@@ -510,7 +508,7 @@ public class Stats implements ModifierAspect
 		info.add("Exhaustion\n" + exhaustion);
 		info.add("Move\n" + movement);
 		info.add("Defend\n" + (lastUsed.active ? lastUsed.item.info().get(0).replace("Type\n", "") : "None"));
-		info.add("ItemTypes\n" + slot.getItemTypes().stream().map(e -> e.getClass().getSimpleName().replace("Item", ""))
+		info.add("ItemTypes\n" + filter.getItemTypes().stream().map(e -> e.getClass().getSimpleName().replace("Item", ""))
 				.collect(Collectors.joining("\n")));
 		return info;
 	}
@@ -562,12 +560,12 @@ public class Stats implements ModifierAspect
 			case 0x10 ->
 			{
 				xClass = XClasses.INSTANCE.xClasses[xClass.code - 1];
-				slot = new AttackItem2Slot(xClass.usableItems);
+				filter = new AttackItemFilter(xClass.usableItems);
 			}
 			case 0x11 ->
 			{
 				xClass = XClasses.INSTANCE.xClasses[xClass.code + 1];
-				slot = new AttackItem2Slot(xClass.usableItems);
+				filter = new AttackItemFilter(xClass.usableItems);
 			}
 			case 0x20 -> level++;
 			case 0x21 -> level--;

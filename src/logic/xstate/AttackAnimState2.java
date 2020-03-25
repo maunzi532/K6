@@ -1,8 +1,5 @@
 package logic.xstate;
 
-import entity.*;
-import entity.analysis.*;
-import java.util.function.*;
 import logic.*;
 import system2.*;
 import system2.analysis.*;
@@ -11,8 +8,7 @@ import system2.animation.*;
 public class AttackAnimState2 extends AttackState
 {
 	private RNGDivider2 divider;
-	private AnimTimer animTimer;
-	private Supplier<RNGOutcome> outcomeSupplier;
+	private AttackAnim attackAnim;
 
 	public AttackAnimState2(NState nextState, AttackInfo aI)
 	{
@@ -23,25 +19,24 @@ public class AttackAnimState2 extends AttackState
 	@Override
 	public void onEnter(MainState mainState)
 	{
-		animTimer = new AttackAnim(divider, mainState.levelMap, mainState.colorScheme);
-		outcomeSupplier = (Supplier<RNGOutcome>) animTimer;
+		attackAnim = new AttackAnim(divider, mainState.levelMap, mainState.colorScheme);
 	}
 
 	@Override
 	public void tick(MainState mainState)
 	{
-		animTimer.tick();
+		attackAnim.tick();
 	}
 
 	@Override
 	public boolean finished()
 	{
-		return animTimer.finished();
+		return attackAnim.finished();
 	}
 
 	@Override
 	public NState nextState()
 	{
-		return new PostAttackState(nextState, aI, outcomeSupplier.get());
+		return new PostAttackState(nextState, aI, attackAnim.outcome());
 	}
 }

@@ -1,27 +1,25 @@
-package file;
+package building.blueprint;
 
 import com.fasterxml.jackson.jr.ob.*;
 import com.fasterxml.jackson.jr.stree.*;
 import item.*;
 import java.io.*;
-import java.nio.file.*;
 import java.util.*;
-import java.util.function.*;
 
-public class BlueprintCache<T extends FullBlueprint>
+public class BlueprintFile
 {
-	private final HashMap<String, T> blueprints;
+	private final HashMap<String, BuildingBlueprint> blueprints;
 
-	public BlueprintCache(String filename, Function<JrsObject, T> initializer)
+	public BlueprintFile(String input, ItemLoader itemLoader)
 	{
 		blueprints = new HashMap<>();
 		try
 		{
-			var tree = JSON.std.with(new JacksonJrsTreeCodec()).treeFrom(ImageLoader.loadTextResource(filename));
+			var tree = JSON.std.with(new JacksonJrsTreeCodec()).treeFrom(input);
 			if(((JrsNumber) tree.get("code")).getValue().intValue() == 0xA4D2839F)
 			{
 				((JrsArray) tree.get("Blueprints")).elements()
-						.forEachRemaining(e -> blueprints.put(((JrsObject) e).get("Name").asText(), initializer.apply((JrsObject) e)));
+						.forEachRemaining(e -> blueprints.put(((JrsObject) e).get("Name").asText(), BuildingBlueprint.create((JrsObject) e, itemLoader)));
 			}
 		}catch(IOException e)
 		{
@@ -29,22 +27,17 @@ public class BlueprintCache<T extends FullBlueprint>
 		}
 	}
 
-	public T get(String name)
+	public BuildingBlueprint get(String name)
 	{
 		return blueprints.get(name);
 	}
 
-	public Set<String> allNames()
-	{
-		return blueprints.keySet();
-	}
-
-	public List<T> allBlueprints()
+	public List<BuildingBlueprint> allBlueprints()
 	{
 		return new ArrayList<>(blueprints.values());
 	}
 
-	public void saveBlueprints(String filename, ItemLoader itemLoader)
+	public String saveBlueprints(ItemLoader itemLoader)
 	{
 		try
 		{
@@ -58,8 +51,7 @@ public class BlueprintCache<T extends FullBlueprint>
 				get(key).save(a2.startObject(), itemLoader);
 			}
 			a2.end();
-			String text = a1.end().finish();
-			Files.write(new File(filename).toPath(), text.getBytes());
+			return a1.end().finish();
 		}catch(IOException e)
 		{
 			throw new RuntimeException(e);

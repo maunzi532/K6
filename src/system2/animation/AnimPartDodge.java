@@ -16,7 +16,7 @@ public class AnimPartDodge implements AnimPart
 	public AnimPartDodge(XCharacter attacker, XCharacter target, int distance, Arrows arrows)
 	{
 		this.distance = distance;
-		arrow = new ManualXArrow(XArrow.convert(target.location(), attacker.location()), LEN, target.mapImage());
+		arrow = new ManualXArrow(XArrow.convert(target.location(), attacker.location()), LEN, target.mapImageName());
 		arrows.addArrow(arrow);
 		target.replaceVisual(arrow);
 	}

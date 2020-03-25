@@ -12,7 +12,7 @@ public class AnimPartVanish implements AnimPart
 
 	public AnimPartVanish(XCharacter target, Arrows arrows)
 	{
-		arrow = new BlinkArrow(target.location(), DURATION, false, target.mapImage(), BLINKTIME);
+		arrow = new BlinkArrow(target.location(), DURATION, false, target.mapImageName(), BLINKTIME);
 		arrows.addArrow(arrow);
 	}
 

@@ -59,7 +59,7 @@ public class Entity2Builder
 		if(team == CharacterTeam.HERO)
 		{
 			entity = new XCharacter(team, 0, location, stats, inv,
-					new NoAI(), new TurnResources(location), new SaveSettings(false, false));
+					new NoAI(), new TurnResources(location), new StartingSettings(false, false));
 		}
 		else
 		{

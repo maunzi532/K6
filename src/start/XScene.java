@@ -6,7 +6,6 @@ import geom.d1.*;
 import javafx.application.*;
 import javafx.scene.*;
 import javafx.scene.canvas.*;
-import javafx.scene.image.*;
 import javafx.scene.paint.*;
 import javafx.stage.*;
 import visual1.*;
@@ -36,7 +35,7 @@ public class XScene extends Application
 		root.getChildren().add(canvas);
 		stage.setScene(s);
 		stage.setTitle("K6");
-		stage.getIcons().add(new Image("Tech.png"));
+		stage.getIcons().add(ImageLoader.getImage("Tech.png"));
 		XGraphics graphics = new XGraphics(canvas.getGraphicsContext2D(), WIDTH, HEIGHT);
 		KeybindFile keybindFile = new KeybindFile(ImageLoader.loadTextResource("Keybinds"));
 		FileColorScheme colorSchemeFile = new FileColorScheme(ImageLoader.loadTextResource("ColorScheme"));

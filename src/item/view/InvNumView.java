@@ -20,11 +20,6 @@ public class InvNumView
 		limit = -1;
 	}
 
-	public int changeType()
-	{
-		return Integer.compare(changed, base);
-	}
-
 	public String currentWithLimit()
 	{
 		if(limit < 0)

@@ -2,6 +2,7 @@ package logic.gui.guis;
 
 import entity.*;
 import entity.sideinfo.*;
+import file.*;
 import logic.*;
 import logic.gui.*;
 import logic.xstate.*;
@@ -75,8 +76,8 @@ public class AttackInfoGUI extends XGUIState
 				{
 						new GuiTile(read(infos, 0)),
 						new GuiTile(read(infos, 2)),
-						new GuiTile(read(infos, 8), aI.mode.image(), false, null),
-						new GuiTile(read(infos, 9), aI.modeT.image(), false, null),
+						new GuiTile(read(infos, 8), aI.mode.imageName(), false, null),
+						new GuiTile(read(infos, 9), aI.modeT.imageName(), false, null),
 						new GuiTile(read(infos, 1)),
 						new GuiTile(read(infos, 3)),
 						new GuiTile(read(infos, 4)),

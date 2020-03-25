@@ -73,7 +73,7 @@ public class PlayerLevelSystem implements LevelSystem
 		for(int i = 0; i < STAT_COUNT; i++)
 		{
 			int assumedStat = assumedIncrease[i] * levelDiff / 100 + baseLevelStats[i];
-			int currentStat = current.getStat1(i);
+			int currentStat = current.statByNum(i);
 			int statModifier = assumedStat - currentStat;
 			/*percent[i] = Math.max(0, Math.min(100, baseIncrease[i]
 					+ statModifier * MODIFIER_MULTIPLIER / MODIFIER_DIVIDER

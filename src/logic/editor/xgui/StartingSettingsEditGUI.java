@@ -6,7 +6,7 @@ import logic.*;
 import logic.gui.*;
 import logic.xstate.*;
 
-public class SaveSettingsEditGUI extends XGUIState
+public class StartingSettingsEditGUI extends XGUIState
 {
 	private static final CTile isLocationLocked = new CTile(0, 1, 2, 1);
 	private static final CTile isInventoryLocked = new CTile(2, 1, 2, 1);
@@ -16,7 +16,7 @@ public class SaveSettingsEditGUI extends XGUIState
 	private CElement locationLockedElement;
 	private CElement inventoryLockedElement;
 
-	public SaveSettingsEditGUI(XCharacter character)
+	public StartingSettingsEditGUI(XCharacter character)
 	{
 		this.character = character;
 	}
@@ -52,13 +52,13 @@ public class SaveSettingsEditGUI extends XGUIState
 	@Override
 	public String text()
 	{
-		return "Settings";
+		return "Starting Settings";
 	}
 
 	@Override
 	public String keybind()
 	{
-		return "Hero Settings";
+		return "Starting Settings";
 	}
 
 	@Override

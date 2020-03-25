@@ -87,7 +87,7 @@ public class CharacterCombatGUI extends XGUIState
 
 	private static List<AttackMode3> modesForItem(Stats stats, Item item)
 	{
-		if(item instanceof AttackItem2 item2)
+		if(item instanceof AttackItem item2)
 			return item2.attackModes().stream().map(e -> AttackMode3.convert(stats, e)).collect(Collectors.toList());
 		return List.of();
 	}
@@ -101,7 +101,7 @@ public class CharacterCombatGUI extends XGUIState
 
 	private void unequip()
 	{
-		character.stats().equipMode(AttackMode4.EVADE_MODE);
+		character.stats().equipMode(AttackMode.EVADE_MODE);
 		equippedItem = null;
 		chosenItem = null;
 	}
@@ -112,7 +112,7 @@ public class CharacterCombatGUI extends XGUIState
 		return new GuiTile[]
 				{
 						new GuiTile(itemView.currentWithLimit(), null, false, mark ? activeColor : null),
-						new GuiTile(null, itemView.item.image(), false, mark ? activeColor : null)
+						new GuiTile(null, itemView.item.imageName(), false, mark ? activeColor : null)
 				};
 	}
 

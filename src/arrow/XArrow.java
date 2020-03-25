@@ -2,7 +2,6 @@ package arrow;
 
 import geom.f1.*;
 import java.util.*;
-import javafx.scene.image.*;
 
 public class XArrow
 {
@@ -11,16 +10,16 @@ public class XArrow
 	protected final List<Tile> locations;
 	protected final int duration;
 	protected final boolean loop;
-	protected final Image image;
+	protected final String imageName;
 	protected int counter;
 	protected boolean remove;
 
-	public XArrow(List<Tile> locations, int duration, boolean loop, Image image)
+	public XArrow(List<Tile> locations, int duration, boolean loop, String imageName)
 	{
 		this.locations = locations;
 		this.duration = duration;
 		this.loop = loop;
-		this.image = image;
+		this.imageName = imageName;
 	}
 
 	public List<Tile> locations()
@@ -58,9 +57,9 @@ public class XArrow
 		remove = true;
 	}
 
-	public Image image()
+	public String imageName()
 	{
-		return image;
+		return imageName;
 	}
 
 	public boolean zeroUpwards()
@@ -68,11 +67,11 @@ public class XArrow
 		return true;
 	}
 
-	public static XArrow factory(Tile start, Tile end, TileType y1, boolean loop, Image image)
+	public static XArrow factory(Tile start, Tile end, TileType y1, boolean loop, String imageName)
 	{
 		int duration = end == null || end.equals(start) ? 0 : y1.distance(end, start) * TIME_PER_DISTANCE;
 		List<Tile> locations = convert(start, end);
-		return new XArrow(locations, duration, loop, image);
+		return new XArrow(locations, duration, loop, imageName);
 	}
 
 	public static List<Tile> convert(Tile start, Tile end)

@@ -2,13 +2,12 @@ package arrow;
 
 import geom.f1.*;
 import java.util.*;
-import javafx.scene.image.*;
 
 public class ManualXArrow extends XArrow
 {
-	public ManualXArrow(List<Tile> locations, int duration, Image image)
+	public ManualXArrow(List<Tile> locations, int duration, String imageName)
 	{
-		super(locations, duration, true, image);
+		super(locations, duration, true, imageName);
 	}
 
 	@Override

@@ -2,15 +2,15 @@ package system2.animation;
 
 import arrow.*;
 import entity.*;
-import logic.*;
+import file.*;
 import system2.*;
 
 public class RegenerationAnim implements AnimTimer
 {
 	private static final int SPEED = 2;
 
-	private InfoArrow healthBar;
-	private int regenerateAmount;
+	private final InfoArrow healthBar;
+	private final int regenerateAmount;
 	private boolean finished;
 	private int counter;
 
@@ -41,7 +41,7 @@ public class RegenerationAnim implements AnimTimer
 	{
 		counter++;
 		if(counter % SPEED == 0)
-			healthBar.statBar().setData(healthBar.statBar().getData() + 1);
+			healthBar.statBar().changeCurrent(1);
 		if(counter / SPEED >= regenerateAmount)
 			finished = true;
 	}

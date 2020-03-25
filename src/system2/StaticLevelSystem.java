@@ -30,6 +30,6 @@ public class StaticLevelSystem implements LevelSystem
 	@Override
 	public int[] getLevelup(Stats current)
 	{
-		return IntStream.range(0, baseLevelStats.length).map(e -> forLevel(e, current.level()) - current.getStat1(e)).toArray();
+		return IntStream.range(0, baseLevelStats.length).map(e -> forLevel(e, current.level()) - current.statByNum(e)).toArray();
 	}
 }

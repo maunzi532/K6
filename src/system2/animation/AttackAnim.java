@@ -2,25 +2,23 @@ package system2.animation;
 
 import arrow.*;
 import entity.*;
-import entity.analysis.*;
+import file.*;
 import java.util.*;
-import java.util.function.*;
 import javafx.scene.paint.*;
-import logic.*;
 import system2.*;
 import system2.analysis.*;
 
-public class AttackAnim implements AnimTimer, Supplier<RNGOutcome>
+public class AttackAnim implements AnimTimer
 {
 	private RNGDivider2 divider;
 	private RNGDivider2 lastDivider;
-	private Arrows arrows;
-	private AttackInfo aI;
+	private final Arrows arrows;
+	private final AttackInfo aI;
 	private List<String> events;
 	private int eventCounter;
-	private List<AnimPart> linked;
-	private InfoArrow healthBar1;
-	private InfoArrow healthBar2;
+	private final List<AnimPart> linked;
+	private final InfoArrow healthBar1;
+	private final InfoArrow healthBar2;
 
 	public AttackAnim(RNGDivider2 divider, Arrows arrows, ColorScheme colorScheme)
 	{
@@ -114,9 +112,8 @@ public class AttackAnim implements AnimTimer, Supplier<RNGOutcome>
 		}
 	}
 
-	@Override
-	public RNGOutcome get()
+	public RNGOutcome2 outcome()
 	{
-		return lastDivider.asOutcome();
+		return (RNGOutcome2) lastDivider.asOutcome();
 	}
 }

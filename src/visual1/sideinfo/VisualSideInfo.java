@@ -1,6 +1,6 @@
 package visual1.sideinfo;
 
-import logic.*;
+import file.*;
 
 public class VisualSideInfo
 {

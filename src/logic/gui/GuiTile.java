@@ -1,7 +1,6 @@
 package logic.gui;
 
 import item.view.*;
-import javafx.scene.image.*;
 import javafx.scene.paint.*;
 
 public class GuiTile
@@ -9,16 +8,16 @@ public class GuiTile
 	public static final GuiTile EMPTY = new GuiTile(null, null, false, null);
 
 	public final String text;
-	public final Image image;
+	public final String imageName;
 	public final boolean flipped;
 	public final Color color;
 	public final int l;
 	public final int u;
 
-	public GuiTile(String text, Image image, boolean flipped, Color color)
+	public GuiTile(String text, String imageName, boolean flipped, Color color)
 	{
 		this.text = text;
-		this.image = image;
+		this.imageName = imageName;
 		this.flipped = flipped;
 		this.color = color;
 		l = 0;
@@ -28,17 +27,17 @@ public class GuiTile
 	public GuiTile(String text)
 	{
 		this.text = text;
-		image = null;
+		imageName = null;
 		flipped = false;
 		color = null;
 		l = 0;
 		u = 0;
 	}
 
-	public GuiTile(String text, Image image, boolean flipped, Color color, int r, int d)
+	public GuiTile(String text, String imageName, boolean flipped, Color color, int r, int d)
 	{
 		this.text = text;
-		this.image = image;
+		this.imageName = imageName;
 		this.flipped = flipped;
 		this.color = color;
 		l = r - 1;
@@ -48,7 +47,7 @@ public class GuiTile
 	public GuiTile(GuiTile copy, int r, int d)
 	{
 		text = copy.text;
-		image = copy.image;
+		imageName = copy.imageName;
 		flipped = copy.flipped;
 		color = copy.color;
 		l = r - 1;
@@ -70,7 +69,7 @@ public class GuiTile
 		return new GuiTile[]
 				{
 						new GuiTile(itemView.currentWithLimit()),
-						new GuiTile(null, itemView.item.image(), false, null)
+						new GuiTile(null, itemView.item.imageName(), false, null)
 				};
 	}
 }

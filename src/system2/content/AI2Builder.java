@@ -1,14 +1,13 @@
 package system2.content;
 
 import java.util.*;
-import javafx.scene.image.*;
 import system2.*;
 
 public class AI2Builder
 {
 	private AI2Class itemClass;
 	private boolean autoImage;
-	private Image image;
+	private String imageName;
 	private int damage;
 	private int heavy;
 	private int accuracy;
@@ -58,10 +57,10 @@ public class AI2Builder
 		return this;
 	}
 
-	public AI2Builder image(Image image)
+	public AI2Builder image(String imageName)
 	{
 		autoImage = false;
-		this.image = image;
+		this.imageName = imageName;
 		return this;
 	}
 
@@ -127,14 +126,14 @@ public class AI2Builder
 		return this;
 	}
 
-	public AttackItem2 build()
+	public AttackItem build()
 	{
 		if(autoAbilities)
 			abilities.addAll(itemClass.abilities());
 		if(autoModes)
 			attackModes.addAll(itemClass.attackModes());
-		return new AttackItem2(itemClass,
-				autoImage ? itemClass.image() : image,
+		return new AttackItem(itemClass,
+				autoImage ? itemClass.imageName() : imageName,
 				damage, heavy, accuracy, crit, slow,
 				autoAdaptive ? itemClass.adaptive() : adaptive,
 				autoAdaptive ? itemClass.adaptiveType() : adaptiveType,

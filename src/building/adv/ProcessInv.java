@@ -21,15 +21,6 @@ public class ProcessInv implements BuildingFunction
 	private final List<Recipe> recipes;
 	public int lastViewedRecipeNum;
 
-	public ProcessInv(String name, Inv inputInv, Inv outputInv, List<Recipe> recipes)
-	{
-		this.name = name;
-		this.inputInv = inputInv;
-		this.outputInv = outputInv;
-		this.recipes = recipes;
-		lastViewedRecipeNum = 0;
-	}
-
 	public ProcessInv(String name, ProductionBlueprint blueprint)
 	{
 		this.name = name;
@@ -84,7 +75,7 @@ public class ProcessInv implements BuildingFunction
 					{
 						inputInv.commit();
 						arrows.addArrow(ShineArrow.factory(location, null,
-								ARROW_TIME, false, recipe.results().items.get(0).item.image()));
+								ARROW_TIME, false, recipe.results().items.get(0).item.imageName()));
 						return;
 					}
 					else
@@ -114,7 +105,7 @@ public class ProcessInv implements BuildingFunction
 	}
 
 	@Override
-	public void loadConnect(ConnectRestore cr, XBuilding connectTo){}
+	public void loadConnect(ConnectRestore cr){}
 
 	public ProcessInv(JrsObject data, ItemLoader itemLoader)
 	{

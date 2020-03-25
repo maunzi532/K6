@@ -3,14 +3,12 @@ package entity;
 import arrow.*;
 import com.fasterxml.jackson.jr.ob.comp.*;
 import doubleinv.*;
-import file.*;
 import geom.f1.*;
 import item.*;
 import item.inv.*;
 import item.view.*;
 import java.io.*;
 import java.util.*;
-import javafx.scene.image.*;
 import system2.*;
 
 public class XCharacter implements DoubleInv, XBuilder
@@ -24,10 +22,10 @@ public class XCharacter implements DoubleInv, XBuilder
 	private final Inv inv;
 	private EnemyAI enemyAI;
 	private TurnResources resources;
-	private SaveSettings saveSettings;
+	private StartingSettings startingSettings;
 
 	public XCharacter(CharacterTeam team, int startingDelay, Tile location, Stats stats, Inv inv,
-			EnemyAI enemyAI, TurnResources resources, SaveSettings saveSettings)
+			EnemyAI enemyAI, TurnResources resources, StartingSettings startingSettings)
 	{
 		this.team = team;
 		this.startingDelay = startingDelay;
@@ -38,11 +36,11 @@ public class XCharacter implements DoubleInv, XBuilder
 		this.inv = inv;
 		this.enemyAI = enemyAI;
 		this.resources = resources;
-		this.saveSettings = saveSettings;
+		this.startingSettings = startingSettings;
 	}
 
 	private XCharacter(CharacterTeam team, int startingDelay, boolean defeated, Tile location,
-			Stats stats, Inv inv, EnemyAI enemyAI, TurnResources resources, SaveSettings saveSettings)
+			Stats stats, Inv inv, EnemyAI enemyAI, TurnResources resources, StartingSettings startingSettings)
 	{
 		this.team = team;
 		this.startingDelay = startingDelay;
@@ -53,13 +51,14 @@ public class XCharacter implements DoubleInv, XBuilder
 		this.inv = inv;
 		this.enemyAI = enemyAI;
 		this.resources = resources;
-		this.saveSettings = saveSettings;
+		this.startingSettings = startingSettings;
 	}
 
 	public XCharacter copy(Tile copyLocation)
 	{
 		XCharacter copy = new XCharacter(team, startingDelay, defeated, copyLocation,
-				stats.copy(), inv.copy(), enemyAI.copy(), resources.copy(copyLocation), SaveSettings.copy(saveSettings));
+				stats.copy(), inv.copy(), enemyAI.copy(), resources.copy(copyLocation), StartingSettings
+				.copy(startingSettings));
 		copy.stats.autoEquip(copy);
 		return copy;
 	}
@@ -105,14 +104,14 @@ public class XCharacter implements DoubleInv, XBuilder
 		return stats;
 	}
 
-	public Image mapImage()
+	public String mapImageName()
 	{
-		return ImageLoader.getImage(stats.mapImagePath());
+		return stats.mapImageName();
 	}
 
-	public Image sideImage()
+	public String sideImageName()
 	{
-		return ImageLoader.getImage(stats.sideImagePath());
+		return stats.sideImageName();
 	}
 
 	public TurnResources resources()
@@ -125,9 +124,9 @@ public class XCharacter implements DoubleInv, XBuilder
 		this.resources = resources;
 	}
 
-	public SaveSettings saveSettings()
+	public StartingSettings saveSettings()
 	{
-		return saveSettings;
+		return startingSettings;
 	}
 
 	public void addItems(ItemList itemList)
@@ -185,7 +184,7 @@ public class XCharacter implements DoubleInv, XBuilder
 	@Override
 	public boolean playerTradeable(boolean levelStarted)
 	{
-		return !levelStarted && (saveSettings == null || !saveSettings.startInvLocked);
+		return !levelStarted && (startingSettings == null || !startingSettings.startInvLocked);
 	}
 
 	public EnemyMove preferredMove(boolean hasToMove, int moveAway)
@@ -216,12 +215,12 @@ public class XCharacter implements DoubleInv, XBuilder
 		a1.put("sx", y1.sx(location));
 		a1.put("sy", y1.sy(location));
 		a1.put("StartingDelay", startingDelay);
-		if(saveSettings != null)
+		if(startingSettings != null)
 		{
 			a1.put("StartName", stats.getName());
-			a1.put("Locked", saveSettings.startLocked);
-			a1.put("InvLocked", saveSettings.startInvLocked);
-			if(saveSettings.startLocked)
+			a1.put("Locked", startingSettings.startLocked);
+			a1.put("InvLocked", startingSettings.startInvLocked);
+			if(startingSettings.startLocked)
 			{
 				inv.save(a1.startObjectField("Inventory"), itemLoader);
 			}

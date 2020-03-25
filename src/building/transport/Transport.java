@@ -23,15 +23,6 @@ public class Transport implements BuildingFunction
 	private final List<DoubleInv> targets;
 	private final InvTransporter invTransporter;
 
-	public Transport(String name, int range, int amount)
-	{
-		this.name = name;
-		this.range = range;
-		this.amount = amount;
-		targets = new ArrayList<>();
-		invTransporter = new InvTransporter(targets, targets, amount);
-	}
-
 	public Transport(String name, TransporterBlueprint blueprint)
 	{
 		this.name = name;
@@ -88,7 +79,7 @@ public class Transport implements BuildingFunction
 				PossibleTransport transport = transportOpt.get();
 				invTransporter.doTheTransport(transport);
 				arrows.addArrow(ShineArrow.factory(transport.from().location(), transport.to().location(),
-						TRANSPORT_TIME, false, transport.item().image()));
+						TRANSPORT_TIME, false, transport.item().imageName()));
 			}
 		}
 	}
@@ -100,7 +91,7 @@ public class Transport implements BuildingFunction
 	public void afterTransport(){}
 
 	@Override
-	public void loadConnect(ConnectRestore cr, XBuilding connectTo)
+	public void loadConnect(ConnectRestore cr)
 	{
 		List<DoubleInv> list = targets.stream().map(cr::restoreConnection).collect(Collectors.toList());
 		targets.clear();

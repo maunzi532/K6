@@ -2,7 +2,6 @@ package system2;
 
 import java.util.*;
 import java.util.stream.*;
-import javafx.scene.image.*;
 import system2.content.*;
 
 public class AttackMode3
@@ -14,7 +13,7 @@ public class AttackMode3
 	private static final int CRIT_MULTIPLIER = 2;
 
 	public final Stats stats;
-	public final AttackItem2 item;
+	public final AttackItem item;
 	public final AM2Type mode;
 	public final Set<Ability2> abilities;
 	private final List<AbilityText> abilityTexts;
@@ -47,7 +46,7 @@ public class AttackMode3
 	public final int evasionMagical;
 	public final int critProtection;
 
-	public AttackMode3(Stats stats, AttackMode4 mode4)
+	private AttackMode3(Stats stats, AttackMode mode4)
 	{
 		this.stats = stats;
 		item = mode4.item;
@@ -122,7 +121,7 @@ public class AttackMode3
 		critProtection = critProtection1;
 	}
 
-	public AttackMode3(Stats stats)
+	private AttackMode3(Stats stats)
 	{
 		this.stats = stats;
 		item = null;
@@ -182,14 +181,9 @@ public class AttackMode3
 		return magical ? evasionMagical : defenseMagical;
 	}
 
-	public AttackMode4 shortVersion()
+	public AttackMode shortVersion()
 	{
-		return item == null || mode == null ? AttackMode4.EVADE_MODE : new AttackMode4(item, mode);
-	}
-
-	public Image image()
-	{
-		return item != null ? item.image() : null;
+		return item == null || mode == null ? AttackMode.EVADE_MODE : new AttackMode(item, mode);
 	}
 
 	public String tile()
@@ -213,8 +207,8 @@ public class AttackMode3
 		{
 			list.add("");
 		}
-		list.add("Range\n" + AttackItem2.displayRange(ranges));
-		list.add("Counter\n" + AttackItem2.displayRange(counter));
+		list.add("Range\n" + AttackItem.displayRange(ranges));
+		list.add("Counter\n" + AttackItem.displayRange(counter));
 		list.add("Adv. Type\n" + advType.name);
 		if(attackCount > 0)
 		{
@@ -240,7 +234,7 @@ public class AttackMode3
 		return list;
 	}
 
-	public static AttackMode3 convert(Stats stats, AttackMode4 mode4)
+	public static AttackMode3 convert(Stats stats, AttackMode mode4)
 	{
 		if(mode4.active)
 			return new AttackMode3(stats, mode4);

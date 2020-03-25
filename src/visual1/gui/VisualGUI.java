@@ -1,9 +1,10 @@
 package visual1.gui;
 
+import file.*;
 import geom.*;
 import geom.d1.*;
 import geom.f1.*;
-import logic.*;
+import javafx.scene.image.*;
 import logic.gui.*;
 import javafx.scene.canvas.*;
 import javafx.scene.paint.*;
@@ -115,18 +116,25 @@ public abstract class VisualGUI
 			gd.fillPolygon(points[0], points[1], y2.directionCount());
 			gd.strokePolygon(points[0], points[1], y2.directionCount());
 		}
-		if(guiTile.image != null)
+		if(guiTile.imageName != null)
 		{
 			PointD midPoint = layout.tileToPixel(t1);
+			Image image = ImageLoader.getImage(guiTile.imageName);
 			if(guiTile.flipped)
-				gd.drawImage(guiTile.image, guiTile.image.widthProperty().get(), 0,
-						-guiTile.image.widthProperty().get(), guiTile.image.heightProperty().get(),
-						midPoint.v()[0] - layout.size().v()[0] * imgSize, midPoint.v()[1] - layout.size().v()[1] * imgSize,
-						layout.size().v()[0] * 2 * imgSize, layout.size().v()[1] * 2 * imgSize);
-			else
-				gd.drawImage(guiTile.image, midPoint.v()[0] - layout.size().v()[0] * imgSize,
+			{
+				double width = image.widthProperty().get();
+				double height = image.heightProperty().get();
+				gd.drawImage(image, width, 0, -width, height,
+						midPoint.v()[0] - layout.size().v()[0] * imgSize,
 						midPoint.v()[1] - layout.size().v()[1] * imgSize,
 						layout.size().v()[0] * 2 * imgSize, layout.size().v()[1] * 2 * imgSize);
+			}
+			else
+			{
+				gd.drawImage(image, midPoint.v()[0] - layout.size().v()[0] * imgSize,
+						midPoint.v()[1] - layout.size().v()[1] * imgSize,
+						layout.size().v()[0] * 2 * imgSize, layout.size().v()[1] * 2 * imgSize);
+			}
 		}
 		if(guiTile.text != null)
 		{
@@ -134,7 +142,7 @@ public abstract class VisualGUI
 			PointD rEnd = layout.tileToPixel(t1);
 			double ld = Math.max(0.5, guiTile.text.chars().filter(e -> e == '\n').count()) + 0.5;
 			gd.setFont(new Font(layout.size().v()[1] * fontSize / ld));
-			if(guiTile.image != null)
+			if(guiTile.imageName != null)
 			{
 				gd.setStroke(outline);
 				gd.strokeText(guiTile.text, midPoint.v()[0], midPoint.v()[1], rEnd.v()[0] - midPoint.v()[0] + layout.size().v()[0] * textWidth);

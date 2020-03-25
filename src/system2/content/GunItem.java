@@ -1,19 +1,17 @@
 package system2.content;
 
 import java.util.*;
-import javafx.scene.image.*;
 import system2.*;
 
 public class GunItem implements AI2Class
 {
-	private static final Image IMAGE = new Image("GunItem.png");
 	private static final int[] RANGES = new int[]{1, 2, 3, 4, 5, 6};
 	public static final GunItem INSTANCE = new GunItem();
 
 	@Override
-	public Image image()
+	public String imageName()
 	{
-		return IMAGE;
+		return "GunItem.png";
 	}
 
 	@Override

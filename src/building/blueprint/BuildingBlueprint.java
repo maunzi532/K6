@@ -2,12 +2,11 @@ package building.blueprint;
 
 import com.fasterxml.jackson.jr.ob.comp.*;
 import com.fasterxml.jackson.jr.stree.*;
-import file.*;
 import item.*;
 import java.io.*;
 
 public record BuildingBlueprint(String name, ConstructionBlueprint constructionBlueprint,
-		ProductionBlueprint productionBlueprint, TransporterBlueprint transporterBlueprint) implements FullBlueprint
+		ProductionBlueprint productionBlueprint, TransporterBlueprint transporterBlueprint)
 {
 	public static BuildingBlueprint create(JrsObject data, ItemLoader itemLoader)
 	{
@@ -32,7 +31,6 @@ public record BuildingBlueprint(String name, ConstructionBlueprint constructionB
 		return new BuildingBlueprint(name, constructionBlueprint, productionBlueprint, transporterBlueprint);
 	}
 
-	@Override
 	public <T extends ComposerBase> void save(ObjectComposer<T> a1, ItemLoader itemLoader) throws IOException
 	{
 		a1.put("Name", name);
