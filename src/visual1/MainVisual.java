@@ -2,7 +2,6 @@ package visual1;
 
 import building.blueprint.*;
 import entity.sideinfo.*;
-import file.*;
 import geom.*;
 import geom.f1.*;
 import item.*;
@@ -13,7 +12,6 @@ import levelMap.*;
 import logic.*;
 import logic.editor.*;
 import logic.xstate.*;
-import system2.*;
 import visual1.gui.*;
 import visual1.sideinfo.*;
 
@@ -36,7 +34,7 @@ public class MainVisual implements XInputInterface
 	private ConvInputConsumer convInputConsumer;
 	private boolean paused;
 
-	public MainVisual(XGraphics graphics, XKeyMap keyMap, Scheme scheme,
+	public MainVisual(XGraphics graphics, XKeyMap keyMap, Scheme scheme, ItemLoader itemLoader, BlueprintFile blueprintFile,
 			TileCamera mapCamera, TileCamera menuCamera, TileCamera guiCamera, String loadFile, String loadFile2)
 	{
 		this.graphics = graphics;
@@ -47,9 +45,8 @@ public class MainVisual implements XInputInterface
 		SideInfoViewer sivL = new SideInfoViewer(graphics, false);
 		SideInfoViewer sivR = new SideInfoViewer(graphics, true);
 		visualSideInfo = new VisualSideInfo(sivL, sivR);
-		ItemLoader itemLoader = new ItemLoader2();
-		BlueprintFile blueprintFile = new BlueprintFile(ImageLoader.loadTextResource("BuildingBlueprints"), itemLoader);
-		mainState = new MainState(y1, itemLoader, new SideInfoFrame(sivL, sivR), blueprintFile);
+		SideInfoFrame sideInfoFrame = new SideInfoFrame(sivL, sivR);
+		mainState = new MainState(y1, itemLoader, sideInfoFrame, blueprintFile);
 		loadLevel(loadFile, loadFile2);
 		graphics.gd().setTextAlign(TextAlignment.CENTER);
 		graphics.gd().setTextBaseline(VPos.CENTER);

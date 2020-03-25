@@ -4,7 +4,7 @@ import geom.d1.*;
 
 public class HexCamera extends TileCamera
 {
-	private HexMatrix matrix;
+	private final HexMatrix matrix;
 
 	public HexCamera(XDimension dimension, double xMid, double yMid, double xSize, double ySize,
 			double xShift, double yShift, HexMatrix matrix)

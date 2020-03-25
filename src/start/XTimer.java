@@ -8,8 +8,8 @@ import visual1.keybind.*;
 
 public class XTimer extends AnimationTimer
 {
-	private XInputInterface inputInterface;
-	private KeybindFile keybindFile;
+	private final XInputInterface inputInterface;
+	private final KeybindFile keybindFile;
 	private long lastNanoTime;
 	private boolean mouseDown;
 	private boolean isDrag;
@@ -104,8 +104,6 @@ public class XTimer extends AnimationTimer
 	@Override
 	public void handle(long currentNanoTime)
 	{
-		//System.out.println((currentNanoTime - lastNanoTime) / 1000000);
-		//System.out.println(1000000000d / (currentNanoTime - lastNanoTime));
 		inputInterface.frameTime(currentNanoTime - lastNanoTime);
 		lastNanoTime = currentNanoTime;
 		if(clicked && inside)

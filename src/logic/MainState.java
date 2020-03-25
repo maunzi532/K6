@@ -98,8 +98,7 @@ public class MainState
 	//TODO character class names in classes
 	//TODO fix stealing from enemies
 	//TODO camera init code is bad
-	//TODO rename or split ImageLoader
-	//TODO ImageLoader non-static
+	//TODO put loadTextResource in ImageLoader somewhere else
 
 	//visual engine mechanics
 	//TODO move GUI so it does not overlap with SideInfo/LevelEditor

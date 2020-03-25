@@ -9,7 +9,7 @@ import java.util.*;
 
 public class EditModeBuilder implements XBuilder
 {
-	private Tile location;
+	private final Tile location;
 
 	public EditModeBuilder(Tile location)
 	{

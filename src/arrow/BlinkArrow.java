@@ -5,7 +5,7 @@ import java.util.*;
 
 public class BlinkArrow extends XArrow
 {
-	private int blinkTime;
+	private final int blinkTime;
 
 	public BlinkArrow(Tile location, int duration, boolean loop, String imageName, int blinkTime)
 	{

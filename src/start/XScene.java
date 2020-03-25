@@ -1,50 +1,55 @@
 package start;
 
-import file.*;
+import building.blueprint.*;
 import geom.*;
 import geom.d1.*;
+import item.*;
+import java.io.*;
+import java.net.*;
 import javafx.application.*;
 import javafx.scene.*;
 import javafx.scene.canvas.*;
 import javafx.scene.paint.*;
 import javafx.stage.*;
+import system2.*;
 import visual1.*;
 import visual1.keybind.*;
 
 public class XScene extends Application
 {
-	private static final int WIDTH = 1000, HEIGHT = 800;
-	private static final double mapSizeFactor = 0.088;
-	private static final double menuSizeFactor = 0.1;
-	private static final double guiSizeFactor = 0.1;
+	private static final double MAP_SIZE_FACTOR = 0.088;
+	private static final double MENU_SIZE_FACTOR = 0.1;
+	private static final double GUI_SIZE_FACTOR = 0.1;
 
-	private static String[] args0;
 
 	public static void main(String[] args)
 	{
-		args0 = args;
 		launch(args);
 	}
 
 	@Override
 	public void start(Stage stage)
 	{
+		Scheme scheme = new SchemeFile(loadTextResource("SchemeFile"));
+		int width = scheme.intSetting("window.width");
+		int height = scheme.intSetting("window.height");
 		Group root = new Group();
-		Scene s = new Scene(root, WIDTH, HEIGHT, Color.BLACK);
-		Canvas canvas = new Canvas(WIDTH, HEIGHT);
+		Scene s = new Scene(root, width, height, Color.BLACK);
+		Canvas canvas = new Canvas(width, height);
 		root.getChildren().add(canvas);
 		stage.setScene(s);
-		stage.setTitle("K6");
-		XGraphics graphics = new XGraphics(canvas.getGraphicsContext2D(), WIDTH, HEIGHT);
-		KeybindFile keybindFile = new KeybindFile(ImageLoader.loadTextResource("Keybinds"));
-		SchemeFile schemeFile = new SchemeFile(ImageLoader.loadTextResource("SchemeFile"));
-		stage.getIcons().add(schemeFile.image("window.icon"));
-		MainVisual mainVisual = new MainVisual(graphics, keybindFile, schemeFile,
-				mapCamera(args0, graphics),
-				menuCamera(args0, graphics),
-				guiCamera(args0, graphics),
-				args0.length > 3 ? args0[3] : null,
-				args0.length > 4 ? args0[4] : null);
+		stage.setTitle(scheme.setting("window.title"));
+		stage.getIcons().add(scheme.image("window.icon"));
+		XGraphics graphics = new XGraphics(canvas.getGraphicsContext2D(), width, height);
+		KeybindFile keybindFile = new KeybindFile(loadTextResource(scheme.setting("file.keybinds")));
+		ItemLoader itemLoader = new ItemLoader2();
+		BlueprintFile blueprintFile = new BlueprintFile(loadTextResource(scheme.setting("file.buildingblueprints")), itemLoader);
+		MainVisual mainVisual = new MainVisual(graphics, keybindFile, scheme, itemLoader, blueprintFile,
+				mapCamera(scheme, graphics),
+				menuCamera(scheme, graphics),
+				guiCamera(scheme, graphics),
+				scheme.setting("load.map"),
+				scheme.setting("load.team"));
 		XTimer xTimer = new XTimer(mainVisual, keybindFile);
 		s.setOnMousePressed(xTimer::onMouseDown);
 		s.setOnDragDetected(xTimer::onDragDetected);
@@ -68,27 +73,50 @@ public class XScene extends Application
 		stage.show();
 	}
 
-	private TileCamera mapCamera(String[] args, XGraphics graphics)
+	private TileCamera mapCamera(Scheme scheme, XGraphics graphics)
 	{
-		if(args.length > 0 && args[0].equals("H"))
-			return new HexCamera(graphics, 1, 1, mapSizeFactor, mapSizeFactor, 0, 0, new HexMatrix(0.5));
-		else
-			return new QuadCamera(graphics, 1, 1, mapSizeFactor, mapSizeFactor, 0, 0);
+		return switch(scheme.setting("camera.map"))
+				{
+					case "Hex" -> new HexCamera(graphics, 1, 1, MAP_SIZE_FACTOR, MAP_SIZE_FACTOR, 0, 0, new HexMatrix(0.5));
+					case "Quad" -> new QuadCamera(graphics, 1, 1, MAP_SIZE_FACTOR, MAP_SIZE_FACTOR, 0, 0);
+					default -> throw new RuntimeException("camera.map must be one of these: \"Hex\", \"Quad\"");
+				};
 	}
 
-	private TileCamera menuCamera(String[] args, XGraphics graphics)
+	private TileCamera menuCamera(Scheme scheme, XGraphics graphics)
 	{
-		if(args.length > 1 && args[1].equals("H"))
-			return new HexCamera(graphics, 2, 1, menuSizeFactor, menuSizeFactor, 1.25 * HexMatrix.Q3, 0, HexMatrix.LP);
-		else
-			return new QuadCamera(graphics, 2, 1, menuSizeFactor, menuSizeFactor, 1.25 * HexMatrix.Q3, 0);
+		return switch(scheme.setting("camera.menu"))
+				{
+					case "Hex" -> new HexCamera(graphics, 2, 1, MENU_SIZE_FACTOR, MENU_SIZE_FACTOR,
+							1.25 * HexMatrix.Q3, 0, new HexMatrix(0.5));
+					case "Quad" -> new QuadCamera(graphics, 2, 1, MENU_SIZE_FACTOR, MENU_SIZE_FACTOR, 2, 0);
+					default -> throw new RuntimeException("camera.menu must be one of these: \"Hex\", \"Quad\"");
+				};
 	}
 
-	private TileCamera guiCamera(String[] args, XGraphics graphics)
+	private TileCamera guiCamera(Scheme scheme, XGraphics graphics)
 	{
-		if(args.length > 2 && args[2].equals("H"))
-			return new HexCamera(graphics, 1, 1, guiSizeFactor, guiSizeFactor, 0, 0, HexMatrix.LP);
-		else
-			return new QuadCamera(graphics, 1, 1, guiSizeFactor, guiSizeFactor, 0, 0);
+		return switch(scheme.setting("camera.gui"))
+				{
+					case "Hex" -> new HexCamera(graphics, 1, 1, GUI_SIZE_FACTOR, GUI_SIZE_FACTOR, 0, 0, new HexMatrix(0.5));
+					case "Quad" -> new QuadCamera(graphics, 1, 1, GUI_SIZE_FACTOR, GUI_SIZE_FACTOR, 0, 0);
+					default -> throw new RuntimeException("camera.gui must be one of these: \"Hex\", \"Quad\"");
+				};
+	}
+
+	private String loadTextResource(String location)
+	{
+		URL resource = Thread.currentThread().getContextClassLoader().getResource(location);
+		if(resource == null)
+		{
+			throw new RuntimeException("Resource not found: \"" + location + "\"");
+		}
+		try
+		{
+			return new String(resource.openStream().readAllBytes());
+		}catch(IOException e)
+		{
+			throw new RuntimeException(e);
+		}
 	}
 }

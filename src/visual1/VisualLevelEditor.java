@@ -22,7 +22,7 @@ public class VisualLevelEditor
 		for(int i = 0; i < LevelEditor.SLOT_COUNT; i++)
 		{
 			visualSlots.add(new VisualGUIHex(graphics, new HexCamera(graphics, (i + 0.5) / LevelEditor.SLOT_COUNT * 2, 1.75,
-					EDITOR_SCALE_X, EDITOR_SCALE_Y, 0,  0, HexMatrix.LP)));
+					EDITOR_SCALE_X, EDITOR_SCALE_Y, 0,  0, new HexMatrix(0.5))));
 		}
 	}
 

@@ -71,5 +71,17 @@
     "resource.gsl" : "GSL.png",
     "resource.material" : "X.png",
     "resource.tech" : "Tech.png"
+  },
+  "Settings" : {
+    "load.map" : "W9",
+    "load.team" : "X9",
+    "window.width" : "1000",
+    "window.height" : "800",
+    "window.title" : "K6",
+    "file.keybinds" : "Keybinds",
+    "file.buildingblueprints" : "BuildingBlueprints",
+    "camera.map" : "Hex",
+    "camera.menu" : "Hex",
+    "camera.gui" : "Quad"
   }
 }
