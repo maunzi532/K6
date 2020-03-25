@@ -4,6 +4,8 @@
     "gui.background" : "666680",
     "gui.background.hover" : "9292b6",
     "gui.text" : "000000",
-    "gui.text.outline" : "ffffff"
+    "gui.text.outline" : "ffffff",
+    "arrow.healthbar.hero" : "00aa00",
+    "arrow.healthbar.enemy" : "777777"
   }
 }

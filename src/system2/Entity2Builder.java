@@ -51,19 +51,19 @@ public class Entity2Builder
 		return this;
 	}
 
-	public void create(boolean player)
+	public void create(CharacterTeam team)
 	{
 		Inv inv = new WeightInv(weightLimit);
 		inv.tryAdd(itemList);
 		XCharacter entity;
-		if(player)
+		if(team == CharacterTeam.HERO)
 		{
-			entity = new XCharacter(CharacterTeam.HERO, 0, location, stats, inv,
-					null, new TurnResources(location), new SaveSettings(false, false));
+			entity = new XCharacter(team, 0, location, stats, inv,
+					new NoAI(), new TurnResources(location), new SaveSettings(false, false));
 		}
 		else
 		{
-			entity = new XCharacter(CharacterTeam.ENEMY, 0, location, stats, inv,
+			entity = new XCharacter(team, 0, location, stats, inv,
 					new StandardAI(levelMap), new TurnResources(location), null);
 		}
 		stats.autoEquip(entity);

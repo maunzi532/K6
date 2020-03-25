@@ -2,6 +2,7 @@ package system2.animation;
 
 import arrow.*;
 import entity.*;
+import logic.*;
 import system2.*;
 
 public class RegenerationAnim implements AnimTimer
@@ -13,11 +14,11 @@ public class RegenerationAnim implements AnimTimer
 	private boolean finished;
 	private int counter;
 
-	public RegenerationAnim(XCharacter entity, Arrows arrows)
+	public RegenerationAnim(XCharacter entity, Arrows arrows, ColorScheme colorScheme)
 	{
 		Stats stats = entity.stats();
 		healthBar = new InfoArrow(entity.location(),
-				entity.team() == CharacterTeam.HERO ? HERO_HEALTH : ENEMY_HEALTH, ARROW_BACKGROUND, ARROW_TEXT,
+				colorScheme.color(entity.team().healthBarColor), ARROW_BACKGROUND, ARROW_TEXT,
 				stats.currentHealth(), stats.maxHealth());
 		arrows.addArrow(healthBar);
 		regenerateAmount = stats.maxHealth() - stats.currentHealth();

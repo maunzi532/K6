@@ -27,7 +27,7 @@ public class AdvMoveState implements NMarkState
 	@Override
 	public void onEnter(MainState mainState)
 	{
-		mainState.sideInfoFrame.setSideInfoXH(character.standardSideInfo(), character);
+		mainState.sideInfoFrame.setStandardSideInfo(character, mainState.colorScheme);
 		movement = new ArrayList<>();
 		attack = new ArrayList<>();
 		if(character.resources().moveAction())
@@ -41,7 +41,7 @@ public class AdvMoveState implements NMarkState
 		if(character.resources().ready(2))
 		{
 			mainState.levelMap.attackRanges(character, false).stream().map(e -> mainState.y1.range(character.location(), e, e))
-					.flatMap(Collection::stream).map(mainState.levelMap::getEntity).filter(e -> e != null && e.team() == CharacterTeam.ENEMY)
+					.flatMap(Collection::stream).map(mainState.levelMap::getEntity).filter(e -> e != null && e.targetable() && e.team() != character.team())
 					.forEach(e -> attack.add(e.location()));
 		}
 		allTargets = new ArrayList<>();

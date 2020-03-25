@@ -23,7 +23,7 @@ public class AttackAnimState2 extends AttackState
 	@Override
 	public void onEnter(MainState mainState)
 	{
-		animTimer = new AttackAnim(divider, mainState.levelMap, mainState.levelMap);
+		animTimer = new AttackAnim(divider, mainState.levelMap, mainState.colorScheme);
 		outcomeSupplier = (Supplier<RNGOutcome>) animTimer;
 	}
 

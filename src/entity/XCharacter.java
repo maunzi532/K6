@@ -3,7 +3,6 @@ package entity;
 import arrow.*;
 import com.fasterxml.jackson.jr.ob.comp.*;
 import doubleinv.*;
-import entity.sideinfo.*;
 import file.*;
 import geom.f1.*;
 import item.*;
@@ -12,7 +11,6 @@ import item.view.*;
 import java.io.*;
 import java.util.*;
 import javafx.scene.image.*;
-import javafx.scene.paint.*;
 import system2.*;
 
 public class XCharacter implements DoubleInv, XBuilder
@@ -22,17 +20,17 @@ public class XCharacter implements DoubleInv, XBuilder
 	private boolean defeated;
 	private Tile location;
 	private XArrow visualReplaced;
-	private Stats stats;
-	private Inv inv;
+	private final Stats stats;
+	private final Inv inv;
 	private EnemyAI enemyAI;
 	private TurnResources resources;
 	private SaveSettings saveSettings;
 
-	public XCharacter(CharacterTeam team, int initialStartingDelay, Tile location, Stats stats, Inv inv,
+	public XCharacter(CharacterTeam team, int startingDelay, Tile location, Stats stats, Inv inv,
 			EnemyAI enemyAI, TurnResources resources, SaveSettings saveSettings)
 	{
 		this.team = team;
-		startingDelay = initialStartingDelay;
+		this.startingDelay = startingDelay;
 		defeated = false;
 		this.location = location;
 		visualReplaced = null;
@@ -61,7 +59,7 @@ public class XCharacter implements DoubleInv, XBuilder
 	public XCharacter copy(Tile copyLocation)
 	{
 		XCharacter copy = new XCharacter(team, startingDelay, defeated, copyLocation,
-				stats.copy(), inv.copy(), enemyAI == null ? null : enemyAI.copy(), resources.copy(copyLocation), SaveSettings.copy(saveSettings));
+				stats.copy(), inv.copy(), enemyAI.copy(), resources.copy(copyLocation), SaveSettings.copy(saveSettings));
 		copy.stats.autoEquip(copy);
 		return copy;
 	}
@@ -75,6 +73,16 @@ public class XCharacter implements DoubleInv, XBuilder
 	{
 		if(startingDelay > 0)
 			startingDelay--;
+	}
+
+	public boolean targetable()
+	{
+		return !defeated && startingDelay <= 0;
+	}
+
+	public void setDefeated()
+	{
+		defeated = true;
 	}
 
 	public void setLocation(Tile location)
@@ -120,23 +128,6 @@ public class XCharacter implements DoubleInv, XBuilder
 	public SaveSettings saveSettings()
 	{
 		return saveSettings;
-	}
-
-	public SideInfo standardSideInfo()
-	{
-		return new SideInfo(this, sideImage(), statBar(), stats.sideInfoText());
-	}
-
-	public StatBar statBar()
-	{
-		return new StatBar(team == CharacterTeam.HERO ? Color.GREEN : Color.GRAY, Color.BLACK, Color.WHITE,
-				stats.getVisualStat(0), stats.getMaxVisualStat(0));
-	}
-
-	public StatBar statBarX1(String extraText)
-	{
-		return new StatBarX1(team == CharacterTeam.HERO ? Color.GREEN : Color.GRAY, Color.BLACK, Color.WHITE,
-				stats.getVisualStat(0), stats.getMaxVisualStat(0), extraText);
 	}
 
 	public void addItems(ItemList itemList)

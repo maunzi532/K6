@@ -13,8 +13,16 @@ public class EnemyStartState implements NAutoState
 		mainState.sideInfoFrame.clearSideInfo();
 		for(XCharacter xEnemy : mainState.levelMap.teamCharacters(CharacterTeam.ENEMY))
 		{
-			xEnemy.newResources(new TurnResources(xEnemy.location(),
-					xEnemy.stats().movement(), xEnemy.stats().dashMovement(), 2));
+			xEnemy.startTurn();
+			if(xEnemy.targetable())
+			{
+				xEnemy.newResources(new TurnResources(xEnemy.location(),
+						xEnemy.stats().movement(), xEnemy.stats().dashMovement(), 2));
+			}
+			else
+			{
+				xEnemy.newResources(new TurnResources(xEnemy.location()));
+			}
 		}
 	}
 

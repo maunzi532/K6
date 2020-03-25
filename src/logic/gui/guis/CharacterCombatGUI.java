@@ -33,7 +33,7 @@ public class CharacterCombatGUI extends XGUIState
 	@Override
 	public void onEnter(MainState mainState)
 	{
-		mainState.sideInfoFrame.setSideInfoXH(character.standardSideInfo(), character);
+		mainState.sideInfoFrame.setStandardSideInfo(character, mainState.colorScheme);
 		equippedItem = character.stats().lastUsed().item;
 		elements.add(new CElement(NAME, new GuiTile(character.name())));
 		elements.add(new CElement(UNEQUIP, true, () -> character.stats().lastUsed().active, this::unequip));

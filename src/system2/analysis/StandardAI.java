@@ -26,14 +26,15 @@ public class StandardAI implements EnemyAI
 		if(canMove)
 		{
 			List<XCharacter> allies = hasToMove ? null :
-					levelMap.teamCharacters(CharacterTeam.ENEMY).stream().filter(e -> e != user && e.resources().moveAction()).collect(Collectors.toList());
+					levelMap.teamTargetCharacters(user.team()).stream().filter(e -> e != user && e.resources().moveAction()).collect(Collectors.toList());
 			locations.addAll(new Pathing(levelMap.y1, user, user.resources().movement(), levelMap, allies).start().getEndpaths());
 		}
 		else
 			locations.add(new PathLocation(user.location()));
 		for(PathLocation pl : locations)
 		{
-			pathsX.addAll(levelMap.pathAttackInfo(user, pl.tile(), levelMap.teamCharacters(CharacterTeam.HERO), pl));
+			pathsX.addAll(levelMap.pathAttackInfo(user, pl.tile(),
+					levelMap.enemyTeamTargetCharacters(user.team()), pl));
 			if(user.resources().moveAction())
 				pathsX.add(new PathAttackX(pl, null));
 		}
@@ -49,14 +50,14 @@ public class StandardAI implements EnemyAI
 				px.score += analysis.get(px.attack) * 1000;
 			if(!px.path.tile().equals(user.location()))
 				px.score += moveAway;
-			px.score += levelMap.teamCharacters(CharacterTeam.HERO).stream().mapToInt(e -> levelMap.y1
+			px.score += levelMap.enemyTeamTargetCharacters(user.team()).stream().mapToInt(e -> levelMap.y1
 					.distance(e.location(), user.location())).max().orElse(0) * 20;
 		}
 		if(analysis.isEmpty())
 		{
 			PathLocation doubledPath = new Pathing(levelMap.y1, user, user.resources().movement() * 2,
 					levelMap, null).start().getEndpaths().stream().min(Comparator.comparingInt((PathLocation f) ->
-					levelMap.teamCharacters(CharacterTeam.HERO).stream().mapToInt(e -> levelMap.y1.distance(e.location(), f.tile())).min().orElse(0))
+					levelMap.enemyTeamTargetCharacters(user.team()).stream().mapToInt(e -> levelMap.y1.distance(e.location(), f.tile())).min().orElse(0))
 					.thenComparingInt(PathLocation::cost)).orElseThrow();
 			int len = 0;
 			PathLocation doubledPath2 = doubledPath;

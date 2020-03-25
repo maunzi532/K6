@@ -467,10 +467,13 @@ public class Stats implements ModifierAspect
 		}
 		info.add("CPower\n" + calcCPower() + " -> " + (calcCPower() + Arrays.stream(levelup).sum()));
 		int changedHealth = currentHealth;
-		if(levelup[7] > 0)
-			changedHealth += levelup[7] * HEALTH_MULTIPLIER;
-		if(changedHealth > (lvStats[7] + levelup[7]) * HEALTH_MULTIPLIER)
-			changedHealth = (lvStats[7] + levelup[7]) * HEALTH_MULTIPLIER;
+		if(currentHealth > 0)
+		{
+			if(levelup[7] > 0)
+				changedHealth += levelup[7] * HEALTH_MULTIPLIER;
+			if(changedHealth > (lvStats[7] + levelup[7]) * HEALTH_MULTIPLIER)
+				changedHealth = (lvStats[7] + levelup[7]) * HEALTH_MULTIPLIER;
+		}
 		info.add("Health\n" + currentHealth + " -> " + changedHealth);
 		info.add("Move\n" + movement);
 		info.add(exhaustion > 0 ? "Exhausted\n" + exhaustion : "");

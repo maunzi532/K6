@@ -5,7 +5,7 @@ import entity.*;
 import entity.analysis.*;
 import java.util.*;
 import java.util.function.*;
-import levelMap.*;
+import logic.*;
 import system2.*;
 import system2.analysis.*;
 
@@ -14,7 +14,6 @@ public class AttackAnim implements AnimTimer, Supplier<RNGOutcome>
 	private RNGDivider2 divider;
 	private RNGDivider2 lastDivider;
 	private Arrows arrows;
-	private LevelMap levelMap;
 	private AttackInfo aI;
 	private List<String> events;
 	private int eventCounter;
@@ -22,21 +21,20 @@ public class AttackAnim implements AnimTimer, Supplier<RNGOutcome>
 	private InfoArrow healthBar1;
 	private InfoArrow healthBar2;
 
-	public AttackAnim(RNGDivider2 divider, Arrows arrows, LevelMap levelMap)
+	public AttackAnim(RNGDivider2 divider, Arrows arrows, ColorScheme colorScheme)
 	{
 		this.divider = divider;
 		lastDivider = divider;
 		this.arrows = arrows;
-		this.levelMap = levelMap;
 		aI = divider.getAttackInfo();
 		events = divider.getEvents();
 		eventCounter = -1;
 		linked = new ArrayList<>();
 		healthBar1 = new InfoArrow(aI.entity.location(), aI.entityT.location(),
-				aI.entity.team() == CharacterTeam.HERO ? HERO_HEALTH : ENEMY_HEALTH, ARROW_BACKGROUND, ARROW_TEXT,
+				colorScheme.color(aI.entity.team().healthBarColor), ARROW_BACKGROUND, ARROW_TEXT,
 				aI.getStats(false).currentHealth(), aI.getStats(false).maxHealth());
 		healthBar2 = new InfoArrow(aI.entityT.location(), aI.entity.location(),
-				aI.entityT.team() == CharacterTeam.HERO ? HERO_HEALTH : ENEMY_HEALTH, ARROW_BACKGROUND, ARROW_TEXT,
+				colorScheme.color(aI.entityT.team().healthBarColor), ARROW_BACKGROUND, ARROW_TEXT,
 				aI.getStats(true).currentHealth(), aI.getStats(true).maxHealth());
 		arrows.addArrow(healthBar1);
 		arrows.addArrow(healthBar2);
@@ -84,6 +82,8 @@ public class AttackAnim implements AnimTimer, Supplier<RNGOutcome>
 				//System.out.println(event);
 				boolean inverse = event.charAt(event.length() - 1) == '2';
 				String eventType = event.substring(0, event.length() - 1);
+				if(eventType.equals("defeated"))
+					aI.getEntity(!inverse).setDefeated();
 				startEvent(eventType, inverse);
 			}
 		}
@@ -102,7 +102,7 @@ public class AttackAnim implements AnimTimer, Supplier<RNGOutcome>
 			case "melt" -> linked.add(new AnimPartHit(aI.getEntity(!inverse), aI.getStats(!inverse),
 					aI.getCalc(inverse).meltDamage, healthBar(!inverse).statBar(), false, true, arrows));
 			case "nodamage" -> linked.add(new AnimPartNoDamage(aI.getEntity(!inverse), false, arrows));
-			case "defeated" -> linked.add(new AnimPartVanish(aI.getEntity(!inverse), arrows, levelMap));
+			case "defeated" -> linked.add(new AnimPartVanish(aI.getEntity(!inverse), arrows));
 			case "crit" -> linked.add(new AnimPartHit(aI.getEntity(!inverse), aI.getStats(!inverse),
 					aI.getCalc(inverse).critDamage, healthBar(!inverse).statBar(), true, false, arrows));
 			case "meltcrit" -> linked.add(new AnimPartHit(aI.getEntity(!inverse), aI.getStats(!inverse),

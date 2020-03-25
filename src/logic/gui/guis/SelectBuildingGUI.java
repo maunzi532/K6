@@ -32,7 +32,7 @@ public class SelectBuildingGUI extends XGUIState
 	{
 		if(builder instanceof XCharacter character)
 		{
-			mainState.sideInfoFrame.setSideInfoXH(character.standardSideInfo(), character);
+			mainState.sideInfoFrame.setStandardSideInfo(character, mainState.colorScheme);
 		}
 		BlueprintCache<BuildingBlueprint> blueprintCache = mainState.buildingBlueprintCache;
 		ScrollList<BuildingBlueprint> buildingsView = new ScrollList<>(0, 1, 6, 5, 2, 1,

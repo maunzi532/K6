@@ -13,7 +13,7 @@ public class PreAttackState extends AttackState
 	@Override
 	public void onEnter(MainState mainState)
 	{
-		mainState.sideInfoFrame.attackInfo(aI);
+		mainState.sideInfoFrame.setAttackSideInfo(aI, mainState.colorScheme);
 		aI.stats.equipMode(aI.mode);
 	}
 

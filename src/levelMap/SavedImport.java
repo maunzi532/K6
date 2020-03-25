@@ -109,7 +109,7 @@ public class SavedImport
 			inv = new WeightInv(((JrsObject) data.get("Inventory")), itemLoader);
 			saveSettings = null;
 		}
-		EnemyAI enemyAI = team == CharacterTeam.ENEMY ? new StandardAI(levelMap) : null;
-		return new XCharacter(team, startingDelay, location, stats, inv, enemyAI, null, saveSettings);
+		EnemyAI enemyAI = team == CharacterTeam.ENEMY ? new StandardAI(levelMap) : new NoAI();
+		return new XCharacter(team, startingDelay, location, stats, inv, enemyAI, new TurnResources(location), saveSettings);
 	}
 }

@@ -269,9 +269,20 @@ public class LevelMap implements ConnectRestore, Arrows
 		return characters.getOrDefault(team, List.of());
 	}
 
+	public List<XCharacter> teamTargetCharacters(CharacterTeam team)
+	{
+		return characters.getOrDefault(team, List.of()).stream().filter(XCharacter::targetable).collect(Collectors.toList());
+	}
+
+	public List<XCharacter> enemyTeamTargetCharacters(CharacterTeam team)
+	{
+		return characters.entrySet().stream().filter(e -> e.getKey() != team).flatMap(e -> e.getValue().stream())
+				.filter(XCharacter::targetable).collect(Collectors.toList());
+	}
+
 	public Map<Tile, Long> allEnemyReach()
 	{
-		return teamCharacters(CharacterTeam.ENEMY).stream().flatMap(character ->
+		return teamTargetCharacters(CharacterTeam.ENEMY).stream().flatMap(character ->
 				new Pathing(y1, character, character.stats().movement(),
 						this, null).start().getEndpoints()
 						.stream().flatMap(loc -> attackRanges(character, false).stream()

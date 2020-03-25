@@ -75,6 +75,7 @@ public class MainState
 	//TODO all enemy reach show amount of enemies
 	//TODO turn limit
 	//TODO enemy reinforcements (starting delay)
+	//TODO remove defeated enemies
 
 	//GUI
 	//TODO    LevelEditor edit PlayerLevelSystem
@@ -100,7 +101,6 @@ public class MainState
 	//TODO character class names in classes
 	//TODO BlueprintCache is weird
 	//TODO rename or split ImageLoader
-	//TODO AnimPartVanish remove character later
 	//TODO fix stealing from enemies
 
 	//visual engine mechanics

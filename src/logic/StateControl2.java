@@ -190,7 +190,7 @@ public class StateControl2 implements XStateHolder, ConvInputConsumer
 				setState(new CharacterInvGUI(entity));
 			}
 		}
-		else if(entity.team() == CharacterTeam.ENEMY)
+		else
 		{
 			if(key.hasFunction("Choose"))
 			{
@@ -325,9 +325,9 @@ public class StateControl2 implements XStateHolder, ConvInputConsumer
 			}
 			mainState.allEnemyReach.forEach((t, n) -> visMarked.add(new VisMark(t, Color.BLACK, 0.8)));
 		}
-		if(state instanceof NMarkState)
+		if(state instanceof NMarkState markState)
 		{
-			visMarked.addAll(((NMarkState) state).visMarked(mainState));
+			visMarked.addAll(markState.visMarked(mainState));
 		}
 		if(cursorMarker != null)
 		{

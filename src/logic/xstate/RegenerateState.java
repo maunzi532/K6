@@ -6,21 +6,21 @@ import system2.animation.*;
 
 public class RegenerateState implements NAutoState
 {
-	private final XCharacter entity;
+	private final XCharacter character;
 	private final NState nextState;
 	private AnimTimer arrow;
 
-	public RegenerateState(XCharacter entity, NState nextState)
+	public RegenerateState(XCharacter character, NState nextState)
 	{
-		this.entity = entity;
+		this.character = character;
 		this.nextState = nextState;
 	}
 
 	@Override
 	public void onEnter(MainState mainState)
 	{
-		mainState.sideInfoFrame.setSideInfoXH(entity.standardSideInfo(), entity);
-		arrow = new RegenerationAnim(entity, mainState.levelMap);
+		mainState.sideInfoFrame.setStandardSideInfo(character, mainState.colorScheme);
+		arrow = new RegenerationAnim(character, mainState.levelMap, mainState.colorScheme);
 	}
 
 	@Override
@@ -38,9 +38,7 @@ public class RegenerateState implements NAutoState
 	@Override
 	public boolean keepInMenu(MainState mainState)
 	{
-		if(entity.team() == CharacterTeam.HERO)
-			return entity.resources().ready(0) && entity.stats().getRegenerateChange() > 0;
-		return false;
+		return character.resources().ready(0) && character.stats().getRegenerateChange() > 0;
 	}
 
 	@Override

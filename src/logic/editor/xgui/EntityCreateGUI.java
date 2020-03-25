@@ -31,28 +31,28 @@ public class EntityCreateGUI extends XGUIState
 	@Override
 	public void onEnter(MainState mainState)
 	{
-		elements.add(new CElement(addXHero, true, null, () -> createXHero(mainState)));
-		elements.add(new CElement(addXEnemy, true, null, () -> createXEnemy(mainState)));
+		elements.add(new CElement(addXHero, true, null, () -> createXCharacter(mainState, CharacterTeam.HERO)));
+		elements.add(new CElement(addXEnemy, true, null, () -> createXCharacter(mainState, CharacterTeam.ENEMY)));
 		update();
 	}
 
-	private void createXHero(MainState mainState)
+	private void createXCharacter(MainState mainState, CharacterTeam team)
 	{
 		Stats stats = defaultStats(true);
 		Inv inv = new WeightInv(20);
-		XCharacter entity = new XCharacter(CharacterTeam.HERO, 0, location, stats, inv,
-				null, new TurnResources(location), new SaveSettings(false, false));
-		mainState.levelMap.addEntity(entity);
-		mainState.stateHolder.setState(new EntityEditGUI(entity));
-	}
+		XCharacter entity;
+		if(team == CharacterTeam.HERO)
+		{
+			entity = new XCharacter(team, 0, location, stats, inv,
+					new NoAI(), new TurnResources(location), new SaveSettings(false, false));
 
-	private void createXEnemy(MainState mainState)
-	{
-		Stats stats = defaultStats(false);
-		EnemyAI standardAI = new StandardAI(mainState.levelMap);
-		Inv inv = new WeightInv(20);
-		XCharacter entity = new XCharacter(CharacterTeam.ENEMY, 0, location, stats, inv,
-				standardAI, new TurnResources(location), null);
+		}
+		else
+		{
+			entity = new XCharacter(team, 0, location, stats, inv,
+					new StandardAI(mainState.levelMap), new TurnResources(location), null);
+
+		}
 		mainState.levelMap.addEntity(entity);
 		mainState.stateHolder.setState(new EntityEditGUI(entity));
 	}

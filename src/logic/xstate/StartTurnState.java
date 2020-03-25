@@ -14,8 +14,15 @@ public class StartTurnState implements NAutoState
 		mainState.turnCounter++;
 		for(XCharacter xHero : mainState.levelMap.teamCharacters(CharacterTeam.HERO))
 		{
-			xHero.newResources(new TurnResources(xHero.location(),
-					xHero.stats().movement(), xHero.stats().dashMovement(), 2));
+			xHero.startTurn();
+			if(xHero.targetable())
+			{
+				xHero.newResources(new TurnResources(xHero.location(), xHero.stats().movement(), xHero.stats().dashMovement(), 2));
+			}
+			else
+			{
+				xHero.newResources(new TurnResources(xHero.location()));
+			}
 		}
 	}
 
