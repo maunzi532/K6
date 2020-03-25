@@ -3,15 +3,14 @@ package logic.gui.guis;
 import building.blueprint.*;
 import doubleinv.*;
 import entity.*;
-import levelMap.*;
-import logic.editor.xstate.*;
-import logic.gui.*;
 import item.*;
 import item.inv.*;
 import item.view.*;
 import java.util.*;
-import javafx.scene.paint.*;
+import levelMap.*;
 import logic.*;
+import logic.editor.xstate.*;
+import logic.gui.*;
 import logic.xstate.*;
 
 public class BuildGUI extends XGUIState
@@ -28,8 +27,6 @@ public class BuildGUI extends XGUIState
 	private final XBuilder builder;
 	private final BuildingBlueprint blueprint;
 	private final List<List<CostBlueprint>> costBlueprints;
-	private Color canViewMoreColor;
-	private Color activeColor;
 	private LevelMap levelMap;
 	private int costNum = 0;
 	private int tileCostNum = 0;
@@ -58,8 +55,6 @@ public class BuildGUI extends XGUIState
 	@Override
 	public void onEnter(MainState mainState)
 	{
-		canViewMoreColor = mainState.colorScheme.color("gui.build.more");
-		activeColor = mainState.colorScheme.color("gui.background.active");
 		levelMap = mainState.levelMap;
 		floorTiles = new ScrollList<>(0, 2, 2, 4, 2, 1, null,
 				this::itemView0, null);
@@ -119,14 +114,14 @@ public class BuildGUI extends XGUIState
 		floorTiles.elements = cost.requiredFloorTiles();
 		required.elements = cost.required().items;
 		returned.elements = cost.refundable().items;
-		prevElement.fillTile = activeIf("Prev", costNum > 0, canViewMoreColor);
-		nextElement.fillTile = activeIf("Next", costNum < blueprints.size() - 1, canViewMoreColor);
-		lessTilesElement.fillTile = activeIf("Less Tiles", tileCostNum > 0, canViewMoreColor);
-		moreTilesElement.fillTile = activeIf("More Tiles", tileCostNum < blueprints.get(costNum).size() - 1, canViewMoreColor);
-		buildElement.fillTile = activeIf("Build", builder.tryBuildingCosts(cost.refundable(), cost.costs(), CommitType.ROLLBACK).isPresent(), activeColor);
+		prevElement.fillTile = activeIf("Prev", costNum > 0, "gui.build.more");
+		nextElement.fillTile = activeIf("Next", costNum < blueprints.size() - 1, "gui.build.more");
+		lessTilesElement.fillTile = activeIf("Less Tiles", tileCostNum > 0, "gui.build.more");
+		moreTilesElement.fillTile = activeIf("More Tiles", tileCostNum < blueprints.get(costNum).size() - 1, "gui.build.more");
+		buildElement.fillTile = activeIf("Build", builder.tryBuildingCosts(cost.refundable(), cost.costs(), CommitType.ROLLBACK).isPresent(), "gui.background.active");
 	}
 
-	private GuiTile activeIf(String text, boolean active, Color color)
+	private GuiTile activeIf(String text, boolean active, String color)
 	{
 		if(active)
 			return new GuiTile(text, null, false, color);
@@ -146,11 +141,11 @@ public class BuildGUI extends XGUIState
 	private GuiTile[] itemView1(ItemStack stack)
 	{
 		ItemView itemView = builder.viewRecipeItem(stack.item);
-		Color color = itemView.base >= stack.count || itemView.base == -1 ? activeColor : null;
+		String color = itemView.base >= stack.count || itemView.base == -1 ? "gui.background.active" : null;
 		return new GuiTile[]
 				{
 						new GuiTile((itemView.base == -1 ? "-" : itemView.base) + " / " + stack.count, null, false, color),
-						new GuiTile(null, itemView.item.imageName(), false, color)
+						new GuiTile(null, itemView.item.image(), false, color)
 				};
 	}
 
@@ -159,7 +154,7 @@ public class BuildGUI extends XGUIState
 		return new GuiTile[]
 				{
 						new GuiTile(String.valueOf(stack.count)),
-						new GuiTile(null, stack.item.imageName(), false, null)
+						new GuiTile(null, stack.item.image(), false, null)
 				};
 	}
 

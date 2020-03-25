@@ -6,7 +6,6 @@ import doubleinv.*;
 import geom.f1.*;
 import java.util.*;
 import java.util.stream.*;
-import javafx.scene.paint.*;
 import levelMap.*;
 import logic.*;
 
@@ -14,8 +13,6 @@ public class TransportTargetsState implements NMarkState
 {
 	private final XBuilding building;
 	private final Transport transport;
-	private Color activeColor;
-	private Color inactiveColor;
 	private List<DoubleInv> possibleTargets;
 	private List<VisMark> visMarked;
 
@@ -28,8 +25,6 @@ public class TransportTargetsState implements NMarkState
 	@Override
 	public void onEnter(MainState mainState)
 	{
-		activeColor = mainState.colorScheme.color("mark.transport.target.active");
-		inactiveColor = mainState.colorScheme.color("mark.transport.target.inactive");
 		possibleTargets = mainState.y1.range(building.location(), 0, transport.range()).stream()
 				.map(e -> (DoubleInv) mainState.levelMap.getBuilding(e))
 				.filter(e -> e != null && e.active()).collect(Collectors.toList());
@@ -38,7 +33,8 @@ public class TransportTargetsState implements NMarkState
 
 	private void createVisMarked()
 	{
-		visMarked = possibleTargets.stream().map(e -> new VisMark(e.location(), transport.isTarget(e) ? activeColor : inactiveColor, VisMark.d1)).collect(Collectors.toList());
+		visMarked = possibleTargets.stream().map(e -> new VisMark(e.location(),
+				transport.isTarget(e) ? "mark.transport.target.active" : "mark.transport.target.inactive", VisMark.d1)).collect(Collectors.toList());
 	}
 
 	@Override

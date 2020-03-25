@@ -24,7 +24,7 @@ public class MainVisual implements XInputInterface
 
 	private XGraphics graphics;
 	private XKeyMap keyMap;
-	private ColorScheme colorScheme;
+	private Scheme scheme;
 	private VisualTile visualTile;
 	private TileCamera mapCamera;
 	private VisualMenu visualMenu;
@@ -36,12 +36,12 @@ public class MainVisual implements XInputInterface
 	private ConvInputConsumer convInputConsumer;
 	private boolean paused;
 
-	public MainVisual(XGraphics graphics, XKeyMap keyMap, ColorScheme colorScheme,
+	public MainVisual(XGraphics graphics, XKeyMap keyMap, Scheme scheme,
 			TileCamera mapCamera, TileCamera menuCamera, TileCamera guiCamera, String loadFile, String loadFile2)
 	{
 		this.graphics = graphics;
 		this.keyMap = keyMap;
-		this.colorScheme = colorScheme;
+		this.scheme = scheme;
 		this.mapCamera = mapCamera;
 		TileType y1 = mapCamera.getDoubleType();
 		SideInfoViewer sivL = new SideInfoViewer(graphics, false);
@@ -49,7 +49,7 @@ public class MainVisual implements XInputInterface
 		visualSideInfo = new VisualSideInfo(sivL, sivR);
 		ItemLoader itemLoader = new ItemLoader2();
 		BlueprintFile blueprintFile = new BlueprintFile(ImageLoader.loadTextResource("BuildingBlueprints"), itemLoader);
-		mainState = new MainState(y1, colorScheme, itemLoader, new SideInfoFrame(sivL, sivR), blueprintFile);
+		mainState = new MainState(y1, itemLoader, new SideInfoFrame(sivL, sivR), blueprintFile);
 		loadLevel(loadFile, loadFile2);
 		graphics.gd().setTextAlign(TextAlignment.CENTER);
 		graphics.gd().setTextBaseline(VPos.CENTER);
@@ -190,12 +190,12 @@ public class MainVisual implements XInputInterface
 	private void draw()
 	{
 		//graphics.gd().clearRect(0, 0, graphics.xHW() * 2, graphics.yHW() * 2);
-		visualTile.draw(mapCamera, mainState.screenshake, colorScheme);
-		visualSideInfo.draw(colorScheme);
-		visualLevelEditor.draw(levelEditor, colorScheme);
-		visualGUI.zoomAndDraw(mainState.stateHolder.getGUI(), colorScheme);
+		visualTile.draw(mapCamera, mainState.screenshake, scheme);
+		visualSideInfo.draw(scheme);
+		visualLevelEditor.draw(levelEditor, scheme);
+		visualGUI.zoomAndDraw(mainState.stateHolder.getGUI(), scheme);
 		visualMenu.draw(graphics.yHW() - graphics.scaleHW() * 0.08,
-				graphics.yHW() - Math.max(visualSideInfo.takeY2(), visualLevelEditor.takeY(mainState)), colorScheme);
+				graphics.yHW() - Math.max(visualSideInfo.takeY2(), visualLevelEditor.takeY(mainState)), scheme);
 		drawInfoText();
 	}
 
@@ -212,9 +212,9 @@ public class MainVisual implements XInputInterface
 		double xHW = graphics.xHW();
 		double scale = graphics.scaleHW() * 0.04;
 		GraphicsContext gd = graphics.gd();
-		gd.setFill(colorScheme.color("topbar.background"));
+		gd.setFill(scheme.color("topbar.background"));
 		gd.fillRect(0, 0, xHW * 2, scale * 2);
-		gd.setFill(colorScheme.color("topbar.text"));
+		gd.setFill(scheme.color("topbar.text"));
 		gd.setFont(new Font(scale));
 		gd.setTextAlign(TextAlignment.LEFT);
 		gd.fillText(mainState.turnText(), scale, scale);

@@ -29,7 +29,7 @@ public class SelectBuildingGUI extends XGUIState
 	{
 		if(builder instanceof XCharacter character)
 		{
-			mainState.sideInfoFrame.setStandardSideInfo(character, mainState.colorScheme);
+			mainState.sideInfoFrame.setStandardSideInfo(character);
 		}
 		ScrollList<BuildingBlueprint> buildingsView = new ScrollList<>(0, 1, 6, 5, 2, 1,
 				mainState.blueprintFile.allBlueprints(), this::itemView,
@@ -87,7 +87,7 @@ public class SelectBuildingGUI extends XGUIState
 		return new GuiTile[]
 				{
 						new GuiTile(blueprint.name()),
-						new GuiTile(null, "M1.png", false, null)
+						new GuiTile(null, "building.default", false, null)
 				};
 	}
 }

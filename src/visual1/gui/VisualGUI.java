@@ -1,14 +1,13 @@
 package visual1.gui;
 
-import file.*;
 import geom.*;
 import geom.d1.*;
 import geom.f1.*;
-import javafx.scene.image.*;
-import logic.gui.*;
 import javafx.scene.canvas.*;
+import javafx.scene.image.*;
 import javafx.scene.paint.*;
 import javafx.scene.text.*;
+import logic.gui.*;
 import visual1.*;
 
 public abstract class VisualGUI
@@ -42,7 +41,7 @@ public abstract class VisualGUI
 
 	public abstract boolean inside(DoubleTile h1, XGUIState xgui);
 
-	public void zoomAndDraw(XGUIState xgui, ColorScheme colorScheme)
+	public void zoomAndDraw(XGUIState xgui, Scheme scheme)
 	{
 		if(xgui != last)
 		{
@@ -55,19 +54,19 @@ public abstract class VisualGUI
 		if(counter < FADEOUT && last2 != null)
 		{
 			camera.setZoom((double) (FADEOUT - counter) / FADEOUT);
-			locateAndDraw(last2, colorScheme);
+			locateAndDraw(last2, scheme);
 		}
 		if(xgui != null)
 		{
 			camera.setZoom((double) counter / FADEIN);
-			locateAndDraw(xgui, colorScheme);
+			locateAndDraw(xgui, scheme);
 		}
 		camera.setZoom(1);
 	}
 
-	public abstract void locateAndDraw(XGUIState xgui, ColorScheme colorScheme);
+	public abstract void locateAndDraw(XGUIState xgui, Scheme scheme);
 
-	public void drawGUI(XGUIState xgui, ColorScheme colorScheme, double cxs, double cys, DoubleTile lu, DoubleTile rl, double imgSize, double fontSize, double textWidth)
+	public void drawGUI(XGUIState xgui, Scheme scheme, double cxs, double cys, DoubleTile lu, DoubleTile rl, double imgSize, double fontSize, double textWidth)
 	{
 		if(xgui.xw() <= 0 || xgui.yw() <= 0)
 			return;
@@ -76,10 +75,10 @@ public abstract class VisualGUI
 		TileLayout layout = camera.layout(0);
 		GraphicsContext gd = graphics.gd();
 		gd.setImageSmoothing(true);
-		Color background = colorScheme.color("gui.background");
-		Color hover = colorScheme.color("gui.background.hover");
-		Color text = colorScheme.color("gui.text");
-		Color outline = colorScheme.color("gui.text.outline");
+		Color background = scheme.color("gui.background");
+		Color hover = scheme.color("gui.background.hover");
+		Color text = scheme.color("gui.text");
+		Color outline = scheme.color("gui.text.outline");
 		gd.setFill(background);
 		gd.setStroke(background);
 		PointD p0 = layout.tileToPixel(lu);
@@ -91,20 +90,22 @@ public abstract class VisualGUI
 		{
 			for(int iy = 0; iy < xgui.yw(); iy++)
 			{
-				drawElement(layout, y2.fromOffset(ix, iy), guiTiles[ix][iy], xgui.getTargeted().contains(ix, iy), hover, text, outline, imgSize, fontSize, textWidth);
+				drawElement(layout, y2.fromOffset(ix, iy), guiTiles[ix][iy], xgui.getTargeted().contains(ix, iy),
+						hover, text, outline, imgSize, fontSize, textWidth, scheme);
 			}
 		}
 	}
 
 	public void drawElement(TileLayout layout, Tile t1, GuiTile guiTile, boolean targeted, Color hover, Color text, Color outline,
-			double imgSize, double fontSize, double textWidth)
+			double imgSize, double fontSize, double textWidth, Scheme scheme)
 	{
 		GraphicsContext gd = graphics.gd();
 		if(guiTile.color != null)
 		{
 			double[][] points = layout.tileCorners(t1);
-			gd.setFill(targeted ? guiTile.color.brighter() : guiTile.color);
-			gd.setStroke(targeted ? guiTile.color.brighter() : guiTile.color);
+			Color color = scheme.color(guiTile.color);
+			gd.setFill(targeted ? color.brighter() : color);
+			gd.setStroke(targeted ? color.brighter() : color);
 			gd.fillPolygon(points[0], points[1], y2.directionCount());
 			gd.strokePolygon(points[0], points[1], y2.directionCount());
 		}
@@ -119,7 +120,7 @@ public abstract class VisualGUI
 		if(guiTile.imageName != null)
 		{
 			PointD midPoint = layout.tileToPixel(t1);
-			Image image = ImageLoader.getImage(guiTile.imageName);
+			Image image = scheme.image(guiTile.imageName);
 			if(guiTile.flipped)
 			{
 				double width = image.widthProperty().get();

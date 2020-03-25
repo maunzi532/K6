@@ -2,7 +2,6 @@ package logic.gui.guis;
 
 import entity.*;
 import entity.sideinfo.*;
-import file.*;
 import logic.*;
 import logic.gui.*;
 import logic.xstate.*;
@@ -12,7 +11,6 @@ public class AttackInfoGUI extends XGUIState
 {
 	private final XCharacter attacker;
 	private final XCharacter target;
-	private ColorScheme colorScheme;
 	private SideInfoFrame sideInfoFrame;
 	private TargetScrollList<AttackInfo> attacksView;
 
@@ -25,9 +23,8 @@ public class AttackInfoGUI extends XGUIState
 	@Override
 	public void onEnter(MainState mainState)
 	{
-		colorScheme = mainState.colorScheme;
 		sideInfoFrame = mainState.sideInfoFrame;
-		sideInfoFrame.sidedInfo(attacker, target, colorScheme);
+		sideInfoFrame.sidedInfo(attacker, target);
 		attacksView = new TargetScrollList<>(0, 1, 6, 6, 6, 2,
 				mainState.levelMap.attackInfo(attacker, target), this::itemView, target1 -> clickAttack(mainState, target1));
 		elements.add(attacksView);
@@ -46,9 +43,9 @@ public class AttackInfoGUI extends XGUIState
 	protected void updateBeforeDraw()
 	{
 		if(attacksView.getTargeted() != null)
-			sideInfoFrame.setAttackSideInfo(attacksView.getTargeted(), colorScheme);
+			sideInfoFrame.setAttackSideInfo(attacksView.getTargeted());
 		else
-			sideInfoFrame.sidedInfo(attacker, target, colorScheme);
+			sideInfoFrame.sidedInfo(attacker, target);
 	}
 
 	@Override

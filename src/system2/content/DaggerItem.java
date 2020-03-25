@@ -10,9 +10,9 @@ public class DaggerItem implements AI2Class
 	public static final DaggerItem INSTANCE = new DaggerItem();
 
 	@Override
-	public String imageName()
+	public String image()
 	{
-		return "DaggerItem.png";
+		return "equipment.dagger";
 	}
 
 	@Override

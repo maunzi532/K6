@@ -4,7 +4,6 @@ import building.adv.*;
 import geom.f1.*;
 import java.util.*;
 import java.util.stream.*;
-import javafx.scene.paint.*;
 import levelMap.*;
 import logic.*;
 
@@ -12,8 +11,6 @@ public class ProductionFloorsState implements NMarkState
 {
 	private final XBuilding building;
 	private final ProcessInv processInv;
-	private Color activeColor;
-	private Color inactiveColor;
 	private List<Tile> targetableTiles;
 	private List<VisMark> visMarked;
 
@@ -26,8 +23,6 @@ public class ProductionFloorsState implements NMarkState
 	@Override
 	public void onEnter(MainState mainState)
 	{
-		activeColor = mainState.colorScheme.color("mark.production.floor.active");
-		inactiveColor = mainState.colorScheme.color("mark.production.floor.inactive");
 		targetableTiles = building.costBlueprint().requiredFloorTiles().stream().flatMap(flt -> mainState.y1
 				.range(building.location(), flt.minRange(), flt.maxRange()).stream()
 				.filter(e -> mainState.levelMap.getFloor(e) != null && mainState.levelMap.getFloor(e).type == flt.floorTileType())).collect(Collectors.toList());
@@ -37,7 +32,7 @@ public class ProductionFloorsState implements NMarkState
 	private void createVisMarked()
 	{
 		visMarked = targetableTiles.stream().map(e -> new VisMark(e,
-				building.claimed().contains(e) ? activeColor : inactiveColor, VisMark.d1)).collect(Collectors.toList());
+				building.claimed().contains(e) ? "mark.production.floor.active" : "mark.production.floor.inactive", VisMark.d1)).collect(Collectors.toList());
 	}
 
 	@Override

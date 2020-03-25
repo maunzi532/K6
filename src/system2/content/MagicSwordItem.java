@@ -10,9 +10,9 @@ public class MagicSwordItem implements AI2Class
 	public static final MagicSwordItem INSTANCE = new MagicSwordItem();
 
 	@Override
-	public String imageName()
+	public String image()
 	{
-		return "MagicSwordItem.png";
+		return "equipment.magicsword";
 	}
 
 	@Override

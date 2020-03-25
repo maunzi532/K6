@@ -6,7 +6,6 @@ import entity.*;
 import geom.f1.*;
 import java.util.*;
 import java.util.stream.*;
-import javafx.scene.paint.*;
 import levelMap.*;
 import logic.*;
 import logic.gui.guis.*;
@@ -27,7 +26,7 @@ public class GiveOrTakeState implements NMarkState
 	@Override
 	public void onEnter(MainState mainState)
 	{
-		mainState.sideInfoFrame.setStandardSideInfo(character, mainState.colorScheme);
+		mainState.sideInfoFrame.setStandardSideInfo(character);
 		boolean levelStarted = mainState.turnCounter > 0;
 		List<Tile> range = mainState.y1.range(character.location(), 0, character.stats().maxAccessRange());
 		possibleTargets = new ArrayList<>();
@@ -35,8 +34,7 @@ public class GiveOrTakeState implements NMarkState
 				.filter(e -> e != null && e.active() && e.playerTradeable(levelStarted)).forEachOrdered(possibleTargets::add);
 		range.stream().map(e -> (DoubleInv) mainState.levelMap.getEntity(e))
 				.filter(e -> e != null && e.active() && e.playerTradeable(levelStarted)).forEachOrdered(possibleTargets::add);
-		Color targetColor = mainState.colorScheme.color("mark.trade.target");
-		visMarked = possibleTargets.stream().map(e -> new VisMark(e.location(), targetColor,
+		visMarked = possibleTargets.stream().map(e -> new VisMark(e.location(), "mark.trade.target",
 				e.type() == DoubleInvType.ENTITY ? VisMark.d2 : VisMark.d1)).collect(Collectors.toList());
 	}
 

@@ -10,9 +10,9 @@ public class DarkSpellItem implements AI2Class
 	public static final DarkSpellItem INSTANCE = new DarkSpellItem();
 
 	@Override
-	public String imageName()
+	public String image()
 	{
-		return "DarkSpellItem.png";
+		return "equipment.darkspell";
 	}
 
 	@Override

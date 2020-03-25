@@ -35,11 +35,11 @@ public class XScene extends Application
 		root.getChildren().add(canvas);
 		stage.setScene(s);
 		stage.setTitle("K6");
-		stage.getIcons().add(ImageLoader.getImage("Tech.png"));
 		XGraphics graphics = new XGraphics(canvas.getGraphicsContext2D(), WIDTH, HEIGHT);
 		KeybindFile keybindFile = new KeybindFile(ImageLoader.loadTextResource("Keybinds"));
-		FileColorScheme colorSchemeFile = new FileColorScheme(ImageLoader.loadTextResource("ColorScheme"));
-		MainVisual mainVisual = new MainVisual(graphics, keybindFile, colorSchemeFile,
+		SchemeFile schemeFile = new SchemeFile(ImageLoader.loadTextResource("SchemeFile"));
+		stage.getIcons().add(schemeFile.image("window.icon"));
+		MainVisual mainVisual = new MainVisual(graphics, keybindFile, schemeFile,
 				mapCamera(args0, graphics),
 				menuCamera(args0, graphics),
 				guiCamera(args0, graphics),

@@ -2,22 +2,22 @@ package doubleinv;
 
 public enum FloorTileType
 {
-	BLUE("BLUE_Tile.png", false, true, 1),
-	GSL("GSL_Tile.png", false, true, 2),
-	TECH("RED_Tile.png", false, true, 1),
-	WALL("WALL_Tile.png", true, false, 1);
+	BLUE("floortile.blue", false, true, 1),
+	GSL("floortile.gsl", false, true, 2),
+	TECH("floortile.tech", false, true, 1),
+	WALL("floortile.wall", true, false, 1);
 
 	//Hex height same as Quad height
 
-	FloorTileType(String imageT, boolean blocked, boolean canMovementEnd, int moveCost)
+	FloorTileType(String image, boolean blocked, boolean canMovementEnd, int moveCost)
 	{
-		this.imageT = imageT;
+		this.image = image;
 		this.blocked = blocked;
 		this.canMovementEnd = canMovementEnd;
 		this.moveCost = moveCost;
 	}
 
-	public final String imageT;
+	public final String image;
 	public final boolean blocked;
 	public final boolean canMovementEnd;
 	public final int moveCost;

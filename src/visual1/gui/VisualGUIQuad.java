@@ -1,6 +1,5 @@
 package visual1.gui;
 
-import file.*;
 import geom.*;
 import geom.d1.*;
 import logic.gui.*;
@@ -35,10 +34,10 @@ public class VisualGUIQuad extends VisualGUI
 	}
 
 	@Override
-	public void locateAndDraw(XGUIState xgui, ColorScheme colorScheme)
+	public void locateAndDraw(XGUIState xgui, Scheme scheme)
 	{
 		double cxs = (xgui.xw() - 1) * QuadLayout.DQ2;
 		double cys = (xgui.yw() - 1) * QuadLayout.DQ2;
-		drawGUI(xgui, colorScheme, cxs, cys, LU, rl(xgui), QuadLayout.DQ2, FONT_SIZE, TEXT_END);
+		drawGUI(xgui, scheme, cxs, cys, LU, rl(xgui), QuadLayout.DQ2, FONT_SIZE, TEXT_END);
 	}
 }

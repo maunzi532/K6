@@ -4,7 +4,7 @@ import java.util.*;
 
 public interface Item
 {
-	String imageName();
+	String image();
 
 	int weight();
 

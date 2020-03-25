@@ -9,9 +9,9 @@ public class GunItem implements AI2Class
 	public static final GunItem INSTANCE = new GunItem();
 
 	@Override
-	public String imageName()
+	public String image()
 	{
-		return "GunItem.png";
+		return "equipment.gun";
 	}
 
 	@Override

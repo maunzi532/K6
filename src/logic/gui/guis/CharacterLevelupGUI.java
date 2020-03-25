@@ -19,7 +19,7 @@ public class CharacterLevelupGUI extends Inv1GUI
 	@Override
 	public void onEnter(MainState mainState)
 	{
-		mainState.sideInfoFrame.setStandardSideInfo(character, mainState.colorScheme);
+		mainState.sideInfoFrame.setStandardSideInfo(character);
 		baseInfo = character.stats().levelup();
 		super.onEnter(mainState);
 	}

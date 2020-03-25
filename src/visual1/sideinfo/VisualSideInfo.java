@@ -1,6 +1,6 @@
 package visual1.sideinfo;
 
-import file.*;
+import visual1.*;
 
 public class VisualSideInfo
 {
@@ -19,11 +19,11 @@ public class VisualSideInfo
 		}
 	}
 
-	public void draw(ColorScheme colorScheme)
+	public void draw(Scheme scheme)
 	{
 		for(int i = 0; i < viewers.length; i++)
 		{
-			viewers[i].draw(colorScheme);
+			viewers[i].draw(scheme);
 		}
 	}
 

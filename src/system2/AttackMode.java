@@ -26,6 +26,6 @@ public class AttackMode
 
 	public String imageName()
 	{
-		return item != null ? item.imageName() : null;
+		return item != null ? item.image() : null;
 	}
 }

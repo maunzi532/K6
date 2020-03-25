@@ -4,7 +4,6 @@ import building.blueprint.*;
 import doubleinv.*;
 import entity.*;
 import entity.sideinfo.*;
-import file.*;
 import geom.f1.*;
 import item.*;
 import java.util.*;
@@ -14,7 +13,6 @@ import logic.xstate.*;
 public class MainState
 {
 	public final TileType y1;
-	public final ColorScheme colorScheme;
 	public final ItemLoader itemLoader;
 	public final SideInfoFrame sideInfoFrame;
 	public final BlueprintFile blueprintFile;
@@ -28,11 +26,10 @@ public class MainState
 	public XStateHolder stateHolder;
 	public Map<Tile, Long> allEnemyReach;
 
-	public MainState(TileType y1, ColorScheme colorScheme, ItemLoader itemLoader,
+	public MainState(TileType y1, ItemLoader itemLoader,
 			SideInfoFrame sideInfoFrame, BlueprintFile blueprintFile)
 	{
 		this.y1 = y1;
-		this.colorScheme = colorScheme;
 		this.itemLoader = itemLoader;
 		this.sideInfoFrame = sideInfoFrame;
 		this.blueprintFile = blueprintFile;

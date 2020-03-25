@@ -9,9 +9,9 @@ public class CrossbowItem implements AI2Class
 	public static final CrossbowItem INSTANCE = new CrossbowItem();
 
 	@Override
-	public String imageName()
+	public String image()
 	{
-		return "CrossbowItem.png";
+		return "equipment.crossbow";
 	}
 
 	@Override

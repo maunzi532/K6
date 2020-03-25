@@ -75,7 +75,7 @@ public class ProcessInv implements BuildingFunction
 					{
 						inputInv.commit();
 						arrows.addArrow(ShineArrow.factory(location, null,
-								ARROW_TIME, false, recipe.results().items.get(0).item.imageName()));
+								ARROW_TIME, false, recipe.results().items.get(0).item.image()));
 						return;
 					}
 					else

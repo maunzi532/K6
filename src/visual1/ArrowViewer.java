@@ -1,7 +1,6 @@
 package visual1;
 
 import arrow.*;
-import file.*;
 import geom.d1.*;
 import geom.f1.*;
 import javafx.scene.paint.*;
@@ -129,12 +128,12 @@ public class ArrowViewer
 		}
 	}
 
-	public Paint shineFill(ShineArrow arrow, TileLayout layout, ColorScheme colorScheme)
+	public Paint shineFill(ShineArrow arrow, TileLayout layout, Scheme scheme)
 	{
-		Color arrowColor = colorScheme.color("arrow.transport");
+		Color arrowColor = scheme.color("arrow.transport");
 		if(arrow.hasShine())
 		{
-			Color shineColor = colorScheme.color("arrow.transport.shine");
+			Color shineColor = scheme.color("arrow.transport.shine");
 			double[][] gp = layout.polygonCorners(visualStart(arrow), visualEnd(arrow));
 			double[] shine = getShine(arrow, distance(arrow), arrow.loop());
 			Stop[] stops = new Stop[shine.length];

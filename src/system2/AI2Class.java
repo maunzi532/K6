@@ -5,7 +5,7 @@ import system2.content.*;
 
 public interface AI2Class
 {
-	String imageName();
+	String image();
 
 	int adaptive();
 

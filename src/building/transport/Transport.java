@@ -79,7 +79,7 @@ public class Transport implements BuildingFunction
 				PossibleTransport transport = transportOpt.get();
 				invTransporter.doTheTransport(transport);
 				arrows.addArrow(ShineArrow.factory(transport.from().location(), transport.to().location(),
-						TRANSPORT_TIME, false, transport.item().imageName()));
+						TRANSPORT_TIME, false, transport.item().image()));
 			}
 		}
 	}

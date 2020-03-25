@@ -1,7 +1,6 @@
 package logic.gui;
 
 import item.view.*;
-import javafx.scene.paint.*;
 
 public class GuiTile
 {
@@ -10,11 +9,11 @@ public class GuiTile
 	public final String text;
 	public final String imageName;
 	public final boolean flipped;
-	public final Color color;
+	public final String color;
 	public final int l;
 	public final int u;
 
-	public GuiTile(String text, String imageName, boolean flipped, Color color)
+	public GuiTile(String text, String imageName, boolean flipped, String color)
 	{
 		this.text = text;
 		this.imageName = imageName;
@@ -34,7 +33,7 @@ public class GuiTile
 		u = 0;
 	}
 
-	public GuiTile(String text, String imageName, boolean flipped, Color color, int r, int d)
+	public GuiTile(String text, String imageName, boolean flipped, String color, int r, int d)
 	{
 		this.text = text;
 		this.imageName = imageName;
@@ -69,7 +68,7 @@ public class GuiTile
 		return new GuiTile[]
 				{
 						new GuiTile(itemView.currentWithLimit()),
-						new GuiTile(null, itemView.item.imageName(), false, null)
+						new GuiTile(null, itemView.item.image(), false, null)
 				};
 	}
 }

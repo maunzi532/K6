@@ -5,7 +5,6 @@ import entity.*;
 import item.*;
 import item.view.*;
 import java.util.*;
-import javafx.scene.paint.*;
 import logic.*;
 import logic.gui.*;
 import logic.xstate.*;
@@ -22,7 +21,6 @@ public class DirectedTradeGUI extends XGUIState
 	private final DoubleInv provide;
 	private final DoubleInv receive;
 	private final TurnResources takeAp;
-	private Color activeColor;
 	private ScrollList<ItemView> provideView;
 	private ScrollList<ItemView> receiveView;
 	private CElement transferElement;
@@ -41,7 +39,6 @@ public class DirectedTradeGUI extends XGUIState
 	public void onEnter(MainState mainState)
 	{
 		mainState.sideInfoFrame.clearSideInfo();
-		activeColor = mainState.colorScheme.color("gui.background.active");
 		amount = 1;
 		provideView = new ScrollList<>(0, 1, 4, 5, 2, 1, null,
 				e -> itemView(e, true), target -> provideMarked = target.item);
@@ -49,9 +46,8 @@ public class DirectedTradeGUI extends XGUIState
 		receiveView = new ScrollList<>(5, 1, 4, 5, 2, 1, null,
 				e -> itemView(e, false), null);
 		elements.add(receiveView);
-		Color nameBackground = mainState.colorScheme.color("gui.trade.name.background");
-		elements.add(new CElement(nameProvide, new GuiTile(provide.name(), null, false, nameBackground)));
-		elements.add(new CElement(nameReceive, new GuiTile(receive.name(), null, false, nameBackground)));
+		elements.add(new CElement(nameProvide, new GuiTile(provide.name(), null, false, "gui.trade.name.background")));
+		elements.add(new CElement(nameReceive, new GuiTile(receive.name(), null, false, "gui.trade.name.background")));
 		elements.add(new CElement(more, true, null, () -> amount++));
 		transferElement = new CElement(transfer, true, null, this::clickTransfer);
 		elements.add(transferElement);
@@ -78,16 +74,16 @@ public class DirectedTradeGUI extends XGUIState
 		setTargeted(CTile.NONE);
 		provideView.elements = provide.outputInv().viewItems(false);
 		receiveView.elements = receive.inputInv().viewItems(true);
-		transferElement.fillTile = new GuiTile(String.valueOf(amount), "Arrow.png", false, null);
+		transferElement.fillTile = new GuiTile(String.valueOf(amount), "gui.trade.arrow", false, null);
 	}
 
 	private GuiTile[] itemView(ItemView view, boolean provideInv)
 	{
-		Color color = provideInv && view.item == provideMarked ? activeColor : null;
+		String color = provideInv && view.item == provideMarked ? "gui.background.active" : null;
 		return new GuiTile[]
 				{
 						new GuiTile(view.currentWithLimit(), null, false, color),
-						new GuiTile(null, view.item.imageName(), false, color)
+						new GuiTile(null, view.item.image(), false, color)
 				};
 	}
 

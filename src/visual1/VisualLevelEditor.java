@@ -1,6 +1,5 @@
 package visual1;
 
-import file.*;
 import geom.*;
 import geom.d1.*;
 import java.util.*;
@@ -42,15 +41,15 @@ public class VisualLevelEditor
 		return mainState.stateHolder.getState().editMode() ? graphics.scaleHW() * 0.35 : 0;
 	}
 
-	public void draw(LevelEditor levelEditor, ColorScheme colorScheme)
+	public void draw(LevelEditor levelEditor, Scheme scheme)
 	{
 		if(levelEditor.mainState.stateHolder.getState().editMode())
 		{
 			for(int i = 0; i < LevelEditor.SLOT_COUNT; i++)
 			{
 				EditorSlot editorSlot = levelEditor.editorSlots.get(i);
-				editorSlot.gui.setTile(editorSlot.mode.guiTile(), levelEditor.getCurrentSlot() == i, colorScheme);
-				visualSlots.get(i).locateAndDraw(editorSlot.gui, colorScheme);
+				editorSlot.gui.setTile(editorSlot.mode.guiTile(), levelEditor.getCurrentSlot() == i);
+				visualSlots.get(i).locateAndDraw(editorSlot.gui, scheme);
 			}
 		}
 	}

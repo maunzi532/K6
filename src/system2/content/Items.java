@@ -5,27 +5,27 @@ import java.util.*;
 
 public enum Items implements Item
 {
-	BLUE("BLUE.png", 1),
-	GSL("GSL.png", 1),
-	TECHNOLOGY("Tech.png", 2),
-	MATERIAL("X.png", 1);
+	BLUE("resource.blue", 1),
+	GSL("resource.gsl", 1),
+	TECHNOLOGY("resource.tech", 2),
+	MATERIAL("resource.material", 1);
 
-	Items(String imageName, int weight, String... info)
+	Items(String image, int weight, String... info)
 	{
-		this.imageName = imageName;
+		this.image = image;
 		this.weight = weight;
 		this.info = Arrays.asList(info);
 
 	}
 
-	public final String imageName;
+	public final String image;
 	public final int weight;
 	public final List<String> info;
 
 	@Override
-	public String imageName()
+	public String image()
 	{
-		return imageName;
+		return image;
 	}
 
 	@Override

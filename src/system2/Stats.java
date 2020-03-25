@@ -308,7 +308,7 @@ public class Stats implements ModifierAspect
 		if(customMapImage != null)
 			return customMapImage;
 		else
-			return "Enemy_3.png";
+			return "mapsprite.default";
 	}
 
 	public String sideImageName()
@@ -316,7 +316,7 @@ public class Stats implements ModifierAspect
 		if(customSideImage != null)
 			return customSideImage;
 		else
-			return "Enemy_0.png";
+			return "character.enemy.0";
 	}
 
 	public Stats(JrsObject data, ItemLoader itemLoader)

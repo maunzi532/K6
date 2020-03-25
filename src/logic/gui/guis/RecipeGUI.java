@@ -15,7 +15,7 @@ public class RecipeGUI extends XGUIState
 	private static final CTile textResults = new CTile(4, 0, new GuiTile("Results"), 2, 1);
 	private static final CTile prev = new CTile(0, 1, new GuiTile("Previous"));
 	private static final CTile next = new CTile(6, 1, new GuiTile("Next"));
-	private static final CTile arrow = new CTile(3, 1, new GuiTile(null, "Arrow.png", false, null));
+	private static final CTile arrow = new CTile(3, 1, new GuiTile(null, "gui.recipe.arrow", false, null));
 
 	private final XBuilding building;
 	private final ProcessInv processInv;
@@ -92,7 +92,7 @@ public class RecipeGUI extends XGUIState
 		return new GuiTile[]
 				{
 						new GuiTile(itemView.currentWithLimit()),
-						new GuiTile(InvNumView.except1(stack.count), itemView.item.imageName(), false, null)
+						new GuiTile(InvNumView.except1(stack.count), itemView.item.image(), false, null)
 				};
 	}
 
@@ -103,7 +103,7 @@ public class RecipeGUI extends XGUIState
 		return new GuiTile[]
 				{
 						new GuiTile(itemView.currentWithLimit()),
-						new GuiTile(InvNumView.except1(stack.count), itemView.item.imageName(), false, null)
+						new GuiTile(InvNumView.except1(stack.count), itemView.item.image(), false, null)
 				};
 	}
 

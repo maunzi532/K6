@@ -9,9 +9,9 @@ public class SpearItem implements AI2Class
 	public static final SpearItem INSTANCE = new SpearItem();
 
 	@Override
-	public String imageName()
+	public String image()
 	{
-		return "SpearItem.png";
+		return "equipment.spear";
 	}
 
 	@Override

@@ -4,14 +4,12 @@ import entity.*;
 import geom.f1.*;
 import java.util.*;
 import java.util.stream.*;
-import javafx.scene.paint.*;
 import levelMap.*;
 import logic.*;
 
 public class SwapState implements NMarkState
 {
 	private final XCharacter character;
-	private Color swapTargetColor;
 	private List<XCharacter> swapTargets;
 	private List<VisMark> visMarked;
 
@@ -23,8 +21,7 @@ public class SwapState implements NMarkState
 	@Override
 	public void onEnter(MainState mainState)
 	{
-		mainState.sideInfoFrame.setStandardSideInfo(character, mainState.colorScheme);
-		swapTargetColor = mainState.colorScheme.color("mark.swap");
+		mainState.sideInfoFrame.setStandardSideInfo(character);
 		if(character.saveSettings() != null && character.saveSettings().startLocked)
 		{
 			swapTargets = List.of();
@@ -34,7 +31,7 @@ public class SwapState implements NMarkState
 			swapTargets = mainState.levelMap.teamCharacters(character.team()).stream()
 					.filter(e -> e != character && (e.saveSettings() == null || !e.saveSettings().startLocked)).collect(Collectors.toList());
 		}
-		visMarked = swapTargets.stream().map(e -> new VisMark(e.location(), swapTargetColor, VisMark.d1)).collect(Collectors.toList());
+		visMarked = swapTargets.stream().map(e -> new VisMark(e.location(), "mark.swap", VisMark.d1)).collect(Collectors.toList());
 	}
 
 	@Override
@@ -62,7 +59,7 @@ public class SwapState implements NMarkState
 		if(target != null && target.team() == character.team() && swapTargets.contains(target))
 		{
 			mainState.levelMap.swapEntities(character, target);
-			visMarked = swapTargets.stream().map(e -> new VisMark(e.location(), swapTargetColor, VisMark.d1)).collect(Collectors.toList());
+			visMarked = swapTargets.stream().map(e -> new VisMark(e.location(), "mark.swap", VisMark.d1)).collect(Collectors.toList());
 		}
 		else
 		{

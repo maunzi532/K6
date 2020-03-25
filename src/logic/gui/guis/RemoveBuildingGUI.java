@@ -26,7 +26,7 @@ public class RemoveBuildingGUI extends XGUIState
 	@Override
 	public void onEnter(MainState mainState)
 	{
-		mainState.sideInfoFrame.setStandardSideInfo(character, mainState.colorScheme);
+		mainState.sideInfoFrame.setStandardSideInfo(character);
 		building = mainState.levelMap.getBuilding(character.location());
 		ItemList refunds = building.allRefundable();
 		character.inputInv().tryAdd(refunds, true, CommitType.LEAVE);
@@ -82,7 +82,7 @@ public class RemoveBuildingGUI extends XGUIState
 		return new GuiTile[]
 				{
 						new GuiTile(itemView.baseAndCurrentWithLimit()),
-						new GuiTile(null, itemView.item.imageName(), false, null)
+						new GuiTile(null, itemView.item.image(), false, null)
 				};
 	}
 

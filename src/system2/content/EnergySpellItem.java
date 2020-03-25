@@ -10,9 +10,9 @@ public class EnergySpellItem implements AI2Class
 	public static final EnergySpellItem INSTANCE = new EnergySpellItem();
 
 	@Override
-	public String imageName()
+	public String image()
 	{
-		return "EnergySpellItem.png";
+		return "equipment.energyspell";
 	}
 
 	@Override

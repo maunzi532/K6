@@ -22,7 +22,7 @@ public class AdvMoveState implements NMarkState
 	@Override
 	public void onEnter(MainState mainState)
 	{
-		mainState.sideInfoFrame.setStandardSideInfo(character, mainState.colorScheme);
+		mainState.sideInfoFrame.setStandardSideInfo(character);
 		movement = new ArrayList<>();
 		attack = new ArrayList<>();
 		if(character.resources().moveAction())
@@ -41,10 +41,10 @@ public class AdvMoveState implements NMarkState
 		}
 		allTargets = new ArrayList<>();
 		if(character.resources().moveAction())
-			movement.stream().map(e -> new VisMark(e.tile(), mainState.colorScheme.color("mark.move.move"), VisMark.d1)).forEach(allTargets::add);
+			movement.stream().map(e -> new VisMark(e.tile(), "mark.move.move", VisMark.d1)).forEach(allTargets::add);
 		else
-			movement.stream().map(e -> new VisMark(e.tile(), mainState.colorScheme.color("mark.move.dash"), VisMark.d1)).forEach(allTargets::add);
-		attack.stream().map(e -> new VisMark(e, mainState.colorScheme.color("mark.move.attack"), VisMark.d1)).forEach(allTargets::add);
+			movement.stream().map(e -> new VisMark(e.tile(), "mark.move.dash", VisMark.d1)).forEach(allTargets::add);
+		attack.stream().map(e -> new VisMark(e, "mark.move.attack", VisMark.d1)).forEach(allTargets::add);
 	}
 
 	@Override

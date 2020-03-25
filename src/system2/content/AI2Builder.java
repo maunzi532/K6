@@ -133,7 +133,7 @@ public class AI2Builder
 		if(autoModes)
 			attackModes.addAll(itemClass.attackModes());
 		return new AttackItem(itemClass,
-				autoImage ? itemClass.imageName() : imageName,
+				autoImage ? itemClass.image() : imageName,
 				damage, heavy, accuracy, crit, slow,
 				autoAdaptive ? itemClass.adaptive() : adaptive,
 				autoAdaptive ? itemClass.adaptiveType() : adaptiveType,

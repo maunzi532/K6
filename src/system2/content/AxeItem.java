@@ -10,9 +10,9 @@ public class AxeItem implements AI2Class
 	public static final AxeItem INSTANCE = new AxeItem();
 
 	@Override
-	public String imageName()
+	public String image()
 	{
-		return "AxeItem.png";
+		return "equipment.axe";
 	}
 
 	@Override

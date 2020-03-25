@@ -19,8 +19,8 @@ public class RegenerateState implements NAutoState
 	@Override
 	public void onEnter(MainState mainState)
 	{
-		mainState.sideInfoFrame.setStandardSideInfo(character, mainState.colorScheme);
-		arrow = new RegenerationAnim(character, mainState.levelMap, mainState.colorScheme);
+		mainState.sideInfoFrame.setStandardSideInfo(character);
+		arrow = new RegenerationAnim(character, mainState.levelMap);
 	}
 
 	@Override

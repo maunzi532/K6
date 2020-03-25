@@ -5,7 +5,6 @@ import item.*;
 import item.view.*;
 import java.util.*;
 import java.util.stream.*;
-import javafx.scene.paint.*;
 import logic.*;
 import logic.gui.*;
 import system2.*;
@@ -17,7 +16,6 @@ public class CharacterCombatGUI extends XGUIState
 	private static final CTile VIEW_MODE = new CTile(4, 6, 2, 1);
 
 	private final XCharacter character;
-	private Color activeColor;
 	private int viewMode;
 	private Item equippedItem;
 	private CElement viewModeElement;
@@ -35,8 +33,7 @@ public class CharacterCombatGUI extends XGUIState
 	@Override
 	public void onEnter(MainState mainState)
 	{
-		mainState.sideInfoFrame.setStandardSideInfo(character, mainState.colorScheme);
-		activeColor = mainState.colorScheme.color("gui.background.active");
+		mainState.sideInfoFrame.setStandardSideInfo(character);
 		equippedItem = character.stats().lastUsed().item;
 		elements.add(new CElement(NAME, new GuiTile(character.name())));
 		elements.add(new CElement(UNEQUIP, true, () -> character.stats().lastUsed().active, this::unequip));
@@ -111,8 +108,8 @@ public class CharacterCombatGUI extends XGUIState
 		boolean mark = itemView.item == equippedItem;
 		return new GuiTile[]
 				{
-						new GuiTile(itemView.currentWithLimit(), null, false, mark ? activeColor : null),
-						new GuiTile(null, itemView.item.imageName(), false, mark ? activeColor : null)
+						new GuiTile(itemView.currentWithLimit(), null, false, mark ? "gui.background.active" : null),
+						new GuiTile(null, itemView.item.image(), false, mark ? "gui.background.active" : null)
 				};
 	}
 

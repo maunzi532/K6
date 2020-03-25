@@ -27,7 +27,7 @@ public class AttackItemFilter implements Item
 	}
 
 	@Override
-	public String imageName()
+	public String image()
 	{
 		throw new RuntimeException();
 	}

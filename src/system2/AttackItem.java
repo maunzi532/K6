@@ -8,7 +8,7 @@ import system2.content.*;
 public class AttackItem implements Item, ModifierAspect
 {
 	public final AI2Class itemClass;
-	private final String imageName;
+	private final String image;
 	private final int damage;
 	private final int heavy;
 	private final int accuracy;
@@ -23,12 +23,12 @@ public class AttackItem implements Item, ModifierAspect
 	private final List<Ability2> abilities;
 	private final List<AttackMode> attackModes4;
 
-	public AttackItem(AI2Class itemClass, String imageName, int damage, int heavy, int accuracy,
+	public AttackItem(AI2Class itemClass, String image, int damage, int heavy, int accuracy,
 			int crit, int slow, int adaptive, AdaptiveType adaptiveType, AdvantageType advantageType,
 			boolean magical, int[] ranges, int[] counterR, List<Ability2> abilities, List<AM2Type> attackModes)
 	{
 		this.itemClass = itemClass;
-		this.imageName = imageName;
+		this.image = image;
 		this.damage = damage;
 		this.heavy = heavy;
 		this.accuracy = accuracy;
@@ -57,9 +57,9 @@ public class AttackItem implements Item, ModifierAspect
 	}
 
 	@Override
-	public String imageName()
+	public String image()
 	{
-		return imageName;
+		return image;
 	}
 
 	@Override

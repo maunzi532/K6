@@ -2,7 +2,6 @@ package visual1.sideinfo;
 
 import arrow.*;
 import entity.sideinfo.*;
-import file.*;
 import java.util.*;
 import javafx.scene.canvas.*;
 import javafx.scene.text.*;
@@ -47,21 +46,21 @@ public class SideInfoViewer implements SideInfoHolder
 		return current != null ? graphics.scaleHW() * (YS_1 + S_I) : 0;
 	}
 
-	public void draw(ColorScheme colorScheme)
+	public void draw(Scheme scheme)
 	{
 		if(counter > 0 && last != null)
-			drawShifted(last, (SHIFT_TIME - counter) / (double) SHIFT_TIME, colorScheme);
+			drawShifted(last, (SHIFT_TIME - counter) / (double) SHIFT_TIME, scheme);
 		if(current != null)
-			drawShifted(current, counter / (double) SHIFT_TIME, colorScheme);
+			drawShifted(current, counter / (double) SHIFT_TIME, scheme);
 	}
 
-	private void drawShifted(SideInfo sideInfo, double shift, ColorScheme colorScheme)
+	private void drawShifted(SideInfo sideInfo, double shift, Scheme scheme)
 	{
 		graphics.gd().setImageSmoothing(false);
 		if(flipped)
-			drawR(sideInfo, shift, colorScheme);
+			drawR(sideInfo, shift, scheme);
 		else
-			drawL(sideInfo, shift, colorScheme);
+			drawL(sideInfo, shift, scheme);
 	}
 
 	private static final double XD_I = 0.1;
@@ -76,18 +75,19 @@ public class SideInfoViewer implements SideInfoHolder
 	private static final double XS_T = 0.7;
 	private static final double YS_T = 0.04;
 
-	private void drawL(SideInfo sideInfo, double shift, ColorScheme colorScheme)
+	private void drawL(SideInfo sideInfo, double shift, Scheme scheme)
 	{
 		GraphicsContext gd = graphics.gd();
 		double size = graphics.scaleHW();
 		double lx = -size * shift;
 		double by = graphics.yHW() * 2;
-		gd.setFill(colorScheme.color("sideinfo.background"));
-		gd.drawImage(ImageLoader.getImage(sideInfo.imageName()), lx + size * XD_I, by - size * (YS_1 + S_I), size * S_I, size * S_I);
+		gd.setFill(scheme.color("sideinfo.background"));
+		gd.drawImage(scheme.image(sideInfo.imageName()), lx + size * XD_I, by - size * (YS_1 + S_I), size * S_I, size * S_I);
 		gd.fillRect(lx, by - size * YS_1, size * XS_1, size * YS_1);
 		if(sideInfo.statBar() != null)
-			drawStatBar(sideInfo.statBar(), lx + size * XD_S, by - size * (YD_S + YS_T), size * XS_S, size * YS_T);
-		gd.setFill(colorScheme.color("sideinfo.text"));
+			drawStatBar(sideInfo.statBar(), lx + size * XD_S, by - size * (YD_S + YS_T), size * XS_S, size * YS_T,
+					scheme);
+		gd.setFill(scheme.color("sideinfo.text"));
 		gd.setFont(new Font(size * YS_T));
 		String[] texts = sideInfo.texts();
 		for(int i = 0; i < texts.length; i++)
@@ -96,18 +96,19 @@ public class SideInfoViewer implements SideInfoHolder
 		}
 	}
 
-	private void drawR(SideInfo sideInfo, double shift, ColorScheme colorScheme)
+	private void drawR(SideInfo sideInfo, double shift, Scheme scheme)
 	{
 		GraphicsContext gd = graphics.gd();
 		double size = graphics.scaleHW();
 		double rx = graphics.xHW() * 2 + size * shift;
 		double by = graphics.yHW() * 2;
-		gd.setFill(colorScheme.color("sideinfo.background"));
-		gd.drawImage(ImageLoader.getImage(sideInfo.imageName()), rx - size * (XD_I + S_I), by - size * (YS_1 + S_I), size * S_I, size * S_I);
+		gd.setFill(scheme.color("sideinfo.background"));
+		gd.drawImage(scheme.image(sideInfo.imageName()), rx - size * (XD_I + S_I), by - size * (YS_1 + S_I), size * S_I, size * S_I);
 		gd.fillRect(rx - size * XS_1, by - size * YS_1, size * XS_1, size * YS_1);
 		if(sideInfo.statBar() != null)
-			drawStatBar(sideInfo.statBar(), rx - size * (XD_S + XS_S), by - size * (YD_S + YS_T), size * XS_S, size * YS_T);
-		gd.setFill(colorScheme.color("sideinfo.text"));
+			drawStatBar(sideInfo.statBar(), rx - size * (XD_S + XS_S), by - size * (YD_S + YS_T), size * XS_S, size * YS_T,
+					scheme);
+		gd.setFill(scheme.color("sideinfo.text"));
 		gd.setFont(new Font(size * YS_T));
 		String[] texts = sideInfo.texts();
 		for(int i = 0; i < texts.length; i++)
@@ -116,17 +117,17 @@ public class SideInfoViewer implements SideInfoHolder
 		}
 	}
 
-	private void drawStatBar(StatBar statBar, double xs, double ys, double xw, double yw)
+	private void drawStatBar(StatBar statBar, double xs, double ys, double xw, double yw, Scheme scheme)
 	{
 		GraphicsContext gd = graphics.gd();
-		gd.setFill(statBar.getBg());
+		gd.setFill(scheme.color(statBar.getBg()));
 		gd.fillRect(xs, ys, xw, yw);
-		gd.setFill(statBar.getFg());
+		gd.setFill(scheme.color(statBar.getFg()));
 		gd.fillRect(xs, ys, xw * statBar.filledPart(), yw);
-		gd.setStroke(statBar.getBg());
+		gd.setStroke(scheme.color(statBar.getBg()));
 		gd.strokeRect(xs, ys, xw, yw);
 		gd.setFont(new Font(yw * 0.8));
-		gd.setFill(statBar.getTc());
+		gd.setFill(scheme.color(statBar.getTc()));
 		gd.fillText(statBar.getText(), xs + xw / 2, ys + yw / 2, xw);
 	}
 }

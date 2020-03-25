@@ -10,9 +10,9 @@ public class LanceItem implements AI2Class
 	public static final LanceItem INSTANCE = new LanceItem();
 
 	@Override
-	public String imageName()
+	public String image()
 	{
-		return "LanceItem.png";
+		return "equipment.lance";
 	}
 
 	@Override

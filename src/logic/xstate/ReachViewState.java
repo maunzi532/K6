@@ -3,7 +3,6 @@ package logic.xstate;
 import entity.*;
 import geom.f1.*;
 import java.util.*;
-import javafx.scene.paint.*;
 import levelMap.*;
 import logic.*;
 
@@ -22,15 +21,13 @@ public class ReachViewState implements NMarkState
 	@Override
 	public void onEnter(MainState mainState)
 	{
-		mainState.sideInfoFrame.setStandardSideInfo(character, mainState.colorScheme);
-		Color movementReachColor = mainState.colorScheme.color("mark.reach.move");
-		Color attackReachColor = mainState.colorScheme.color("mark.reach.attack");
+		mainState.sideInfoFrame.setStandardSideInfo(character);
 		List<Tile> movement = new Pathing(mainState.y1, character, character.stats().movement(), mainState.levelMap, null).start().getEndpoints();
 		allTargets = new ArrayList<>();
-		movement.forEach(e -> allTargets.add(new VisMark(e, movementReachColor, VisMark.d1)));
+		movement.forEach(e -> allTargets.add(new VisMark(e, "mark.reach.move", VisMark.d1)));
 		movement.stream().flatMap(loc -> mainState.levelMap.attackRanges(character, false).stream()
 				.flatMap(e -> mainState.y1.range(loc, e, e).stream())).distinct()
-				.forEach(e -> allTargets.add(new VisMark(e, attackReachColor, VisMark.d1)));
+				.forEach(e -> allTargets.add(new VisMark(e, "mark.reach.attack", VisMark.d1)));
 	}
 
 	@Override

@@ -1,7 +1,6 @@
 package visual1;
 
 import arrow.*;
-import file.*;
 import geom.*;
 import geom.d1.*;
 import geom.f1.*;
@@ -29,7 +28,7 @@ public class VisualTile
 		this.gd = gd;
 	}
 
-	public void draw(TileCamera camera, int screenshake, ColorScheme colorScheme)
+	public void draw(TileCamera camera, int screenshake, Scheme scheme)
 	{
 		gd.setImageSmoothing(true);
 		int range = camera.getRange();
@@ -40,30 +39,29 @@ public class VisualTile
 			int i1 = i * camera.startMultiplier();
 			for(int j = Math.min(0, i1) + range; j >= Math.max(0, i1) - range; j--)
 			{
-				draw0(layout, y1.add(mid, y1.create2(j, i)));
+				draw0(layout, y1.add(mid, y1.create2(j, i)), scheme);
 			}
 		}
-		drawArrows0(layout, mid, range, colorScheme);
-		drawMarked0(layout);
+		drawArrows0(layout, mid, range, scheme);
+		drawMarked0(layout, scheme);
 		for(int i = -range; i <= range; i++)
 		{
 			int i1 = i * camera.startMultiplier();
 			for(int j = Math.min(0, i1) + range; j >= Math.max(0, i1) - range; j--)
 			{
-				draw1(layout, y1.add(mid, y1.create2(j, i)));
+				draw1(layout, y1.add(mid, y1.create2(j, i)), scheme);
 			}
 		}
-		drawArrows1(layout, mid, range);
+		drawArrows1(layout, mid, range, scheme);
 	}
 
-	private void draw0(TileLayout layout, Tile t1)
+	private void draw0(TileLayout layout, Tile t1, Scheme scheme)
 	{
 		AdvTile advTile = levelMap.advTile(t1);
 		double[][] points = layout.tileCorners(t1);
 		PointD mid = layout.tileToPixel(t1);
 		PointD offset = layout.imageOffset();
-		Image image = Objects.requireNonNullElse(advTile.visible() ? ImageLoader.getImage(advTile.floorTile().type.imageT) : null,
-				ImageLoader.getImage("WALL_Tile.png"));
+		Image image = scheme.image(advTile.visible() ? advTile.floorTile().type.image : "floortile.wall");
 		gd.setFill(new ImagePattern(image, mid.v()[0] - offset.v()[0],
 				mid.v()[1] - offset.v()[1], offset.v()[0] * 2, offset.v()[1] * 2, false));
 		gd.fillPolygon(points[0], points[1], y1.directionCount());
@@ -72,34 +70,34 @@ public class VisualTile
 			if(advTile.building() != null)
 			{
 				PointD midPoint = layout.tileToPixel(t1);
-				gd.drawImage(ImageLoader.getImage("M1.png"), midPoint.v()[0] - layout.size().v()[0], midPoint.v()[1] - layout.size().v()[1],
+				gd.drawImage(scheme.image("building.default"), midPoint.v()[0] - layout.size().v()[0], midPoint.v()[1] - layout.size().v()[1],
 						layout.size().v()[0] * 2, layout.size().v()[1] * 2);
 			}
 		}
 	}
 
-	private void drawArrows0(TileLayout layout, Tile mid, int range, ColorScheme colorScheme)
+	private void drawArrows0(TileLayout layout, Tile mid, int range, Scheme scheme)
 	{
 		levelMap.getArrows().stream().filter(arrow -> arrow instanceof ShineArrow && av.isVisible(arrow, mid, range)).forEach(arrow ->
 				{
 					ShineArrow arrow1 = (ShineArrow) arrow;
-					gd.setFill(av.shineFill(arrow1, layout, colorScheme));
+					gd.setFill(av.shineFill(arrow1, layout, scheme));
 					double[][] points = layout.polygonCorners(av.arrowPoints(arrow1));
 					gd.fillPolygon(points[0], points[1], points[0].length);
 				});
 	}
 
-	private void drawMarked0(TileLayout layout)
+	private void drawMarked0(TileLayout layout, Scheme scheme)
 	{
 		for(VisMark vm : visMarked)
 		{
 			double[][] points = layout.tileCorners(vm.location(), vm.midDistance());
-			gd.setStroke(vm.color());
+			gd.setStroke(scheme.color(vm.color()));
 			gd.strokePolygon(points[0], points[1], y1.directionCount());
 		}
 	}
 
-	private void draw1(TileLayout layout, Tile t1)
+	private void draw1(TileLayout layout, Tile t1, Scheme scheme)
 	{
 		AdvTile advTile = levelMap.advTile(t1);
 		if(advTile.visible())
@@ -107,19 +105,19 @@ public class VisualTile
 			if(advTile.entity() != null && advTile.entity().isVisible())
 			{
 				PointD midPoint = layout.tileToPixel(t1);
-				gd.drawImage(ImageLoader.getImage(advTile.entity().mapImageName()),
+				gd.drawImage(scheme.image(advTile.entity().mapImageName()),
 						midPoint.v()[0] - layout.size().v()[0], midPoint.v()[1] - layout.size().v()[1],
 						layout.size().v()[0] * 2, layout.size().v()[1] * 2);
 			}
 		}
 	}
 
-	private void drawArrows1(TileLayout layout, Tile mid, int range)
+	private void drawArrows1(TileLayout layout, Tile mid, int range, Scheme scheme)
 	{
 		levelMap.getArrows().stream().filter(arrow -> arrow.imageName() != null && av.isVisible(arrow, mid, range)).forEach(arrow ->
 				{
 					PointD midPoint = layout.tileToPixel(av.imageLocation(arrow));
-					gd.drawImage(ImageLoader.getImage(arrow.imageName()), midPoint.v()[0] - layout.size().v()[0], midPoint.v()[1] - layout.size().v()[1],
+					gd.drawImage(scheme.image(arrow.imageName()), midPoint.v()[0] - layout.size().v()[0], midPoint.v()[1] - layout.size().v()[1],
 							layout.size().v()[0] * 2, layout.size().v()[1] * 2);
 				});
 		levelMap.getArrows().stream().filter(arrow -> arrow instanceof InfoArrow && av.isVisible(arrow, mid, range)).forEach(arrow ->
@@ -130,14 +128,14 @@ public class VisualTile
 			double yw = layout.size().v()[1] * ArrowViewer.DATA_HEIGHT;
 			double xs = midPoint.v()[0] - xw / 2;
 			double ys = midPoint.v()[1] - yw / 2;
-			gd.setFill(statBar.getBg());
+			gd.setFill(scheme.color(statBar.getBg()));
 			gd.fillRect(xs, ys, xw, yw);
-			gd.setFill(statBar.getFg());
+			gd.setFill(scheme.color(statBar.getFg()));
 			gd.fillRect(xs, ys, xw * statBar.filledPart(), yw);
-			gd.setStroke(statBar.getBg());
+			gd.setStroke(scheme.color(statBar.getBg()));
 			gd.strokeRect(xs, ys, xw, yw);
 			gd.setFont(new Font(yw * 0.8));
-			gd.setFill(statBar.getTc());
+			gd.setFill(scheme.color(statBar.getTc()));
 			gd.fillText(statBar.getText(), xs + xw / 2, ys + yw / 2, xw);
 		});
 	}

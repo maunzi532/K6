@@ -6,7 +6,6 @@ import entity.*;
 import geom.f1.*;
 import java.util.*;
 import java.util.stream.*;
-import javafx.scene.paint.*;
 import levelMap.*;
 import logic.editor.*;
 import logic.editor.xstate.*;
@@ -106,7 +105,7 @@ public class StateControl2 implements XStateHolder, ConvInputConsumer
 		{
 			//tile
 			handleMapTarget(mapTile, key);
-			cursorMarker = new VisMark(mapTile, mainState.colorScheme.color("mark.cursor"), VisMark.d2);
+			cursorMarker = new VisMark(mapTile, "mark.cursor", VisMark.d2);
 		}
 	}
 
@@ -234,9 +233,8 @@ public class StateControl2 implements XStateHolder, ConvInputConsumer
 	{
 		if(!(state instanceof XGUIState))
 		{
-			Color dragMarkColor = mainState.colorScheme.color("mark.cursor.drag");
 			dragMarker = mainState.y1.betweenArea(startTile, endTile).stream()
-					.map(e -> new VisMark(e, dragMarkColor, VisMark.d3)).collect(Collectors.toList());
+					.map(e -> new VisMark(e, "mark.cursor.drag", VisMark.d3)).collect(Collectors.toList());
 			if(finished && state.editMode() && key.canDrag())
 			{
 				levelEditor.onMapDrag(startTile, endTile, key);
@@ -324,8 +322,7 @@ public class StateControl2 implements XStateHolder, ConvInputConsumer
 			{
 				mainState.allEnemyReach = mainState.levelMap.allEnemyReach();
 			}
-			Color allReachColor = mainState.colorScheme.color("mark.reach.all");
-			mainState.allEnemyReach.forEach((t, n) -> visMarked.add(new VisMark(t, allReachColor, 0.8)));
+			mainState.allEnemyReach.forEach((t, n) -> visMarked.add(new VisMark(t, "mark.reach.all", 0.8)));
 		}
 		if(state instanceof NMarkState markState)
 		{

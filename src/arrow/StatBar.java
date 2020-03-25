@@ -1,17 +1,15 @@
 package arrow;
 
-import javafx.scene.paint.*;
-
 public class StatBar
 {
-	private final Color fg;
-	private final Color bg;
-	private final Color tc;
+	private final String fg;
+	private final String bg;
+	private final String tc;
 	private int current;
 	private int max;
 	private String t1;
 
-	public StatBar(Color fg, Color bg, Color tc, int current, int max, String t1)
+	public StatBar(String fg, String bg, String tc, int current, int max, String t1)
 	{
 		this.fg = fg;
 		this.bg = bg;
@@ -21,17 +19,17 @@ public class StatBar
 		this.t1 = t1;
 	}
 
-	public Color getFg()
+	public String getFg()
 	{
 		return fg;
 	}
 
-	public Color getBg()
+	public String getBg()
 	{
 		return bg;
 	}
 
-	public Color getTc()
+	public String getTc()
 	{
 		return tc;
 	}
