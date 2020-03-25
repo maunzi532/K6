@@ -80,7 +80,7 @@ public class ProcessInv implements BuildingFunction
 			{
 				if(inputInv.tryProvide(recipe.required(), false, CommitType.LEAVE).isPresent())
 				{
-					if(outputInv.tryAdd(recipe.results(), false, CommitType.COMMIT))
+					if(outputInv.tryAdd(recipe.results()))
 					{
 						inputInv.commit();
 						arrows.addArrow(ShineArrow.factory(location, null,

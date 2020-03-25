@@ -71,6 +71,12 @@ public class XCharacter implements DoubleInv, XBuilder
 		return team;
 	}
 
+	public void startTurn()
+	{
+		if(startingDelay > 0)
+			startingDelay--;
+	}
+
 	public void setLocation(Tile location)
 	{
 		this.location = location;
@@ -135,7 +141,7 @@ public class XCharacter implements DoubleInv, XBuilder
 
 	public void addItems(ItemList itemList)
 	{
-		inv.tryAdd(itemList, false, CommitType.COMMIT);
+		inv.tryAdd(itemList);
 	}
 
 	public boolean isEnemy(XCharacter other)
@@ -176,7 +182,7 @@ public class XCharacter implements DoubleInv, XBuilder
 	@Override
 	public boolean active()
 	{
-		return !defeated && startingDelay <= 0;
+		return !defeated;
 	}
 
 	@Override
@@ -215,18 +221,19 @@ public class XCharacter implements DoubleInv, XBuilder
 	public <T extends ComposerBase, H extends ComposerBase> void save(ObjectComposer<T> a1,
 			ArrayComposer<H> xhList, ItemLoader itemLoader, TileType y1) throws IOException
 	{
+		a1.put("Type", team.name());
+		a1.put("sx", y1.sx(location));
+		a1.put("sy", y1.sy(location));
+		a1.put("StartingDelay", startingDelay);
 		if(saveSettings != null)
 		{
 			a1.put("StartName", stats.getName());
 			a1.put("Locked", saveSettings.startLocked);
 			a1.put("InvLocked", saveSettings.startInvLocked);
-			a1.put("sx", y1.sx(location));
-			a1.put("sy", y1.sy(location));
 			if(saveSettings.startLocked)
 			{
 				inv.save(a1.startObjectField("Inventory"), itemLoader);
 			}
-			a1.end();
 
 			var h1 = xhList.startObject();
 			stats.save(h1.startObjectField("Stats"), itemLoader);
@@ -235,12 +242,9 @@ public class XCharacter implements DoubleInv, XBuilder
 		}
 		else
 		{
-			a1.put("Type", team.name());
-			a1.put("sx", y1.sx(location));
-			a1.put("sy", y1.sy(location));
 			stats.save(a1.startObjectField("Stats"), itemLoader);
 			inv.save(a1.startObjectField("Inventory"), itemLoader);
-			a1.end();
 		}
+		a1.end();
 	}
 }

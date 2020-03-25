@@ -65,7 +65,6 @@ public class MainState
 	//images
 	//TODO replace floor images
 	//TODO downscale item images
-	//TODO add images of items of upgraded classes
 
 	//save/load
 	//TODO savestate during map

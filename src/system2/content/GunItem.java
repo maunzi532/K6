@@ -6,7 +6,7 @@ import system2.*;
 
 public class GunItem implements AI2Class
 {
-	private static final Image IMAGE = null;//new Image("GunItem.png");
+	private static final Image IMAGE = new Image("GunItem.png");
 	private static final int[] RANGES = new int[]{1, 2, 3, 4, 5, 6};
 	public static final GunItem INSTANCE = new GunItem();
 

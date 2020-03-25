@@ -63,6 +63,11 @@ public interface Inv extends Inv0
 		return Optional.of(new ItemList(stacks));
 	}
 
+	default boolean tryAdd(ItemList itemList)
+	{
+		return tryAdd(itemList, false, CommitType.COMMIT);
+	}
+
 	default boolean tryAdd(ItemList itemList, boolean unlimited, CommitType commitType)
 	{
 		for(ItemStack itemStack : itemList.items)

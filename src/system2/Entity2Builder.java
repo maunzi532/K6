@@ -54,7 +54,7 @@ public class Entity2Builder
 	public void create(boolean player)
 	{
 		Inv inv = new WeightInv(weightLimit);
-		inv.tryAdd(itemList, false, CommitType.COMMIT);
+		inv.tryAdd(itemList);
 		XCharacter entity;
 		if(player)
 		{

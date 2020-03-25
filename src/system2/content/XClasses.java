@@ -17,7 +17,7 @@ public class XClasses
 		xClasses[3] = new XClass(3, "Squire", 0, new int[]{7, 10, 11, 9, 10, 6, 9, 8}, 6, List.of(SpearItem.INSTANCE, MagicSwordItem.INSTANCE), List.of());
 		xClasses[4] = new XClass(4, "Hexer", 0, new int[]{6, 7, 12, 10, 9, 6, 11, 9}, 6, List.of(EnergySpellItem.INSTANCE), List.of());
 		xClasses[5] = new XClass(5, "Mage", 0, new int[]{7, 11, 9, 9, 11, 5, 8, 7}, 6, List.of(DarkSpellItem.INSTANCE, DaggerItem.INSTANCE), List.of());
-		xClasses[6] = new XClass(6, "Pirate", 0, new int[]{11, 6, 8, 9, 7, 10, 8, 10}, 6, List.of(AxeItem.INSTANCE, CrossbowItem.INSTANCE), List.of());
+		xClasses[6] = new XClass(6, "Explorer", 0, new int[]{11, 6, 8, 9, 7, 10, 8, 10}, 6, List.of(AxeItem.INSTANCE, CrossbowItem.INSTANCE), List.of());
 		xClasses[7] = new XClass(7, "Gangster", 20, new int[]{7, 8, 10, 14, 5, 7, 6, 10}, 6, List.of(DaggerItem.INSTANCE, AxeItem.INSTANCE, GunItem.INSTANCE), List.of(Ability2.UNLIMITED_CRITICAL));
 		xClasses[8] = new XClass(8, "General", 20, new int[]{12, 8, 9, 6, 8, 12, 9, 8}, 6, List.of(SpearItem.INSTANCE, CrossbowItem.INSTANCE, AxeItem.INSTANCE, MagicSwordItem.INSTANCE), List.of(Ability2.SHIELD_POWER));
 		xClasses[9] = new XClass(9, "Knight", 25, new int[]{9, 11, 12, 11, 9, 6, 10, 9}, 10, List.of(SpearItem.INSTANCE, MagicSwordItem.INSTANCE, LanceItem.INSTANCE), List.of(Ability2.TEAMSTRIKE));
@@ -51,7 +51,7 @@ public class XClasses
 		return INSTANCE.xClasses[5];
 	}
 
-	public static XClass pirateClass()
+	public static XClass explorerClass()
 	{
 		return INSTANCE.xClasses[6];
 	}

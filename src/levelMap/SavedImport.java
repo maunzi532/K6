@@ -61,7 +61,7 @@ public class SavedImport
 					levelMap.addBuilding(building);
 				});
 				Inv storageLoad = new WeightInv((JrsObject) treeXh.get("Storage"), itemLoader);
-				storage.tryAdd(storageLoad.allItems(), false, CommitType.COMMIT);
+				storage.tryAdd(storageLoad.allItems());
 				Map<String, JrsObject> characters = new HashMap<>();
 				((JrsArray) treeXh.get("Characters")).elements().forEachRemaining(
 						character -> characters.put(((JrsObject) ((JrsObject) character).get("Stats")).get("CustomName").asText(), (JrsObject) character));
@@ -80,24 +80,23 @@ public class SavedImport
 			JrsObject data, ItemLoader itemLoader, Map<String, JrsObject> characters, Inv storage)
 	{
 		Tile location = levelMap.y1.create2(((JrsNumber) data.get("sx")).getValue().intValue(), ((JrsNumber) data.get("sy")).getValue().intValue());
-		CharacterTeam team;
+		CharacterTeam team = CharacterTeam.valueOf(data.get("Type").asText());
+		int startingDelay = ((JrsNumber) data.get("StartingDelay")).getValue().intValue();
 		Stats stats;
 		Inv inv;
 		SaveSettings saveSettings;
 		if(data.get("StartName") != null)
 		{
-			team = data.get("Type") != null ? CharacterTeam.valueOf(data.get("Type").asText()) : CharacterTeam.HERO;
-			String startName = data.get("StartName").asText();
 			boolean locked = ((JrsBoolean) data.get("Locked")).booleanValue();
 			boolean invLocked = ((JrsBoolean) data.get("InvLocked")).booleanValue();
 			saveSettings = new SaveSettings(locked, invLocked);
-			JrsObject char1 = characters.get(startName);
+			JrsObject char1 = characters.get(data.get("StartName").asText());
 			stats = new Stats(((JrsObject) char1.get("Stats")), itemLoader);
 			if(invLocked)
 			{
 				inv = new WeightInv(((JrsObject) data.get("Inventory")), itemLoader);
 				Inv inv2 = new WeightInv(((JrsObject) char1.get("Inventory")), itemLoader);
-				storage.tryAdd(inv2.allItems(), false, CommitType.COMMIT);
+				storage.tryAdd(inv2.allItems());
 			}
 			else
 			{
@@ -106,12 +105,11 @@ public class SavedImport
 		}
 		else
 		{
-			team = CharacterTeam.valueOf(data.get("Type").asText());
 			stats = new Stats(((JrsObject) data.get("Stats")), itemLoader);
 			inv = new WeightInv(((JrsObject) data.get("Inventory")), itemLoader);
 			saveSettings = null;
 		}
 		EnemyAI enemyAI = team == CharacterTeam.ENEMY ? new StandardAI(levelMap) : null;
-		return new XCharacter(team, 0, location, stats, inv, enemyAI, null, saveSettings);
+		return new XCharacter(team, startingDelay, location, stats, inv, enemyAI, null, saveSettings);
 	}
 }

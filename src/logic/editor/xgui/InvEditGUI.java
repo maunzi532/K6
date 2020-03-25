@@ -113,7 +113,7 @@ public class InvEditGUI extends XGUIState
 			{
 				case "Add", "+" ->
 				{
-					inv.tryAdd(new ItemList(new ItemStack(editItem, 1)), false, CommitType.COMMIT);
+					inv.tryAdd(new ItemList(new ItemStack(editItem, 1)));
 					update();
 				}
 				case "-" ->
