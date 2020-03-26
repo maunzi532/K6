@@ -38,8 +38,8 @@
     "menu.text.keybind" : "2f4f4f",
     "sideinfo.background" : "666680",
     "sideinfo.text" : "000000",
-    "topbar.background" : "000000",
-    "topbar.text" : "ffffff"
+    "topbar.background" : "222222",
+    "topbar.text" : "dddddd"
   },
   "Images" : {
     "window.icon" : "Tech.png",
@@ -47,6 +47,7 @@
     "floortile.gsl" : "GSL_Tile.png",
     "floortile.tech" : "RED_Tile.png",
     "floortile.wall" : "WALL_Tile.png",
+    "floortile.wood" : "WOOD_Tile.png",
     "building.default" : "M1.png",
     "gui.trade.arrow" : "Arrow.png",
     "gui.recipe.arrow" : "Arrow.png",

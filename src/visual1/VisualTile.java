@@ -14,12 +14,12 @@ import levelMap.*;
 public class VisualTile
 {
 	private final TileType y1;
-	private final ArrowViewer av;
+	private final VisualXArrow av;
 	private LevelMap levelMap;
 	private List<VisMark> visMarked;
 	private GraphicsContext gd;
 
-	public VisualTile(TileType y1, ArrowViewer av, LevelMap levelMap, List<VisMark> visMarked, GraphicsContext gd)
+	public VisualTile(TileType y1, VisualXArrow av, LevelMap levelMap, List<VisMark> visMarked, GraphicsContext gd)
 	{
 		this.y1 = y1;
 		this.av = av;
@@ -124,8 +124,8 @@ public class VisualTile
 		{
 			StatBar statBar = ((InfoArrow) arrow).statBar();
 			PointD midPoint = layout.tileToPixel(av.dataLocation((InfoArrow) arrow, layout));
-			double xw = layout.size().v()[0] * ArrowViewer.DATA_WIDTH;
-			double yw = layout.size().v()[1] * ArrowViewer.DATA_HEIGHT;
+			double xw = layout.size().v()[0] * VisualXArrow.DATA_WIDTH;
+			double yw = layout.size().v()[1] * VisualXArrow.DATA_HEIGHT;
 			double xs = midPoint.v()[0] - xw / 2;
 			double ys = midPoint.v()[1] - yw / 2;
 			gd.setFill(scheme.color(statBar.getBg()));

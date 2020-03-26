@@ -5,9 +5,12 @@ import entity.sideinfo.*;
 import geom.*;
 import geom.f1.*;
 import item.*;
+import java.io.*;
+import java.nio.file.*;
 import javafx.geometry.*;
 import javafx.scene.canvas.*;
 import javafx.scene.text.*;
+import javafx.stage.*;
 import levelMap.*;
 import logic.*;
 import logic.editor.*;
@@ -27,7 +30,7 @@ public class MainVisual implements XInputInterface
 	private TileCamera mapCamera;
 	private VisualMenu visualMenu;
 	private VisualGUI visualGUI;
-	private VisualSideInfo visualSideInfo;
+	private VisualSideInfoFrame visualSideInfoFrame;
 	private VisualLevelEditor visualLevelEditor;
 	private LevelEditor levelEditor;
 	private MainState mainState;
@@ -42,9 +45,9 @@ public class MainVisual implements XInputInterface
 		this.scheme = scheme;
 		this.mapCamera = mapCamera;
 		TileType y1 = mapCamera.getDoubleType();
-		SideInfoViewer sivL = new SideInfoViewer(graphics, false);
-		SideInfoViewer sivR = new SideInfoViewer(graphics, true);
-		visualSideInfo = new VisualSideInfo(sivL, sivR);
+		VisualSideInfo sivL = new VisualSideInfo(graphics, false);
+		VisualSideInfo sivR = new VisualSideInfo(graphics, true);
+		visualSideInfoFrame = new VisualSideInfoFrame(sivL, sivR);
 		SideInfoFrame sideInfoFrame = new SideInfoFrame(sivL, sivR);
 		mainState = new MainState(y1, itemLoader, sideInfoFrame, blueprintFile);
 		loadLevel(loadFile, loadFile2);
@@ -54,7 +57,7 @@ public class MainVisual implements XInputInterface
 		levelEditor = new LevelEditor(mainState);
 		convInputConsumer = new StateControl2(mainState, levelEditor, new StartTurnState());
 		mainState.stateHolder = (XStateHolder) convInputConsumer;
-		visualTile = new VisualTile(y1, new ArrowViewer(mapCamera.getDoubleType()), mainState.levelMap, mainState.visMarked, graphics.gd());
+		visualTile = new VisualTile(y1, new VisualXArrow(mapCamera.getDoubleType()), mainState.levelMap, mainState.visMarked, graphics.gd());
 		visualMenu = new VisualMenu(graphics, mainState.stateHolder, menuCamera, keyMap);
 		visualGUI = VisualGUI.forCamera(graphics, guiCamera);
 		draw();
@@ -62,10 +65,27 @@ public class MainVisual implements XInputInterface
 
 	public void loadLevel(String loadFile, String loadFile2)
 	{
-		SavedImport savedImport = loadFile != null ? new SavedImport(loadFile, loadFile2) : new SavedImport();
-		if(savedImport.hasFile())
+		File fileMap;
+		File fileTeam;
+		if(loadFile != null && loadFile2 != null)
 		{
-			savedImport.importIntoMap3(mainState.levelMap, mainState.itemLoader, mainState.storage.inputInv());
+			fileMap = new File(loadFile);
+			fileTeam = new File(loadFile2);
+		}
+		else
+		{
+			fileMap = new FileChooser().showOpenDialog(null);
+			fileTeam = new FileChooser().showOpenDialog(null);
+		}
+		if(fileMap != null && fileTeam != null && fileMap.exists() && fileTeam.exists())
+		{
+			try
+			{
+				mainState.importSave(new SavedImport(new String(Files.readAllBytes(fileMap.toPath())), new String(Files.readAllBytes(fileTeam.toPath()))));
+			}catch(IOException e)
+			{
+				throw new RuntimeException(e);
+			}
 		}
 		/*else
 		{
@@ -175,7 +195,7 @@ public class MainVisual implements XInputInterface
 			mainState.levelMap.tickArrows();
 			convInputConsumer.tick();
 		}
-		visualSideInfo.tick();
+		visualSideInfoFrame.tick();
 		mainState.screenshake = Math.max(mainState.screenshake, mainState.levelMap.removeFirstScreenshake());
 		if(mainState.screenshake > 0)
 		{
@@ -188,11 +208,11 @@ public class MainVisual implements XInputInterface
 	{
 		//graphics.gd().clearRect(0, 0, graphics.xHW() * 2, graphics.yHW() * 2);
 		visualTile.draw(mapCamera, mainState.screenshake, scheme);
-		visualSideInfo.draw(scheme);
+		visualSideInfoFrame.draw(scheme);
 		visualLevelEditor.draw(levelEditor, scheme);
 		visualGUI.zoomAndDraw(mainState.stateHolder.getGUI(), scheme);
 		visualMenu.draw(graphics.yHW() - graphics.scaleHW() * 0.08,
-				graphics.yHW() - Math.max(visualSideInfo.takeY2(), visualLevelEditor.takeY(mainState)), scheme);
+				graphics.yHW() - Math.max(visualSideInfoFrame.takeY2(), visualLevelEditor.takeY(mainState)), scheme);
 		drawInfoText();
 	}
 

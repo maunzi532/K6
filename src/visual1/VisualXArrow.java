@@ -5,7 +5,7 @@ import geom.d1.*;
 import geom.f1.*;
 import javafx.scene.paint.*;
 
-public class ArrowViewer
+public class VisualXArrow
 {
 	private static final double SHINE_WIDTH = 0.65;
 	private static final double ZERO_SHINE = 0.45;
@@ -18,7 +18,7 @@ public class ArrowViewer
 
 	private final DoubleType y2;
 
-	public ArrowViewer(DoubleType y2)
+	public VisualXArrow(DoubleType y2)
 	{
 		this.y2 = y2;
 	}

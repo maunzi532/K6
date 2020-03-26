@@ -22,7 +22,7 @@ public class XClasses
 		xClasses[8] = new XClass(8, "General", 20, new int[]{12, 8, 9, 6, 8, 12, 9, 8}, 6, List.of(SpearItem.INSTANCE, CrossbowItem.INSTANCE, AxeItem.INSTANCE, MagicSwordItem.INSTANCE), List.of(Ability2.SHIELD_POWER));
 		xClasses[9] = new XClass(9, "Knight", 25, new int[]{9, 11, 12, 11, 9, 6, 10, 9}, 10, List.of(SpearItem.INSTANCE, MagicSwordItem.INSTANCE, LanceItem.INSTANCE), List.of(Ability2.TEAMSTRIKE));
 		xClasses[10] = new XClass(10, "Adv. Hexer", 20, new int[]{7, 7, 14, 10, 8, 6, 13, 11}, 6, List.of(EnergySpellItem.INSTANCE, DarkSpellItem.INSTANCE), List.of(Ability2.LIFE_REFUND));
-		xClasses[11] = new XClass(11, "Adv. Mage", 20, new int[]{6, 13, 9, 8, 12, 7, 8, 8}, 6, List.of(DarkSpellItem.INSTANCE, DaggerItem.INSTANCE, EnergySpellItem.INSTANCE, MagicSwordItem.INSTANCE), List.of(Ability2.CRITICAL_TARGET));
+		xClasses[11] = new XClass(11, "Archmage", 20, new int[]{6, 13, 9, 8, 12, 7, 8, 8}, 6, List.of(DarkSpellItem.INSTANCE, DaggerItem.INSTANCE, EnergySpellItem.INSTANCE, MagicSwordItem.INSTANCE), List.of(Ability2.CRITICAL_TARGET));
 		xClasses[12] = new XClass(12, "Captain", 20, new int[]{12, 7, 10, 9, 7, 9, 9, 11}, 6, List.of(AxeItem.INSTANCE, CrossbowItem.INSTANCE, GunItem.INSTANCE), List.of(Ability2.FAST_FIRE));
 	}
 

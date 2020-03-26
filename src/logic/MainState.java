@@ -39,6 +39,11 @@ public class MainState
 		storage = new Storage();
 	}
 
+	public void importSave(SavedImport savedImport)
+	{
+		savedImport.importIntoMap3(levelMap, itemLoader, storage.inputInv());
+	}
+
 	public String turnText()
 	{
 		if(turnCounter <= 0)
@@ -97,8 +102,6 @@ public class MainState
 	//TODO    Initialize somewhere else than in MainVisual
 	//TODO character class names in classes
 	//TODO fix stealing from enemies
-	//TODO camera init code is bad
-	//TODO put loadTextResource in ImageLoader somewhere else
 
 	//visual engine mechanics
 	//TODO move GUI so it does not overlap with SideInfo/LevelEditor

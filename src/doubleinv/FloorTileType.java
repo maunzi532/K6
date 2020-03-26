@@ -5,7 +5,8 @@ public enum FloorTileType
 	BLUE("floortile.blue", false, true, 1),
 	GSL("floortile.gsl", false, true, 2),
 	TECH("floortile.tech", false, true, 1),
-	WALL("floortile.wall", true, false, 1);
+	WALL("floortile.wall", true, false, 1),
+	WOOD("floortile.wood", false, true, 1);
 
 	//Hex height same as Quad height
 

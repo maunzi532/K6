@@ -10,40 +10,27 @@ import item.*;
 import item.inv.*;
 import java.io.*;
 import java.nio.*;
-import java.nio.file.*;
 import java.util.*;
-import javafx.stage.*;
 import system2.*;
 import system2.analysis.*;
 
 public class SavedImport
 {
-	private File file;
-	private File fileXh;
+	private final String inputMap;
+	private final String inputTeam;
 
-	public SavedImport()
+	public SavedImport(String inputMap, String inputTeam)
 	{
-		file = new FileChooser().showOpenDialog(null);
-		fileXh = new FileChooser().showOpenDialog(null);
-	}
-
-	public SavedImport(String loadFile, String loadFileXh)
-	{
-		file = new File(loadFile);
-		fileXh = new File(loadFileXh);
-	}
-
-	public boolean hasFile()
-	{
-		return file != null && fileXh != null && file.exists() && fileXh.exists();
+		this.inputMap = inputMap;
+		this.inputTeam = inputTeam;
 	}
 
 	public void importIntoMap3(LevelMap levelMap, ItemLoader itemLoader, Inv storage)
 	{
 		try
 		{
-			TreeNode tree = JSON.std.with(new JacksonJrsTreeCodec()).treeFrom(new String(Files.readAllBytes(file.toPath())));
-			TreeNode treeXh = JSON.std.with(new JacksonJrsTreeCodec()).treeFrom(new String(Files.readAllBytes(fileXh.toPath())));
+			TreeNode tree = JSON.std.with(new JacksonJrsTreeCodec()).treeFrom(inputMap);
+			TreeNode treeXh = JSON.std.with(new JacksonJrsTreeCodec()).treeFrom(inputTeam);
 			if(((JrsNumber) tree.get("code")).getValue().intValue() == 0xA4D2839F &&
 					((JrsNumber) treeXh.get("code")).getValue().intValue() == 0xA4D2839F)
 			{
