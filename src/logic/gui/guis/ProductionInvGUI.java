@@ -1,6 +1,8 @@
 package logic.gui.guis;
 
 import building.adv.*;
+import entity.sideinfo.*;
+import levelMap.*;
 import logic.*;
 import logic.xstate.*;
 
@@ -17,10 +19,10 @@ public class ProductionInvGUI extends Inv2GUI
 	}
 
 	@Override
-	public void onEnter(MainState mainState)
+	public void onEnter(SideInfoFrame side, LevelMap levelMap, MainState mainState)
 	{
-		mainState.sideInfoFrame.clearSideInfo();
-		super.onEnter(mainState);
+		side.clearSideInfo();
+		super.onEnter(side, levelMap, mainState);
 	}
 
 	@Override

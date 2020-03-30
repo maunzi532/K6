@@ -1,8 +1,10 @@
 package logic.gui.guis;
 
+import entity.sideinfo.*;
 import item.inv.*;
 import item.view.*;
 import java.util.*;
+import levelMap.*;
 import logic.*;
 import logic.gui.*;
 
@@ -27,7 +29,7 @@ public class Inv1GUI extends XGUIState
 	}
 
 	@Override
-	public void onEnter(MainState mainState)
+	public void onEnter(SideInfoFrame side, LevelMap levelMap, MainState mainState)
 	{
 		weightView = inv.viewInvWeight();
 		itemsView = inv.viewItems(true);

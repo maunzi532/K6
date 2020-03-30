@@ -56,9 +56,9 @@ public class MainVisual implements XInputInterface
 		visualGUI = VisualGUI.forCamera(graphics, guiCamera);
 		visualLevelEditor = new VisualLevelEditor(graphics, editorSlotCameraSupplier);
 		visualSideInfoFrame = new VisualSideInfoFrame(graphics, false);
-		mainState = new MainState(mapCamera.getDoubleType(), itemLoader, visualSideInfoFrame, blueprintFile);
+		mainState = new MainState(mapCamera.getDoubleType(), itemLoader, blueprintFile);
 		levelEditor = new LevelEditor(mainState);
-		XStateControl stateControl = new XStateControl(mainState, levelEditor, new StartTurnState());
+		XStateControl stateControl = new XStateControl(mainState, levelEditor, visualSideInfoFrame, new StartTurnState());
 		convInputConsumer = stateControl;
 		mainState.stateHolder = stateControl;
 		loadLevel(loadFileMap, loadFileTeam);

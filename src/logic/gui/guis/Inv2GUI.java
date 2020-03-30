@@ -1,8 +1,10 @@
 package logic.gui.guis;
 
 import doubleinv.*;
+import entity.sideinfo.*;
 import item.inv.*;
 import item.view.*;
+import levelMap.*;
 import logic.*;
 import logic.gui.*;
 
@@ -23,7 +25,7 @@ public class Inv2GUI extends XGUIState
 	}
 
 	@Override
-	public void onEnter(MainState mainState)
+	public void onEnter(SideInfoFrame side, LevelMap levelMap, MainState mainState)
 	{
 		InvNumView weightViewInput = inputInv.viewInvWeight();
 		InvNumView weightViewOutput = outputInv.viewInvWeight();

@@ -1,5 +1,7 @@
 package logic.xstate;
 
+import entity.sideinfo.*;
+import levelMap.*;
 import logic.*;
 
 public class EndTurnState implements NAutoState
@@ -7,7 +9,7 @@ public class EndTurnState implements NAutoState
 	private boolean start;
 
 	@Override
-	public void onEnter(MainState mainState){}
+	public void onEnter(SideInfoFrame side, LevelMap levelMap, MainState mainState){}
 
 	@Override
 	public void tick(MainState mainState){}
@@ -37,7 +39,7 @@ public class EndTurnState implements NAutoState
 	}
 
 	@Override
-	public boolean keepInMenu(MainState mainState)
+	public boolean keepInMenu(MainState mainState, LevelMap levelMap)
 	{
 		start = mainState.turnCounter == 0;
 		return true;

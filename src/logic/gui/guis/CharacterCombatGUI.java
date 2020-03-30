@@ -1,10 +1,12 @@
 package logic.gui.guis;
 
 import entity.*;
+import entity.sideinfo.*;
 import item.*;
 import item.view.*;
 import java.util.*;
 import java.util.stream.*;
+import levelMap.*;
 import logic.*;
 import logic.gui.*;
 import system2.*;
@@ -31,9 +33,9 @@ public class CharacterCombatGUI extends XGUIState
 	}
 
 	@Override
-	public void onEnter(MainState mainState)
+	public void onEnter(SideInfoFrame side, LevelMap levelMap, MainState mainState)
 	{
-		mainState.sideInfoFrame.setStandardSideInfo(character);
+		side.setStandardSideInfo(character);
 		equippedItem = character.stats().lastUsed().item;
 		elements.add(new CElement(NAME, new GuiTile(character.name())));
 		elements.add(new CElement(UNEQUIP, true, () -> character.stats().lastUsed().active, this::unequip));

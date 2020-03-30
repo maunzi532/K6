@@ -2,9 +2,11 @@ package logic.gui.guis;
 
 import doubleinv.*;
 import entity.*;
+import entity.sideinfo.*;
 import item.*;
 import item.view.*;
 import java.util.*;
+import levelMap.*;
 import logic.*;
 import logic.gui.*;
 import logic.xstate.*;
@@ -36,9 +38,9 @@ public class DirectedTradeGUI extends XGUIState
 	}
 
 	@Override
-	public void onEnter(MainState mainState)
+	public void onEnter(SideInfoFrame side, LevelMap levelMap, MainState mainState)
 	{
-		mainState.sideInfoFrame.clearSideInfo();
+		side.clearSideInfo();
 		amount = 1;
 		provideView = new ScrollList<>(0, 1, 4, 5, 2, 1, null,
 				e -> itemView(e, true), target -> provideMarked = target.item);

@@ -18,9 +18,9 @@ public class BCEditMode implements EditingMode
 	}
 
 	@Override
-	public void onMapClick(MainState mainState, Tile tile, XKey key)
+	public void onMapClick(MainState mainState, LevelMap levelMap, Tile tile, XKey key)
 	{
-		AdvTile advTile = mainState.levelMap.advTile(tile);
+		AdvTile advTile = levelMap.advTile(tile);
 		if(mainState.preferBuildings)
 		{
 			if(advTile.building() != null)

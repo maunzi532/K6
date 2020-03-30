@@ -3,6 +3,7 @@ package logic;
 import building.adv.*;
 import building.transport.*;
 import entity.*;
+import entity.sideinfo.*;
 import geom.f1.*;
 import java.util.*;
 import java.util.stream.*;
@@ -17,16 +18,20 @@ public class XStateControl implements XStateHolder, ConvInputConsumer
 {
 	private final MainState mainState;
 	private final LevelEditor levelEditor;
+	private final SideInfoFrame sideInfoFrame;
 	private NState state;
 	private List<NState> menu;
 	private VisMark cursorMarker;
 	private List<VisMark> dragMarker;
+	private Map<Tile, Long> allEnemyReach;
 	private final List<VisMark> visMarked;
 
-	public XStateControl(MainState mainState, LevelEditor levelEditor, NState state)
+
+	public XStateControl(MainState mainState, LevelEditor levelEditor, SideInfoFrame sideInfoFrame, NState state)
 	{
 		this.mainState = mainState;
 		this.levelEditor = levelEditor;
+		this.sideInfoFrame = sideInfoFrame;
 		dragMarker = List.of();
 		visMarked = new ArrayList<>();
 		setState(state);
@@ -36,8 +41,8 @@ public class XStateControl implements XStateHolder, ConvInputConsumer
 	public void setState(NState state)
 	{
 		this.state = state;
-		state.onEnter(mainState);
-		menu = state.menu().getEntries().stream().filter(e -> e.keepInMenu(mainState)).collect(Collectors.toList());
+		state.onEnter(sideInfoFrame, mainState.levelMap, mainState);
+		menu = state.menu().getEntries().stream().filter(e -> e.keepInMenu(mainState, mainState.levelMap)).collect(Collectors.toList());
 	}
 
 	@Override
@@ -143,7 +148,7 @@ public class XStateControl implements XStateHolder, ConvInputConsumer
 			return;
 		if(state instanceof NMarkState markState && key.canClick())
 		{
-			markState.onClick(mapTile, mainState, this, key);
+			markState.onClick(mainState, mainState.levelMap, this, mapTile, key);
 		}
 		else if(state.editMode() && key.canClick())
 		{
@@ -241,7 +246,7 @@ public class XStateControl implements XStateHolder, ConvInputConsumer
 	{
 		if(!(state instanceof XGUIState))
 		{
-			dragMarker = mainState.y1.betweenArea(startTile, endTile).stream()
+			dragMarker = mainState.levelMap.y1.betweenArea(startTile, endTile).stream()
 					.map(e -> new VisMark(e, "mark.cursor.drag", VisMark.d3)).collect(Collectors.toList());
 			if(finished && state.editMode() && key.canDrag())
 			{
@@ -327,9 +332,9 @@ public class XStateControl implements XStateHolder, ConvInputConsumer
 		{
 			if(mainState.levelMap.checkUpdate())
 			{
-				mainState.allEnemyReach = mainState.levelMap.allEnemyReach();
+				allEnemyReach = mainState.levelMap.allEnemyReach();
 			}
-			mainState.allEnemyReach.forEach((t, n) -> visMarked.add(new VisMark(t, "mark.reach.all", 0.8)));
+			allEnemyReach.forEach((t, n) -> visMarked.add(new VisMark(t, "mark.reach.all", 0.8)));
 		}
 		if(state instanceof NMarkState markState)
 		{
@@ -350,9 +355,9 @@ public class XStateControl implements XStateHolder, ConvInputConsumer
 		{
 			if(mainState.levelMap.checkUpdate())
 			{
-				mainState.allEnemyReach = mainState.levelMap.allEnemyReach();
+				allEnemyReach = mainState.levelMap.allEnemyReach();
 			}
-			mainState.allEnemyReach.forEach((t, n) -> visMarked.add(new VisMark(t, "mark.reach.all", 0.8)));
+			allEnemyReach.forEach((t, n) -> visMarked.add(new VisMark(t, "mark.reach.all", 0.8)));
 		}
 		if(state instanceof NMarkState markState)
 		{

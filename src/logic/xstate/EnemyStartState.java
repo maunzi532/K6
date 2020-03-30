@@ -1,6 +1,8 @@
 package logic.xstate;
 
 import entity.*;
+import entity.sideinfo.*;
+import levelMap.*;
 import logic.*;
 
 public class EnemyStartState implements NAutoState
@@ -8,10 +10,10 @@ public class EnemyStartState implements NAutoState
 	private int counter;
 
 	@Override
-	public void onEnter(MainState mainState)
+	public void onEnter(SideInfoFrame side, LevelMap levelMap, MainState mainState)
 	{
-		mainState.sideInfoFrame.clearSideInfo();
-		for(XCharacter xEnemy : mainState.levelMap.teamCharacters(CharacterTeam.ENEMY))
+		side.clearSideInfo();
+		for(XCharacter xEnemy : levelMap.teamCharacters(CharacterTeam.ENEMY))
 		{
 			xEnemy.startTurn();
 			if(xEnemy.targetable())

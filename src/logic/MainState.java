@@ -3,18 +3,14 @@ package logic;
 import building.blueprint.*;
 import doubleinv.*;
 import entity.*;
-import entity.sideinfo.*;
 import geom.f1.*;
 import item.*;
-import java.util.*;
 import levelMap.*;
 import logic.xstate.*;
 
 public class MainState
 {
-	public final TileType y1;
 	public final ItemLoader itemLoader;
-	public final SideInfoFrame sideInfoFrame;
 	public final BlueprintFile blueprintFile;
 	public final LevelMap levelMap;
 	public int turnCounter;
@@ -22,13 +18,10 @@ public class MainState
 	public boolean preferBuildings;
 	public boolean showAllEnemyReach;
 	public XStateHolder stateHolder;
-	public Map<Tile, Long> allEnemyReach;
 
-	public MainState(TileType y1, ItemLoader itemLoader, SideInfoFrame sideInfoFrame, BlueprintFile blueprintFile)
+	public MainState(TileType y1, ItemLoader itemLoader, BlueprintFile blueprintFile)
 	{
-		this.y1 = y1;
 		this.itemLoader = itemLoader;
-		this.sideInfoFrame = sideInfoFrame;
 		this.blueprintFile = blueprintFile;
 		levelMap = new LevelMap(y1);
 		turnCounter = -1;

@@ -1,8 +1,10 @@
 package logic.xstate;
 
 import entity.*;
+import entity.sideinfo.*;
 import geom.f1.*;
 import java.util.*;
+import levelMap.*;
 import logic.*;
 import system2.*;
 
@@ -11,10 +13,10 @@ public class EnemyPhaseState implements NAutoState
 	private EnemyMove initiativeMove;
 
 	@Override
-	public void onEnter(MainState mainState)
+	public void onEnter(SideInfoFrame side, LevelMap levelMap, MainState mainState)
 	{
-		mainState.sideInfoFrame.clearSideInfo();
-		initiativeMove = mainState.levelMap.teamTargetCharacters(CharacterTeam.ENEMY).stream().filter(e -> e.resources().ready(2))
+		side.clearSideInfo();
+		initiativeMove = levelMap.teamTargetCharacters(CharacterTeam.ENEMY).stream().filter(e -> e.resources().ready(2))
 				.map(e -> e.preferredMove(false, 0))
 				.max(Comparator.comparingInt(EnemyMove::initiative)).filter(e -> e.initiative() >= 0).orElse(null);
 		if(initiativeMove != null && initiativeMove.moveTo() != null && initiativeMove.moveTo().movingAlly() != null)

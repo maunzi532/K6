@@ -2,6 +2,7 @@ package logic.gui.guis;
 
 import entity.*;
 import entity.sideinfo.*;
+import levelMap.*;
 import logic.*;
 import logic.gui.*;
 import logic.xstate.*;
@@ -11,7 +12,7 @@ public class AttackInfoGUI extends XGUIState
 {
 	private final XCharacter attacker;
 	private final XCharacter target;
-	private SideInfoFrame sideInfoFrame;
+	private SideInfoFrame side;
 	private TargetScrollList<AttackInfo> attacksView;
 
 	public AttackInfoGUI(XCharacter attacker, XCharacter target)
@@ -21,12 +22,12 @@ public class AttackInfoGUI extends XGUIState
 	}
 
 	@Override
-	public void onEnter(MainState mainState)
+	public void onEnter(SideInfoFrame side, LevelMap levelMap, MainState mainState)
 	{
-		sideInfoFrame = mainState.sideInfoFrame;
-		sideInfoFrame.sidedInfo(attacker, target);
+		this.side = side;
+		side.sidedInfo(attacker, target);
 		attacksView = new TargetScrollList<>(0, 1, 6, 6, 6, 2,
-				mainState.levelMap.attackInfo(attacker, target), this::itemView, target1 -> clickAttack(mainState, target1));
+				levelMap.attackInfo(attacker, target), this::itemView, target1 -> clickAttack(mainState, target1));
 		elements.add(attacksView);
 		elements.add(new CElement(new CTile(0, 0, new GuiTile(attacker.name()), 2, 1)));
 		elements.add(new CElement(new CTile(4, 0, new GuiTile(target.name()), 2, 1)));
@@ -43,9 +44,9 @@ public class AttackInfoGUI extends XGUIState
 	protected void updateBeforeDraw()
 	{
 		if(attacksView.getTargeted() != null)
-			sideInfoFrame.setAttackSideInfo(attacksView.getTargeted());
+			side.setAttackSideInfo(attacksView.getTargeted());
 		else
-			sideInfoFrame.sidedInfo(attacker, target);
+			side.sidedInfo(attacker, target);
 	}
 
 	@Override

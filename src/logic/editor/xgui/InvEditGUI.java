@@ -1,9 +1,11 @@
 package logic.editor.xgui;
 
+import entity.sideinfo.*;
 import item.*;
 import item.inv.*;
 import item.view.*;
 import java.util.*;
+import levelMap.*;
 import logic.*;
 import logic.gui.*;
 import system2.content.*;
@@ -37,7 +39,7 @@ public class InvEditGUI extends XGUIState
 	}
 
 	@Override
-	public void onEnter(MainState mainState)
+	public void onEnter(SideInfoFrame side, LevelMap levelMap, MainState mainState)
 	{
 		invView = new TargetScrollList<>(0, 1, 2, 5, 2, 1, null,
 				GuiTile::itemViewView, this::itemClick1);

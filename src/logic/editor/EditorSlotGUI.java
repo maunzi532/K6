@@ -1,5 +1,7 @@
 package logic.editor;
 
+import entity.sideinfo.*;
+import levelMap.*;
 import logic.*;
 import logic.gui.*;
 import logic.xstate.*;
@@ -20,7 +22,7 @@ public class EditorSlotGUI extends XGUIState
 	}
 
 	@Override
-	public void onEnter(MainState mainState){}
+	public void onEnter(SideInfoFrame side, LevelMap levelMap, MainState mainState){}
 
 	@Override
 	public int xw()

@@ -1,6 +1,7 @@
 package logic.xstate;
 
 import entity.*;
+import entity.sideinfo.*;
 import geom.f1.*;
 import java.util.*;
 import java.util.stream.*;
@@ -19,16 +20,16 @@ public class SwapState implements NMarkState
 	}
 
 	@Override
-	public void onEnter(MainState mainState)
+	public void onEnter(SideInfoFrame side, LevelMap levelMap, MainState mainState)
 	{
-		mainState.sideInfoFrame.setStandardSideInfo(character);
+		side.setStandardSideInfo(character);
 		if(character.saveSettings() != null && character.saveSettings().startLocked)
 		{
 			swapTargets = List.of();
 		}
 		else
 		{
-			swapTargets = mainState.levelMap.teamCharacters(character.team()).stream()
+			swapTargets = levelMap.teamCharacters(character.team()).stream()
 					.filter(e -> e != character && (e.saveSettings() == null || !e.saveSettings().startLocked)).collect(Collectors.toList());
 		}
 		visMarked = swapTargets.stream().map(e -> new VisMark(e.location(), "mark.swap", VisMark.d1)).collect(Collectors.toList());
@@ -53,12 +54,12 @@ public class SwapState implements NMarkState
 	}
 
 	@Override
-	public void onClick(Tile mapTile, MainState mainState, XStateHolder stateHolder, XKey key)
+	public void onClick(MainState mainState, LevelMap levelMap, XStateHolder stateHolder, Tile mapTile, XKey key)
 	{
-		XCharacter target = mainState.levelMap.getEntity(mapTile);
+		XCharacter target = levelMap.getEntity(mapTile);
 		if(target != null && target.team() == character.team() && swapTargets.contains(target))
 		{
-			mainState.levelMap.swapEntities(character, target);
+			levelMap.swapEntities(character, target);
 			visMarked = swapTargets.stream().map(e -> new VisMark(e.location(), "mark.swap", VisMark.d1)).collect(Collectors.toList());
 		}
 		else

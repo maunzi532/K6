@@ -1,6 +1,7 @@
 package logic.xstate;
 
 import entity.*;
+import entity.sideinfo.*;
 import geom.f1.*;
 import java.util.*;
 import levelMap.*;
@@ -20,23 +21,26 @@ public class AdvMoveState implements NMarkState
 	}
 
 	@Override
-	public void onEnter(MainState mainState)
+	public void onEnter(SideInfoFrame side, LevelMap levelMap, MainState mainState)
 	{
-		mainState.sideInfoFrame.setStandardSideInfo(character);
+		side.setStandardSideInfo(character);
 		movement = new ArrayList<>();
 		attack = new ArrayList<>();
 		if(character.resources().moveAction())
 		{
-			movement.addAll(new Pathing(mainState.y1, character, character.resources().movement(), mainState.levelMap, null).start().getEndpaths());
+			movement.addAll(new Pathing(levelMap.y1, character, character.resources().movement(),
+					levelMap, null).start().getEndpaths());
 		}
 		else if(character.resources().ready(2) && character.resources().dashMovement() > 0)
 		{
-			movement.addAll(new Pathing(mainState.y1, character, character.resources().dashMovement(), mainState.levelMap, null).start().getEndpaths());
+			movement.addAll(new Pathing(levelMap.y1, character, character.resources().dashMovement(),
+					levelMap, null).start().getEndpaths());
 		}
 		if(character.resources().ready(2))
 		{
-			mainState.levelMap.attackRanges(character, false).stream().map(e -> mainState.y1.range(character.location(), e, e))
-					.flatMap(Collection::stream).map(mainState.levelMap::getEntity).filter(e -> e != null && e.targetable() && e.team() != character.team())
+			levelMap
+					.attackRanges(character, false).stream().map(e -> levelMap.y1.range(character.location(), e, e))
+					.flatMap(Collection::stream).map(levelMap::getEntity).filter(e -> e != null && e.targetable() && e.team() != character.team())
 					.forEach(e -> attack.add(e.location()));
 		}
 		allTargets = new ArrayList<>();
@@ -66,11 +70,11 @@ public class AdvMoveState implements NMarkState
 	}
 
 	@Override
-	public void onClick(Tile mapTile, MainState mainState, XStateHolder stateHolder, XKey key)
+	public void onClick(MainState mainState, LevelMap levelMap, XStateHolder stateHolder, Tile mapTile, XKey key)
 	{
 		if(attack.contains(mapTile))
 		{
-			stateHolder.setState(new AttackInfoGUI(character, mainState.levelMap.getEntity(mapTile)));
+			stateHolder.setState(new AttackInfoGUI(character, levelMap.getEntity(mapTile)));
 		}
 		else
 		{
@@ -80,14 +84,14 @@ public class AdvMoveState implements NMarkState
 				if(character.resources().moveAction())
 				{
 					character.resources().move(pathLocation.get().cost());
-					mainState.levelMap.moveEntity(character, mapTile);
+					levelMap.moveEntity(character, mapTile);
 					stateHolder.setState(new AdvMoveState(character));
 				}
 				else
 				{
 					character.resources().move(pathLocation.get().cost());
 					character.resources().action(true, 2);
-					mainState.levelMap.moveEntity(character, mapTile);
+					levelMap.moveEntity(character, mapTile);
 					stateHolder.setState(NoneState.INSTANCE);
 				}
 			}

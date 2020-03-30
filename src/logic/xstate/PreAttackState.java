@@ -1,5 +1,7 @@
 package logic.xstate;
 
+import entity.sideinfo.*;
+import levelMap.*;
 import logic.*;
 import system2.*;
 
@@ -11,9 +13,9 @@ public class PreAttackState extends AttackState
 	}
 
 	@Override
-	public void onEnter(MainState mainState)
+	public void onEnter(SideInfoFrame side, LevelMap levelMap, MainState mainState)
 	{
-		mainState.sideInfoFrame.setAttackSideInfo(aI);
+		side.setAttackSideInfo(aI);
 		aI.stats.equipMode(aI.mode);
 	}
 

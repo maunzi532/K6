@@ -3,6 +3,7 @@ package logic.gui.guis;
 import building.blueprint.*;
 import doubleinv.*;
 import entity.*;
+import entity.sideinfo.*;
 import item.*;
 import item.inv.*;
 import item.view.*;
@@ -53,9 +54,9 @@ public class BuildGUI extends XGUIState
 	}
 
 	@Override
-	public void onEnter(MainState mainState)
+	public void onEnter(SideInfoFrame side, LevelMap levelMap, MainState mainState)
 	{
-		levelMap = mainState.levelMap;
+		this.levelMap = levelMap;
 		floorTiles = new ScrollList<>(0, 2, 2, 4, 2, 1, null,
 				this::itemView0, null);
 		elements.add(floorTiles);

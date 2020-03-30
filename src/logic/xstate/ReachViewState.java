@@ -1,6 +1,7 @@
 package logic.xstate;
 
 import entity.*;
+import entity.sideinfo.*;
 import geom.f1.*;
 import java.util.*;
 import levelMap.*;
@@ -19,14 +20,14 @@ public class ReachViewState implements NMarkState
 	}
 
 	@Override
-	public void onEnter(MainState mainState)
+	public void onEnter(SideInfoFrame side, LevelMap levelMap, MainState mainState)
 	{
-		mainState.sideInfoFrame.setStandardSideInfo(character);
-		List<Tile> movement = new Pathing(mainState.y1, character, character.stats().movement(), mainState.levelMap, null).start().getEndpoints();
+		side.setStandardSideInfo(character);
+		List<Tile> movement = new Pathing(levelMap.y1, character, character.stats().movement(), levelMap, null).start().getEndpoints();
 		allTargets = new ArrayList<>();
 		movement.forEach(e -> allTargets.add(new VisMark(e, "mark.reach.move", VisMark.d1)));
-		movement.stream().flatMap(loc -> mainState.levelMap.attackRanges(character, false).stream()
-				.flatMap(e -> mainState.y1.range(loc, e, e).stream())).distinct()
+		movement.stream().flatMap(loc -> levelMap.attackRanges(character, false).stream()
+				.flatMap(e -> levelMap.y1.range(loc, e, e).stream())).distinct()
 				.forEach(e -> allTargets.add(new VisMark(e, "mark.reach.attack", VisMark.d1)));
 	}
 
@@ -49,7 +50,7 @@ public class ReachViewState implements NMarkState
 	}
 
 	@Override
-	public void onClick(Tile mapTile, MainState mainState, XStateHolder stateHolder, XKey key)
+	public void onClick(MainState mainState, LevelMap levelMap, XStateHolder stateHolder, Tile mapTile, XKey key)
 	{
 		stateHolder.setState(NoneState.INSTANCE);
 	}

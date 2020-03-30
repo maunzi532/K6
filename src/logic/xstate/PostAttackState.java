@@ -1,5 +1,7 @@
 package logic.xstate;
 
+import entity.sideinfo.*;
+import levelMap.*;
 import logic.*;
 import logic.gui.guis.*;
 import system2.*;
@@ -22,11 +24,11 @@ public class PostAttackState extends AttackState
 	}
 
 	@Override
-	public void onEnter(MainState mainState)
+	public void onEnter(SideInfoFrame side, LevelMap levelMap, MainState mainState)
 	{
 		if(firstEnter)
 		{
-			getExpAnim = new GetExpAnim(aI, result, mainState.levelMap);
+			getExpAnim = new GetExpAnim(aI, result, levelMap);
 			firstEnter = false;
 			levelup = getExpAnim.isLevelup();
 			levelupT = getExpAnim.isLevelupT();

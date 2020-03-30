@@ -1,5 +1,7 @@
 package logic.editor.xgui;
 
+import entity.sideinfo.*;
+import levelMap.*;
 import logic.*;
 import logic.editor.*;
 import logic.editor.xstate.*;
@@ -23,9 +25,9 @@ public class EditorSlotModeGUI extends XGUIState
 	}
 
 	@Override
-	public void onEnter(MainState mainState)
+	public void onEnter(SideInfoFrame side, LevelMap levelMap, MainState mainState)
 	{
-		mainState.sideInfoFrame.clearSideInfo();
+		side.clearSideInfo();
 		elements.add(new ScrollList<>(0, 1, 6, 5, 1, 1, editor.getModes(),
 				mode -> GuiTile.cast(mode.guiTile()), target -> click(target, mainState)));
 		elements.add(new CElement(textInv));

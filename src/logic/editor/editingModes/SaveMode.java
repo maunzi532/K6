@@ -1,6 +1,7 @@
 package logic.editor.editingModes;
 
 import geom.f1.*;
+import levelMap.*;
 import logic.gui.*;
 import java.io.*;
 import java.nio.file.*;
@@ -42,5 +43,5 @@ public class SaveMode implements EditingMode
 	}
 
 	@Override
-	public void onMapClick(MainState mainState, Tile tile, XKey key){}
+	public void onMapClick(MainState mainState, LevelMap levelMap, Tile tile, XKey key){}
 }

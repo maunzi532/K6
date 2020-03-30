@@ -3,6 +3,7 @@ package logic.xstate;
 import building.adv.*;
 import doubleinv.*;
 import entity.*;
+import entity.sideinfo.*;
 import geom.f1.*;
 import java.util.*;
 import java.util.stream.*;
@@ -24,16 +25,14 @@ public class GiveOrTakeState implements NMarkState
 	}
 
 	@Override
-	public void onEnter(MainState mainState)
+	public void onEnter(SideInfoFrame side, LevelMap levelMap, MainState mainState)
 	{
-		mainState.sideInfoFrame.setStandardSideInfo(character);
+		side.setStandardSideInfo(character);
 		boolean levelStarted = mainState.turnCounter > 0;
-		List<Tile> range = mainState.y1.range(character.location(), 0, character.stats().maxAccessRange());
+		List<Tile> range = levelMap.y1.range(character.location(), 0, character.stats().maxAccessRange());
 		possibleTargets = new ArrayList<>();
-		range.stream().map(e -> (DoubleInv) mainState.levelMap.getBuilding(e))
-				.filter(e -> e != null && e.active() && e.playerTradeable(levelStarted)).forEachOrdered(possibleTargets::add);
-		range.stream().map(e -> (DoubleInv) mainState.levelMap.getEntity(e))
-				.filter(e -> e != null && e.active() && e.playerTradeable(levelStarted)).forEachOrdered(possibleTargets::add);
+		range.stream().map(levelMap::getBuilding).filter(e -> e != null && e.active() && e.playerTradeable(levelStarted)).forEachOrdered(possibleTargets::add);
+		range.stream().map(levelMap::getEntity).filter(e -> e != null && e.active() && e.playerTradeable(levelStarted)).forEachOrdered(possibleTargets::add);
 		visMarked = possibleTargets.stream().map(e -> new VisMark(e.location(), "mark.trade.target",
 				e.type() == DoubleInvType.ENTITY ? VisMark.d2 : VisMark.d1)).collect(Collectors.toList());
 	}
@@ -51,7 +50,7 @@ public class GiveOrTakeState implements NMarkState
 	}
 
 	@Override
-	public boolean keepInMenu(MainState mainState)
+	public boolean keepInMenu(MainState mainState, LevelMap levelMap)
 	{
 		if(mainState.turnCounter == 0)
 		{
@@ -70,7 +69,7 @@ public class GiveOrTakeState implements NMarkState
 	}
 
 	@Override
-	public void onClick(Tile mapTile, MainState mainState, XStateHolder stateHolder, XKey key)
+	public void onClick(MainState mainState, LevelMap levelMap, XStateHolder stateHolder, Tile mapTile, XKey key)
 	{
 		boolean levelStarted = mainState.turnCounter > 0;
 		List<DoubleInv> list = possibleTargets.stream().filter(e -> mapTile.equals(e.location())).collect(Collectors.toList());
