@@ -1,6 +1,6 @@
 package logic.editor;
 
-import geom.f1.*;
+import geom.tile.*;
 import logic.*;
 import logic.gui.*;
 

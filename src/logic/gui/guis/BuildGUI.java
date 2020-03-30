@@ -7,13 +7,13 @@ import item.*;
 import item.inv.*;
 import item.view.*;
 import java.util.*;
-import levelMap.*;
+import levelmap.*;
 import logic.*;
 import logic.editor.xstate.*;
 import logic.gui.*;
 import logic.xstate.*;
 
-public class BuildGUI extends XGUIState
+public final class BuildGUI extends XGUIState
 {
 	private static final CTile textTiles = new CTile(0, 1, new GuiTile("Floor Req."), 2, 1);
 	private static final CTile textRequired = new CTile(3, 1, new GuiTile("Required"), 2, 1);
@@ -28,8 +28,8 @@ public class BuildGUI extends XGUIState
 	private final BuildingBlueprint blueprint;
 	private final List<List<CostBlueprint>> costBlueprints;
 	private LevelMap levelMap;
-	private int costNum = 0;
-	private int tileCostNum = 0;
+	private int costNum;
+	private int tileCostNum;
 	private ScrollList<RequiresFloorTiles> floorTiles;
 	private ScrollList<ItemStack> required;
 	private ScrollList<ItemStack> returned;
@@ -43,7 +43,7 @@ public class BuildGUI extends XGUIState
 	{
 		this.builder = builder;
 		this.blueprint = blueprint;
-		costBlueprints = blueprint.constructionBlueprint().blueprints();
+		costBlueprints = blueprint.construction().blueprints();
 	}
 
 	@Override
@@ -109,7 +109,7 @@ public class BuildGUI extends XGUIState
 	@Override
 	protected void updateBeforeDraw()
 	{
-		List<List<CostBlueprint>> blueprints = blueprint.constructionBlueprint().blueprints();
+		List<List<CostBlueprint>> blueprints = blueprint.construction().blueprints();
 		CostBlueprint cost = blueprints.get(costNum).get(tileCostNum);
 		floorTiles.elements = cost.requiredFloorTiles();
 		required.elements = cost.required().items;

@@ -1,6 +1,6 @@
 package entity;
 
-import geom.f1.*;
+import geom.tile.*;
 import java.util.*;
 
 public record PathLocation(Tile tile, int cost, boolean canEnd, PathLocation from, XCharacter movingAlly)
@@ -11,11 +11,11 @@ public record PathLocation(Tile tile, int cost, boolean canEnd, PathLocation fro
 	}
 
 	@Override
-	public boolean equals(Object o)
+	public boolean equals(Object obj)
 	{
-		if(this == o) return true;
-		if(!(o instanceof PathLocation that)) return false;
-		return tile.equals(that.tile);
+		if(this == obj) return true;
+		if(!(obj instanceof PathLocation other)) return false;
+		return tile.equals(other.tile);
 	}
 
 	@Override

@@ -124,11 +124,11 @@ public class ScrollList<T> implements GuiElement
 
 	private void setFilledTile(GuiTile[][] tiles, CTile tile)
 	{
-		for(int ix = 0; ix < tile.r; ix++)
+		for(int ix = 0; ix < tile.right; ix++)
 		{
-			for(int iy = 0; iy < tile.d; iy++)
+			for(int iy = 0; iy < tile.down; iy++)
 			{
-				if(ix == tile.r - 1 && iy == tile.d - 1)
+				if(ix == tile.right - 1 && iy == tile.down - 1)
 					tiles[tile.x + ix][tile.y + iy] = tile.guiTile;
 				else
 					tiles[tile.x + ix][tile.y + iy] = tile.other;

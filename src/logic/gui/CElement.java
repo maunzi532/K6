@@ -2,7 +2,7 @@ package logic.gui;
 
 import java.util.function.*;
 
-public class CElement implements GuiElement
+public final class CElement implements GuiElement
 {
 	private final CTile tile;
 	public GuiTile fillTile;
@@ -47,12 +47,12 @@ public class CElement implements GuiElement
 
 	private void setEmptyTileAndFill(GuiTile[][] tiles, GuiTile guiTile)
 	{
-		for(int ix = 0; ix < tile.r; ix++)
+		for(int ix = 0; ix < tile.right; ix++)
 		{
-			for(int iy = 0; iy < tile.d; iy++)
+			for(int iy = 0; iy < tile.down; iy++)
 			{
-				if(ix == tile.r - 1 && iy == tile.d - 1)
-					tiles[tile.x + ix][tile.y + iy] = new GuiTile(guiTile, tile.r, tile.d);
+				if(ix == tile.right - 1 && iy == tile.down - 1)
+					tiles[tile.x + ix][tile.y + iy] = new GuiTile(guiTile, tile.right, tile.down);
 				else
 					tiles[tile.x + ix][tile.y + iy] = CTile.getOther(guiTile);
 			}
@@ -61,11 +61,11 @@ public class CElement implements GuiElement
 
 	private void setFilledTile(GuiTile[][] tiles)
 	{
-		for(int ix = 0; ix < tile.r; ix++)
+		for(int ix = 0; ix < tile.right; ix++)
 		{
-			for(int iy = 0; iy < tile.d; iy++)
+			for(int iy = 0; iy < tile.down; iy++)
 			{
-				if(ix == tile.r - 1 && iy == tile.d - 1)
+				if(ix == tile.right - 1 && iy == tile.down - 1)
 					tiles[tile.x + ix][tile.y + iy] = tile.guiTile;
 				else
 					tiles[tile.x + ix][tile.y + iy] = tile.other;

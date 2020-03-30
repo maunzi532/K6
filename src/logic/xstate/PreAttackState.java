@@ -1,9 +1,9 @@
 package logic.xstate;
 
 import logic.*;
-import system2.*;
+import statsystem.*;
 
-public class PreAttackState extends AttackState
+public final class PreAttackState extends AttackState
 {
 	public PreAttackState(NState nextState, AttackInfo aI)
 	{
@@ -29,6 +29,6 @@ public class PreAttackState extends AttackState
 	@Override
 	public NState nextState()
 	{
-		return new AttackAnimState2(nextState, aI);
+		return new AttackAnimState(nextState, aI);
 	}
 }

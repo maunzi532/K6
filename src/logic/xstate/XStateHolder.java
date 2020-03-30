@@ -1,6 +1,6 @@
 package logic.xstate;
 
-import levelMap.*;
+import levelmap.*;
 import logic.gui.*;
 import java.util.*;
 

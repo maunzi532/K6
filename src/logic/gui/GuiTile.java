@@ -2,7 +2,7 @@ package logic.gui;
 
 import item.view.*;
 
-public class GuiTile
+public final class GuiTile
 {
 	public static final GuiTile EMPTY = new GuiTile(null, null, false, null);
 
@@ -10,8 +10,8 @@ public class GuiTile
 	public final String imageName;
 	public final boolean flipped;
 	public final String color;
-	public final int l;
-	public final int u;
+	public final int left;
+	public final int up;
 
 	public GuiTile(String text, String imageName, boolean flipped, String color)
 	{
@@ -19,8 +19,8 @@ public class GuiTile
 		this.imageName = imageName;
 		this.flipped = flipped;
 		this.color = color;
-		l = 0;
-		u = 0;
+		left = 0;
+		up = 0;
 	}
 
 	public GuiTile(String text)
@@ -29,28 +29,28 @@ public class GuiTile
 		imageName = null;
 		flipped = false;
 		color = null;
-		l = 0;
-		u = 0;
+		left = 0;
+		up = 0;
 	}
 
-	public GuiTile(String text, String imageName, boolean flipped, String color, int r, int d)
+	public GuiTile(String text, String imageName, boolean flipped, String color, int right, int down)
 	{
 		this.text = text;
 		this.imageName = imageName;
 		this.flipped = flipped;
 		this.color = color;
-		l = r - 1;
-		u = d - 1;
+		left = right - 1;
+		up = down - 1;
 	}
 
-	public GuiTile(GuiTile copy, int r, int d)
+	public GuiTile(GuiTile copy, int right, int down)
 	{
 		text = copy.text;
 		imageName = copy.imageName;
 		flipped = copy.flipped;
 		color = copy.color;
-		l = r - 1;
-		u = d - 1;
+		left = right - 1;
+		up = down - 1;
 	}
 
 	public static GuiTile[] cast(GuiTile guiTile)

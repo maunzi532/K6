@@ -1,12 +1,12 @@
 package logic.xstate;
 
 import entity.*;
-import geom.f1.*;
+import geom.tile.*;
 import java.util.*;
 import logic.*;
-import system2.*;
+import statsystem.*;
 
-public class EnemyPhaseState implements NAutoState
+public final class EnemyPhaseState implements NAutoState
 {
 	private EnemyMove initiativeMove;
 

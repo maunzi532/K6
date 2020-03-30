@@ -3,7 +3,7 @@ package building.transport;
 import com.fasterxml.jackson.jr.ob.comp.*;
 import com.fasterxml.jackson.jr.stree.*;
 import doubleinv.*;
-import geom.f1.*;
+import geom.tile.*;
 import item.*;
 import java.io.*;
 import java.util.*;
@@ -11,13 +11,13 @@ import java.util.*;
 public record PossibleTransport(Item item, DoubleInv from, DoubleInv to, int priorityFrom, int priorityTo)
 {
 	@Override
-	public boolean equals(Object o)
+	public boolean equals(Object obj)
 	{
-		if(this == o) return true;
-		if(!(o instanceof PossibleTransport that)) return false;
-		return item.equals(that.item) &&
-				from.equals(that.from) &&
-				to.equals(that.to);
+		if(this == obj) return true;
+		if(!(obj instanceof PossibleTransport other)) return false;
+		return item.equals(other.item) &&
+				from.equals(other.from) &&
+				to.equals(other.to);
 	}
 
 	@Override

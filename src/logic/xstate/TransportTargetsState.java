@@ -3,13 +3,13 @@ package logic.xstate;
 import building.adv.*;
 import building.transport.*;
 import doubleinv.*;
-import geom.f1.*;
+import geom.tile.*;
 import java.util.*;
 import java.util.stream.*;
-import levelMap.*;
+import levelmap.*;
 import logic.*;
 
-public class TransportTargetsState implements NMarkState
+public final class TransportTargetsState implements NMarkState
 {
 	private final XBuilding building;
 	private final Transport transport;

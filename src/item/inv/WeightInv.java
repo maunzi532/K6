@@ -8,7 +8,7 @@ import java.io.*;
 import java.util.*;
 import java.util.stream.*;
 
-public class WeightInv implements Inv
+public final class WeightInv implements Inv
 {
 	private final List<InvStack> stacks;
 	private int currentW;
@@ -59,7 +59,7 @@ public class WeightInv implements Inv
 		WeightInv copy = new WeightInv(limitW);
 		for(InvStack stack : stacks)
 		{
-			copy.stacks.add(new InvStack(stack));
+			copy.stacks.add(stack.copy());
 		}
 		copy.currentW = currentW;
 		return copy;

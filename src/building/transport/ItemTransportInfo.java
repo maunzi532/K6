@@ -4,7 +4,7 @@ import doubleinv.*;
 import item.*;
 import java.util.*;
 
-public class ItemTransportInfo
+public final class ItemTransportInfo
 {
 	public final List<DoubleInv> provide;
 	public final List<DoubleInv> require;

@@ -1,9 +1,9 @@
 package item.inv;
 
 import item.*;
-import java.util.Optional;
+import java.util.*;
 
-public class InvStack implements Inv0
+public final class InvStack implements Inv0
 {
 	public final Item item;
 	private int current;
@@ -18,12 +18,15 @@ public class InvStack implements Inv0
 		increase = items.count;
 	}
 
-	public InvStack(InvStack copy)
+	private InvStack(Item item, int current)
 	{
-		item = copy.item;
-		current = copy.current;
-		decrease = 0;
-		increase = 0;
+		this.item = item;
+		this.current = current;
+	}
+
+	public InvStack copy()
+	{
+		return new InvStack(item, current);
 	}
 
 	public ItemStack toItemStack()

@@ -3,7 +3,7 @@ package logic.editor.xstate;
 import logic.*;
 import logic.xstate.*;
 
-public class EditingState implements NState
+public final class EditingState implements NState
 {
 	public static final EditingState INSTANCE = new EditingState();
 

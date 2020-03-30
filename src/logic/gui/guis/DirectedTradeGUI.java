@@ -9,7 +9,7 @@ import logic.*;
 import logic.gui.*;
 import logic.xstate.*;
 
-public class DirectedTradeGUI extends XGUIState
+public final class DirectedTradeGUI extends XGUIState
 {
 	private static final CTile nameProvide = new CTile(0, 0, 4, 1);
 	private static final CTile nameReceive = new CTile(5, 0, 4, 1);

@@ -1,7 +1,7 @@
 package item.inv;
 
-import item.ItemStack;
-import java.util.Optional;
+import item.*;
+import java.util.*;
 
 public interface Inv0
 {

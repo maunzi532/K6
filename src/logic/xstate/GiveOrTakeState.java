@@ -3,23 +3,23 @@ package logic.xstate;
 import building.adv.*;
 import doubleinv.*;
 import entity.*;
-import geom.f1.*;
+import geom.tile.*;
 import java.util.*;
 import java.util.stream.*;
-import levelMap.*;
+import levelmap.*;
 import logic.*;
 import logic.gui.guis.*;
 
-public class GiveOrTakeState implements NMarkState
+public final class GiveOrTakeState implements NMarkState
 {
-	private final boolean give;
+	private final TradeDirection tradeDirection;
 	private final XCharacter character;
 	private List<DoubleInv> possibleTargets;
 	private List<VisMark> visMarked;
 
-	public GiveOrTakeState(boolean give, XCharacter character)
+	public GiveOrTakeState(TradeDirection tradeDirection, XCharacter character)
 	{
-		this.give = give;
+		this.tradeDirection = tradeDirection;
 		this.character = character;
 	}
 
@@ -39,13 +39,13 @@ public class GiveOrTakeState implements NMarkState
 	@Override
 	public String text()
 	{
-		return give ? "Give" : "Take";
+		return tradeDirection.text;
 	}
 
 	@Override
 	public String keybind()
 	{
-		return give ? "Give" : "Take";
+		return tradeDirection.keybind;
 	}
 
 	@Override
@@ -113,10 +113,11 @@ public class GiveOrTakeState implements NMarkState
 		{
 			if(!levelStarted)
 			{
-				if(give)
-					stateHolder.setState(new DirectedTradeGUI(character, levelMap.storage(), null));
-				else
-					stateHolder.setState(new DirectedTradeGUI(levelMap.storage(), character, null));
+				stateHolder.setState(switch(tradeDirection)
+						{
+							case GIVE -> new DirectedTradeGUI(character, levelMap.storage(), null);
+							case TAKE -> new DirectedTradeGUI(levelMap.storage(), character, null);
+						});
 			}
 			else
 			{
@@ -125,10 +126,12 @@ public class GiveOrTakeState implements NMarkState
 		}
 		else
 		{
-			if(give)
-				stateHolder.setState(new DirectedTradeGUI(character, inv1, levelStarted ? character.resources() : null));
-			else
-				stateHolder.setState(new DirectedTradeGUI(inv1, character, levelStarted ? character.resources() : null));
+			TurnResources takeAp = levelStarted ? character.resources() : null;
+			stateHolder.setState(switch(tradeDirection)
+					{
+						case GIVE -> new DirectedTradeGUI(character, inv1, takeAp);
+						case TAKE -> new DirectedTradeGUI(inv1, character, takeAp);
+					});
 		}
 	}
 

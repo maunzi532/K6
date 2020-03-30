@@ -3,7 +3,7 @@ package logic;
 import building.blueprint.*;
 import entity.sideinfo.*;
 import item.*;
-import levelMap.*;
+import levelmap.*;
 import logic.xstate.*;
 
 public record MainState(LevelMap levelMap, XStateHolder stateHolder, SideInfoFrame side, ItemLoader itemLoader, BlueprintFile blueprintFile)

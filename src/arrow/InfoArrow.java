@@ -1,9 +1,9 @@
 package arrow;
 
-import geom.f1.*;
+import geom.tile.*;
 import java.util.*;
 
-public class InfoArrow extends XArrow
+public final class InfoArrow extends XArrow
 {
 	private final StatBar statBar;
 

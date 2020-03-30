@@ -2,10 +2,10 @@ package logic.xstate;
 
 import arrow.*;
 import entity.*;
-import geom.f1.*;
+import geom.tile.*;
 import logic.*;
 
-public class MoveAnimState implements NAutoState
+public final class MoveAnimState implements NAutoState
 {
 	private final NState nextState;
 	private final XCharacter entity;

@@ -6,7 +6,7 @@ import item.view.*;
 import java.util.*;
 import logic.*;
 import logic.gui.*;
-import system2.content.*;
+import statsystem.content.*;
 
 public class InvEditGUI extends XGUIState
 {
@@ -46,7 +46,7 @@ public class InvEditGUI extends XGUIState
 				GuiTile::textView, this::onClickInfoView);
 		elements.add(infoView);
 		allItemsView = new TargetScrollList<>(5, 1, 3, 5, 1, 1,
-				AttackItems2.INSTANCE.allItemsList, e -> GuiTile.cast(new GuiTile(null, e.image(), false, null)),
+				AttackItems.INSTANCE.allItemsList, e -> GuiTile.cast(new GuiTile(null, e.image(), false, null)),
 				this::itemClick2);
 		elements.add(allItemsView);
 		elements.add(new CElement(textInv, new GuiTile(name)));
@@ -113,13 +113,13 @@ public class InvEditGUI extends XGUIState
 			{
 				case "Add", "+" ->
 				{
-					inv.tryAdd(new ItemList(new ItemStack(editItem, 1)));
+					inv.tryAdd(new ItemList(editItem));
 					update();
 				}
 				case "-" ->
 				{
-					inv.tryGive(new ItemList(new ItemStack(editItem, 1)), false, CommitType.COMMIT);
-					if(!inv.tryGive(new ItemList(new ItemStack(editItem, 1)), false, CommitType.ROLLBACK))
+					inv.tryGive(new ItemList(editItem), false, CommitType.COMMIT);
+					if(!inv.tryGive(new ItemList(editItem), false, CommitType.ROLLBACK))
 					{
 						editItem = null;
 					}

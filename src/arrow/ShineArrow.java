@@ -1,10 +1,10 @@
 package arrow;
 
-import geom.d1.*;
-import geom.f1.*;
+import geom.advtile.*;
+import geom.tile.*;
 import java.util.*;
 
-public class ShineArrow extends XArrow
+public final class ShineArrow extends XArrow
 {
 	private final boolean hasShine;
 	private DoubleTile[] stored;

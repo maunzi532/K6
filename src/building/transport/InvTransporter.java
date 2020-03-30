@@ -5,7 +5,7 @@ import item.*;
 import item.inv.*;
 import java.util.*;
 
-public class InvTransporter
+public final class InvTransporter
 {
 	private List<DoubleInv> providingTargets;
 	private List<DoubleInv> receivingTargets;
@@ -54,11 +54,11 @@ public class InvTransporter
 		for(DoubleInv inv : receivingTargets)
 		{
 			Inv receivingInv = inv.inputInv();
-			for(Item item : possibleItems.keySet())
+			for(Map.Entry<Item, ItemTransportInfo> entry : possibleItems.entrySet())
 			{
-				if(receivingInv.canAdd(new ItemStack(item, amount), false))
+				if(receivingInv.canAdd(new ItemStack(entry.getKey(), amount), false))
 				{
-					possibleItems.get(item).require.add(inv);
+					entry.getValue().require.add(inv);
 				}
 			}
 		}

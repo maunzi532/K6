@@ -1,9 +1,9 @@
 package logic.editor;
 
-import geom.f1.*;
+import geom.tile.*;
 import logic.*;
 
-public class EditorSlot
+public final class EditorSlot
 {
 	public final EditorSlotGUI gui;
 	public EditingMode mode;
@@ -11,7 +11,7 @@ public class EditorSlot
 	public EditorSlot(EditingMode mode)
 	{
 		gui = new EditorSlotGUI();
-		setMode(mode);
+		this.mode = mode;
 	}
 
 	public void setMode(EditingMode mode)

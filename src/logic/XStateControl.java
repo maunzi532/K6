@@ -3,17 +3,17 @@ package logic;
 import building.adv.*;
 import building.transport.*;
 import entity.*;
-import geom.f1.*;
+import geom.tile.*;
 import java.util.*;
 import java.util.stream.*;
-import levelMap.*;
+import levelmap.*;
 import logic.editor.*;
 import logic.editor.xstate.*;
 import logic.gui.*;
 import logic.gui.guis.*;
 import logic.xstate.*;
 
-public class XStateControl implements XStateHolder, ConvInputConsumer
+public final class XStateControl implements XStateHolder, ConvInputConsumer
 {
 	private MainState mainState;
 	private final LevelMap levelMap;
@@ -351,7 +351,7 @@ public class XStateControl implements XStateHolder, ConvInputConsumer
 			{
 				allEnemyReach = levelMap.allEnemyReach();
 			}
-			allEnemyReach.forEach((t, n) -> visMarked.add(new VisMark(t, "mark.reach.all", 0.8)));
+			allEnemyReach.forEach((tile, amount) -> visMarked.add(new VisMark(tile, "mark.reach.all", 0.8)));
 		}
 		if(state instanceof NMarkState markState)
 		{
@@ -374,7 +374,7 @@ public class XStateControl implements XStateHolder, ConvInputConsumer
 			{
 				allEnemyReach = levelMap.allEnemyReach();
 			}
-			allEnemyReach.forEach((t, n) -> visMarked.add(new VisMark(t, "mark.reach.all", 0.8)));
+			allEnemyReach.forEach((tile, amount) -> visMarked.add(new VisMark(tile, "mark.reach.all", 0.8)));
 		}
 		if(state instanceof NMarkState markState)
 		{

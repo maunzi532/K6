@@ -1,9 +1,9 @@
 package arrow;
 
-import geom.f1.*;
+import geom.tile.*;
 import java.util.*;
 
-public class BlinkArrow extends XArrow
+public final class BlinkArrow extends XArrow
 {
 	private final int blinkTime;
 

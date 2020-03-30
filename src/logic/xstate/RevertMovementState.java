@@ -3,7 +3,7 @@ package logic.xstate;
 import entity.*;
 import logic.*;
 
-public class RevertMovementState implements NAutoState
+public final class RevertMovementState implements NAutoState
 {
 	private final XCharacter character;
 

@@ -3,15 +3,15 @@ package entity;
 import arrow.*;
 import com.fasterxml.jackson.jr.ob.comp.*;
 import doubleinv.*;
-import geom.f1.*;
+import geom.tile.*;
 import item.*;
 import item.inv.*;
 import item.view.*;
 import java.io.*;
 import java.util.*;
-import system2.*;
+import statsystem.*;
 
-public class XCharacter implements DoubleInv, XBuilder
+public final class XCharacter implements DoubleInv, XBuilder
 {
 	private CharacterTeam team;
 	private int startingDelay;

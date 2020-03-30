@@ -4,7 +4,7 @@ import entity.*;
 import logic.*;
 import logic.xstate.*;
 
-public class CharacterInvGUI extends Inv1GUI
+public final class CharacterInvGUI extends Inv1GUI
 {
 	private final XCharacter character;
 

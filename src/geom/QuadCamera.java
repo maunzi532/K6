@@ -1,8 +1,8 @@
 package geom;
 
-import geom.d1.*;
+import geom.advtile.*;
 
-public class QuadCamera extends TileCamera
+public final class QuadCamera extends TileCamera
 {
 	public QuadCamera(XDimension dimension, double xMid, double yMid, double xSize, double ySize,
 			double xShift, double yShift)

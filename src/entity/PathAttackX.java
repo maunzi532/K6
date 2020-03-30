@@ -1,8 +1,8 @@
 package entity;
 
-import system2.*;
+import statsystem.*;
 
-public class PathAttackX
+public final class PathAttackX
 {
 	public final PathLocation path;
 	public final AttackInfo attack;

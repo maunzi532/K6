@@ -4,7 +4,7 @@ import entity.*;
 import logic.*;
 import logic.xstate.*;
 
-public class EditDeleteState implements NAutoState
+public final class EditDeleteState implements NAutoState
 {
 	private final XCharacter entity;
 

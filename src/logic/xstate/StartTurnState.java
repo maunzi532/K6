@@ -3,7 +3,7 @@ package logic.xstate;
 import entity.*;
 import logic.*;
 
-public class StartTurnState implements NAutoState
+public final class StartTurnState implements NAutoState
 {
 	private int counter;
 

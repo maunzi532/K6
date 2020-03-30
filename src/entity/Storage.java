@@ -1,10 +1,10 @@
 package entity;
 
 import doubleinv.*;
-import geom.f1.*;
+import geom.tile.*;
 import item.inv.*;
 
-public class Storage implements DoubleInv
+public final class Storage implements DoubleInv
 {
 	private final WeightInv inv;
 

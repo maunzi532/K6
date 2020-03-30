@@ -7,7 +7,7 @@ import logic.*;
 import logic.gui.*;
 import logic.xstate.*;
 
-public class SelectBuildingGUI extends XGUIState
+public final class SelectBuildingGUI extends XGUIState
 {
 	private static final CTile textInv = new CTile(2, 0, new GuiTile("Buildings"), 2, 1);
 

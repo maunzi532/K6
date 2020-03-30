@@ -8,7 +8,7 @@ import java.io.*;
 import java.util.*;
 import java.util.stream.*;
 
-public class SlotInv implements Inv
+public final class SlotInv implements Inv
 {
 	private final List<InvSlot> slots;
 
@@ -19,7 +19,7 @@ public class SlotInv implements Inv
 
 	private SlotInv(List<InvSlot> limits)
 	{
-		slots = limits.stream().map(InvSlot::new).collect(Collectors.toList());
+		slots = limits.stream().map(InvSlot::copy).collect(Collectors.toList());
 	}
 
 	@Override

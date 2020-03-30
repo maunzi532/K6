@@ -2,7 +2,7 @@ package logic.xstate;
 
 import logic.*;
 
-public class EndTurnState implements NAutoState
+public final class EndTurnState implements NAutoState
 {
 	private boolean start;
 

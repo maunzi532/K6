@@ -3,7 +3,7 @@ package entity.sideinfo;
 import arrow.*;
 import entity.*;
 
-public class SideInfo
+public final class SideInfo
 {
 	private final XCharacter identifier;
 	private String imageName;

@@ -6,13 +6,13 @@ import building.transport.*;
 import com.fasterxml.jackson.jr.ob.comp.*;
 import com.fasterxml.jackson.jr.stree.*;
 import doubleinv.*;
-import geom.f1.*;
+import geom.tile.*;
 import item.*;
 import item.inv.*;
 import java.io.*;
 import java.util.*;
 
-public class XBuilding implements DoubleInv
+public final class XBuilding implements DoubleInv
 {
 	private final Tile location;
 	private final CostBlueprint costBlueprint;
@@ -37,17 +37,17 @@ public class XBuilding implements DoubleInv
 		this.costBlueprint = costBlueprint;
 		this.refundable = refundable;
 		claimed = new ArrayList<>();
-		if(blueprint.productionBlueprint() != null)
+		if(blueprint.production() != null)
 		{
-			function = new ProcessInv(blueprint.name(), blueprint.productionBlueprint());
+			function = new ProcessInv(blueprint.name(), blueprint.production());
 		}
-		else if(blueprint.transporterBlueprint() != null)
+		else if(blueprint.transporter() != null)
 		{
-			function = new Transport(blueprint.name(), blueprint.transporterBlueprint());
+			function = new Transport(blueprint.name(), blueprint.transporter());
 		}
 		else
 		{
-			throw new RuntimeException();
+			throw new RuntimeException("Missing building function");
 		}
 		active = true;
 	}
@@ -200,7 +200,7 @@ public class XBuilding implements DoubleInv
 		}
 		else
 		{
-			throw new RuntimeException();
+			throw new IllegalArgumentException("Missing building function");
 		}
 	}
 

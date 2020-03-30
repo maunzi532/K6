@@ -1,13 +1,13 @@
 package logic.xstate;
 
 import entity.*;
-import geom.f1.*;
+import geom.tile.*;
 import java.util.*;
 import java.util.stream.*;
-import levelMap.*;
+import levelmap.*;
 import logic.*;
 
-public class SwapState implements NMarkState
+public final class SwapState implements NMarkState
 {
 	private final XCharacter character;
 	private List<XCharacter> swapTargets;

@@ -6,7 +6,7 @@ import item.*;
 import java.io.*;
 import java.util.*;
 
-public class InvSlot implements Inv0
+public final class InvSlot implements Inv0
 {
 	private InvStack stack;
 	private boolean stackExists;
@@ -19,13 +19,17 @@ public class InvSlot implements Inv0
 		limit = limits.count;
 	}
 
-	public InvSlot(InvSlot copy)
+	private InvSlot(InvStack stack, boolean stackExists, Item type, int limit)
 	{
-		stackExists = copy.stackExists;
-		if(stackExists)
-			stack = new InvStack(copy.stack);
-		type = copy.type;
-		limit = copy.limit;
+		this.stack = stack;
+		this.stackExists = stackExists;
+		this.type = type;
+		this.limit = limit;
+	}
+
+	public InvSlot copy()
+	{
+		return new InvSlot(stack != null ? stack.copy() : null, stackExists, type, limit);
 	}
 
 	public Item getType()

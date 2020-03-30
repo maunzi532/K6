@@ -1,6 +1,6 @@
 package arrow;
 
-public class StatBar
+public final class StatBar
 {
 	private final String fg;
 	private final String bg;

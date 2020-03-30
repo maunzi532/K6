@@ -1,13 +1,14 @@
 package logic.xstate;
 
 import entity.*;
-import geom.f1.*;
+import geom.tile.*;
 import java.util.*;
-import levelMap.*;
+import levelmap.*;
 import logic.*;
 import logic.gui.guis.*;
+import statsystem.*;
 
-public class AdvMoveState implements NMarkState
+public final class AdvMoveState implements NMarkState
 {
 	private final XCharacter character;
 	private List<PathLocation> movement;
@@ -24,7 +25,6 @@ public class AdvMoveState implements NMarkState
 	{
 		mainState.side().setStandardSideInfo(character);
 		movement = new ArrayList<>();
-		attack = new ArrayList<>();
 		if(character.resources().moveAction())
 		{
 			movement.addAll(new Pathing(mainState.levelMap().y1, character, character.resources().movement(),
@@ -35,9 +35,10 @@ public class AdvMoveState implements NMarkState
 			movement.addAll(new Pathing(mainState.levelMap().y1, character, character.resources().dashMovement(),
 					mainState.levelMap(), null).start().getEndpaths());
 		}
+		attack = new ArrayList<>();
 		if(character.resources().ready(2))
 		{
-			mainState.levelMap().attackRanges(character, false).stream().map(e -> mainState.levelMap().y1.range(character.location(), e, e))
+			mainState.levelMap().attackRanges(character, AttackSide.INITIATOR).stream().map(e -> mainState.levelMap().y1.range(character.location(), e, e))
 					.flatMap(Collection::stream).map(mainState.levelMap()::getEntity).filter(e -> e != null && e.targetable() && e.team() != character.team())
 					.forEach(e -> attack.add(e.location()));
 		}

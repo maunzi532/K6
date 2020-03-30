@@ -3,10 +3,10 @@ package start;
 import javafx.animation.*;
 import javafx.scene.input.*;
 import logic.*;
-import visual1.*;
-import visual1.keybind.*;
+import vis.*;
+import vis.keybind.*;
 
-public class XTimer extends AnimationTimer
+public final class XTimer extends AnimationTimer
 {
 	private final XInputInterface inputInterface;
 	private final KeybindFile keybindFile;

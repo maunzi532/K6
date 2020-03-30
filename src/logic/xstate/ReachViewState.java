@@ -1,12 +1,13 @@
 package logic.xstate;
 
 import entity.*;
-import geom.f1.*;
+import geom.tile.*;
 import java.util.*;
-import levelMap.*;
+import levelmap.*;
 import logic.*;
+import statsystem.*;
 
-public class ReachViewState implements NMarkState
+public final class ReachViewState implements NMarkState
 {
 	private final XCharacter character;
 	private final boolean enemy;
@@ -25,7 +26,7 @@ public class ReachViewState implements NMarkState
 		List<Tile> movement = new Pathing(mainState.levelMap().y1, character, character.stats().movement(), mainState.levelMap(), null).start().getEndpoints();
 		allTargets = new ArrayList<>();
 		movement.forEach(e -> allTargets.add(new VisMark(e, "mark.reach.move", VisMark.d1)));
-		movement.stream().flatMap(loc -> mainState.levelMap().attackRanges(character, false).stream()
+		movement.stream().flatMap(loc -> mainState.levelMap().attackRanges(character, AttackSide.INITIATOR).stream()
 				.flatMap(e -> mainState.levelMap().y1.range(loc, e, e).stream())).distinct()
 				.forEach(e -> allTargets.add(new VisMark(e, "mark.reach.attack", VisMark.d1)));
 	}

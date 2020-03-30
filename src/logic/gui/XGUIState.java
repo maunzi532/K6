@@ -11,7 +11,7 @@ public abstract class XGUIState implements NState
 	public List<GuiElement> elements;
 	public CTile targeted = CTile.NONE;
 
-	public XGUIState()
+	protected XGUIState()
 	{
 		elements = new ArrayList<>();
 	}

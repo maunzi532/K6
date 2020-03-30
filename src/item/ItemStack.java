@@ -4,7 +4,7 @@ import com.fasterxml.jackson.jr.ob.comp.*;
 import com.fasterxml.jackson.jr.stree.*;
 import java.io.*;
 
-public class ItemStack
+public final class ItemStack
 {
 	public final Item item;
 	public final int count;

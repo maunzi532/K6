@@ -2,7 +2,7 @@ package logic.xstate;
 
 import logic.*;
 
-public class NoneState implements NState
+public final class NoneState implements NState
 {
 	public static final NoneState INSTANCE = new NoneState();
 

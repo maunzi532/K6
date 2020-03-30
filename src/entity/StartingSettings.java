@@ -1,6 +1,6 @@
 package entity;
 
-public class StartingSettings
+public final class StartingSettings
 {
 	public boolean startLocked;
 	public boolean startInvLocked;

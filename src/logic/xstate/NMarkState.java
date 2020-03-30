@@ -1,8 +1,8 @@
 package logic.xstate;
 
-import geom.f1.*;
+import geom.tile.*;
 import java.util.*;
-import levelMap.*;
+import levelmap.*;
 import logic.*;
 import logic.editor.xstate.*;
 

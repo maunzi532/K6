@@ -5,9 +5,9 @@ import entity.sideinfo.*;
 import logic.*;
 import logic.gui.*;
 import logic.xstate.*;
-import system2.*;
+import statsystem.*;
 
-public class AttackInfoGUI extends XGUIState
+public final class AttackInfoGUI extends XGUIState
 {
 	private final XCharacter attacker;
 	private final XCharacter target;

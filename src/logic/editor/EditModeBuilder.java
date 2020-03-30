@@ -1,13 +1,13 @@
 package logic.editor;
 
 import doubleinv.*;
-import geom.f1.*;
+import geom.tile.*;
 import item.*;
 import item.inv.*;
 import item.view.*;
 import java.util.*;
 
-public class EditModeBuilder implements XBuilder
+public final class EditModeBuilder implements XBuilder
 {
 	private final Tile location;
 

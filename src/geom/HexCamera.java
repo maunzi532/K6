@@ -1,8 +1,8 @@
 package geom;
 
-import geom.d1.*;
+import geom.advtile.*;
 
-public class HexCamera extends TileCamera
+public final class HexCamera extends TileCamera
 {
 	private final HexMatrix matrix;
 

@@ -7,9 +7,9 @@ import java.util.*;
 import java.util.stream.*;
 import logic.*;
 import logic.gui.*;
-import system2.*;
+import statsystem.*;
 
-public class CharacterCombatGUI extends XGUIState
+public final class CharacterCombatGUI extends XGUIState
 {
 	private static final CTile NAME = new CTile(2, 0, 3, 1);
 	private static final CTile UNEQUIP = new CTile(1, 6, new GuiTile("Unequip"), 2, 1);

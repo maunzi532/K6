@@ -5,7 +5,7 @@ import logic.*;
 import logic.gui.*;
 import logic.xstate.*;
 
-public class StartingSettingsEditGUI extends XGUIState
+public final class StartingSettingsEditGUI extends XGUIState
 {
 	private static final CTile isLocationLocked = new CTile(0, 1, 2, 1);
 	private static final CTile isInventoryLocked = new CTile(2, 1, 2, 1);

@@ -6,14 +6,14 @@ import building.blueprint.*;
 import com.fasterxml.jackson.jr.ob.comp.*;
 import com.fasterxml.jackson.jr.stree.*;
 import doubleinv.*;
-import geom.f1.*;
+import geom.tile.*;
 import item.*;
 import item.inv.*;
 import java.io.*;
 import java.util.*;
 import java.util.stream.*;
 
-public class Transport implements BuildingFunction
+public final class Transport implements BuildingFunction
 {
 	public static final int TRANSPORT_TIME = 60;
 

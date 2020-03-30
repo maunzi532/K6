@@ -1,13 +1,13 @@
 package logic.xstate;
 
 import building.adv.*;
-import geom.f1.*;
+import geom.tile.*;
 import java.util.*;
 import java.util.stream.*;
-import levelMap.*;
+import levelmap.*;
 import logic.*;
 
-public class ProductionFloorsState implements NMarkState
+public final class ProductionFloorsState implements NMarkState
 {
 	private final XBuilding building;
 	private final ProcessInv processInv;

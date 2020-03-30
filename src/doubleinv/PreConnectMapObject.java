@@ -2,7 +2,7 @@ package doubleinv;
 
 import com.fasterxml.jackson.jr.ob.comp.*;
 import com.fasterxml.jackson.jr.stree.*;
-import geom.f1.*;
+import geom.tile.*;
 import item.inv.*;
 import java.io.*;
 
@@ -50,7 +50,7 @@ public record PreConnectMapObject(Tile location, DoubleInvType type) implements 
 	public static PreConnectMapObject create(JrsObject data, TileType y1)
 	{
 		Tile location = y1.create2(((JrsNumber) data.get("sx")).getValue().intValue(), ((JrsNumber) data.get("sy")).getValue().intValue());
-		DoubleInvType type = DoubleInvType.valueOf(data.get("Type").asText().toUpperCase());
+		DoubleInvType type = DoubleInvType.valueOf(data.get("Type").asText());
 		return new PreConnectMapObject(location, type);
 	}
 

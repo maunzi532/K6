@@ -3,7 +3,7 @@ package logic.editor.xgui;
 import entity.*;
 import logic.xstate.*;
 
-public class EntityInvEditGUI extends InvEditGUI
+public final class EntityInvEditGUI extends InvEditGUI
 {
 	private final XCharacter invEntity;
 

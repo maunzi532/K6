@@ -1,5 +1,5 @@
 package entity;
 
-import system2.*;
+import statsystem.*;
 
 public record EnemyMove(XCharacter entity, int initiative, PathLocation moveTo, AttackInfo attackInfo, int tileAdvantage){}

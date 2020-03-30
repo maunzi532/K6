@@ -1,6 +1,6 @@
 package doubleinv;
 
-import geom.f1.*;
+import geom.tile.*;
 import item.*;
 import item.inv.*;
 import item.view.*;

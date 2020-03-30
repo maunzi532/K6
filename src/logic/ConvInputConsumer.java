@@ -1,6 +1,6 @@
 package logic;
 
-import geom.f1.*;
+import geom.tile.*;
 
 public interface ConvInputConsumer
 {

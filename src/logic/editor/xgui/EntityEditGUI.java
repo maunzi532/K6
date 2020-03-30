@@ -8,7 +8,7 @@ import logic.*;
 import logic.gui.*;
 import logic.xstate.*;
 
-public class EntityEditGUI extends XGUIState
+public final class EntityEditGUI extends XGUIState
 {
 	private static final CTile textInv = new CTile(2, 0, 2, 1);
 	private static final CTile weight = new CTile(0, 0);

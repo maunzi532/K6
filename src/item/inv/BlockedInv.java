@@ -6,7 +6,7 @@ import item.view.*;
 import java.io.*;
 import java.util.*;
 
-public class BlockedInv implements Inv
+public final class BlockedInv implements Inv
 {
 	public static final BlockedInv INSTANCE = new BlockedInv();
 

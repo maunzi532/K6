@@ -4,7 +4,7 @@ import building.adv.*;
 import java.util.*;
 import logic.xstate.*;
 
-public class BuildingInvEditGUI extends InvEditGUI
+public final class BuildingInvEditGUI extends InvEditGUI
 {
 	private final XBuilding doubleInv;
 	private final boolean editOutput;
@@ -14,12 +14,6 @@ public class BuildingInvEditGUI extends InvEditGUI
 		super(editOutput ? doubleInv.outputInv() : doubleInv.inputInv(), doubleInv.name(), List.of());
 		this.doubleInv = doubleInv;
 		this.editOutput = editOutput;
-	}
-
-	@Override
-	public boolean editMode()
-	{
-		return true;
 	}
 
 	@Override

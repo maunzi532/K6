@@ -2,11 +2,11 @@ package logic.xstate;
 
 import logic.*;
 import logic.gui.guis.*;
-import system2.*;
-import system2.analysis.*;
-import system2.animation.*;
+import statsystem.*;
+import statsystem.analysis.*;
+import statsystem.animation.*;
 
-public class PostAttackState extends AttackState
+public final class PostAttackState extends AttackState
 {
 	private final RNGOutcome2 result;
 	private GetExpAnim getExpAnim;

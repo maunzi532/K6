@@ -1,15 +1,15 @@
 package logic.editor;
 
 import doubleinv.*;
-import geom.f1.*;
+import geom.tile.*;
 import java.util.*;
 import logic.*;
-import logic.editor.editingModes.*;
+import logic.editor.editingmodes.*;
 import logic.editor.xgui.*;
 import logic.editor.xstate.*;
 import logic.xstate.*;
 
-public class LevelEditor
+public final class LevelEditor
 {
 	public static final int SLOT_COUNT = 5;
 

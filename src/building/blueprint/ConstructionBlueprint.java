@@ -14,7 +14,7 @@ public record ConstructionBlueprint(List<List<CostBlueprint>> blueprints)
 		data.elements().forEachRemaining(e ->
 		{
 			List<CostBlueprint> b1 = new ArrayList<>();
-			((JrsArray) e).elements().forEachRemaining(f -> b1.add(CostBlueprint.create((JrsObject) f, itemLoader)));
+			((JrsArray) e).elements().forEachRemaining(e1 -> b1.add(CostBlueprint.create((JrsObject) e1, itemLoader)));
 			blueprints.add(b1);
 		});
 		return new ConstructionBlueprint(blueprints);

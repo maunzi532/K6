@@ -3,7 +3,7 @@ package logic.gui;
 import java.util.*;
 import java.util.function.*;
 
-public class TargetScrollList<T> extends ScrollList<T>
+public final class TargetScrollList<T> extends ScrollList<T>
 {
 	private T targeted;
 	private T targeted2;
@@ -12,7 +12,7 @@ public class TargetScrollList<T> extends ScrollList<T>
 			List<T> elements, Function<T, GuiTile[]> function, Consumer<T> onClick)
 	{
 		super(locationX, locationY, sizeX, sizeY, elementSizeX, elementSizeY, elements, function, onClick);
-		this.onTarget = this::onTarget;
+		onTarget = this::onTarget;
 	}
 
 	private Boolean onTarget(T target)

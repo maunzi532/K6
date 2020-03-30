@@ -1,8 +1,8 @@
 package entity;
 
-import geom.f1.*;
+import geom.tile.*;
 
-public class TurnResources
+public final class TurnResources
 {
 	private Tile startLocation;
 	private int startMovement;

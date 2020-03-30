@@ -2,9 +2,9 @@ package logic.xstate;
 
 import entity.*;
 import logic.*;
-import system2.animation.*;
+import statsystem.animation.*;
 
-public class RegenerateState implements NAutoState
+public final class RegenerateState implements NAutoState
 {
 	private final XCharacter character;
 	private final NState nextState;

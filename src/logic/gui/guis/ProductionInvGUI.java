@@ -4,7 +4,7 @@ import building.adv.*;
 import logic.*;
 import logic.xstate.*;
 
-public class ProductionInvGUI extends Inv2GUI
+public final class ProductionInvGUI extends Inv2GUI
 {
 	private final XBuilding building;
 	private final ProcessInv processInv;

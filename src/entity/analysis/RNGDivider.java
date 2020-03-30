@@ -12,7 +12,7 @@ public abstract class RNGDivider
 	public long divider;
 	public List<RNGDivider> paths;
 
-	public RNGDivider(RNGDivider prev, long chance, long divider)
+	protected RNGDivider(RNGDivider prev, long chance, long divider)
 	{
 		this.prev = prev;
 		this.chance = chance;
@@ -51,12 +51,12 @@ public abstract class RNGDivider
 		int maxDivider = paths.stream().mapToInt(e -> (int) e.divider).max().orElseThrow();
 		int limit = paths.stream().mapToInt(e -> e.chanceForDivider(maxDivider)).sum();
 		int randomNum = r.nextInt(limit);
-		for(int i = 0; i < paths.size(); i++)
+		for(RNGDivider path : paths)
 		{
-			randomNum -= paths.get(i).chanceForDivider(maxDivider);
+			randomNum -= path.chanceForDivider(maxDivider);
 			if(randomNum < 0)
-				return paths.get(i);
+				return path;
 		}
-		throw new RuntimeException();
+		throw new RuntimeException("RollRNG Error");
 	}
 }

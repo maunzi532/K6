@@ -1,7 +1,7 @@
 package entity.sideinfo;
 
 import entity.*;
-import system2.*;
+import statsystem.*;
 
 public interface SideInfoFrame
 {

@@ -3,7 +3,7 @@ package entity.analysis;
 import java.util.*;
 import java.util.stream.*;
 
-public class RNGInfoAnalysis<Divider extends RNGDivider>
+public final class RNGInfoAnalysis<Divider extends RNGDivider>
 {
 	private Divider start;
 	private List<Divider> stack;
@@ -22,7 +22,7 @@ public class RNGInfoAnalysis<Divider extends RNGDivider>
 	{
 		stack.add(start);
 		snum.add(0);
-		while(stack.size() > 0)
+		while(!stack.isEmpty())
 		{
 			current().build();
 			if(current().paths.isEmpty())

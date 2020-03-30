@@ -9,7 +9,7 @@ public record RequiresFloorTiles(FloorTileType floorTileType, int amount, int mi
 {
 	public static RequiresFloorTiles create(JrsObject data)
 	{
-		FloorTileType floorTileType = FloorTileType.valueOf(data.get("Type").asText().toUpperCase());
+		FloorTileType floorTileType = FloorTileType.valueOf(data.get("Type").asText());
 		int amount = ((JrsNumber) data.get("Amount")).getValue().intValue();
 		int minRange = ((JrsNumber) data.get("MinRange")).getValue().intValue();
 		int maxRange = ((JrsNumber) data.get("MaxRange")).getValue().intValue();

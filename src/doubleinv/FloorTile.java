@@ -1,6 +1,6 @@
 package doubleinv;
 
-public class FloorTile
+public final class FloorTile
 {
 	public FloorTile(int sector, FloorTileType type)
 	{

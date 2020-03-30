@@ -8,7 +8,7 @@ import logic.editor.xgui.*;
 import logic.editor.xstate.*;
 import logic.gui.guis.*;
 
-public class XMenu
+public final class XMenu
 {
 	public static final XMenu NOMENU = new XMenu();
 
@@ -26,7 +26,7 @@ public class XMenu
 	public static XMenu characterGUIMenu(XCharacter character)
 	{
 		return new XMenu(new CharacterInvGUI(character), new CharacterCombatGUI(character, 0),
-				new GiveOrTakeState(true, character), new GiveOrTakeState(false, character),
+				new GiveOrTakeState(TradeDirection.GIVE, character), new GiveOrTakeState(TradeDirection.TAKE, character),
 				new SelectBuildingGUI(character), new RemoveBuildingGUI(character), new EndTurnState());
 	}
 

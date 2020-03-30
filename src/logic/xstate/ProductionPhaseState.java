@@ -3,7 +3,7 @@ package logic.xstate;
 import building.adv.*;
 import logic.*;
 
-public class ProductionPhaseState implements NAutoState
+public final class ProductionPhaseState implements NAutoState
 {
 	public static final int WAIT = 30;
 

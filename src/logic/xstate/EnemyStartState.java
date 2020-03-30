@@ -3,7 +3,7 @@ package logic.xstate;
 import entity.*;
 import logic.*;
 
-public class EnemyStartState implements NAutoState
+public final class EnemyStartState implements NAutoState
 {
 	private int counter;
 

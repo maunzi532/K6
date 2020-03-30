@@ -27,13 +27,13 @@ public class XDimension
 		return scaleHW;
 	}
 
-	public void setxW(double xW)
+	public final void setxW(double xW)
 	{
 		xHW = xW / 2d;
 		updateScale();
 	}
 
-	public void setyW(double yW)
+	public final void setyW(double yW)
 	{
 		yHW = yW / 2d;
 		updateScale();

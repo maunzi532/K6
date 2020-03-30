@@ -5,13 +5,13 @@ import building.blueprint.*;
 import com.fasterxml.jackson.jr.ob.comp.*;
 import com.fasterxml.jackson.jr.stree.*;
 import doubleinv.*;
-import geom.f1.*;
+import geom.tile.*;
 import item.*;
 import item.inv.*;
 import java.io.*;
 import java.util.*;
 
-public class ProcessInv implements BuildingFunction
+public final class ProcessInv implements BuildingFunction
 {
 	public static final int ARROW_TIME = 30;
 

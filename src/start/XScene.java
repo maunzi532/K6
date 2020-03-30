@@ -2,20 +2,21 @@ package start;
 
 import building.blueprint.*;
 import geom.*;
-import geom.d1.*;
+import geom.advtile.*;
 import item.*;
 import java.io.*;
 import java.net.*;
+import java.nio.charset.*;
 import javafx.application.*;
 import javafx.scene.*;
 import javafx.scene.canvas.*;
 import javafx.scene.paint.*;
 import javafx.stage.*;
-import system2.*;
-import visual1.*;
-import visual1.keybind.*;
+import statsystem.*;
+import vis.*;
+import vis.keybind.*;
 
-public class XScene extends Application
+public final class XScene extends Application
 {
 	private static final double MAP_SIZE_FACTOR = 0.088;
 	private static final double MENU_SIZE_FACTOR = 0.1;
@@ -35,10 +36,10 @@ public class XScene extends Application
 		int width = scheme.intSetting("window.width");
 		int height = scheme.intSetting("window.height");
 		Group root = new Group();
-		Scene s = new Scene(root, width, height, Color.BLACK);
+		Scene scene = new Scene(root, width, height, Color.BLACK);
 		Canvas canvas = new Canvas(width, height);
 		root.getChildren().add(canvas);
-		stage.setScene(s);
+		stage.setScene(scene);
 		stage.setTitle(scheme.setting("window.title"));
 		stage.getIcons().add(scheme.image("window.icon"));
 		XGraphics graphics = new XGraphics(canvas.getGraphicsContext2D(), width, height);
@@ -51,23 +52,23 @@ public class XScene extends Application
 				scheme.setting("load.map"),
 				scheme.setting("load.team"));
 		XTimer xTimer = new XTimer(mainVisual, keybindFile);
-		s.setOnMousePressed(xTimer::onMouseDown);
-		s.setOnDragDetected(xTimer::onDragDetected);
-		s.setOnMouseReleased(xTimer::onMouseUp);
-		s.setOnMouseMoved(xTimer::onMouseMove);
-		s.setOnMouseDragged(xTimer::onMouseMove);
-		s.setOnMouseExited(xTimer::onMouseExit);
-		s.setOnKeyPressed(xTimer::onKeyEvent);
-		s.setOnKeyReleased(xTimer::onKeyUp);
-		s.widthProperty().addListener((e, f, g) ->
+		scene.setOnMousePressed(xTimer::onMouseDown);
+		scene.setOnDragDetected(xTimer::onDragDetected);
+		scene.setOnMouseReleased(xTimer::onMouseUp);
+		scene.setOnMouseMoved(xTimer::onMouseMove);
+		scene.setOnMouseDragged(xTimer::onMouseMove);
+		scene.setOnMouseExited(xTimer::onMouseExit);
+		scene.setOnKeyPressed(xTimer::onKeyEvent);
+		scene.setOnKeyReleased(xTimer::onKeyUp);
+		scene.widthProperty().addListener((e1, e2, number) ->
 		{
-			canvas.setWidth(g.doubleValue());
-			graphics.setxW(g.doubleValue());
+			canvas.setWidth(number.doubleValue());
+			graphics.setxW(number.doubleValue());
 		});
-		s.heightProperty().addListener((e, f, g) ->
+		scene.heightProperty().addListener((e1, e2, number) ->
 		{
-			canvas.setHeight(g.doubleValue());
-			graphics.setyW(g.doubleValue());
+			canvas.setHeight(number.doubleValue());
+			graphics.setyW(number.doubleValue());
 		});
 		xTimer.start();
 		stage.show();
@@ -121,9 +122,9 @@ public class XScene extends Application
 		{
 			throw new RuntimeException("Resource not found: \"" + location + "\"");
 		}
-		try
+		try(InputStream inputStream = resource.openStream())
 		{
-			return new String(resource.openStream().readAllBytes());
+			return new String(inputStream.readAllBytes(), StandardCharsets.UTF_8);
 		}catch(IOException e)
 		{
 			throw new RuntimeException(e);

@@ -6,7 +6,7 @@ import item.*;
 import java.io.*;
 import java.util.*;
 
-public class BlueprintFile
+public final class BlueprintFile
 {
 	private final HashMap<String, BuildingBlueprint> blueprints;
 

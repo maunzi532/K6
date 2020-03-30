@@ -9,7 +9,7 @@ import logic.*;
 import logic.gui.*;
 import logic.xstate.*;
 
-public class RecipeGUI extends XGUIState
+public final class RecipeGUI extends XGUIState
 {
 	private static final CTile textRequires = new CTile(1, 0, new GuiTile("Requires"), 2, 1);
 	private static final CTile textResults = new CTile(4, 0, new GuiTile("Results"), 2, 1);

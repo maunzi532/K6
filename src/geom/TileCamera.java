@@ -1,7 +1,7 @@
 package geom;
 
-import geom.d1.*;
-import geom.f1.*;
+import geom.advtile.*;
+import geom.tile.*;
 
 public abstract class TileCamera
 {
@@ -12,7 +12,7 @@ public abstract class TileCamera
 	protected double xShift, yShift;
 	private double zoom;
 
-	public TileCamera(DoubleType y2, XDimension dimension, double xMid, double yMid, double xSize, double ySize,
+	protected TileCamera(DoubleType y2, XDimension dimension, double xMid, double yMid, double xSize, double ySize,
 			double xShift, double yShift)
 	{
 		this.y2 = y2;

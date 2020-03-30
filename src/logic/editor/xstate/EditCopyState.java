@@ -1,13 +1,13 @@
 package logic.editor.xstate;
 
 import entity.*;
-import geom.f1.*;
+import geom.tile.*;
 import java.util.*;
-import levelMap.*;
+import levelmap.*;
 import logic.*;
 import logic.xstate.*;
 
-public class EditCopyState implements NMarkState
+public final class EditCopyState implements NMarkState
 {
 	private final XCharacter entity;
 

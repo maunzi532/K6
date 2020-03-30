@@ -1,6 +1,6 @@
 package entity;
 
-public class NoAI implements EnemyAI
+public final class NoAI implements EnemyAI
 {
 	@Override
 	public EnemyMove preferredMove(XCharacter user, boolean canMove, boolean hasToMove, int moveAway)

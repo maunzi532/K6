@@ -18,7 +18,7 @@ public interface NState
 
 	default String keybind()
 	{
-		throw new RuntimeException();
+		throw new RuntimeException("Keybind not defined");
 	}
 
 	default boolean keepInMenu(MainState mainState)

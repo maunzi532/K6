@@ -2,7 +2,7 @@ package item.view;
 
 import item.*;
 
-public class ItemView extends InvNumView
+public final class ItemView extends InvNumView
 {
 	public final Item item;
 
