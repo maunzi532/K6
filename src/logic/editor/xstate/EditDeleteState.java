@@ -1,8 +1,6 @@
 package logic.editor.xstate;
 
 import entity.*;
-import entity.sideinfo.*;
-import levelMap.*;
 import logic.*;
 import logic.xstate.*;
 
@@ -22,10 +20,10 @@ public class EditDeleteState implements NAutoState
 	}
 
 	@Override
-	public void onEnter(SideInfoFrame side, LevelMap levelMap, MainState mainState)
+	public void onEnter(MainState mainState)
 	{
-		side.clearSideInfo();
-		levelMap.removeEntity(entity);
+		mainState.side.clearSideInfo();
+		mainState.levelMap.removeEntity(entity);
 	}
 
 	@Override

@@ -1,53 +1,26 @@
 package logic;
 
 import building.blueprint.*;
-import doubleinv.*;
-import entity.*;
-import geom.f1.*;
+import entity.sideinfo.*;
 import item.*;
 import levelMap.*;
 import logic.xstate.*;
 
 public class MainState
 {
+	public final LevelMap levelMap;
+	public final XStateHolder stateHolder;
+	public final SideInfoFrame side;
 	public final ItemLoader itemLoader;
 	public final BlueprintFile blueprintFile;
-	public final LevelMap levelMap;
-	public int turnCounter;
-	public final DoubleInv storage;
-	public boolean preferBuildings;
-	public boolean showAllEnemyReach;
-	public XStateHolder stateHolder;
 
-	public MainState(TileType y1, ItemLoader itemLoader, BlueprintFile blueprintFile)
+	public MainState(LevelMap levelMap, XStateHolder stateHolder, SideInfoFrame side, ItemLoader itemLoader, BlueprintFile blueprintFile)
 	{
+		this.levelMap = levelMap;
+		this.stateHolder = stateHolder;
+		this.side = side;
 		this.itemLoader = itemLoader;
 		this.blueprintFile = blueprintFile;
-		levelMap = new LevelMap(y1);
-		turnCounter = -1;
-		storage = new Storage();
-	}
-
-	public void importSave(SavedImport savedImport)
-	{
-		savedImport.importIntoMap3(levelMap, itemLoader, storage.inputInv());
-	}
-
-	public String turnText()
-	{
-		if(turnCounter <= 0)
-		{
-			return "Preparation Phase";
-		}
-		else
-		{
-			return "Turn " + turnCounter;
-		}
-	}
-
-	public String preferBuildingsText()
-	{
-		return preferBuildings ? "BCM" : "CCM";
 	}
 
 	//content
@@ -74,6 +47,7 @@ public class MainState
 	//TODO    LevelSystem view
 	//TODO    CharacterCombatGUI show stat calculation
 	//TODO    AttackInfoGUI show stat calculation
+	//TODO Building show floor requirements
 
 	//combat system (rules)
 	//TODO    change speed effects

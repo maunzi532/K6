@@ -3,7 +3,6 @@ package logic.xstate;
 import building.adv.*;
 import doubleinv.*;
 import entity.*;
-import entity.sideinfo.*;
 import geom.f1.*;
 import java.util.*;
 import java.util.stream.*;
@@ -25,14 +24,14 @@ public class GiveOrTakeState implements NMarkState
 	}
 
 	@Override
-	public void onEnter(SideInfoFrame side, LevelMap levelMap, MainState mainState)
+	public void onEnter(MainState mainState)
 	{
-		side.setStandardSideInfo(character);
-		boolean levelStarted = mainState.turnCounter > 0;
-		List<Tile> range = levelMap.y1.range(character.location(), 0, character.stats().maxAccessRange());
+		mainState.side.setStandardSideInfo(character);
+		boolean levelStarted = mainState.levelMap.turnCounter() > 0;
+		List<Tile> range = mainState.levelMap.y1.range(character.location(), 0, character.stats().maxAccessRange());
 		possibleTargets = new ArrayList<>();
-		range.stream().map(levelMap::getBuilding).filter(e -> e != null && e.active() && e.playerTradeable(levelStarted)).forEachOrdered(possibleTargets::add);
-		range.stream().map(levelMap::getEntity).filter(e -> e != null && e.active() && e.playerTradeable(levelStarted)).forEachOrdered(possibleTargets::add);
+		range.stream().map(mainState.levelMap::getBuilding).filter(e -> e != null && e.active() && e.playerTradeable(levelStarted)).forEachOrdered(possibleTargets::add);
+		range.stream().map(mainState.levelMap::getEntity).filter(e -> e != null && e.active() && e.playerTradeable(levelStarted)).forEachOrdered(possibleTargets::add);
 		visMarked = possibleTargets.stream().map(e -> new VisMark(e.location(), "mark.trade.target",
 				e.type() == DoubleInvType.ENTITY ? VisMark.d2 : VisMark.d1)).collect(Collectors.toList());
 	}
@@ -50,9 +49,9 @@ public class GiveOrTakeState implements NMarkState
 	}
 
 	@Override
-	public boolean keepInMenu(MainState mainState, LevelMap levelMap)
+	public boolean keepInMenu(MainState mainState)
 	{
-		if(mainState.turnCounter == 0)
+		if(mainState.levelMap.turnCounter() == 0)
 		{
 			return character.saveSettings() == null || !character.saveSettings().startInvLocked;
 		}
@@ -69,27 +68,27 @@ public class GiveOrTakeState implements NMarkState
 	}
 
 	@Override
-	public void onClick(MainState mainState, LevelMap levelMap, XStateHolder stateHolder, Tile mapTile, XKey key)
+	public void onClick(MainState mainState, Tile mapTile, XKey key)
 	{
-		boolean levelStarted = mainState.turnCounter > 0;
+		boolean levelStarted = mainState.levelMap.turnCounter() > 0;
 		List<DoubleInv> list = possibleTargets.stream().filter(e -> mapTile.equals(e.location())).collect(Collectors.toList());
 		if(list.isEmpty())
 		{
-			stateHolder.setState(NoneState.INSTANCE);
+			mainState.stateHolder.setState(NoneState.INSTANCE);
 		}
 		else if(list.size() == 1)
 		{
-			startTradeState(mainState, stateHolder, list.get(0), levelStarted);
+			startTradeState(mainState.levelMap, mainState.stateHolder, list.get(0), levelStarted);
 		}
 		else
 		{
-			if(mainState.preferBuildings)
+			if(mainState.stateHolder.preferBuildings())
 			{
 				for(DoubleInv inv1 : list)
 				{
 					if(inv1 instanceof XBuilding)
 					{
-						startTradeState(mainState, stateHolder, inv1, levelStarted);
+						startTradeState(mainState.levelMap, mainState.stateHolder, inv1, levelStarted);
 						break;
 					}
 				}
@@ -100,7 +99,7 @@ public class GiveOrTakeState implements NMarkState
 				{
 					if(inv1.type() == DoubleInvType.ENTITY)
 					{
-						startTradeState(mainState, stateHolder, inv1, levelStarted);
+						startTradeState(mainState.levelMap, mainState.stateHolder, inv1, levelStarted);
 						break;
 					}
 				}
@@ -108,16 +107,16 @@ public class GiveOrTakeState implements NMarkState
 		}
 	}
 
-	private void startTradeState(MainState mainState, XStateHolder stateHolder, DoubleInv inv1, boolean levelStarted)
+	private void startTradeState(LevelMap levelMap, XStateHolder stateHolder, DoubleInv inv1, boolean levelStarted)
 	{
 		if(inv1 == character)
 		{
 			if(!levelStarted)
 			{
 				if(give)
-					stateHolder.setState(new DirectedTradeGUI(character, mainState.storage, null));
+					stateHolder.setState(new DirectedTradeGUI(character, levelMap.storage(), null));
 				else
-					stateHolder.setState(new DirectedTradeGUI(mainState.storage, character, null));
+					stateHolder.setState(new DirectedTradeGUI(levelMap.storage(), character, null));
 			}
 			else
 			{

@@ -1,8 +1,6 @@
 package logic.gui.guis;
 
 import entity.*;
-import entity.sideinfo.*;
-import levelMap.*;
 import logic.*;
 import logic.xstate.*;
 
@@ -19,11 +17,11 @@ public class CharacterLevelupGUI extends Inv1GUI
 	}
 
 	@Override
-	public void onEnter(SideInfoFrame side, LevelMap levelMap, MainState mainState)
+	public void onEnter(MainState mainState)
 	{
-		side.setStandardSideInfo(character);
+		mainState.side.setStandardSideInfo(character);
 		baseInfo = character.stats().levelup();
-		super.onEnter(side, levelMap, mainState);
+		super.onEnter(mainState);
 	}
 
 	@Override

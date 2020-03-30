@@ -3,7 +3,6 @@ package logic;
 import building.adv.*;
 import building.transport.*;
 import entity.*;
-import entity.sideinfo.*;
 import geom.f1.*;
 import java.util.*;
 import java.util.stream.*;
@@ -16,24 +15,30 @@ import logic.xstate.*;
 
 public class XStateControl implements XStateHolder, ConvInputConsumer
 {
-	private final MainState mainState;
+	private MainState mainState;
+	private final LevelMap levelMap;
 	private final LevelEditor levelEditor;
-	private final SideInfoFrame sideInfoFrame;
 	private NState state;
 	private List<NState> menu;
 	private VisMark cursorMarker;
 	private List<VisMark> dragMarker;
-	private Map<Tile, Long> allEnemyReach;
 	private final List<VisMark> visMarked;
+	public boolean preferBuildings;
+	private boolean showAllEnemyReach;
+	private Map<Tile, Long> allEnemyReach;
 
 
-	public XStateControl(MainState mainState, LevelEditor levelEditor, SideInfoFrame sideInfoFrame, NState state)
+	public XStateControl(LevelMap levelMap, LevelEditor levelEditor)
 	{
-		this.mainState = mainState;
+		this.levelMap = levelMap;
 		this.levelEditor = levelEditor;
-		this.sideInfoFrame = sideInfoFrame;
 		dragMarker = List.of();
 		visMarked = new ArrayList<>();
+	}
+
+	public void setMainState(MainState mainState, NState state)
+	{
+		this.mainState = mainState;
 		setState(state);
 	}
 
@@ -41,8 +46,8 @@ public class XStateControl implements XStateHolder, ConvInputConsumer
 	public void setState(NState state)
 	{
 		this.state = state;
-		state.onEnter(sideInfoFrame, mainState.levelMap, mainState);
-		menu = state.menu().getEntries().stream().filter(e -> e.keepInMenu(mainState, mainState.levelMap)).collect(Collectors.toList());
+		state.onEnter(mainState);
+		menu = state.menu().getEntries().stream().filter(e -> e.keepInMenu(mainState)).collect(Collectors.toList());
 	}
 
 	@Override
@@ -70,6 +75,18 @@ public class XStateControl implements XStateHolder, ConvInputConsumer
 	public List<VisMark> visMarked()
 	{
 		return visMarked;
+	}
+
+	@Override
+	public boolean preferBuildings()
+	{
+		return preferBuildings;
+	}
+
+	@Override
+	public boolean showAllEnemyReach()
+	{
+		return showAllEnemyReach;
 	}
 
 	@Override
@@ -111,7 +128,7 @@ public class XStateControl implements XStateHolder, ConvInputConsumer
 		else if(state.editMode() && editorOption >= 0)
 		{
 			//editor
-			levelEditor.onEditorTarget(editorOption, key);
+			levelEditor.onEditorTarget(editorOption, key, this, mainState);
 			cursorMarker = null;
 		}
 		else
@@ -148,16 +165,16 @@ public class XStateControl implements XStateHolder, ConvInputConsumer
 			return;
 		if(state instanceof NMarkState markState && key.canClick())
 		{
-			markState.onClick(mainState, mainState.levelMap, this, mapTile, key);
+			markState.onClick(mainState, mapTile, key);
 		}
 		else if(state.editMode() && key.canClick())
 		{
-			levelEditor.onMapClick(mapTile, key);
+			levelEditor.onMapClick(mapTile, key, mainState);
 		}
 		else if(key.canClick())
 		{
-			AdvTile advTile = mainState.levelMap.advTile(mapTile);
-			if(mainState.preferBuildings)
+			AdvTile advTile = levelMap.advTile(mapTile);
+			if(preferBuildings)
 			{
 				if(advTile.building() != null)
 				{
@@ -165,14 +182,14 @@ public class XStateControl implements XStateHolder, ConvInputConsumer
 				}
 				else if(advTile.entity() != null)
 				{
-					onClickEntity(advTile.entity(), mainState.turnCounter > 0, key);
+					onClickEntity(advTile.entity(), levelMap.turnCounter() > 0, key);
 				}
 			}
 			else
 			{
 				if(advTile.entity() != null)
 				{
-					onClickEntity(advTile.entity(), mainState.turnCounter > 0, key);
+					onClickEntity(advTile.entity(), levelMap.turnCounter() > 0, key);
 				}
 				else if(advTile.building() != null)
 				{
@@ -246,11 +263,11 @@ public class XStateControl implements XStateHolder, ConvInputConsumer
 	{
 		if(!(state instanceof XGUIState))
 		{
-			dragMarker = mainState.levelMap.y1.betweenArea(startTile, endTile).stream()
+			dragMarker = levelMap.y1.betweenArea(startTile, endTile).stream()
 					.map(e -> new VisMark(e, "mark.cursor.drag", VisMark.d3)).collect(Collectors.toList());
 			if(finished && state.editMode() && key.canDrag())
 			{
-				levelEditor.onMapDrag(startTile, endTile, key);
+				levelEditor.onMapDrag(startTile, endTile, key, mainState);
 			}
 		}
 		else
@@ -281,13 +298,13 @@ public class XStateControl implements XStateHolder, ConvInputConsumer
 		}
 		else if(key.hasFunction("Click Mode"))
 		{
-			mainState.preferBuildings = !mainState.preferBuildings;
+			preferBuildings = !preferBuildings;
 		}
 		else if(key.hasFunction("All Enemy Reach"))
 		{
-			mainState.showAllEnemyReach = !mainState.showAllEnemyReach;
-			if(mainState.showAllEnemyReach)
-				mainState.levelMap.requireUpdate();
+			showAllEnemyReach = !showAllEnemyReach;
+			if(showAllEnemyReach)
+				levelMap.requireUpdate();
 		}
 		else if(key.hasFunction("Escape"))
 		{
@@ -328,11 +345,11 @@ public class XStateControl implements XStateHolder, ConvInputConsumer
 			}
 		}
 		visMarked.clear();
-		if(mainState.showAllEnemyReach)
+		if(showAllEnemyReach)
 		{
-			if(mainState.levelMap.checkUpdate())
+			if(levelMap.checkUpdate())
 			{
-				allEnemyReach = mainState.levelMap.allEnemyReach();
+				allEnemyReach = levelMap.allEnemyReach();
 			}
 			allEnemyReach.forEach((t, n) -> visMarked.add(new VisMark(t, "mark.reach.all", 0.8)));
 		}
@@ -351,11 +368,11 @@ public class XStateControl implements XStateHolder, ConvInputConsumer
 	public void tickPaused()
 	{
 		visMarked.clear();
-		if(mainState.showAllEnemyReach)
+		if(showAllEnemyReach)
 		{
-			if(mainState.levelMap.checkUpdate())
+			if(levelMap.checkUpdate())
 			{
-				allEnemyReach = mainState.levelMap.allEnemyReach();
+				allEnemyReach = levelMap.allEnemyReach();
 			}
 			allEnemyReach.forEach((t, n) -> visMarked.add(new VisMark(t, "mark.reach.all", 0.8)));
 		}

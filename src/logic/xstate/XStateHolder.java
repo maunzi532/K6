@@ -15,4 +15,8 @@ public interface XStateHolder
 	XGUIState getGUI();
 
 	List<VisMark> visMarked();
+
+	boolean preferBuildings();
+
+	boolean showAllEnemyReach();
 }

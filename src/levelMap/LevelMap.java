@@ -8,7 +8,6 @@ import doubleinv.*;
 import entity.*;
 import geom.f1.*;
 import item.*;
-import item.inv.*;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
@@ -22,6 +21,8 @@ public class LevelMap implements ConnectRestore, Arrows
 	private final HashMap<Tile, AdvTile> advTiles;
 	private final ArrayList<XBuilding> buildings;
 	private final HashMap<CharacterTeam, List<XCharacter>> characters;
+	private final DoubleInv storage;
+	private int turnCounter;
 	private final ArrayList<XArrow> arrows;
 	private final ArrayList<Integer> screenshake;
 	private boolean requiresUpdate;
@@ -32,6 +33,8 @@ public class LevelMap implements ConnectRestore, Arrows
 		advTiles = new HashMap<>();
 		buildings = new ArrayList<>();
 		characters = new HashMap<>();
+		storage = new Storage();
+		turnCounter = -1;
 		arrows = new ArrayList<>();
 		screenshake = new ArrayList<>();
 	}
@@ -290,6 +293,21 @@ public class LevelMap implements ConnectRestore, Arrows
 				.collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
 	}
 
+	public DoubleInv storage()
+	{
+		return storage;
+	}
+
+	public int turnCounter()
+	{
+		return turnCounter;
+	}
+
+	public void increaseTurnCounter()
+	{
+		turnCounter++;
+	}
+
 	public List<XArrow> getArrows()
 	{
 		return arrows;
@@ -381,7 +399,7 @@ public class LevelMap implements ConnectRestore, Arrows
 		throw new RuntimeException();
 	}
 
-	public String[] saveDataJSON(ItemLoader itemLoader, Inv storage)
+	public String[] saveDataJSON(ItemLoader itemLoader)
 	{
 		try
 		{
@@ -414,7 +432,7 @@ public class LevelMap implements ConnectRestore, Arrows
 					building.save(a2.startObject(), itemLoader, y1);
 			}
 			a2.end();
-			storage.save(h1.startObjectField("Storage"), itemLoader);
+			storage.outputInv().save(h1.startObjectField("Storage"), itemLoader);
 			var a3 = a1.startArrayField("Characters");
 			var h2 = h1.startArrayField("Characters");
 			for(List<XCharacter> c1 : characters.values())

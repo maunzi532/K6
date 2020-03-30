@@ -1,7 +1,5 @@
 package logic.xstate;
 
-import entity.sideinfo.*;
-import levelMap.*;
 import logic.*;
 
 public interface NState
@@ -11,7 +9,7 @@ public interface NState
 		return false;
 	}
 
-	void onEnter(SideInfoFrame side, LevelMap levelMap, MainState mainState);
+	void onEnter(MainState mainState);
 
 	default String text()
 	{
@@ -23,7 +21,7 @@ public interface NState
 		throw new RuntimeException();
 	}
 
-	default boolean keepInMenu(MainState mainState, LevelMap levelMap)
+	default boolean keepInMenu(MainState mainState)
 	{
 		return true;
 	}

@@ -1,11 +1,9 @@
 package logic.editor.xgui;
 
 import entity.*;
-import entity.sideinfo.*;
 import item.view.*;
 import java.util.*;
 import java.util.stream.*;
-import levelMap.*;
 import logic.*;
 import logic.gui.*;
 import logic.xstate.*;
@@ -36,7 +34,7 @@ public class EntityEditGUI extends XGUIState
 	}
 
 	@Override
-	public void onEnter(SideInfoFrame side, LevelMap levelMap, MainState mainState)
+	public void onEnter(MainState mainState)
 	{
 		changeStatNum = -1;
 		changeOptions = List.of();

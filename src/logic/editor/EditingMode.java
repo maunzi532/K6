@@ -1,9 +1,8 @@
 package logic.editor;
 
 import geom.f1.*;
-import levelMap.*;
-import logic.gui.*;
 import logic.*;
+import logic.gui.*;
 
 public interface EditingMode
 {
@@ -13,7 +12,7 @@ public interface EditingMode
 
 	default void onClick(MainState mainState, XKey key){}
 
-	void onMapClick(MainState mainState, LevelMap levelMap, Tile tile, XKey key);
+	void onMapClick(MainState mainState, Tile tile, XKey key);
 
-	default void onMapDrag(MainState mainState, LevelMap levelMap, Tile tile1, Tile tile2, XKey key){}
+	default void onMapDrag(MainState mainState, Tile tile1, Tile tile2, XKey key){}
 }

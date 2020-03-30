@@ -1,11 +1,10 @@
 package logic.editor.xgui;
 
-import entity.sideinfo.*;
-import levelMap.*;
 import logic.*;
 import logic.editor.*;
 import logic.editor.xstate.*;
 import logic.gui.*;
+import logic.xstate.*;
 
 public class EditorSlotModeGUI extends XGUIState
 {
@@ -25,11 +24,11 @@ public class EditorSlotModeGUI extends XGUIState
 	}
 
 	@Override
-	public void onEnter(SideInfoFrame side, LevelMap levelMap, MainState mainState)
+	public void onEnter(MainState mainState)
 	{
-		side.clearSideInfo();
+		mainState.side.clearSideInfo();
 		elements.add(new ScrollList<>(0, 1, 6, 5, 1, 1, editor.getModes(),
-				mode -> GuiTile.cast(mode.guiTile()), target -> click(target, mainState)));
+				mode -> GuiTile.cast(mode.guiTile()), target -> click(target, mainState.stateHolder)));
 		elements.add(new CElement(textInv));
 		update();
 	}
@@ -46,9 +45,9 @@ public class EditorSlotModeGUI extends XGUIState
 		return 6;
 	}
 
-	private void click(EditingMode target, MainState mainState)
+	private void click(EditingMode target, XStateHolder stateHolder)
 	{
 		editor.setCurrentSlot(target);
-		mainState.stateHolder.setState(EditingState.INSTANCE);
+		stateHolder.setState(EditingState.INSTANCE);
 	}
 }

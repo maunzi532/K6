@@ -31,11 +31,11 @@ public class EditorSlot
 
 	public void onMapClick(MainState mainState, Tile tile, XKey key)
 	{
-		mode.onMapClick(mainState, mainState.levelMap, tile, key);
+		mode.onMapClick(mainState, tile, key);
 	}
 
 	public void onMapDrag(MainState mainState, Tile tile1, Tile tile2, XKey key)
 	{
-		mode.onMapDrag(mainState, mainState.levelMap, tile1, tile2, key);
+		mode.onMapDrag(mainState, tile1, tile2, key);
 	}
 }

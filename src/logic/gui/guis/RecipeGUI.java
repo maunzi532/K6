@@ -2,11 +2,9 @@ package logic.gui.guis;
 
 import building.adv.*;
 import building.blueprint.*;
-import entity.sideinfo.*;
 import item.*;
 import item.inv.*;
 import item.view.*;
-import levelMap.*;
 import logic.*;
 import logic.gui.*;
 import logic.xstate.*;
@@ -32,7 +30,7 @@ public class RecipeGUI extends XGUIState
 	}
 
 	@Override
-	public void onEnter(SideInfoFrame side, LevelMap levelMap, MainState mainState)
+	public void onEnter(MainState mainState)
 	{
 		recipeNum = processInv.lastViewedRecipeNum;
 		requireView = new ScrollList<>(1, 1, 2, 5, 2, 1, null,

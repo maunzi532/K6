@@ -2,9 +2,7 @@ package logic.xstate;
 
 import arrow.*;
 import entity.*;
-import entity.sideinfo.*;
 import geom.f1.*;
-import levelMap.*;
 import logic.*;
 
 public class MoveAnimState implements NAutoState
@@ -23,10 +21,10 @@ public class MoveAnimState implements NAutoState
 	}
 
 	@Override
-	public void onEnter(SideInfoFrame side, LevelMap levelMap, MainState mainState)
+	public void onEnter(MainState mainState)
 	{
-		finish = (levelMap.y1.distance(newLocation, entity.location()) + 1) * XArrow.TIME_PER_DISTANCE;
-		levelMap.moveEntity(entity, newLocation);
+		finish = (mainState.levelMap.y1.distance(newLocation, entity.location()) + 1) * XArrow.TIME_PER_DISTANCE;
+		mainState.levelMap.moveEntity(entity, newLocation);
 	}
 
 	@Override

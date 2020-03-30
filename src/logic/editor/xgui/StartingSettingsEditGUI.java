@@ -1,8 +1,6 @@
 package logic.editor.xgui;
 
 import entity.*;
-import entity.sideinfo.*;
-import levelMap.*;
 import logic.*;
 import logic.gui.*;
 import logic.xstate.*;
@@ -28,7 +26,7 @@ public class StartingSettingsEditGUI extends XGUIState
 	}
 
 	@Override
-	public void onEnter(SideInfoFrame side, LevelMap levelMap, MainState mainState)
+	public void onEnter(MainState mainState)
 	{
 		locationLockedElement = new CElement(isLocationLocked, true, null,
 				() -> character.saveSettings().startLocked = !character.saveSettings().startLocked);
@@ -67,7 +65,7 @@ public class StartingSettingsEditGUI extends XGUIState
 	}
 
 	@Override
-	public boolean keepInMenu(MainState mainState, LevelMap levelMap)
+	public boolean keepInMenu(MainState mainState)
 	{
 		return character.saveSettings() != null;
 	}

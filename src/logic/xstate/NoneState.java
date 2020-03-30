@@ -1,7 +1,5 @@
 package logic.xstate;
 
-import entity.sideinfo.*;
-import levelMap.*;
 import logic.*;
 
 public class NoneState implements NState
@@ -9,9 +7,9 @@ public class NoneState implements NState
 	public static final NoneState INSTANCE = new NoneState();
 
 	@Override
-	public void onEnter(SideInfoFrame side, LevelMap levelMap, MainState mainState)
+	public void onEnter(MainState mainState)
 	{
-		side.clearSideInfo();
+		mainState.side.clearSideInfo();
 	}
 
 	@Override

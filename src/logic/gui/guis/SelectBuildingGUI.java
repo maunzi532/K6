@@ -3,8 +3,6 @@ package logic.gui.guis;
 import building.blueprint.*;
 import doubleinv.*;
 import entity.*;
-import entity.sideinfo.*;
-import levelMap.*;
 import logic.*;
 import logic.gui.*;
 import logic.xstate.*;
@@ -27,11 +25,11 @@ public class SelectBuildingGUI extends XGUIState
 	}
 
 	@Override
-	public void onEnter(SideInfoFrame side, LevelMap levelMap, MainState mainState)
+	public void onEnter(MainState mainState)
 	{
 		if(builder instanceof XCharacter character)
 		{
-			side.setStandardSideInfo(character);
+			mainState.side.setStandardSideInfo(character);
 		}
 		ScrollList<BuildingBlueprint> buildingsView = new ScrollList<>(0, 1, 6, 5, 2, 1,
 				mainState.blueprintFile.allBlueprints(), this::itemView,
@@ -54,9 +52,9 @@ public class SelectBuildingGUI extends XGUIState
 	}
 
 	@Override
-	public boolean keepInMenu(MainState mainState, LevelMap levelMap)
+	public boolean keepInMenu(MainState mainState)
 	{
-		return !(builder instanceof XCharacter character) || (character.resources().ready(1) && levelMap.getBuilding(builder.location()) == null);
+		return !(builder instanceof XCharacter character) || (character.resources().ready(1) && mainState.levelMap.getBuilding(builder.location()) == null);
 	}
 
 	@Override

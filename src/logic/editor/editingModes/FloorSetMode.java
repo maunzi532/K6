@@ -2,7 +2,6 @@ package logic.editor.editingModes;
 
 import doubleinv.*;
 import geom.f1.*;
-import levelMap.*;
 import logic.gui.*;
 import logic.editor.*;
 import logic.*;
@@ -25,28 +24,28 @@ public class FloorSetMode implements EditingMode
 	}
 
 	@Override
-	public void onMapClick(MainState mainState, LevelMap levelMap, Tile tile, XKey key)
+	public void onMapClick(MainState mainState, Tile tile, XKey key)
 	{
 		if(key.hasFunction("Clear Tile"))
 		{
-			levelMap.clearTile(tile);
+			mainState.levelMap.clearTile(tile);
 		}
 		if(key.hasFunction("Set Tile"))
 		{
-			levelMap.setFloorTile(tile, new FloorTile(0, tileType));
+			mainState.levelMap.setFloorTile(tile, new FloorTile(0, tileType));
 		}
 	}
 
 	@Override
-	public void onMapDrag(MainState mainState, LevelMap levelMap, Tile tile1, Tile tile2, XKey key)
+	public void onMapDrag(MainState mainState, Tile tile1, Tile tile2, XKey key)
 	{
 		if(key.hasFunction("Clear Tile"))
 		{
-			levelMap.y1.betweenArea(tile1, tile2).forEach(levelMap::clearTile);
+			mainState.levelMap.y1.betweenArea(tile1, tile2).forEach(mainState.levelMap::clearTile);
 		}
 		if(key.hasFunction("Set Tile"))
 		{
-			levelMap.y1.betweenArea(tile1, tile2).forEach(tile -> levelMap.setFloorTile(tile, new FloorTile(0, tileType)));
+			mainState.levelMap.y1.betweenArea(tile1, tile2).forEach(tile -> mainState.levelMap.setFloorTile(tile, new FloorTile(0, tileType)));
 		}
 	}
 }

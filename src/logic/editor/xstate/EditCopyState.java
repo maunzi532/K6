@@ -1,7 +1,6 @@
 package logic.editor.xstate;
 
 import entity.*;
-import entity.sideinfo.*;
 import geom.f1.*;
 import java.util.*;
 import levelMap.*;
@@ -24,7 +23,7 @@ public class EditCopyState implements NMarkState
 	}
 
 	@Override
-	public void onEnter(SideInfoFrame side, LevelMap levelMap, MainState mainState){}
+	public void onEnter(MainState mainState){}
 
 	@Override
 	public String text()
@@ -45,15 +44,15 @@ public class EditCopyState implements NMarkState
 	}
 
 	@Override
-	public void onClick(MainState mainState, LevelMap levelMap, XStateHolder stateHolder, Tile mapTile, XKey key)
+	public void onClick(MainState mainState, Tile mapTile, XKey key)
 	{
-		if(levelMap.getEntity(mapTile) == null)
+		if(mainState.levelMap.getEntity(mapTile) == null)
 		{
-			levelMap.addEntity(entity.copy(mapTile));
+			mainState.levelMap.addEntity(entity.copy(mapTile));
 		}
 		else
 		{
-			stateHolder.setState(EditingState.INSTANCE);
+			mainState.stateHolder.setState(EditingState.INSTANCE);
 		}
 	}
 

@@ -1,8 +1,6 @@
 package logic.xstate;
 
 import building.transport.*;
-import entity.sideinfo.*;
-import levelMap.*;
 import logic.*;
 
 public class TransportPhaseState implements NAutoState
@@ -12,10 +10,10 @@ public class TransportPhaseState implements NAutoState
 	private int counter;
 
 	@Override
-	public void onEnter(SideInfoFrame side, LevelMap levelMap, MainState mainState)
+	public void onEnter(MainState mainState)
 	{
-		side.clearSideInfo();
-		levelMap.transportPhase();
+		mainState.side.clearSideInfo();
+		mainState.levelMap.transportPhase();
 	}
 
 	@Override

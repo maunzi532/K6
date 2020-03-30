@@ -34,9 +34,11 @@ public class MainVisual implements XInputInterface
 	private VisualGUI visualGUI;
 	private VisualLevelEditor visualLevelEditor;
 	private VisualSideInfoFrame visualSideInfoFrame;
-	private MainState mainState;
+	private LevelMap levelMap;
 	private LevelEditor levelEditor;
+	private XStateHolder stateHolder;
 	private ConvInputConsumer convInputConsumer;
+	private MainState mainState;
 	private int screenshake;
 	private boolean paused;
 
@@ -56,19 +58,21 @@ public class MainVisual implements XInputInterface
 		visualGUI = VisualGUI.forCamera(graphics, guiCamera);
 		visualLevelEditor = new VisualLevelEditor(graphics, editorSlotCameraSupplier);
 		visualSideInfoFrame = new VisualSideInfoFrame(graphics, false);
-		mainState = new MainState(mapCamera.getDoubleType(), itemLoader, blueprintFile);
-		levelEditor = new LevelEditor(mainState);
-		XStateControl stateControl = new XStateControl(mainState, levelEditor, visualSideInfoFrame, new StartTurnState());
+		levelMap = new LevelMap(mapCamera.getDoubleType());
+		levelEditor = new LevelEditor();
+		XStateControl stateControl = new XStateControl(levelMap, levelEditor);
+		stateHolder = stateControl;
 		convInputConsumer = stateControl;
-		mainState.stateHolder = stateControl;
-		loadLevel(loadFileMap, loadFileTeam);
+		mainState = new MainState(levelMap, stateHolder, visualSideInfoFrame, itemLoader, blueprintFile);
+		stateControl.setMainState(mainState, new StartTurnState());
+		loadLevel(loadFileMap, loadFileTeam, itemLoader, levelMap);
 		GraphicsContext gd = graphics.gd();
 		gd.setTextAlign(TextAlignment.CENTER);
 		gd.setTextBaseline(VPos.CENTER);
 		draw();
 	}
 
-	public void loadLevel(String loadFileMap, String loadFileTeam)
+	public void loadLevel(String loadFileMap, String loadFileTeam, ItemLoader itemLoader, LevelMap levelMap)
 	{
 		File fileMap;
 		File fileTeam;
@@ -86,7 +90,8 @@ public class MainVisual implements XInputInterface
 		{
 			try
 			{
-				mainState.importSave(new SavedImport(new String(Files.readAllBytes(fileMap.toPath())), new String(Files.readAllBytes(fileTeam.toPath()))));
+				new SavedImport(new String(Files.readAllBytes(fileMap.toPath())), new String(Files.readAllBytes(fileTeam.toPath())))
+						.importIntoMap3(levelMap, itemLoader, levelMap.storage().inputInv());
 			}catch(IOException e)
 			{
 				throw new RuntimeException(e);
@@ -132,9 +137,9 @@ public class MainVisual implements XInputInterface
 				mapCamera.setYShift(mapCamera.getYShift() + yp + BORDER2);
 			if(!paused)
 			{
-				convInputConsumer.mousePosition(visualGUI.inside(guiCamera, xMouse, yMouse, mainState.stateHolder.getGUI()),
+				convInputConsumer.mousePosition(visualGUI.inside(guiCamera, xMouse, yMouse, stateHolder.getGUI()),
 						visualGUI.offsetClickLocation(guiCamera, xMouse, yMouse),
-						visualMenu.coordinatesToOption(menuCamera, xMouse, yMouse, mainState.stateHolder),
+						visualMenu.coordinatesToOption(menuCamera, xMouse, yMouse, stateHolder),
 						visualLevelEditor.editorClickNum(xMouse, yMouse, levelEditor),
 						targetedTile(xMouse, yMouse), moved, drag, key);
 			}
@@ -202,7 +207,7 @@ public class MainVisual implements XInputInterface
 	{
 		if(!paused)
 		{
-			mainState.levelMap.tickArrows();
+			levelMap.tickArrows();
 			convInputConsumer.tick();
 		}
 		else
@@ -210,7 +215,7 @@ public class MainVisual implements XInputInterface
 			convInputConsumer.tickPaused();
 		}
 		visualSideInfoFrame.tick();
-		screenshake = Math.max(screenshake, mainState.levelMap.removeFirstScreenshake());
+		screenshake = Math.max(screenshake, levelMap.removeFirstScreenshake());
 		if(screenshake > 0)
 		{
 			screenshake--;
@@ -221,13 +226,15 @@ public class MainVisual implements XInputInterface
 	private void draw()
 	{
 		//graphics.gd().clearRect(0, 0, graphics.xHW() * 2, graphics.yHW() * 2);
-		visualTile.draw(mapCamera, mainState.levelMap, mainState.stateHolder.visMarked(), screenshake, scheme);
+		visualTile.draw(mapCamera, levelMap, stateHolder.visMarked(), screenshake, scheme);
 		visualSideInfoFrame.draw(scheme);
-		visualLevelEditor.draw(levelEditor, scheme);
-		visualGUI.zoomAndDraw(guiCamera, mainState.stateHolder.getGUI(), scheme);
-		visualMenu.draw(menuCamera, graphics.yHW() - graphics.scaleHW() * 0.08,
-				graphics.yHW() - Math.max(visualSideInfoFrame.takeY2(), visualLevelEditor.takeY(mainState)),
-				mainState.stateHolder, keyMap, scheme);
+		if(stateHolder.getState().editMode())
+		{
+			visualLevelEditor.draw(levelEditor, scheme);
+		}
+		visualGUI.zoomAndDraw(guiCamera, stateHolder.getGUI(), scheme);
+		double bLimit = graphics.yHW() - Math.max(visualSideInfoFrame.takeY2(), visualLevelEditor.takeY(stateHolder.getState().editMode()));
+		visualMenu.draw(menuCamera, graphics.yHW() - graphics.scaleHW() * 0.08, bLimit, stateHolder, keyMap, scheme);
 		drawInfoText();
 	}
 
@@ -249,12 +256,24 @@ public class MainVisual implements XInputInterface
 		gd.setFill(scheme.color("topbar.text"));
 		gd.setFont(new Font(scale));
 		gd.setTextAlign(TextAlignment.LEFT);
-		gd.fillText(mainState.turnText(), scale, scale);
-		gd.fillText(mainState.preferBuildingsText(), xHW / 2, scale);
+		gd.fillText(turnText(levelMap.turnCounter()), scale, scale);
+		gd.fillText(stateHolder.preferBuildings() ? "BCM" : "CCM", xHW / 2, scale);
 		if(paused)
 			gd.fillText("Paused", xHW, scale);
 		gd.setTextAlign(TextAlignment.RIGHT);
 		gd.fillText("P to open pause menu", xHW * 2 - scale, scale);
 		gd.setTextAlign(TextAlignment.CENTER);
+	}
+
+	public String turnText(int turnCounter)
+	{
+		if(turnCounter <= 0)
+		{
+			return "Preparation Phase";
+		}
+		else
+		{
+			return "Turn " + turnCounter;
+		}
 	}
 }

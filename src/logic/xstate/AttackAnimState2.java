@@ -1,7 +1,5 @@
 package logic.xstate;
 
-import entity.sideinfo.*;
-import levelMap.*;
 import logic.*;
 import system2.*;
 import system2.analysis.*;
@@ -19,9 +17,9 @@ public class AttackAnimState2 extends AttackState
 	}
 
 	@Override
-	public void onEnter(SideInfoFrame side, LevelMap levelMap, MainState mainState)
+	public void onEnter(MainState mainState)
 	{
-		attackAnim = new AttackAnim(divider, levelMap);
+		attackAnim = new AttackAnim(divider, mainState.levelMap);
 	}
 
 	@Override

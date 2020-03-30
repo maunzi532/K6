@@ -1,8 +1,6 @@
 package logic.gui.guis;
 
 import entity.*;
-import entity.sideinfo.*;
-import levelMap.*;
 import logic.*;
 import logic.xstate.*;
 
@@ -17,10 +15,10 @@ public class CharacterInvGUI extends Inv1GUI
 	}
 
 	@Override
-	public void onEnter(SideInfoFrame side, LevelMap levelMap, MainState mainState)
+	public void onEnter(MainState mainState)
 	{
-		side.setStandardSideInfo(character);
-		super.onEnter(side, levelMap, mainState);
+		mainState.side.setStandardSideInfo(character);
+		super.onEnter(mainState);
 	}
 
 	@Override

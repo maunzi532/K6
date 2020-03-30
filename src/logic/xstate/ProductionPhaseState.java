@@ -1,8 +1,6 @@
 package logic.xstate;
 
 import building.adv.*;
-import entity.sideinfo.*;
-import levelMap.*;
 import logic.*;
 
 public class ProductionPhaseState implements NAutoState
@@ -12,10 +10,10 @@ public class ProductionPhaseState implements NAutoState
 	private int counter;
 
 	@Override
-	public void onEnter(SideInfoFrame side, LevelMap levelMap, MainState mainState)
+	public void onEnter(MainState mainState)
 	{
-		side.clearSideInfo();
-		levelMap.productionPhase();
+		mainState.side.clearSideInfo();
+		mainState.levelMap.productionPhase();
 	}
 
 	@Override

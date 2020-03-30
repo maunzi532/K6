@@ -3,7 +3,6 @@ package visual1;
 import geom.*;
 import java.util.*;
 import java.util.function.*;
-import logic.*;
 import logic.editor.*;
 import visual1.gui.*;
 
@@ -36,21 +35,18 @@ public class VisualLevelEditor
 		return -1;
 	}
 
-	public double takeY(MainState mainState)
+	public double takeY(boolean editMode)
 	{
-		return mainState.stateHolder.getState().editMode() ? graphics.scaleHW() * 0.35 : 0;
+		return editMode ? graphics.scaleHW() * 0.35 : 0;
 	}
 
 	public void draw(LevelEditor levelEditor, Scheme scheme)
 	{
-		if(levelEditor.mainState.stateHolder.getState().editMode())
+		for(int i = 0; i < LevelEditor.SLOT_COUNT; i++)
 		{
-			for(int i = 0; i < LevelEditor.SLOT_COUNT; i++)
-			{
-				EditorSlot editorSlot = levelEditor.editorSlots.get(i);
-				editorSlot.gui.setTile(editorSlot.mode.guiTile(), levelEditor.getCurrentSlot() == i);
-				visualSlots.get(i).locateAndDraw(cameras.get(i), editorSlot.gui, scheme);
-			}
+			EditorSlot editorSlot = levelEditor.editorSlots.get(i);
+			editorSlot.gui.setTile(editorSlot.mode.guiTile(), levelEditor.getCurrentSlot() == i);
+			visualSlots.get(i).locateAndDraw(cameras.get(i), editorSlot.gui, scheme);
 		}
 	}
 }

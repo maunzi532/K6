@@ -2,11 +2,9 @@ package logic.gui.guis;
 
 import building.adv.*;
 import entity.*;
-import entity.sideinfo.*;
 import item.*;
 import item.inv.*;
 import item.view.*;
-import levelMap.*;
 import logic.*;
 import logic.gui.*;
 import logic.xstate.*;
@@ -26,10 +24,10 @@ public class RemoveBuildingGUI extends XGUIState
 	}
 
 	@Override
-	public void onEnter(SideInfoFrame side, LevelMap levelMap, MainState mainState)
+	public void onEnter(MainState mainState)
 	{
-		side.setStandardSideInfo(character);
-		building = levelMap.getBuilding(character.location());
+		mainState.side.setStandardSideInfo(character);
+		building = mainState.levelMap.getBuilding(character.location());
 		ItemList refunds = building.allRefundable();
 		character.inputInv().tryAdd(refunds, true, CommitType.LEAVE);
 		InvNumView weightView = character.inputInv().viewInvWeight();
@@ -38,7 +36,7 @@ public class RemoveBuildingGUI extends XGUIState
 		elements.add(invView);
 		elements.add(new CElement(textInv));
 		elements.add(new CElement(weight, new GuiTile(weightView.baseAndCurrentWithLimit())));
-		elements.add(new CElement(remove, true, null, () -> onClickRemove(mainState)));
+		elements.add(new CElement(remove, true, null, () -> onClickRemove(mainState.stateHolder)));
 		update();
 	}
 
@@ -55,9 +53,9 @@ public class RemoveBuildingGUI extends XGUIState
 	}
 
 	@Override
-	public boolean keepInMenu(MainState mainState, LevelMap levelMap)
+	public boolean keepInMenu(MainState mainState)
 	{
-		return character.resources().ready(1) && levelMap.getBuilding(character.location()) != null;
+		return character.resources().ready(1) && mainState.levelMap.getBuilding(character.location()) != null;
 	}
 
 	@Override
@@ -88,14 +86,14 @@ public class RemoveBuildingGUI extends XGUIState
 				};
 	}
 
-	private void onClickRemove(MainState mainState)
+	private void onClickRemove(XStateHolder stateHolder)
 	{
 		if(character.inputInv().ok())
 		{
 			character.resources().action(false, 1);
 			character.inputInv().commit();
 			building.remove();
-			mainState.stateHolder.setState(NoneState.INSTANCE);
+			stateHolder.setState(NoneState.INSTANCE);
 		}
 	}
 

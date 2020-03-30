@@ -3,7 +3,6 @@ package logic.xstate;
 import building.adv.*;
 import building.transport.*;
 import doubleinv.*;
-import entity.sideinfo.*;
 import geom.f1.*;
 import java.util.*;
 import java.util.stream.*;
@@ -24,10 +23,10 @@ public class TransportTargetsState implements NMarkState
 	}
 
 	@Override
-	public void onEnter(SideInfoFrame side, LevelMap levelMap, MainState mainState)
+	public void onEnter(MainState mainState)
 	{
-		possibleTargets = levelMap.y1.range(building.location(), 0, transport.range()).stream()
-				.map(levelMap::getBuilding).filter(e -> e != null && e.active()).collect(Collectors.toList());
+		possibleTargets = mainState.levelMap.y1.range(building.location(), 0, transport.range()).stream()
+				.map(mainState.levelMap::getBuilding).filter(e -> e != null && e.active()).collect(Collectors.toList());
 		createVisMarked();
 	}
 
@@ -56,12 +55,12 @@ public class TransportTargetsState implements NMarkState
 	}
 
 	@Override
-	public void onClick(MainState mainState, LevelMap levelMap, XStateHolder stateHolder, Tile mapTile, XKey key)
+	public void onClick(MainState mainState, Tile mapTile, XKey key)
 	{
 		List<DoubleInv> list = possibleTargets.stream().filter(e -> mapTile.equals(e.location())).collect(Collectors.toList());
 		if(list.isEmpty())
 		{
-			stateHolder.setState(NoneState.INSTANCE);
+			mainState.stateHolder.setState(NoneState.INSTANCE);
 		}
 		else
 		{

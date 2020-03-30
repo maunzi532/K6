@@ -3,7 +3,6 @@ package logic.gui.guis;
 import building.blueprint.*;
 import doubleinv.*;
 import entity.*;
-import entity.sideinfo.*;
 import item.*;
 import item.inv.*;
 import item.view.*;
@@ -54,9 +53,9 @@ public class BuildGUI extends XGUIState
 	}
 
 	@Override
-	public void onEnter(SideInfoFrame side, LevelMap levelMap, MainState mainState)
+	public void onEnter(MainState mainState)
 	{
-		this.levelMap = levelMap;
+		levelMap = mainState.levelMap;
 		floorTiles = new ScrollList<>(0, 2, 2, 4, 2, 1, null,
 				this::itemView0, null);
 		elements.add(floorTiles);
@@ -77,7 +76,7 @@ public class BuildGUI extends XGUIState
 		elements.add(lessTilesElement);
 		moreTilesElement = new CElement(moreTiles, true, null, this::clickMoreTiles);
 		elements.add(moreTilesElement);
-		buildElement = new CElement(build, true, null, () -> clickBuild(mainState));
+		buildElement = new CElement(build, true, null, () -> clickBuild(mainState.stateHolder));
 		elements.add(buildElement);
 		update();
 	}
@@ -193,7 +192,7 @@ public class BuildGUI extends XGUIState
 		}
 	}
 
-	private void clickBuild(MainState mainState)
+	private void clickBuild(XStateHolder stateHolder)
 	{
 		CostBlueprint cost = costBlueprints.get(costNum).get(tileCostNum);
 		Optional<ItemList> refundable = builder.tryBuildingCosts(cost.refundable(), cost.costs(), CommitType.COMMIT);
@@ -205,9 +204,9 @@ public class BuildGUI extends XGUIState
 			}
 			levelMap.buildBuilding(builder, cost, refundable.get(), blueprint);
 			if(builder instanceof XCharacter)
-				mainState.stateHolder.setState(NoneState.INSTANCE);
+				stateHolder.setState(NoneState.INSTANCE);
 			else
-				mainState.stateHolder.setState(EditingState.INSTANCE);
+				stateHolder.setState(EditingState.INSTANCE);
 		}
 	}
 }

@@ -1,13 +1,13 @@
 package logic.editor.xgui;
 
 import entity.*;
-import entity.sideinfo.*;
 import geom.f1.*;
 import item.inv.*;
 import java.util.stream.*;
 import levelMap.*;
 import logic.*;
 import logic.gui.*;
+import logic.xstate.*;
 import system2.*;
 import system2.analysis.*;
 import system2.content.*;
@@ -31,14 +31,16 @@ public class EntityCreateGUI extends XGUIState
 	}
 
 	@Override
-	public void onEnter(SideInfoFrame side, LevelMap levelMap, MainState mainState)
+	public void onEnter(MainState mainState)
 	{
-		elements.add(new CElement(addXHero, true, null, () -> createXCharacter(mainState, levelMap, CharacterTeam.HERO)));
-		elements.add(new CElement(addXEnemy, true, null, () -> createXCharacter(mainState, levelMap, CharacterTeam.ENEMY)));
+		elements.add(new CElement(addXHero, true, null,
+				() -> createXCharacter(CharacterTeam.HERO, mainState.levelMap, mainState.stateHolder)));
+		elements.add(new CElement(addXEnemy, true, null,
+				() -> createXCharacter(CharacterTeam.ENEMY, mainState.levelMap, mainState.stateHolder)));
 		update();
 	}
 
-	private void createXCharacter(MainState mainState, LevelMap levelMap, CharacterTeam team)
+	private void createXCharacter(CharacterTeam team, LevelMap levelMap, XStateHolder stateHolder)
 	{
 		Stats stats = defaultStats(team == CharacterTeam.HERO);
 		Inv inv = new WeightInv(20);
@@ -47,16 +49,14 @@ public class EntityCreateGUI extends XGUIState
 		{
 			entity = new XCharacter(team, 0, location, stats, inv,
 					new NoAI(), new TurnResources(location), new StartingSettings(false, false));
-
 		}
 		else
 		{
 			entity = new XCharacter(team, 0, location, stats, inv,
 					new StandardAI(levelMap), new TurnResources(location), null);
-
 		}
 		levelMap.addEntity(entity);
-		mainState.stateHolder.setState(new EntityEditGUI(entity));
+		stateHolder.setState(new EntityEditGUI(entity));
 	}
 
 	private static Stats defaultStats(boolean xh)

@@ -1,8 +1,6 @@
 package logic.xstate;
 
 import entity.*;
-import entity.sideinfo.*;
-import levelMap.*;
 import logic.*;
 
 public class RevertMovementState implements NAutoState
@@ -15,10 +13,10 @@ public class RevertMovementState implements NAutoState
 	}
 
 	@Override
-	public void onEnter(SideInfoFrame side, LevelMap levelMap, MainState mainState)
+	public void onEnter(MainState mainState)
 	{
-		side.setStandardSideInfo(character);
-		levelMap.revertMovement(character);
+		mainState.side.setStandardSideInfo(character);
+		mainState.levelMap.revertMovement(character);
 	}
 
 	@Override
@@ -34,7 +32,7 @@ public class RevertMovementState implements NAutoState
 	}
 
 	@Override
-	public boolean keepInMenu(MainState mainState, LevelMap levelMap)
+	public boolean keepInMenu(MainState mainState)
 	{
 		return character.resources().revertMoveAction();
 	}

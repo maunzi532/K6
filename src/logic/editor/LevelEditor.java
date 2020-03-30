@@ -2,25 +2,24 @@ package logic.editor;
 
 import doubleinv.*;
 import geom.f1.*;
+import java.util.*;
+import logic.*;
+import logic.editor.editingModes.*;
 import logic.editor.xgui.*;
 import logic.editor.xstate.*;
-import java.util.*;
-import logic.editor.editingModes.*;
-import logic.*;
+import logic.xstate.*;
 
 public class LevelEditor
 {
 	public static final int SLOT_COUNT = 5;
 
-	public MainState mainState;
 	private int currentSlot;
 	private List<EditingMode> modes;
 	public List<EditorSlot> editorSlots;
 	private EditorSlotModeGUI editorSlotModeGUI;
 
-	public LevelEditor(MainState mainState)
+	public LevelEditor()
 	{
-		this.mainState = mainState;
 		currentSlot = -1;
 		modes = new ArrayList<>();
 		modes.add(new SaveMode());
@@ -48,7 +47,7 @@ public class LevelEditor
 		return currentSlot;
 	}
 
-	public void onEditorTarget(int num, XKey key)
+	public void onEditorTarget(int num, XKey key, XStateHolder stateHolder, MainState mainState)
 	{
 		if(key.hasFunction("Choose") && num == currentSlot)
 		{
@@ -64,15 +63,15 @@ public class LevelEditor
 		}
 		if(key.hasFunction("Menu"))
 		{
-			mainState.stateHolder.setState(editorSlotModeGUI);
+			stateHolder.setState(editorSlotModeGUI);
 		}
-		else if(key.canClick() && !(mainState.stateHolder.getState() instanceof EditingState))
+		else if(key.canClick() && !(stateHolder.getState() instanceof EditingState))
 		{
-			mainState.stateHolder.setState(EditingState.INSTANCE);
+			stateHolder.setState(EditingState.INSTANCE);
 		}
 	}
 
-	public void onMapClick(Tile tile, XKey key)
+	public void onMapClick(Tile tile, XKey key, MainState mainState)
 	{
 		if(currentSlot >= 0)
 		{
@@ -80,7 +79,7 @@ public class LevelEditor
 		}
 	}
 
-	public void onMapDrag(Tile tile1, Tile tile2, XKey key)
+	public void onMapDrag(Tile tile1, Tile tile2, XKey key, MainState mainState)
 	{
 		if(currentSlot >= 0)
 		{

@@ -1,8 +1,6 @@
 package logic.xstate;
 
 import entity.*;
-import entity.sideinfo.*;
-import levelMap.*;
 import logic.*;
 import system2.animation.*;
 
@@ -19,10 +17,10 @@ public class RegenerateState implements NAutoState
 	}
 
 	@Override
-	public void onEnter(SideInfoFrame side, LevelMap levelMap, MainState mainState)
+	public void onEnter(MainState mainState)
 	{
-		side.setStandardSideInfo(character);
-		arrow = new RegenerationAnim(character, levelMap);
+		mainState.side.setStandardSideInfo(character);
+		arrow = new RegenerationAnim(character, mainState.levelMap);
 	}
 
 	@Override
@@ -38,7 +36,7 @@ public class RegenerateState implements NAutoState
 	}
 
 	@Override
-	public boolean keepInMenu(MainState mainState, LevelMap levelMap)
+	public boolean keepInMenu(MainState mainState)
 	{
 		return character.resources().ready(0) && character.stats().getRegenerateChange() > 0;
 	}

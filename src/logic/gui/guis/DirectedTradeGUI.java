@@ -2,11 +2,9 @@ package logic.gui.guis;
 
 import doubleinv.*;
 import entity.*;
-import entity.sideinfo.*;
 import item.*;
 import item.view.*;
 import java.util.*;
-import levelMap.*;
 import logic.*;
 import logic.gui.*;
 import logic.xstate.*;
@@ -38,9 +36,9 @@ public class DirectedTradeGUI extends XGUIState
 	}
 
 	@Override
-	public void onEnter(SideInfoFrame side, LevelMap levelMap, MainState mainState)
+	public void onEnter(MainState mainState)
 	{
-		side.clearSideInfo();
+		mainState.side.clearSideInfo();
 		amount = 1;
 		provideView = new ScrollList<>(0, 1, 4, 5, 2, 1, null,
 				e -> itemView(e, true), target -> provideMarked = target.item);
@@ -54,7 +52,7 @@ public class DirectedTradeGUI extends XGUIState
 		transferElement = new CElement(transfer, true, null, this::clickTransfer);
 		elements.add(transferElement);
 		elements.add(new CElement(less, true, null, () -> amount = Math.max(0, amount - 1)));
-		elements.add(new CElement(ok, true, null, () -> clickOk(mainState)));
+		elements.add(new CElement(ok, true, null, () -> clickOk(mainState.stateHolder)));
 		update();
 	}
 
@@ -108,7 +106,7 @@ public class DirectedTradeGUI extends XGUIState
 		}
 	}
 
-	private void clickOk(MainState mainState)
+	private void clickOk(XStateHolder stateHolder)
 	{
 		if(changed)
 		{
@@ -121,7 +119,7 @@ public class DirectedTradeGUI extends XGUIState
 				takeAp.action(false, 1);
 			}
 		}
-		mainState.stateHolder.setState(NoneState.INSTANCE);
+		stateHolder.setState(NoneState.INSTANCE);
 	}
 
 	@Override

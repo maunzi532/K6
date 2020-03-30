@@ -1,7 +1,5 @@
 package logic.editor.xstate;
 
-import entity.sideinfo.*;
-import levelMap.*;
 import logic.*;
 import logic.xstate.*;
 
@@ -16,9 +14,9 @@ public class EditingState implements NState
 	}
 
 	@Override
-	public void onEnter(SideInfoFrame side, LevelMap levelMap, MainState mainState)
+	public void onEnter(MainState mainState)
 	{
-		side.clearSideInfo();
+		mainState.side.clearSideInfo();
 	}
 
 	@Override

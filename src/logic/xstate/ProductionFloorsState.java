@@ -1,7 +1,6 @@
 package logic.xstate;
 
 import building.adv.*;
-import entity.sideinfo.*;
 import geom.f1.*;
 import java.util.*;
 import java.util.stream.*;
@@ -22,11 +21,11 @@ public class ProductionFloorsState implements NMarkState
 	}
 
 	@Override
-	public void onEnter(SideInfoFrame side, LevelMap levelMap, MainState mainState)
+	public void onEnter(MainState mainState)
 	{
 		targetableTiles = building.costBlueprint().requiredFloorTiles().stream().flatMap(flt ->
-				levelMap.y1.range(building.location(), flt.minRange(), flt.maxRange()).stream()
-						.filter(e -> levelMap.getFloor(e) != null && levelMap.getFloor(e).type == flt.floorTileType())).collect(Collectors.toList());
+				mainState.levelMap.y1.range(building.location(), flt.minRange(), flt.maxRange()).stream()
+						.filter(e -> mainState.levelMap.getFloor(e) != null && mainState.levelMap.getFloor(e).type == flt.floorTileType())).collect(Collectors.toList());
 		createVisMarked();
 	}
 
@@ -55,16 +54,16 @@ public class ProductionFloorsState implements NMarkState
 	}
 
 	@Override
-	public void onClick(MainState mainState, LevelMap levelMap, XStateHolder stateHolder, Tile mapTile, XKey key)
+	public void onClick(MainState mainState, Tile mapTile, XKey key)
 	{
 		if(targetableTiles.contains(mapTile))
 		{
-			levelMap.toggleTargetClaimed(mapTile, building);
+			mainState.levelMap.toggleTargetClaimed(mapTile, building);
 			createVisMarked();
 		}
 		else
 		{
-			stateHolder.setState(NoneState.INSTANCE);
+			mainState.stateHolder.setState(NoneState.INSTANCE);
 		}
 	}
 
