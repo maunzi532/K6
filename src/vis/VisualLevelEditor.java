@@ -19,7 +19,7 @@ public final class VisualLevelEditor
 		visualSlots = new ArrayList<>();
 		for(int i = 0; i < LevelEditor.SLOT_COUNT; i++)
 		{
-			TileCamera camera = cameraSupplier.apply((i + 0.5) / LevelEditor.SLOT_COUNT * 2);
+			TileCamera camera = cameraSupplier.apply((i + 0.5) / LevelEditor.SLOT_COUNT * 2.0);
 			cameras.add(camera);
 			visualSlots.add(VisualGUI.forCamera(graphics, camera));
 		}
@@ -37,7 +37,7 @@ public final class VisualLevelEditor
 
 	public double takeY(boolean editMode)
 	{
-		return editMode ? graphics.scaleHW() * 0.35 : 0;
+		return editMode ? graphics.scaleHW() * 0.35 : 0.0;
 	}
 
 	public void draw(LevelEditor levelEditor, Scheme scheme)

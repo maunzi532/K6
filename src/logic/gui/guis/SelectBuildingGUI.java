@@ -32,7 +32,7 @@ public final class SelectBuildingGUI extends XGUIState
 			mainState.side().setStandardSideInfo(character);
 		}
 		ScrollList<BuildingBlueprint> buildingsView = new ScrollList<>(0, 1, 6, 5, 2, 1,
-				mainState.blueprintFile().allBlueprints(), this::itemView,
+				mainState.blueprintFile().allBlueprints(), SelectBuildingGUI::itemView,
 				target -> mainState.stateHolder().setState(new BuildGUI(builder, target)));
 		elements.add(buildingsView);
 		elements.add(new CElement(textInv));
@@ -82,7 +82,7 @@ public final class SelectBuildingGUI extends XGUIState
 		return 6;
 	}
 
-	public GuiTile[] itemView(BuildingBlueprint blueprint)
+	private static GuiTile[] itemView(BuildingBlueprint blueprint)
 	{
 		return new GuiTile[]
 				{

@@ -20,12 +20,12 @@ public class RNGOutcome
 		chanceAsDouble = chance.doubleValue();
 		for(int i = 0; i < divider; i++)
 		{
-			chanceAsDouble /= 100;
+			chanceAsDouble /= 100.0;
 		}
 		this.compareText = compareText;
 	}
 
-	public RNGOutcome(List<RNGOutcome> outcomes)
+	public RNGOutcome(List<? extends RNGOutcome> outcomes)
 	{
 		chanceAsDouble = outcomes.stream().mapToDouble(e -> e.chanceAsDouble).sum();
 		compareText = outcomes.get(0).compareText;
@@ -33,9 +33,9 @@ public class RNGOutcome
 
 	public String readableChance()
 	{
-		if(chanceAsDouble <= 0)
+		if(chanceAsDouble <= 0.0)
 			return "Never";
-		if(chanceAsDouble >= 1)
+		if(chanceAsDouble >= 1.0)
 			return "Always";
 		return f1.format(chanceAsDouble);
 	}

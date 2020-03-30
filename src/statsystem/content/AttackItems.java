@@ -13,7 +13,7 @@ public final class AttackItems
 	public final List<Item> itemListA;
 	public final List<Item> allItemsList;
 
-	public AttackItems()
+	private AttackItems()
 	{
 		items = new AttackItem[600];
 

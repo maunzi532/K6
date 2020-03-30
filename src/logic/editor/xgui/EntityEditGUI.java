@@ -7,6 +7,7 @@ import java.util.stream.*;
 import logic.*;
 import logic.gui.*;
 import logic.xstate.*;
+import statsystem.*;
 
 public final class EntityEditGUI extends XGUIState
 {
@@ -99,6 +100,6 @@ public final class EntityEditGUI extends XGUIState
 	private void clickInfo(int target)
 	{
 		changeStatNum = target;
-		changeOptions = entity.stats().editOptions(target);
+		changeOptions = Stats.editOptions(target);
 	}
 }

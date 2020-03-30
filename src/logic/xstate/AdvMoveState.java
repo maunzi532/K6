@@ -38,7 +38,7 @@ public final class AdvMoveState implements NMarkState
 		attack = new ArrayList<>();
 		if(character.resources().ready(2))
 		{
-			mainState.levelMap().attackRanges(character, AttackSide.INITIATOR).stream().map(e -> mainState.levelMap().y1.range(character.location(), e, e))
+			LevelMap.attackRanges(character, AttackSide.INITIATOR).stream().map(e -> mainState.levelMap().y1.range(character.location(), e, e))
 					.flatMap(Collection::stream).map(mainState.levelMap()::getEntity).filter(e -> e != null && e.targetable() && e.team() != character.team())
 					.forEach(e -> attack.add(e.location()));
 		}

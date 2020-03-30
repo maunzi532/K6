@@ -52,7 +52,7 @@ public final class VisualSideInfoFrame implements SideInfoFrame
 		r0.setSideInfo(standardSideInfo(inverted ? e1 : e2));
 	}
 
-	private SideInfo standardSideInfo(XCharacter character)
+	private static SideInfo standardSideInfo(XCharacter character)
 	{
 		StatBar statBar = new StatBar(character.team().healthBarColor,
 				"arrow.healthbar.background", "arrow.healthbar.text",
@@ -70,7 +70,7 @@ public final class VisualSideInfoFrame implements SideInfoFrame
 		r0.setSideInfo(attackSideInfo(aI.getEntity(side2), aI.getSideInfoX1T(side2), aI.getSideInfos(side2)));
 	}
 
-	private SideInfo attackSideInfo(XCharacter character, String x1Text, String[] text2)
+	private static SideInfo attackSideInfo(XCharacter character, String x1Text, String[] text2)
 	{
 		StatBar statBar = new StatBar(character.team().healthBarColor,
 				"arrow.healthbar.background", "arrow.healthbar.text",

@@ -14,9 +14,9 @@ public final class LevelEditor
 	public static final int SLOT_COUNT = 5;
 
 	private int currentSlot;
-	private List<EditingMode> modes;
+	private final List<EditingMode> modes;
 	public List<EditorSlot> editorSlots;
-	private EditorSlotModeGUI editorSlotModeGUI;
+	private final EditorSlotModeGUI editorSlotModeGUI;
 
 	public LevelEditor()
 	{

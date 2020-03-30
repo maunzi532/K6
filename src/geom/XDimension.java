@@ -29,13 +29,13 @@ public class XDimension
 
 	public final void setxW(double xW)
 	{
-		xHW = xW / 2d;
+		xHW = xW / 2.0;
 		updateScale();
 	}
 
 	public final void setyW(double yW)
 	{
-		yHW = yW / 2d;
+		yHW = yW / 2.0;
 		updateScale();
 	}
 

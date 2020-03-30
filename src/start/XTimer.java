@@ -126,7 +126,7 @@ public final class XTimer extends AnimationTimer
 		}
 		else
 		{
-			inputInterface.mousePosition(0, 0, false, moved, isDrag, KeybindFile.NONE);
+			inputInterface.mousePosition(0.0, 0.0, false, moved, isDrag, KeybindFile.NONE);
 			clicked = false;
 			clickedK = false;
 		}
@@ -141,7 +141,7 @@ public final class XTimer extends AnimationTimer
 		}
 		else
 		{
-			inputInterface.dragPosition(false, 0, 0, 0, 0, KeybindFile.NONE, false);
+			inputInterface.dragPosition(false, 0.0, 0.0, 0.0, 0.0, KeybindFile.NONE, false);
 		}
 		if(!clicked && !clickedK && !dragged)
 		{

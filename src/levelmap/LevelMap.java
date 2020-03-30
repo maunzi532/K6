@@ -339,7 +339,7 @@ public final class LevelMap implements ConnectRestore, Arrows
 		arrows.removeIf(XArrow::finished);
 	}
 
-	public List<Integer> attackRanges(XCharacter entity, AttackSide side)
+	public static List<Integer> attackRanges(XCharacter entity, AttackSide side)
 	{
 		List<int[]> v = entity.outputInv().viewItems(false)
 				.stream().filter(e -> entity.stats().getItemFilter().canContain(e.item))

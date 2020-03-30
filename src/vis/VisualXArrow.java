@@ -9,11 +9,11 @@ public final class VisualXArrow
 {
 	private static final double SHINE_WIDTH = 0.65;
 	private static final double ZERO_SHINE = 0.45;
-	public static final double WIDTH = 0.15;
-	public static final double HEAD_WIDTH = 0.25;
-	public static final double HEAD_IN = 0.5;
-	public static final double DATA_DISTANCE = 0.75;
-	public static final double DATA_WIDTH = 2;
+	private static final double WIDTH = 0.15;
+	private static final double HEAD_WIDTH = 0.25;
+	private static final double HEAD_IN = 0.5;
+	private static final double DATA_DISTANCE = 0.75;
+	public static final double DATA_WIDTH = 2.0;
 	public static final double DATA_HEIGHT = 0.3;
 
 	private final DoubleType y2;
@@ -54,11 +54,11 @@ public final class VisualXArrow
 			return y2.fromTile(arrow.locations().get(1));
 	}
 
-	private double distance(XArrow arrow)
+	private static double distance(XArrow arrow)
 	{
 		if(arrow.duration() == 0)
 		{
-			return 0;
+			return 0.0;
 		}
 		return (arrow.counter() % arrow.duration()) / (double) arrow.duration();
 	}
@@ -115,11 +115,11 @@ public final class VisualXArrow
 		{
 			if(dM < 0.5)
 			{
-				return new double[]{dL, dM, dH, dL + 1, dM + 1, dH + 1};
+				return new double[]{dL, dM, dH, dL + 1.0, dM + 1.0, dH + 1.0};
 			}
 			else
 			{
-				return new double[]{dL - 1, dM - 1, dH - 1, dL, dM, dH};
+				return new double[]{dL - 1.0, dM - 1.0, dH - 1.0, dL, dM, dH};
 			}
 		}
 		else

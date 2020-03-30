@@ -66,7 +66,7 @@ public final class XMenu
 
 	private final List<NState> entries;
 
-	public XMenu(NState... allEntries)
+	private XMenu(NState... allEntries)
 	{
 		entries = List.of(allEntries);
 	}

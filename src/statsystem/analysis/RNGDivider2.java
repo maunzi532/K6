@@ -5,19 +5,19 @@ import java.util.*;
 import java.util.stream.*;
 import statsystem.*;
 
-public final class RNGDivider2 extends RNGDivider
+public final class RNGDivider2 extends RNGDivider<RNGOutcome2>
 {
-	private AttackInfo aI;
-	private int health1;
-	private int health2;
-	private int attacks1;
-	private int attacks2;
-	private int attacked1;
-	private int attacked2;
-	private int crits1;
-	private int crits2;
-	private boolean end;
-	private List<SidedAttackAnalysisEvent> events;
+	private final AttackInfo aI;
+	private final int health1;
+	private final int health2;
+	private final int attacks1;
+	private final int attacks2;
+	private final int attacked1;
+	private final int attacked2;
+	private final int crits1;
+	private final int crits2;
+	private final boolean end;
+	private final List<SidedAttackAnalysisEvent> events;
 
 	public RNGDivider2(AttackInfo aI)
 	{
@@ -31,10 +31,11 @@ public final class RNGDivider2 extends RNGDivider
 		attacked2 = 0;
 		crits1 = 0;
 		crits2 = 0;
+		end = false;
 		events = List.of();
 	}
 
-	public RNGDivider2(RNGDivider2 prev, long chance, long divider, AttackInfo aI, int health1, int health2,
+	private RNGDivider2(RNGDivider2 prev, long chance, long divider, AttackInfo aI, int health1, int health2,
 			int attacks1, int attacks2, int attacked1, int attacked2, int crits1, int crits2, boolean end,
 			List<SidedAttackAnalysisEvent> events)
 	{
@@ -117,7 +118,7 @@ public final class RNGDivider2 extends RNGDivider
 				int remaining2 = health2 - damageDealt;
 				if(remaining2 <= 0)
 					events3.add(new SidedAttackAnalysisEvent(AttackAnalysisEvent.DEFEATED, AttackSide.INITIATOR));
-				paths.add(new RNGDivider2(this, hitrate * (100l - critrate), 2, aI, health1a,
+				paths.add(new RNGDivider2(this, hitrate * (100L - critrate), 2, aI, health1a,
 						Math.max(0, remaining2), attacks1, attacks2, attacked1 + 1, attacked2, crits1,
 						crits2, remaining2 <= 0, events3));
 			}
@@ -191,7 +192,7 @@ public final class RNGDivider2 extends RNGDivider
 				int remaining1 = health1 - damageDealt;
 				if(remaining1 <= 0)
 					events3.add(new SidedAttackAnalysisEvent(AttackAnalysisEvent.DEFEATED, AttackSide.TARGET));
-				paths.add(new RNGDivider2(this, hitrate * (100l - critrate), 2, aI, Math.max(0, remaining1),
+				paths.add(new RNGDivider2(this, hitrate * (100L - critrate), 2, aI, Math.max(0, remaining1),
 						health2a, attacks1, attacks2, attacked1, attacked2 + 1, crits1, crits2, remaining1 <= 0, events3));
 			}
 			if(hitrate > 0 && critrate > 0)
@@ -218,7 +219,7 @@ public final class RNGDivider2 extends RNGDivider
 	}
 
 	@Override
-	public RNGOutcome asOutcome()
+	public RNGOutcome2 asOutcome()
 	{
 		List<SidedAttackAnalysisEvent> compareText = new ArrayList<>();
 		compareText(compareText);

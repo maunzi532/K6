@@ -7,7 +7,7 @@ import java.util.stream.*;
 
 public final class Pathing
 {
-	public final TileType y1;
+	private final TileType y1;
 	private final XCharacter entity;
 	private final Tile startLocation;
 	private final int maxMovementCost;

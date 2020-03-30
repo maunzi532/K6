@@ -16,8 +16,8 @@ public final class VisualGUIQuad extends VisualGUI
 	{
 		super(graphics);
 		DoubleType y2 = camera.getDoubleType();
-		lu = y2.createD(-3d / 4d, -3d / 4d);
-		rl = y2.createD(-1d / 4d, -1d / 4d);
+		lu = y2.createD(-3.0 / 4.0, -3.0 / 4.0);
+		rl = y2.createD(-1.0 / 4.0, -1.0 / 4.0);
 	}
 
 	private DoubleTile rlLoc(DoubleType y2, XGUIState xgui)

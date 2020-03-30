@@ -113,6 +113,6 @@ public final class AttackAnim implements AnimTimer
 
 	public RNGOutcome2 outcome()
 	{
-		return (RNGOutcome2) lastDivider.asOutcome();
+		return lastDivider.asOutcome();
 	}
 }

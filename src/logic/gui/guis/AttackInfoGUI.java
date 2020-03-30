@@ -26,7 +26,7 @@ public final class AttackInfoGUI extends XGUIState
 		side = mainState.side();
 		side.sidedInfo(attacker, target);
 		attacksView = new TargetScrollList<>(0, 1, 6, 6, 6, 2,
-				mainState.levelMap().attackInfo(attacker, target), this::itemView, target1 -> clickAttack(target1, mainState.stateHolder()));
+				mainState.levelMap().attackInfo(attacker, target), AttackInfoGUI::itemView, target1 -> clickAttack(target1, mainState.stateHolder()));
 		elements.add(attacksView);
 		elements.add(new CElement(new CTile(0, 0, new GuiTile(attacker.name()), 2, 1)));
 		elements.add(new CElement(new CTile(4, 0, new GuiTile(target.name()), 2, 1)));
@@ -66,7 +66,7 @@ public final class AttackInfoGUI extends XGUIState
 		return 7;
 	}
 
-	private GuiTile[] itemView(AttackInfo aI)
+	private static GuiTile[] itemView(AttackInfo aI)
 	{
 		String[] infos = aI.getInfos();
 		return new GuiTile[]
@@ -86,7 +86,7 @@ public final class AttackInfoGUI extends XGUIState
 				};
 	}
 
-	private String read(String[] infos, int n)
+	private static String read(String[] infos, int n)
 	{
 		if(n >= infos.length)
 			return "";

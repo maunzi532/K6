@@ -6,7 +6,7 @@ public interface DoubleType extends TileType
 {
 	static double lerp(double a1, double a2, double t)
 	{
-		return a1 * (1 - t) + a2 * t;
+		return a1 * (1.0 - t) + a2 * t;
 	}
 
 	DoubleTile createD(double... v);

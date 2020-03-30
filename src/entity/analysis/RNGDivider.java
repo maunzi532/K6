@@ -3,16 +3,16 @@ package entity.analysis;
 import java.math.*;
 import java.util.*;
 
-public abstract class RNGDivider
+public abstract class RNGDivider<O extends RNGOutcome>
 {
 	private static final Random r = new Random();
 
-	public RNGDivider prev;
-	public long chance;
-	public long divider;
-	public List<RNGDivider> paths;
+	protected RNGDivider<O> prev;
+	private long chance;
+	private long divider;
+	public List<RNGDivider<O>> paths;
 
-	protected RNGDivider(RNGDivider prev, long chance, long divider)
+	protected RNGDivider(RNGDivider<O> prev, long chance, long divider)
 	{
 		this.prev = prev;
 		this.chance = chance;
@@ -22,14 +22,14 @@ public abstract class RNGDivider
 
 	public abstract void build();
 
-	public abstract RNGOutcome asOutcome();
+	public abstract O asOutcome();
 
-	public BigInteger chanceC()
+	protected BigInteger chanceC()
 	{
 		return prev != null ? prev.chanceC().multiply(BigInteger.valueOf(chance)) : BigInteger.valueOf(chance);
 	}
 
-	public long dividerC()
+	protected long dividerC()
 	{
 		return prev != null ? prev.dividerC() + divider : divider;
 	}
@@ -44,14 +44,14 @@ public abstract class RNGDivider
 		return chance2;
 	}
 
-	public RNGDivider rollRNG()
+	public RNGDivider<O> rollRNG()
 	{
 		if(paths.isEmpty())
 			return null;
 		int maxDivider = paths.stream().mapToInt(e -> (int) e.divider).max().orElseThrow();
 		int limit = paths.stream().mapToInt(e -> e.chanceForDivider(maxDivider)).sum();
 		int randomNum = r.nextInt(limit);
-		for(RNGDivider path : paths)
+		for(RNGDivider<O> path : paths)
 		{
 			randomNum -= path.chanceForDivider(maxDivider);
 			if(randomNum < 0)

@@ -23,7 +23,7 @@ public final class XStateControl implements XStateHolder, ConvInputConsumer
 	private VisMark cursorMarker;
 	private List<VisMark> dragMarker;
 	private final List<VisMark> visMarked;
-	public boolean preferBuildings;
+	private boolean preferBuildings;
 	private boolean showAllEnemyReach;
 	private Map<Tile, Long> allEnemyReach;
 

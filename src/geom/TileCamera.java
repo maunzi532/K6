@@ -23,7 +23,7 @@ public abstract class TileCamera
 		this.ySize = ySize;
 		this.xShift = xShift;
 		this.yShift = yShift;
-		zoom = 1;
+		zoom = 1.0;
 	}
 
 	public DoubleType getDoubleType()

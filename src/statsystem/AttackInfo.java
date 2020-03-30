@@ -14,7 +14,7 @@ public final class AttackInfo
 	public final Stats statsT;
 	public final AttackMode modeT;
 	public final int distance;
-	public RNGInfoAnalysis<RNGDivider2> analysis;
+	public RNGInfoAnalysis<RNGOutcome2, RNGDivider2> analysis;
 
 	public final boolean canInitiate;
 	public final AttackInfoPart3 calc;
@@ -32,7 +32,7 @@ public final class AttackInfo
 		this.distance = distance;
 		AttackMode3 attackMode = AttackMode3.convert(stats, mode);
 		AttackMode3 attackModeT = AttackMode3.convert(statsT, modeT);
-		canInitiate = Arrays.stream(attackMode.ranges).anyMatch(e -> e == distance);
+		canInitiate = Arrays.stream(attackMode.ranges(AttackSide.INITIATOR)).anyMatch(e -> e == distance);
 		calc = new AttackInfoPart3(attackMode, attackModeT, distance, AttackSide.INITIATOR);
 		calcT = new AttackInfoPart3(attackModeT, attackMode, distance, AttackSide.TARGET);
 		String[] i1 = calc.infos();

@@ -8,7 +8,7 @@ public final class CElement implements GuiElement
 	public GuiTile fillTile;
 	private boolean targetable;
 	private Supplier<Boolean> exists;
-	protected Supplier<Boolean> onTarget;
+	private Supplier<Boolean> onTarget;
 	private Runnable onClick;
 
 	public CElement(CTile tile)

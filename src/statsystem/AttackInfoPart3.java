@@ -86,7 +86,7 @@ public final class AttackInfoPart3
 			return attackMode.attackCount;
 	}
 
-	private int advantage(AdvantageType adv, AdvantageType advT)
+	private static int advantage(AdvantageType adv, AdvantageType advT)
 	{
 		if(adv == advT)
 			return 0;

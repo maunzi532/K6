@@ -72,7 +72,7 @@ public final class MainVisual implements XInputInterface
 		draw();
 	}
 
-	public void loadLevel(String loadFileMap, String loadFileTeam, ItemLoader itemLoader, LevelMap levelMap)
+	private static void loadLevel(String loadFileMap, String loadFileTeam, ItemLoader itemLoader, LevelMap levelMap)
 	{
 		File fileMap;
 		File fileTeam;
@@ -125,8 +125,8 @@ public final class MainVisual implements XInputInterface
 	{
 		if(inside)
 		{
-			double xp = xMouse / graphics.xHW() - 1;
-			double yp = yMouse / graphics.yHW() - 1;
+			double xp = xMouse / graphics.xHW() - 1.0;
+			double yp = yMouse / graphics.yHW() - 1.0;
 			if(xp > BORDER)
 				mapCamera.setXShift(mapCamera.getXShift() + xp - BORDER2);
 			else if(xp < -BORDER)
@@ -175,13 +175,13 @@ public final class MainVisual implements XInputInterface
 	public void handleKey(XKey key)
 	{
 		if(key.hasFunction("Camera Left"))
-			mapCamera.setXShift(mapCamera.getXShift() - 3);
+			mapCamera.setXShift(mapCamera.getXShift() - 3.0);
 		if(key.hasFunction("Camera Up"))
-			mapCamera.setYShift(mapCamera.getYShift() - 3);
+			mapCamera.setYShift(mapCamera.getYShift() - 3.0);
 		if(key.hasFunction("Camera Right"))
-			mapCamera.setXShift(mapCamera.getXShift() + 3);
+			mapCamera.setXShift(mapCamera.getXShift() + 3.0);
 		if(key.hasFunction("Camera Down"))
-			mapCamera.setYShift(mapCamera.getYShift() + 3);
+			mapCamera.setYShift(mapCamera.getYShift() + 3.0);
 		if(!paused)
 		{
 			if(key.hasFunction("Pause"))
@@ -252,20 +252,20 @@ public final class MainVisual implements XInputInterface
 		double scale = graphics.scaleHW() * 0.04;
 		GraphicsContext gd = graphics.gd();
 		gd.setFill(scheme.color("topbar.background"));
-		gd.fillRect(0, 0, xHW * 2, scale * 2);
+		gd.fillRect(0.0, 0.0, xHW * 2.0, scale * 2.0);
 		gd.setFill(scheme.color("topbar.text"));
 		gd.setFont(new Font(scale));
 		gd.setTextAlign(TextAlignment.LEFT);
 		gd.fillText(turnText(levelMap.turnCounter()), scale, scale);
-		gd.fillText(stateHolder.preferBuildings() ? "BCM" : "CCM", xHW / 2, scale);
+		gd.fillText(stateHolder.preferBuildings() ? "BCM" : "CCM", xHW / 2.0, scale);
 		if(paused)
 			gd.fillText("Paused", xHW, scale);
 		gd.setTextAlign(TextAlignment.RIGHT);
-		gd.fillText("P to open pause menu", xHW * 2 - scale, scale);
+		gd.fillText("P to open pause menu", xHW * 2.0 - scale, scale);
 		gd.setTextAlign(TextAlignment.CENTER);
 	}
 
-	public String turnText(int turnCounter)
+	private static String turnText(int turnCounter)
 	{
 		if(turnCounter <= 0)
 		{

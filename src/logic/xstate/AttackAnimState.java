@@ -2,24 +2,21 @@ package logic.xstate;
 
 import logic.*;
 import statsystem.*;
-import statsystem.analysis.*;
 import statsystem.animation.*;
 
 public final class AttackAnimState extends AttackState
 {
-	private RNGDivider2 divider;
 	private AttackAnim attackAnim;
 
 	public AttackAnimState(NState nextState, AttackInfo aI)
 	{
 		super(nextState, aI);
-		divider = aI.analysis.getStart();
 	}
 
 	@Override
 	public void onEnter(MainState mainState)
 	{
-		attackAnim = new AttackAnim(divider, mainState.levelMap());
+		attackAnim = new AttackAnim(aI.analysis.getStart(), mainState.levelMap());
 	}
 
 	@Override

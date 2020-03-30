@@ -89,7 +89,7 @@ public interface ModifierAspect
 		return list;
 	}
 
-	private static void add(List<String> list, String prefix, int num, boolean p)
+	private static void add(List<? super String> list, String prefix, int num, boolean p)
 	{
 		if(num > 0 && p)
 			list.add(prefix + "\n+" + num);

@@ -18,9 +18,9 @@ public enum Items implements Item
 
 	}
 
-	public final String image;
-	public final int weight;
-	public final List<String> info;
+	private final String image;
+	private final int weight;
+	private final List<String> info;
 
 	@Override
 	public String image()

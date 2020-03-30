@@ -4,9 +4,9 @@ import geom.tile.*;
 
 public final class HexLayout implements TileLayout
 {
-	public final HexMatrix mat;
-	public final PointD size;
-	public final PointD origin;
+	private final HexMatrix mat;
+	private final PointD size;
+	private final PointD origin;
 
 	public HexLayout(HexMatrix mat, PointD size, PointD origin)
 	{
@@ -49,7 +49,7 @@ public final class HexLayout implements TileLayout
 	@Override
 	public PointD cornerOffset(int corner)
 	{
-		double angle = Math.PI * (mat.startAngle + corner) / -3f;
+		double angle = Math.PI * (mat.startAngle + corner) / -3.0;
 		return new PointD(size.v()[0] * Math.cos(angle), size.v()[1] * Math.sin(angle));
 	}
 

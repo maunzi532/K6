@@ -5,7 +5,7 @@ import logic.*;
 
 public final class ProductionPhaseState implements NAutoState
 {
-	public static final int WAIT = 30;
+	private static final int WAIT = 30;
 
 	private int counter;
 

@@ -17,8 +17,8 @@ public final class AttackMode3
 	public final AM2Type mode;
 	public final Set<Ability2> abilities;
 	private final List<AbilityText> abilityTexts;
-	public final int[] ranges;
-	public final int[] counter;
+	private final int[] ranges;
+	private final int[] counter;
 	public final DefenseType defenseType;
 	public final int attackCount;
 	public final AdvantageType advType;
@@ -40,10 +40,10 @@ public final class AttackMode3
 	public final int finalSpeed;
 	public final int accuracy;
 	public final int crit;
-	public final int defensePhysical;
-	public final int defenseMagical;
-	public final int evasionPhysical;
-	public final int evasionMagical;
+	private final int defensePhysical;
+	private final int defenseMagical;
+	private final int evasionPhysical;
+	private final int evasionMagical;
 	public final int critProtection;
 
 	private AttackMode3(Stats stats, AttackMode mode4)

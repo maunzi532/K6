@@ -36,7 +36,7 @@ public abstract class VisualGUI
 		return xgui != null && inside(camera, camera.clickLocation(x, y), xgui);
 	}
 
-	public abstract boolean inside(TileCamera camera, DoubleTile h1, XGUIState xgui);
+	protected abstract boolean inside(TileCamera camera, DoubleTile h1, XGUIState xgui);
 
 	public void zoomAndDraw(TileCamera camera, XGUIState xgui, Scheme scheme)
 	{
@@ -58,7 +58,7 @@ public abstract class VisualGUI
 			camera.setZoom((double) counter / FADEIN);
 			locateAndDraw(camera, xgui, scheme);
 		}
-		camera.setZoom(1);
+		camera.setZoom(1.0);
 	}
 
 	public abstract void locateAndDraw(TileCamera camera, XGUIState xgui, Scheme scheme);
@@ -123,16 +123,16 @@ public abstract class VisualGUI
 			{
 				double width = image.widthProperty().get();
 				double height = image.heightProperty().get();
-				gd.drawImage(image, width, 0, -width, height,
+				gd.drawImage(image, width, 0.0, -width, height,
 						midPoint.v()[0] - layout.size().v()[0] * imgSize,
 						midPoint.v()[1] - layout.size().v()[1] * imgSize,
-						layout.size().v()[0] * 2 * imgSize, layout.size().v()[1] * 2 * imgSize);
+						layout.size().v()[0] * 2.0 * imgSize, layout.size().v()[1] * 2.0 * imgSize);
 			}
 			else
 			{
 				gd.drawImage(image, midPoint.v()[0] - layout.size().v()[0] * imgSize,
 						midPoint.v()[1] - layout.size().v()[1] * imgSize,
-						layout.size().v()[0] * 2 * imgSize, layout.size().v()[1] * 2 * imgSize);
+						layout.size().v()[0] * 2.0 * imgSize, layout.size().v()[1] * 2.0 * imgSize);
 			}
 		}
 		if(guiTile.text != null)

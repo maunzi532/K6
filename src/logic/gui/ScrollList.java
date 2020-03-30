@@ -8,9 +8,9 @@ public class ScrollList<T> implements GuiElement
 	private final int locationX, locationY;
 	private final int sizeX, sizeY;
 	private final int elementSizeX, elementSizeY;
-	private final Function<T, GuiTile[]> function;
+	private final Function<? super T, GuiTile[]> function;
 	protected Function<T, Boolean> onTarget;
-	private final Consumer<T> onClick;
+	private final Consumer<? super T> onClick;
 	private final int elementCountX;
 	private final int elementCountYm0;
 	private final int elementCountYm1;
@@ -25,7 +25,7 @@ public class ScrollList<T> implements GuiElement
 	private int shownLinesY;
 
 	public ScrollList(int locationX, int locationY, int sizeX, int sizeY, int elementSizeX, int elementSizeY, List<T> elements,
-			Function<T, GuiTile[]> function, Consumer<T> onClick)
+			Function<? super T, GuiTile[]> function, Consumer<? super T> onClick)
 	{
 		this.locationX = locationX;
 		this.locationY = locationY;

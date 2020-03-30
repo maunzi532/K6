@@ -85,7 +85,7 @@ public final class RecipeGUI extends XGUIState
 		resultView.elements = recipe.results().items;
 	}
 
-	public GuiTile[] elementViewRequired(ItemStack stack)
+	private GuiTile[] elementViewRequired(ItemStack stack)
 	{
 		Inv inv = building.inputInv();
 		ItemView itemView = inv.viewRecipeItem(stack.item);
@@ -96,7 +96,7 @@ public final class RecipeGUI extends XGUIState
 				};
 	}
 
-	public GuiTile[] elementViewResults(ItemStack stack)
+	private GuiTile[] elementViewResults(ItemStack stack)
 	{
 		Inv inv = building.outputInv();
 		ItemView itemView = inv.viewRecipeItem(stack.item);

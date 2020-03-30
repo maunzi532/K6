@@ -9,7 +9,7 @@ public final class XClasses
 
 	public final XClass[] xClasses;
 
-	public XClasses()
+	private XClasses()
 	{
 		xClasses = new XClass[13];
 		xClasses[1] = new XClass(1, "Bandit", 0, new int[]{9, 7, 6, 13, 5, 8, 5, 12}, 6, List.of(DaggerItem.INSTANCE, AxeItem.INSTANCE), List.of());

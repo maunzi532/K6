@@ -4,11 +4,11 @@ import geom.tile.*;
 
 public final class QuadLayout implements TileLayout
 {
-	public static final double Q2 = Math.sqrt(2);
-	public static final double DQ2 = Math.sqrt(2) / 2;
+	public static final double Q2 = 1.4142135623730951; //sqrt 2
+	public static final double DQ2 = 0.7071067811865476; //sqrt 0.5
 
-	public final PointD size;
-	public final PointD origin;
+	private final PointD size;
+	private final PointD origin;
 
 	public QuadLayout(PointD size, PointD origin)
 	{
@@ -50,7 +50,7 @@ public final class QuadLayout implements TileLayout
 	@Override
 	public PointD cornerOffset(int corner)
 	{
-		double angle = Math.PI * (0.5 + corner) / 2f;
+		double angle = Math.PI * (0.5 + corner) / 2.0;
 		return new PointD(size.v()[0] * Math.cos(angle), size.v()[1] * Math.sin(angle));
 	}
 

@@ -42,7 +42,7 @@ public final class VisualSideInfo
 
 	public double takeY2()
 	{
-		return current != null ? graphics.scaleHW() * (YS_1 + S_I) : 0;
+		return current != null ? graphics.scaleHW() * (YS_1 + S_I) : 0.0;
 	}
 
 	public void draw(Scheme scheme)
@@ -79,7 +79,7 @@ public final class VisualSideInfo
 		GraphicsContext gd = graphics.gd();
 		double size = graphics.scaleHW();
 		double lx = -size * shift;
-		double by = graphics.yHW() * 2;
+		double by = graphics.yHW() * 2.0;
 		gd.setFill(scheme.color("sideinfo.background"));
 		gd.drawImage(scheme.image(sideInfo.imageName()), lx + size * XD_I, by - size * (YS_1 + S_I), size * S_I, size * S_I);
 		gd.fillRect(lx, by - size * YS_1, size * XS_1, size * YS_1);
@@ -99,8 +99,8 @@ public final class VisualSideInfo
 	{
 		GraphicsContext gd = graphics.gd();
 		double size = graphics.scaleHW();
-		double rx = graphics.xHW() * 2 + size * shift;
-		double by = graphics.yHW() * 2;
+		double rx = graphics.xHW() * 2.0 + size * shift;
+		double by = graphics.yHW() * 2.0;
 		gd.setFill(scheme.color("sideinfo.background"));
 		gd.drawImage(scheme.image(sideInfo.imageName()), rx - size * (XD_I + S_I), by - size * (YS_1 + S_I), size * S_I, size * S_I);
 		gd.fillRect(rx - size * XS_1, by - size * YS_1, size * XS_1, size * YS_1);
@@ -127,6 +127,6 @@ public final class VisualSideInfo
 		gd.strokeRect(xs, ys, xw, yw);
 		gd.setFont(new Font(yw * 0.8));
 		gd.setFill(scheme.color(statBar.getTc()));
-		gd.fillText(statBar.getText(), xs + xw / 2, ys + yw / 2, xw);
+		gd.fillText(statBar.getText(), xs + xw / 2.0, ys + yw / 2.0, xw);
 	}
 }

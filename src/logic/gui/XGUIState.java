@@ -8,7 +8,7 @@ import logic.xstate.*;
 public abstract class XGUIState implements NState
 {
 	public GuiTile[][] tiles;
-	public List<GuiElement> elements;
+	protected List<GuiElement> elements;
 	public CTile targeted = CTile.NONE;
 
 	protected XGUIState()
@@ -55,7 +55,7 @@ public abstract class XGUIState implements NState
 		return targeted;
 	}
 
-	public void setTargeted(CTile targeted)
+	protected void setTargeted(CTile targeted)
 	{
 		this.targeted = targeted;
 	}

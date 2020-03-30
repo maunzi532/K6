@@ -16,9 +16,9 @@ public final class HexCamera extends TileCamera
 	@Override
 	public int getRange()
 	{
-		double yDistance = dimension.yHW() / (ySize * dimension.scaleHW()) / 3;
+		double yDistance = dimension.yHW() / (ySize * dimension.scaleHW()) / 3.0;
 		double xDistance = dimension.xHW() / (xSize * dimension.scaleHW()) / HexMatrix.Q3;
-		return (int)(yDistance + xDistance + 1);
+		return (int)(yDistance + xDistance + 1.0);
 	}
 
 	@Override

@@ -57,13 +57,13 @@ public final class BuildGUI extends XGUIState
 	{
 		levelMap = mainState.levelMap();
 		floorTiles = new ScrollList<>(0, 2, 2, 4, 2, 1, null,
-				this::itemView0, null);
+				BuildGUI::itemView0, null);
 		elements.add(floorTiles);
 		required = new ScrollList<>(3, 2, 2, 4, 2, 1, null,
 				this::itemView1, null);
 		elements.add(required);
 		returned = new ScrollList<>(6, 2, 2, 4, 2, 1, null,
-				this::itemView2, null);
+				BuildGUI::itemView2, null);
 		elements.add(returned);
 		elements.add(new CElement(textTiles));
 		elements.add(new CElement(textRequired));
@@ -121,7 +121,7 @@ public final class BuildGUI extends XGUIState
 		buildElement.fillTile = activeIf("Build", builder.tryBuildingCosts(cost.refundable(), cost.costs(), CommitType.ROLLBACK).isPresent(), "gui.background.active");
 	}
 
-	private GuiTile activeIf(String text, boolean active, String color)
+	private static GuiTile activeIf(String text, boolean active, String color)
 	{
 		if(active)
 			return new GuiTile(text, null, false, color);
@@ -129,7 +129,7 @@ public final class BuildGUI extends XGUIState
 			return new GuiTile(text);
 	}
 
-	private GuiTile[] itemView0(RequiresFloorTiles rft)
+	private static GuiTile[] itemView0(RequiresFloorTiles rft)
 	{
 		return new GuiTile[]
 				{
@@ -149,7 +149,7 @@ public final class BuildGUI extends XGUIState
 				};
 	}
 
-	private GuiTile[] itemView2(ItemStack stack)
+	private static GuiTile[] itemView2(ItemStack stack)
 	{
 		return new GuiTile[]
 				{

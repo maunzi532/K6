@@ -3,12 +3,12 @@ package entity.analysis;
 import java.util.*;
 import java.util.stream.*;
 
-public final class RNGInfoAnalysis<Divider extends RNGDivider>
+public final class RNGInfoAnalysis<O extends RNGOutcome, Divider extends RNGDivider<O>>
 {
-	private Divider start;
-	private List<Divider> stack;
-	private List<Integer> snum;
-	private List<RNGOutcome> outcomes;
+	private final Divider start;
+	private final List<Divider> stack;
+	private final List<Integer> snum;
+	private final List<O> outcomes;
 
 	public RNGInfoAnalysis(Divider start)
 	{
@@ -18,7 +18,7 @@ public final class RNGInfoAnalysis<Divider extends RNGDivider>
 		outcomes = new ArrayList<>();
 	}
 
-	public RNGInfoAnalysis<Divider> create()
+	public RNGInfoAnalysis<O, Divider> create()
 	{
 		stack.add(start);
 		snum.add(0);
@@ -56,7 +56,7 @@ public final class RNGInfoAnalysis<Divider extends RNGDivider>
 		return start;
 	}
 
-	public List<RNGOutcome> outcomes()
+	public List<O> outcomes()
 	{
 		return outcomes;
 	}

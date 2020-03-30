@@ -8,7 +8,7 @@ import vis.*;
 public final class VisualGUIHex extends VisualGUI
 {
 	private static final double TEXT_END = 1.4;
-	private static final double IMAGE_END = 1;
+	private static final double IMAGE_END = 1.0;
 	private static final double FONT_SIZE = 0.5;
 	private final DoubleTile lu;
 	private final DoubleTile rle;
@@ -18,9 +18,9 @@ public final class VisualGUIHex extends VisualGUI
 	{
 		super(graphics);
 		DoubleType y2 = camera.getDoubleType();
-		lu = y2.createD(-1d / 6d, 5d / 6d, -4d / 6d);
-		rle = y2.createD(1d / 6d, -5d / 6d, 4d / 6d);
-		rls = y2.createD(4d / 6d, -8d / 6d, 4d / 6d);
+		lu = y2.createD(-1.0 / 6.0, 5.0 / 6.0, -4.0 / 6.0);
+		rle = y2.createD(1.0 / 6.0, -5.0 / 6.0, 4.0 / 6.0);
+		rls = y2.createD(4.0 / 6.0, -8.0 / 6.0, 4.0 / 6.0);
 	}
 
 	private DoubleTile rlLoc(DoubleType y2, XGUIState xgui)
@@ -42,8 +42,8 @@ public final class VisualGUIHex extends VisualGUI
 	@Override
 	public void locateAndDraw(TileCamera camera, XGUIState xgui, Scheme scheme)
 	{
-		double cxs = xgui.xw() - (xgui.yw() > 1 ? 0.5 : 1d) * HexMatrix.Q3 / 2d;
-		double cys = (xgui.yw() - 1) * 1.5 / 2d;
+		double cxs = xgui.xw() - (xgui.yw() > 1 ? 0.5 : 1.0) * HexMatrix.Q3 / 2.0;
+		double cys = (xgui.yw() - 1) * 1.5 / 2.0;
 		drawGUI(camera, xgui, scheme, cxs, cys, lu, rlLoc(camera.getDoubleType(), xgui), IMAGE_END, FONT_SIZE, TEXT_END);
 	}
 }

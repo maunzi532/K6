@@ -1,7 +1,6 @@
 package statsystem.analysis;
 
 import entity.*;
-import entity.analysis.*;
 import java.util.*;
 import java.util.stream.*;
 import levelmap.*;
@@ -45,9 +44,9 @@ public final class StandardAI implements EnemyAI
 		for(PathAttackX px : pathsX)
 		{
 			if(px.attack != null && !analysis.containsKey(px.attack))
-				analysis.put(px.attack, enemyAIScore(px.attack.analysis.outcomes()));
+				analysis.put(px.attack, new EnemyThoughts2(px.attack.analysis.outcomes()).score());
 			if(px.attack != null)
-				px.score += analysis.get(px.attack) * 1000;
+				px.score += analysis.get(px.attack) * 1000.0;
 			if(!px.path.tile().equals(user.location()))
 				px.score += moveAway;
 			px.score += levelMap.enemyTeamTargetCharacters(user.team()).stream().mapToInt(e -> levelMap.y1
@@ -85,11 +84,6 @@ public final class StandardAI implements EnemyAI
 		PathAttackX max = pathsX.stream().max(Comparator.comparingInt(e -> e.score)).orElseThrow();
 		PathAttackX max2 = pathsX.stream().filter(e -> !e.path.tile().equals(max.path.tile())).max(Comparator.comparingInt(e -> e.score)).orElse(max);
 		return new EnemyMove(user, max.score, max.path, max.attack, max.score - max2.score);
-	}
-
-	private double enemyAIScore(List<RNGOutcome> outcomes)
-	{
-		return new EnemyThoughts2(outcomes).score();
 	}
 
 	@Override

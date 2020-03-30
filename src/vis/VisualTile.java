@@ -87,7 +87,7 @@ public final class VisualTile
 		Image image = scheme.image(floorTile != null ? floorTile.type.image : "floortile.wall");
 		GraphicsContext gd = graphics.gd();
 		gd.setFill(new ImagePattern(image, mid.v()[0] - offset.v()[0],
-				mid.v()[1] - offset.v()[1], offset.v()[0] * 2, offset.v()[1] * 2, false));
+				mid.v()[1] - offset.v()[1], offset.v()[0] * 2.0, offset.v()[1] * 2.0, false));
 		gd.fillPolygon(points[0], points[1], y1.directionCount());
 	}
 
@@ -95,7 +95,7 @@ public final class VisualTile
 	{
 		PointD midPoint = layout.tileToPixel(loc);
 		graphics.gd().drawImage(scheme.image("building.default"), midPoint.v()[0] - layout.size().v()[0], midPoint.v()[1] - layout.size().v()[1],
-				layout.size().v()[0] * 2, layout.size().v()[1] * 2);
+				layout.size().v()[0] * 2.0, layout.size().v()[1] * 2.0);
 	}
 
 	private void drawShineArrow(TileLayout layout, ShineArrow shineArrow, Scheme scheme)
@@ -118,14 +118,14 @@ public final class VisualTile
 		PointD midPoint = layout.tileToPixel(loc);
 		graphics.gd().drawImage(scheme.image(character.mapImageName()),
 				midPoint.v()[0] - layout.size().v()[0], midPoint.v()[1] - layout.size().v()[1],
-				layout.size().v()[0] * 2, layout.size().v()[1] * 2);
+				layout.size().v()[0] * 2.0, layout.size().v()[1] * 2.0);
 	}
 
 	private void drawCharacterArrow(TileLayout layout, XArrow arrow, Scheme scheme)
 	{
 		PointD midPoint = layout.tileToPixel(av.imageLocation(arrow));
 		graphics.gd().drawImage(scheme.image(arrow.imageName()), midPoint.v()[0] - layout.size().v()[0], midPoint.v()[1] - layout.size().v()[1],
-				layout.size().v()[0] * 2, layout.size().v()[1] * 2);
+				layout.size().v()[0] * 2.0, layout.size().v()[1] * 2.0);
 	}
 
 	private void drawInfoArrow(TileLayout layout, InfoArrow arrow, Scheme scheme)
@@ -134,8 +134,8 @@ public final class VisualTile
 		PointD midPoint = layout.tileToPixel(av.dataLocation(arrow, layout));
 		double xw = layout.size().v()[0] * VisualXArrow.DATA_WIDTH;
 		double yw = layout.size().v()[1] * VisualXArrow.DATA_HEIGHT;
-		double xs = midPoint.v()[0] - xw / 2;
-		double ys = midPoint.v()[1] - yw / 2;
+		double xs = midPoint.v()[0] - xw / 2.0;
+		double ys = midPoint.v()[1] - yw / 2.0;
 		GraphicsContext gd = graphics.gd();
 		gd.setFill(scheme.color(statBar.getBg()));
 		gd.fillRect(xs, ys, xw, yw);
@@ -145,6 +145,6 @@ public final class VisualTile
 		gd.strokeRect(xs, ys, xw, yw);
 		gd.setFont(new Font(yw * 0.8));
 		gd.setFill(scheme.color(statBar.getTc()));
-		gd.fillText(statBar.getText(), xs + xw / 2, ys + yw / 2, xw);
+		gd.fillText(statBar.getText(), xs + xw / 2.0, ys + yw / 2.0, xw);
 	}
 }

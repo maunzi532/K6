@@ -63,8 +63,8 @@ public final class SavedImport
 		}
 	}
 
-	public XCharacter loadCharacterOrStartLoc(LevelMap levelMap,
-			JrsObject data, ItemLoader itemLoader, Map<String, JrsObject> characters, Inv storage)
+	private XCharacter loadCharacterOrStartLoc(LevelMap levelMap,
+			JrsObject data, ItemLoader itemLoader, Map<String, ? extends JrsObject> characters, Inv storage)
 	{
 		Tile location = levelMap.y1.create2(((JrsNumber) data.get("sx")).getValue().intValue(), ((JrsNumber) data.get("sy")).getValue().intValue());
 		CharacterTeam team = CharacterTeam.valueOf(data.get("Type").asText());
@@ -97,7 +97,6 @@ public final class SavedImport
 			startingSettings = null;
 		}
 		EnemyAI enemyAI = team == CharacterTeam.ENEMY ? new StandardAI(levelMap) : new NoAI();
-		return new XCharacter(team, startingDelay, location, stats, inv, enemyAI, new TurnResources(location),
-				startingSettings);
+		return new XCharacter(team, startingDelay, location, stats, inv, enemyAI, new TurnResources(location), startingSettings);
 	}
 }

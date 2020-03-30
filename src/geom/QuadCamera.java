@@ -15,7 +15,7 @@ public final class QuadCamera extends TileCamera
 	{
 		double yDistance = dimension.yHW() / (ySize * dimension.scaleHW()) / QuadLayout.Q2;
 		double xDistance = dimension.xHW() / (xSize * dimension.scaleHW()) / QuadLayout.Q2;
-		return (int)(Math.max(yDistance, xDistance) + 1);
+		return (int)(Math.max(yDistance, xDistance) + 1.0);
 	}
 
 	@Override

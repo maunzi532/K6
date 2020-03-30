@@ -15,7 +15,7 @@ import statsystem.content.*;
 
 public final class Stats implements ModifierAspect
 {
-	public static final int HEALTH_MULTIPLIER = 5;
+	private static final int HEALTH_MULTIPLIER = 5;
 	private static final String[] statNames =
 			{
 					"Strength", "Finesse", "Skill", "Speed", "Luck", "Defense", "Evasion", "Toughness"
@@ -70,8 +70,8 @@ public final class Stats implements ModifierAspect
 		filter = new AttackItemFilter(xClass.usableItems);
 	}
 
-	public Stats(XClass xClass, int level, int exp, String customName, String customMapImage, String customSideImage, int[] lvStats,
-			int currentHealth, int exhaustion, int movement, int dashMovement, int maxAccessRange, PlayerLevelSystem playerLevelSystem)
+	private Stats(XClass xClass, int level, int exp, String customName, String customMapImage, String customSideImage,
+			int[] lvStats, int currentHealth, int exhaustion, int movement, int dashMovement, int maxAccessRange, PlayerLevelSystem playerLevelSystem)
 	{
 		this.xClass = xClass;
 		this.level = level;
@@ -518,7 +518,7 @@ public final class Stats implements ModifierAspect
 		return info;
 	}
 
-	public List<String> editOptions(int num)
+	public static List<String> editOptions(int num)
 	{
 		if(num == 0)
 			return List.of("Name", "Image 1", "Image 2");

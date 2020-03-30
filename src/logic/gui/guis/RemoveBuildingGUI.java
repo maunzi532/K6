@@ -32,7 +32,7 @@ public final class RemoveBuildingGUI extends XGUIState
 		character.inputInv().tryAdd(refunds, true, CommitType.LEAVE);
 		InvNumView weightView = character.inputInv().viewInvWeight();
 		ScrollList<ItemView> invView = new ScrollList<>(0, 1, 3, 4, 2, 1,
-				character.inputInv().viewItems(true), this::changedItemView, null);
+				character.inputInv().viewItems(true), RemoveBuildingGUI::changedItemView, null);
 		elements.add(invView);
 		elements.add(new CElement(textInv));
 		elements.add(new CElement(weight, new GuiTile(weightView.baseAndCurrentWithLimit())));
@@ -77,7 +77,7 @@ public final class RemoveBuildingGUI extends XGUIState
 	}
 
 
-	private GuiTile[] changedItemView(ItemView itemView)
+	private static GuiTile[] changedItemView(ItemView itemView)
 	{
 		return new GuiTile[]
 				{

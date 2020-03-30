@@ -65,7 +65,7 @@ public final class HexDoubleType extends HexTileType implements DoubleType
 
 	private double length(DoubleTile t1)
 	{
-		return (Math.abs(t1.v()[0]) + Math.abs(t1.v()[1]) + Math.abs(t1.v()[2])) / 2;
+		return (Math.abs(t1.v()[0]) + Math.abs(t1.v()[1]) + Math.abs(t1.v()[2])) / 2.0;
 	}
 
 	@Override
@@ -92,7 +92,7 @@ public final class HexDoubleType extends HexTileType implements DoubleType
 	@Override
 	public DoubleTile upwards()
 	{
-		return createD(1, 1, -2);
+		return createD(1.0, 1.0, -2.0);
 	}
 
 	@Override
@@ -106,6 +106,6 @@ public final class HexDoubleType extends HexTileType implements DoubleType
 	@Override
 	public DoubleTile fromOffsetD(double x, double y)
 	{
-		return create3d(x - y / 2, -x - x / 2, y);
+		return create3d(x - y / 2.0, -x - x / 2.0, y);
 	}
 }

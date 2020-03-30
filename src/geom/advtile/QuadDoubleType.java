@@ -68,13 +68,13 @@ public final class QuadDoubleType extends QuadTileType implements DoubleType
 	@Override
 	public DoubleTile rotateR2(DoubleTile t1, boolean inverse)
 	{
-		return multiply(rotate(t1, inverse), 2);
+		return multiply(rotate(t1, inverse), 2.0);
 	}
 
 	@Override
 	public DoubleTile upwards()
 	{
-		return create2d(0, -1);
+		return create2d(0.0, -1.0);
 	}
 
 	@Override

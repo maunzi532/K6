@@ -103,7 +103,7 @@ public final class CharacterCombatGUI extends XGUIState
 		chosenItem = null;
 	}
 
-	public GuiTile[] itemViewView(ItemView itemView)
+	private GuiTile[] itemViewView(ItemView itemView)
 	{
 		boolean mark = itemView.item == equippedItem;
 		return new GuiTile[]

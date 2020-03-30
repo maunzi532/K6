@@ -7,12 +7,12 @@ import java.util.*;
 
 public final class InvTransporter
 {
-	private List<DoubleInv> providingTargets;
-	private List<DoubleInv> receivingTargets;
+	private List<? extends DoubleInv> providingTargets;
+	private List<? extends DoubleInv> receivingTargets;
 	private int amount;
 	private List<PossibleTransport> transportHistory;
 
-	public InvTransporter(List<DoubleInv> providingTargets, List<DoubleInv> receivingTargets, int amount)
+	public InvTransporter(List<? extends DoubleInv> providingTargets, List<? extends DoubleInv> receivingTargets, int amount)
 	{
 		this.providingTargets = providingTargets;
 		this.receivingTargets = receivingTargets;
@@ -20,7 +20,7 @@ public final class InvTransporter
 		transportHistory = new ArrayList<>();
 	}
 
-	public InvTransporter(List<DoubleInv> providingTargets, List<DoubleInv> receivingTargets, int amount, List<PossibleTransport> transportHistory)
+	public InvTransporter(List<? extends DoubleInv> providingTargets, List<? extends DoubleInv> receivingTargets, int amount, List<PossibleTransport> transportHistory)
 	{
 		this.providingTargets = providingTargets;
 		this.receivingTargets = receivingTargets;

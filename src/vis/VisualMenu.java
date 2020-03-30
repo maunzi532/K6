@@ -38,14 +38,14 @@ public final class VisualMenu
 			double tLimitC = tLimit / camera.ySizeNZ();
 			double bLimitC = bLimit / camera.ySizeNZ();
 			double size1 = 0.75 * menuEntries.size() + 0.25;
-			double zoom = 1;
-			double yShift = 0;
+			double zoom = 1.0;
+			double yShift = 0.0;
 			if(size1 > tLimitC || size1 > bLimitC)
 			{
-				if(size1 * 2 > tLimitC + bLimitC)
+				if(size1 * 2.0 > tLimitC + bLimitC)
 				{
-					zoom = (tLimitC + bLimitC) / (size1 * 2);
-					size1 = (tLimitC + bLimitC) / 2;
+					zoom = (tLimitC + bLimitC) / (size1 * 2.0);
+					size1 = (tLimitC + bLimitC) / 2.0;
 				}
 				if(tLimitC < bLimitC)
 				{
@@ -56,7 +56,7 @@ public final class VisualMenu
 					yShift += size1 - bLimitC;
 				}
 			}
-			if(lastZoom <= 0)
+			if(lastZoom <= 0.0)
 			{
 				lastZoom = zoom;
 				lastShift = yShift;
@@ -77,8 +77,8 @@ public final class VisualMenu
 		}
 		else
 		{
-			lastZoom = 0;
-			lastShift = 0;
+			lastZoom = 0.0;
+			lastShift = 0.0;
 		}
 	}
 
@@ -95,14 +95,14 @@ public final class VisualMenu
 		if(active)
 		{
 			gd.setFill(new LinearGradient(points[0][0], points[1][0], points[0][dch], points[1][dch],
-					false, null, new Stop(0, scheme.color("menu.background.active.1")),
-					new Stop(1, scheme.color("menu.background.active.2"))));
+					false, null, new Stop(0.0, scheme.color("menu.background.active.1")),
+					new Stop(1.0, scheme.color("menu.background.active.2"))));
 		}
 		else
 		{
 			gd.setFill(new LinearGradient(points[0][0], points[1][0], points[0][dch], points[1][dch],
-					false, null, new Stop(0, scheme.color("menu.background.1")),
-					new Stop(1, scheme.color("menu.background.2"))));
+					false, null, new Stop(0.0, scheme.color("menu.background.1")),
+					new Stop(1.0, scheme.color("menu.background.2"))));
 		}
 		gd.fillPolygon(points[0], points[1], y1.directionCount());
 		PointD midPoint = layout.tileToPixel(h1);
