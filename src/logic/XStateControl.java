@@ -13,7 +13,7 @@ import logic.gui.*;
 import logic.gui.guis.*;
 import logic.xstate.*;
 
-public class StateControl2 implements XStateHolder, ConvInputConsumer
+public class XStateControl implements XStateHolder, ConvInputConsumer
 {
 	private final MainState mainState;
 	private final LevelEditor levelEditor;
@@ -21,13 +21,23 @@ public class StateControl2 implements XStateHolder, ConvInputConsumer
 	private List<NState> menu;
 	private VisMark cursorMarker;
 	private List<VisMark> dragMarker;
+	private final List<VisMark> visMarked;
 
-	public StateControl2(MainState mainState, LevelEditor levelEditor, NState state)
+	public XStateControl(MainState mainState, LevelEditor levelEditor, NState state)
 	{
 		this.mainState = mainState;
 		this.levelEditor = levelEditor;
 		dragMarker = List.of();
+		visMarked = new ArrayList<>();
 		setState(state);
+	}
+
+	@Override
+	public void setState(NState state)
+	{
+		this.state = state;
+		state.onEnter(mainState);
+		menu = state.menu().getEntries().stream().filter(e -> e.keepInMenu(mainState)).collect(Collectors.toList());
 	}
 
 	@Override
@@ -37,26 +47,24 @@ public class StateControl2 implements XStateHolder, ConvInputConsumer
 	}
 
 	@Override
-	public XGUIState getGUI()
-	{
-		if(state instanceof XGUIState)
-			return (XGUIState) state;
-		else
-			return null;
-	}
-
-	@Override
 	public List<NState> getMenu()
 	{
 		return menu;
 	}
 
 	@Override
-	public void setState(NState state)
+	public XGUIState getGUI()
 	{
-		this.state = state;
-		state.onEnter(mainState);
-		menu = state.menu().getEntries().stream().filter(e -> e.keepInMenu(mainState)).collect(Collectors.toList());
+		if(state instanceof XGUIState guiState)
+			return guiState;
+		else
+			return null;
+	}
+
+	@Override
+	public List<VisMark> visMarked()
+	{
+		return visMarked;
 	}
 
 	@Override
@@ -133,9 +141,9 @@ public class StateControl2 implements XStateHolder, ConvInputConsumer
 	{
 		if(state instanceof NAutoState)
 			return;
-		if(state instanceof NMarkState && key.canClick())
+		if(state instanceof NMarkState markState && key.canClick())
 		{
-			((NMarkState) state).onClick(mapTile, mainState, this, key);
+			markState.onClick(mapTile, mainState, this, key);
 		}
 		else if(state.editMode() && key.canClick())
 		{
@@ -278,13 +286,13 @@ public class StateControl2 implements XStateHolder, ConvInputConsumer
 		}
 		else if(key.hasFunction("Escape"))
 		{
-			if(state instanceof XGUIState)
+			if(state instanceof XGUIState guiState)
 			{
-				((XGUIState) state).clickOutside(key, this);
+				guiState.clickOutside(key, this);
 			}
-			else if(state instanceof NMarkState)
+			else if(state instanceof NMarkState markState)
 			{
-				((NMarkState) state).onEscape(this);
+				markState.onEscape(this);
 			}
 		}
 		else if(!(state instanceof NAutoState))
@@ -314,7 +322,6 @@ public class StateControl2 implements XStateHolder, ConvInputConsumer
 				setState(autoState.nextState());
 			}
 		}
-		List<VisMark> visMarked = mainState.visMarked;
 		visMarked.clear();
 		if(mainState.showAllEnemyReach)
 		{
@@ -338,11 +345,18 @@ public class StateControl2 implements XStateHolder, ConvInputConsumer
 	@Override
 	public void tickPaused()
 	{
-		List<VisMark> visMarked = mainState.visMarked;
 		visMarked.clear();
-		if(state instanceof NMarkState)
+		if(mainState.showAllEnemyReach)
 		{
-			visMarked.addAll(((NMarkState) state).visMarked(mainState));
+			if(mainState.levelMap.checkUpdate())
+			{
+				mainState.allEnemyReach = mainState.levelMap.allEnemyReach();
+			}
+			mainState.allEnemyReach.forEach((t, n) -> visMarked.add(new VisMark(t, "mark.reach.all", 0.8)));
+		}
+		if(state instanceof NMarkState markState)
+		{
+			visMarked.addAll(markState.visMarked(mainState));
 		}
 	}
 }

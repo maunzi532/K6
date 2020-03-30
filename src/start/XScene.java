@@ -20,7 +20,8 @@ public class XScene extends Application
 	private static final double MAP_SIZE_FACTOR = 0.088;
 	private static final double MENU_SIZE_FACTOR = 0.1;
 	private static final double GUI_SIZE_FACTOR = 0.1;
-
+	private static final double EDITOR_SCALE_X = 0.125;
+	private static final double EDITOR_SCALE_Y = 0.1;
 
 	public static void main(String[] args)
 	{
@@ -44,10 +45,9 @@ public class XScene extends Application
 		KeybindFile keybindFile = new KeybindFile(loadTextResource(scheme.setting("file.keybinds")));
 		ItemLoader itemLoader = new ItemLoader2();
 		BlueprintFile blueprintFile = new BlueprintFile(loadTextResource(scheme.setting("file.buildingblueprints")), itemLoader);
-		MainVisual mainVisual = new MainVisual(graphics, keybindFile, scheme, itemLoader, blueprintFile,
-				mapCamera(scheme, graphics),
-				menuCamera(scheme, graphics),
-				guiCamera(scheme, graphics),
+		MainVisual mainVisual = new MainVisual(graphics, keybindFile, scheme, mapCamera(scheme, graphics),
+				menuCamera(scheme, graphics), guiCamera(scheme, graphics), a1 -> editorSlotCamera(scheme, graphics, a1),
+				itemLoader, blueprintFile,
 				scheme.setting("load.map"),
 				scheme.setting("load.team"));
 		XTimer xTimer = new XTimer(mainVisual, keybindFile);
@@ -101,6 +101,16 @@ public class XScene extends Application
 					case "Hex" -> new HexCamera(graphics, 1, 1, GUI_SIZE_FACTOR, GUI_SIZE_FACTOR, 0, 0, new HexMatrix(0.5));
 					case "Quad" -> new QuadCamera(graphics, 1, 1, GUI_SIZE_FACTOR, GUI_SIZE_FACTOR, 0, 0);
 					default -> throw new RuntimeException("camera.gui must be one of these: \"Hex\", \"Quad\"");
+				};
+	}
+
+	private TileCamera editorSlotCamera(Scheme scheme, XGraphics graphics, Double a1)
+	{
+		return switch(scheme.setting("camera.editorslot"))
+				{
+					case "Hex" -> new HexCamera(graphics, a1, 1.75, EDITOR_SCALE_X, EDITOR_SCALE_Y, 0, 0, new HexMatrix(0.5));
+					case "Quad" -> new QuadCamera(graphics, a1, 1.75, EDITOR_SCALE_X, EDITOR_SCALE_Y, 0, 0);
+					default -> throw new RuntimeException("camera.editorslot must be one of these: \"Hex\", \"Quad\"");
 				};
 	}
 

@@ -14,30 +14,31 @@ public class VisualGUIQuad extends VisualGUI
 
 	public VisualGUIQuad(XGraphics graphics, QuadCamera camera)
 	{
-		super(graphics, camera);
-		LU = this.y2.createD(-3d / 4d, -3d / 4d);
-		RL = this.y2.createD(-1d / 4d, -1d / 4d);
+		super(graphics);
+		DoubleType y2 = camera.getDoubleType();
+		LU = y2.createD(-3d / 4d, -3d / 4d);
+		RL = y2.createD(-1d / 4d, -1d / 4d);
 	}
 
-	private DoubleTile rl(XGUIState xgui)
+	private DoubleTile rl(DoubleType y2, XGUIState xgui)
 	{
 		return y2.add(y2.createD(xgui.xw(), xgui.yw()), RL);
 	}
 
 	@Override
-	public boolean inside(DoubleTile h1, XGUIState xgui)
+	public boolean inside(TileCamera camera, DoubleTile h1, XGUIState xgui)
 	{
 		if(xgui.xw() <= 0 || xgui.yw() <= 0)
 			return false;
-		DoubleTile rl = rl(xgui);
+		DoubleTile rl = rl(camera.getDoubleType(), xgui);
 		return h1.v()[0] >= LU.v()[0] && h1.v()[0] <= rl.v()[0] && h1.v()[1] >= LU.v()[1] && h1.v()[1] <= rl.v()[1];
 	}
 
 	@Override
-	public void locateAndDraw(XGUIState xgui, Scheme scheme)
+	public void locateAndDraw(TileCamera camera, XGUIState xgui, Scheme scheme)
 	{
 		double cxs = (xgui.xw() - 1) * QuadLayout.DQ2;
 		double cys = (xgui.yw() - 1) * QuadLayout.DQ2;
-		drawGUI(xgui, scheme, cxs, cys, LU, rl(xgui), QuadLayout.DQ2, FONT_SIZE, TEXT_END);
+		drawGUI(camera, xgui, scheme, cxs, cys, LU, rl(camera.getDoubleType(), xgui), QuadLayout.DQ2, FONT_SIZE, TEXT_END);
 	}
 }

@@ -5,12 +5,13 @@ import com.fasterxml.jackson.jr.ob.*;
 import com.fasterxml.jackson.jr.stree.*;
 import java.io.*;
 import java.util.*;
+import java.util.stream.*;
 import javafx.scene.input.*;
 import logic.*;
 
 public class KeybindFile implements XKeyMap
 {
-	public static final XKey NONE = new FXKey();
+	public static final XKey NONE = new XKey(List.of(), false, false);
 	private static final String[] mouseButtonNames = new String[]
 			{
 					"None",
@@ -21,25 +22,29 @@ public class KeybindFile implements XKeyMap
 					"Mouse Forward"
 			};
 
-	public final Map<KeyCode, XKey> keyboardKeys;
-	public final Map<MouseButton, XKey> mouseKeys;
+	private final Map<KeyCode, XKeyBuilder> keyboardKeyBuilders;
+	private final Map<MouseButton, XKeyBuilder> mouseKeyBuilders;
+	private final Map<KeyCode, XKey> keyboardKeys;
+	private final Map<MouseButton, XKey> mouseKeys;
 	private final Map<String, String> info;
 
 	public KeybindFile(String input)
 	{
-		keyboardKeys = new HashMap<>();
-		mouseKeys = new HashMap<>();
+		keyboardKeyBuilders = new HashMap<>();
+		mouseKeyBuilders = new HashMap<>();
 		info = new HashMap<>();
 		try
 		{
 			TreeNode a1 = JSON.std.with(new JacksonJrsTreeCodec()).treeFrom(input);
 			((JrsArray) a1.get("CanClick")).elements().forEachRemaining(e -> decipher2(e.asText(), null, false));
 			((JrsArray) a1.get("CanDrag")).elements().forEachRemaining(e -> decipher2(e.asText(), null, true));
-			((JrsArray) a1.get("Functions")).elements().forEachRemaining(this::decipher1);
+			((JrsArray) a1.get("Functions")).elements().forEachRemaining(e -> decipher1(e));
 		}catch(IOException e)
 		{
 			throw new RuntimeException(e);
 		}
+		keyboardKeys = keyboardKeyBuilders.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue().finish()));
+		mouseKeys = mouseKeyBuilders.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue().finish()));
 	}
 
 	private void decipher1(JrsValue e)
@@ -54,9 +59,9 @@ public class KeybindFile implements XKeyMap
 		if(input.charAt(0) == 'K')
 		{
 			KeyCode keyCode = KeyCode.valueOf(input.substring(1));
-			if(!keyboardKeys.containsKey(keyCode))
-				keyboardKeys.put(keyCode, new FXKey());
-			FXKey key = (FXKey) keyboardKeys.get(keyCode);
+			if(!keyboardKeyBuilders.containsKey(keyCode))
+				keyboardKeyBuilders.put(keyCode, new XKeyBuilder());
+			XKeyBuilder key = keyboardKeyBuilders.get(keyCode);
 			if(t2 != null)
 			{
 				key.functions.add(t2);
@@ -70,9 +75,9 @@ public class KeybindFile implements XKeyMap
 		else if(input.charAt(0) == 'M')
 		{
 			MouseButton keyCode = MouseButton.valueOf(input.substring(1));
-			if(!mouseKeys.containsKey(keyCode))
-				mouseKeys.put(keyCode, new FXKey());
-			FXKey key = (FXKey) mouseKeys.get(keyCode);
+			if(!mouseKeyBuilders.containsKey(keyCode))
+				mouseKeyBuilders.put(keyCode, new XKeyBuilder());
+			XKeyBuilder key = mouseKeyBuilders.get(keyCode);
 			if(t2 != null)
 			{
 				key.functions.add(t2);
@@ -95,6 +100,16 @@ public class KeybindFile implements XKeyMap
 		{
 			info.put(function, text);
 		}
+	}
+
+	public XKey keyboardKey(KeyCode keyCode)
+	{
+		return keyboardKeys.getOrDefault(keyCode, NONE);
+	}
+
+	public XKey mouseKey(MouseButton mouseButton)
+	{
+		return mouseKeys.getOrDefault(mouseButton, NONE);
 	}
 
 	@Override

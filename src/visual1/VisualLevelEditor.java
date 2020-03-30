@@ -1,28 +1,28 @@
 package visual1;
 
 import geom.*;
-import geom.d1.*;
 import java.util.*;
+import java.util.function.*;
 import logic.*;
 import logic.editor.*;
 import visual1.gui.*;
 
 public class VisualLevelEditor
 {
-	private static final double EDITOR_SCALE_X = 0.125;
-	private static final double EDITOR_SCALE_Y = 0.1;
+	private final XGraphics graphics;
+	private final List<TileCamera> cameras;
+	private final List<VisualGUI> visualSlots;
 
-	private List<VisualGUI> visualSlots;
-	private XGraphics graphics;
-
-	public VisualLevelEditor(XGraphics graphics)
+	public VisualLevelEditor(XGraphics graphics, Function<Double, TileCamera> cameraSupplier)
 	{
 		this.graphics = graphics;
+		cameras = new ArrayList<>();
 		visualSlots = new ArrayList<>();
 		for(int i = 0; i < LevelEditor.SLOT_COUNT; i++)
 		{
-			visualSlots.add(new VisualGUIHex(graphics, new HexCamera(graphics, (i + 0.5) / LevelEditor.SLOT_COUNT * 2, 1.75,
-					EDITOR_SCALE_X, EDITOR_SCALE_Y, 0,  0, new HexMatrix(0.5))));
+			TileCamera camera = cameraSupplier.apply((i + 0.5) / LevelEditor.SLOT_COUNT * 2);
+			cameras.add(camera);
+			visualSlots.add(VisualGUI.forCamera(graphics, camera));
 		}
 	}
 
@@ -30,7 +30,7 @@ public class VisualLevelEditor
 	{
 		for(int i = 0; i < LevelEditor.SLOT_COUNT; i++)
 		{
-			if(visualSlots.get(i).inside(x, y, levelEditor.editorSlots.get(i).gui))
+			if(visualSlots.get(i).inside(cameras.get(i), x, y, levelEditor.editorSlots.get(i).gui))
 				return i;
 		}
 		return -1;
@@ -49,7 +49,7 @@ public class VisualLevelEditor
 			{
 				EditorSlot editorSlot = levelEditor.editorSlots.get(i);
 				editorSlot.gui.setTile(editorSlot.mode.guiTile(), levelEditor.getCurrentSlot() == i);
-				visualSlots.get(i).locateAndDraw(editorSlot.gui, scheme);
+				visualSlots.get(i).locateAndDraw(cameras.get(i), editorSlot.gui, scheme);
 			}
 		}
 	}

@@ -1,12 +1,12 @@
 package visual1;
 
 import building.blueprint.*;
-import entity.sideinfo.*;
 import geom.*;
 import geom.f1.*;
 import item.*;
 import java.io.*;
 import java.nio.file.*;
+import java.util.function.*;
 import javafx.geometry.*;
 import javafx.scene.canvas.*;
 import javafx.scene.text.*;
@@ -23,54 +23,59 @@ public class MainVisual implements XInputInterface
 	private static final double BORDER = 0.9;
 	private static final double BORDER2 = 0.75;
 
-	private XGraphics graphics;
+	private final XGraphics graphics;
 	private XKeyMap keyMap;
 	private Scheme scheme;
-	private VisualTile visualTile;
 	private TileCamera mapCamera;
+	private VisualTile visualTile;
+	private TileCamera menuCamera;
 	private VisualMenu visualMenu;
+	private TileCamera guiCamera;
 	private VisualGUI visualGUI;
-	private VisualSideInfoFrame visualSideInfoFrame;
 	private VisualLevelEditor visualLevelEditor;
-	private LevelEditor levelEditor;
+	private VisualSideInfoFrame visualSideInfoFrame;
 	private MainState mainState;
+	private LevelEditor levelEditor;
 	private ConvInputConsumer convInputConsumer;
+	private int screenshake;
 	private boolean paused;
 
-	public MainVisual(XGraphics graphics, XKeyMap keyMap, Scheme scheme, ItemLoader itemLoader, BlueprintFile blueprintFile,
-			TileCamera mapCamera, TileCamera menuCamera, TileCamera guiCamera, String loadFile, String loadFile2)
+	public MainVisual(XGraphics graphics, XKeyMap keyMap, Scheme scheme,
+			TileCamera mapCamera, TileCamera menuCamera, TileCamera guiCamera,
+			Function<Double, TileCamera> editorSlotCameraSupplier,
+			ItemLoader itemLoader, BlueprintFile blueprintFile, String loadFileMap, String loadFileTeam)
 	{
 		this.graphics = graphics;
 		this.keyMap = keyMap;
 		this.scheme = scheme;
 		this.mapCamera = mapCamera;
-		TileType y1 = mapCamera.getDoubleType();
-		VisualSideInfo sivL = new VisualSideInfo(graphics, false);
-		VisualSideInfo sivR = new VisualSideInfo(graphics, true);
-		visualSideInfoFrame = new VisualSideInfoFrame(sivL, sivR);
-		SideInfoFrame sideInfoFrame = new SideInfoFrame(sivL, sivR);
-		mainState = new MainState(y1, itemLoader, sideInfoFrame, blueprintFile);
-		loadLevel(loadFile, loadFile2);
-		graphics.gd().setTextAlign(TextAlignment.CENTER);
-		graphics.gd().setTextBaseline(VPos.CENTER);
-		visualLevelEditor = new VisualLevelEditor(graphics);
-		levelEditor = new LevelEditor(mainState);
-		convInputConsumer = new StateControl2(mainState, levelEditor, new StartTurnState());
-		mainState.stateHolder = (XStateHolder) convInputConsumer;
-		visualTile = new VisualTile(y1, new VisualXArrow(mapCamera.getDoubleType()), mainState.levelMap, mainState.visMarked, graphics.gd());
-		visualMenu = new VisualMenu(graphics, mainState.stateHolder, menuCamera, keyMap);
+		visualTile = new VisualTile(new VisualXArrow(mapCamera.getDoubleType()), graphics);
+		this.menuCamera = menuCamera;
+		visualMenu = new VisualMenu(graphics);
+		this.guiCamera = guiCamera;
 		visualGUI = VisualGUI.forCamera(graphics, guiCamera);
+		visualLevelEditor = new VisualLevelEditor(graphics, editorSlotCameraSupplier);
+		visualSideInfoFrame = new VisualSideInfoFrame(graphics, false);
+		mainState = new MainState(mapCamera.getDoubleType(), itemLoader, visualSideInfoFrame, blueprintFile);
+		levelEditor = new LevelEditor(mainState);
+		XStateControl stateControl = new XStateControl(mainState, levelEditor, new StartTurnState());
+		convInputConsumer = stateControl;
+		mainState.stateHolder = stateControl;
+		loadLevel(loadFileMap, loadFileTeam);
+		GraphicsContext gd = graphics.gd();
+		gd.setTextAlign(TextAlignment.CENTER);
+		gd.setTextBaseline(VPos.CENTER);
 		draw();
 	}
 
-	public void loadLevel(String loadFile, String loadFile2)
+	public void loadLevel(String loadFileMap, String loadFileTeam)
 	{
 		File fileMap;
 		File fileTeam;
-		if(loadFile != null && loadFile2 != null)
+		if(loadFileMap != null && loadFileTeam != null)
 		{
-			fileMap = new File(loadFile);
-			fileTeam = new File(loadFile2);
+			fileMap = new File(loadFileMap);
+			fileTeam = new File(loadFileTeam);
 		}
 		else
 		{
@@ -127,9 +132,11 @@ public class MainVisual implements XInputInterface
 				mapCamera.setYShift(mapCamera.getYShift() + yp + BORDER2);
 			if(!paused)
 			{
-				convInputConsumer.mousePosition(visualGUI.inside(xMouse, yMouse, mainState.stateHolder.getGUI()),
-						visualGUI.offsetClickLocation(xMouse, yMouse), visualMenu.coordinatesToOption(xMouse, yMouse),
-						visualLevelEditor.editorClickNum(xMouse, yMouse, levelEditor), targetedTile(xMouse, yMouse), moved, drag, key);
+				convInputConsumer.mousePosition(visualGUI.inside(guiCamera, xMouse, yMouse, mainState.stateHolder.getGUI()),
+						visualGUI.offsetClickLocation(guiCamera, xMouse, yMouse),
+						visualMenu.coordinatesToOption(menuCamera, xMouse, yMouse, mainState.stateHolder),
+						visualLevelEditor.editorClickNum(xMouse, yMouse, levelEditor),
+						targetedTile(xMouse, yMouse), moved, drag, key);
 			}
 		}
 		else
@@ -141,21 +148,22 @@ public class MainVisual implements XInputInterface
 		}
 	}
 
-	private Tile targetedTile(double x, double y)
-	{
-		return mapCamera.getDoubleType().cast(mapCamera.clickLocation(x, y, mainState.screenshake));
-	}
-
 	@Override
 	public void dragPosition(boolean active, double xStart, double yStart,
 			double xMoved, double yMoved, XKey key, boolean finished)
 	{
-		if(paused)
-			return;
-		if(active)
-			convInputConsumer.dragPosition(targetedTile(xStart, yStart), targetedTile(xMoved, yMoved), key, finished);
-		else
-			convInputConsumer.noDrag();
+		if(!paused)
+		{
+			if(active)
+				convInputConsumer.dragPosition(targetedTile(xStart, yStart), targetedTile(xMoved, yMoved), key, finished);
+			else
+				convInputConsumer.noDrag();
+		}
+	}
+
+	private Tile targetedTile(double x, double y)
+	{
+		return mapCamera.getDoubleType().cast(mapCamera.clickLocation(x, y, screenshake));
 	}
 
 	@Override
@@ -169,37 +177,43 @@ public class MainVisual implements XInputInterface
 			mapCamera.setXShift(mapCamera.getXShift() + 3);
 		if(key.hasFunction("Camera Down"))
 			mapCamera.setYShift(mapCamera.getYShift() + 3);
-		if(paused)
+		if(!paused)
 		{
 			if(key.hasFunction("Pause"))
-				paused = false;
+			{
+				paused = true;
+			}
+			else
+			{
+				convInputConsumer.handleKey(key);
+			}
 		}
 		else
 		{
 			if(key.hasFunction("Pause"))
-				paused = true;
-			else
-				convInputConsumer.handleKey(key);
+			{
+				paused = false;
+			}
 		}
 	}
 
 	@Override
 	public void tick()
 	{
-		if(paused)
-		{
-			convInputConsumer.tickPaused();
-		}
-		else
+		if(!paused)
 		{
 			mainState.levelMap.tickArrows();
 			convInputConsumer.tick();
 		}
-		visualSideInfoFrame.tick();
-		mainState.screenshake = Math.max(mainState.screenshake, mainState.levelMap.removeFirstScreenshake());
-		if(mainState.screenshake > 0)
+		else
 		{
-			mainState.screenshake--;
+			convInputConsumer.tickPaused();
+		}
+		visualSideInfoFrame.tick();
+		screenshake = Math.max(screenshake, mainState.levelMap.removeFirstScreenshake());
+		if(screenshake > 0)
+		{
+			screenshake--;
 		}
 		draw();
 	}
@@ -207,12 +221,13 @@ public class MainVisual implements XInputInterface
 	private void draw()
 	{
 		//graphics.gd().clearRect(0, 0, graphics.xHW() * 2, graphics.yHW() * 2);
-		visualTile.draw(mapCamera, mainState.screenshake, scheme);
+		visualTile.draw(mapCamera, mainState.levelMap, mainState.stateHolder.visMarked(), screenshake, scheme);
 		visualSideInfoFrame.draw(scheme);
 		visualLevelEditor.draw(levelEditor, scheme);
-		visualGUI.zoomAndDraw(mainState.stateHolder.getGUI(), scheme);
-		visualMenu.draw(graphics.yHW() - graphics.scaleHW() * 0.08,
-				graphics.yHW() - Math.max(visualSideInfoFrame.takeY2(), visualLevelEditor.takeY(mainState)), scheme);
+		visualGUI.zoomAndDraw(guiCamera, mainState.stateHolder.getGUI(), scheme);
+		visualMenu.draw(menuCamera, graphics.yHW() - graphics.scaleHW() * 0.08,
+				graphics.yHW() - Math.max(visualSideInfoFrame.takeY2(), visualLevelEditor.takeY(mainState)),
+				mainState.stateHolder, keyMap, scheme);
 		drawInfoText();
 	}
 

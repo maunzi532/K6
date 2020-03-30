@@ -49,16 +49,16 @@ public class XTimer extends AnimationTimer
 	{
 		if(mouseDown)
 		{
-			XKey key = keybindFile.mouseKeys.get(mouseEvent.getButton());
+			XKey key = keybindFile.mouseKey(mouseEvent.getButton());
 			mouseDown = false;
 			if(isDrag)
 			{
-				if(key != null && key.canDrag())
+				if(key.canDrag())
 					dragged = true;
 			}
 			else
 			{
-				if(key != null && key.canClick())
+				if(key.canClick())
 					clicked = true;
 			}
 			isDrag = false;
@@ -93,8 +93,8 @@ public class XTimer extends AnimationTimer
 
 	public void onKeyUp(KeyEvent keyEvent)
 	{
-		XKey key = keybindFile.keyboardKeys.get(keyEvent.getCode());
-		if(key != null && key.canClick())
+		XKey key = keybindFile.keyboardKey(keyEvent.getCode());
+		if(key.canClick())
 		{
 			clickedK = true;
 			keyCode = keyEvent.getCode();
@@ -108,13 +108,13 @@ public class XTimer extends AnimationTimer
 		lastNanoTime = currentNanoTime;
 		if(clicked && inside)
 		{
-			inputInterface.mousePosition(xClicked, yClicked, true, moved, isDrag, keybindFile.mouseKeys.getOrDefault(mouseKeyD, KeybindFile.NONE));
+			inputInterface.mousePosition(xClicked, yClicked, true, moved, isDrag, keybindFile.mouseKey(mouseKeyD));
 			moved = false;
 			clicked = false;
 		}
 		else if(clickedK && inside)
 		{
-			inputInterface.mousePosition(xClicked, yClicked, true, moved, isDrag, keybindFile.keyboardKeys.getOrDefault(keyCode, KeybindFile.NONE));
+			inputInterface.mousePosition(xClicked, yClicked, true, moved, isDrag, keybindFile.keyboardKey(keyCode));
 			moved = false;
 			clickedK = false;
 			keyCode = null;
@@ -132,12 +132,12 @@ public class XTimer extends AnimationTimer
 		}
 		if(dragged)
 		{
-			inputInterface.dragPosition(true, xStart, yStart, xClicked, yClicked, keybindFile.mouseKeys.getOrDefault(mouseKeyD, KeybindFile.NONE), true);
+			inputInterface.dragPosition(true, xStart, yStart, xClicked, yClicked, keybindFile.mouseKey(mouseKeyD), true);
 			dragged = false;
 		}
 		else if(isDrag)
 		{
-			inputInterface.dragPosition(true, xStart, yStart, xMoved, yMoved, keybindFile.mouseKeys.getOrDefault(mouseKeyD, KeybindFile.NONE), false);
+			inputInterface.dragPosition(true, xStart, yStart, xMoved, yMoved, keybindFile.mouseKey(mouseKeyD), false);
 		}
 		else
 		{
@@ -147,12 +147,12 @@ public class XTimer extends AnimationTimer
 		{
 			if(keyCode != null)
 			{
-				inputInterface.handleKey(keybindFile.keyboardKeys.getOrDefault(keyCode, KeybindFile.NONE));
+				inputInterface.handleKey(keybindFile.keyboardKey(keyCode));
 				keyCode = null;
 			}
 			else if(mouseKey != null)
 			{
-				inputInterface.handleKey(keybindFile.mouseKeys.getOrDefault(mouseKeyD, KeybindFile.NONE));
+				inputInterface.handleKey(keybindFile.mouseKey(mouseKeyD));
 				mouseKey = null;
 			}
 		}

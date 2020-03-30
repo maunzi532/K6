@@ -16,33 +16,34 @@ public class VisualGUIHex extends VisualGUI
 
 	public VisualGUIHex(XGraphics graphics, HexCamera camera)
 	{
-		super(graphics, camera);
+		super(graphics);
+		DoubleType y2 = camera.getDoubleType();
 		LU = y2.createD(-1d / 6d, 5d / 6d, -4d / 6d);
 		RLE = y2.createD(1d / 6d, -5d / 6d, 4d / 6d);
 		RLS = y2.createD(4d / 6d, -8d / 6d, 4d / 6d);
 	}
 
-	private DoubleTile rl(XGUIState xgui)
+	private DoubleTile rl(DoubleType y2, XGUIState xgui)
 	{
 		return y2.add(y2.fromTile(y2.fromOffset(xgui.xw() - 1, xgui.yw() - 1)), (xgui.yw() - 2) % 2 == 1 ? RLS : RLE);
 	}
 
 	@Override
-	public boolean inside(DoubleTile h1, XGUIState xgui)
+	public boolean inside(TileCamera camera, DoubleTile h1, XGUIState xgui)
 	{
 		if(xgui.xw() <= 0 || xgui.yw() <= 0)
 			return false;
 		double xc = h1.v()[0] - h1.v()[1];
 		double yc = h1.v()[2];
-		DoubleTile rl = rl(xgui);
+		DoubleTile rl = rl(camera.getDoubleType(), xgui);
 		return xc >= LU.v()[0] - LU.v()[1] && xc <= rl.v()[0] - rl.v()[1] && yc >= LU.v()[2] && yc <= rl.v()[2];
 	}
 
 	@Override
-	public void locateAndDraw(XGUIState xgui, Scheme scheme)
+	public void locateAndDraw(TileCamera camera, XGUIState xgui, Scheme scheme)
 	{
 		double cxs = xgui.xw() - (xgui.yw() > 1 ? 0.5 : 1d) * HexMatrix.Q3 / 2d;
 		double cys = (xgui.yw() - 1) * 1.5 / 2d;
-		drawGUI(xgui, scheme, cxs, cys, LU, rl(xgui), IMAGE_END, FONT_SIZE, TEXT_END);
+		drawGUI(camera, xgui, scheme, cxs, cys, LU, rl(camera.getDoubleType(), xgui), IMAGE_END, FONT_SIZE, TEXT_END);
 	}
 }

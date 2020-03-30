@@ -1,5 +1,6 @@
 package logic.xstate;
 
+import levelMap.*;
 import logic.gui.*;
 import java.util.*;
 
@@ -12,4 +13,6 @@ public interface XStateHolder
 	List<NState> getMenu();
 
 	XGUIState getGUI();
+
+	List<VisMark> visMarked();
 }

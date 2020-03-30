@@ -7,7 +7,7 @@ import javafx.scene.canvas.*;
 import javafx.scene.text.*;
 import visual1.*;
 
-public class VisualSideInfo implements SideInfoHolder
+public class VisualSideInfo
 {
 	private static final int SHIFT_TIME = 8;
 
@@ -23,7 +23,6 @@ public class VisualSideInfo implements SideInfoHolder
 		this.flipped = flipped;
 	}
 
-	@Override
 	public void setSideInfo(SideInfo sideInfo)
 	{
 		if(!Objects.equals(current == null ? null : current.identifier().location(),

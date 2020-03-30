@@ -12,32 +12,25 @@ import logic.xstate.*;
 
 public class VisualMenu
 {
-	private final DoubleType y2;
 	private final XGraphics graphics;
-	private final TileCamera camera;
-	private final XStateHolder stateHolder;
-	private final XKeyMap keyMap;
 	private double lastZoom;
 	private double lastShift;
 
-	public VisualMenu(XGraphics graphics, XStateHolder stateHolder, TileCamera camera, XKeyMap keyMap)
+	public VisualMenu(XGraphics graphics)
 	{
 		this.graphics = graphics;
-		this.camera = camera;
-		y2 = camera.getDoubleType();
-		this.stateHolder = stateHolder;
-		this.keyMap = keyMap;
 	}
 
-	public int coordinatesToOption(double x, double y)
+	public int coordinatesToOption(TileCamera camera, double x, double y, XStateHolder stateHolder)
 	{
+		DoubleType y2 = camera.getDoubleType();
 		Tile offset = y2.toOffset(y2.cast(camera.clickLocation(x, y)));
 		if(offset.v()[0] != 0 || offset.v()[1] < 0 || offset.v()[1] >= stateHolder.getMenu().size())
 			return -1;
 		return offset.v()[1];
 	}
 
-	public void draw(double tLimit, double bLimit, Scheme scheme)
+	public void draw(TileCamera camera, double tLimit, double bLimit, XStateHolder stateHolder, XKeyMap keyMap, Scheme scheme)
 	{
 		List<NState> menuEntries = stateHolder.getMenu();
 		if(menuEntries.size() > 0)
@@ -75,10 +68,11 @@ public class VisualMenu
 			}
 			camera.setZoom(lastZoom);
 			camera.setYShift(lastShift + (menuEntries.size() - 1) * 0.75);
+			TileType y1 = camera.getDoubleType();
 			for(int i = 0; i < menuEntries.size(); i++)
 			{
-				draw0(camera.layout(0), y2.fromOffset(0, i), menuEntries.get(i),
-						menuEntries.get(i).text().equals(stateHolder.getState().text()), scheme);
+				draw0(y1, camera.layout(0), y1.fromOffset(0, i), menuEntries.get(i),
+						menuEntries.get(i).text().equals(stateHolder.getState().text()), keyMap, scheme);
 			}
 		}
 		else
@@ -93,11 +87,11 @@ public class VisualMenu
 		return Math.min(Math.max(target, (prev * 0.9 + target * 0.1) - speed), (prev * 0.9 + target * 0.1) + speed);
 	}
 
-	private void draw0(TileLayout layout, Tile h1, NState menuEntry, boolean active, Scheme scheme)
+	private void draw0(TileType y1, TileLayout layout, Tile h1, NState menuEntry, boolean active, XKeyMap keyMap, Scheme scheme)
 	{
 		GraphicsContext gd = graphics.gd();
 		double[][] points = layout.tileCorners(h1);
-		int dch = y2.directionCount() / 2;
+		int dch = y1.directionCount() / 2;
 		if(active)
 		{
 			gd.setFill(new LinearGradient(points[0][0], points[1][0], points[0][dch], points[1][dch],
@@ -110,7 +104,7 @@ public class VisualMenu
 					false, null, new Stop(0, scheme.color("menu.background.1")),
 					new Stop(1, scheme.color("menu.background.2"))));
 		}
-		gd.fillPolygon(points[0], points[1], y2.directionCount());
+		gd.fillPolygon(points[0], points[1], y1.directionCount());
 		PointD midPoint = layout.tileToPixel(h1);
 		gd.setFill(scheme.color("menu.text"));
 		gd.setFont(new Font(layout.size().v()[1] * 0.5));

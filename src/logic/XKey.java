@@ -1,10 +1,11 @@
 package logic;
 
-public interface XKey
+import java.util.*;
+
+public record XKey(List<String> functions, boolean canClick, boolean canDrag)
 {
-	boolean hasFunction(String function);
-
-	boolean canClick();
-
-	boolean canDrag();
+	public boolean hasFunction(String function)
+	{
+		return functions.contains(function);
+	}
 }

@@ -83,6 +83,7 @@
     "file.buildingblueprints" : "BuildingBlueprints",
     "camera.map" : "Hex",
     "camera.menu" : "Hex",
-    "camera.gui" : "Quad"
+    "camera.gui" : "Quad",
+    "camera.editorslot" : "Hex"
   }
 }

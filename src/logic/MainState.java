@@ -17,24 +17,20 @@ public class MainState
 	public final SideInfoFrame sideInfoFrame;
 	public final BlueprintFile blueprintFile;
 	public final LevelMap levelMap;
-	public final List<VisMark> visMarked;
 	public int turnCounter;
 	public final DoubleInv storage;
-	public int screenshake;
 	public boolean preferBuildings;
 	public boolean showAllEnemyReach;
 	public XStateHolder stateHolder;
 	public Map<Tile, Long> allEnemyReach;
 
-	public MainState(TileType y1, ItemLoader itemLoader,
-			SideInfoFrame sideInfoFrame, BlueprintFile blueprintFile)
+	public MainState(TileType y1, ItemLoader itemLoader, SideInfoFrame sideInfoFrame, BlueprintFile blueprintFile)
 	{
 		this.y1 = y1;
 		this.itemLoader = itemLoader;
 		this.sideInfoFrame = sideInfoFrame;
 		this.blueprintFile = blueprintFile;
 		levelMap = new LevelMap(y1);
-		visMarked = new ArrayList<>();
 		turnCounter = -1;
 		storage = new Storage();
 	}
@@ -65,8 +61,8 @@ public class MainState
 	//TODO    Build a real level
 
 	//images
-	//TODO replace floor images
-	//TODO downscale item images
+	//TODO replace floor images (1/5)
+	//TODO downscale item images (0/4)
 
 	//save/load
 	//TODO savestate during map
