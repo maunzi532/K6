@@ -21,12 +21,12 @@ public class ReachViewState implements NMarkState
 	@Override
 	public void onEnter(MainState mainState)
 	{
-		mainState.side.setStandardSideInfo(character);
-		List<Tile> movement = new Pathing(mainState.levelMap.y1, character, character.stats().movement(), mainState.levelMap, null).start().getEndpoints();
+		mainState.side().setStandardSideInfo(character);
+		List<Tile> movement = new Pathing(mainState.levelMap().y1, character, character.stats().movement(), mainState.levelMap(), null).start().getEndpoints();
 		allTargets = new ArrayList<>();
 		movement.forEach(e -> allTargets.add(new VisMark(e, "mark.reach.move", VisMark.d1)));
-		movement.stream().flatMap(loc -> mainState.levelMap.attackRanges(character, false).stream()
-				.flatMap(e -> mainState.levelMap.y1.range(loc, e, e).stream())).distinct()
+		movement.stream().flatMap(loc -> mainState.levelMap().attackRanges(character, false).stream()
+				.flatMap(e -> mainState.levelMap().y1.range(loc, e, e).stream())).distinct()
 				.forEach(e -> allTargets.add(new VisMark(e, "mark.reach.attack", VisMark.d1)));
 	}
 
@@ -51,7 +51,7 @@ public class ReachViewState implements NMarkState
 	@Override
 	public void onClick(MainState mainState, Tile mapTile, XKey key)
 	{
-		mainState.stateHolder.setState(NoneState.INSTANCE);
+		mainState.stateHolder().setState(NoneState.INSTANCE);
 	}
 
 	@Override

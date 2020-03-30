@@ -39,7 +39,7 @@ public class EndTurnState implements NAutoState
 	@Override
 	public boolean keepInMenu(MainState mainState)
 	{
-		start = mainState.levelMap.turnCounter() == 0;
+		start = mainState.levelMap().turnCounter() == 0;
 		return true;
 	}
 }

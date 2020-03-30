@@ -6,23 +6,8 @@ import item.*;
 import levelMap.*;
 import logic.xstate.*;
 
-public class MainState
+public record MainState(LevelMap levelMap, XStateHolder stateHolder, SideInfoFrame side, ItemLoader itemLoader, BlueprintFile blueprintFile)
 {
-	public final LevelMap levelMap;
-	public final XStateHolder stateHolder;
-	public final SideInfoFrame side;
-	public final ItemLoader itemLoader;
-	public final BlueprintFile blueprintFile;
-
-	public MainState(LevelMap levelMap, XStateHolder stateHolder, SideInfoFrame side, ItemLoader itemLoader, BlueprintFile blueprintFile)
-	{
-		this.levelMap = levelMap;
-		this.stateHolder = stateHolder;
-		this.side = side;
-		this.itemLoader = itemLoader;
-		this.blueprintFile = blueprintFile;
-	}
-
 	//content
 	//TODO    Build a real level
 

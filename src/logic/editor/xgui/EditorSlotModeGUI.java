@@ -26,9 +26,9 @@ public class EditorSlotModeGUI extends XGUIState
 	@Override
 	public void onEnter(MainState mainState)
 	{
-		mainState.side.clearSideInfo();
+		mainState.side().clearSideInfo();
 		elements.add(new ScrollList<>(0, 1, 6, 5, 1, 1, editor.getModes(),
-				mode -> GuiTile.cast(mode.guiTile()), target -> click(target, mainState.stateHolder)));
+				mode -> GuiTile.cast(mode.guiTile()), target -> click(target, mainState.stateHolder())));
 		elements.add(new CElement(textInv));
 		update();
 	}

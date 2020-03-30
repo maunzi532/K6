@@ -26,8 +26,8 @@ public class RemoveBuildingGUI extends XGUIState
 	@Override
 	public void onEnter(MainState mainState)
 	{
-		mainState.side.setStandardSideInfo(character);
-		building = mainState.levelMap.getBuilding(character.location());
+		mainState.side().setStandardSideInfo(character);
+		building = mainState.levelMap().getBuilding(character.location());
 		ItemList refunds = building.allRefundable();
 		character.inputInv().tryAdd(refunds, true, CommitType.LEAVE);
 		InvNumView weightView = character.inputInv().viewInvWeight();
@@ -36,7 +36,7 @@ public class RemoveBuildingGUI extends XGUIState
 		elements.add(invView);
 		elements.add(new CElement(textInv));
 		elements.add(new CElement(weight, new GuiTile(weightView.baseAndCurrentWithLimit())));
-		elements.add(new CElement(remove, true, null, () -> onClickRemove(mainState.stateHolder)));
+		elements.add(new CElement(remove, true, null, () -> onClickRemove(mainState.stateHolder())));
 		update();
 	}
 
@@ -55,7 +55,7 @@ public class RemoveBuildingGUI extends XGUIState
 	@Override
 	public boolean keepInMenu(MainState mainState)
 	{
-		return character.resources().ready(1) && mainState.levelMap.getBuilding(character.location()) != null;
+		return character.resources().ready(1) && mainState.levelMap().getBuilding(character.location()) != null;
 	}
 
 	@Override

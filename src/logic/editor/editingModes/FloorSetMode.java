@@ -28,11 +28,11 @@ public class FloorSetMode implements EditingMode
 	{
 		if(key.hasFunction("Clear Tile"))
 		{
-			mainState.levelMap.clearTile(tile);
+			mainState.levelMap().clearTile(tile);
 		}
 		if(key.hasFunction("Set Tile"))
 		{
-			mainState.levelMap.setFloorTile(tile, new FloorTile(0, tileType));
+			mainState.levelMap().setFloorTile(tile, new FloorTile(0, tileType));
 		}
 	}
 
@@ -41,11 +41,11 @@ public class FloorSetMode implements EditingMode
 	{
 		if(key.hasFunction("Clear Tile"))
 		{
-			mainState.levelMap.y1.betweenArea(tile1, tile2).forEach(mainState.levelMap::clearTile);
+			mainState.levelMap().y1.betweenArea(tile1, tile2).forEach(mainState.levelMap()::clearTile);
 		}
 		if(key.hasFunction("Set Tile"))
 		{
-			mainState.levelMap.y1.betweenArea(tile1, tile2).forEach(tile -> mainState.levelMap.setFloorTile(tile, new FloorTile(0, tileType)));
+			mainState.levelMap().y1.betweenArea(tile1, tile2).forEach(tile -> mainState.levelMap().setFloorTile(tile, new FloorTile(0, tileType)));
 		}
 	}
 }

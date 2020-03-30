@@ -12,8 +12,8 @@ public class ProductionPhaseState implements NAutoState
 	@Override
 	public void onEnter(MainState mainState)
 	{
-		mainState.side.clearSideInfo();
-		mainState.levelMap.productionPhase();
+		mainState.side().clearSideInfo();
+		mainState.levelMap().productionPhase();
 	}
 
 	@Override

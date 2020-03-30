@@ -13,8 +13,8 @@ public class EnemyPhaseState implements NAutoState
 	@Override
 	public void onEnter(MainState mainState)
 	{
-		mainState.side.clearSideInfo();
-		initiativeMove = mainState.levelMap.teamTargetCharacters(CharacterTeam.ENEMY).stream().filter(e -> e.resources().ready(2))
+		mainState.side().clearSideInfo();
+		initiativeMove = mainState.levelMap().teamTargetCharacters(CharacterTeam.ENEMY).stream().filter(e -> e.resources().ready(2))
 				.map(e -> e.preferredMove(false, 0))
 				.max(Comparator.comparingInt(EnemyMove::initiative)).filter(e -> e.initiative() >= 0).orElse(null);
 		if(initiativeMove != null && initiativeMove.moveTo() != null && initiativeMove.moveTo().movingAlly() != null)

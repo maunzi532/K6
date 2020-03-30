@@ -12,8 +12,8 @@ public class TransportPhaseState implements NAutoState
 	@Override
 	public void onEnter(MainState mainState)
 	{
-		mainState.side.clearSideInfo();
-		mainState.levelMap.transportPhase();
+		mainState.side().clearSideInfo();
+		mainState.levelMap().transportPhase();
 	}
 
 	@Override

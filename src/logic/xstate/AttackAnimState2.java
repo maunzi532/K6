@@ -19,7 +19,7 @@ public class AttackAnimState2 extends AttackState
 	@Override
 	public void onEnter(MainState mainState)
 	{
-		attackAnim = new AttackAnim(divider, mainState.levelMap);
+		attackAnim = new AttackAnim(divider, mainState.levelMap());
 	}
 
 	@Override

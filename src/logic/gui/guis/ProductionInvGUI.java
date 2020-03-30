@@ -19,7 +19,7 @@ public class ProductionInvGUI extends Inv2GUI
 	@Override
 	public void onEnter(MainState mainState)
 	{
-		mainState.side.clearSideInfo();
+		mainState.side().clearSideInfo();
 		super.onEnter(mainState);
 	}
 

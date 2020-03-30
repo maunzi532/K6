@@ -29,11 +29,11 @@ public class SelectBuildingGUI extends XGUIState
 	{
 		if(builder instanceof XCharacter character)
 		{
-			mainState.side.setStandardSideInfo(character);
+			mainState.side().setStandardSideInfo(character);
 		}
 		ScrollList<BuildingBlueprint> buildingsView = new ScrollList<>(0, 1, 6, 5, 2, 1,
-				mainState.blueprintFile.allBlueprints(), this::itemView,
-				target -> mainState.stateHolder.setState(new BuildGUI(builder, target)));
+				mainState.blueprintFile().allBlueprints(), this::itemView,
+				target -> mainState.stateHolder().setState(new BuildGUI(builder, target)));
 		elements.add(buildingsView);
 		elements.add(new CElement(textInv));
 		update();
@@ -54,7 +54,7 @@ public class SelectBuildingGUI extends XGUIState
 	@Override
 	public boolean keepInMenu(MainState mainState)
 	{
-		return !(builder instanceof XCharacter character) || (character.resources().ready(1) && mainState.levelMap.getBuilding(builder.location()) == null);
+		return !(builder instanceof XCharacter character) || (character.resources().ready(1) && mainState.levelMap().getBuilding(builder.location()) == null);
 	}
 
 	@Override

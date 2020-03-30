@@ -38,7 +38,7 @@ public class DirectedTradeGUI extends XGUIState
 	@Override
 	public void onEnter(MainState mainState)
 	{
-		mainState.side.clearSideInfo();
+		mainState.side().clearSideInfo();
 		amount = 1;
 		provideView = new ScrollList<>(0, 1, 4, 5, 2, 1, null,
 				e -> itemView(e, true), target -> provideMarked = target.item);
@@ -52,7 +52,7 @@ public class DirectedTradeGUI extends XGUIState
 		transferElement = new CElement(transfer, true, null, this::clickTransfer);
 		elements.add(transferElement);
 		elements.add(new CElement(less, true, null, () -> amount = Math.max(0, amount - 1)));
-		elements.add(new CElement(ok, true, null, () -> clickOk(mainState.stateHolder)));
+		elements.add(new CElement(ok, true, null, () -> clickOk(mainState.stateHolder())));
 		update();
 	}
 

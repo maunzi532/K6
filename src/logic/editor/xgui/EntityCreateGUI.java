@@ -34,9 +34,9 @@ public class EntityCreateGUI extends XGUIState
 	public void onEnter(MainState mainState)
 	{
 		elements.add(new CElement(addXHero, true, null,
-				() -> createXCharacter(CharacterTeam.HERO, mainState.levelMap, mainState.stateHolder)));
+				() -> createXCharacter(CharacterTeam.HERO, mainState.levelMap(), mainState.stateHolder())));
 		elements.add(new CElement(addXEnemy, true, null,
-				() -> createXCharacter(CharacterTeam.ENEMY, mainState.levelMap, mainState.stateHolder)));
+				() -> createXCharacter(CharacterTeam.ENEMY, mainState.levelMap(), mainState.stateHolder())));
 		update();
 	}
 

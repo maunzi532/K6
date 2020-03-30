@@ -25,8 +25,8 @@ public class TransportTargetsState implements NMarkState
 	@Override
 	public void onEnter(MainState mainState)
 	{
-		possibleTargets = mainState.levelMap.y1.range(building.location(), 0, transport.range()).stream()
-				.map(mainState.levelMap::getBuilding).filter(e -> e != null && e.active()).collect(Collectors.toList());
+		possibleTargets = mainState.levelMap().y1.range(building.location(), 0, transport.range()).stream()
+				.map(mainState.levelMap()::getBuilding).filter(e -> e != null && e.active()).collect(Collectors.toList());
 		createVisMarked();
 	}
 
@@ -60,7 +60,7 @@ public class TransportTargetsState implements NMarkState
 		List<DoubleInv> list = possibleTargets.stream().filter(e -> mapTile.equals(e.location())).collect(Collectors.toList());
 		if(list.isEmpty())
 		{
-			mainState.stateHolder.setState(NoneState.INSTANCE);
+			mainState.stateHolder().setState(NoneState.INSTANCE);
 		}
 		else
 		{

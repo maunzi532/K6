@@ -21,27 +21,27 @@ public class BCCreateMode implements EditingMode
 	@Override
 	public void onMapClick(MainState mainState, Tile tile, XKey key)
 	{
-		AdvTile advTile = mainState.levelMap.advTile(tile);
-		if(mainState.stateHolder.preferBuildings())
+		AdvTile advTile = mainState.levelMap().advTile(tile);
+		if(mainState.stateHolder().preferBuildings())
 		{
 			if(advTile.building() == null)
 			{
-				mainState.stateHolder.setState(new SelectBuildingGUI(new EditModeBuilder(tile)));
+				mainState.stateHolder().setState(new SelectBuildingGUI(new EditModeBuilder(tile)));
 			}
 			else if(advTile.entity() == null)
 			{
-				mainState.stateHolder.setState(new EntityCreateGUI(tile));
+				mainState.stateHolder().setState(new EntityCreateGUI(tile));
 			}
 		}
 		else
 		{
 			if(advTile.entity() == null)
 			{
-				mainState.stateHolder.setState(new EntityCreateGUI(tile));
+				mainState.stateHolder().setState(new EntityCreateGUI(tile));
 			}
 			else if(advTile.building() == null)
 			{
-				mainState.stateHolder.setState(new SelectBuildingGUI(new EditModeBuilder(tile)));
+				mainState.stateHolder().setState(new SelectBuildingGUI(new EditModeBuilder(tile)));
 			}
 		}
 	}

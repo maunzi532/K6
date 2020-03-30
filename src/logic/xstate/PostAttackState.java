@@ -26,7 +26,7 @@ public class PostAttackState extends AttackState
 	{
 		if(firstEnter)
 		{
-			getExpAnim = new GetExpAnim(aI, result, mainState.levelMap);
+			getExpAnim = new GetExpAnim(aI, result, mainState.levelMap());
 			firstEnter = false;
 			levelup = getExpAnim.isLevelup();
 			levelupT = getExpAnim.isLevelupT();
@@ -34,12 +34,12 @@ public class PostAttackState extends AttackState
 		if(levelup)
 		{
 			levelup = false;
-			mainState.stateHolder.setState(new CharacterLevelupGUI(aI.entity, this));
+			mainState.stateHolder().setState(new CharacterLevelupGUI(aI.entity, this));
 		}
 		else if(levelupT)
 		{
 			levelupT = false;
-			mainState.stateHolder.setState(new CharacterLevelupGUI(aI.entityT, this));
+			mainState.stateHolder().setState(new CharacterLevelupGUI(aI.entityT, this));
 		}
 		else
 		{

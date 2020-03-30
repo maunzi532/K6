@@ -17,7 +17,7 @@ public class CharacterInvGUI extends Inv1GUI
 	@Override
 	public void onEnter(MainState mainState)
 	{
-		mainState.side.setStandardSideInfo(character);
+		mainState.side().setStandardSideInfo(character);
 		super.onEnter(mainState);
 	}
 

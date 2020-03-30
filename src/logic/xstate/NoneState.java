@@ -9,7 +9,7 @@ public class NoneState implements NState
 	@Override
 	public void onEnter(MainState mainState)
 	{
-		mainState.side.clearSideInfo();
+		mainState.side().clearSideInfo();
 	}
 
 	@Override

@@ -10,9 +10,9 @@ public class StartTurnState implements NAutoState
 	@Override
 	public void onEnter(MainState mainState)
 	{
-		mainState.side.clearSideInfo();
-		mainState.levelMap.increaseTurnCounter();
-		for(XCharacter xHero : mainState.levelMap.teamCharacters(CharacterTeam.HERO))
+		mainState.side().clearSideInfo();
+		mainState.levelMap().increaseTurnCounter();
+		for(XCharacter xHero : mainState.levelMap().teamCharacters(CharacterTeam.HERO))
 		{
 			xHero.startTurn();
 			if(xHero.targetable())

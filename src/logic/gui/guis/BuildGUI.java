@@ -55,7 +55,7 @@ public class BuildGUI extends XGUIState
 	@Override
 	public void onEnter(MainState mainState)
 	{
-		levelMap = mainState.levelMap;
+		levelMap = mainState.levelMap();
 		floorTiles = new ScrollList<>(0, 2, 2, 4, 2, 1, null,
 				this::itemView0, null);
 		elements.add(floorTiles);
@@ -76,7 +76,7 @@ public class BuildGUI extends XGUIState
 		elements.add(lessTilesElement);
 		moreTilesElement = new CElement(moreTiles, true, null, this::clickMoreTiles);
 		elements.add(moreTilesElement);
-		buildElement = new CElement(build, true, null, () -> clickBuild(mainState.stateHolder));
+		buildElement = new CElement(build, true, null, () -> clickBuild(mainState.stateHolder()));
 		elements.add(buildElement);
 		update();
 	}

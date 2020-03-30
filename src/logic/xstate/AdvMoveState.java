@@ -22,23 +22,23 @@ public class AdvMoveState implements NMarkState
 	@Override
 	public void onEnter(MainState mainState)
 	{
-		mainState.side.setStandardSideInfo(character);
+		mainState.side().setStandardSideInfo(character);
 		movement = new ArrayList<>();
 		attack = new ArrayList<>();
 		if(character.resources().moveAction())
 		{
-			movement.addAll(new Pathing(mainState.levelMap.y1, character, character.resources().movement(),
-					mainState.levelMap, null).start().getEndpaths());
+			movement.addAll(new Pathing(mainState.levelMap().y1, character, character.resources().movement(),
+					mainState.levelMap(), null).start().getEndpaths());
 		}
 		else if(character.resources().ready(2) && character.resources().dashMovement() > 0)
 		{
-			movement.addAll(new Pathing(mainState.levelMap.y1, character, character.resources().dashMovement(),
-					mainState.levelMap, null).start().getEndpaths());
+			movement.addAll(new Pathing(mainState.levelMap().y1, character, character.resources().dashMovement(),
+					mainState.levelMap(), null).start().getEndpaths());
 		}
 		if(character.resources().ready(2))
 		{
-			mainState.levelMap.attackRanges(character, false).stream().map(e -> mainState.levelMap.y1.range(character.location(), e, e))
-					.flatMap(Collection::stream).map(mainState.levelMap::getEntity).filter(e -> e != null && e.targetable() && e.team() != character.team())
+			mainState.levelMap().attackRanges(character, false).stream().map(e -> mainState.levelMap().y1.range(character.location(), e, e))
+					.flatMap(Collection::stream).map(mainState.levelMap()::getEntity).filter(e -> e != null && e.targetable() && e.team() != character.team())
 					.forEach(e -> attack.add(e.location()));
 		}
 		allTargets = new ArrayList<>();
@@ -72,7 +72,7 @@ public class AdvMoveState implements NMarkState
 	{
 		if(attack.contains(mapTile))
 		{
-			mainState.stateHolder.setState(new AttackInfoGUI(character, mainState.levelMap.getEntity(mapTile)));
+			mainState.stateHolder().setState(new AttackInfoGUI(character, mainState.levelMap().getEntity(mapTile)));
 		}
 		else
 		{
@@ -82,20 +82,20 @@ public class AdvMoveState implements NMarkState
 				if(character.resources().moveAction())
 				{
 					character.resources().move(pathLocation.get().cost());
-					mainState.levelMap.moveEntity(character, mapTile);
-					mainState.stateHolder.setState(new AdvMoveState(character));
+					mainState.levelMap().moveEntity(character, mapTile);
+					mainState.stateHolder().setState(new AdvMoveState(character));
 				}
 				else
 				{
 					character.resources().move(pathLocation.get().cost());
 					character.resources().action(true, 2);
-					mainState.levelMap.moveEntity(character, mapTile);
-					mainState.stateHolder.setState(NoneState.INSTANCE);
+					mainState.levelMap().moveEntity(character, mapTile);
+					mainState.stateHolder().setState(NoneState.INSTANCE);
 				}
 			}
 			else
 			{
-				mainState.stateHolder.setState(NoneState.INSTANCE);
+				mainState.stateHolder().setState(NoneState.INSTANCE);
 			}
 		}
 	}

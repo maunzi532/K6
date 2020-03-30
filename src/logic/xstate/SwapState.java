@@ -21,14 +21,14 @@ public class SwapState implements NMarkState
 	@Override
 	public void onEnter(MainState mainState)
 	{
-		mainState.side.setStandardSideInfo(character);
+		mainState.side().setStandardSideInfo(character);
 		if(character.saveSettings() != null && character.saveSettings().startLocked)
 		{
 			swapTargets = List.of();
 		}
 		else
 		{
-			swapTargets = mainState.levelMap.teamCharacters(character.team()).stream()
+			swapTargets = mainState.levelMap().teamCharacters(character.team()).stream()
 					.filter(e -> e != character && (e.saveSettings() == null || !e.saveSettings().startLocked)).collect(Collectors.toList());
 		}
 		visMarked = swapTargets.stream().map(e -> new VisMark(e.location(), "mark.swap", VisMark.d1)).collect(Collectors.toList());
@@ -55,15 +55,15 @@ public class SwapState implements NMarkState
 	@Override
 	public void onClick(MainState mainState, Tile mapTile, XKey key)
 	{
-		XCharacter target = mainState.levelMap.getEntity(mapTile);
+		XCharacter target = mainState.levelMap().getEntity(mapTile);
 		if(target != null && target.team() == character.team() && swapTargets.contains(target))
 		{
-			mainState.levelMap.swapEntities(character, target);
+			mainState.levelMap().swapEntities(character, target);
 			visMarked = swapTargets.stream().map(e -> new VisMark(e.location(), "mark.swap", VisMark.d1)).collect(Collectors.toList());
 		}
 		else
 		{
-			mainState.stateHolder.setState(NoneState.INSTANCE);
+			mainState.stateHolder().setState(NoneState.INSTANCE);
 		}
 	}
 

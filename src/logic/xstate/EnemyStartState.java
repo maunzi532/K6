@@ -10,8 +10,8 @@ public class EnemyStartState implements NAutoState
 	@Override
 	public void onEnter(MainState mainState)
 	{
-		mainState.side.clearSideInfo();
-		for(XCharacter xEnemy : mainState.levelMap.teamCharacters(CharacterTeam.ENEMY))
+		mainState.side().clearSideInfo();
+		for(XCharacter xEnemy : mainState.levelMap().teamCharacters(CharacterTeam.ENEMY))
 		{
 			xEnemy.startTurn();
 			if(xEnemy.targetable())

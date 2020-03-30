@@ -46,13 +46,13 @@ public class EditMoveState implements NMarkState
 	@Override
 	public void onClick(MainState mainState, Tile mapTile, XKey key)
 	{
-		if(mainState.levelMap.getEntity(mapTile) == null)
+		if(mainState.levelMap().getEntity(mapTile) == null)
 		{
-			mainState.levelMap.moveEntity(entity, mapTile);
+			mainState.levelMap().moveEntity(entity, mapTile);
 		}
 		else
 		{
-			mainState.stateHolder.setState(EditingState.INSTANCE);
+			mainState.stateHolder().setState(EditingState.INSTANCE);
 		}
 	}
 
