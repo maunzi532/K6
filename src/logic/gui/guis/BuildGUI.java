@@ -12,12 +12,13 @@ import logic.*;
 import logic.editor.xstate.*;
 import logic.gui.*;
 import logic.xstate.*;
+import text.*;
 
 public final class BuildGUI extends XGUIState
 {
-	private static final CTile textTiles = new CTile(0, 1, new GuiTile("Floor Req."), 2, 1);
-	private static final CTile textRequired = new CTile(3, 1, new GuiTile("Required"), 2, 1);
-	private static final CTile textReturned = new CTile(6, 1, new GuiTile("When removed"), 2, 1);
+	private static final CTile textTiles = new CTile(0, 1, new GuiTile("gui.build.requiredfloor"), 2, 1);
+	private static final CTile textRequired = new CTile(3, 1, new GuiTile("gui.build.requireditem"), 2, 1);
+	private static final CTile textReturned = new CTile(6, 1, new GuiTile("gui.build.returneditem"), 2, 1);
 	private static final CTile prev = new CTile(2, 1);
 	private static final CTile next = new CTile(5, 1);
 	private static final CTile lessTiles = new CTile(0, 0);
@@ -114,11 +115,11 @@ public final class BuildGUI extends XGUIState
 		floorTiles.elements = cost.requiredFloorTiles();
 		required.elements = cost.required().items;
 		returned.elements = cost.refundable().items;
-		prevElement.fillTile = activeIf("Prev", costNum > 0, "gui.build.more");
-		nextElement.fillTile = activeIf("Next", costNum < blueprints.size() - 1, "gui.build.more");
-		lessTilesElement.fillTile = activeIf("Less Tiles", tileCostNum > 0, "gui.build.more");
-		moreTilesElement.fillTile = activeIf("More Tiles", tileCostNum < blueprints.get(costNum).size() - 1, "gui.build.more");
-		buildElement.fillTile = activeIf("Build", builder.tryBuildingCosts(cost.refundable(), cost.costs(), CommitType.ROLLBACK).isPresent(), "gui.background.active");
+		prevElement.fillTile = activeIf("gui.build.previous", costNum > 0, "gui.build.more");
+		nextElement.fillTile = activeIf("gui.build.next", costNum < blueprints.size() - 1, "gui.build.more");
+		lessTilesElement.fillTile = activeIf("gui.build.lesstiles", tileCostNum > 0, "gui.build.more");
+		moreTilesElement.fillTile = activeIf("gui.build.moretiles", tileCostNum < blueprints.get(costNum).size() - 1, "gui.build.more");
+		buildElement.fillTile = activeIf("gui.build.build", builder.tryBuildingCosts(cost.refundable(), cost.costs(), CommitType.ROLLBACK).isPresent(), "gui.background.active");
 	}
 
 	private static GuiTile activeIf(String text, boolean active, String color)
@@ -133,8 +134,8 @@ public final class BuildGUI extends XGUIState
 	{
 		return new GuiTile[]
 				{
-						new GuiTile("R " + rft.minRange() + " - " + rft.maxRange()),
-						new GuiTile(rft.floorTileType().name() + " x" + rft.amount())
+						new GuiTile(new ArgsText("gui.build.floor.range", rft.minRange(), rft.maxRange())),
+						new GuiTile(new ArgsText("gui.build.floor.required", rft.floorTileType().name(), rft.amount()))
 				};
 	}
 
@@ -144,8 +145,9 @@ public final class BuildGUI extends XGUIState
 		String color = itemView.base >= stack.count || itemView.base == -1 ? "gui.background.active" : null;
 		return new GuiTile[]
 				{
-						new GuiTile((itemView.base == -1 ? "-" : itemView.base) + " / " + stack.count, null, false, color),
-						new GuiTile(null, itemView.item.image(), false, color)
+						new GuiTile(itemView.base == -1 ? new ArgsText("gui.build.nocost", stack.count)
+								: new ArgsText("gui.build.cost", itemView.base, stack.count), null, false, color),
+						new GuiTile((XText) null, itemView.item.image(), false, color)
 				};
 	}
 
@@ -153,8 +155,8 @@ public final class BuildGUI extends XGUIState
 	{
 		return new GuiTile[]
 				{
-						new GuiTile(String.valueOf(stack.count)),
-						new GuiTile(null, stack.item.image(), false, null)
+						new GuiTile(new ArgsText("i", stack.count)),
+						new GuiTile((XText) null, stack.item.image(), false, null)
 				};
 	}
 

@@ -8,6 +8,7 @@ import java.util.stream.*;
 import logic.*;
 import logic.gui.*;
 import statsystem.*;
+import text.*;
 
 public final class CharacterCombatGUI extends XGUIState
 {
@@ -109,7 +110,7 @@ public final class CharacterCombatGUI extends XGUIState
 		return new GuiTile[]
 				{
 						new GuiTile(itemView.currentWithLimit(), null, false, mark ? "gui.background.active" : null),
-						new GuiTile(null, itemView.item.image(), false, mark ? "gui.background.active" : null)
+						new GuiTile((XText) null, itemView.item.image(), false, mark ? "gui.background.active" : null)
 				};
 	}
 

@@ -15,6 +15,7 @@ import levelmap.*;
 import logic.*;
 import logic.editor.*;
 import logic.xstate.*;
+import text.*;
 import vis.gui.*;
 import vis.sideinfo.*;
 
@@ -257,23 +258,23 @@ public final class MainVisual implements XInputInterface
 		gd.setFont(new Font(scale));
 		gd.setTextAlign(TextAlignment.LEFT);
 		gd.fillText(turnText(levelMap.turnCounter()), scale, scale);
-		gd.fillText(stateHolder.preferBuildings() ? "BCM" : "CCM", xHW / 2.0, scale);
+		gd.fillText(scheme.local(stateHolder.preferBuildings() ? "choosemode.building" : "choosemode.character"), xHW / 2.0, scale);
 		if(paused)
-			gd.fillText("Paused", xHW, scale);
+			gd.fillText(scheme.local("pause"), xHW, scale);
 		gd.setTextAlign(TextAlignment.RIGHT);
-		gd.fillText("P to open pause menu", xHW * 2.0 - scale, scale);
+		gd.fillText(scheme.local("pause.info", new KeyFunction("Pause")), xHW * 2.0 - scale, scale);
 		gd.setTextAlign(TextAlignment.CENTER);
 	}
 
-	private static String turnText(int turnCounter)
+	private String turnText(int turnCounter)
 	{
 		if(turnCounter <= 0)
 		{
-			return "Preparation Phase";
+			return scheme.local("turn.display.0");
 		}
 		else
 		{
-			return "Turn " + turnCounter;
+			return scheme.local("turn.display", turnCounter);
 		}
 	}
 }

@@ -1,0 +1,28 @@
+{
+  "code" : -1529707617,
+  "LocaleFormat" : "EN",
+  "Locale" : {
+    "i" : "%d",
+    "d" : "%f",
+    "turn.display.0" : "Preparation Phase",
+    "turn.display" : "Turn %d",
+    "pause" : "Paused",
+    "pause.info" : "%s to open pause menu",
+    "choosemode.building" : "BCM",
+    "choosemode.character" : "CCM",
+    "gui.scroll.up" : "Scroll",
+    "gui.scroll.down" : "Scroll",
+    "gui.build.requiredfloor" : "Floor Req.",
+    "gui.build.requireditem" : "Required",
+    "gui.build.returneditem" : "When removed",
+    "gui.build.previous" : "Prev",
+    "gui.build.next" : "Next",
+    "gui.build.lesstiles" : "Less Tiles",
+    "gui.build.moretiles" : "More Tiles",
+    "gui.build.build" : "Build",
+    "gui.build.floor.range" : "R %s - %s",
+    "gui.build.floor.required" : "%s x%s",
+    "gui.build.cost" : "%s / %s",
+    "gui.build.nocost" : "- / %s"
+  }
+}

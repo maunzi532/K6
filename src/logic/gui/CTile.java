@@ -1,5 +1,7 @@
 package logic.gui;
 
+import text.*;
+
 public final class CTile
 {
 	public static final CTile NONE = new CTile(0, 0, 0, 0);
@@ -56,7 +58,7 @@ public final class CTile
 
 	public static GuiTile getOther(GuiTile guiTile)
 	{
-		return new GuiTile(null, null, false, guiTile.color);
+		return new GuiTile((XText) null, null, false, guiTile.color);
 	}
 
 }

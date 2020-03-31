@@ -34,6 +34,9 @@ public record MainState(LevelMap levelMap, XStateHolder stateHolder, SideInfoFra
 	//TODO    AttackInfoGUI show stat calculation
 	//TODO Building show floor requirements
 
+	//Text
+	//TODO GUI Text in file (1/16)
+
 	//combat system (rules)
 	//TODO    change speed effects
 	//TODO    levelup essence formula
@@ -50,6 +53,7 @@ public record MainState(LevelMap levelMap, XStateHolder stateHolder, SideInfoFra
 	//TODO    Initialize somewhere else than in MainVisual
 	//TODO character class names in classes
 	//TODO fix stealing from enemies
+	//TODO fix cannot build in preparation phase
 
 	//visual engine mechanics
 	//TODO move GUI so it does not overlap with SideInfo/LevelEditor

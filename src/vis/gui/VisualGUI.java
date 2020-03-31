@@ -135,19 +135,21 @@ public abstract class VisualGUI
 						layout.size().v()[0] * 2.0 * imgSize, layout.size().v()[1] * 2.0 * imgSize);
 			}
 		}
+
 		if(guiTile.text != null)
 		{
+			String text1 = scheme.localXText(guiTile.text);
 			PointD midPoint = layout.tileToPixel(y2.add(y2.fromTile(t1), y2.fromOffsetD(guiTile.left * -0.5, guiTile.up * -0.5)));
 			PointD rEnd = layout.tileToPixel(t1);
-			double ld = Math.max(0.5, guiTile.text.chars().filter(e -> e == '\n').count()) + 0.5;
+			double ld = Math.max(0.5, text1.chars().filter(e -> e == '\n').count()) + 0.5;
 			gd.setFont(new Font(layout.size().v()[1] * fontSize / ld));
 			if(guiTile.imageName != null)
 			{
 				gd.setStroke(outline);
-				gd.strokeText(guiTile.text, midPoint.v()[0], midPoint.v()[1], rEnd.v()[0] - midPoint.v()[0] + layout.size().v()[0] * textWidth);
+				gd.strokeText(text1, midPoint.v()[0], midPoint.v()[1], rEnd.v()[0] - midPoint.v()[0] + layout.size().v()[0] * textWidth);
 			}
 			gd.setFill(text);
-			gd.fillText(guiTile.text, midPoint.v()[0], midPoint.v()[1], rEnd.v()[0] - midPoint.v()[0] + layout.size().v()[0] * textWidth);
+			gd.fillText(text1, midPoint.v()[0], midPoint.v()[1], rEnd.v()[0] - midPoint.v()[0] + layout.size().v()[0] * textWidth);
 		}
 	}
 

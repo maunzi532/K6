@@ -8,6 +8,7 @@ import java.util.*;
 import logic.*;
 import logic.gui.*;
 import logic.xstate.*;
+import text.*;
 
 public final class DirectedTradeGUI extends XGUIState
 {
@@ -83,7 +84,7 @@ public final class DirectedTradeGUI extends XGUIState
 		return new GuiTile[]
 				{
 						new GuiTile(view.currentWithLimit(), null, false, color),
-						new GuiTile(null, view.item.image(), false, color)
+						new GuiTile((XText) null, view.item.image(), false, color)
 				};
 	}
 

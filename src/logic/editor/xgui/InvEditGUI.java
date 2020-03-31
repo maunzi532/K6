@@ -7,6 +7,7 @@ import java.util.*;
 import logic.*;
 import logic.gui.*;
 import statsystem.content.*;
+import text.*;
 
 public class InvEditGUI extends XGUIState
 {
@@ -46,7 +47,7 @@ public class InvEditGUI extends XGUIState
 				GuiTile::textView, this::onClickInfoView);
 		elements.add(infoView);
 		allItemsView = new TargetScrollList<>(5, 1, 3, 5, 1, 1,
-				AttackItems.INSTANCE.allItemsList, e -> GuiTile.cast(new GuiTile(null, e.image(), false, null)),
+				AttackItems.INSTANCE.allItemsList, e -> GuiTile.cast(new GuiTile((XText) null, e.image(), false, null)),
 				this::itemClick2);
 		elements.add(allItemsView);
 		elements.add(new CElement(textInv, new GuiTile(name)));

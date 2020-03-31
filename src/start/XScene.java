@@ -14,7 +14,6 @@ import javafx.scene.paint.*;
 import javafx.stage.*;
 import statsystem.*;
 import vis.*;
-import vis.keybind.*;
 
 public final class XScene extends Application
 {
@@ -32,7 +31,7 @@ public final class XScene extends Application
 	@Override
 	public void start(Stage stage)
 	{
-		Scheme scheme = new SchemeFile(loadTextResource("SchemeFile"));
+		SchemeFile scheme = new SchemeFile(loadTextResource("SchemeFile"), XScene::loadTextResource);
 		int width = scheme.intSetting("window.width");
 		int height = scheme.intSetting("window.height");
 		Group root = new Group();
@@ -43,15 +42,14 @@ public final class XScene extends Application
 		stage.setTitle(scheme.setting("window.title"));
 		stage.getIcons().add(scheme.image("window.icon"));
 		XGraphics graphics = new XGraphics(canvas.getGraphicsContext2D(), width, height);
-		KeybindFile keybindFile = new KeybindFile(loadTextResource(scheme.setting("file.keybinds")));
 		ItemLoader itemLoader = new ItemLoader2();
-		BlueprintFile blueprintFile = new BlueprintFile(loadTextResource(scheme.setting("file.buildingblueprints")), itemLoader);
-		MainVisual mainVisual = new MainVisual(graphics, keybindFile, scheme, mapCamera(scheme, graphics),
+		BlueprintFile blueprintFile = new BlueprintFile(loadTextResource(scheme.setting("file.buildingblueprint")), itemLoader);
+		MainVisual mainVisual = new MainVisual(graphics, scheme.keybindFile(), scheme, mapCamera(scheme, graphics),
 				menuCamera(scheme, graphics), guiCamera(scheme, graphics), a1 -> editorSlotCamera(scheme, graphics, a1),
 				itemLoader, blueprintFile,
 				scheme.setting("load.map"),
 				scheme.setting("load.team"));
-		XTimer xTimer = new XTimer(mainVisual, keybindFile);
+		XTimer xTimer = new XTimer(mainVisual, scheme.keybindFile());
 		scene.setOnMousePressed(xTimer::onMouseDown);
 		scene.setOnDragDetected(xTimer::onDragDetected);
 		scene.setOnMouseReleased(xTimer::onMouseUp);
@@ -115,7 +113,7 @@ public final class XScene extends Application
 				};
 	}
 
-	private String loadTextResource(String location)
+	private static String loadTextResource(String location)
 	{
 		URL resource = Thread.currentThread().getContextClassLoader().getResource(location);
 		if(resource == null)

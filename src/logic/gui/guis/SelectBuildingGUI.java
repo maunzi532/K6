@@ -6,6 +6,7 @@ import entity.*;
 import logic.*;
 import logic.gui.*;
 import logic.xstate.*;
+import text.*;
 
 public final class SelectBuildingGUI extends XGUIState
 {
@@ -87,7 +88,7 @@ public final class SelectBuildingGUI extends XGUIState
 		return new GuiTile[]
 				{
 						new GuiTile(blueprint.name()),
-						new GuiTile(null, "building.default", false, null)
+						new GuiTile((XText) null, "building.default", false, null)
 				};
 	}
 }
