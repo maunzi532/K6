@@ -7,7 +7,6 @@ import java.util.*;
 import logic.*;
 import logic.gui.*;
 import statsystem.content.*;
-import text.*;
 
 public class InvEditGUI extends XGUIState
 {
@@ -15,16 +14,16 @@ public class InvEditGUI extends XGUIState
 	private static final CTile weight = new CTile(0, 0);
 
 	private final Inv inv;
-	private final String name;
-	private final List<String> defaultInfo;
+	private final CharSequence name;
+	private final List<? extends CharSequence> defaultInfo;
 	private TargetScrollList<ItemView> invView;
-	private ScrollList<String> infoView;
+	private ScrollList<CharSequence> infoView;
 	private TargetScrollList<Item> allItemsView;
 	private CElement weightElement;
 	private boolean otherItem;
 	private Item editItem;
 
-	public InvEditGUI(Inv inv, String name, List<String> defaultInfo)
+	public InvEditGUI(Inv inv, CharSequence name, List<? extends CharSequence> defaultInfo)
 	{
 		this.inv = inv;
 		this.name = name;
@@ -47,7 +46,7 @@ public class InvEditGUI extends XGUIState
 				GuiTile::textView, this::onClickInfoView);
 		elements.add(infoView);
 		allItemsView = new TargetScrollList<>(5, 1, 3, 5, 1, 1,
-				AttackItems.INSTANCE.allItemsList, e -> GuiTile.cast(new GuiTile((XText) null, e.image(), false, null)),
+				AttackItems.INSTANCE.allItemsList, e -> GuiTile.cast(new GuiTile(null, e.image(), false, null)),
 				this::itemClick2);
 		elements.add(allItemsView);
 		elements.add(new CElement(textInv, new GuiTile(name)));
@@ -106,11 +105,11 @@ public class InvEditGUI extends XGUIState
 		editItem = target;
 	}
 
-	private void onClickInfoView(String target)
+	private void onClickInfoView(CharSequence target)
 	{
 		if(editItem != null)
 		{
-			switch(target)
+			switch(target.toString())
 			{
 				case "Add", "+" ->
 				{

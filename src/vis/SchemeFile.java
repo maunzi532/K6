@@ -95,17 +95,40 @@ public final class SchemeFile implements Scheme
 	@Override
 	public String local(String key, Object... args)
 	{
-		Object[] args1 = Arrays.stream(args).map(e -> e instanceof KeyFunction e1 ? keybindFile.info(e1.function()) : e).toArray();
+		Object[] args1 = Arrays.stream(args).map(e -> e instanceof SLocaleFeature e1 ? localeFeature(e1) : e).toArray();
 		return String.format(localeFormat, locale.getOrDefault(key, "X_" + key), args1);
 	}
 
-	@Override
-	public String localXText(XText xText)
+	private String localeFeature(SLocaleFeature localeFeature)
 	{
-		if(xText instanceof ArgsText argsText)
+		if(localeFeature instanceof KeyFunction keyFunction)
+		{
+			return keybindFile.info(keyFunction.function());
+		}
+		else if(localeFeature instanceof ArgsText argsText)
 		{
 			return local(argsText.key(), argsText.args());
 		}
-		throw new IllegalArgumentException("XText should be sealed");
+		else
+		{
+			throw new IllegalArgumentException("SLocaleFeature should be sealed");
+		}
+	}
+
+	@Override
+	public String localXText(CharSequence xText)
+	{
+		if(xText instanceof String text)
+		{
+			return local(text);
+		}
+		else if(xText instanceof ArgsText argsText)
+		{
+			return local(argsText.key(), argsText.args());
+		}
+		else
+		{
+			throw new IllegalArgumentException("Wrong type of CharSequence");
+		}
 	}
 }

@@ -10,7 +10,7 @@ import java.io.*;
 
 public interface BuildingFunction
 {
-	String name();
+	CharSequence name();
 
 	Inv inputInv();
 

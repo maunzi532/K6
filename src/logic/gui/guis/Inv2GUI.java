@@ -8,8 +8,8 @@ import logic.gui.*;
 
 public class Inv2GUI extends XGUIState
 {
-	private static final CTile textInputInv = new CTile(1, 0, new GuiTile("Input"), 2, 1);
-	private static final CTile textOutputInv = new CTile(6, 0, new GuiTile("Output"), 2, 1);
+	private static final CTile headerInputInv = new CTile(1, 0, new GuiTile("gui.double.header.input"), 2, 1);
+	private static final CTile headerOutputInv = new CTile(6, 0, new GuiTile("gui.double.header.output"), 2, 1);
 	private static final CTile weightInput = new CTile(3, 0);
 	private static final CTile weightOutput = new CTile(8, 0);
 
@@ -33,8 +33,8 @@ public class Inv2GUI extends XGUIState
 		ScrollList<ItemView> invViewOutput = new ScrollList<>(5, 1, 4, 5, 2, 1,
 				outputInv.viewItems(true), GuiTile::itemViewView, null);
 		elements.add(invViewOutput);
-		elements.add(new CElement(textInputInv));
-		elements.add(new CElement(textOutputInv));
+		elements.add(new CElement(headerInputInv));
+		elements.add(new CElement(headerOutputInv));
 		elements.add(new CElement(weightInput, new GuiTile(weightViewInput.currentWithLimit())));
 		elements.add(new CElement(weightOutput, new GuiTile(weightViewOutput.currentWithLimit())));
 		update();

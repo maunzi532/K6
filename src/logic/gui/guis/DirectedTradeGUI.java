@@ -14,10 +14,10 @@ public final class DirectedTradeGUI extends XGUIState
 {
 	private static final CTile nameProvide = new CTile(0, 0, 4, 1);
 	private static final CTile nameReceive = new CTile(5, 0, 4, 1);
-	private static final CTile more = new CTile(4, 1, new GuiTile("More"));
-	private static final CTile less = new CTile(4, 3, new GuiTile("Less"));
+	private static final CTile more = new CTile(4, 1, new GuiTile("gui.trade.more"));
+	private static final CTile less = new CTile(4, 3, new GuiTile("gui.trade.less"));
 	private static final CTile transfer = new CTile(4, 2);
-	private static final CTile ok = new CTile(4, 4, new GuiTile("OK"));
+	private static final CTile ok = new CTile(4, 4, new GuiTile("gui.trade.ok"));
 
 	private final DoubleInv provide;
 	private final DoubleInv receive;
@@ -75,7 +75,7 @@ public final class DirectedTradeGUI extends XGUIState
 		setTargeted(CTile.NONE);
 		provideView.elements = provide.outputInv().viewItems(false);
 		receiveView.elements = receive.inputInv().viewItems(true);
-		transferElement.fillTile = new GuiTile(String.valueOf(amount), "gui.trade.arrow", false, null);
+		transferElement.fillTile = new GuiTile(new ArgsText("i", amount), "gui.trade.arrow", false, null);
 	}
 
 	private GuiTile[] itemView(ItemView view, boolean provideInv)
@@ -84,7 +84,7 @@ public final class DirectedTradeGUI extends XGUIState
 		return new GuiTile[]
 				{
 						new GuiTile(view.currentWithLimit(), null, false, color),
-						new GuiTile((XText) null, view.item.image(), false, color)
+						new GuiTile(null, view.item.image(), false, color)
 				};
 	}
 
@@ -92,7 +92,7 @@ public final class DirectedTradeGUI extends XGUIState
 	{
 		if(provideMarked != null)
 		{
-			List<ItemView> provideItems = provideView.elements;
+			List<? extends ItemView> provideItems = provideView.elements;
 			ItemStack items = new ItemStack(provideItems.stream().filter(e -> e.item == provideMarked).findFirst().orElseThrow().item, amount);
 			if(provide.outputInv().canGive(items, false) && receive.inputInv().canAdd(items, false))
 			{

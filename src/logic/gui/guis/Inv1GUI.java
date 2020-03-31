@@ -15,11 +15,11 @@ public class Inv1GUI extends XGUIState
 	protected InvNumView weightView;
 	protected List<ItemView> itemsView;
 	protected TargetScrollList<ItemView> invView;
-	protected ScrollList<String> itemView;
-	protected String name;
-	protected List<String> baseInfo;
+	protected ScrollList<CharSequence> itemView;
+	protected CharSequence name;
+	protected List<? extends CharSequence> baseInfo;
 
-	public Inv1GUI(Inv inv, String name, List<String> baseInfo)
+	public Inv1GUI(Inv inv, CharSequence name, List<? extends CharSequence> baseInfo)
 	{
 		this.inv = inv;
 		this.name = name;
@@ -61,7 +61,7 @@ public class Inv1GUI extends XGUIState
 		itemView.elements = info();
 	}
 
-	protected List<String> info()
+	protected List<? extends CharSequence> info()
 	{
 		if(invView.getTargeted() != null)
 			return invView.getTargeted().item.info();

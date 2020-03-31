@@ -17,13 +17,13 @@ public final class Transport implements BuildingFunction
 {
 	public static final int TRANSPORT_TIME = 60;
 
-	private final String name;
+	private final CharSequence name;
 	private final int range;
 	private final int amount;
 	private final List<DoubleInv> targets;
 	private final InvTransporter invTransporter;
 
-	public Transport(String name, TransporterBlueprint blueprint)
+	public Transport(CharSequence name, TransporterBlueprint blueprint)
 	{
 		this.name = name;
 		range = blueprint.range();
@@ -38,7 +38,7 @@ public final class Transport implements BuildingFunction
 	}
 
 	@Override
-	public String name()
+	public CharSequence name()
 	{
 		return name;
 	}
@@ -133,7 +133,7 @@ public final class Transport implements BuildingFunction
 	@Override
 	public <T extends ComposerBase> void save(ObjectComposer<T> a1, ItemLoader itemLoader, TileType y1) throws IOException
 	{
-		a1.put("Name", name);
+		a1.put("Name", name.toString());
 		a1.put("Range", range);
 		a1.put("Amount", amount);
 		var a2 = a1.startArrayField("Targets");

@@ -144,7 +144,7 @@ public final class AttackItem implements Item, ModifierAspect
 	}
 
 	@Override
-	public List<String> info()
+	public List<? extends CharSequence> info()
 	{
 		List<String> list = new ArrayList<>();
 		list.add(defenseType.text + "\n" + itemClass.getClass().getSimpleName().replace("Item", ""));

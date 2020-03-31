@@ -88,10 +88,10 @@ public final class VisualSideInfo
 					scheme);
 		gd.setFill(scheme.color("sideinfo.text"));
 		gd.setFont(new Font(size * YS_T));
-		String[] texts = sideInfo.texts();
+		CharSequence[] texts = sideInfo.texts();
 		for(int i = 0; i < texts.length; i++)
 		{
-			gd.fillText(texts[i], lx + size * XD_T + size * XS_T / texts.length * i, by - size * YD_T);
+			gd.fillText(texts[i].toString(), lx + size * XD_T + size * XS_T / texts.length * i, by - size * YD_T);
 		}
 	}
 
@@ -109,10 +109,10 @@ public final class VisualSideInfo
 					scheme);
 		gd.setFill(scheme.color("sideinfo.text"));
 		gd.setFont(new Font(size * YS_T));
-		String[] texts = sideInfo.texts();
+		CharSequence[] texts = sideInfo.texts();
 		for(int i = 0; i < texts.length; i++)
 		{
-			gd.fillText(texts[i], rx - size * XD_T - size * XS_T / texts.length * i, by - size * YD_T);
+			gd.fillText(texts[i].toString(), rx - size * XD_T - size * XS_T / texts.length * i, by - size * YD_T);
 		}
 	}
 

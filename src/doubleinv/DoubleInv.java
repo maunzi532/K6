@@ -7,7 +7,7 @@ public interface DoubleInv
 {
 	DoubleInvType type();
 
-	String name();
+	CharSequence name();
 
 	Tile location();
 

@@ -147,7 +147,7 @@ public final class BuildGUI extends XGUIState
 				{
 						new GuiTile(itemView.base == -1 ? new ArgsText("gui.build.nocost", stack.count)
 								: new ArgsText("gui.build.cost", itemView.base, stack.count), null, false, color),
-						new GuiTile((XText) null, itemView.item.image(), false, color)
+						new GuiTile(null, itemView.item.image(), false, color)
 				};
 	}
 
@@ -156,7 +156,7 @@ public final class BuildGUI extends XGUIState
 		return new GuiTile[]
 				{
 						new GuiTile(new ArgsText("i", stack.count)),
-						new GuiTile((XText) null, stack.item.image(), false, null)
+						new GuiTile(null, stack.item.image(), false, null)
 				};
 	}
 

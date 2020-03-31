@@ -146,7 +146,7 @@ public final class XCharacter implements DoubleInv, XBuilder
 	}
 
 	@Override
-	public String name()
+	public CharSequence name()
 	{
 		return stats.getName();
 	}
@@ -217,7 +217,7 @@ public final class XCharacter implements DoubleInv, XBuilder
 		a1.put("StartingDelay", startingDelay);
 		if(startingSettings != null)
 		{
-			a1.put("StartName", stats.getName());
+			a1.put("StartName", stats.getName().toString());
 			a1.put("Locked", startingSettings.startLocked);
 			a1.put("InvLocked", startingSettings.startInvLocked);
 			if(startingSettings.startLocked)

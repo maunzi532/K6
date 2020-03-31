@@ -8,12 +8,11 @@ import java.util.stream.*;
 import logic.*;
 import logic.gui.*;
 import statsystem.*;
-import text.*;
 
 public final class CharacterCombatGUI extends XGUIState
 {
 	private static final CTile NAME = new CTile(2, 0, 3, 1);
-	private static final CTile UNEQUIP = new CTile(1, 6, new GuiTile("Unequip"), 2, 1);
+	private static final CTile UNEQUIP = new CTile(1, 6, new GuiTile("gui.stats.unequip"), 2, 1);
 	private static final CTile VIEW_MODE = new CTile(4, 6, 2, 1);
 
 	private final XCharacter character;
@@ -22,7 +21,7 @@ public final class CharacterCombatGUI extends XGUIState
 	private CElement viewModeElement;
 	private TargetScrollList<ItemView> invView;
 	private TargetScrollList<AttackMode3> modeChooseView;
-	private ScrollList<String> statsView;
+	private ScrollList<CharSequence> statsView;
 	private Item chosenItem;
 
 	public CharacterCombatGUI(XCharacter character, int viewMode)
@@ -55,7 +54,7 @@ public final class CharacterCombatGUI extends XGUIState
 	@Override
 	protected void updateBeforeDraw()
 	{
-		viewModeElement.fillTile = new GuiTile(viewMode == 1 ? "View Mode\nStat View" : "View Mode\nCombat Data");
+		viewModeElement.fillTile = new GuiTile(viewMode == 1 ? "gui.stats.mode.stats" : "gui.stats.mode.combatdata");
 		invView.elements = character.outputInv().viewItems(true);
 		if(invView.getTargeted() != null && !invView.getTargeted().item.info().isEmpty())
 		{
@@ -110,7 +109,7 @@ public final class CharacterCombatGUI extends XGUIState
 		return new GuiTile[]
 				{
 						new GuiTile(itemView.currentWithLimit(), null, false, mark ? "gui.background.active" : null),
-						new GuiTile((XText) null, itemView.item.image(), false, mark ? "gui.background.active" : null)
+						new GuiTile(null, itemView.item.image(), false, mark ? "gui.background.active" : null)
 				};
 	}
 

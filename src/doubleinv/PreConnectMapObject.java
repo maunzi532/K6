@@ -15,7 +15,7 @@ public record PreConnectMapObject(Tile location, DoubleInvType type) implements 
 	}
 
 	@Override
-	public String name()
+	public CharSequence name()
 	{
 		return null;
 	}

@@ -215,12 +215,12 @@ public final class AttackMode3
 		return mode != null ? mode.tile() : "Evade";
 	}
 
-	public List<String> modeInfo()
+	public List<? extends CharSequence> modeInfo()
 	{
 		return mode.info();
 	}
 
-	public List<String> info()
+	public List<? extends CharSequence> info()
 	{
 		List<String> list = new ArrayList<>();
 		if(attackCount > 0)
@@ -245,8 +245,8 @@ public final class AttackMode3
 				list.add("");
 			}
 			list.add("Attack\n" + attackPower);
-			list.add("Acc%\n" + accuracy);
-			list.add("Crit%\n" + crit);
+			list.add("Acc%%\n" + accuracy);
+			list.add("Crit%%\n" + crit);
 		}
 		list.add("Speed\n" + finalSpeed);
 		list.add("Def (phy)\n" + defensePhysical);

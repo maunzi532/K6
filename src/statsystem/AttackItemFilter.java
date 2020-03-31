@@ -2,6 +2,7 @@ package statsystem;
 
 import item.*;
 import java.util.*;
+import text.*;
 
 public final class AttackItemFilter implements Item
 {
@@ -33,7 +34,7 @@ public final class AttackItemFilter implements Item
 	}
 
 	@Override
-	public List<String> info()
+	public List<CharSequence> info()
 	{
 		throw new RuntimeException("AttackItemFilter cannot be displayed");
 	}

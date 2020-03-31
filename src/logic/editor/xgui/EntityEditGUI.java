@@ -15,12 +15,12 @@ public final class EntityEditGUI extends XGUIState
 	private static final CTile weight = new CTile(0, 0);
 
 	private final XCharacter entity;
-	private List<String> info;
+	private List<? extends CharSequence> info;
 	private TargetScrollList<ItemView> invView;
 	private ScrollList<Integer> infoView;
 	private ScrollList<Integer> changeView;
 	private int changeStatNum;
-	private List<String> changeOptions;
+	private List<? extends CharSequence> changeOptions;
 	private CElement textInvE;
 
 	public EntityEditGUI(XCharacter entity)

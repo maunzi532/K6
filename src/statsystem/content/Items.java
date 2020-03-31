@@ -10,7 +10,7 @@ public enum Items implements Item
 	TECHNOLOGY("resource.tech", 2),
 	MATERIAL("resource.material", 1);
 
-	Items(String image, int weight, String... info)
+	Items(String image, int weight, CharSequence... info)
 	{
 		this.image = image;
 		this.weight = weight;
@@ -20,7 +20,7 @@ public enum Items implements Item
 
 	private final String image;
 	private final int weight;
-	private final List<String> info;
+	private final List<CharSequence> info;
 
 	@Override
 	public String image()
@@ -35,7 +35,7 @@ public enum Items implements Item
 	}
 
 	@Override
-	public List<String> info()
+	public List<CharSequence> info()
 	{
 		return info;
 	}

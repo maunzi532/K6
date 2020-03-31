@@ -13,5 +13,5 @@ public interface Item
 		return equals(item);
 	}
 
-	List<String> info();
+	List<? extends CharSequence> info();
 }

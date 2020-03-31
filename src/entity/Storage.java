@@ -20,7 +20,7 @@ public final class Storage implements DoubleInv
 	}
 
 	@Override
-	public String name()
+	public CharSequence name()
 	{
 		return "Storage";
 	}

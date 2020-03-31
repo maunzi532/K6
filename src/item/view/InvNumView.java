@@ -1,5 +1,7 @@
 package item.view;
 
+import text.*;
+
 public class InvNumView
 {
 	public final int base;
@@ -20,30 +22,34 @@ public class InvNumView
 		limit = -1;
 	}
 
-	public String currentWithLimit()
+	public CharSequence currentWithLimit()
 	{
-		if(limit < 0)
-			return String.valueOf(changed);
-		else
-			return changed + " / " + limit;
-	}
-
-	public String baseAndCurrentWithLimit()
-	{
-		StringBuilder sb = new StringBuilder();
-		sb.append(base);
-		if(changed != base)
-			sb.append(" -> ").append(changed);
 		if(limit >= 0)
-			sb.append(" / ").append(limit);
-		return sb.toString();
+			return new ArgsText("itemview.limit", changed, limit);
+		else
+			return new ArgsText("itemview.base", changed);
 	}
 
-	public static String except1(int num)
+	public CharSequence baseAndCurrentWithLimit()
+	{
+		if(changed != base)
+		{
+			if(limit >= 0)
+				return new ArgsText("itemview.changedandlimit", base, changed, limit);
+			else
+				return new ArgsText("itemview.changed", base, changed);
+		}
+		else
+		{
+			return currentWithLimit();
+		}
+	}
+
+	public static CharSequence except1(int num)
 	{
 		if(num == 1)
 			return null;
 		else
-			return String.valueOf(num);
+			return new ArgsText("i", num);
 	}
 }

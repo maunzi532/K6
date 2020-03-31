@@ -9,7 +9,7 @@ public final class TargetScrollList<T> extends ScrollList<T>
 	private T targeted2;
 
 	public TargetScrollList(int locationX, int locationY, int sizeX, int sizeY, int elementSizeX, int elementSizeY,
-			List<T> elements, Function<? super T, GuiTile[]> function, Consumer<? super T> onClick)
+			List<? extends T> elements, Function<? super T, GuiTile[]> function, Consumer<? super T> onClick)
 	{
 		super(locationX, locationY, sizeX, sizeY, elementSizeX, elementSizeY, elements, function, onClick);
 		onTarget = this::onTarget;

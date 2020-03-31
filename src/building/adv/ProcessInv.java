@@ -15,13 +15,13 @@ public final class ProcessInv implements BuildingFunction
 {
 	public static final int ARROW_TIME = 30;
 
-	private final String name;
+	private final CharSequence name;
 	private final Inv inputInv;
 	private final Inv outputInv;
 	private final List<Recipe> recipes;
 	public int lastViewedRecipeNum;
 
-	public ProcessInv(String name, ProductionBlueprint blueprint)
+	public ProcessInv(CharSequence name, ProductionBlueprint blueprint)
 	{
 		this.name = name;
 		inputInv = new SlotInv(blueprint.inputLimits());
@@ -36,7 +36,7 @@ public final class ProcessInv implements BuildingFunction
 	}
 
 	@Override
-	public String name()
+	public CharSequence name()
 	{
 		return name;
 	}
@@ -120,7 +120,7 @@ public final class ProcessInv implements BuildingFunction
 	@Override
 	public <T extends ComposerBase> void save(ObjectComposer<T> a1, ItemLoader itemLoader, TileType y1) throws IOException
 	{
-		a1.put("Name", name);
+		a1.put("Name", name.toString());
 		inputInv.save(a1.startObjectField("InputInv"), itemLoader);
 		outputInv.save(a1.startObjectField("OutputInv"), itemLoader);
 		var a2 = a1.startArrayField("Recipes");

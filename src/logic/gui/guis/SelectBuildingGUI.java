@@ -6,11 +6,10 @@ import entity.*;
 import logic.*;
 import logic.gui.*;
 import logic.xstate.*;
-import text.*;
 
 public final class SelectBuildingGUI extends XGUIState
 {
-	private static final CTile textInv = new CTile(2, 0, new GuiTile("Buildings"), 2, 1);
+	private static final CTile header = new CTile(2, 0, new GuiTile("gui.selectbuilding.header"), 2, 1);
 
 	private final XBuilder builder;
 
@@ -36,7 +35,7 @@ public final class SelectBuildingGUI extends XGUIState
 				mainState.blueprintFile().allBlueprints(), SelectBuildingGUI::itemView,
 				target -> mainState.stateHolder().setState(new BuildGUI(builder, target)));
 		elements.add(buildingsView);
-		elements.add(new CElement(textInv));
+		elements.add(new CElement(header));
 		update();
 	}
 
@@ -55,7 +54,13 @@ public final class SelectBuildingGUI extends XGUIState
 	@Override
 	public boolean keepInMenu(MainState mainState)
 	{
-		return !(builder instanceof XCharacter character) || (character.resources().ready(1) && mainState.levelMap().getBuilding(builder.location()) == null);
+		if(!(builder instanceof XCharacter character))
+			return true;
+		if(mainState.levelMap().turnCounter() == 0 || character.resources().ready(1))
+		{
+			return mainState.levelMap().getBuilding(builder.location()) == null;
+		}
+		return false;
 	}
 
 	@Override
@@ -88,7 +93,7 @@ public final class SelectBuildingGUI extends XGUIState
 		return new GuiTile[]
 				{
 						new GuiTile(blueprint.name()),
-						new GuiTile((XText) null, "building.default", false, null)
+						new GuiTile(null, "building.default", false, null)
 				};
 	}
 }

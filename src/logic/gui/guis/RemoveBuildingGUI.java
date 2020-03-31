@@ -8,13 +8,12 @@ import item.view.*;
 import logic.*;
 import logic.gui.*;
 import logic.xstate.*;
-import text.*;
 
 public final class RemoveBuildingGUI extends XGUIState
 {
-	private static final CTile textInv = new CTile(0, 0, new GuiTile("Remove Building?"), 4, 1);
+	private static final CTile header = new CTile(0, 0, new GuiTile("gui.removebuilding.header"), 4, 1);
 	private static final CTile weight = new CTile(4, 0, 2, 1);
-	private static final CTile remove = new CTile(2, 5, new GuiTile("Remove"), 2, 1);
+	private static final CTile remove = new CTile(2, 5, new GuiTile("gui.removebuilding.remove"), 2, 1);
 
 	private final XCharacter character;
 	private XBuilding building;
@@ -35,7 +34,7 @@ public final class RemoveBuildingGUI extends XGUIState
 		ScrollList<ItemView> invView = new ScrollList<>(0, 1, 3, 4, 2, 1,
 				character.inputInv().viewItems(true), RemoveBuildingGUI::changedItemView, null);
 		elements.add(invView);
-		elements.add(new CElement(textInv));
+		elements.add(new CElement(header));
 		elements.add(new CElement(weight, new GuiTile(weightView.baseAndCurrentWithLimit())));
 		elements.add(new CElement(remove, true, null, () -> onClickRemove(mainState.stateHolder())));
 		update();
@@ -77,13 +76,12 @@ public final class RemoveBuildingGUI extends XGUIState
 		return 6;
 	}
 
-
 	private static GuiTile[] changedItemView(ItemView itemView)
 	{
 		return new GuiTile[]
 				{
 						new GuiTile(itemView.baseAndCurrentWithLimit()),
-						new GuiTile((XText) null, itemView.item.image(), false, null)
+						new GuiTile(null, itemView.item.image(), false, null)
 				};
 	}
 

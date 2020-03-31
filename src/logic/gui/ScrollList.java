@@ -17,14 +17,14 @@ public class ScrollList<T> implements GuiElement
 	private final int elementCountYm2;
 	private final CTile scrollUp;
 	private final CTile scrollDown;
-	public List<T> elements;
+	public List<? extends T> elements;
 	private int currentScroll;
 	private boolean skipScroll1;
 	private boolean canScrollUp;
 	private boolean canScrollDown;
 	private int shownLinesY;
 
-	public ScrollList(int locationX, int locationY, int sizeX, int sizeY, int elementSizeX, int elementSizeY, List<T> elements,
+	public ScrollList(int locationX, int locationY, int sizeX, int sizeY, int elementSizeX, int elementSizeY, List<? extends T> elements,
 			Function<? super T, GuiTile[]> function, Consumer<? super T> onClick)
 	{
 		this.locationX = locationX;

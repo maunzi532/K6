@@ -2,7 +2,6 @@ package vis;
 
 import javafx.scene.image.*;
 import javafx.scene.paint.*;
-import text.*;
 
 public interface Scheme
 {
@@ -18,5 +17,5 @@ public interface Scheme
 
 	String local(String key, Object... args);
 
-	String localXText(XText xText);
+	String localXText(CharSequence xText);
 }

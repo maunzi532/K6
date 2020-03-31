@@ -8,9 +8,9 @@ public final class SideInfo
 	private final XCharacter identifier;
 	private String imageName;
 	private final StatBar statBar;
-	private String[] texts;
+	private CharSequence[] texts;
 
-	public SideInfo(XCharacter identifier, String imageName, StatBar statBar, String... texts)
+	public SideInfo(XCharacter identifier, String imageName, StatBar statBar, CharSequence... texts)
 	{
 		this.identifier = identifier;
 		this.imageName = imageName;
@@ -28,7 +28,7 @@ public final class SideInfo
 		return imageName;
 	}
 
-	public String[] texts()
+	public CharSequence[] texts()
 	{
 		return texts;
 	}

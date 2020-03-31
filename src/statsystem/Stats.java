@@ -12,13 +12,14 @@ import javafx.scene.control.*;
 import javafx.stage.*;
 import statsystem.animation.*;
 import statsystem.content.*;
+import text.*;
 
 public final class Stats implements ModifierAspect
 {
 	private static final int HEALTH_MULTIPLIER = 5;
 	private static final String[] statNames =
 			{
-					"Strength", "Finesse", "Skill", "Speed", "Luck", "Defense", "Evasion", "Toughness"
+					"strength", "finesse", "skill", "speed", "luck", "defense", "evasion", "toughness"
 			};
 
 	private XClass xClass;
@@ -298,9 +299,9 @@ public final class Stats implements ModifierAspect
 		exhaustion++;
 	}
 
-	public String getName()
+	public CharSequence getName()
 	{
-		return customName != null ? customName : xClass.className + " lv" + level;
+		return customName != null ? customName : new ArgsText(xClass.className + " lv" + level);
 	}
 
 	public String mapImageName()
@@ -404,7 +405,7 @@ public final class Stats implements ModifierAspect
 		a1.end();
 	}
 
-	public List<String> info()
+	public List<? extends CharSequence> info()
 	{
 		List<String> info = new ArrayList<>();
 		info.add("Class\n" + xClass.className);
@@ -418,7 +419,7 @@ public final class Stats implements ModifierAspect
 		info.add("CPower\n" + calcCPower());
 		info.add("Move\n" + movement);
 		info.add(exhaustion > 0 ? "Exhausted\n" + exhaustion : "");
-		info.add("Defend\n" + (lastUsed.active ? lastUsed.item.info().get(0).replace("Type\n", "") : "None"));
+		info.add("Defend\n" + (lastUsed.active ? lastUsed.item.info().get(0).toString().replace("Type\n", "") : "None")); //TODO
 		for(AI2Class e : filter.getItemTypes())
 		{
 			info.add("ItemType\n" + e.getClass().getSimpleName().replace("Item", ""));
@@ -430,7 +431,7 @@ public final class Stats implements ModifierAspect
 		return info;
 	}
 
-	public List<String> statsInfo()
+	public List<? extends CharSequence> statsInfo()
 	{
 		List<String> info = new ArrayList<>();
 		info.add("Class\n" + xClass.className);
@@ -452,12 +453,12 @@ public final class Stats implements ModifierAspect
 		return info;
 	}
 
-	public List<String> infoWithEquip()
+	public List<? extends CharSequence> infoWithEquip()
 	{
 		return AttackMode3.convert(this, lastUsed).info();
 	}
 
-	public List<String> levelup()
+	public List<? extends CharSequence> levelup()
 	{
 		int[] levelup = levelSystem().getLevelup(this);
 		List<String> info = new ArrayList<>();
@@ -493,43 +494,58 @@ public final class Stats implements ModifierAspect
 		return info;
 	}
 
-	public String[] sideInfoText()
+	public CharSequence[] sideInfoText()
 	{
-		return new String[]{customName != null ? customName : "Enemy", xClass.className + " lv" + level};
+		return new CharSequence[]{customName != null ? customName : "Enemy", xClass.className + " lv" + level};
 	}
 
-	public List<String> infoEdit()
+	public List<? extends CharSequence> infoEdit()
 	{
-		List<String> info = new ArrayList<>();
-		info.add(customName != null ? "Name\n" + customName : "Generic\nName");
-		info.add("Class\n" + xClass.className);
-		info.add("Level\n" + level);
-		info.add("Exp\n" + exp);
+		List<CharSequence> info = new ArrayList<>();
+		if(customName != null)
+			info.add(new ArgsText("stats.edit.customname", customName));
+		else
+			info.add("stats.edit.genericname");
+		info.add(new ArgsText("stats.edit.class", xClass.className));
+		info.add(new ArgsText("stats.edit.level", level));
+		info.add(new ArgsText("stats.edit.exp", exp));
 		for(int i = 0; i < 8; i++)
 		{
-			info.add(statNames[i] + "\n" + lvStats[i]);
+			info.add(new ArgsText("stats.edit." + statNames[i], lvStats[i]));
 		}
-		info.add("Health\n" + currentHealth + "/" + maxHealth());
-		info.add("Exhaustion\n" + exhaustion);
-		info.add("Move\n" + movement);
-		info.add("Defend\n" + (lastUsed.active ? lastUsed.item.info().get(0).replace("Type\n", "") : "None"));
-		info.add("ItemTypes\n" + filter.getItemTypes().stream().map(e -> e.getClass().getSimpleName().replace("Item", ""))
-				.collect(Collectors.joining("\n")));
+		info.add(new ArgsText("stats.edit.health", currentHealth, maxHealth()));
+		info.add(new ArgsText("stats.edit.exhaustion", exhaustion));
+		info.add(new ArgsText("stats.edit.movement", movement));
+		if(lastUsed.active)
+			info.add(new ArgsText("stats.edit.defendwith", lastUsed.item.info().get(0).toString().replace("Type\n", ""))); //TODO
+		else
+			info.add("stats.edit.defendwithnone");
+		info.add(new ArgsText("stats.edit.itemfilter", filter.getItemTypes().stream()
+				.map(e -> e.getClass().getSimpleName().replace("Item", ""))
+				.collect(Collectors.joining("\n")))); //TODO
 		return info;
 	}
 
-	public static List<String> editOptions(int num)
+	public static List<? extends CharSequence> editOptions(int num)
 	{
 		if(num == 0)
-			return List.of("Name", "Image 1", "Image 2");
+			return List.of("stats.editoption.name.name", "stats.editoption.name.mapimage", "stats.editoption.name.sideimage");
 		if(num == 1)
-			return List.of("Prev", "Next");
+			return List.of("stats.editoption.class.previous", "stats.editoption.class.next");
 		if(num == 2)
-			return List.of("+", "-", "Reset\nstats");
-		if(num <= 14)
-			return List.of("+", "-", "Reset");
+			return List.of("stats.editoption.plus", "stats.editoption.minus", "stats.editoption.level.resetstats");
+		if(num == 3)
+			return List.of("stats.editoption.plus", "stats.editoption.minus", "stats.editoption.exp.reset");
+		if(num <= 11)
+			return List.of("stats.editoption.plus", "stats.editoption.minus", "stats.editoption.lvstat.reset");
+		if(num == 12)
+			return List.of("stats.editoption.plus", "stats.editoption.minus", "stats.editoption.health.reset");
+		if(num == 13)
+			return List.of("stats.editoption.plus", "stats.editoption.minus", "stats.editoption.exhaustion.reset");
+		if(num == 14)
+			return List.of("stats.editoption.plus", "stats.editoption.minus", "stats.editoption.movement.reset");
 		if(num == 15)
-			return List.of("Auto");
+			return List.of("stats.editoption.defendwith.autoequip");
 		return List.of();
 	}
 

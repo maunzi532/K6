@@ -24,7 +24,7 @@ public interface AM2Type extends ModifierAspect
 
 	String tile();
 
-	default List<String> info()
+	default List<? extends CharSequence> info()
 	{
 		List<String> list = new ArrayList<>();
 		if(inverseDefenseType())

@@ -74,7 +74,7 @@ public final class XBuilding implements DoubleInv
 	}
 
 	@Override
-	public String name()
+	public CharSequence name()
 	{
 		return function.name();
 	}

@@ -1,7 +1,7 @@
 {
   "code" : -1529707617,
   "Blueprints" : [ {
-    "Name" : "GSL1",
+    "Name" : "building.name.gsl1",
     "Construction" : [ [ {
       "Refundable" : [ ],
       "Costs" : [ {
@@ -57,7 +57,7 @@
       } ]
     }
   }, {
-    "Name" : "Material1",
+    "Name" : "building.name.material1",
     "Construction" : [ [ {
       "Refundable" : [ ],
       "Costs" : [ {
@@ -96,7 +96,7 @@
       } ]
     }
   }, {
-    "Name" : "BLUE1",
+    "Name" : "building.name.blue1",
     "Construction" : [ [ {
       "Refundable" : [ ],
       "Costs" : [ {
@@ -158,7 +158,7 @@
       } ]
     }
   }, {
-    "Name" : "Transporter1",
+    "Name" : "building.name.transporter1",
     "Construction" : [ [ {
       "Refundable" : [ {
         "ItemCode" : 2
