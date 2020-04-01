@@ -2,13 +2,13 @@ package statsystem;
 
 public enum DefenseType
 {
-	PHYSICAL("Physical"),
-	MAGICAL("Magical"),
-	NONE("None");
+	PHYSICAL("attackitem.defensetype.physical"),
+	MAGICAL("attackitem.defensetype.magical"),
+	NONE("attackitem.defensetype.none");
 
-	public final String text;
+	public final CharSequence text;
 
-	DefenseType(String text)
+	DefenseType(CharSequence text)
 	{
 		this.text = text;
 	}

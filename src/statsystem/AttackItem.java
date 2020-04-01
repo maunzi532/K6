@@ -4,6 +4,7 @@ import item.*;
 import java.util.*;
 import java.util.stream.*;
 import statsystem.content.*;
+import text.*;
 
 public final class AttackItem implements Item, ModifierAspect
 {
@@ -146,14 +147,14 @@ public final class AttackItem implements Item, ModifierAspect
 	@Override
 	public List<? extends CharSequence> info()
 	{
-		List<String> list = new ArrayList<>();
-		list.add(defenseType.text + "\n" + itemClass.getClass().getSimpleName().replace("Item", ""));
-		list.add("Range\n" + displayRange(ranges));
-		list.add("Counter\n" + displayRange(counterR));
-		list.add("Adv. Type\n" + advantageType.name);
+		List<CharSequence> list = new ArrayList<>();
+		list.add(MultiText.lines(itemClass.name(), defenseType.text));
+		list.add(new ArgsText("attackitem.ranges", displayRange(ranges)));
+		list.add(new ArgsText("attackitem.counterranges", displayRange(counterR)));
+		list.add(new ArgsText("attackitem.advantage", advantageType.name));
 		if(adaptive > 0)
 		{
-			list.add("Adaptive\n" + adaptiveType.name + " " + adaptive);
+			list.add(new ArgsText("attackitem.adaptive", adaptiveType.name, adaptive));
 		}
 		list.addAll(detailedInfo(false));
 		return list;

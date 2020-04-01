@@ -15,12 +15,11 @@ public enum Items implements Item
 		this.image = image;
 		this.weight = weight;
 		this.info = Arrays.asList(info);
-
 	}
 
 	private final String image;
 	private final int weight;
-	private final List<CharSequence> info;
+	private final List<? extends CharSequence> info;
 
 	@Override
 	public String image()
@@ -35,7 +34,7 @@ public enum Items implements Item
 	}
 
 	@Override
-	public List<CharSequence> info()
+	public List<? extends CharSequence> info()
 	{
 		return info;
 	}

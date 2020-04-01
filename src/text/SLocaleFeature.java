@@ -1,6 +1,3 @@
 package text;
 
-public interface SLocaleFeature
-{
-
-}
+public interface SLocaleFeature{}

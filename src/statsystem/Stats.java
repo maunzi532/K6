@@ -7,7 +7,6 @@ import item.*;
 import item.view.*;
 import java.io.*;
 import java.util.*;
-import java.util.stream.*;
 import javafx.scene.control.*;
 import javafx.stage.*;
 import statsystem.animation.*;
@@ -517,12 +516,13 @@ public final class Stats implements ModifierAspect
 		info.add(new ArgsText("stats.edit.exhaustion", exhaustion));
 		info.add(new ArgsText("stats.edit.movement", movement));
 		if(lastUsed.active)
-			info.add(new ArgsText("stats.edit.defendwith", lastUsed.item.info().get(0).toString().replace("Type\n", ""))); //TODO
+			info.add(MultiText.lines("stats.edit.defendwith", lastUsed.item.itemClass.name()));
 		else
 			info.add("stats.edit.defendwithnone");
-		info.add(new ArgsText("stats.edit.itemfilter", filter.getItemTypes().stream()
-				.map(e -> e.getClass().getSimpleName().replace("Item", ""))
-				.collect(Collectors.joining("\n")))); //TODO
+		List<CharSequence> m1 = new ArrayList<>();
+		m1.add(new ArgsText("stats.edit.itemfilter"));
+		filter.getItemTypes().stream().map(AI2Class::name).forEach(m1::add);
+		info.add(new MultiText(m1, MultiTextConnect.LINES));
 		return info;
 	}
 

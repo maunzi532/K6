@@ -10,6 +10,12 @@ public final class EnergySpellItem implements AI2Class
 	public static final EnergySpellItem INSTANCE = new EnergySpellItem();
 
 	@Override
+	public CharSequence name()
+	{
+		return "itemclass.energyspell";
+	}
+
+	@Override
 	public String image()
 	{
 		return "equipment.energyspell";

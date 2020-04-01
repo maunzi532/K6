@@ -6,6 +6,7 @@ import com.fasterxml.jackson.jr.stree.*;
 import java.io.*;
 import java.util.*;
 import java.util.function.*;
+import java.util.stream.*;
 import javafx.scene.image.*;
 import javafx.scene.paint.*;
 import text.*;
@@ -109,6 +110,10 @@ public final class SchemeFile implements Scheme
 		{
 			return local(argsText.key(), argsText.args());
 		}
+		else if(localeFeature instanceof MultiText multiText)
+		{
+			return multiText(multiText);
+		}
 		else
 		{
 			throw new IllegalArgumentException("SLocaleFeature should be sealed");
@@ -126,9 +131,18 @@ public final class SchemeFile implements Scheme
 		{
 			return local(argsText.key(), argsText.args());
 		}
+		else if(xText instanceof MultiText multiText)
+		{
+			return multiText(multiText);
+		}
 		else
 		{
 			throw new IllegalArgumentException("Wrong type of CharSequence");
 		}
+	}
+
+	private String multiText(MultiText multiText)
+	{
+		return multiText.parts().stream().map(this::localXText).collect(Collectors.joining(localXText(multiText.connect().text)));
 	}
 }

@@ -10,6 +10,12 @@ public final class DaggerItem implements AI2Class
 	public static final DaggerItem INSTANCE = new DaggerItem();
 
 	@Override
+	public CharSequence name()
+	{
+		return "itemclass.dagger";
+	}
+
+	@Override
 	public String image()
 	{
 		return "equipment.dagger";

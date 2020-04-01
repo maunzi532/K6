@@ -5,6 +5,8 @@ import statsystem.content.*;
 
 public interface AI2Class
 {
+	CharSequence name();
+
 	String image();
 
 	int adaptive();

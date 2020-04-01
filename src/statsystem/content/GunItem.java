@@ -9,6 +9,12 @@ public final class GunItem implements AI2Class
 	public static final GunItem INSTANCE = new GunItem();
 
 	@Override
+	public CharSequence name()
+	{
+		return "itemclass.gun";
+	}
+
+	@Override
 	public String image()
 	{
 		return "equipment.gun";

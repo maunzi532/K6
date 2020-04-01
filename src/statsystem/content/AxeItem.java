@@ -10,6 +10,12 @@ public final class AxeItem implements AI2Class
 	public static final AxeItem INSTANCE = new AxeItem();
 
 	@Override
+	public CharSequence name()
+	{
+		return "itemclass.axe";
+	}
+
+	@Override
 	public String image()
 	{
 		return "equipment.axe";

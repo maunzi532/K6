@@ -26,7 +26,7 @@ public interface AM2Type extends ModifierAspect
 
 	default List<? extends CharSequence> info()
 	{
-		List<String> list = new ArrayList<>();
+		List<CharSequence> list = new ArrayList<>();
 		if(inverseDefenseType())
 			list.add("Defense Type\nInvert");
 		if(attackCount() != 2)

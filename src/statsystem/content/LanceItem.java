@@ -10,6 +10,12 @@ public final class LanceItem implements AI2Class
 	public static final LanceItem INSTANCE = new LanceItem();
 
 	@Override
+	public CharSequence name()
+	{
+		return "itemclass.lance";
+	}
+
+	@Override
 	public String image()
 	{
 		return "equipment.lance";

@@ -2,6 +2,7 @@ package statsystem;
 
 import java.util.*;
 import statsystem.content.*;
+import text.*;
 
 public final class AttackInfoPart3
 {
@@ -41,22 +42,37 @@ public final class AttackInfoPart3
 		melting1 = attackMode.abilities.contains(Ability2.MELTING);
 	}
 
-	public String[] infos()
+	public CharSequence[] infos()
 	{
-		String[] info = new String[6];
+		CharSequence[] info = new CharSequence[6];
 		if(healthCost > 0)
-			info[0] = "Health\n" + attackMode.stats.currentHealth() + "(-" + healthCost + ")/" + attackMode.stats.maxHealth();
+			info[0] = new ArgsText("attackinfo.health.cost", attackMode.stats.currentHealth(), healthCost, attackMode.stats.maxHealth());
 		else
-			info[0] = "Health\n" + attackMode.stats.currentHealth() + "/" + attackMode.stats.maxHealth();
+			info[0] = new ArgsText("attackinfo.health", attackMode.stats.currentHealth(), attackMode.stats.maxHealth());
 		if(attackCount > 0)
 		{
 			if(melting1)
-				info[1] = "Damage\n" + meltDamage + "+" + damage + (attackCount > 2 ? "x" + (attackCount - 1) : "");
+			{
+				int normalAttackCount = attackCount - 1;
+				if(normalAttackCount > 1)
+					info[1] = new ArgsText("attackinfo.damage.melt", meltDamage, normalAttackCount, damage);
+				else
+					info[1] = new ArgsText("attackinfo.damage.melt.1", meltDamage, damage);
+			}
 			else
-				info[1] = "Damage\n" + damage + (attackCount > 1 ? "x" + attackCount : "");
-			info[2] = "Acc%\n" + hitrate + (autohit1 ? "*" : "");
-			info[3] = "Crit%\n" + critrate;
-			info[4] = advantage > 0 ? "+" : "";
+			{
+				if(attackCount > 1)
+					info[1] = new ArgsText("attackinfo.damage", attackCount, damage);
+				else
+					info[1] = new ArgsText("attackinfo.damage.1", damage);
+			}
+			if(autohit1)
+				info[2] = new ArgsText("attackinfo.hitrate.autohit1", hitrate);
+			else
+				info[2] = new ArgsText("attackinfo.hitrate", hitrate);
+			info[3] = new ArgsText("attackinfo.critrate", critrate);
+			if(advantage > 0)
+				info[4] = "attackinfo.advantage";
 		}
 		return info;
 	}

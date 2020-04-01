@@ -10,6 +10,12 @@ public final class DarkSpellItem implements AI2Class
 	public static final DarkSpellItem INSTANCE = new DarkSpellItem();
 
 	@Override
+	public CharSequence name()
+	{
+		return "itemclass.darkspell";
+	}
+
+	@Override
 	public String image()
 	{
 		return "equipment.darkspell";

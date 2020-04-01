@@ -68,7 +68,7 @@ public final class AttackInfoGUI extends XGUIState
 
 	private static GuiTile[] itemView(AttackInfo aI)
 	{
-		String[] infos = aI.getInfos();
+		CharSequence[] infos = aI.getInfos();
 		return new GuiTile[]
 				{
 						new GuiTile(read(infos, 0)),
@@ -86,10 +86,10 @@ public final class AttackInfoGUI extends XGUIState
 				};
 	}
 
-	private static String read(String[] infos, int n)
+	private static CharSequence read(CharSequence[] infos, int n)
 	{
 		if(n >= infos.length)
-			return "";
+			return null;
 		return infos[n];
 	}
 }

@@ -9,6 +9,12 @@ public final class SpearItem implements AI2Class
 	public static final SpearItem INSTANCE = new SpearItem();
 
 	@Override
+	public CharSequence name()
+	{
+		return "itemclass.spear";
+	}
+
+	@Override
 	public String image()
 	{
 		return "equipment.spear";

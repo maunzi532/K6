@@ -1,6 +1,7 @@
 package statsystem;
 
 import java.util.*;
+import text.*;
 
 public interface ModifierAspect
 {
@@ -58,42 +59,41 @@ public interface ModifierAspect
 		return 0;
 	}
 
-	default List<String> detailedInfo(boolean p)
+	default List<? extends CharSequence> detailedInfo(boolean p)
 	{
-		List<String> list = new ArrayList<>();
-		add(list, "Weight", heavy(), p);
-		add(list, "Damage", attackPower(), p);
-		add(list, "Speed", speedMod(), p);
-		add(list, "Accuracy", accuracy(), p);
-		add(list, "Crit", crit(), p);
+		String pKey = p ? "i.plus" : "i";
+		List<CharSequence> list = new ArrayList<>();
+		add(list, "modifier.weight", pKey, heavy());
+		add(list, "modifier.attackpower", pKey, attackPower());
+		add(list, "modifier.speed", pKey, speedMod());
+		add(list, "modifier.accuracy", pKey, accuracy());
+		add(list, "modifier.crit", pKey, crit());
 		if(defensePhysical() == defenseMagical())
 		{
-			add(list, "Def (all)", defensePhysical(), p);
+			add(list, "modifier.defense.all", pKey, defensePhysical());
 		}
 		else
 		{
-			add(list, "Def (phy)", defensePhysical(), p);
-			add(list, "Def (mag)", defenseMagical(), p);
+			add(list, "modifier.defense.physical", pKey, defensePhysical());
+			add(list, "modifier.defense.magical", pKey, defenseMagical());
 		}
 		if(evasionPhysical() == evasionMagical())
 		{
-			add(list, "Evade (all)", evasionPhysical(), p);
+			add(list, "modifier.evasion.all", pKey, evasionPhysical());
 		}
 		else
 		{
-			add(list, "Evade (phy)", evasionPhysical(), p);
-			add(list, "Evade (mag)", evasionMagical(), p);
+			add(list, "modifier.evasion.physical", pKey, evasionPhysical());
+			add(list, "modifier.evasion.magical", pKey, evasionMagical());
 		}
-		add(list, "Prevent Crit", critProtection(), p);
-		abilities().forEach(e -> list.add("Ability\n" + e.name));
+		add(list, "modifier.critprotection", pKey, critProtection());
+		abilities().forEach(e -> list.add(new ArgsText("modifier.ability", e.name)));
 		return list;
 	}
 
-	private static void add(List<? super String> list, String prefix, int num, boolean p)
+	private static void add(List<? super CharSequence> list, String prefix, String pkey, int value)
 	{
-		if(num > 0 && p)
-			list.add(prefix + "\n+" + num);
-		else if(num != 0)
-			list.add(prefix + "\n" + num);
+		if(value != 0)
+			list.add(MultiText.lines(prefix, new ArgsText(pkey, value)));
 	}
 }

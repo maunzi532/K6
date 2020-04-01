@@ -9,6 +9,12 @@ public final class CrossbowItem implements AI2Class
 	public static final CrossbowItem INSTANCE = new CrossbowItem();
 
 	@Override
+	public CharSequence name()
+	{
+		return "itemclass.crossbow";
+	}
+
+	@Override
 	public String image()
 	{
 		return "equipment.crossbow";

@@ -10,6 +10,12 @@ public final class MagicSwordItem implements AI2Class
 	public static final MagicSwordItem INSTANCE = new MagicSwordItem();
 
 	@Override
+	public CharSequence name()
+	{
+		return "itemclass.magicsword";
+	}
+
+	@Override
 	public String image()
 	{
 		return "equipment.magicsword";

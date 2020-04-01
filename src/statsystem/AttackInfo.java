@@ -19,7 +19,7 @@ public final class AttackInfo
 	public final boolean canInitiate;
 	public final AttackInfoPart3 calc;
 	public final AttackInfoPart3 calcT;
-	private final String[] infos;
+	private final CharSequence[] infos;
 
 	public AttackInfo(XCharacter entity, AttackMode mode, XCharacter entityT, AttackMode modeT, int distance)
 	{
@@ -35,9 +35,9 @@ public final class AttackInfo
 		canInitiate = Arrays.stream(attackMode.ranges(AttackSide.INITIATOR)).anyMatch(e -> e == distance);
 		calc = new AttackInfoPart3(attackMode, attackModeT, distance, AttackSide.INITIATOR);
 		calcT = new AttackInfoPart3(attackModeT, attackMode, distance, AttackSide.TARGET);
-		String[] i1 = calc.infos();
-		String[] i2 = calcT.infos();
-		infos = new String[i1.length * 2];
+		CharSequence[] i1 = calc.infos();
+		CharSequence[] i2 = calcT.infos();
+		infos = new CharSequence[i1.length * 2];
 		for(int i = 0; i < i1.length; i++)
 		{
 			infos[i * 2] = i1[i];
@@ -78,7 +78,7 @@ public final class AttackInfo
 				};
 	}
 
-	public String[] getInfos()
+	public CharSequence[] getInfos()
 	{
 		return infos;
 	}
