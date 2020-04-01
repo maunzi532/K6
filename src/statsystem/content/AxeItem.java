@@ -58,9 +58,9 @@ public final class AxeItem implements AI2Class
 	}
 
 	@Override
-	public List<Ability2> abilities()
+	public List<XAbility> abilities()
 	{
-		return List.of(Ability2.MELTING);
+		return List.of(XAbility.MELTING);
 	}
 
 	@Override

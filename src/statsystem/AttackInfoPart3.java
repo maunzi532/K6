@@ -38,8 +38,8 @@ public final class AttackInfoPart3
 		attackCount = attackCount();
 		hitrate = Math.max(0, Math.min(100, attackMode.accuracy - attackModeT.evasion(attackMode.defenseType)));
 		critrate = Math.max(0, Math.min(100, attackMode.crit - attackModeT.critProtection));
-		autohit1 = advantage >= 0 && attackMode.abilities.contains(Ability2.TWO_HANDED);
-		melting1 = attackMode.abilities.contains(Ability2.MELTING);
+		autohit1 = advantage >= 0 && attackMode.abilities.contains(XAbility.TWO_HANDED);
+		melting1 = attackMode.abilities.contains(XAbility.MELTING);
 	}
 
 	public CharSequence[] infos()

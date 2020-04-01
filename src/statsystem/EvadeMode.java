@@ -13,13 +13,13 @@ public final class EvadeMode implements AM2Type
 	}
 
 	@Override
-	public List<Ability2> abilities()
+	public List<XAbility> abilities()
 	{
 		return List.of();
 	}
 
 	@Override
-	public String tile()
+	public CharSequence tile()
 	{
 		throw new RuntimeException("EvadeMode cannot be displayed");
 	}

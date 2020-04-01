@@ -1,5 +1,7 @@
 package arrow;
 
+import text.*;
+
 public final class StatBar
 {
 	private final String fg;
@@ -7,16 +9,26 @@ public final class StatBar
 	private final String tc;
 	private int current;
 	private int max;
-	private CharSequence t1;
+	private int change;
 
-	public StatBar(String fg, String bg, String tc, int current, int max, CharSequence t1)
+	public StatBar(String fg, String bg, String tc, int current, int max)
 	{
 		this.fg = fg;
 		this.bg = bg;
 		this.tc = tc;
 		this.current = current;
 		this.max = max;
-		this.t1 = t1;
+		change = 0;
+	}
+
+	public StatBar(String fg, String bg, String tc, int current, int max, int change)
+	{
+		this.fg = fg;
+		this.bg = bg;
+		this.tc = tc;
+		this.current = current;
+		this.max = max;
+		this.change = change;
 	}
 
 	public String getFg()
@@ -44,9 +56,15 @@ public final class StatBar
 		this.current = current;
 	}
 
-	public void changeCurrent(int change)
+	public void alterCurrent(int diff)
 	{
-		current += change;
+		current += diff;
+	}
+
+	public void alterCurrentAndChange(int diff)
+	{
+		current += diff;
+		change -= diff;
 	}
 
 	public void setMax(int max)
@@ -54,13 +72,11 @@ public final class StatBar
 		this.max = max;
 	}
 
-	public void setT1(CharSequence t1)
-	{
-		this.t1 = t1;
-	}
-
 	public CharSequence getText()
 	{
-		return current + t1.toString() + "/" + max; //TODO
+		if(change != 0)
+			return new ArgsText("statbar.change", current, change, max);
+		else
+			return new ArgsText("statbar", current, max);
 	}
 }

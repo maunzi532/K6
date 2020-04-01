@@ -21,7 +21,7 @@ public interface AI2Class
 
 	int[] counterR();
 
-	List<Ability2> abilities();
+	List<XAbility> abilities();
 
 	List<AM2Type> attackModes();
 }

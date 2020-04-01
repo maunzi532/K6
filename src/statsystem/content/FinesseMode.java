@@ -14,14 +14,14 @@ public final class FinesseMode implements AM2Type
 	}
 
 	@Override
-	public List<Ability2> abilities()
+	public List<XAbility> abilities()
 	{
-		return List.of(Ability2.TWO_HANDED);
+		return List.of(XAbility.TWO_HANDED);
 	}
 
 	@Override
-	public String tile()
+	public CharSequence tile()
 	{
-		return "FinesseMode";
+		return "attackitem.mode.finesse";
 	}
 }

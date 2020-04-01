@@ -88,12 +88,12 @@ public final class AttackInfo
 		return getCalc(side).sideInfos();
 	}
 
-	public String getSideInfoX1T(AttackSide side)
+	public int getSideInfoChange(AttackSide side)
 	{
 		return switch(side)
 				{
-					case INITIATOR -> calc.healthCost > 0 ? "(-" + calc.healthCost + ")" : "";
-					case TARGET -> calcT.healthCost > 0 ? "(-" + calcT.healthCost + ")" : "";
+					case INITIATOR -> -calc.healthCost;
+					case TARGET -> -calcT.healthCost;
 				};
 	}
 

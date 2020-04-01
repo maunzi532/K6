@@ -57,7 +57,7 @@ public final class CrossbowItem implements AI2Class
 	}
 
 	@Override
-	public List<Ability2> abilities()
+	public List<XAbility> abilities()
 	{
 		return List.of();
 	}

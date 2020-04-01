@@ -58,9 +58,9 @@ public final class DaggerItem implements AI2Class
 	}
 
 	@Override
-	public List<Ability2> abilities()
+	public List<XAbility> abilities()
 	{
-		return List.of(Ability2.FAST);
+		return List.of(XAbility.FAST);
 	}
 
 	@Override

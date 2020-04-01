@@ -1,13 +1,14 @@
 package statsystem;
 
 import java.util.*;
+import text.*;
 
 public interface AM2Type extends ModifierAspect
 {
 	@Override
-	default String nameForAbility()
+	default CharSequence nameForAbility()
 	{
-		return "Mode";
+		return "modifier.name.mode";
 	}
 
 	int code();
@@ -22,15 +23,15 @@ public interface AM2Type extends ModifierAspect
 		return 2;
 	}
 
-	String tile();
+	CharSequence tile();
 
 	default List<? extends CharSequence> info()
 	{
 		List<CharSequence> list = new ArrayList<>();
 		if(inverseDefenseType())
-			list.add("Defense Type\nInvert");
+			list.add("modifier.invertdefense");
 		if(attackCount() != 2)
-			list.add("Attacks\n" + attackCount());
+			list.add(new ArgsText("modifier.attackcount", attackCount()));
 		list.addAll(detailedInfo(true));
 		return list;
 	}

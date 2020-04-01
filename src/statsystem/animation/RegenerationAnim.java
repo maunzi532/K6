@@ -38,7 +38,7 @@ public final class RegenerationAnim implements AnimTimer
 	{
 		counter++;
 		if(counter % SPEED == 0)
-			healthBar.statBar().changeCurrent(1);
+			healthBar.statBar().alterCurrent(1);
 		if(counter / SPEED >= regenerateAmount)
 			finished = true;
 	}

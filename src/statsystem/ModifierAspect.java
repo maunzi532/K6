@@ -5,9 +5,9 @@ import text.*;
 
 public interface ModifierAspect
 {
-	String nameForAbility();
+	CharSequence nameForAbility();
 
-	List<Ability2> abilities();
+	List<XAbility> abilities();
 
 	default int heavy()
 	{
@@ -87,7 +87,7 @@ public interface ModifierAspect
 			add(list, "modifier.evasion.magical", pKey, evasionMagical());
 		}
 		add(list, "modifier.critprotection", pKey, critProtection());
-		abilities().forEach(e -> list.add(new ArgsText("modifier.ability", e.name)));
+		abilities().forEach(e -> list.add(new ArgsText("modifier.ability", new ArgsText(e.name))));
 		return list;
 	}
 

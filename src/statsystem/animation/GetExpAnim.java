@@ -92,9 +92,9 @@ public final class GetExpAnim implements AnimTimer
 		if(counter % SPEED == 0)
 		{
 			if(counter / SPEED <= endExp - startExp)
-				expBar.statBar().changeCurrent(1);
+				expBar.statBar().alterCurrent(1);
 			if(counter / SPEED <= endExpT - startExpT)
-				expBarT.statBar().changeCurrent(1);
+				expBarT.statBar().alterCurrent(1);
 		}
 		if(counter / SPEED >= expAmount + DELAY && counter / SPEED >= expAmountT + DELAY)
 			finished = true;

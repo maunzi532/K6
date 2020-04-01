@@ -3,9 +3,9 @@ package statsystem;
 public final class AbilityText
 {
 	private final ModifierAspect modifierAspect;
-	private final Ability2 ability;
+	private final XAbility ability;
 
-	public AbilityText(ModifierAspect modifierAspect, Ability2 ability)
+	public AbilityText(ModifierAspect modifierAspect, XAbility ability)
 	{
 		this.modifierAspect = modifierAspect;
 		this.ability = ability;

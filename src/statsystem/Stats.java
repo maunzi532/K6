@@ -25,7 +25,7 @@ public final class Stats implements ModifierAspect
 	private int level;
 	private int exp;
 	private PlayerLevelSystem playerLevelSystem;
-	private String customName;
+	private NameText customName;
 	private String customMapImage;
 	private String customSideImage;
 	private int[] lvStats;
@@ -37,7 +37,7 @@ public final class Stats implements ModifierAspect
 	private AttackMode lastUsed;
 	private AttackItemFilter filter;
 
-	public Stats(XClass xClass, int level, String customName, String customMapImage,
+	public Stats(XClass xClass, int level, NameText customName, String customMapImage,
 			String customSideImage, int movement, PlayerLevelSystem playerLevelSystem)
 	{
 		this.xClass = xClass;
@@ -71,7 +71,7 @@ public final class Stats implements ModifierAspect
 		filter = new AttackItemFilter(xClass.usableItems);
 	}
 
-	private Stats(XClass xClass, int level, int exp, String customName, String customMapImage, String customSideImage,
+	private Stats(XClass xClass, int level, int exp, NameText customName, String customMapImage, String customSideImage,
 			int[] lvStats, int currentHealth, int exhaustion, int movement, int dashMovement, int maxAccessRange, PlayerLevelSystem playerLevelSystem)
 	{
 		this.xClass = xClass;
@@ -140,13 +140,13 @@ public final class Stats implements ModifierAspect
 	}
 
 	@Override
-	public String nameForAbility()
+	public CharSequence nameForAbility()
 	{
-		return customName != null ? customName : "Char";
+		return customName != null ? customName : "modifier.name.character";
 	}
 
 	@Override
-	public List<Ability2> abilities()
+	public List<XAbility> abilities()
 	{
 		return List.of();
 	}
@@ -281,7 +281,7 @@ public final class Stats implements ModifierAspect
 
 	public CharSequence getName()
 	{
-		return customName != null ? customName : new ArgsText(xClass.className + " lv" + level);
+		return customName != null ? customName : new ArgsText("class.withlevel", new ArgsText(xClass.className), level);
 	}
 
 	public String mapImageName()
@@ -312,7 +312,7 @@ public final class Stats implements ModifierAspect
 		}
 		if(data.get("CustomName") != null)
 		{
-			customName = data.get("CustomName").asText();
+			customName = new NameText(data.get("CustomName").asText());
 		}
 		if(data.get("CustomMapImage") != null)
 		{
@@ -404,7 +404,7 @@ public final class Stats implements ModifierAspect
 		{
 			info.add("ItemType\n" + e.getClass().getSimpleName().replace("Item", ""));
 		}
-		for(Ability2 ability : xClass.abilities)
+		for(XAbility ability : xClass.abilities)
 		{
 			info.add("Ability\n" + ability.name);
 		}
@@ -479,7 +479,7 @@ public final class Stats implements ModifierAspect
 		return new CharSequence[]
 				{
 						customName != null ? customName : generic,
-						new ArgsText("sideinfo.classandlevel", xClass.className, level)
+						new ArgsText("class.withlevel", new ArgsText(xClass.className), level)
 				};
 	}
 
@@ -490,7 +490,7 @@ public final class Stats implements ModifierAspect
 			info.add(new ArgsText("stats.edit.customname", customName));
 		else
 			info.add("stats.edit.genericname");
-		info.add(new ArgsText("stats.edit.class", xClass.className));
+		info.add(new ArgsText("stats.edit.class", new ArgsText(xClass.className)));
 		info.add(new ArgsText("stats.edit.level", level));
 		info.add(new ArgsText("stats.edit.exp", exp));
 		for(int i = 0; i < 8; i++)
@@ -540,12 +540,12 @@ public final class Stats implements ModifierAspect
 		{
 			case 0x00 ->
 			{
-				TextInputDialog td = new TextInputDialog(customName != null ? customName : "");
+				TextInputDialog td = new TextInputDialog(customName != null ? customName.name() : "");
 				td.setTitle("Edit name");
 				td.setGraphic(null);
 				td.setHeaderText(null);
 				td.show();
-				td.setOnHidden(e -> customName = td.getResult());
+				td.setOnHidden(e -> customName = td.getResult().isEmpty() ? null : new NameText(td.getResult()));
 			}
 			case 0x01 ->
 			{

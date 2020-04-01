@@ -38,10 +38,9 @@ public record MainState(LevelMap levelMap, XStateHolder stateHolder, SideInfoFra
 	//TODO GUI Text in file InvEdit
 	//TODO GUI Text in file StartSettings
 	//TODO GUI Text in file CharInv
-	//TODO GUI Text in file CharStats
+	//TODO GUI Text in file CharStats 1
+	//TODO GUI Text in file CharStats 2
 	//TODO GUI Text in file CharLevelup
-	//TODO Text in file StatBar
-	//TODO Text in file char names
 
 	//combat system (rules)
 	//TODO    change speed effects
@@ -57,7 +56,6 @@ public record MainState(LevelMap levelMap, XStateHolder stateHolder, SideInfoFra
 
 	//code
 	//TODO    Initialize somewhere else than in MainVisual
-	//TODO character class names in classes
 	//TODO fix stealing from enemies
 	//TODO fix cannot build in preparation phase
 

@@ -24,7 +24,7 @@ public final class AIBuilder
 	private int[] ranges;
 	private int[] counterR;
 	private boolean autoAbilities;
-	private List<Ability2> abilities;
+	private List<XAbility> abilities;
 	private boolean autoModes;
 	private List<AM2Type> attackModes;
 
@@ -108,7 +108,7 @@ public final class AIBuilder
 		return this;
 	}
 
-	public AIBuilder addAbility(Ability2 ability)
+	public AIBuilder addAbility(XAbility ability)
 	{
 		abilities.add(ability);
 		return this;

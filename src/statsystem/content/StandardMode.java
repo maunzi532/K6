@@ -14,14 +14,14 @@ public final class StandardMode implements AM2Type
 	}
 
 	@Override
-	public List<Ability2> abilities()
+	public List<XAbility> abilities()
 	{
 		return List.of();
 	}
 
 	@Override
-	public String tile()
+	public CharSequence tile()
 	{
-		return "Standard";
+		return "attackitem.mode.standard";
 	}
 }

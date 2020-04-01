@@ -9,11 +9,6 @@ public record MultiText(List<? extends CharSequence> parts, MultiTextConnect con
 		return new MultiText(List.of(parts), MultiTextConnect.LINES);
 	}
 
-	public static MultiText spaces(CharSequence... parts)
-	{
-		return new MultiText(List.of(parts), MultiTextConnect.SPACES);
-	}
-
 	@Override
 	public int length()
 	{

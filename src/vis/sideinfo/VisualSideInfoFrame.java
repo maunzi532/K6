@@ -56,7 +56,7 @@ public final class VisualSideInfoFrame implements SideInfoFrame
 	{
 		StatBar statBar = new StatBar(character.team().healthBarColor,
 				"arrow.healthbar.background", "arrow.healthbar.text",
-				character.stats().currentHealth(), character.stats().maxHealth(), "");
+				character.stats().currentHealth(), character.stats().maxHealth());
 		return new SideInfo(character, character.sideImageName(), statBar, character.stats().sideInfoText(character.team().genericName));
 	}
 
@@ -66,15 +66,15 @@ public final class VisualSideInfoFrame implements SideInfoFrame
 		boolean inverted = isInverted(aI.entity, aI.entityT);
 		AttackSide side1 = inverted ? AttackSide.TARGET : AttackSide.INITIATOR;
 		AttackSide side2 = inverted ? AttackSide.INITIATOR : AttackSide.TARGET;
-		l0.setSideInfo(attackSideInfo(aI.getEntity(side1), aI.getSideInfoX1T(side1), aI.getSideInfos(side1)));
-		r0.setSideInfo(attackSideInfo(aI.getEntity(side2), aI.getSideInfoX1T(side2), aI.getSideInfos(side2)));
+		l0.setSideInfo(attackSideInfo(aI.getEntity(side1), aI.getSideInfoChange(side1), aI.getSideInfos(side1)));
+		r0.setSideInfo(attackSideInfo(aI.getEntity(side2), aI.getSideInfoChange(side2), aI.getSideInfos(side2)));
 	}
 
-	private static SideInfo attackSideInfo(XCharacter character, CharSequence x1Text, CharSequence[] text2)
+	private static SideInfo attackSideInfo(XCharacter character, int change, CharSequence[] text2)
 	{
 		StatBar statBar = new StatBar(character.team().healthBarColor,
 				"arrow.healthbar.background", "arrow.healthbar.text",
-				character.stats().currentHealth(), character.stats().maxHealth(), x1Text);
+				character.stats().currentHealth(), character.stats().maxHealth(), change);
 		return new SideInfo(character, character.sideImageName(), statBar, text2);
 	}
 

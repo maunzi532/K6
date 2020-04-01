@@ -15,7 +15,7 @@ public final class AttackMode3
 	public final Stats stats;
 	public final AttackItem item;
 	public final AM2Type mode;
-	public final Set<Ability2> abilities;
+	public final Set<XAbility> abilities;
 	private final List<AbilityText> abilityTexts;
 	private final int[] ranges;
 	private final int[] counter;
@@ -55,10 +55,10 @@ public final class AttackMode3
 		abilities = modifiers.stream().flatMap(modifier -> modifier.abilities().stream()).collect(Collectors.toSet());
 		abilityTexts = modifiers.stream().flatMap(modifier -> modifier.abilities()
 				.stream().map(ability -> new AbilityText(modifier, ability))).collect(Collectors.toList());
-		ranges = abilities.contains(Ability2.DEFENDER) ? DEFENDER_RANGES : item.getRanges(AttackSide.INITIATOR);
-		counter = abilities.contains(Ability2.DEFENDER) ? DEFENDER_RANGES : item.getRanges(AttackSide.TARGET);
+		ranges = abilities.contains(XAbility.DEFENDER) ? DEFENDER_RANGES : item.getRanges(AttackSide.INITIATOR);
+		counter = abilities.contains(XAbility.DEFENDER) ? DEFENDER_RANGES : item.getRanges(AttackSide.TARGET);
 		defenseType = mode.inverseDefenseType() ? DefenseType.inverted(item.defenseType()) : item.defenseType();
-		attackCount = mode.attackCount() + (abilities.contains(Ability2.FAST) ? 1 : 0);
+		attackCount = mode.attackCount() + (abilities.contains(XAbility.FAST) ? 1 : 0);
 		advType = item.getAdvantageType();
 		exhausted = stats.exhaustion();
 		strength1 = stats.strength() - exhausted;
@@ -210,9 +210,9 @@ public final class AttackMode3
 		return item == null || mode == null ? AttackMode.EVADE_MODE : new AttackMode(item, mode);
 	}
 
-	public String tile()
+	public CharSequence tile()
 	{
-		return mode != null ? mode.tile() : "Evade";
+		return mode != null ? mode.tile() : "attackitem.mode.evade";
 	}
 
 	public List<? extends CharSequence> modeInfo()

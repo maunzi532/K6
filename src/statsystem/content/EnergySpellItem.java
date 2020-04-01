@@ -58,7 +58,7 @@ public final class EnergySpellItem implements AI2Class
 	}
 
 	@Override
-	public List<Ability2> abilities()
+	public List<XAbility> abilities()
 	{
 		return List.of();
 	}

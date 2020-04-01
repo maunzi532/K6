@@ -35,7 +35,7 @@ public final class AnimPartHealthCost implements AnimPart
 	{
 		counter++;
 		if(counter % SPEED == 0)
-			statBar.changeCurrent(-1);
+			statBar.alterCurrent(-1);
 		return counter / SPEED >= healthCost;
 	}
 }

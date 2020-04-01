@@ -21,12 +21,12 @@ public final class AttackItem implements Item, ModifierAspect
 	private final DefenseType defenseType;
 	private final int[] ranges;
 	private final int[] counterR;
-	private final List<Ability2> abilities;
+	private final List<XAbility> abilities;
 	private final List<AttackMode> attackModes4;
 
 	public AttackItem(AI2Class itemClass, String image, int damage, int heavy, int accuracy,
 			int crit, int slow, int adaptive, AdaptiveType adaptiveType, AdvantageType advantageType,
-			DefenseType defenseType, int[] ranges, int[] counterR, List<Ability2> abilities, List<AM2Type> attackModes)
+			DefenseType defenseType, int[] ranges, int[] counterR, List<XAbility> abilities, List<AM2Type> attackModes)
 	{
 		this.itemClass = itemClass;
 		this.image = image;
@@ -64,13 +64,13 @@ public final class AttackItem implements Item, ModifierAspect
 	}
 
 	@Override
-	public String nameForAbility()
+	public CharSequence nameForAbility()
 	{
-		return "Equip";
+		return "modifier.name.item";
 	}
 
 	@Override
-	public List<Ability2> abilities()
+	public List<XAbility> abilities()
 	{
 		return abilities;
 	}
@@ -134,7 +134,7 @@ public final class AttackItem implements Item, ModifierAspect
 				};
 	}
 
-	public List<Ability2> getAbilities()
+	public List<XAbility> getAbilities()
 	{
 		return abilities;
 	}
@@ -160,11 +160,11 @@ public final class AttackItem implements Item, ModifierAspect
 		return list;
 	}
 
-	public static String displayRange(int[] ranges) //TODO
+	public static CharSequence displayRange(int[] ranges)
 	{
 		if(ranges.length == 0)
-			return "-";
-		List<String> collected = new ArrayList<>();
+			return new ArgsText("range.none");
+		List<CharSequence> collected = new ArrayList<>();
 		int start = ranges[0];
 		int current = start;
 		for(int i = 1; i < ranges.length; i++)
@@ -176,16 +176,16 @@ public final class AttackItem implements Item, ModifierAspect
 			else
 			{
 				if(start == current)
-					collected.add(String.valueOf(start));
+					collected.add(new ArgsText("range.one", start));
 				else
-					collected.add(start + "-" + current);
+					collected.add(new ArgsText("range.range", start, current));
 				start = ranges[i];
 			}
 		}
 		if(start == current)
-			collected.add(String.valueOf(start));
+			collected.add(new ArgsText("range.one", start));
 		else
-			collected.add(start + "-" + current);
-		return String.join(", ", collected);
+			collected.add(new ArgsText("range.range", start, current));
+		return new MultiText(collected, MultiTextConnect.LISTED);
 	}
 }

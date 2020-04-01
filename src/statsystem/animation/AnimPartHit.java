@@ -60,7 +60,7 @@ public final class AnimPartHit implements AnimPart
 			return false;
 		int counter2 = counter - AnimPartAttack.DODGETIME;
 		if(counter2 % SPEED == 0 && counter2 / SPEED <= reduction)
-			statBar.changeCurrent(-1);
+			statBar.alterCurrent(-1);
 		return counter2 / SPEED >= reduction && arrow.finished();
 	}
 }
