@@ -77,9 +77,10 @@ public final class AttackInfoPart3
 		return info;
 	}
 
-	public String[] sideInfos()
+	public CharSequence[] sideInfos()
 	{
-		String[] info = new String[3];
+		return Arrays.stream(infos()).limit(4).toArray(CharSequence[]::new);
+		/*String[] info = new String[3];
 		if(attackCount > 0)
 		{
 			if(melting1)
@@ -90,6 +91,37 @@ public final class AttackInfoPart3
 			info[2] = "Crit%\n" + critrate;
 		}
 		return info;
+		CharSequence[] info = new CharSequence[6];
+		if(healthCost > 0)
+			info[0] = new ArgsText("sideinfo.health.cost", attackMode.stats.currentHealth(), healthCost, attackMode.stats.maxHealth());
+		else
+			info[0] = new ArgsText("sideinfo.health", attackMode.stats.currentHealth(), attackMode.stats.maxHealth());
+		if(attackCount > 0)
+		{
+			if(melting1)
+			{
+				int normalAttackCount = attackCount - 1;
+				if(normalAttackCount > 1)
+					info[1] = new ArgsText("sideinfo.damage.melt", meltDamage, normalAttackCount, damage);
+				else
+					info[1] = new ArgsText("sideinfo.damage.melt.1", meltDamage, damage);
+			}
+			else
+			{
+				if(attackCount > 1)
+					info[1] = new ArgsText("sideinfo.damage", attackCount, damage);
+				else
+					info[1] = new ArgsText("sideinfo.damage.1", damage);
+			}
+			if(autohit1)
+				info[2] = new ArgsText("sideinfo.hitrate.autohit1", hitrate);
+			else
+				info[2] = new ArgsText("sideinfo.hitrate", hitrate);
+			info[3] = new ArgsText("sideinfo.critrate", critrate);
+			if(advantage > 0)
+				info[4] = "sideinfo.advantage";
+		}
+		return info;*/
 	}
 
 	private int attackCount()

@@ -27,18 +27,6 @@ public final class StartTurnState implements NAutoState
 	}
 
 	@Override
-	public String text()
-	{
-		return "Start";
-	}
-
-	@Override
-	public String keybind()
-	{
-		return "Start Level";
-	}
-
-	@Override
 	public void tick(MainState mainState)
 	{
 		counter++;

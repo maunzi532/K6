@@ -37,9 +37,9 @@ public final class TransportTargetsState implements NMarkState
 	}
 
 	@Override
-	public String text()
+	public CharSequence text()
 	{
-		return "Targets";
+		return "menu.transporttargets";
 	}
 
 	@Override

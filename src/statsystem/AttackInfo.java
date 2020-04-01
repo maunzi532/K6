@@ -83,7 +83,7 @@ public final class AttackInfo
 		return infos;
 	}
 
-	public String[] getSideInfos(AttackSide side)
+	public CharSequence[] getSideInfos(AttackSide side)
 	{
 		return getCalc(side).sideInfos();
 	}

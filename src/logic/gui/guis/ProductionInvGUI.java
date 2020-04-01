@@ -24,9 +24,9 @@ public final class ProductionInvGUI extends Inv2GUI
 	}
 
 	@Override
-	public String text()
+	public CharSequence text()
 	{
-		return "Inv.";
+		return "menu.inv.building";
 	}
 
 	@Override

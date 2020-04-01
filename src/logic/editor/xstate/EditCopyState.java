@@ -26,9 +26,9 @@ public final class EditCopyState implements NMarkState
 	public void onEnter(MainState mainState){}
 
 	@Override
-	public String text()
+	public CharSequence text()
 	{
-		return "Copy";
+		return "menu.edit.copy";
 	}
 
 	@Override

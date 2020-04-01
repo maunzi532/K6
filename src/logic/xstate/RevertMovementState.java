@@ -20,9 +20,9 @@ public final class RevertMovementState implements NAutoState
 	}
 
 	@Override
-	public String text()
+	public CharSequence text()
 	{
-		return "Back";
+		return "menu.revertmove";
 	}
 
 	@Override

@@ -7,6 +7,7 @@ import java.util.*;
 import java.util.stream.*;
 import logic.*;
 import logic.gui.*;
+import logic.xstate.*;
 import statsystem.*;
 
 public final class CharacterCombatGUI extends XGUIState
@@ -114,15 +115,25 @@ public final class CharacterCombatGUI extends XGUIState
 	}
 
 	@Override
-	public String text()
+	public CharSequence text()
 	{
-		return "Stats";
+		return "menu.stats";
 	}
 
 	@Override
 	public String keybind()
 	{
 		return "Combat Info";
+	}
+
+	@Override
+	public XMenu menu()
+	{
+		return XMenu.characterGUIMenu(character);
+		/*if(character.team() == CharacterTeam.HERO)
+			return XMenu.characterGUIMenu(character);
+		else
+			return XMenu.enemyGUIMenu(character);*/
 	}
 
 	@Override

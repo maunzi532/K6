@@ -56,8 +56,8 @@ public final class VisualSideInfoFrame implements SideInfoFrame
 	{
 		StatBar statBar = new StatBar(character.team().healthBarColor,
 				"arrow.healthbar.background", "arrow.healthbar.text",
-				character.stats().getVisualStat(0), character.stats().getMaxVisualStat(0), "");
-		return new SideInfo(character, character.sideImageName(), statBar, character.stats().sideInfoText());
+				character.stats().currentHealth(), character.stats().maxHealth(), "");
+		return new SideInfo(character, character.sideImageName(), statBar, character.stats().sideInfoText(character.team().genericName));
 	}
 
 	@Override
@@ -70,11 +70,11 @@ public final class VisualSideInfoFrame implements SideInfoFrame
 		r0.setSideInfo(attackSideInfo(aI.getEntity(side2), aI.getSideInfoX1T(side2), aI.getSideInfos(side2)));
 	}
 
-	private static SideInfo attackSideInfo(XCharacter character, String x1Text, String[] text2)
+	private static SideInfo attackSideInfo(XCharacter character, CharSequence x1Text, CharSequence[] text2)
 	{
 		StatBar statBar = new StatBar(character.team().healthBarColor,
 				"arrow.healthbar.background", "arrow.healthbar.text",
-				character.stats().getVisualStat(0), character.stats().getMaxVisualStat(0), x1Text);
+				character.stats().currentHealth(), character.stats().maxHealth(), x1Text);
 		return new SideInfo(character, character.sideImageName(), statBar, text2);
 	}
 

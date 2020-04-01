@@ -24,9 +24,9 @@ public final class RegenerateState implements NAutoState
 	}
 
 	@Override
-	public String text()
+	public CharSequence text()
 	{
-		return "Regenerate";
+		return "menu.regenerate";
 	}
 
 	@Override

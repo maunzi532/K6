@@ -26,9 +26,9 @@ public final class EditMoveState implements NMarkState
 	public void onEnter(MainState mainState){}
 
 	@Override
-	public String text()
+	public CharSequence text()
 	{
-		return "Move";
+		return "menu.edit.move";
 	}
 
 	@Override

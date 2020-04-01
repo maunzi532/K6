@@ -32,9 +32,9 @@ public final class ReachViewState implements NMarkState
 	}
 
 	@Override
-	public String text()
+	public CharSequence text()
 	{
-		return enemy ? "Movement" : "Reach";
+		return enemy ? "menu.reach.enemy" : "menu.reach.ally";
 	}
 
 	@Override

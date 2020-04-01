@@ -7,9 +7,9 @@ public final class StatBar
 	private final String tc;
 	private int current;
 	private int max;
-	private String t1;
+	private CharSequence t1;
 
-	public StatBar(String fg, String bg, String tc, int current, int max, String t1)
+	public StatBar(String fg, String bg, String tc, int current, int max, CharSequence t1)
 	{
 		this.fg = fg;
 		this.bg = bg;
@@ -54,13 +54,13 @@ public final class StatBar
 		this.max = max;
 	}
 
-	public void setT1(String t1)
+	public void setT1(CharSequence t1)
 	{
 		this.t1 = t1;
 	}
 
-	public String getText()
+	public CharSequence getText()
 	{
-		return current + t1 + "/" + max;
+		return current + t1.toString() + "/" + max; //TODO
 	}
 }

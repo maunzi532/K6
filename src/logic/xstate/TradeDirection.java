@@ -2,8 +2,8 @@ package logic.xstate;
 
 public enum TradeDirection
 {
-	GIVE("Give", "Give"),
-	TAKE("Take", "Give");
+	GIVE("menu.trade.give", "Give"),
+	TAKE("menu.trade.take", "Take");
 
 	public final String text;
 	public final String keybind;

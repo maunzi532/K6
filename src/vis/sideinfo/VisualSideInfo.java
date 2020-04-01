@@ -84,14 +84,14 @@ public final class VisualSideInfo
 		gd.drawImage(scheme.image(sideInfo.imageName()), lx + size * XD_I, by - size * (YS_1 + S_I), size * S_I, size * S_I);
 		gd.fillRect(lx, by - size * YS_1, size * XS_1, size * YS_1);
 		if(sideInfo.statBar() != null)
-			drawStatBar(sideInfo.statBar(), lx + size * XD_S, by - size * (YD_S + YS_T), size * XS_S, size * YS_T,
-					scheme);
+			drawStatBar(sideInfo.statBar(), lx + size * XD_S, by - size * (YD_S + YS_T), size * XS_S, size * YS_T, scheme);
 		gd.setFill(scheme.color("sideinfo.text"));
 		gd.setFont(new Font(size * YS_T));
 		CharSequence[] texts = sideInfo.texts();
 		for(int i = 0; i < texts.length; i++)
 		{
-			gd.fillText(texts[i].toString(), lx + size * XD_T + size * XS_T / texts.length * i, by - size * YD_T);
+			if(texts[i] != null)
+				gd.fillText(scheme.localXText(texts[i]), lx + size * XD_T + size * XS_T / texts.length * i, by - size * YD_T);
 		}
 	}
 
@@ -112,7 +112,8 @@ public final class VisualSideInfo
 		CharSequence[] texts = sideInfo.texts();
 		for(int i = 0; i < texts.length; i++)
 		{
-			gd.fillText(texts[i].toString(), rx - size * XD_T - size * XS_T / texts.length * i, by - size * YD_T);
+			if(texts[i] != null)
+				gd.fillText(scheme.localXText(texts[i]), rx - size * XD_T - size * XS_T / texts.length * i, by - size * YD_T);
 		}
 	}
 
@@ -127,6 +128,6 @@ public final class VisualSideInfo
 		gd.strokeRect(xs, ys, xw, yw);
 		gd.setFont(new Font(yw * 0.8));
 		gd.setFill(scheme.color(statBar.getTc()));
-		gd.fillText(statBar.getText(), xs + xw / 2.0, ys + yw / 2.0, xw);
+		gd.fillText(scheme.localXText(statBar.getText()), xs + xw / 2.0, ys + yw / 2.0, xw);
 	}
 }

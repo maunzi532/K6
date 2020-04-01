@@ -8,7 +8,7 @@ import logic.xstate.*;
 
 public final class EditorSlotModeGUI extends XGUIState
 {
-	private static final CTile textInv = new CTile(2, 0, new GuiTile("Editing modes"), 2, 1);
+	private static final CTile header = new CTile(2, 0, new GuiTile("gui.editmode.header"), 2, 1);
 
 	private final LevelEditor editor;
 
@@ -29,7 +29,7 @@ public final class EditorSlotModeGUI extends XGUIState
 		mainState.side().clearSideInfo();
 		elements.add(new ScrollList<>(0, 1, 6, 5, 1, 1, editor.getModes(),
 				mode -> GuiTile.cast(mode.guiTile()), target -> click(target, mainState.stateHolder())));
-		elements.add(new CElement(textInv));
+		elements.add(new CElement(header));
 		update();
 	}
 

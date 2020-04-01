@@ -160,7 +160,7 @@ public final class AttackItem implements Item, ModifierAspect
 		return list;
 	}
 
-	public static String displayRange(int[] ranges)
+	public static String displayRange(int[] ranges) //TODO
 	{
 		if(ranges.length == 0)
 			return "-";

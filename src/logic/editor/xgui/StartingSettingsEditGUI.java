@@ -47,9 +47,9 @@ public final class StartingSettingsEditGUI extends XGUIState
 	}
 
 	@Override
-	public String text()
+	public CharSequence text()
 	{
-		return "Starting Settings";
+		return "menu.edit.start";
 	}
 
 	@Override

@@ -48,9 +48,9 @@ public final class RecipeGUI extends XGUIState
 	}
 
 	@Override
-	public String text()
+	public CharSequence text()
 	{
-		return "View";
+		return "menu.recipe";
 	}
 
 	@Override

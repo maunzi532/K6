@@ -27,9 +27,9 @@ public final class EditDeleteState implements NAutoState
 	}
 
 	@Override
-	public String text()
+	public CharSequence text()
 	{
-		return "Delete";
+		return "menu.edit.delete";
 	}
 
 	@Override

@@ -56,9 +56,9 @@ public final class EntityEditGUI extends XGUIState
 	}
 
 	@Override
-	public String text()
+	public CharSequence text()
 	{
-		return "Edit";
+		return "menu.edit.entity";
 	}
 
 	@Override

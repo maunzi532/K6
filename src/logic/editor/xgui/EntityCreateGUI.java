@@ -14,8 +14,8 @@ import statsystem.content.*;
 
 public final class EntityCreateGUI extends XGUIState
 {
-	private static final CTile addXHero = new CTile(4, 0, new GuiTile("Add Character"), 2, 1);
-	private static final CTile addXEnemy = new CTile(4, 2, new GuiTile("Add Enemy"), 2, 1);
+	private static final CTile addXHero = new CTile(4, 0, new GuiTile("gui.edit.create.ally"), 2, 1);
+	private static final CTile addXEnemy = new CTile(4, 2, new GuiTile("gui.edit.create.enemy"), 2, 1);
 
 	private final Tile location;
 

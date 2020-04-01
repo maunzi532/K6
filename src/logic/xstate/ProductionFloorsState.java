@@ -36,9 +36,9 @@ public final class ProductionFloorsState implements NMarkState
 	}
 
 	@Override
-	public String text()
+	public CharSequence text()
 	{
-		return "Floor";
+		return "menu.floor";
 	}
 
 	@Override

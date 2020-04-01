@@ -145,6 +145,6 @@ public final class VisualTile
 		gd.strokeRect(xs, ys, xw, yw);
 		gd.setFont(new Font(yw * 0.8));
 		gd.setFill(scheme.color(statBar.getTc()));
-		gd.fillText(statBar.getText(), xs + xw / 2.0, ys + yw / 2.0, xw);
+		gd.fillText(scheme.localXText(statBar.getText()), xs + xw / 2.0, ys + yw / 2.0, xw);
 	}
 }

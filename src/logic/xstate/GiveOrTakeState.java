@@ -37,7 +37,7 @@ public final class GiveOrTakeState implements NMarkState
 	}
 
 	@Override
-	public String text()
+	public CharSequence text()
 	{
 		return tradeDirection.text;
 	}

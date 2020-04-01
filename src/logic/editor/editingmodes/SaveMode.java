@@ -10,7 +10,12 @@ import logic.gui.*;
 
 public final class SaveMode implements EditingMode
 {
-	private static final GuiTile[] GUI_TILES = {new GuiTile("Save"), new GuiTile("Saved"), new GuiTile("Error")};
+	private static final GuiTile[] GUI_TILES =
+			{
+					new GuiTile("editmode.save"),
+					new GuiTile("editmode.save.saved"),
+					new GuiTile("editmode.save.error")
+			};
 
 	private int state;
 

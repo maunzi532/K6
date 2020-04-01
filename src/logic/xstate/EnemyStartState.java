@@ -27,18 +27,6 @@ public final class EnemyStartState implements NAutoState
 	}
 
 	@Override
-	public String text()
-	{
-		return "Enemy Phase";
-	}
-
-	@Override
-	public String keybind()
-	{
-		return "End Turn";
-	}
-
-	@Override
 	public void tick(MainState mainState)
 	{
 		counter++;

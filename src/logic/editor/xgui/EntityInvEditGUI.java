@@ -14,9 +14,9 @@ public final class EntityInvEditGUI extends InvEditGUI
 	}
 
 	@Override
-	public String text()
+	public CharSequence text()
 	{
-		return "Edit Inv.";
+		return "menu.edit.inv.character";
 	}
 
 	@Override

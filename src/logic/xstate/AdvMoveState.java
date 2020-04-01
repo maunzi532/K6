@@ -51,9 +51,9 @@ public final class AdvMoveState implements NMarkState
 	}
 
 	@Override
-	public String text()
+	public CharSequence text()
 	{
-		return "Move";
+		return "menu.advmove";
 	}
 
 	@Override

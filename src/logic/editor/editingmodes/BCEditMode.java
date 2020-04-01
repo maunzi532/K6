@@ -14,7 +14,7 @@ public final class BCEditMode implements EditingMode
 	@Override
 	public GuiTile guiTile()
 	{
-		return new GuiTile("Edit Object");
+		return new GuiTile("editmode.edit");
 	}
 
 	@Override

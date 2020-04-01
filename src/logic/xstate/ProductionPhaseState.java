@@ -17,18 +17,6 @@ public final class ProductionPhaseState implements NAutoState
 	}
 
 	@Override
-	public String text()
-	{
-		return "Production";
-	}
-
-	@Override
-	public String keybind()
-	{
-		return "Production Phase";
-	}
-
-	@Override
 	public void tick(MainState mainState)
 	{
 		counter++;

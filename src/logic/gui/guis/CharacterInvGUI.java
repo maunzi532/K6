@@ -22,9 +22,9 @@ public final class CharacterInvGUI extends Inv1GUI
 	}
 
 	@Override
-	public String text()
+	public CharSequence text()
 	{
-		return "Inv.";
+		return "menu.inv.character";
 	}
 
 	@Override

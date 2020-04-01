@@ -17,9 +17,9 @@ public final class BuildingInvEditGUI extends InvEditGUI
 	}
 
 	@Override
-	public String text()
+	public CharSequence text()
 	{
-		return editOutput ? "Edit Output" : "Edit Input";
+		return editOutput ? "menu.edit.inv.building.output" : "menu.edit.inv.building.input";
 	}
 
 	@Override

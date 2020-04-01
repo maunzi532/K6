@@ -35,7 +35,13 @@ public record MainState(LevelMap levelMap, XStateHolder stateHolder, SideInfoFra
 	//TODO Building show floor requirements
 
 	//Text
-	//TODO GUI Text in file (7/16)
+	//TODO GUI Text in file InvEdit
+	//TODO GUI Text in file StartSettings
+	//TODO GUI Text in file CharInv
+	//TODO GUI Text in file CharStats
+	//TODO GUI Text in file CharLevelup
+	//TODO Text in file StatBar
+	//TODO Text in file char names
 
 	//combat system (rules)
 	//TODO    change speed effects

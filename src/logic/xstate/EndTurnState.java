@@ -25,9 +25,9 @@ public final class EndTurnState implements NAutoState
 	}
 
 	@Override
-	public String text()
+	public CharSequence text()
 	{
-		return start ? "Start Level" : "Enemy Phase";
+		return start ? "menu.endturn.start" : "menu.endturn.endturn";
 	}
 
 	@Override

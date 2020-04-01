@@ -41,9 +41,9 @@ public final class RemoveBuildingGUI extends XGUIState
 	}
 
 	@Override
-	public String text()
+	public CharSequence text()
 	{
-		return "Remove";
+		return "menu.removebuilding";
 	}
 
 	@Override

@@ -48,13 +48,12 @@ public final class XMenu
 
 	public static XMenu transportMenu(XBuilding building, Transport transport)
 	{
-		return new XMenu(new TransportTargetsState(building, transport), new ProductionPhaseState());
+		return new XMenu(new TransportTargetsState(building, transport));
 	}
 
 	public static XMenu entityEditMenu(XCharacter entity)
 	{
-		return new XMenu(new EntityEditGUI(entity), new EntityInvEditGUI(entity),
-				new StartingSettingsEditGUI(entity), new EntityEditGUI(entity),
+		return new XMenu(new EntityEditGUI(entity), new EntityInvEditGUI(entity), new StartingSettingsEditGUI(entity),
 				new EditMoveState(entity), new EditCopyState(entity), new EditDeleteState(entity));
 	}
 

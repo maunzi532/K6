@@ -127,6 +127,10 @@ public final class SchemeFile implements Scheme
 		{
 			return local(text);
 		}
+		else if(xText instanceof KeyFunction keyFunction)
+		{
+			return keybindFile.info(keyFunction.function());
+		}
 		else if(xText instanceof ArgsText argsText)
 		{
 			return local(argsText.key(), argsText.args());

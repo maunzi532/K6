@@ -14,7 +14,7 @@ public final class FloorSetMode implements EditingMode
 	public FloorSetMode(FloorTileType tileType)
 	{
 		this.tileType = tileType;
-		guiTile = new GuiTile(tileType.name());
+		guiTile = new GuiTile(tileType.text);
 	}
 
 	@Override

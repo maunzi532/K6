@@ -11,7 +11,7 @@ public interface NState
 
 	void onEnter(MainState mainState);
 
-	default String text()
+	default CharSequence text()
 	{
 		return null;
 	}

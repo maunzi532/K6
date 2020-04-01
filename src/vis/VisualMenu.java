@@ -9,6 +9,7 @@ import javafx.scene.paint.*;
 import javafx.scene.text.*;
 import logic.*;
 import logic.xstate.*;
+import text.*;
 
 public final class VisualMenu
 {
@@ -110,15 +111,15 @@ public final class VisualMenu
 		gd.setFont(new Font(layout.size().v()[1] * 0.5));
 		if(menuEntry.keybind() != null)
 		{
-			gd.fillText(menuEntry.text(),
-					midPoint.v()[0], midPoint.v()[1], layout.size().v()[0] * 1.4);
+			gd.fillText(scheme.localXText(menuEntry.text()), midPoint.v()[0], midPoint.v()[1], layout.size().v()[0] * 1.4);
 			gd.setFill(scheme.color("menu.text.keybind"));
 			gd.setFont(new Font(layout.size().v()[1] * 0.3));
-			gd.fillText(keyMap.info(menuEntry.keybind()), midPoint.v()[0], midPoint.v()[1] - layout.size().v()[1] * 0.5, layout.size().v()[0] * 1.4);
+			gd.fillText(scheme.localXText(new KeyFunction(menuEntry.keybind())),
+					midPoint.v()[0], midPoint.v()[1] - layout.size().v()[1] * 0.5, layout.size().v()[0] * 1.4);
 		}
 		else
 		{
-			gd.fillText(menuEntry.text(), midPoint.v()[0], midPoint.v()[1], layout.size().v()[0] * 1.4);
+			gd.fillText(scheme.localXText(menuEntry.text()), midPoint.v()[0], midPoint.v()[1], layout.size().v()[0] * 1.4);
 		}
 	}
 }

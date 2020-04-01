@@ -61,6 +61,7 @@ public final class Stats implements ModifierAspect
 		this.xClass = xClass;
 		this.level = level;
 		this.playerLevelSystem = playerLevelSystem;
+		lvStats = new int[8];
 		autoStats();
 		currentHealth = maxHealth();
 		movement = xClass.movement;
@@ -268,26 +269,6 @@ public final class Stats implements ModifierAspect
 		return filter;
 	}
 
-	public int getVisualStat(int num)
-	{
-		return switch(num)
-				{
-					case 0 -> currentHealth;
-					case 1 -> exp;
-					default -> throw new IllegalStateException("Unexpected value: " + num);
-				};
-	}
-
-	public int getMaxVisualStat(int num)
-	{
-		return switch(num)
-				{
-					case 0 -> maxHealth();
-					case 1 -> 100;
-					default -> throw new IllegalStateException("Unexpected value: " + num);
-				};
-	}
-
 	public int getRegenerateChange()
 	{
 		return maxHealth() - currentHealth;
@@ -493,9 +474,13 @@ public final class Stats implements ModifierAspect
 		return info;
 	}
 
-	public CharSequence[] sideInfoText()
+	public CharSequence[] sideInfoText(CharSequence generic)
 	{
-		return new CharSequence[]{customName != null ? customName : "Enemy", xClass.className + " lv" + level};
+		return new CharSequence[]
+				{
+						customName != null ? customName : generic,
+						new ArgsText("sideinfo.classandlevel", xClass.className, level)
+				};
 	}
 
 	public List<? extends CharSequence> infoEdit()
