@@ -34,22 +34,22 @@ public final class InvStack implements Inv0
 		return new ItemStack(item, current);
 	}
 
-	public int getCountC()
+	public int currentCount()
 	{
 		return current;
 	}
 
-	public int getCountX()
+	public int changedCount()
 	{
 		return current + increase - decrease;
 	}
 
-	public boolean canProvideX()
+	public boolean canChangedProvide()
 	{
 		return current - decrease > 0;
 	}
 
-	public int getIncreasedX()
+	public int getChangedIncreased()
 	{
 		return current + increase;
 	}
@@ -102,7 +102,7 @@ public final class InvStack implements Inv0
 	}
 
 	@Override
-	public Optional<ItemStack> wouldProvide(ItemStack itemStack, boolean unlimited)
+	public Optional<ItemStack> showProvidable(ItemStack itemStack, boolean unlimited)
 	{
 		if(itemStack.item.canContain(item) && (unlimited || current - decrease >= itemStack.count))
 		{
@@ -114,7 +114,7 @@ public final class InvStack implements Inv0
 	@Override
 	public Optional<ItemStack> provide(ItemStack itemStack, boolean unlimited)
 	{
-		Optional<ItemStack> provided = wouldProvide(itemStack, unlimited);
+		Optional<ItemStack> provided = showProvidable(itemStack, unlimited);
 		if(provided.isPresent())
 		{
 			decrease += itemStack.count;

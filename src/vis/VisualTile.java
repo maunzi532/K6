@@ -16,6 +16,9 @@ import levelmap.*;
 
 public final class VisualTile
 {
+	private static final double STATBAR_WIDTH = 2.0;
+	private static final double STATBAR_HEIGHT = 0.3;
+
 	private final VisualXArrow av;
 	private final XGraphics graphics;
 
@@ -28,7 +31,7 @@ public final class VisualTile
 	public void draw(TileCamera camera, LevelMap levelMap, List<VisMark> visMarked, int screenshake, Scheme scheme)
 	{
 		graphics.gd().setImageSmoothing(true);
-		TileType y1 = camera.getDoubleType();
+		TileType y1 = camera.doubleType();
 		int range = camera.getRange();
 		TileLayout layout = camera.layout(screenshake);
 		Tile mid = camera.mid(layout);
@@ -132,8 +135,8 @@ public final class VisualTile
 	{
 		StatBar statBar = arrow.statBar();
 		PointD midPoint = layout.tileToPixel(av.dataLocation(arrow, layout));
-		double xw = layout.size().v()[0] * VisualXArrow.DATA_WIDTH;
-		double yw = layout.size().v()[1] * VisualXArrow.DATA_HEIGHT;
+		double xw = layout.size().v()[0] * STATBAR_WIDTH;
+		double yw = layout.size().v()[1] * STATBAR_HEIGHT;
 		double xs = midPoint.v()[0] - xw / 2.0;
 		double ys = midPoint.v()[1] - yw / 2.0;
 		GraphicsContext gd = graphics.gd();

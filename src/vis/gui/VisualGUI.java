@@ -27,7 +27,7 @@ public abstract class VisualGUI
 
 	public Tile offsetClickLocation(TileCamera camera, double x, double y)
 	{
-		DoubleType y2 = camera.getDoubleType();
+		DoubleType y2 = camera.doubleType();
 		return y2.toOffset(y2.cast(camera.clickLocation(x, y)));
 	}
 
@@ -84,7 +84,7 @@ public abstract class VisualGUI
 		gd.fillRect(p0.v()[0], p0.v()[1], p1.v()[0] - p0.v()[0], p1.v()[1] - p0.v()[1]);
 		gd.strokeRect(p0.v()[0], p0.v()[1], p1.v()[0] - p0.v()[0], p1.v()[1] - p0.v()[1]);
 		GuiTile[][] guiTiles = xgui.tiles;
-		DoubleType y2 = camera.getDoubleType();
+		DoubleType y2 = camera.doubleType();
 		for(int ix = 0; ix < xgui.xw(); ix++)
 		{
 			for(int iy = 0; iy < xgui.yw(); iy++)
@@ -142,7 +142,7 @@ public abstract class VisualGUI
 			String text1 = scheme.localXText(guiTile.text);
 			PointD midPoint = layout.tileToPixel(y2.add(y2.fromTile(t1), y2.fromOffsetD(guiTile.left * -0.5, guiTile.up * -0.5)));
 			PointD rEnd = layout.tileToPixel(t1);
-			double ld = Math.max(0.5, text1.chars().filter(e -> e == '\n').count()) + 0.5;
+			double ld = Math.max(1.5, text1.lines().count()) - 0.5;
 			gd.setFont(new Font(layout.size().v()[1] * fontSize / ld));
 			if(guiTile.imageName != null)
 			{

@@ -1,6 +1,7 @@
 package statsystem.analysis;
 
 import entity.*;
+import geom.tile.*;
 import java.util.*;
 import java.util.stream.*;
 import levelmap.*;
@@ -46,7 +47,7 @@ public final class StandardAI implements EnemyAI
 			if(px.attack != null && !analysis.containsKey(px.attack))
 				analysis.put(px.attack, new EnemyThoughts2(px.attack.analysis.outcomes()).score());
 			if(px.attack != null)
-				px.score += analysis.get(px.attack) * 1000.0;
+				px.score += (int) (analysis.get(px.attack) * 1000.0);
 			if(!px.path.tile().equals(user.location()))
 				px.score += moveAway;
 			px.score += levelMap.enemyTeamTargetCharacters(user.team()).stream().mapToInt(e -> levelMap.y1
@@ -69,14 +70,9 @@ public final class StandardAI implements EnemyAI
 			int z1 = len;
 			while(doubledPath3 != null)
 			{
-				for(PathAttackX e : pathsX)
-				{
-					if(e.path.tile().equals(doubledPath3.tile()))
-					{
-						e.score += 800 * z1 / len;
-						break;
-					}
-				}
+				Tile tile3 = doubledPath3.tile();
+				int score = 800 * z1 / len;
+				pathsX.stream().filter(pa -> pa.path.tile().equals(tile3)).findFirst().ifPresent(pa -> pa.score += score);
 				doubledPath3 = doubledPath3.from();
 				z1--;
 			}

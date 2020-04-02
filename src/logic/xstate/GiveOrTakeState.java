@@ -84,25 +84,13 @@ public final class GiveOrTakeState implements NMarkState
 		{
 			if(mainState.stateHolder().preferBuildings())
 			{
-				for(DoubleInv inv1 : list)
-				{
-					if(inv1 instanceof XBuilding)
-					{
-						startTradeState(mainState.levelMap(), mainState.stateHolder(), inv1, levelStarted);
-						break;
-					}
-				}
+				list.stream().filter(inv1 -> inv1 instanceof XBuilding).findFirst()
+						.ifPresent(inv1 -> startTradeState(mainState.levelMap(), mainState.stateHolder(), inv1, levelStarted));
 			}
 			else
 			{
-				for(DoubleInv inv1 : list)
-				{
-					if(inv1.type() == DoubleInvType.ENTITY)
-					{
-						startTradeState(mainState.levelMap(), mainState.stateHolder(), inv1, levelStarted);
-						break;
-					}
-				}
+				list.stream().filter(inv1 -> inv1 instanceof XCharacter).findFirst()
+						.ifPresent(inv1 -> startTradeState(mainState.levelMap(), mainState.stateHolder(), inv1, levelStarted));
 			}
 		}
 	}

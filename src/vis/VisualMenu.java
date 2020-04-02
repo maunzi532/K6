@@ -7,7 +7,6 @@ import java.util.*;
 import javafx.scene.canvas.*;
 import javafx.scene.paint.*;
 import javafx.scene.text.*;
-import logic.*;
 import logic.xstate.*;
 import text.*;
 
@@ -24,14 +23,14 @@ public final class VisualMenu
 
 	public int coordinatesToOption(TileCamera camera, double x, double y, XStateHolder stateHolder)
 	{
-		DoubleType y2 = camera.getDoubleType();
+		DoubleType y2 = camera.doubleType();
 		Tile offset = y2.toOffset(y2.cast(camera.clickLocation(x, y)));
 		if(offset.v()[0] != 0 || offset.v()[1] < 0 || offset.v()[1] >= stateHolder.getMenu().size())
 			return -1;
 		return offset.v()[1];
 	}
 
-	public void draw(TileCamera camera, double tLimit, double bLimit, XStateHolder stateHolder, XKeyMap keyMap, Scheme scheme)
+	public void draw(TileCamera camera, double tLimit, double bLimit, XStateHolder stateHolder, Scheme scheme)
 	{
 		List<NState> menuEntries = stateHolder.getMenu();
 		if(!menuEntries.isEmpty())
@@ -69,11 +68,11 @@ public final class VisualMenu
 			}
 			camera.setZoom(lastZoom);
 			camera.setYShift(lastShift + (menuEntries.size() - 1) * 0.75);
-			TileType y1 = camera.getDoubleType();
+			TileType y1 = camera.doubleType();
 			for(int i = 0; i < menuEntries.size(); i++)
 			{
 				draw0(y1, camera.layout(0), y1.fromOffset(0, i), menuEntries.get(i),
-						menuEntries.get(i).text().equals(stateHolder.getState().text()), keyMap, scheme);
+						menuEntries.get(i).text().equals(stateHolder.getState().text()), scheme);
 			}
 		}
 		else
@@ -88,7 +87,7 @@ public final class VisualMenu
 		return Math.min(Math.max(target, (prev * 0.9 + target * 0.1) - speed), (prev * 0.9 + target * 0.1) + speed);
 	}
 
-	private void draw0(TileType y1, TileLayout layout, Tile h1, NState menuEntry, boolean active, XKeyMap keyMap, Scheme scheme)
+	private void draw0(TileType y1, TileLayout layout, Tile h1, NState menuEntry, boolean active, Scheme scheme)
 	{
 		GraphicsContext gd = graphics.gd();
 		double[][] points = layout.tileCorners(h1);

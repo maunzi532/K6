@@ -20,9 +20,9 @@ public final class ItemList
 		this.items = items;
 	}
 
-	public ItemList(Item... items)
+	public static ItemList create(Item... items)
 	{
-		this.items = Arrays.stream(items).map(e -> new ItemStack(e, 1)).collect(Collectors.toList());
+		return new ItemList(Arrays.stream(items).map(e -> new ItemStack(e, 1)).collect(Collectors.toList()));
 	}
 
 	public ItemList add(ItemList other)

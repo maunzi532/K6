@@ -1,7 +1,6 @@
 package entity;
 
 import geom.tile.*;
-import java.util.*;
 
 public record PathLocation(Tile tile, int cost, boolean canEnd, PathLocation from, XCharacter movingAlly)
 {
@@ -21,6 +20,6 @@ public record PathLocation(Tile tile, int cost, boolean canEnd, PathLocation fro
 	@Override
 	public int hashCode()
 	{
-		return Objects.hash(tile);
+		return tile.hashCode();
 	}
 }

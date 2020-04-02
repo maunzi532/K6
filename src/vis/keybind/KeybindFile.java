@@ -8,31 +8,34 @@ import java.util.*;
 import java.util.stream.*;
 import javafx.scene.input.*;
 import logic.*;
+import text.*;
 
-public final class KeybindFile implements XKeyMap
+public final class KeybindFile
 {
 	public static final XKey NONE = new XKey(List.of(), false, false);
-	private static final String[] mouseButtonNames =
+	private static final char INPUT_SEPARATOR = ',';
+	private static final CharSequence[] mouseButtonNames =
 			{
-					"None",
-					"Left Click",
-					"Middle Click",
-					"Right Click",
-					"Mouse Back",
-					"Mouse Forward"
+					new LocaleText("mouse.0"),
+					new LocaleText("mouse.1"),
+					new LocaleText("mouse.2"),
+					new LocaleText("mouse.3"),
+					new LocaleText("mouse.4"),
+					new LocaleText("mouse.5")
 			};
 
 	private final Map<KeyCode, XKeyBuilder> keyboardKeyBuilders;
 	private final Map<MouseButton, XKeyBuilder> mouseKeyBuilders;
+	private final Map<String, List<CharSequence>> infoBuilders;
 	private final Map<KeyCode, XKey> keyboardKeys;
 	private final Map<MouseButton, XKey> mouseKeys;
-	private final Map<String, String> info;
+	private final Map<String, MultiText> info;
 
 	public KeybindFile(String input)
 	{
 		keyboardKeyBuilders = new EnumMap<>(KeyCode.class);
 		mouseKeyBuilders = new EnumMap<>(MouseButton.class);
-		info = new HashMap<>();
+		infoBuilders = new HashMap<>();
 		try
 		{
 			TreeNode a1 = JSON.std.with(new JacksonJrsTreeCodec()).treeFrom(input);
@@ -45,20 +48,21 @@ public final class KeybindFile implements XKeyMap
 		}
 		keyboardKeys = keyboardKeyBuilders.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue().finish()));
 		mouseKeys = mouseKeyBuilders.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue().finish()));
+		info = infoBuilders.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, e -> new MultiText(e.getValue(), MultiTextConnect.LISTED)));
 	}
 
 	private void decipher1(JrsValue e)
 	{
 		String s = e.asText();
-		int index = s.indexOf(',');
+		int index = s.indexOf(INPUT_SEPARATOR);
 		decipher2(s.substring(0, index), s.substring(index + 1), false);
 	}
 
 	private void decipher2(String input, String t2, boolean drag)
 	{
-		if(input.charAt(0) == 'K')
+		if(input.startsWith("key."))
 		{
-			KeyCode keyCode = KeyCode.valueOf(input.substring(1));
+			KeyCode keyCode = KeyCode.valueOf(input.substring(4));
 			if(!keyboardKeyBuilders.containsKey(keyCode))
 				keyboardKeyBuilders.put(keyCode, new XKeyBuilder());
 			XKeyBuilder key = keyboardKeyBuilders.get(keyCode);
@@ -72,9 +76,9 @@ public final class KeybindFile implements XKeyMap
 			else
 				key.canClick = true;
 		}
-		else if(input.charAt(0) == 'M')
+		else if(input.startsWith("mouse."))
 		{
-			MouseButton keyCode = MouseButton.valueOf(input.substring(1));
+			MouseButton keyCode = MouseButton.valueOf(input.substring(6));
 			if(!mouseKeyBuilders.containsKey(keyCode))
 				mouseKeyBuilders.put(keyCode, new XKeyBuilder());
 			XKeyBuilder key = mouseKeyBuilders.get(keyCode);
@@ -90,16 +94,11 @@ public final class KeybindFile implements XKeyMap
 		}
 	}
 
-	private void infoAdd(String function, String text)
+	private void infoAdd(String function, CharSequence text)
 	{
-		if(info.containsKey(function))
-		{
-			info.put(function, info.get(function) + ", " + text);
-		}
-		else
-		{
-			info.put(function, text);
-		}
+		if(!infoBuilders.containsKey(function))
+			infoBuilders.put(function, new ArrayList<>());
+		infoBuilders.get(function).add(text);
 	}
 
 	public XKey keyboardKey(KeyCode keyCode)
@@ -112,8 +111,7 @@ public final class KeybindFile implements XKeyMap
 		return mouseKeys.getOrDefault(mouseButton, NONE);
 	}
 
-	@Override
-	public String info(String function)
+	public MultiText info(String function)
 	{
 		return info.get(function);
 	}

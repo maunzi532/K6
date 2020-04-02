@@ -43,7 +43,7 @@ public final class SideInfo
 		this.imageName = imageName;
 	}
 
-	public void setTexts(String[] texts)
+	public void setTexts(CharSequence[] texts)
 	{
 		this.texts = texts;
 	}

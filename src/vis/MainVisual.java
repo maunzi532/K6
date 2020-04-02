@@ -25,7 +25,6 @@ public final class MainVisual implements XInputInterface
 	private static final double BORDER2 = 0.75;
 
 	private final XGraphics graphics;
-	private XKeyMap keyMap;
 	private Scheme scheme;
 	private TileCamera mapCamera;
 	private VisualTile visualTile;
@@ -39,32 +38,30 @@ public final class MainVisual implements XInputInterface
 	private LevelEditor levelEditor;
 	private XStateHolder stateHolder;
 	private ConvInputConsumer convInputConsumer;
-	private MainState mainState;
 	private int screenshake;
 	private boolean paused;
 
-	public MainVisual(XGraphics graphics, XKeyMap keyMap, Scheme scheme,
+	public MainVisual(XGraphics graphics, Scheme scheme,
 			TileCamera mapCamera, TileCamera menuCamera, TileCamera guiCamera,
 			Function<Double, TileCamera> editorSlotCamera,
 			ItemLoader itemLoader, BlueprintFile blueprintFile, String loadFileMap, String loadFileTeam)
 	{
 		this.graphics = graphics;
-		this.keyMap = keyMap;
 		this.scheme = scheme;
 		this.mapCamera = mapCamera;
-		visualTile = new VisualTile(new VisualXArrow(mapCamera.getDoubleType()), graphics);
+		visualTile = new VisualTile(new VisualXArrow(mapCamera.doubleType()), graphics);
 		this.menuCamera = menuCamera;
 		visualMenu = new VisualMenu(graphics);
 		this.guiCamera = guiCamera;
 		visualGUI = VisualGUI.forCamera(graphics, guiCamera);
 		visualLevelEditor = new VisualLevelEditor(graphics, editorSlotCamera);
 		visualSideInfoFrame = new VisualSideInfoFrame(graphics, false);
-		levelMap = new LevelMap(mapCamera.getDoubleType());
+		levelMap = new LevelMap(mapCamera.doubleType());
 		levelEditor = new LevelEditor();
 		XStateControl stateControl = new XStateControl(levelMap, levelEditor);
 		stateHolder = stateControl;
 		convInputConsumer = stateControl;
-		mainState = new MainState(levelMap, stateHolder, visualSideInfoFrame, itemLoader, blueprintFile);
+		MainState mainState = new MainState(levelMap, stateHolder, visualSideInfoFrame, itemLoader, blueprintFile);
 		stateControl.setMainState(mainState, new StartTurnState());
 		loadLevel(loadFileMap, loadFileTeam, itemLoader, levelMap);
 		GraphicsContext gd = graphics.gd();
@@ -169,7 +166,7 @@ public final class MainVisual implements XInputInterface
 
 	private Tile targetedTile(double x, double y)
 	{
-		return mapCamera.getDoubleType().cast(mapCamera.clickLocation(x, y, screenshake));
+		return mapCamera.doubleType().cast(mapCamera.clickLocation(x, y, screenshake));
 	}
 
 	@Override
@@ -235,7 +232,7 @@ public final class MainVisual implements XInputInterface
 		}
 		visualGUI.zoomAndDraw(guiCamera, stateHolder.getGUI(), scheme);
 		double bLimit = graphics.yHW() - Math.max(visualSideInfoFrame.takeY2(), visualLevelEditor.takeY(stateHolder.getState().editMode()));
-		visualMenu.draw(menuCamera, graphics.yHW() - graphics.scaleHW() * 0.08, bLimit, stateHolder, keyMap, scheme);
+		visualMenu.draw(menuCamera, graphics.yHW() - graphics.scaleHW() * 0.08, bLimit, stateHolder, scheme);
 		drawInfoText();
 	}
 
@@ -258,11 +255,11 @@ public final class MainVisual implements XInputInterface
 		gd.setFont(new Font(scale));
 		gd.setTextAlign(TextAlignment.LEFT);
 		gd.fillText(turnText(levelMap.turnCounter()), scale, scale);
-		gd.fillText(scheme.local(stateHolder.preferBuildings() ? "choosemode.building" : "choosemode.character"), xHW / 2.0, scale);
+		gd.fillText(scheme.localXText(stateHolder.preferBuildings() ? "choosemode.building" : "choosemode.character"), xHW / 2.0, scale);
 		if(paused)
-			gd.fillText(scheme.local("pause"), xHW, scale);
+			gd.fillText(scheme.localXText("pause"), xHW, scale);
 		gd.setTextAlign(TextAlignment.RIGHT);
-		gd.fillText(scheme.local("pause.info", new KeyFunction("pause.toggle")), xHW * 2.0 - scale, scale);
+		gd.fillText(scheme.localXText(new ArgsText("pause.info", new KeyFunction("pause.toggle"))), xHW * 2.0 - scale, scale);
 		gd.setTextAlign(TextAlignment.CENTER);
 	}
 
@@ -270,11 +267,11 @@ public final class MainVisual implements XInputInterface
 	{
 		if(turnCounter <= 0)
 		{
-			return scheme.local("turn.display.0");
+			return scheme.localXText("turn.display.0");
 		}
 		else
 		{
-			return scheme.local("turn.display", turnCounter);
+			return scheme.localXText(new ArgsText("turn.display", turnCounter));
 		}
 	}
 }

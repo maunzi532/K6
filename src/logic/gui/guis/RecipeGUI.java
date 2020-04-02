@@ -8,6 +8,7 @@ import item.view.*;
 import logic.*;
 import logic.gui.*;
 import logic.xstate.*;
+import text.*;
 
 public final class RecipeGUI extends XGUIState
 {
@@ -92,7 +93,7 @@ public final class RecipeGUI extends XGUIState
 		return new GuiTile[]
 				{
 						new GuiTile(itemView.currentWithLimit()),
-						new GuiTile(InvNumView.except1(stack.count), itemView.item.image(), false, null)
+						new GuiTile(except1(stack.count), itemView.item.image(), false, null)
 				};
 	}
 
@@ -103,8 +104,16 @@ public final class RecipeGUI extends XGUIState
 		return new GuiTile[]
 				{
 						new GuiTile(itemView.currentWithLimit()),
-						new GuiTile(InvNumView.except1(stack.count), itemView.item.image(), false, null)
+						new GuiTile(except1(stack.count), itemView.item.image(), false, null)
 				};
+	}
+
+	private static CharSequence except1(int num)
+	{
+		if(num == 1)
+			return null;
+		else
+			return new ArgsText("i", num);
 	}
 
 	@Override

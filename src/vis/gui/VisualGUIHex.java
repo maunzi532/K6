@@ -17,7 +17,7 @@ public final class VisualGUIHex extends VisualGUI
 	public VisualGUIHex(XGraphics graphics, HexCamera camera)
 	{
 		super(graphics);
-		DoubleType y2 = camera.getDoubleType();
+		DoubleType y2 = camera.doubleType();
 		lu = y2.createD(-1.0 / 6.0, 5.0 / 6.0, -4.0 / 6.0);
 		rle = y2.createD(1.0 / 6.0, -5.0 / 6.0, 4.0 / 6.0);
 		rls = y2.createD(4.0 / 6.0, -8.0 / 6.0, 4.0 / 6.0);
@@ -35,7 +35,7 @@ public final class VisualGUIHex extends VisualGUI
 			return false;
 		double xc = h1.v()[0] - h1.v()[1];
 		double yc = h1.v()[2];
-		DoubleTile rlLoc = rlLoc(camera.getDoubleType(), xgui);
+		DoubleTile rlLoc = rlLoc(camera.doubleType(), xgui);
 		return xc >= lu.v()[0] - lu.v()[1] && xc <= rlLoc.v()[0] - rlLoc.v()[1] && yc >= lu.v()[2] && yc <= rlLoc.v()[2];
 	}
 
@@ -44,6 +44,6 @@ public final class VisualGUIHex extends VisualGUI
 	{
 		double cxs = xgui.xw() - (xgui.yw() > 1 ? 0.5 : 1.0) * HexMatrix.Q3 / 2.0;
 		double cys = (xgui.yw() - 1) * 1.5 / 2.0;
-		drawGUI(camera, xgui, scheme, cxs, cys, lu, rlLoc(camera.getDoubleType(), xgui), IMAGE_END, FONT_SIZE, TEXT_END);
+		drawGUI(camera, xgui, scheme, cxs, cys, lu, rlLoc(camera.doubleType(), xgui), IMAGE_END, FONT_SIZE, TEXT_END);
 	}
 }

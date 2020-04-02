@@ -2,13 +2,13 @@ package logic.gui;
 
 import java.util.function.*;
 
-public final class CElement implements GuiElement
+public class CElement implements GuiElement
 {
 	private final CTile tile;
 	public GuiTile fillTile;
 	private boolean targetable;
 	private Supplier<Boolean> exists;
-	private Supplier<Boolean> onTarget;
+	protected boolean targeted;
 	private Runnable onClick;
 
 	public CElement(CTile tile)
@@ -89,11 +89,7 @@ public final class CElement implements GuiElement
 			}
 			else
 			{
-				if(onTarget != null)
-				{
-					if(onTarget.get())
-						requireUpdate = true;
-				}
+				targeted = true;
 			}
 			return new ElementTargetResult(true, requireUpdate, tile);
 		}

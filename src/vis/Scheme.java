@@ -15,7 +15,5 @@ public interface Scheme
 
 	double doubleSetting(String key);
 
-	String local(String key, Object... args);
-
 	String localXText(CharSequence xText);
 }

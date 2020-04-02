@@ -4,7 +4,8 @@ public enum MultiTextConnect
 {
 	SPACES("multitext.spaces"),
 	LISTED("multitext.listed"),
-	LINES("multitext.lines");
+	LINES("multitext.lines"),
+	OR("multitext.or");
 
 	public final CharSequence text;
 

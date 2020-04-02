@@ -281,7 +281,7 @@ public final class Stats implements ModifierAspect
 
 	public CharSequence getName()
 	{
-		return customName != null ? customName : new ArgsText("class.withlevel", new ArgsText(xClass.className), level);
+		return customName != null ? customName : new ArgsText("class.withlevel", new LocaleText(xClass.className), level);
 	}
 
 	public String mapImageName()
@@ -388,7 +388,7 @@ public final class Stats implements ModifierAspect
 	public List<? extends CharSequence> statsInfo()
 	{
 		List<CharSequence> info = new ArrayList<>();
-		info.add(new ArgsText("stats.info.class", new ArgsText(xClass.className)));
+		info.add(new ArgsText("stats.info.class", new LocaleText(xClass.className)));
 		info.add(new ArgsText("stats.info.level", level));
 		info.add(new ArgsText("stats.info.exp", exp));
 		info.add(new ArgsText("stats.info.health", currentHealth, maxHealth()));
@@ -404,7 +404,7 @@ public final class Stats implements ModifierAspect
 			info.add(null);
 		info.add(new ArgsText("stats.info.movement", movement));
 		List<CharSequence> m1 = new ArrayList<>();
-		m1.add(new ArgsText("stats.info.itemfilter"));
+		m1.add("stats.info.itemfilter");
 		filter.getItemTypes().stream().map(AI2Class::name).forEach(m1::add);
 		info.add(new MultiText(m1, MultiTextConnect.LINES));
 		return info;
@@ -418,7 +418,7 @@ public final class Stats implements ModifierAspect
 	public List<? extends CharSequence> levelupText(int[] levelup)
 	{
 		List<CharSequence> info = new ArrayList<>();
-		info.add(new ArgsText("stats.levelup.class", new ArgsText(xClass.className)));
+		info.add(new ArgsText("stats.levelup.class", new LocaleText(xClass.className)));
 		info.add(new ArgsText("stats.levelup.level", level, level + 1));
 		info.add(new ArgsText("stats.levelup.exp", exp, changedExp()));
 		info.add(new ArgsText("stats.levelup.health", changedHealth(levelup[7]), changedMaxHealth(levelup[7])));
@@ -472,7 +472,7 @@ public final class Stats implements ModifierAspect
 		return new CharSequence[]
 				{
 						customName != null ? customName : generic,
-						new ArgsText("class.withlevel", new ArgsText(xClass.className), level)
+						new ArgsText("class.withlevel", new LocaleText(xClass.className), level)
 				};
 	}
 
@@ -483,7 +483,7 @@ public final class Stats implements ModifierAspect
 			info.add(new ArgsText("stats.edit.customname", customName));
 		else
 			info.add("stats.edit.genericname");
-		info.add(new ArgsText("stats.edit.class", new ArgsText(xClass.className)));
+		info.add(new ArgsText("stats.edit.class", new LocaleText(xClass.className)));
 		info.add(new ArgsText("stats.edit.level", level));
 		info.add(new ArgsText("stats.edit.exp", exp));
 		for(int i = 0; i < 8; i++)
@@ -498,33 +498,10 @@ public final class Stats implements ModifierAspect
 		else
 			info.add("stats.edit.defendwithnone");
 		List<CharSequence> m1 = new ArrayList<>();
-		m1.add(new ArgsText("stats.edit.itemfilter"));
+		m1.add("stats.edit.itemfilter");
 		filter.getItemTypes().stream().map(AI2Class::name).forEach(m1::add);
 		info.add(new MultiText(m1, MultiTextConnect.LINES));
 		return info;
-	}
-
-	public static List<? extends CharSequence> editOptions(int num)
-	{
-		if(num == 0)
-			return List.of("stats.editoption.name.name", "stats.editoption.name.mapimage", "stats.editoption.name.sideimage");
-		if(num == 1)
-			return List.of("stats.editoption.class.previous", "stats.editoption.class.next");
-		if(num == 2)
-			return List.of("stats.editoption.plus", "stats.editoption.minus", "stats.editoption.level.resetstats");
-		if(num == 3)
-			return List.of("stats.editoption.plus", "stats.editoption.minus", "stats.editoption.exp.reset");
-		if(num <= 11)
-			return List.of("stats.editoption.plus", "stats.editoption.minus", "stats.editoption.lvstat.reset");
-		if(num == 12)
-			return List.of("stats.editoption.plus", "stats.editoption.minus", "stats.editoption.health.reset");
-		if(num == 13)
-			return List.of("stats.editoption.plus", "stats.editoption.minus", "stats.editoption.exhaustion.reset");
-		if(num == 14)
-			return List.of("stats.editoption.plus", "stats.editoption.minus", "stats.editoption.movement.reset");
-		if(num == 15)
-			return List.of("stats.editoption.defendwith.autoequip");
-		return List.of();
 	}
 
 	public void applyEditOption(int num, int option, XCharacter entity)

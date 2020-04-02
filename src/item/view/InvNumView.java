@@ -44,12 +44,4 @@ public class InvNumView
 			return currentWithLimit();
 		}
 	}
-
-	public static CharSequence except1(int num)
-	{
-		if(num == 1)
-			return null;
-		else
-			return new ArgsText("i", num);
-	}
 }

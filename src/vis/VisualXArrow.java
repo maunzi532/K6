@@ -13,8 +13,6 @@ public final class VisualXArrow
 	private static final double HEAD_WIDTH = 0.25;
 	private static final double HEAD_IN = 0.5;
 	private static final double DATA_DISTANCE = 0.75;
-	public static final double DATA_WIDTH = 2.0;
-	public static final double DATA_HEIGHT = 0.3;
 
 	private final DoubleType y2;
 
@@ -152,7 +150,7 @@ public final class VisualXArrow
 	public DoubleTile dataLocation(InfoArrow arrow, TileLayout layout)
 	{
 		double[][] gp = layout.polygonCorners(visualStart(arrow), visualEnd(arrow));
-		if(gp[1][0] < gp[1][1] || (gp[1][0] == gp[1][1] && gp[0][0] > gp[0][1]))
+		if(gp[1][0] < gp[1][1] || (gp[1][0] - gp[1][1] == 0 && gp[0][0] > gp[0][1]))
 		{
 			return y2.add(visualStart(arrow), y2.multiply(y2.normalize(y2.upwards()), DATA_DISTANCE));
 		}

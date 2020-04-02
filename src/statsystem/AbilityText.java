@@ -15,6 +15,6 @@ public final class AbilityText
 
 	public CharSequence text()
 	{
-		return MultiText.lines(ability.name, new ArgsText("ability.withmode", new ArgsText(modifierAspect.nameForAbility().toString())));
+		return MultiText.lines(ability.name, new ArgsText("ability.withmode", new LocaleText(modifierAspect.nameForAbility())));
 	}
 }

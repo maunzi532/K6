@@ -94,54 +94,31 @@ public final class SchemeFile implements Scheme
 	}
 
 	@Override
-	public String local(String key, Object... args)
-	{
-		Object[] args1 = Arrays.stream(args).map(e -> e instanceof SLocaleFeature e1 ? localeFeature(e1) : e).toArray();
-		return String.format(localeFormat, locale.getOrDefault(key, "X_" + key), args1);
-	}
-
-	private String localeFeature(SLocaleFeature localeFeature)
-	{
-		if(localeFeature instanceof KeyFunction keyFunction)
-		{
-			return keybindFile.info(keyFunction.function());
-		}
-		else if(localeFeature instanceof ArgsText argsText)
-		{
-			return local(argsText.key(), argsText.args());
-		}
-		else if(localeFeature instanceof MultiText multiText)
-		{
-			return multiText(multiText);
-		}
-		else
-		{
-			throw new IllegalArgumentException("SLocaleFeature should be sealed");
-		}
-	}
-
-	@Override
 	public String localXText(CharSequence xText)
 	{
-		if(xText instanceof String text)
+		if(xText instanceof String key)
 		{
-			return local(text);
+			return localizeAndFormat(key);
+		}
+		else if(xText instanceof LocaleText localeText)
+		{
+			return localeText(localeText);
+		}
+		else if(xText instanceof ArgsText argsText)
+		{
+			return argsText(argsText);
 		}
 		else if(xText instanceof NameText nameText)
 		{
 			return nameText.name();
 		}
-		else if(xText instanceof KeyFunction keyFunction)
-		{
-			return keybindFile.info(keyFunction.function());
-		}
-		else if(xText instanceof ArgsText argsText)
-		{
-			return local(argsText.key(), argsText.args());
-		}
 		else if(xText instanceof MultiText multiText)
 		{
 			return multiText(multiText);
+		}
+		else if(xText instanceof KeyFunction keyFunction)
+		{
+			return keyText(keybindFile.info(keyFunction.function()));
 		}
 		else
 		{
@@ -149,8 +126,60 @@ public final class SchemeFile implements Scheme
 		}
 	}
 
+	private String localizeAndFormat(String key)
+	{
+		return String.format(localeFormat, localize(key));
+	}
+
+	private String localize(String key)
+	{
+		return locale.getOrDefault(key, "X_" + key);
+	}
+
+	private String localeText(LocaleText localeText)
+	{
+		if(localeText.key() instanceof String text)
+		{
+			return localizeAndFormat(text);
+		}
+		else if(localeText.key() instanceof NameText nameText)
+		{
+			return nameText.name();
+		}
+		else
+		{
+			throw new IllegalArgumentException("Wrong type of CharSequence");
+		}
+	}
+
+	private String argsText(ArgsText argsText)
+	{
+		return String.format(localeFormat, localize(argsText.key()), Arrays.stream(argsText.args()).map(this::localArg).toArray());
+	}
+
+	private Object localArg(Object arg)
+	{
+		if(arg instanceof String)
+			return arg;
+		if(arg instanceof CharSequence localeArg)
+			return localXText(localeArg);
+		return arg;
+	}
+
 	private String multiText(MultiText multiText)
 	{
 		return multiText.parts().stream().map(this::localXText).collect(Collectors.joining(localXText(multiText.connect().text)));
+	}
+
+	private String keyText(MultiText keyText)
+	{
+		return keyText.parts().stream().map(this::localArg2).collect(Collectors.joining(localXText(keyText.connect().text)));
+	}
+
+	private String localArg2(CharSequence arg)
+	{
+		if(arg instanceof String text)
+			return text;
+		return localXText(arg);
 	}
 }

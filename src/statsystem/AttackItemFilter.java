@@ -2,7 +2,6 @@ package statsystem;
 
 import item.*;
 import java.util.*;
-import text.*;
 
 public final class AttackItemFilter implements Item
 {

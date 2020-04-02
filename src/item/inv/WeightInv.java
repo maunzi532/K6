@@ -25,13 +25,13 @@ public final class WeightInv implements Inv
 	@Override
 	public List<Item> providedItemTypesX()
 	{
-		return stacks.stream().filter(InvStack::canProvideX).map(e -> e.item).collect(Collectors.toList());
+		return stacks.stream().filter(InvStack::canChangedProvide).map(e -> e.item).collect(Collectors.toList());
 	}
 
 	@Override
 	public List<ItemView> viewItems(boolean withEmpty)
 	{
-		return stacks.stream().map(e -> new ItemView(e.item, e.getCountC(), e.getCountX())).collect(Collectors.toList());
+		return stacks.stream().map(e -> new ItemView(e.item, e.currentCount(), e.changedCount())).collect(Collectors.toList());
 	}
 
 	@Override
@@ -44,7 +44,7 @@ public final class WeightInv implements Inv
 	public ItemView viewRecipeItem(Item item)
 	{
 		return stacks.stream().filter(e -> item.canContain(e.item)).findFirst()
-				.map(e -> new ItemView(e.item, e.getCountC(), e.getCountX())).orElse(new ItemView(item, 0, 0));
+				.map(e -> new ItemView(e.item, e.currentCount(), e.changedCount())).orElse(new ItemView(item, 0, 0));
 	}
 
 	@Override
@@ -78,7 +78,7 @@ public final class WeightInv implements Inv
 		stacks.removeIf(InvStack::removable);
 		decreaseW = 0;
 		increaseW = 0;
-		currentW = stacks.stream().mapToInt(e -> e.item.weight() * e.getCountC()).sum();
+		currentW = stacks.stream().mapToInt(e -> e.item.weight() * e.currentCount()).sum();
 	}
 
 	@Override
@@ -108,9 +108,9 @@ public final class WeightInv implements Inv
 	}
 
 	@Override
-	public Optional<ItemStack> wouldProvide(ItemStack itemStack, boolean unlimited)
+	public Optional<ItemStack> showProvidable(ItemStack itemStack, boolean unlimited)
 	{
-		return stacks.stream().map(e -> e.wouldProvide(itemStack, unlimited)).filter(Optional::isPresent).findFirst().orElse(Optional.empty());
+		return stacks.stream().map(e -> e.showProvidable(itemStack, unlimited)).filter(Optional::isPresent).findFirst().orElse(Optional.empty());
 	}
 
 	@Override

@@ -1,6 +1,6 @@
 package text;
 
-public record ArgsText(String key, Object... args) implements CharSequence
+public record LocaleText(CharSequence key) implements CharSequence
 {
 	@Override
 	public int length()
@@ -18,11 +18,5 @@ public record ArgsText(String key, Object... args) implements CharSequence
 	public CharSequence subSequence(int start, int end)
 	{
 		return key.subSequence(start, end);
-	}
-
-	@Override
-	public String toString()
-	{
-		return key;
 	}
 }

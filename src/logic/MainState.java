@@ -38,11 +38,7 @@ public record MainState(LevelMap levelMap, XStateHolder stateHolder, SideInfoFra
 	//TODO    Locale_DE
 	//TODO    remove X_ in SchemeFile
 	//TODO RNGOutcome text change to record
-	//TODO AttackInfoPart3 sideInfos
 	//TODO stats edit name title
-	//TODO keybind prefix
-	//TODO keybind mouse button names
-	//TODO keybind infoAdd
 
 	//combat system (rules)
 	//TODO    change speed effects

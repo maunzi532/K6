@@ -49,17 +49,17 @@ public final class InvSlot implements Inv0
 
 	public boolean canProvideX()
 	{
-		return stack != null && stack.canProvideX();
+		return stack != null && stack.canChangedProvide();
 	}
 
 	public int getCurrentX()
 	{
-		return stack != null ? stack.getCountX() : 0;
+		return stack != null ? stack.changedCount() : 0;
 	}
 
 	public int getCurrentC()
 	{
-		return stackExists ? stack.getCountC() : 0;
+		return stackExists ? stack.currentCount() : 0;
 	}
 
 	public int getLimit()
@@ -70,7 +70,7 @@ public final class InvSlot implements Inv0
 	@Override
 	public boolean ok()
 	{
-		return stack == null || (stack.ok() && stack.getIncreasedX() <= limit);
+		return stack == null || (stack.ok() && stack.getChangedIncreased() <= limit);
 	}
 
 	@Override
@@ -109,9 +109,9 @@ public final class InvSlot implements Inv0
 	}
 
 	@Override
-	public Optional<ItemStack> wouldProvide(ItemStack itemStack, boolean unlimited)
+	public Optional<ItemStack> showProvidable(ItemStack itemStack, boolean unlimited)
 	{
-		return stack != null ? stack.wouldProvide(itemStack, unlimited) : Optional.empty();
+		return stack != null ? stack.showProvidable(itemStack, unlimited) : Optional.empty();
 	}
 
 	@Override
@@ -125,7 +125,7 @@ public final class InvSlot implements Inv0
 	{
 		if(stack != null)
 		{
-			return stack.canAdd(itemStack, unlimited) && (unlimited || stack.getIncreasedX() + itemStack.count <= limit);
+			return stack.canAdd(itemStack, unlimited) && (unlimited || stack.getChangedIncreased() + itemStack.count <= limit);
 		}
 		else
 		{

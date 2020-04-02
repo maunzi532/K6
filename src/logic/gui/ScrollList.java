@@ -9,7 +9,7 @@ public class ScrollList<T> implements GuiElement
 	private final int sizeX, sizeY;
 	private final int elementSizeX, elementSizeY;
 	private final Function<? super T, GuiTile[]> function;
-	protected Function<T, Boolean> onTarget;
+	protected T targetedElement;
 	private final Consumer<? super T> onClick;
 	private final int elementCountX;
 	private final int elementCountYm0;
@@ -178,21 +178,18 @@ public class ScrollList<T> implements GuiElement
 			return new ElementTargetResult(true, false, CTile.NONE);
 		}
 		boolean requireUpdate = false;
+		T targetElement = elements.get(elementNum);
 		if(click)
 		{
 			if(onClick != null)
 			{
-				onClick.accept(elements.get(elementNum));
+				onClick.accept(targetElement);
 				requireUpdate = true;
 			}
 		}
 		else
 		{
-			if(onTarget != null)
-			{
-				if(onTarget.apply(elements.get(elementNum)))
-					requireUpdate = true;
-			}
+			targetedElement = targetElement;
 		}
 		return new ElementTargetResult(true, requireUpdate,
 				new CTile(locationX + xel * elementSizeX, startY() + yel * elementSizeY, elementSizeX, elementSizeY));

@@ -71,7 +71,7 @@ public final class BlockedInv implements Inv
 	}
 
 	@Override
-	public Optional<ItemStack> wouldProvide(ItemStack itemStack, boolean unlimited)
+	public Optional<ItemStack> showProvidable(ItemStack itemStack, boolean unlimited)
 	{
 		return Optional.empty();
 	}

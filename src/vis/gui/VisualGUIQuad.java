@@ -15,7 +15,7 @@ public final class VisualGUIQuad extends VisualGUI
 	public VisualGUIQuad(XGraphics graphics, QuadCamera camera)
 	{
 		super(graphics);
-		DoubleType y2 = camera.getDoubleType();
+		DoubleType y2 = camera.doubleType();
 		lu = y2.createD(-3.0 / 4.0, -3.0 / 4.0);
 		rl = y2.createD(-1.0 / 4.0, -1.0 / 4.0);
 	}
@@ -30,7 +30,7 @@ public final class VisualGUIQuad extends VisualGUI
 	{
 		if(xgui.xw() <= 0 || xgui.yw() <= 0)
 			return false;
-		DoubleTile rlLoc = rlLoc(camera.getDoubleType(), xgui);
+		DoubleTile rlLoc = rlLoc(camera.doubleType(), xgui);
 		return h1.v()[0] >= lu.v()[0] && h1.v()[0] <= rlLoc.v()[0] && h1.v()[1] >= lu.v()[1] && h1.v()[1] <= rlLoc.v()[1];
 	}
 
@@ -39,6 +39,6 @@ public final class VisualGUIQuad extends VisualGUI
 	{
 		double cxs = (xgui.xw() - 1) * QuadLayout.DQ2;
 		double cys = (xgui.yw() - 1) * QuadLayout.DQ2;
-		drawGUI(camera, xgui, scheme, cxs, cys, lu, rlLoc(camera.getDoubleType(), xgui), QuadLayout.DQ2, FONT_SIZE, TEXT_END);
+		drawGUI(camera, xgui, scheme, cxs, cys, lu, rlLoc(camera.doubleType(), xgui), QuadLayout.DQ2, FONT_SIZE, TEXT_END);
 	}
 }

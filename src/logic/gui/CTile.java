@@ -1,7 +1,5 @@
 package logic.gui;
 
-import text.*;
-
 public final class CTile
 {
 	public static final CTile NONE = new CTile(0, 0, 0, 0);

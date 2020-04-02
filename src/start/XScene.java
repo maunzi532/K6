@@ -44,7 +44,7 @@ public final class XScene extends Application
 		XGraphics graphics = new XGraphics(canvas.getGraphicsContext2D(), width, height);
 		ItemLoader itemLoader = new ItemLoader2();
 		BlueprintFile blueprintFile = new BlueprintFile(loadTextResource(scheme.setting("file.buildingblueprint")), itemLoader);
-		MainVisual mainVisual = new MainVisual(graphics, scheme.keybindFile(), scheme, mapCamera(scheme, graphics),
+		MainVisual mainVisual = new MainVisual(graphics, scheme, mapCamera(scheme, graphics),
 				menuCamera(scheme, graphics), guiCamera(scheme, graphics), a1 -> editorSlotCamera(scheme, graphics, a1),
 				itemLoader, blueprintFile,
 				scheme.setting("load.map"),

@@ -41,7 +41,7 @@ public final class Entity2Builder
 
 	public Entity2Builder addItem(Item item)
 	{
-		itemList = itemList.add(new ItemList(item));
+		itemList = itemList.add(ItemList.create(item));
 		return this;
 	}
 

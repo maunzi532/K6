@@ -42,98 +42,6 @@ public final class AttackInfoPart3
 		melting1 = attackMode.abilities.contains(XAbility.MELTING);
 	}
 
-	public CharSequence[] infos()
-	{
-		CharSequence[] info = new CharSequence[6];
-		if(healthCost > 0)
-			info[0] = new ArgsText("attackinfo.health.cost", attackMode.stats.currentHealth(), healthCost, attackMode.stats.maxHealth());
-		else
-			info[0] = new ArgsText("attackinfo.health", attackMode.stats.currentHealth(), attackMode.stats.maxHealth());
-		if(attackCount > 0)
-		{
-			if(melting1)
-			{
-				int normalAttackCount = attackCount - 1;
-				if(normalAttackCount > 1)
-					info[1] = new ArgsText("attackinfo.damage.melt", meltDamage, normalAttackCount, damage);
-				else
-					info[1] = new ArgsText("attackinfo.damage.melt.1", meltDamage, damage);
-			}
-			else
-			{
-				if(attackCount > 1)
-					info[1] = new ArgsText("attackinfo.damage", attackCount, damage);
-				else
-					info[1] = new ArgsText("attackinfo.damage.1", damage);
-			}
-			if(autohit1)
-				info[2] = new ArgsText("attackinfo.hitrate.autohit1", hitrate);
-			else
-				info[2] = new ArgsText("attackinfo.hitrate", hitrate);
-			info[3] = new ArgsText("attackinfo.critrate", critrate);
-			if(advantage > 0)
-				info[4] = "attackinfo.advantage";
-		}
-		return info;
-	}
-
-	public CharSequence[] sideInfos()
-	{
-		return Arrays.stream(infos()).limit(4).toArray(CharSequence[]::new);
-		/*String[] info = new String[3];
-		if(attackCount > 0)
-		{
-			if(melting1)
-				info[0] = "Damage\n" + meltDamage + "+" + damage + (attackCount > 2 ? "x" + (attackCount - 1) : "");
-			else
-				info[0] = "Damage\n" + damage + (attackCount > 1 ? "x" + attackCount : "");
-			info[1] = "Acc%\n" + hitrate + (autohit1 ? "*" : "");
-			info[2] = "Crit%\n" + critrate;
-		}
-		return info;
-		CharSequence[] info = new CharSequence[6];
-		if(healthCost > 0)
-			info[0] = new ArgsText("sideinfo.health.cost", attackMode.stats.currentHealth(), healthCost, attackMode.stats.maxHealth());
-		else
-			info[0] = new ArgsText("sideinfo.health", attackMode.stats.currentHealth(), attackMode.stats.maxHealth());
-		if(attackCount > 0)
-		{
-			if(melting1)
-			{
-				int normalAttackCount = attackCount - 1;
-				if(normalAttackCount > 1)
-					info[1] = new ArgsText("sideinfo.damage.melt", meltDamage, normalAttackCount, damage);
-				else
-					info[1] = new ArgsText("sideinfo.damage.melt.1", meltDamage, damage);
-			}
-			else
-			{
-				if(attackCount > 1)
-					info[1] = new ArgsText("sideinfo.damage", attackCount, damage);
-				else
-					info[1] = new ArgsText("sideinfo.damage.1", damage);
-			}
-			if(autohit1)
-				info[2] = new ArgsText("sideinfo.hitrate.autohit1", hitrate);
-			else
-				info[2] = new ArgsText("sideinfo.hitrate", hitrate);
-			info[3] = new ArgsText("sideinfo.critrate", critrate);
-			if(advantage > 0)
-				info[4] = "sideinfo.advantage";
-		}
-		return info;*/
-	}
-
-	private int attackCount()
-	{
-		if(!distanceOK)
-			return 0;
-		if(attackMode.finalSpeed > attackModeT.finalSpeed)
-			return attackMode.attackCount + 1;
-		else
-			return attackMode.attackCount;
-	}
-
 	private static int advantage(AdvantageType adv, AdvantageType advT)
 	{
 		if(adv == advT)
@@ -156,5 +64,84 @@ public final class AttackInfoPart3
 			return -1;
 		else
 			return 0;
+	}
+
+	private int attackCount()
+	{
+		if(!distanceOK)
+			return 0;
+		if(attackMode.finalSpeed > attackModeT.finalSpeed)
+			return attackMode.attackCount + 1;
+		else
+			return attackMode.attackCount;
+	}
+
+	public CharSequence[] infos()
+	{
+		CharSequence[] info = new CharSequence[6];
+		info[0] = viewHealth();
+		if(attackCount > 0)
+		{
+			info[1] = viewCountXDamage();
+			info[2] = viewHitrate();
+			info[3] = viewCritrate();
+			if(advantage > 0)
+				info[4] = "attackinfo.advantage";
+		}
+		return info;
+	}
+
+	public CharSequence[] sideInfos()
+	{
+		CharSequence[] info = new CharSequence[3];
+		if(attackCount > 0)
+		{
+			info[0] = viewCountXDamage();
+			info[1] = viewHitrate();
+			info[2] = viewCritrate();
+		}
+		return info;
+	}
+
+	private CharSequence viewHealth()
+	{
+		if(healthCost > 0)
+			return new ArgsText("attackinfo.health.cost", attackMode.stats.currentHealth(), healthCost, attackMode.stats.maxHealth());
+		else
+			return new ArgsText("attackinfo.health", attackMode.stats.currentHealth(), attackMode.stats.maxHealth());
+	}
+
+	private CharSequence viewCountXDamage()
+	{
+		if(attackCount <= 0)
+			return null;
+		if(melting1)
+		{
+			int normalAttackCount = attackCount - 1;
+			if(normalAttackCount > 1)
+				return new ArgsText("attackinfo.damage.melt", meltDamage, normalAttackCount, damage);
+			else
+				return new ArgsText("attackinfo.damage.melt.1", meltDamage, damage);
+		}
+		else
+		{
+			if(attackCount > 1)
+				return new ArgsText("attackinfo.damage", attackCount, damage);
+			else
+				return new ArgsText("attackinfo.damage.1", damage);
+		}
+	}
+
+	private CharSequence viewHitrate()
+	{
+		if(autohit1)
+			return new ArgsText("attackinfo.hitrate.autohit1", hitrate);
+		else
+			return new ArgsText("attackinfo.hitrate", hitrate);
+	}
+
+	private CharSequence viewCritrate()
+	{
+		return new ArgsText("attackinfo.critrate", critrate);
 	}
 }

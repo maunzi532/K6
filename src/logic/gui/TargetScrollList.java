@@ -6,19 +6,11 @@ import java.util.function.*;
 public final class TargetScrollList<T> extends ScrollList<T>
 {
 	private T targeted;
-	private T targeted2;
 
 	public TargetScrollList(int locationX, int locationY, int sizeX, int sizeY, int elementSizeX, int elementSizeY,
 			List<? extends T> elements, Function<? super T, GuiTile[]> function, Consumer<? super T> onClick)
 	{
 		super(locationX, locationY, sizeX, sizeY, elementSizeX, elementSizeY, elements, function, onClick);
-		onTarget = this::onTarget;
-	}
-
-	private Boolean onTarget(T target)
-	{
-		targeted2 = target;
-		return false;
 	}
 
 	public T getTargeted()
@@ -32,17 +24,17 @@ public final class TargetScrollList<T> extends ScrollList<T>
 		ElementTargetResult result = super.target(x, y, click);
 		if(!click)
 		{
-			if(targeted2 != null)
+			if(targetedElement != null)
 			{
-				if(targeted != targeted2)
+				if(targeted != targetedElement)
 				{
-					targeted = targeted2;
-					targeted2 = null;
+					targeted = targetedElement;
+					targetedElement = null;
 					return new ElementTargetResult(result.inside(), true, result.targetTile());
 				}
 				else
 				{
-					targeted2 = null;
+					targetedElement = null;
 					return result;
 				}
 			}

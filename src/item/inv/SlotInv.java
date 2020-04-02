@@ -94,9 +94,9 @@ public final class SlotInv implements Inv
 	}
 
 	@Override
-	public Optional<ItemStack> wouldProvide(ItemStack itemStack, boolean unlimited)
+	public Optional<ItemStack> showProvidable(ItemStack itemStack, boolean unlimited)
 	{
-		return slots.stream().map(e -> e.wouldProvide(itemStack, unlimited)).filter(Optional::isPresent).findFirst().orElse(Optional.empty());
+		return slots.stream().map(e -> e.showProvidable(itemStack, unlimited)).filter(Optional::isPresent).findFirst().orElse(Optional.empty());
 	}
 
 	@Override

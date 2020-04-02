@@ -7,7 +7,6 @@ import java.util.stream.*;
 import logic.*;
 import logic.gui.*;
 import logic.xstate.*;
-import statsystem.*;
 
 public final class EntityEditGUI extends XGUIState
 {
@@ -100,6 +99,29 @@ public final class EntityEditGUI extends XGUIState
 	private void clickInfo(int target)
 	{
 		changeStatNum = target;
-		changeOptions = Stats.editOptions(target);
+		changeOptions = editOptions(target);
+	}
+
+	private static List<? extends CharSequence> editOptions(int num)
+	{
+		if(num == 0)
+			return List.of("stats.editoption.name.name", "stats.editoption.name.mapimage", "stats.editoption.name.sideimage");
+		if(num == 1)
+			return List.of("stats.editoption.class.previous", "stats.editoption.class.next");
+		if(num == 2)
+			return List.of("stats.editoption.plus", "stats.editoption.minus", "stats.editoption.level.resetstats");
+		if(num == 3)
+			return List.of("stats.editoption.plus", "stats.editoption.minus", "stats.editoption.exp.reset");
+		if(num <= 11)
+			return List.of("stats.editoption.plus", "stats.editoption.minus", "stats.editoption.lvstat.reset");
+		if(num == 12)
+			return List.of("stats.editoption.plus", "stats.editoption.minus", "stats.editoption.health.reset");
+		if(num == 13)
+			return List.of("stats.editoption.plus", "stats.editoption.minus", "stats.editoption.exhaustion.reset");
+		if(num == 14)
+			return List.of("stats.editoption.plus", "stats.editoption.minus", "stats.editoption.movement.reset");
+		if(num == 15)
+			return List.of("stats.editoption.defendwith.autoequip");
+		return List.of();
 	}
 }

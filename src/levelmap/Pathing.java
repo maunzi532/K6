@@ -41,27 +41,29 @@ public final class Pathing
 		for(int counter = 0; counter < lA.size(); counter++)
 		{
 			PathLocation first = lA.get(counter);
-			if(first == null)
-				continue;
-			for(Tile neighbor : y1.neighbors(first.tile()))
+			if(first != null)
 			{
-				PathLocation pl = pathLocation(neighbor, map.advTile(neighbor), first.cost(), maxMovementCost, entity, first, movingAllies);
-				if(pl != null)
+				for(Tile neighbor : y1.neighbors(first.tile()))
 				{
-					int prevIndex = lA.indexOf(pl);
-					if(prevIndex >= 0)
+					PathLocation pl = pathLocation(neighbor, map.advTile(neighbor),
+							first.cost(), maxMovementCost, entity, first, movingAllies);
+					if(pl != null)
 					{
-						if(pl.cost() < lA.get(prevIndex).cost())
+						int prevIndex = lA.indexOf(pl);
+						if(prevIndex >= 0)
 						{
-							lA.set(prevIndex, null);
-							lA.add(pl);
+							if(pl.cost() < lA.get(prevIndex).cost())
+							{
+								lA.set(prevIndex, null);
+								lA.add(pl);
+							}
 						}
-					}
-					else
-					{
-						lA.add(pl);
-						if(pl.canEnd())
-							endpoints.add(neighbor);
+						else
+						{
+							lA.add(pl);
+							if(pl.canEnd())
+								endpoints.add(neighbor);
+						}
 					}
 				}
 			}

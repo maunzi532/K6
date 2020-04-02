@@ -57,8 +57,8 @@ public final class XCharacter implements DoubleInv, XBuilder
 	public XCharacter copy(Tile copyLocation)
 	{
 		XCharacter copy = new XCharacter(team, startingDelay, defeated, copyLocation,
-				stats.copy(), inv.copy(), enemyAI.copy(), resources.copy(copyLocation), StartingSettings
-				.copy(startingSettings));
+				stats.copy(), inv.copy(), enemyAI.copy(), resources.copy(copyLocation),
+				StartingSettings.copy(startingSettings));
 		copy.stats.autoEquip(copy);
 		return copy;
 	}
@@ -94,9 +94,9 @@ public final class XCharacter implements DoubleInv, XBuilder
 		return visualReplaced == null || visualReplaced.finished();
 	}
 
-	public void replaceVisual(XArrow visualReplaced)
+	public void replaceVisual(XArrow arrow)
 	{
-		this.visualReplaced = visualReplaced;
+		visualReplaced = arrow;
 	}
 
 	public Stats stats()
@@ -119,9 +119,9 @@ public final class XCharacter implements DoubleInv, XBuilder
 		return resources;
 	}
 
-	public void newResources(TurnResources resources)
+	public void newResources(TurnResources newResources)
 	{
-		this.resources = resources;
+		resources = newResources;
 	}
 
 	public StartingSettings saveSettings()
@@ -129,14 +129,9 @@ public final class XCharacter implements DoubleInv, XBuilder
 		return startingSettings;
 	}
 
-	public void addItems(ItemList itemList)
-	{
-		inv.tryAdd(itemList);
-	}
-
 	public boolean isEnemy(XCharacter other)
 	{
-		return other.team != team;
+		return other.team() != team;
 	}
 
 	@Override

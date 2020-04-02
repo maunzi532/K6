@@ -1,6 +1,6 @@
 package text;
 
-public record KeyFunction(String function) implements CharSequence, SLocaleFeature
+public record KeyFunction(String function) implements CharSequence
 {
 	@Override
 	public int length()

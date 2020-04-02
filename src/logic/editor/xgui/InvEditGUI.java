@@ -113,13 +113,13 @@ public class InvEditGUI extends XGUIState
 			{
 				case "gui.edit.inv.add", "gui.edit.inv.increase" ->
 				{
-					inv.tryAdd(new ItemList(editItem));
+					inv.tryAdd(ItemList.create(editItem));
 					update();
 				}
 				case "gui.edit.inv.decrease" ->
 				{
-					inv.tryGive(new ItemList(editItem), false, CommitType.COMMIT);
-					if(!inv.tryGive(new ItemList(editItem), false, CommitType.ROLLBACK))
+					inv.tryGive(ItemList.create(editItem), false, CommitType.COMMIT);
+					if(!inv.tryGive(ItemList.create(editItem), false, CommitType.ROLLBACK))
 					{
 						editItem = null;
 					}

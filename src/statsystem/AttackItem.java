@@ -163,7 +163,7 @@ public final class AttackItem implements Item, ModifierAspect
 	public static CharSequence displayRange(int[] ranges)
 	{
 		if(ranges.length == 0)
-			return new ArgsText("range.none");
+			return "range.none";
 		List<CharSequence> collected = new ArrayList<>();
 		int start = ranges[0];
 		int current = start;

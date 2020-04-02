@@ -15,7 +15,7 @@ public interface Inv0
 
 	boolean give(ItemStack itemStack, boolean unlimited);
 
-	Optional<ItemStack> wouldProvide(ItemStack itemStack, boolean unlimited);
+	Optional<ItemStack> showProvidable(ItemStack itemStack, boolean unlimited);
 
 	Optional<ItemStack> provide(ItemStack itemStack, boolean unlimited);
 

@@ -26,7 +26,7 @@ public abstract class TileCamera
 		zoom = 1.0;
 	}
 
-	public DoubleType getDoubleType()
+	public DoubleType doubleType()
 	{
 		return y2;
 	}
