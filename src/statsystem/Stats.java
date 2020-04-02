@@ -413,23 +413,26 @@ public final class Stats implements ModifierAspect
 
 	public List<? extends CharSequence> statsInfo()
 	{
-		List<String> info = new ArrayList<>();
-		info.add("Class\n" + xClass.className);
-		info.add("Level\n" + level);
-		info.add("Exp\n" + exp);
-		info.add("Health\n" + currentHealth + "/" + maxHealth());
-		info.add("Move\n" + movement);
-		if(exhaustion > 0)
-			info.add("Exhausted\n" + exhaustion);
-		else if(exhaustion < 0)
-			info.add("Boosted\n" + (-exhaustion));
-		else
-			info.add("");
+		List<CharSequence> info = new ArrayList<>();
+		info.add(new ArgsText("stats.info.class", new ArgsText(xClass.className)));
+		info.add(new ArgsText("stats.info.level", level));
+		info.add(new ArgsText("stats.info.exp", exp));
+		info.add(new ArgsText("stats.info.health", currentHealth, maxHealth()));
 		for(int i = 0; i < 8; i++)
 		{
-			info.add(statNames[i] + "\n" + lvStats[i]);
+			info.add(new ArgsText("stats.info." + statNames[i], lvStats[i]));
 		}
-		info.add("CPower\n" + calcCPower());
+		if(exhaustion > 0)
+			info.add(new ArgsText("stats.info.exhaustion", exhaustion));
+		else if(exhaustion < 0)
+			info.add(new ArgsText("stats.info.boost", -exhaustion));
+		else
+			info.add(null);
+		info.add(new ArgsText("stats.info.movement", movement));
+		List<CharSequence> m1 = new ArrayList<>();
+		m1.add(new ArgsText("stats.info.itemfilter"));
+		filter.getItemTypes().stream().map(AI2Class::name).forEach(m1::add);
+		info.add(new MultiText(m1, MultiTextConnect.LINES));
 		return info;
 	}
 

@@ -151,10 +151,10 @@ public final class AttackItem implements Item, ModifierAspect
 		list.add(MultiText.lines(itemClass.name(), defenseType.text));
 		list.add(new ArgsText("attackitem.ranges", displayRange(ranges)));
 		list.add(new ArgsText("attackitem.counterranges", displayRange(counterR)));
-		list.add(new ArgsText("attackitem.advantage", advantageType.name));
+		list.add(MultiText.lines("attackitem.advantage", advantageType.name));
 		if(adaptive > 0)
 		{
-			list.add(new ArgsText("attackitem.adaptive", adaptiveType.name, adaptive));
+			list.add(MultiText.lines("attackitem.adaptive", new ArgsText(adaptiveType.name, adaptive)));
 		}
 		list.addAll(detailedInfo(false));
 		return list;

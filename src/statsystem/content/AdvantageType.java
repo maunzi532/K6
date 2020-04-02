@@ -2,16 +2,16 @@ package statsystem.content;
 
 public enum AdvantageType
 {
-	DEFEND("Defend"),
-	DAGGER("Dagger"),
-	SPEAR("Spear"),
-	AXE("Axe"),
-	SPELL("None"),
-	CROSSBOW("None");
+	DEFEND("advtype.defend"),
+	DAGGER("advtype.dagger"),
+	SPEAR("advtype.spear"),
+	AXE("advtype.axe"),
+	SPELL("advtype.spell"),
+	CROSSBOW("advtype.crossbow");
 
-	public final String name;
+	public final CharSequence name;
 
-	AdvantageType(String name)
+	AdvantageType(CharSequence name)
 	{
 		this.name = name;
 	}

@@ -1,5 +1,7 @@
 package statsystem;
 
+import text.*;
+
 public final class AbilityText
 {
 	private final ModifierAspect modifierAspect;
@@ -11,8 +13,8 @@ public final class AbilityText
 		this.ability = ability;
 	}
 
-	public String text()
+	public CharSequence text()
 	{
-		return "Ability\n" + ability.name + "\n" + modifierAspect.nameForAbility();
+		return MultiText.lines(ability.name, new ArgsText("ability.withmode", new ArgsText(modifierAspect.nameForAbility().toString())));
 	}
 }

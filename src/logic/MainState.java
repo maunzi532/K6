@@ -38,9 +38,8 @@ public record MainState(LevelMap levelMap, XStateHolder stateHolder, SideInfoFra
 	//TODO GUI Text in file InvEdit
 	//TODO GUI Text in file StartSettings
 	//TODO GUI Text in file CharInv
-	//TODO GUI Text in file CharStats 1
-	//TODO GUI Text in file CharStats 2
 	//TODO GUI Text in file CharLevelup
+	//TODO Keybind names
 
 	//combat system (rules)
 	//TODO    change speed effects

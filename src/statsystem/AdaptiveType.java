@@ -2,14 +2,14 @@ package statsystem;
 
 public enum AdaptiveType
 {
-	NONE("-"),
-	COST("Health"),
-	FINESSE("Finesse"),
-	SKILL("Skill"),
-	SPEED("Speed"),
-	LUCK("Luck"),
-	DEFENSE("Defense"),
-	EVASION("Evasion");
+	NONE("adaptive.none"),
+	COST("adaptive.cost"),
+	FINESSE("adaptive.finesse"),
+	SKILL("adaptive.skill"),
+	SPEED("adaptive.speed"),
+	LUCK("adaptive.luck"),
+	DEFENSE("adaptive.defense"),
+	EVASION("adaptive.evasion");
 
 	public final String name;
 

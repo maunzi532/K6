@@ -3,6 +3,7 @@ package statsystem;
 import java.util.*;
 import java.util.stream.*;
 import statsystem.content.*;
+import text.*;
 
 public final class AttackMode3
 {
@@ -222,38 +223,41 @@ public final class AttackMode3
 
 	public List<? extends CharSequence> info()
 	{
-		List<String> list = new ArrayList<>();
+		List<CharSequence> list = new ArrayList<>();
 		if(attackCount > 0)
 		{
-			list.add(attackCount + " attacks\n" + defenseType.text);
+			list.add(MultiText.lines(new ArgsText("stats.equip.attackcount", attackCount), defenseType.text));
 		}
 		else
 		{
-			list.add("");
+			list.add(null);
 		}
-		list.add("Range\n" + AttackItem.displayRange(ranges));
-		list.add("Counter\n" + AttackItem.displayRange(counter));
-		list.add("Adv. Type\n" + advType.name);
+		list.add(new ArgsText("stats.equip.ranges", AttackItem.displayRange(ranges)));
+		list.add(new ArgsText("stats.equip.counterranges", AttackItem.displayRange(counter)));
+		list.add(MultiText.lines("stats.equip.advantage", advType.name));
 		if(attackCount > 0)
 		{
 			if(adaptiveType == AdaptiveType.COST)
 			{
-				list.add("Cast with\n" + healthCost + " health");
+				list.add(new ArgsText("stats.equip.cost", healthCost));
 			}
 			else
 			{
-				list.add("");
+				list.add(null);
 			}
-			list.add("Attack\n" + attackPower);
-			list.add("Acc%%\n" + accuracy);
-			list.add("Crit%%\n" + crit);
+			list.add(new ArgsText("stats.equip.attackpower", attackPower));
 		}
-		list.add("Speed\n" + finalSpeed);
-		list.add("Def (phy)\n" + defensePhysical);
-		list.add("Def (mag)\n" + defenseMagical);
-		list.add("Evade (phy)\n" + evasionPhysical);
-		list.add("Evade (mag)\n" + evasionMagical);
-		list.add("Prevent Crit\n" + critProtection);
+		list.add(new ArgsText("stats.equip.speed", finalSpeed));
+		if(attackCount > 0)
+		{
+			list.add(new ArgsText("stats.equip.accuracy", accuracy));
+			list.add(new ArgsText("stats.equip.crit", crit));
+		}
+		list.add(new ArgsText("stats.equip.defense.physical", defensePhysical));
+		list.add(new ArgsText("stats.equip.defense.magical", defenseMagical));
+		list.add(new ArgsText("stats.equip.evasion.physical", evasionPhysical));
+		list.add(new ArgsText("stats.equip.evasion.magical", evasionMagical));
+		list.add(new ArgsText("stats.equip.critprotection", critProtection));
 		abilityTexts.forEach(e -> list.add(e.text()));
 		return list;
 	}
