@@ -385,32 +385,6 @@ public final class Stats implements ModifierAspect
 		a1.end();
 	}
 
-	public List<? extends CharSequence> info() //TODO remove
-	{
-		List<String> info = new ArrayList<>();
-		info.add("Class\n" + xClass.className);
-		info.add("Level\n" + level);
-		info.add("Exp\n" + exp);
-		info.add("Health\n" + currentHealth + "/" + maxHealth());
-		for(int i = 0; i < 7; i++)
-		{
-			info.add(statNames[i] + "\n" + lvStats[i]);
-		}
-		info.add("CPower\n" + calcCPower());
-		info.add("Move\n" + movement);
-		info.add(exhaustion > 0 ? "Exhausted\n" + exhaustion : "");
-		info.add("Defend\n" + (lastUsed.active ? lastUsed.item.info().get(0).toString().replace("Type\n", "") : "None")); //TODO
-		for(AI2Class e : filter.getItemTypes())
-		{
-			info.add("ItemType\n" + e.getClass().getSimpleName().replace("Item", ""));
-		}
-		for(XAbility ability : xClass.abilities)
-		{
-			info.add("Ability\n" + ability.name);
-		}
-		return info;
-	}
-
 	public List<? extends CharSequence> statsInfo()
 	{
 		List<CharSequence> info = new ArrayList<>();
@@ -441,40 +415,56 @@ public final class Stats implements ModifierAspect
 		return AttackMode3.convert(this, lastUsed).info();
 	}
 
-	public List<? extends CharSequence> levelup() //TODO remove
+	public List<? extends CharSequence> levelupText(int[] levelup)
 	{
-		int[] levelup = levelSystem().getLevelup(this);
-		List<String> info = new ArrayList<>();
-		info.add("Class\n" + xClass.className);
-		info.add("Level\n" + level + " -> " + (level + 1));
-		info.add("Exp\n" + exp + " -> " + ((exp - GetExpAnim.LEVELUP_EXP) / 2));
+		List<CharSequence> info = new ArrayList<>();
+		info.add(new ArgsText("stats.levelup.class", new ArgsText(xClass.className)));
+		info.add(new ArgsText("stats.levelup.level", level, level + 1));
+		info.add(new ArgsText("stats.levelup.exp", exp, changedExp()));
+		info.add(new ArgsText("stats.levelup.health", changedHealth(levelup[7]), changedMaxHealth(levelup[7])));
 		for(int i = 0; i < 8; i++)
 		{
-			info.add(statNames[i] + "\n" + lvStats[i] + " -> " + (lvStats[i] + levelup[i]));
+			info.add(new ArgsText("stats.levelup." + statNames[i], lvStats[i], lvStats[i] + levelup[i]));
 		}
-		info.add("CPower\n" + calcCPower() + " -> " + (calcCPower() + Arrays.stream(levelup).sum()));
-		int changedHealth = currentHealth;
-		if(currentHealth > 0)
-		{
-			if(levelup[7] > 0)
-				changedHealth += levelup[7] * HEALTH_MULTIPLIER;
-			if(changedHealth > (lvStats[7] + levelup[7]) * HEALTH_MULTIPLIER)
-				changedHealth = (lvStats[7] + levelup[7]) * HEALTH_MULTIPLIER;
-		}
-		info.add("Health\n" + currentHealth + " -> " + changedHealth);
-		info.add("Move\n" + movement);
-		info.add(exhaustion > 0 ? "Exhausted\n" + exhaustion : "");
+		info.add(new ArgsText("stats.levelup.power", calcCPower(), (calcCPower() + Arrays.stream(levelup).sum())));
+		return info;
+	}
+
+	public void levelup(int[] levelup)
+	{
 		level++;
-		if(level < levelSystem().levelCap())
-			exp = (exp - GetExpAnim.LEVELUP_EXP) / 2;
-		else
-			exp = 0;
+		exp = changedExp();
+		currentHealth = changedHealth(levelup[7]);
 		for(int i = 0; i < 8; i++)
 		{
 			lvStats[i] += levelup[i];
 		}
-		currentHealth = changedHealth;
-		return info;
+	}
+
+	private int changedExp()
+	{
+		if(level < levelSystem().levelCap())
+			return (exp - GetExpAnim.LEVELUP_EXP) / 2;
+		else
+			return 0;
+	}
+
+	private int changedHealth(int toughnessChange)
+	{
+		int changedHealth = currentHealth;
+		if(currentHealth > 0)
+		{
+			if(toughnessChange > 0)
+				changedHealth += toughnessChange * HEALTH_MULTIPLIER;
+			if(changedHealth > (lvStats[7] + toughnessChange) * HEALTH_MULTIPLIER)
+				changedHealth = (lvStats[7] + toughnessChange) * HEALTH_MULTIPLIER;
+		}
+		return changedHealth;
+	}
+
+	private int changedMaxHealth(int toughnessChange)
+	{
+		return (lvStats[7] + toughnessChange) * HEALTH_MULTIPLIER;
 	}
 
 	public CharSequence[] sideInfoText(CharSequence generic)

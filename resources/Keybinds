@@ -35,7 +35,6 @@
     "KD,state.edit.delete",
     "KM,state.edit.move",
     "KC,state.stats",
-    "KI,state.inv.character",
     "KI,state.inv.building",
     "KR,state.recipe",
     "KBACK_SPACE,state.removebuilding",

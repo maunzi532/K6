@@ -12,11 +12,11 @@ import statsystem.*;
 
 public final class CharacterCombatGUI extends XGUIState
 {
-	private static final CTile NAME = new CTile(2, 0, 3, 1);
 	private static final CTile UNEQUIP = new CTile(1, 6, new GuiTile("gui.stats.unequip"), 2, 1);
-	private static final CTile VIEW_MODE = new CTile(4, 6, 2, 1);
 
 	private final XCharacter character;
+	private final boolean control;
+	private final int xhs;
 	private int viewMode;
 	private Item equippedItem;
 	private CElement viewModeElement;
@@ -28,6 +28,8 @@ public final class CharacterCombatGUI extends XGUIState
 	public CharacterCombatGUI(XCharacter character, int viewMode)
 	{
 		this.character = character;
+		control = character.team() == CharacterTeam.HERO;
+		xhs = control ? 1 : 0;
 		this.viewMode = viewMode;
 	}
 
@@ -36,17 +38,23 @@ public final class CharacterCombatGUI extends XGUIState
 	{
 		mainState.side().setStandardSideInfo(character);
 		equippedItem = character.stats().lastUsed().item;
-		elements.add(new CElement(NAME, new GuiTile(character.name())));
-		elements.add(new CElement(UNEQUIP, true, () -> character.stats().lastUsed().active, this::unequip));
-		viewModeElement = new CElement(VIEW_MODE, true, null, () -> viewMode = (viewMode + 1) % 2);
+		elements.add(new CElement(new CTile(1 + xhs, 0, 3, 1), new GuiTile(character.name())));
+		if(control)
+		{
+			elements.add(new CElement(UNEQUIP, true, () -> character.stats().lastUsed().active, this::unequip));
+		}
+		viewModeElement = new CElement(new CTile(3 + xhs, 6, 2, 1), true, null, () -> viewMode = (viewMode + 1) % 2);
 		elements.add(viewModeElement);
-		invView = new TargetScrollList<>(1, 1, 2, 5, 2, 1,
-				null, this::itemViewView, e -> chosenItem = (e.base > 0 ? e.item : null));
+		invView = new TargetScrollList<>(xhs, 1, 2, 5, 2, 1,
+				null, this::itemViewView, control ? this::invClick : null);
 		elements.add(invView);
-		modeChooseView = new TargetScrollList<>(0, 1, 1, 5, 1, 1,
-				null, e -> GuiTile.textView(e.tile()), this::onClickMode);
-		elements.add(modeChooseView);
-		statsView = new ScrollList<>(3, 1, 4, 5, 1, 1,
+		if(control)
+		{
+			modeChooseView = new TargetScrollList<>(0, 1, 1, 5, 1, 1,
+					null, e -> GuiTile.textView(e.tile()), this::onClickMode);
+			elements.add(modeChooseView);
+		}
+		statsView = new ScrollList<>(2 + xhs, 1, 4, 5, 1, 1,
 				null, GuiTile::textView, null);
 		elements.add(statsView);
 		update();
@@ -61,7 +69,7 @@ public final class CharacterCombatGUI extends XGUIState
 		{
 			statsView.elements = invView.getTargeted().item.info();
 		}
-		else if(modeChooseView.getTargeted() != null)
+		else if(control && modeChooseView.getTargeted() != null)
 		{
 			statsView.elements = modeChooseView.getTargeted().modeInfo();
 		}
@@ -73,13 +81,16 @@ public final class CharacterCombatGUI extends XGUIState
 		{
 			statsView.elements = character.stats().infoWithEquip();
 		}
-		if(chosenItem != null && character.stats().getItemFilter().canContain(chosenItem))
+		if(control)
 		{
-			modeChooseView.elements = modesForItem(character.stats(), chosenItem);
-		}
-		else
-		{
-			modeChooseView.elements = List.of();
+			if(chosenItem != null && character.stats().getItemFilter().canContain(chosenItem))
+			{
+				modeChooseView.elements = modesForItem(character.stats(), chosenItem);
+			}
+			else
+			{
+				modeChooseView.elements = List.of();
+			}
 		}
 	}
 
@@ -88,6 +99,11 @@ public final class CharacterCombatGUI extends XGUIState
 		if(item instanceof AttackItem item2)
 			return item2.attackModes().stream().map(e -> AttackMode3.convert(stats, e)).collect(Collectors.toList());
 		return List.of();
+	}
+
+	private void invClick(ItemView itemView)
+	{
+		chosenItem = (itemView.base > 0 ? itemView.item : null);
 	}
 
 	private void onClickMode(AttackMode3 mode)
@@ -129,17 +145,16 @@ public final class CharacterCombatGUI extends XGUIState
 	@Override
 	public XMenu menu()
 	{
-		return XMenu.characterGUIMenu(character);
-		/*if(character.team() == CharacterTeam.HERO)
+		if(character.team() == CharacterTeam.HERO)
 			return XMenu.characterGUIMenu(character);
 		else
-			return XMenu.enemyGUIMenu(character);*/
+			return XMenu.enemyGUIMenu(character);
 	}
 
 	@Override
 	public int xw()
 	{
-		return 7;
+		return 6 + xhs;
 	}
 
 	@Override

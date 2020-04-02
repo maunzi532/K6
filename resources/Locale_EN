@@ -137,7 +137,6 @@
     "menu.edit.inv.building.input" : "Edit Input",
     "menu.edit.inv.building.output" : "Edit Output",
     "menu.stats" : "Stats",
-    "menu.inv.character" : "Inv.",
     "menu.edit.copy" : "Copy",
     "menu.edit.delete" : "Delete",
     "menu.edit.move" : "Move",
@@ -254,6 +253,19 @@
     "calculation.never" : "Never",
     "calculation.always" : "Always",
     "calculation.percent" : "%.0f%%",
-    "storage.name" : "Storage"
+    "storage.name" : "Storage",
+    "stats.levelup.class" : "Class%n%s",
+    "stats.levelup.level" : "Level%n%d -> %d",
+    "stats.levelup.exp" : "Exp%n%d -> %d",
+    "stats.levelup.health" : "Health%n%d / %d",
+    "stats.levelup.strength" : "Strength%n%d -> %d",
+    "stats.levelup.finesse" : "Finesse%n%d -> %d",
+    "stats.levelup.skill" : "Skill%n%d -> %d",
+    "stats.levelup.speed" : "Speed%n%d -> %d",
+    "stats.levelup.luck" : "Luck%n%d -> %d",
+    "stats.levelup.defense" : "Defense%n%d -> %d",
+    "stats.levelup.evasion" : "Evasion%n%d -> %d",
+    "stats.levelup.toughness" : "Toughness%n%d -> %d",
+    "stats.levelup.power" : "Power%n%d -> %d"
   }
 }

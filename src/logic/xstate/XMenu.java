@@ -25,7 +25,7 @@ public final class XMenu
 
 	public static XMenu characterGUIMenu(XCharacter character)
 	{
-		return new XMenu(new CharacterInvGUI(character), new CharacterCombatGUI(character, 0),
+		return new XMenu(new CharacterCombatGUI(character, 0),
 				new GiveOrTakeState(TradeDirection.GIVE, character), new GiveOrTakeState(TradeDirection.TAKE, character),
 				new SelectBuildingGUI(character), new RemoveBuildingGUI(character), new EndTurnState());
 	}
@@ -37,7 +37,7 @@ public final class XMenu
 
 	public static XMenu enemyGUIMenu(XCharacter enemy)
 	{
-		return new XMenu(new CharacterInvGUI(enemy), new EndTurnState());
+		return new XMenu(new CharacterCombatGUI(enemy, 0), new EndTurnState());
 	}
 
 	public static XMenu productionMenu(XBuilding building, ProcessInv processInv)

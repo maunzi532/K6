@@ -35,9 +35,6 @@ public record MainState(LevelMap levelMap, XStateHolder stateHolder, SideInfoFra
 	//TODO Building show floor requirements
 
 	//Text
-	//TODO GUI Text in file CharInv / replace charinv with charstats
-	//TODO GUI Text in file CharLevelup / replace charlevelup somehow
-	//TODO check remaining text
 	//TODO    Locale_DE
 	//TODO    remove X_ in SchemeFile
 	//TODO RNGOutcome text change to record

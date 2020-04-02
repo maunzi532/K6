@@ -20,7 +20,9 @@ public final class CharacterLevelupGUI extends Inv1GUI
 	public void onEnter(MainState mainState)
 	{
 		mainState.side().setStandardSideInfo(character);
-		baseInfo = character.stats().levelup();
+		int[] levelup = character.stats().levelSystem().getLevelup(character.stats());
+		baseInfo = character.stats().levelupText(levelup);
+		character.stats().levelup(levelup);
 		super.onEnter(mainState);
 	}
 

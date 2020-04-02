@@ -216,7 +216,7 @@ public final class XStateControl implements XStateHolder, ConvInputConsumer
 			}
 			else if(key.hasFunction("menu"))
 			{
-				setState(new CharacterInvGUI(entity));
+				setState(new CharacterCombatGUI(entity, 0));
 			}
 		}
 		else
@@ -227,7 +227,7 @@ public final class XStateControl implements XStateHolder, ConvInputConsumer
 			}
 			else if(key.hasFunction("menu"))
 			{
-				setState(new CharacterInvGUI(entity));
+				setState(new CharacterCombatGUI(entity, 0));
 			}
 		}
 	}
