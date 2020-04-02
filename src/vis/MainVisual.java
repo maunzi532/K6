@@ -175,17 +175,17 @@ public final class MainVisual implements XInputInterface
 	@Override
 	public void handleKey(XKey key)
 	{
-		if(key.hasFunction("Camera Left"))
+		if(key.hasFunction("camera.left"))
 			mapCamera.setXShift(mapCamera.getXShift() - 3.0);
-		if(key.hasFunction("Camera Up"))
+		if(key.hasFunction("camera.up"))
 			mapCamera.setYShift(mapCamera.getYShift() - 3.0);
-		if(key.hasFunction("Camera Right"))
+		if(key.hasFunction("camera.right"))
 			mapCamera.setXShift(mapCamera.getXShift() + 3.0);
-		if(key.hasFunction("Camera Down"))
+		if(key.hasFunction("camera.down"))
 			mapCamera.setYShift(mapCamera.getYShift() + 3.0);
 		if(!paused)
 		{
-			if(key.hasFunction("Pause"))
+			if(key.hasFunction("pause.toggle"))
 			{
 				paused = true;
 			}
@@ -196,7 +196,7 @@ public final class MainVisual implements XInputInterface
 		}
 		else
 		{
-			if(key.hasFunction("Pause"))
+			if(key.hasFunction("pause.toggle"))
 			{
 				paused = false;
 			}
@@ -262,7 +262,7 @@ public final class MainVisual implements XInputInterface
 		if(paused)
 			gd.fillText(scheme.local("pause"), xHW, scale);
 		gd.setTextAlign(TextAlignment.RIGHT);
-		gd.fillText(scheme.local("pause.info", new KeyFunction("Pause")), xHW * 2.0 - scale, scale);
+		gd.fillText(scheme.local("pause.info", new KeyFunction("pause.toggle")), xHW * 2.0 - scale, scale);
 		gd.setTextAlign(TextAlignment.CENTER);
 	}
 

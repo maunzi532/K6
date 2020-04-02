@@ -1,13 +1,11 @@
 package entity.analysis;
 
 import java.math.*;
-import java.text.*;
 import java.util.*;
+import text.*;
 
 public class RNGOutcome
 {
-	private static final NumberFormat f1 = NumberFormat.getPercentInstance();
-
 	public BigInteger chance;
 	public long divider;
 	public double chanceAsDouble;
@@ -31,12 +29,12 @@ public class RNGOutcome
 		compareText = outcomes.get(0).compareText;
 	}
 
-	public String readableChance()
+	public CharSequence readableChance()
 	{
 		if(chanceAsDouble <= 0.0)
-			return "Never";
+			return "calculation.never";
 		if(chanceAsDouble >= 1.0)
-			return "Always";
-		return f1.format(chanceAsDouble);
+			return "calculation.always";
+		return new ArgsText("calculation.percent", chanceAsDouble * 100);
 	}
 }

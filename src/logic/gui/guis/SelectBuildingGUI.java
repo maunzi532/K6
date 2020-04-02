@@ -48,7 +48,7 @@ public final class SelectBuildingGUI extends XGUIState
 	@Override
 	public String keybind()
 	{
-		return "Select Building";
+		return "state.selectbuilding";
 	}
 
 	@Override

@@ -40,9 +40,9 @@ public final class StartingSettingsEditGUI extends XGUIState
 	@Override
 	protected void updateBeforeDraw()
 	{
-		locationLockedElement.fillTile = new GuiTile("Lock\nLocation", null, false,
+		locationLockedElement.fillTile = new GuiTile("gui.edit.start.locklocation", null, false,
 				character.saveSettings().startLocked ? "gui.background.active" : null);
-		inventoryLockedElement.fillTile = new GuiTile("Lock\nInventory", null, false,
+		inventoryLockedElement.fillTile = new GuiTile("gui.edit.start.lockinventory", null, false,
 				character.saveSettings().startInvLocked ? "gui.background.active" : null);
 	}
 
@@ -55,7 +55,7 @@ public final class StartingSettingsEditGUI extends XGUIState
 	@Override
 	public String keybind()
 	{
-		return "Starting Settings";
+		return "state.edit.start";
 	}
 
 	@Override

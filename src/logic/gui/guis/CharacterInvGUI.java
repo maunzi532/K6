@@ -30,7 +30,7 @@ public final class CharacterInvGUI extends Inv1GUI
 	@Override
 	public String keybind()
 	{
-		return "Character Inv";
+		return "state.inv.character";
 	}
 
 	@Override

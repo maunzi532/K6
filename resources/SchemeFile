@@ -82,9 +82,9 @@
     "file.locale" : "Locale_EN",
     "file.keybind" : "Keybinds",
     "file.buildingblueprint" : "BuildingBlueprints",
-    "camera.map" : "Hex",
-    "camera.menu" : "Hex",
-    "camera.gui" : "Quad",
-    "camera.editorslot" : "Hex"
+    "camera.map" : "hex",
+    "camera.menu" : "hex",
+    "camera.gui" : "quad",
+    "camera.editorslot" : "hex"
   }
 }

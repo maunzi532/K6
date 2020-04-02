@@ -22,7 +22,7 @@ public final class Storage implements DoubleInv
 	@Override
 	public CharSequence name()
 	{
-		return "Storage";
+		return "storage.name";
 	}
 
 	@Override

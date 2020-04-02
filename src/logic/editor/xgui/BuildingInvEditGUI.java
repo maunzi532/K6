@@ -25,7 +25,7 @@ public final class BuildingInvEditGUI extends InvEditGUI
 	@Override
 	public String keybind()
 	{
-		return editOutput ? "Edit Output" : "Edit Input";
+		return editOutput ? "state.edit.inv.building.output" : "state.edit.inv.building.input";
 	}
 
 	@Override

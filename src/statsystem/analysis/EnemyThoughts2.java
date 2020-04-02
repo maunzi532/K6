@@ -39,7 +39,7 @@ public final class EnemyThoughts2
 		return score;
 	}
 
-	@Override
+	/*@Override
 	public String toString()
 	{
 		return "EnemyThoughts2{" +
@@ -50,5 +50,5 @@ public final class EnemyThoughts2
 				", avgDamageDealtInMaxHealth=" + avgDamageDealtInMaxHealth +
 				", avgDownToInMaxHealth=" + avgDownToInMaxHealth +
 				'}';
-	}
+	}*/
 }

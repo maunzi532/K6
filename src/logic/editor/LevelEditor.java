@@ -49,7 +49,7 @@ public final class LevelEditor
 
 	public void onEditorTarget(int num, XKey key, XStateHolder stateHolder, MainState mainState)
 	{
-		if(key.hasFunction("Choose") && num == currentSlot)
+		if(key.hasFunction("choose") && num == currentSlot)
 		{
 			editorSlots.get(currentSlot).onClick(mainState, key);
 		}
@@ -61,7 +61,7 @@ public final class LevelEditor
 			}
 			currentSlot = num;
 		}
-		if(key.hasFunction("Menu"))
+		if(key.hasFunction("menu"))
 		{
 			stateHolder.setState(editorSlotModeGUI);
 		}

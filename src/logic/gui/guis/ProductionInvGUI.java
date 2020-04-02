@@ -32,7 +32,7 @@ public final class ProductionInvGUI extends Inv2GUI
 	@Override
 	public String keybind()
 	{
-		return "Production Inv";
+		return "state.inv.building";
 	}
 
 	@Override

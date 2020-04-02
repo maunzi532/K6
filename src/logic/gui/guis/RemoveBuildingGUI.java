@@ -49,7 +49,7 @@ public final class RemoveBuildingGUI extends XGUIState
 	@Override
 	public String keybind()
 	{
-		return "Remove Building";
+		return "state.removebuilding";
 	}
 
 	@Override

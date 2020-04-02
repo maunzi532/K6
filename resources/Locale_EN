@@ -143,7 +143,7 @@
     "menu.edit.move" : "Move",
     "menu.endturn.start" : "Start Level",
     "menu.endturn.endturn" : "Enemy Phase",
-    "menu.edit.entity" : "Edit",
+    "menu.edit.character" : "Edit",
     "menu.edit.inv.character" : "Edit Inv.",
     "menu.trade.give" : "Give",
     "menu.trade.take" : "Take",
@@ -244,6 +244,16 @@
     "stats.equip.evasion.physical" : "Evade (phy.)%n%s",
     "stats.equip.evasion.magical" : "Evade (mag.)%n%s",
     "stats.equip.critprotection" : "Prevent Crit%n%s",
-    "ability.withmode" : "(%s)"
+    "ability.withmode" : "(%s)",
+    "gui.edit.inv.add" : "Add",
+    "gui.edit.inv.increase" : "+",
+    "gui.edit.inv.decrease" : "-",
+    "gui.edit.inv.stop" : "X",
+    "gui.edit.start.locklocation" : "Lock%nLocation",
+    "gui.edit.start.lockinventory" : "Lock%nInventory",
+    "calculation.never" : "Never",
+    "calculation.always" : "Always",
+    "calculation.percent" : "%.0f%%",
+    "storage.name" : "Storage"
   }
 }

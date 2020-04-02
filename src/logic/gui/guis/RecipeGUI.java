@@ -56,7 +56,7 @@ public final class RecipeGUI extends XGUIState
 	@Override
 	public String keybind()
 	{
-		return "Recipe view";
+		return "state.recipe";
 	}
 
 	@Override

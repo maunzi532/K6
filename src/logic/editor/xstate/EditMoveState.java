@@ -34,7 +34,7 @@ public final class EditMoveState implements NMarkState
 	@Override
 	public String keybind()
 	{
-		return "Entity Move";
+		return "state.edit.move";
 	}
 
 	@Override

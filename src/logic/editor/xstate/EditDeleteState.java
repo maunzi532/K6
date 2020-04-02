@@ -35,7 +35,7 @@ public final class EditDeleteState implements NAutoState
 	@Override
 	public String keybind()
 	{
-		return "Entity Delete";
+		return "state.edit.delete";
 	}
 
 	@Override

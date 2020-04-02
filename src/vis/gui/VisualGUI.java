@@ -63,7 +63,8 @@ public abstract class VisualGUI
 
 	public abstract void locateAndDraw(TileCamera camera, XGUIState xgui, Scheme scheme);
 
-	protected void drawGUI(TileCamera camera, XGUIState xgui, Scheme scheme, double cxs, double cys, DoubleTile lu, DoubleTile rl, double imgSize, double fontSize, double textWidth)
+	protected void drawGUI(TileCamera camera, XGUIState xgui, Scheme scheme, double cxs, double cys,
+			DoubleTile lu, DoubleTile rl, double imgSize, double fontSize, double textWidth)
 	{
 		if(xgui.xw() <= 0 || xgui.yw() <= 0)
 			return;
@@ -94,8 +95,8 @@ public abstract class VisualGUI
 		}
 	}
 
-	private void drawElement(DoubleType y2, TileLayout layout, Tile t1, GuiTile guiTile, boolean targeted, Color hover, Color text, Color outline,
-			double imgSize, double fontSize, double textWidth, Scheme scheme)
+	private void drawElement(DoubleType y2, TileLayout layout, Tile t1, GuiTile guiTile, boolean targeted,
+			Color hover, Color text, Color outline, double imgSize, double fontSize, double textWidth, Scheme scheme)
 	{
 		GraphicsContext gd = graphics.gd();
 		if(guiTile.color != null)

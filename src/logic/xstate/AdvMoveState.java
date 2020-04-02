@@ -59,7 +59,7 @@ public final class AdvMoveState implements NMarkState
 	@Override
 	public String keybind()
 	{
-		return "Movement";
+		return "state.advmove";
 	}
 
 	@Override

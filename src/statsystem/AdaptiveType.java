@@ -11,9 +11,9 @@ public enum AdaptiveType
 	DEFENSE("adaptive.defense"),
 	EVASION("adaptive.evasion");
 
-	public final String name;
+	public final CharSequence name;
 
-	AdaptiveType(String name)
+	AdaptiveType(CharSequence name)
 	{
 		this.name = name;
 	}

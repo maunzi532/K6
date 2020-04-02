@@ -385,7 +385,7 @@ public final class Stats implements ModifierAspect
 		a1.end();
 	}
 
-	public List<? extends CharSequence> info()
+	public List<? extends CharSequence> info() //TODO remove
 	{
 		List<String> info = new ArrayList<>();
 		info.add("Class\n" + xClass.className);
@@ -441,7 +441,7 @@ public final class Stats implements ModifierAspect
 		return AttackMode3.convert(this, lastUsed).info();
 	}
 
-	public List<? extends CharSequence> levelup()
+	public List<? extends CharSequence> levelup() //TODO remove
 	{
 		int[] levelup = levelSystem().getLevelup(this);
 		List<String> info = new ArrayList<>();
@@ -544,7 +544,7 @@ public final class Stats implements ModifierAspect
 			case 0x00 ->
 			{
 				TextInputDialog td = new TextInputDialog(customName != null ? customName.name() : "");
-				td.setTitle("Edit name");
+				td.setTitle("Edit name"); //TODO
 				td.setGraphic(null);
 				td.setHeaderText(null);
 				td.show();

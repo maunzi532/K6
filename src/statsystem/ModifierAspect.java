@@ -87,7 +87,7 @@ public interface ModifierAspect
 			add(list, "modifier.evasion.magical", pKey, evasionMagical());
 		}
 		add(list, "modifier.critprotection", pKey, critProtection());
-		abilities().forEach(e -> list.add(new ArgsText("modifier.ability", new ArgsText(e.name))));
+		abilities().forEach(e -> list.add(new ArgsText("modifier.ability", new ArgsText(e.name.toString()))));
 		return list;
 	}
 

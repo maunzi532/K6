@@ -28,7 +28,7 @@ public final class RevertMovementState implements NAutoState
 	@Override
 	public String keybind()
 	{
-		return "Revert";
+		return "state.revertmove";
 	}
 
 	@Override

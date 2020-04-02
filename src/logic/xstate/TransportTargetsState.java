@@ -45,7 +45,7 @@ public final class TransportTargetsState implements NMarkState
 	@Override
 	public String keybind()
 	{
-		return "Transport Targets";
+		return "state.transporttargets";
 	}
 
 	@Override

@@ -22,7 +22,7 @@ public final class EntityInvEditGUI extends InvEditGUI
 	@Override
 	public String keybind()
 	{
-		return "Entity Inv Edit";
+		return "state.edit.inv.character";
 	}
 
 	@Override

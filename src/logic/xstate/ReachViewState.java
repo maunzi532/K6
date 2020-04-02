@@ -40,7 +40,7 @@ public final class ReachViewState implements NMarkState
 	@Override
 	public String keybind()
 	{
-		return enemy ? "Enemy Reach" : "View Reach";
+		return enemy ? "state.reach.enemy" : "state.reach.ally";
 	}
 
 	@Override

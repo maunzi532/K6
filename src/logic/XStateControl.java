@@ -203,7 +203,7 @@ public final class XStateControl implements XStateHolder, ConvInputConsumer
 	{
 		if(entity.team() == CharacterTeam.HERO)
 		{
-			if(key.hasFunction("Choose"))
+			if(key.hasFunction("choose"))
 			{
 				if(levelStarted)
 				{
@@ -214,18 +214,18 @@ public final class XStateControl implements XStateHolder, ConvInputConsumer
 					setState(new SwapState(entity));
 				}
 			}
-			else if(key.hasFunction("Menu"))
+			else if(key.hasFunction("menu"))
 			{
 				setState(new CharacterInvGUI(entity));
 			}
 		}
 		else
 		{
-			if(key.hasFunction("Choose"))
+			if(key.hasFunction("choose"))
 			{
 				setState(new ReachViewState(entity, true));
 			}
-			else if(key.hasFunction("Menu"))
+			else if(key.hasFunction("menu"))
 			{
 				setState(new CharacterInvGUI(entity));
 			}
@@ -236,22 +236,22 @@ public final class XStateControl implements XStateHolder, ConvInputConsumer
 	{
 		if(building.function() instanceof ProcessInv processInv)
 		{
-			if(key.hasFunction("Choose"))
+			if(key.hasFunction("choose"))
 			{
 				setState(new ProductionFloorsState(building, processInv));
 			}
-			else if(key.hasFunction("Menu"))
+			else if(key.hasFunction("menu"))
 			{
 				setState(new ProductionInvGUI(building, processInv));
 			}
 		}
 		else if(building.function() instanceof Transport transport)
 		{
-			if(key.hasFunction("Choose"))
+			if(key.hasFunction("choose"))
 			{
 				setState(new TransportTargetsState(building, transport));
 			}
-			else if(key.hasFunction("Menu"))
+			else if(key.hasFunction("menu"))
 			{
 				setState(new TransportTargetsState(building, transport));
 			}
@@ -285,7 +285,7 @@ public final class XStateControl implements XStateHolder, ConvInputConsumer
 	@Override
 	public void handleKey(XKey key)
 	{
-		if(key.hasFunction("Editor Mode"))
+		if(key.hasFunction("editor.toggle"))
 		{
 			if(state instanceof NoneState)
 			{
@@ -296,17 +296,17 @@ public final class XStateControl implements XStateHolder, ConvInputConsumer
 				setState(NoneState.INSTANCE);
 			}
 		}
-		else if(key.hasFunction("Click Mode"))
+		else if(key.hasFunction("choosemode.toggle"))
 		{
 			preferBuildings = !preferBuildings;
 		}
-		else if(key.hasFunction("All Enemy Reach"))
+		else if(key.hasFunction("allenemyreach"))
 		{
 			showAllEnemyReach = !showAllEnemyReach;
 			if(showAllEnemyReach)
 				levelMap.requireUpdate();
 		}
-		else if(key.hasFunction("Escape"))
+		else if(key.hasFunction("escape"))
 		{
 			if(state instanceof XGUIState guiState)
 			{

@@ -123,7 +123,7 @@ public final class CharacterCombatGUI extends XGUIState
 	@Override
 	public String keybind()
 	{
-		return "Combat Info";
+		return "state.stats";
 	}
 
 	@Override

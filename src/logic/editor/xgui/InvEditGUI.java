@@ -74,9 +74,9 @@ public class InvEditGUI extends XGUIState
 		if(editItem != null)
 		{
 			if(otherItem)
-				infoView.elements = List.of("Add", "X");
+				infoView.elements = List.of("gui.edit.inv.add", "gui.edit.inv.stop");
 			else
-				infoView.elements = List.of("+", "-", "X");
+				infoView.elements = List.of("gui.edit.inv.increase", "gui.edit.inv.decrease", "gui.edit.inv.stop");
 		}
 		else if(invView.getTargeted() != null && !invView.getTargeted().item.info().isEmpty())
 		{
@@ -111,12 +111,12 @@ public class InvEditGUI extends XGUIState
 		{
 			switch(target.toString())
 			{
-				case "Add", "+" ->
+				case "gui.edit.inv.add", "gui.edit.inv.increase" ->
 				{
 					inv.tryAdd(new ItemList(editItem));
 					update();
 				}
-				case "-" ->
+				case "gui.edit.inv.decrease" ->
 				{
 					inv.tryGive(new ItemList(editItem), false, CommitType.COMMIT);
 					if(!inv.tryGive(new ItemList(editItem), false, CommitType.ROLLBACK))
@@ -125,7 +125,7 @@ public class InvEditGUI extends XGUIState
 					}
 					update();
 				}
-				case "X" ->
+				case "gui.edit.inv.stop" ->
 				{
 					editItem = null;
 					update();

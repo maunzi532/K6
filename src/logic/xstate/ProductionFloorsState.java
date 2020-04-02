@@ -44,7 +44,7 @@ public final class ProductionFloorsState implements NMarkState
 	@Override
 	public String keybind()
 	{
-		return "Production Floors";
+		return "state.floor";
 	}
 
 	@Override

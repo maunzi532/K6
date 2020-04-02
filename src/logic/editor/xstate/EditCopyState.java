@@ -34,7 +34,7 @@ public final class EditCopyState implements NMarkState
 	@Override
 	public String keybind()
 	{
-		return "Entity Copy";
+		return "state.edit.copy";
 	}
 
 	@Override

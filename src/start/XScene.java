@@ -76,9 +76,9 @@ public final class XScene extends Application
 	{
 		return switch(scheme.setting("camera.map"))
 				{
-					case "Hex" -> new HexCamera(graphics, 1.0, 1.0, MAP_SIZE_FACTOR, MAP_SIZE_FACTOR, 0.0, 0.0, new HexMatrix(0.5));
-					case "Quad" -> new QuadCamera(graphics, 1.0, 1.0, MAP_SIZE_FACTOR, MAP_SIZE_FACTOR, 0.0, 0.0);
-					default -> throw new RuntimeException("camera.map must be one of these: \"Hex\", \"Quad\"");
+					case "hex" -> new HexCamera(graphics, 1.0, 1.0, MAP_SIZE_FACTOR, MAP_SIZE_FACTOR, 0.0, 0.0, new HexMatrix(0.5));
+					case "quad" -> new QuadCamera(graphics, 1.0, 1.0, MAP_SIZE_FACTOR, MAP_SIZE_FACTOR, 0.0, 0.0);
+					default -> throw new RuntimeException("camera.map must be one of these: \"hex\", \"quad\"");
 				};
 	}
 
@@ -86,10 +86,10 @@ public final class XScene extends Application
 	{
 		return switch(scheme.setting("camera.menu"))
 				{
-					case "Hex" -> new HexCamera(graphics, 2.0, 1.0, MENU_SIZE_FACTOR, MENU_SIZE_FACTOR,
+					case "hex" -> new HexCamera(graphics, 2.0, 1.0, MENU_SIZE_FACTOR, MENU_SIZE_FACTOR,
 							1.25 * HexMatrix.Q3, 0.0, new HexMatrix(0.5));
-					case "Quad" -> new QuadCamera(graphics, 2.0, 1.0, MENU_SIZE_FACTOR, MENU_SIZE_FACTOR, 2.0, 0.0);
-					default -> throw new RuntimeException("camera.menu must be one of these: \"Hex\", \"Quad\"");
+					case "quad" -> new QuadCamera(graphics, 2.0, 1.0, MENU_SIZE_FACTOR, MENU_SIZE_FACTOR, 2.0, 0.0);
+					default -> throw new RuntimeException("camera.menu must be one of these: \"hex\", \"quad\"");
 				};
 	}
 
@@ -97,9 +97,9 @@ public final class XScene extends Application
 	{
 		return switch(scheme.setting("camera.gui"))
 				{
-					case "Hex" -> new HexCamera(graphics, 1.0, 1.0, GUI_SIZE_FACTOR, GUI_SIZE_FACTOR, 0.0, 0.0, new HexMatrix(0.5));
-					case "Quad" -> new QuadCamera(graphics, 1.0, 1.0, GUI_SIZE_FACTOR, GUI_SIZE_FACTOR, 0.0, 0.0);
-					default -> throw new RuntimeException("camera.gui must be one of these: \"Hex\", \"Quad\"");
+					case "hex" -> new HexCamera(graphics, 1.0, 1.0, GUI_SIZE_FACTOR, GUI_SIZE_FACTOR, 0.0, 0.0, new HexMatrix(0.5));
+					case "quad" -> new QuadCamera(graphics, 1.0, 1.0, GUI_SIZE_FACTOR, GUI_SIZE_FACTOR, 0.0, 0.0);
+					default -> throw new RuntimeException("camera.gui must be one of these: \"hex\", \"quad\"");
 				};
 	}
 
@@ -107,9 +107,9 @@ public final class XScene extends Application
 	{
 		return switch(scheme.setting("camera.editorslot"))
 				{
-					case "Hex" -> new HexCamera(graphics, a1, 1.75, EDITOR_SCALE_X, EDITOR_SCALE_Y, 0.0, 0.0, new HexMatrix(0.5));
-					case "Quad" -> new QuadCamera(graphics, a1, 1.75, EDITOR_SCALE_X, EDITOR_SCALE_Y, 0.0, 0.0);
-					default -> throw new RuntimeException("camera.editorslot must be one of these: \"Hex\", \"Quad\"");
+					case "hex" -> new HexCamera(graphics, a1, 1.75, EDITOR_SCALE_X, EDITOR_SCALE_Y, 0.0, 0.0, new HexMatrix(0.5));
+					case "quad" -> new QuadCamera(graphics, a1, 1.75, EDITOR_SCALE_X, EDITOR_SCALE_Y, 0.0, 0.0);
+					default -> throw new RuntimeException("camera.editorslot must be one of these: \"hex\", \"quad\"");
 				};
 	}
 

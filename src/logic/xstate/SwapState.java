@@ -43,7 +43,7 @@ public final class SwapState implements NMarkState
 	@Override
 	public String keybind()
 	{
-		return "Swap";
+		return "state.swap";
 	}
 
 	@Override

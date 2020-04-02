@@ -13,9 +13,9 @@ public enum XAbility
 	CRITICAL_TARGET("ability.criticaltarget"),
 	FAST_FIRE("ability.fastfire");
 
-	public final String name;
+	public final CharSequence name;
 
-	XAbility(String name)
+	XAbility(CharSequence name)
 	{
 		this.name = name;
 	}

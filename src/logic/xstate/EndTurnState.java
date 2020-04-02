@@ -33,7 +33,7 @@ public final class EndTurnState implements NAutoState
 	@Override
 	public String keybind()
 	{
-		return "End Turn";
+		return "state.endturn";
 	}
 
 	@Override

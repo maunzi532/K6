@@ -32,7 +32,7 @@ public final class RegenerateState implements NAutoState
 	@Override
 	public String keybind()
 	{
-		return "Regenerate";
+		return "state.regenerate";
 	}
 
 	@Override
