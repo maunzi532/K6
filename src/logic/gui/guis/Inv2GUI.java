@@ -18,8 +18,8 @@ public class Inv2GUI extends XGUIState
 
 	public Inv2GUI(DoubleInv doubleInv)
 	{
-		inputInv = doubleInv.inputInv();
-		outputInv = doubleInv.outputInv();
+		inputInv = doubleInv.inv(TradeDirection.TAKE);
+		outputInv = doubleInv.inv(TradeDirection.GIVE);
 	}
 
 	@Override

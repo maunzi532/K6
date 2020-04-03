@@ -23,7 +23,7 @@ public final class ItemTransportInfo
 			for(DoubleInv required : require)
 			{
 				re.add(new PossibleTransport(item, provided, required,
-						provided.outputPriority(), required.inputPriority()));
+						provided.priority(TradeDirection.GIVE), required.priority(TradeDirection.TAKE)));
 			}
 		}
 		return re;

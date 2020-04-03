@@ -86,21 +86,9 @@ public final class XBuilding implements DoubleInv
 	}
 
 	@Override
-	public boolean playerTradeable(boolean levelStarted)
+	public Inv inv(TradeDirection tradeDirection)
 	{
-		return function.playerTradeable(levelStarted);
-	}
-
-	@Override
-	public Inv inputInv()
-	{
-		return function.inputInv();
-	}
-
-	@Override
-	public Inv outputInv()
-	{
-		return function.outputInv();
+		return function.inv(tradeDirection);
 	}
 
 	@Override
@@ -116,15 +104,9 @@ public final class XBuilding implements DoubleInv
 	}
 
 	@Override
-	public int inputPriority()
+	public int priority(TradeDirection tradeDirection)
 	{
-		return function.inputPriority();
-	}
-
-	@Override
-	public int outputPriority()
-	{
-		return function.outputPriority();
+		return function.priority(tradeDirection);
 	}
 
 	public void remove()
@@ -164,8 +146,8 @@ public final class XBuilding implements DoubleInv
 
 	public ItemList allRefundable()
 	{
-		Inv inputInv = function.inputInv();
-		Inv outputInv = function.outputInv();
+		Inv inputInv = function.inv(TradeDirection.TAKE);
+		Inv outputInv = function.inv(TradeDirection.GIVE);
 		if(inputInv == outputInv)
 		{
 			return refundable.add(outputInv.allItems());

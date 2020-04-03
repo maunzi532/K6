@@ -1,4 +1,4 @@
-package logic.xstate;
+package doubleinv;
 
 public enum TradeDirection
 {
@@ -12,5 +12,14 @@ public enum TradeDirection
 	{
 		this.text = text;
 		this.keybind = keybind;
+	}
+
+	public TradeDirection inverse()
+	{
+		return switch(this)
+		{
+			case GIVE -> TAKE;
+			case TAKE -> GIVE;
+		};
 	}
 }

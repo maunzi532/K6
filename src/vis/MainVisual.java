@@ -89,7 +89,7 @@ public final class MainVisual implements XInputInterface
 			try
 			{
 				new SavedImport(Files.readString(fileMap.toPath()), Files.readString(fileTeam.toPath()))
-						.importIntoMap3(levelMap, itemLoader, levelMap.storage().inputInv());
+						.importIntoMap3(levelMap, itemLoader, levelMap.storage().inv());
 			}catch(IOException e)
 			{
 				throw new RuntimeException(e);

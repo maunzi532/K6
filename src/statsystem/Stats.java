@@ -72,7 +72,7 @@ public final class Stats implements ModifierAspect
 	}
 
 	private Stats(XClass xClass, int level, int exp, NameText customName, String customMapImage, String customSideImage,
-			int[] lvStats, int currentHealth, int exhaustion, int movement, int dashMovement, int maxAccessRange, PlayerLevelSystem playerLevelSystem)
+			int[] lvStats, int movement, int dashMovement, int maxAccessRange, PlayerLevelSystem playerLevelSystem)
 	{
 		this.xClass = xClass;
 		this.level = level;
@@ -82,8 +82,8 @@ public final class Stats implements ModifierAspect
 		this.customMapImage = customMapImage;
 		this.customSideImage = customSideImage;
 		this.lvStats = Arrays.copyOf(lvStats, 8);
-		this.currentHealth = currentHealth;
-		this.exhaustion = exhaustion;
+		currentHealth = maxHealth();
+		exhaustion = 0;
 		this.movement = movement;
 		this.dashMovement = dashMovement;
 		this.maxAccessRange = maxAccessRange;
@@ -91,10 +91,10 @@ public final class Stats implements ModifierAspect
 		filter = new AttackItemFilter(xClass.usableItems);
 	}
 
-	public Stats copy()
+	public Stats createACopy()
 	{
 		return new Stats(xClass, level, exp, customName, customMapImage, customSideImage, lvStats,
-				currentHealth, exhaustion, movement, dashMovement, maxAccessRange, playerLevelSystem);
+				movement, dashMovement, maxAccessRange, playerLevelSystem.createACopy());
 	}
 
 	public void autoStats()
@@ -243,7 +243,7 @@ public final class Stats implements ModifierAspect
 
 	public void autoEquip(XCharacter entity)
 	{
-		ItemView itemView = entity.outputInv().viewRecipeItem(filter);
+		ItemView itemView = entity.inv().viewRecipeItem(filter);
 		if(itemView.base != 0 && itemView.item instanceof AttackItem attackItem)
 		{
 			lastUsed = attackItem.attackModes().stream().findFirst().orElse(AttackMode.EVADE_MODE);
@@ -258,7 +258,7 @@ public final class Stats implements ModifierAspect
 	{
 		if(!lastUsed.active)
 			return;
-		if(!entity.outputInv().canGive(new ItemStack(lastUsed.item, 1), false))
+		if(!entity.inv().canGive(new ItemStack(lastUsed.item, 1), false))
 		{
 			lastUsed = AttackMode.EVADE_MODE;
 		}

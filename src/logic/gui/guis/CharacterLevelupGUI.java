@@ -11,7 +11,7 @@ public final class CharacterLevelupGUI extends Inv1GUI
 
 	public CharacterLevelupGUI(XCharacter character, NState nextState)
 	{
-		super(character.inputInv(), character.name(), null);
+		super(character.inv(), character.name(), null);
 		this.character = character;
 		this.nextState = nextState;
 	}

@@ -54,12 +54,6 @@ public final class TurnResources
 		this.mainAction = mainAction;
 	}
 
-	public TurnResources copy(Tile copyLocation)
-	{
-		return new TurnResources(copyLocation, startMovement, startDashMovement, startMovement,
-				startDashMovement, actionPoints, moveAction, moveAction, mainAction);
-	}
-
 	public Tile startLocation()
 	{
 		return startLocation;

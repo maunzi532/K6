@@ -73,8 +73,8 @@ public final class DirectedTradeGUI extends XGUIState
 	protected void updateBeforeDraw()
 	{
 		setTargeted(CTile.NONE);
-		provideView.elements = provide.outputInv().viewItems(false);
-		receiveView.elements = receive.inputInv().viewItems(true);
+		provideView.elements = provide.inv(TradeDirection.GIVE).viewItems(false);
+		receiveView.elements = receive.inv(TradeDirection.TAKE).viewItems(true);
 		transferElement.fillTile = new GuiTile(new ArgsText("i", amount), "gui.trade.arrow", false, null);
 	}
 
@@ -94,12 +94,12 @@ public final class DirectedTradeGUI extends XGUIState
 		{
 			List<? extends ItemView> provideItems = provideView.elements;
 			ItemStack items = new ItemStack(provideItems.stream().filter(e -> e.item == provideMarked).findFirst().orElseThrow().item, amount);
-			if(provide.outputInv().canGive(items, false) && receive.inputInv().canAdd(items, false))
+			if(provide.inv(TradeDirection.GIVE).canGive(items, false) && receive.inv(TradeDirection.TAKE).canAdd(items, false))
 			{
-				provide.outputInv().give(items, false);
-				receive.inputInv().add(items, false);
-				provideView.elements = provide.outputInv().viewItems(false);
-				receiveView.elements = receive.inputInv().viewItems(true);
+				provide.inv(TradeDirection.GIVE).give(items, false);
+				receive.inv(TradeDirection.TAKE).add(items, false);
+				provideView.elements = provide.inv(TradeDirection.GIVE).viewItems(false);
+				receiveView.elements = receive.inv(TradeDirection.TAKE).viewItems(true);
 				provideMarked = provideView.elements.stream().filter(e -> e.item.equals(items.item)).findFirst().map(e -> e.item).orElse(null);
 				changed = true;
 				update();
@@ -111,8 +111,8 @@ public final class DirectedTradeGUI extends XGUIState
 	{
 		if(changed)
 		{
-			provide.outputInv().commit();
-			receive.inputInv().commit();
+			provide.inv(TradeDirection.GIVE).commit();
+			receive.inv(TradeDirection.TAKE).commit();
 			provide.afterTrading();
 			receive.afterTrading();
 			if(takeAp != null)
@@ -126,8 +126,8 @@ public final class DirectedTradeGUI extends XGUIState
 	@Override
 	public void close(XStateHolder stateHolder)
 	{
-		provide.outputInv().rollback();
-		receive.inputInv().rollback();
+		provide.inv(TradeDirection.GIVE).rollback();
+		receive.inv(TradeDirection.TAKE).rollback();
 		super.close(stateHolder);
 	}
 }

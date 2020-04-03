@@ -182,14 +182,14 @@ public final class XStateControl implements XStateHolder, ConvInputConsumer
 				}
 				else if(advTile.entity() != null)
 				{
-					onClickEntity(advTile.entity(), levelMap.turnCounter() > 0, key);
+					onClickEntity(advTile.entity(), key);
 				}
 			}
 			else
 			{
 				if(advTile.entity() != null)
 				{
-					onClickEntity(advTile.entity(), levelMap.turnCounter() > 0, key);
+					onClickEntity(advTile.entity(), key);
 				}
 				else if(advTile.building() != null)
 				{
@@ -199,13 +199,13 @@ public final class XStateControl implements XStateHolder, ConvInputConsumer
 		}
 	}
 
-	private void onClickEntity(XCharacter entity, boolean levelStarted, XKey key)
+	private void onClickEntity(XCharacter entity, XKey key)
 	{
 		if(entity.team() == CharacterTeam.HERO)
 		{
 			if(key.hasFunction("choose"))
 			{
-				if(levelStarted)
+				if(levelMap.levelStarted())
 				{
 					setState(new AdvMoveState(entity));
 				}

@@ -22,14 +22,14 @@ public final class SwapState implements NMarkState
 	public void onEnter(MainState mainState)
 	{
 		mainState.side().setStandardSideInfo(character);
-		if(character.saveSettings() != null && character.saveSettings().startLocked)
+		if(mainState.levelMap().canSwap(character))
 		{
-			swapTargets = List.of();
+			swapTargets = mainState.levelMap().teamCharacters(character.team()).stream()
+					.filter(e -> e != character && mainState.levelMap().canSwap(e)).collect(Collectors.toList());
 		}
 		else
 		{
-			swapTargets = mainState.levelMap().teamCharacters(character.team()).stream()
-					.filter(e -> e != character && (e.saveSettings() == null || !e.saveSettings().startLocked)).collect(Collectors.toList());
+			swapTargets = List.of();
 		}
 		visMarked = swapTargets.stream().map(e -> new VisMark(e.location(), "mark.swap", VisMark.d1)).collect(Collectors.toList());
 	}

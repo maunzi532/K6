@@ -22,10 +22,9 @@ public final class XCharacter implements DoubleInv, XBuilder
 	private final Inv inv;
 	private EnemyAI enemyAI;
 	private TurnResources resources;
-	private StartingSettings startingSettings;
 
 	public XCharacter(CharacterTeam team, int startingDelay, Tile location, Stats stats, Inv inv,
-			EnemyAI enemyAI, TurnResources resources, StartingSettings startingSettings)
+			EnemyAI enemyAI)
 	{
 		this.team = team;
 		this.startingDelay = startingDelay;
@@ -35,31 +34,13 @@ public final class XCharacter implements DoubleInv, XBuilder
 		this.stats = stats;
 		this.inv = inv;
 		this.enemyAI = enemyAI;
-		this.resources = resources;
-		this.startingSettings = startingSettings;
 	}
 
-	private XCharacter(CharacterTeam team, int startingDelay, boolean defeated, Tile location,
-			Stats stats, Inv inv, EnemyAI enemyAI, TurnResources resources, StartingSettings startingSettings)
+	public XCharacter createACopy(Tile copyLocation)
 	{
-		this.team = team;
-		this.startingDelay = startingDelay;
-		this.defeated = defeated;
-		this.location = location;
-		visualReplaced = null;
-		this.stats = stats;
-		this.inv = inv;
-		this.enemyAI = enemyAI;
-		this.resources = resources;
-		this.startingSettings = startingSettings;
-	}
-
-	public XCharacter copy(Tile copyLocation)
-	{
-		XCharacter copy = new XCharacter(team, startingDelay, defeated, copyLocation,
-				stats.copy(), inv.copy(), enemyAI.copy(), resources.copy(copyLocation),
-				StartingSettings.copy(startingSettings));
-		copy.stats.autoEquip(copy);
+		XCharacter copy = new XCharacter(team, startingDelay, copyLocation,
+				stats.createACopy(), inv.copy(), enemyAI.copy());
+		copy.stats().autoEquip(copy);
 		return copy;
 	}
 
@@ -124,11 +105,6 @@ public final class XCharacter implements DoubleInv, XBuilder
 		resources = newResources;
 	}
 
-	public StartingSettings saveSettings()
-	{
-		return startingSettings;
-	}
-
 	public boolean isEnemy(XCharacter other)
 	{
 		return other.team() != team;
@@ -152,14 +128,13 @@ public final class XCharacter implements DoubleInv, XBuilder
 		return location;
 	}
 
-	@Override
-	public Inv inputInv()
+	public Inv inv()
 	{
 		return inv;
 	}
 
 	@Override
-	public Inv outputInv()
+	public Inv inv(TradeDirection tradeDirection)
 	{
 		return inv;
 	}
@@ -176,12 +151,6 @@ public final class XCharacter implements DoubleInv, XBuilder
 		stats.afterTrading(this);
 	}
 
-	@Override
-	public boolean playerTradeable(boolean levelStarted)
-	{
-		return !levelStarted && (startingSettings == null || !startingSettings.startInvLocked);
-	}
-
 	public EnemyMove preferredMove(boolean hasToMove, int moveAway)
 	{
 		if(!resources.ready(2))
@@ -192,7 +161,7 @@ public final class XCharacter implements DoubleInv, XBuilder
 	@Override
 	public ItemView viewRecipeItem(Item item)
 	{
-		return outputInv().viewRecipeItem(item);
+		return inv.viewRecipeItem(item);
 	}
 
 	@Override
@@ -210,7 +179,7 @@ public final class XCharacter implements DoubleInv, XBuilder
 		a1.put("sx", y1.sx(location));
 		a1.put("sy", y1.sy(location));
 		a1.put("StartingDelay", startingDelay);
-		if(startingSettings != null)
+		/*if(startingSettings != null)
 		{
 			a1.put("StartName", stats.getName().toString());
 			a1.put("Locked", startingSettings.startLocked);
@@ -229,7 +198,7 @@ public final class XCharacter implements DoubleInv, XBuilder
 		{
 			stats.save(a1.startObjectField("Stats"), itemLoader);
 			inv.save(a1.startObjectField("Inventory"), itemLoader);
-		}
+		}*/ //TODO
 		a1.end();
 	}
 }

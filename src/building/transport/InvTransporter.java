@@ -38,7 +38,7 @@ public final class InvTransporter
 		Map<Item, ItemTransportInfo> possibleItems = new HashMap<>();
 		for(DoubleInv inv : providingTargets)
 		{
-			Inv providingInv = inv.outputInv();
+			Inv providingInv = inv.inv(TradeDirection.GIVE);
 			for(Item item : providingInv.providedItemTypesX())
 			{
 				if(providingInv.canGive(new ItemStack(item, amount), false))
@@ -53,7 +53,7 @@ public final class InvTransporter
 		}
 		for(DoubleInv inv : receivingTargets)
 		{
-			Inv receivingInv = inv.inputInv();
+			Inv receivingInv = inv.inv(TradeDirection.TAKE);
 			for(Map.Entry<Item, ItemTransportInfo> entry : possibleItems.entrySet())
 			{
 				if(receivingInv.canAdd(new ItemStack(entry.getKey(), amount), false))
@@ -73,7 +73,7 @@ public final class InvTransporter
 		transportHistory.remove(theTransport);
 		transportHistory.add(theTransport);
 		ItemStack itemStack = new ItemStack(theTransport.item(), amount);
-		theTransport.from().outputInv().give(itemStack, false);
-		theTransport.to().inputInv().add(itemStack, false);
+		theTransport.from().inv(TradeDirection.GIVE).give(itemStack, false);
+		theTransport.to().inv(TradeDirection.TAKE).add(itemStack, false);
 	}
 }

@@ -12,20 +12,11 @@ public interface BuildingFunction
 {
 	CharSequence name();
 
-	Inv inputInv();
-
-	Inv outputInv();
-
-	boolean playerTradeable(boolean levelStarted);
+	Inv inv(TradeDirection tradeDirection);
 
 	void afterTrading();
 
-	default int inputPriority()
-	{
-		return 0;
-	}
-
-	default int outputPriority()
+	default int priority(TradeDirection tradeDirection)
 	{
 		return 0;
 	}

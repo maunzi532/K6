@@ -2,6 +2,7 @@ package logic.gui.guis;
 
 import building.adv.*;
 import building.blueprint.*;
+import doubleinv.*;
 import item.*;
 import item.inv.*;
 import item.view.*;
@@ -88,7 +89,7 @@ public final class RecipeGUI extends XGUIState
 
 	private GuiTile[] elementViewRequired(ItemStack stack)
 	{
-		Inv inv = building.inputInv();
+		Inv inv = building.inv(TradeDirection.TAKE);
 		ItemView itemView = inv.viewRecipeItem(stack.item);
 		return new GuiTile[]
 				{
@@ -99,7 +100,7 @@ public final class RecipeGUI extends XGUIState
 
 	private GuiTile[] elementViewResults(ItemStack stack)
 	{
-		Inv inv = building.outputInv();
+		Inv inv = building.inv(TradeDirection.GIVE);
 		ItemView itemView = inv.viewRecipeItem(stack.item);
 		return new GuiTile[]
 				{

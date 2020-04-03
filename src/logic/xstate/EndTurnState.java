@@ -4,7 +4,7 @@ import logic.*;
 
 public final class EndTurnState implements NAutoState
 {
-	private boolean start;
+	private boolean started;
 
 	@Override
 	public void onEnter(MainState mainState){}
@@ -21,13 +21,13 @@ public final class EndTurnState implements NAutoState
 	@Override
 	public NState nextState()
 	{
-		return start ? new StartTurnState() : new EnemyStartState();
+		return started ? new EnemyStartState() : new StartTurnState();
 	}
 
 	@Override
 	public CharSequence text()
 	{
-		return start ? "menu.endturn.start" : "menu.endturn.endturn";
+		return started ? "menu.endturn.endturn" : "menu.endturn.start";
 	}
 
 	@Override
@@ -39,7 +39,7 @@ public final class EndTurnState implements NAutoState
 	@Override
 	public boolean keepInMenu(MainState mainState)
 	{
-		start = mainState.levelMap().turnCounter() == 0;
+		started = mainState.levelMap().levelStarted();
 		return true;
 	}
 }

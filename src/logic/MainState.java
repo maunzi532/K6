@@ -16,7 +16,8 @@ public record MainState(LevelMap levelMap, XStateHolder stateHolder, SideInfoFra
 	//TODO downscale item images (0/4)
 
 	//save/load
-	//TODO savestate during map
+	//TODO Char edit add/remove StartLocation
+	//TODO StartingLocation replace SaveSettings
 	//TODO    save maps and saves in folders
 	//TODO    advanced loading system
 
@@ -54,15 +55,13 @@ public record MainState(LevelMap levelMap, XStateHolder stateHolder, SideInfoFra
 
 	//code
 	//TODO    Initialize somewhere else than in MainVisual
-	//TODO fix stealing from enemies
-	//TODO fix cannot build in preparation phase
+	//TODO unlimited TurnResources in Preparation Phase
 
 	//visual engine mechanics
 	//TODO move GUI so it does not overlap with SideInfo/LevelEditor
 	//TODO    improve camera controls
 	//TODO move camera to view enemies/encounters
 	//TODO    show pause menu
-	//TODO    show better SideInfo
 	//TODO show TurnResources in SideInfo
 
 	//LK char - move/attack
@@ -76,4 +75,10 @@ public record MainState(LevelMap levelMap, XStateHolder stateHolder, SideInfoFra
 
 	//enter -- end turn
 	//esc -- back to NoneState
+
+	//Save System
+	//End Save - saves characters, storage, progress
+	//Prepare Save - saves characters with locations, storage, current map, progress, (enemy range view)
+	//Mid Save - saves characters (with locations, turnresources, linked), buildings, current map, turn, progress
+	//Map Save - saves starting locations, enemies, buildings, story, additional characters, next map
 }

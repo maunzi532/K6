@@ -21,6 +21,15 @@ public final class PlayerLevelSystem implements LevelSystem
 	private int[] assumedIncrease;
 	private int levelCap;
 
+	public PlayerLevelSystem(int baseLevel, int[] baseLevelStats, int levelCap)
+	{
+		this.baseLevel = baseLevel;
+		this.baseLevelStats = baseLevelStats;
+		baseIncrease = Arrays.stream(baseLevelStats).map(e -> e * 5).toArray();
+		this.levelCap = levelCap;
+		setAssumedIncrease();
+	}
+
 	public PlayerLevelSystem(int baseLevel, int[] baseLevelStats, int[] baseIncrease, int levelCap)
 	{
 		this.baseLevel = baseLevel;
@@ -30,13 +39,10 @@ public final class PlayerLevelSystem implements LevelSystem
 		setAssumedIncrease();
 	}
 
-	public PlayerLevelSystem(int baseLevel, int[] baseLevelStats, int levelCap)
+	public PlayerLevelSystem createACopy()
 	{
-		this.baseLevel = baseLevel;
-		this.baseLevelStats = baseLevelStats;
-		baseIncrease = Arrays.stream(baseLevelStats).map(e -> e * 5).toArray();
-		this.levelCap = levelCap;
-		setAssumedIncrease();
+		return new PlayerLevelSystem(baseLevel, Arrays.copyOf(baseLevelStats, baseLevelStats.length),
+				Arrays.copyOf(baseIncrease, baseIncrease.length), levelCap);
 	}
 
 	private void setAssumedIncrease()

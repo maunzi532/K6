@@ -28,22 +28,22 @@ public final class StartingSettingsEditGUI extends XGUIState
 	@Override
 	public void onEnter(MainState mainState)
 	{
-		locationLockedElement = new CElement(isLocationLocked, true, null,
+		/*locationLockedElement = new CElement(isLocationLocked, true, null,
 				() -> character.saveSettings().startLocked = !character.saveSettings().startLocked);
 		elements.add(locationLockedElement);
 		inventoryLockedElement = new CElement(isInventoryLocked, true, null,
 				() -> character.saveSettings().startInvLocked = !character.saveSettings().startInvLocked);
-		elements.add(inventoryLockedElement);
+		elements.add(inventoryLockedElement);*/
 		update();
 	}
 
 	@Override
 	protected void updateBeforeDraw()
 	{
-		locationLockedElement.fillTile = new GuiTile("gui.edit.start.locklocation", null, false,
+		/*locationLockedElement.fillTile = new GuiTile("gui.edit.start.locklocation", null, false,
 				character.saveSettings().startLocked ? "gui.background.active" : null);
 		inventoryLockedElement.fillTile = new GuiTile("gui.edit.start.lockinventory", null, false,
-				character.saveSettings().startInvLocked ? "gui.background.active" : null);
+				character.saveSettings().startInvLocked ? "gui.background.active" : null);*/
 	}
 
 	@Override
@@ -67,7 +67,7 @@ public final class StartingSettingsEditGUI extends XGUIState
 	@Override
 	public boolean keepInMenu(MainState mainState)
 	{
-		return character.saveSettings() != null;
+		return false;//character.saveSettings() != null;
 	}
 
 	@Override

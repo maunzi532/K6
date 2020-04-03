@@ -31,14 +31,13 @@ public final class Storage implements DoubleInv
 		return null;
 	}
 
-	@Override
-	public Inv inputInv()
+	public Inv inv()
 	{
 		return inv;
 	}
 
 	@Override
-	public Inv outputInv()
+	public Inv inv(TradeDirection tradeDirection)
 	{
 		return inv;
 	}

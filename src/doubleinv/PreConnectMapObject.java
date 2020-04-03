@@ -27,13 +27,7 @@ public record PreConnectMapObject(Tile location, DoubleInvType type) implements 
 	}
 
 	@Override
-	public Inv inputInv()
-	{
-		return null;
-	}
-
-	@Override
-	public Inv outputInv()
+	public Inv inv(TradeDirection tradeDirection)
 	{
 		return null;
 	}

@@ -59,12 +59,12 @@ public final class Entity2Builder
 		if(team == CharacterTeam.HERO)
 		{
 			entity = new XCharacter(CharacterTeam.HERO, 0, location, stats, inv,
-					new NoAI(), new TurnResources(location), new StartingSettings(false, false));
+					new NoAI(), new TurnResources(location));
 		}
 		else
 		{
 			entity = new XCharacter(team, 0, location, stats, inv,
-					new StandardAI(levelMap), new TurnResources(location), null);
+					new StandardAI(levelMap), new TurnResources(location));
 		}
 		stats.autoEquip(entity);
 		if(levelMap.getFloor(location) == null)

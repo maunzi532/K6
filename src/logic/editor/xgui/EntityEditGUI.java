@@ -39,7 +39,7 @@ public final class EntityEditGUI extends XGUIState
 		changeStatNum = -1;
 		changeOptions = List.of();
 		invView = new TargetScrollList<>(0, 1, 2, 5, 2, 1,
-				entity.inputInv().viewItems(true), GuiTile::itemViewView, null);
+				entity.inv().viewItems(true), GuiTile::itemViewView, null);
 		elements.add(invView);
 		infoView = new ScrollList<>(3, 1, 3, 5, 1, 1, null,
 				e -> GuiTile.textView(info.get(e)), this::clickInfo);
@@ -50,7 +50,7 @@ public final class EntityEditGUI extends XGUIState
 		elements.add(changeView);
 		textInvE = new CElement(textInv);
 		elements.add(textInvE);
-		elements.add(new CElement(weight, new GuiTile(entity.inputInv().viewInvWeight().currentWithLimit())));
+		elements.add(new CElement(weight, new GuiTile(entity.inv().viewInvWeight().currentWithLimit())));
 		update();
 	}
 

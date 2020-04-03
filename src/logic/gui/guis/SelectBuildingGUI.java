@@ -54,13 +54,16 @@ public final class SelectBuildingGUI extends XGUIState
 	@Override
 	public boolean keepInMenu(MainState mainState)
 	{
-		if(!(builder instanceof XCharacter character))
-			return true;
-		if(mainState.levelMap().turnCounter() == 0 || character.resources().ready(1))
+		if(mainState.levelMap().getBuilding(builder.location()) != null)
+			return false;
+		if(builder instanceof XCharacter character)
 		{
-			return mainState.levelMap().getBuilding(builder.location()) == null;
+			return mainState.levelMap().canBuild() && character.resources().ready(1);
 		}
-		return false;
+		else
+		{
+			return true;
+		}
 	}
 
 	@Override

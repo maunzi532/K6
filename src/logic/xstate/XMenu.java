@@ -2,6 +2,7 @@ package logic.xstate;
 
 import building.adv.*;
 import building.transport.*;
+import doubleinv.*;
 import entity.*;
 import java.util.*;
 import logic.editor.xgui.*;
@@ -59,8 +60,8 @@ public final class XMenu
 
 	public static XMenu buildingEditMenu(XBuilding building)
 	{
-		return new XMenu(new BuildingInvEditGUI(building, false),
-				new BuildingInvEditGUI(building, true));
+		return new XMenu(new BuildingInvEditGUI(building, TradeDirection.TAKE),
+				new BuildingInvEditGUI(building, TradeDirection.GIVE));
 	}
 
 	private final List<NState> entries;

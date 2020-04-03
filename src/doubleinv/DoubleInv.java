@@ -11,25 +11,13 @@ public interface DoubleInv
 
 	Tile location();
 
-	default boolean playerTradeable(boolean levelStarted)
-	{
-		return false;
-	}
-
-	Inv inputInv();
-
-	Inv outputInv();
+	Inv inv(TradeDirection tradeDirection);
 
 	boolean active();
 
 	void afterTrading();
 
-	default int inputPriority()
-	{
-		return 0;
-	}
-
-	default int outputPriority()
+	default int priority(TradeDirection tradeDirection)
 	{
 		return 0;
 	}

@@ -42,21 +42,13 @@ public final class ProcessInv implements BuildingFunction
 	}
 
 	@Override
-	public boolean playerTradeable(boolean levelStarted)
+	public Inv inv(TradeDirection tradeDirection)
 	{
-		return true;
-	}
-
-	@Override
-	public Inv inputInv()
-	{
-		return inputInv;
-	}
-
-	@Override
-	public Inv outputInv()
-	{
-		return outputInv;
+		return switch(tradeDirection)
+				{
+					case GIVE -> outputInv;
+					case TAKE -> inputInv;
+				};
 	}
 
 	@Override

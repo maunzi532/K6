@@ -44,19 +44,7 @@ public final class Transport implements BuildingFunction
 	}
 
 	@Override
-	public boolean playerTradeable(boolean levelStarted)
-	{
-		return false;
-	}
-
-	@Override
-	public Inv inputInv()
-	{
-		return BlockedInv.INSTANCE;
-	}
-
-	@Override
-	public Inv outputInv()
+	public Inv inv(TradeDirection tradeDirection)
 	{
 		return BlockedInv.INSTANCE;
 	}

@@ -27,11 +27,15 @@ public final class GiveOrTakeState implements NMarkState
 	public void onEnter(MainState mainState)
 	{
 		mainState.side().setStandardSideInfo(character);
-		boolean levelStarted = mainState.levelMap().turnCounter() > 0;
-		List<Tile> range = mainState.levelMap().y1.range(character.location(), 0, character.stats().maxAccessRange());
+		LevelMap levelMap = mainState.levelMap();
+		List<Tile> range = levelMap.y1.range(character.location(), 0, character.stats().maxAccessRange());
 		possibleTargets = new ArrayList<>();
-		range.stream().map(mainState.levelMap()::getBuilding).filter(e -> e != null && e.active() && e.playerTradeable(levelStarted)).forEachOrdered(possibleTargets::add);
-		range.stream().map(mainState.levelMap()::getEntity).filter(e -> e != null && e.active() && e.playerTradeable(levelStarted)).forEachOrdered(possibleTargets::add);
+		if(levelMap.playerTradeableStorage())
+			possibleTargets.add(levelMap.storage());
+		range.stream().map(levelMap::getBuilding).filter(e -> e != null && e.active()
+				&& levelMap.playerTradeable(e, tradeDirection.inverse())).forEachOrdered(possibleTargets::add);
+		range.stream().map(levelMap::getEntity).filter(e -> e != null && e != character && e.active()
+				&& levelMap.playerTradeable(e)).forEachOrdered(possibleTargets::add);
 		visMarked = possibleTargets.stream().map(e -> new VisMark(e.location(), "mark.trade.target",
 				e.type() == DoubleInvType.ENTITY ? VisMark.d2 : VisMark.d1)).collect(Collectors.toList());
 	}
@@ -51,14 +55,7 @@ public final class GiveOrTakeState implements NMarkState
 	@Override
 	public boolean keepInMenu(MainState mainState)
 	{
-		if(mainState.levelMap().turnCounter() == 0)
-		{
-			return character.saveSettings() == null || !character.saveSettings().startInvLocked;
-		}
-		else
-		{
-			return character.resources().ready(1);
-		}
+		return mainState.levelMap().playerTradeable(character) && character.resources().ready(1);
 	}
 
 	@Override
@@ -70,57 +67,38 @@ public final class GiveOrTakeState implements NMarkState
 	@Override
 	public void onClick(MainState mainState, Tile mapTile, XKey key)
 	{
-		boolean levelStarted = mainState.levelMap().turnCounter() > 0;
-		List<DoubleInv> list = possibleTargets.stream().filter(e -> mapTile.equals(e.location())).collect(Collectors.toList());
+		List<DoubleInv> list = possibleTargets.stream().filter(e -> e instanceof Storage storage ?
+						mapTile.equals(character.location()) : mapTile.equals(e.location())).collect(Collectors.toList());
 		if(list.isEmpty())
 		{
 			mainState.stateHolder().setState(NoneState.INSTANCE);
 		}
 		else if(list.size() == 1)
 		{
-			startTradeState(mainState.levelMap(), mainState.stateHolder(), list.get(0), levelStarted);
+			startTradeState(mainState.stateHolder(), list.get(0));
 		}
 		else
 		{
 			if(mainState.stateHolder().preferBuildings())
 			{
 				list.stream().filter(inv1 -> inv1 instanceof XBuilding).findFirst()
-						.ifPresent(inv1 -> startTradeState(mainState.levelMap(), mainState.stateHolder(), inv1, levelStarted));
+						.ifPresent(inv1 -> startTradeState(mainState.stateHolder(), inv1));
 			}
 			else
 			{
 				list.stream().filter(inv1 -> inv1 instanceof XCharacter).findFirst()
-						.ifPresent(inv1 -> startTradeState(mainState.levelMap(), mainState.stateHolder(), inv1, levelStarted));
+						.ifPresent(inv1 -> startTradeState(mainState.stateHolder(), inv1));
 			}
 		}
 	}
 
-	private void startTradeState(LevelMap levelMap, XStateHolder stateHolder, DoubleInv inv1, boolean levelStarted)
+	private void startTradeState(XStateHolder stateHolder, DoubleInv inv1)
 	{
-		if(inv1 == character)
-		{
-			if(!levelStarted)
-			{
-				stateHolder.setState(switch(tradeDirection)
-						{
-							case GIVE -> new DirectedTradeGUI(character, levelMap.storage(), null);
-							case TAKE -> new DirectedTradeGUI(levelMap.storage(), character, null);
-						});
-			}
-			else
-			{
-				stateHolder.setState(NoneState.INSTANCE);
-			}
-		}
-		else
-		{
-			TurnResources takeAp = levelStarted ? character.resources() : null;
-			stateHolder.setState(switch(tradeDirection)
-					{
-						case GIVE -> new DirectedTradeGUI(character, inv1, takeAp);
-						case TAKE -> new DirectedTradeGUI(inv1, character, takeAp);
-					});
-		}
+		stateHolder.setState(switch(tradeDirection)
+				{
+					case GIVE -> new DirectedTradeGUI(character, inv1, character.resources());
+					case TAKE -> new DirectedTradeGUI(inv1, character, character.resources());
+				});
 	}
 
 	@Override

@@ -8,6 +8,7 @@ import doubleinv.*;
 import entity.*;
 import geom.tile.*;
 import item.*;
+import item.inv.*;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
@@ -21,7 +22,8 @@ public final class LevelMap implements ConnectRestore, Arrows
 	private final HashMap<Tile, AdvTile> advTiles;
 	private final List<XBuilding> buildings;
 	private final Map<CharacterTeam, List<XCharacter>> characters;
-	private final DoubleInv storage;
+	private final Map<CharSequence, StartingLocation> startingLocations;
+	private final Storage storage;
 	private int turnCounter;
 	private final ArrayList<XArrow> arrows;
 	private final ArrayList<Integer> screenshake;
@@ -33,6 +35,7 @@ public final class LevelMap implements ConnectRestore, Arrows
 		advTiles = new HashMap<>();
 		buildings = new ArrayList<>();
 		characters = new EnumMap<>(CharacterTeam.class);
+		startingLocations = new HashMap<>();
 		storage = new Storage();
 		turnCounter = -1;
 		arrows = new ArrayList<>();
@@ -88,7 +91,7 @@ public final class LevelMap implements ConnectRestore, Arrows
 		}
 	}
 
-	public boolean buildingCanWork(XBuilding building, boolean unclaimed)
+	private boolean buildingCanWork(XBuilding building, boolean unclaimed)
 	{
 		return building.costBlueprint().requiredFloorTiles().stream().noneMatch(rft -> y1.range(building.location(), rft.minRange(), rft.maxRange()).stream()
 				.filter(e -> okTile(building, e, rft, unclaimed)).count() < rft.amount());
@@ -149,6 +152,47 @@ public final class LevelMap implements ConnectRestore, Arrows
 		addBuilding(building);
 		autoClaimFloor(building);
 		requireUpdate();
+	}
+
+	public boolean playerTradeable(XBuilding building, TradeDirection tradeDirection)
+	{
+		return turnCounter > 0 && !(building.inv(tradeDirection) instanceof BlockedInv);
+	}
+
+	public boolean playerTradeable(XCharacter character)
+	{
+		if(turnCounter == 0)
+		{
+			StartingLocation startingLocation = startingLocations.get(character.name());
+			return startingLocation != null && startingLocation.canTrade();
+		}
+		else
+		{
+			return false;
+		}
+	}
+
+	public boolean playerTradeableStorage()
+	{
+		return turnCounter == 0;
+	}
+
+	public boolean canSwap(XCharacter character)
+	{
+		if(turnCounter == 0)
+		{
+			StartingLocation startingLocation = startingLocations.get(character.name());
+			return startingLocation != null && startingLocation.canSwap();
+		}
+		else
+		{
+			return false;
+		}
+	}
+
+	public boolean canBuild()
+	{
+		return turnCounter > 0;
 	}
 
 	public void revertMovement(XCharacter xh)
@@ -293,9 +337,14 @@ public final class LevelMap implements ConnectRestore, Arrows
 				.collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
 	}
 
-	public DoubleInv storage()
+	public Storage storage()
 	{
 		return storage;
+	}
+
+	public boolean levelStarted()
+	{
+		return turnCounter > 0;
 	}
 
 	public int turnCounter()
@@ -341,7 +390,7 @@ public final class LevelMap implements ConnectRestore, Arrows
 
 	public static List<Integer> attackRanges(XCharacter entity, AttackSide side)
 	{
-		List<int[]> v = entity.outputInv().viewItems(false)
+		List<int[]> v = entity.inv().viewItems(false)
 				.stream().filter(e -> entity.stats().getItemFilter().canContain(e.item))
 				.map(e -> ((AttackItem) e.item).getRanges(side)).collect(Collectors.toList());
 		Set<Integer> ints2 = new HashSet<>();
@@ -369,7 +418,7 @@ public final class LevelMap implements ConnectRestore, Arrows
 	public List<AttackInfo> attackInfo(XCharacter entity, Tile loc, XCharacter entityT, Tile locT)
 	{
 		int distance = y1.distance(loc, locT);
-		return entity.outputInv()
+		return entity.inv()
 				.viewItems(false)
 				.stream()
 				.filter(e -> entity.stats().getItemFilter().canContain(e.item))
@@ -432,7 +481,7 @@ public final class LevelMap implements ConnectRestore, Arrows
 					building.save(a2.startObject(), itemLoader, y1);
 			}
 			a2.end();
-			storage.outputInv().save(h1.startObjectField("Storage"), itemLoader);
+			storage.inv().save(h1.startObjectField("Storage"), itemLoader);
 			var a3 = a1.startArrayField("Characters");
 			var h2 = h1.startArrayField("Characters");
 			for(List<XCharacter> c1 : characters.values())

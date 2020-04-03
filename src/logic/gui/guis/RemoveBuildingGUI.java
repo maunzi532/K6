@@ -29,10 +29,10 @@ public final class RemoveBuildingGUI extends XGUIState
 		mainState.side().setStandardSideInfo(character);
 		building = mainState.levelMap().getBuilding(character.location());
 		ItemList refunds = building.allRefundable();
-		character.inputInv().tryAdd(refunds, true, CommitType.LEAVE);
-		InvNumView weightView = character.inputInv().viewInvWeight();
+		character.inv().tryAdd(refunds, true, CommitType.LEAVE);
+		InvNumView weightView = character.inv().viewInvWeight();
 		ScrollList<ItemView> invView = new ScrollList<>(0, 1, 3, 4, 2, 1,
-				character.inputInv().viewItems(true), RemoveBuildingGUI::changedItemView, null);
+				character.inv().viewItems(true), RemoveBuildingGUI::changedItemView, null);
 		elements.add(invView);
 		elements.add(new CElement(header));
 		elements.add(new CElement(weight, new GuiTile(weightView.baseAndCurrentWithLimit())));
@@ -55,7 +55,10 @@ public final class RemoveBuildingGUI extends XGUIState
 	@Override
 	public boolean keepInMenu(MainState mainState)
 	{
-		return character.resources().ready(1) && mainState.levelMap().getBuilding(character.location()) != null;
+		if(mainState.levelMap().getBuilding(character.location()) == null)
+			return false;
+		else
+			return mainState.levelMap().canBuild() && character.resources().ready(1);
 	}
 
 	@Override
@@ -87,10 +90,10 @@ public final class RemoveBuildingGUI extends XGUIState
 
 	private void onClickRemove(XStateHolder stateHolder)
 	{
-		if(character.inputInv().ok())
+		if(character.inv().ok())
 		{
 			character.resources().action(false, 1);
-			character.inputInv().commit();
+			character.inv().commit();
 			building.remove();
 			stateHolder.setState(NoneState.INSTANCE);
 		}
@@ -99,7 +102,7 @@ public final class RemoveBuildingGUI extends XGUIState
 	@Override
 	public void close(XStateHolder stateHolder)
 	{
-		character.inputInv().rollback();
+		character.inv().rollback();
 		super.close(stateHolder);
 	}
 }
