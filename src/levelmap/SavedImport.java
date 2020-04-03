@@ -97,6 +97,6 @@ public final class SavedImport
 			//startingSettings = null;
 		}
 		EnemyAI enemyAI = team == CharacterTeam.ENEMY ? new StandardAI(levelMap) : new NoAI();
-		return new XCharacter(team, startingDelay, location, stats, inv, enemyAI);
+		return new XCharacter(team, startingDelay, location, stats, inv, enemyAI, true);
 	}
 }

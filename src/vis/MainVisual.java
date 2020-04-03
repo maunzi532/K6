@@ -88,8 +88,10 @@ public final class MainVisual implements XInputInterface
 		{
 			try
 			{
-				new SavedImport(Files.readString(fileMap.toPath()), Files.readString(fileTeam.toPath()))
-						.importIntoMap3(levelMap, itemLoader, levelMap.storage().inv());
+				/*new SavedImport(Files.readString(fileMap.toPath()), Files.readString(fileTeam.toPath()))
+						.importIntoMap3(levelMap, itemLoader, levelMap.storage().inv());*/
+				levelMap.loadMap(Files.readString(fileMap.toPath()), itemLoader);
+				levelMap.loadTeam(Files.readString(fileTeam.toPath()), itemLoader);
 			}catch(IOException e)
 			{
 				throw new RuntimeException(e);

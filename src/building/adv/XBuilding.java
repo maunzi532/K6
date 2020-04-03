@@ -160,7 +160,6 @@ public final class XBuilding implements DoubleInv
 
 	public XBuilding(JrsObject data, ItemLoader itemLoader, TileType y1)
 	{
-		active = true;
 		location = y1.create2(((JrsNumber) data.get("sx")).getValue().intValue(), ((JrsNumber) data.get("sy")).getValue().intValue());
 		costBlueprint = CostBlueprint.create((JrsObject) data.get("Costs"), itemLoader);
 		refundable = new ItemList((JrsArray) data.get("Refundable"), itemLoader);
@@ -184,6 +183,7 @@ public final class XBuilding implements DoubleInv
 		{
 			throw new IllegalArgumentException("Missing building function");
 		}
+		active = true;
 	}
 
 	public <T extends ComposerBase> void save(ObjectComposer<T> a1, ItemLoader itemLoader, TileType y1) throws IOException

@@ -1,7 +1,10 @@
 package statsystem.analysis;
 
+import com.fasterxml.jackson.jr.ob.comp.*;
 import entity.*;
 import geom.tile.*;
+import item.*;
+import java.io.*;
 import java.util.*;
 import java.util.stream.*;
 import levelmap.*;
@@ -86,5 +89,13 @@ public final class StandardAI implements EnemyAI
 	public EnemyAI copy()
 	{
 		return new StandardAI(levelMap);
+	}
+
+	@Override
+	public <T extends ComposerBase> void save(ObjectComposer<T> a1, ItemLoader itemLoader, TileType y1)
+			throws IOException
+	{
+		a1.put("Type", "StandardAI");
+		a1.end();
 	}
 }

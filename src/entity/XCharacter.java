@@ -2,6 +2,7 @@ package entity;
 
 import arrow.*;
 import com.fasterxml.jackson.jr.ob.comp.*;
+import com.fasterxml.jackson.jr.stree.*;
 import doubleinv.*;
 import geom.tile.*;
 import item.*;
@@ -9,37 +10,45 @@ import item.inv.*;
 import item.view.*;
 import java.io.*;
 import java.util.*;
+import levelmap.*;
 import statsystem.*;
 
 public final class XCharacter implements DoubleInv, XBuilder
 {
 	private CharacterTeam team;
 	private int startingDelay;
-	private boolean defeated;
 	private Tile location;
-	private XArrow visualReplaced;
 	private final Stats stats;
 	private final Inv inv;
 	private EnemyAI enemyAI;
 	private TurnResources resources;
+	private XArrow visualReplaced;
+	private boolean defeated;
 
-	public XCharacter(CharacterTeam team, int startingDelay, Tile location, Stats stats, Inv inv,
-			EnemyAI enemyAI)
+	public XCharacter(CharacterTeam team, int startingDelay, Tile location, Stats stats, Inv inv, EnemyAI enemyAI, boolean unlimitedTR)
 	{
 		this.team = team;
 		this.startingDelay = startingDelay;
-		defeated = false;
 		this.location = location;
-		visualReplaced = null;
 		this.stats = stats;
 		this.inv = inv;
 		this.enemyAI = enemyAI;
+		if(unlimitedTR)
+		{
+			resources = TurnResources.unlimited();
+		}
+		else
+		{
+			resources = new TurnResources(location);
+		}
+		visualReplaced = null;
+		defeated = false;
 	}
 
-	public XCharacter createACopy(Tile copyLocation)
+	public XCharacter createACopy(Tile copyLocation, boolean unlimitedTR)
 	{
 		XCharacter copy = new XCharacter(team, startingDelay, copyLocation,
-				stats.createACopy(), inv.copy(), enemyAI.copy());
+				stats.createACopy(), inv.copy(), enemyAI.copy(), unlimitedTR);
 		copy.stats().autoEquip(copy);
 		return copy;
 	}
@@ -198,7 +207,77 @@ public final class XCharacter implements DoubleInv, XBuilder
 		{
 			stats.save(a1.startObjectField("Stats"), itemLoader);
 			inv.save(a1.startObjectField("Inventory"), itemLoader);
-		}*/ //TODO
+		}*/
 		a1.end();
+	}
+
+	public static XCharacter loadFromMap(JrsObject data, ItemLoader itemLoader, LevelMap levelMap)
+	{
+		CharacterTeam team = CharacterTeam.valueOf(data.get("Team").asText());
+		int startingDelay = ((JrsNumber) data.get("StartingDelay")).getValue().intValue();
+		Tile location = levelMap.y1.create2(((JrsNumber) data.get("sx")).getValue().intValue(), ((JrsNumber) data.get("sy")).getValue().intValue());
+		Stats stats = new Stats(((JrsObject) data.get("Stats")), itemLoader);
+		Inv inv = new WeightInv(((JrsObject) data.get("Inventory")), itemLoader);
+		EnemyAI enemyAI = EnemyAI.load((JrsObject) data.get("EnemyAI"), itemLoader, levelMap);
+		return new XCharacter(team, startingDelay, location, stats, inv, enemyAI, false);
+	}
+
+	public <T extends ComposerBase> void saveToMap(ObjectComposer<T> a1, ItemLoader itemLoader, TileType y1) throws IOException
+	{
+		a1.put("Team", team.name());
+		a1.put("StartingDelay", startingDelay);
+		a1.put("sx", y1.sx(location));
+		a1.put("sy", y1.sy(location));
+		stats.save(a1.startObjectField("Stats"), itemLoader);
+		inv.save(a1.startObjectField("Inventory"), itemLoader);
+		enemyAI.save(a1.startObjectField("EnemyAI"), itemLoader, y1);
+	}
+
+	public static XCharacter loadFromTeam(JrsObject data, int startingDelay, Tile defaultStart, Inv invOverride, Inv storageInv, ItemLoader itemLoader, LevelMap levelMap)
+	{
+		CharacterTeam team = CharacterTeam.valueOf(data.get("Team").asText());
+		Tile location;
+		if(data.get("sx") != null && data.get("sy") != null)
+		{
+			location = levelMap.y1.create2(((JrsNumber) data.get("sx")).getValue().intValue(), ((JrsNumber) data.get("sy")).getValue().intValue());
+		}
+		else
+		{
+			location = defaultStart;
+		}
+		Stats stats = new Stats(((JrsObject) data.get("Stats")), itemLoader);
+		Inv inv;
+		if(invOverride != null)
+		{
+			Inv toStorage = new WeightInv(((JrsObject) data.get("Inventory")), itemLoader);
+			storageInv.tryAdd(toStorage.allItems());
+			inv = invOverride;
+		}
+		else
+		{
+			inv = new WeightInv(((JrsObject) data.get("Inventory")), itemLoader);
+		}
+		EnemyAI enemyAI = EnemyAI.load((JrsObject) data.get("EnemyAI"), itemLoader, levelMap);
+		return new XCharacter(team, startingDelay, location, stats, inv, enemyAI, true);
+	}
+
+	public <T extends ComposerBase> void saveToTeam(ObjectComposer<T> a1, boolean saveLocation, boolean canTrade, ItemLoader itemLoader, TileType y1) throws IOException
+	{
+		a1.put("Team", team.name());
+		if(saveLocation)
+		{
+			a1.put("sx", y1.sx(location));
+			a1.put("sy", y1.sy(location));
+		}
+		stats.save(a1.startObjectField("Stats"), itemLoader);
+		if(canTrade)
+		{
+			inv.save(a1.startObjectField("Inventory"), itemLoader);
+		}
+		else
+		{
+			new WeightInv(inv.viewInvWeight().limit).save(a1.startObjectField("Inventory"), itemLoader);
+		}
+		enemyAI.save(a1.startObjectField("EnemyAI"), itemLoader, y1);
 	}
 }

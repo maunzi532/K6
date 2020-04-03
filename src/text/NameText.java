@@ -19,4 +19,10 @@ public record NameText(String name) implements CharSequence
 	{
 		return name.subSequence(start, end);
 	}
+
+	@Override
+	public String toString()
+	{
+		return name;
+	}
 }

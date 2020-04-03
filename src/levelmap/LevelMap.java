@@ -3,7 +3,9 @@ package levelmap;
 import arrow.*;
 import building.adv.*;
 import building.blueprint.*;
+import com.fasterxml.jackson.core.*;
 import com.fasterxml.jackson.jr.ob.*;
+import com.fasterxml.jackson.jr.stree.*;
 import doubleinv.*;
 import entity.*;
 import geom.tile.*;
@@ -15,6 +17,7 @@ import java.util.*;
 import java.util.function.*;
 import java.util.stream.*;
 import statsystem.*;
+import text.*;
 
 public final class LevelMap implements ConnectRestore, Arrows
 {
@@ -273,6 +276,12 @@ public final class LevelMap implements ConnectRestore, Arrows
 			characters.put(entity.team(), new ArrayList<>());
 		}
 		characters.get(entity.team()).add(entity);
+		/*//TODO
+		if(entity.team() == CharacterTeam.HERO)
+		{
+			startingLocations.put(entity.name(), new StartingLocation(startingLocations.size(), entity.name(),
+					entity.location(), true, null, 0));
+		}*/
 		requireUpdate();
 	}
 
@@ -340,6 +349,11 @@ public final class LevelMap implements ConnectRestore, Arrows
 	public Storage storage()
 	{
 		return storage;
+	}
+
+	public void addStartingLocation(StartingLocation sl)
+	{
+		startingLocations.put(sl.characterName(), sl);
 	}
 
 	public boolean levelStarted()
@@ -494,6 +508,139 @@ public final class LevelMap implements ConnectRestore, Arrows
 			a3.end();
 			h2.end();
 			return new String[]{a1.end().finish(), h1.end().finish()};
+		}catch(IOException e)
+		{
+			throw new RuntimeException(e);
+		}
+	}
+
+	public void loadMap(String input, ItemLoader itemLoader)
+	{
+		try
+		{
+			TreeNode data = JSON.std.with(new JacksonJrsTreeCodec()).treeFrom(input);
+			if(((JrsNumber) data.get("code")).getValue().intValue() == 0xA4D2839F)
+			{
+				ByteBuffer sb = ByteBuffer.wrap(Base64.getDecoder().decode(((JrsString) data.get("FloorTiles")).getValue()));
+				int lenTiles = sb.remaining() / 4;
+				for(int i = 0; i < lenTiles; i++)
+				{
+					createTile(sb.get(), sb.get(), sb.get(), sb.get());
+				}
+				((JrsArray) data.get("Buildings")).elements().forEachRemaining(e ->
+						addBuilding(new XBuilding((JrsObject) e, itemLoader, y1)));
+				((JrsArray) data.get("Characters")).elements().forEachRemaining(e ->
+						addEntity(XCharacter.loadFromMap((JrsObject) e, itemLoader, this)));
+				((JrsArray) data.get("StartingLocations")).elements().forEachRemaining(e ->
+						addStartingLocation(StartingLocation.load((JrsObject) e, itemLoader, y1, startingLocations.size())));
+				buildings.forEach(this::loadConnectBuilding);
+			}
+		}catch(IOException e)
+		{
+			throw new RuntimeException(e);
+		}
+	}
+
+	public String saveMap(ItemLoader itemLoader)
+	{
+		try
+		{
+			var a1 = JSON.std.with(JSON.Feature.PRETTY_PRINT_OUTPUT)
+					.composeString()
+					.startObject()
+					.put("code", 0xA4D2839F);
+			ByteBuffer sb = ByteBuffer.allocate(advTiles.size() * 4);
+			for(Map.Entry<Tile, AdvTile> entry : advTiles.entrySet())
+			{
+				Tile t1 = entry.getKey();
+				AdvTile adv = entry.getValue();
+				if(adv.floorTile() != null)
+				{
+					sb.put((byte) y1.sx(t1));
+					sb.put((byte) y1.sy(t1));
+					sb.put((byte) adv.floorTile().sector);
+					sb.put((byte) adv.floorTile().type.ordinal());
+				}
+			}
+			a1.put("FloorTiles", Base64.getEncoder().encodeToString(sb.array()));
+			var a2 = a1.startArrayField("Buildings");
+			for(XBuilding building : buildings)
+			{
+				if(building.active())
+					building.save(a2.startObject(), itemLoader, y1);
+			}
+			a2.end();
+			var a3 = a1.startArrayField("Characters");
+			for(List<XCharacter> c1 : characters.values())
+			{
+				for(XCharacter character : c1)
+				{
+					if(!startingLocations.containsKey(character.name()))
+						character.saveToMap(a3.startObject(), itemLoader, y1);
+				}
+			}
+			a3.end();
+			var a4 = a1.startArrayField("StartingLocations");
+			List<StartingLocation> startingLocations1 = startingLocations.values().stream()
+					.sorted(Comparator.comparingInt(StartingLocation::number)).collect(Collectors.toList());
+			for(StartingLocation sl : startingLocations1)
+			{
+				sl.save(a4.startObject(), itemLoader, y1);
+			}
+			a4.end();
+			return a1.end().finish();
+		}catch(IOException e)
+		{
+			throw new RuntimeException(e);
+		}
+	}
+
+	public void loadTeam(String input, ItemLoader itemLoader)
+	{
+		try
+		{
+			TreeNode data = JSON.std.with(new JacksonJrsTreeCodec()).treeFrom(input);
+			if(((JrsNumber) data.get("code")).getValue().intValue() == 0xA4D2839F)
+			{
+				//TODO ((JrsValue) data.get("CurrentMap")).asText();
+				WeightInv tempInv = new WeightInv((JrsObject) data.get("Storage"), itemLoader);
+				storage.inv().tryAdd(tempInv.allItems());
+				((JrsArray) data.get("Team")).elements().forEachRemaining(e ->
+						{
+							JrsObject e1 = (JrsObject) e;
+							StartingLocation sl = startingLocations.get(new NameText(((JrsObject) e1.get("Stats")).get("CustomName").asText()));
+							addEntity(XCharacter.loadFromTeam(e1, sl.startingDelay(), sl.location(), sl.invOverride(), storage.inv(), itemLoader, this));
+						});
+				buildings.forEach(this::loadConnectBuilding);
+			}
+		}catch(IOException e)
+		{
+			throw new RuntimeException(e);
+		}
+	}
+
+	public String saveTeamStart(String mapFile, ItemLoader itemLoader)
+	{
+		try
+		{
+			var a1 = JSON.std.with(JSON.Feature.PRETTY_PRINT_OUTPUT)
+					.composeString()
+					.startObject()
+					.put("code", 0xA4D2839F);
+			a1.put("CurrentMap", mapFile);
+			var a2 = a1.startArrayField("Team");
+			for(List<XCharacter> c1 : characters.values())
+			{
+				for(XCharacter character : c1)
+				{
+					StartingLocation sl = startingLocations.get(character.name());
+					if(sl != null)
+						character.saveToTeam(a2.startObject(), true, sl.canTrade(), itemLoader, y1);
+				}
+			}
+			a2.end();
+			storage.inv().save(a1.startObjectField("Storage"), itemLoader);
+			return a1.end().finish();
 		}catch(IOException e)
 		{
 			throw new RuntimeException(e);

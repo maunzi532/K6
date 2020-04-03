@@ -1,5 +1,10 @@
 package entity;
 
+import com.fasterxml.jackson.jr.ob.comp.*;
+import geom.tile.*;
+import item.*;
+import java.io.*;
+
 public final class NoAI implements EnemyAI
 {
 	@Override
@@ -12,5 +17,13 @@ public final class NoAI implements EnemyAI
 	public EnemyAI copy()
 	{
 		return new NoAI();
+	}
+
+	@Override
+	public <T extends ComposerBase> void save(ObjectComposer<T> a1, ItemLoader itemLoader, TileType y1)
+			throws IOException
+	{
+		a1.put("Type", "NoAI");
+		a1.end();
 	}
 }

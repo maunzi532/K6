@@ -48,12 +48,12 @@ public final class EntityCreateGUI extends XGUIState
 		if(team == CharacterTeam.HERO)
 		{
 			entity = new XCharacter(CharacterTeam.HERO, 0, location, stats, inv,
-					new NoAI(), new TurnResources(location));
+					new NoAI(), false);
 		}
 		else
 		{
 			entity = new XCharacter(team, 0, location, stats, inv,
-					new StandardAI(levelMap), new TurnResources(location));
+					new StandardAI(levelMap), false);
 		}
 		levelMap.addEntity(entity);
 		stateHolder.setState(new EntityEditGUI(entity));

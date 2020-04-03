@@ -10,9 +10,23 @@ public final class TurnResources
 	private int movement;
 	private int dashMovement;
 	private int actionPoints;
+	private boolean unlimited;
 	private boolean moveAction;
 	private boolean revertMoveAction;
 	private boolean mainAction;
+
+	private TurnResources()
+	{
+		startMovement = 0;
+		startDashMovement = 0;
+		movement = 0;
+		dashMovement = 0;
+		actionPoints = 0;
+		unlimited = true;
+		moveAction = false;
+		revertMoveAction = false;
+		mainAction = false;
+	}
 
 	public TurnResources(Tile startLocation)
 	{
@@ -22,6 +36,7 @@ public final class TurnResources
 		movement = 0;
 		dashMovement = 0;
 		actionPoints = 0;
+		unlimited = false;
 		moveAction = false;
 		revertMoveAction = false;
 		mainAction = false;
@@ -35,6 +50,7 @@ public final class TurnResources
 		movement = startMovement;
 		dashMovement = startDashMovement;
 		actionPoints = startActionPoints;
+		unlimited = false;
 		moveAction = true;
 		revertMoveAction = true;
 		mainAction = true;
@@ -91,7 +107,7 @@ public final class TurnResources
 
 	public boolean ready(int apCost)
 	{
-		return mainAction && actionPoints >= apCost;
+		return unlimited || (mainAction && actionPoints >= apCost);
 	}
 
 	public void move(int cost)
@@ -103,10 +119,13 @@ public final class TurnResources
 
 	public void action(boolean main, int ap)
 	{
-		if(main)
-			mainAction = false;
-		actionPoints -= ap;
-		revertMoveAction = false;
+		if(!unlimited)
+		{
+			if(main)
+				mainAction = false;
+			actionPoints -= ap;
+			revertMoveAction = false;
+		}
 	}
 
 	public void revertMovement()
@@ -114,5 +133,10 @@ public final class TurnResources
 		movement = startMovement;
 		dashMovement = startDashMovement;
 		moveAction = true;
+	}
+
+	public static TurnResources unlimited()
+	{
+		return new TurnResources();
 	}
 }
