@@ -1,6 +1,8 @@
 package vis;
 
 import building.blueprint.*;
+import com.fasterxml.jackson.jr.ob.*;
+import com.fasterxml.jackson.jr.stree.*;
 import geom.*;
 import geom.tile.*;
 import item.*;
@@ -44,7 +46,7 @@ public final class MainVisual implements XInputInterface
 	public MainVisual(XGraphics graphics, Scheme scheme,
 			TileCamera mapCamera, TileCamera menuCamera, TileCamera guiCamera,
 			Function<Double, TileCamera> editorSlotCamera,
-			ItemLoader itemLoader, BlueprintFile blueprintFile, String loadFileMap, String loadFileTeam)
+			ItemLoader itemLoader, BlueprintFile blueprintFile, String loadFileTeam)
 	{
 		this.graphics = graphics;
 		this.scheme = scheme;
@@ -63,35 +65,41 @@ public final class MainVisual implements XInputInterface
 		convInputConsumer = stateControl;
 		MainState mainState = new MainState(levelMap, stateHolder, visualSideInfoFrame, itemLoader, blueprintFile);
 		stateControl.setMainState(mainState, new StartTurnState());
-		loadLevel(loadFileMap, loadFileTeam, itemLoader, levelMap);
+		loadLevel(loadFileTeam, itemLoader, levelMap);
 		GraphicsContext gd = graphics.gd();
 		gd.setTextAlign(TextAlignment.CENTER);
 		gd.setTextBaseline(VPos.CENTER);
 		draw();
 	}
 
-	private static void loadLevel(String loadFileMap, String loadFileTeam, ItemLoader itemLoader, LevelMap levelMap)
+	private static void loadLevel(String loadFileTeam, ItemLoader itemLoader, LevelMap levelMap)
 	{
-		File fileMap;
 		File fileTeam;
-		if(loadFileMap != null && loadFileTeam != null)
+		if(loadFileTeam != null)
 		{
-			fileMap = new File(loadFileMap);
 			fileTeam = new File(loadFileTeam);
 		}
 		else
 		{
-			fileMap = new FileChooser().showOpenDialog(null);
 			fileTeam = new FileChooser().showOpenDialog(null);
 		}
-		if(fileMap != null && fileTeam != null && fileMap.exists() && fileTeam.exists())
+		if(fileTeam != null && fileTeam.exists())
 		{
 			try
 			{
-				/*new SavedImport(Files.readString(fileMap.toPath()), Files.readString(fileTeam.toPath()))
-						.importIntoMap3(levelMap, itemLoader, levelMap.storage().inv());*/
-				levelMap.loadMap(Files.readString(fileMap.toPath()), itemLoader);
-				levelMap.loadTeam(Files.readString(fileTeam.toPath()), itemLoader);
+				var dataTeam = JSON.std.with(new JacksonJrsTreeCodec()).treeFrom(Files.readString(fileTeam.toPath()));
+				if(((JrsNumber) dataTeam.get("code")).getValue().intValue() == 0xA4D2839F)
+				{
+					String world = ((JrsString) dataTeam.get("World")).getValue();
+					String currentMap = ((JrsString) dataTeam.get("CurrentMap")).getValue();
+					File levelFile = new File(world, currentMap);
+					var dataMap = JSON.std.with(new JacksonJrsTreeCodec()).treeFrom(Files.readString(levelFile.toPath()));
+					if(((JrsNumber) dataMap.get("code")).getValue().intValue() == 0xA4D2839F)
+					{
+						levelMap.loadMap((JrsObject) dataMap, itemLoader);
+					}
+					levelMap.loadTeam((JrsObject) dataTeam, itemLoader);
+				}
 			}catch(IOException e)
 			{
 				throw new RuntimeException(e);

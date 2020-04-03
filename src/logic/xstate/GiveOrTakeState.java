@@ -36,7 +36,7 @@ public final class GiveOrTakeState implements NMarkState
 				&& levelMap.playerTradeable(e, tradeDirection.inverse())).forEachOrdered(possibleTargets::add);
 		range.stream().map(levelMap::getEntity).filter(e -> e != null && e != character && e.active()
 				&& levelMap.playerTradeable(e)).forEachOrdered(possibleTargets::add);
-		visMarked = possibleTargets.stream().map(e -> new VisMark(e.location(), "mark.trade.target",
+		visMarked = possibleTargets.stream().map(e -> new VisMark(getLocation(e), "mark.trade.target",
 				e.type() == DoubleInvType.ENTITY ? VisMark.d2 : VisMark.d1)).collect(Collectors.toList());
 	}
 
@@ -67,8 +67,7 @@ public final class GiveOrTakeState implements NMarkState
 	@Override
 	public void onClick(MainState mainState, Tile mapTile, XKey key)
 	{
-		List<DoubleInv> list = possibleTargets.stream().filter(e -> e instanceof Storage storage ?
-						mapTile.equals(character.location()) : mapTile.equals(e.location())).collect(Collectors.toList());
+		List<DoubleInv> list = possibleTargets.stream().filter(e -> mapTile.equals(getLocation(e))).collect(Collectors.toList());
 		if(list.isEmpty())
 		{
 			mainState.stateHolder().setState(NoneState.INSTANCE);
@@ -90,6 +89,14 @@ public final class GiveOrTakeState implements NMarkState
 						.ifPresent(inv1 -> startTradeState(mainState.stateHolder(), inv1));
 			}
 		}
+	}
+
+	private Tile getLocation(DoubleInv possibleTarget)
+	{
+		if(possibleTarget instanceof Storage storage)
+			return character.location();
+		else
+			return possibleTarget.location();
 	}
 
 	private void startTradeState(XStateHolder stateHolder, DoubleInv inv1)

@@ -16,15 +16,16 @@ public record MainState(LevelMap levelMap, XStateHolder stateHolder, SideInfoFra
 	//TODO downscale item images (0/4)
 
 	//save/load
-	//TODO create y1/y2 in LevelMap load
-	//TODO    save maps and saves in folders
+	//TODO save map in SaveMode, save team in turn 0
+	//TODO save maps and saves in folders
 	//TODO    advanced loading system
 
 	//engine mechanics
-	//TODO all enemy reach show amount of enemies
+	//TODO test starting delay
+	//TODO CharacterDefeatedState
 	//TODO turn limit
-	//TODO enemy reinforcements (starting delay)
-	//TODO remove defeated enemies
+	//TODO    all enemy reach show amount of enemies
+	//TODO show TurnResources in SideInfo
 
 	//GUI
 	//TODO edit starting delay
@@ -55,14 +56,12 @@ public record MainState(LevelMap levelMap, XStateHolder stateHolder, SideInfoFra
 
 	//code
 	//TODO    Initialize somewhere else than in MainVisual
-	//TODO give/take NPE
 
 	//visual engine mechanics
 	//TODO move GUI so it does not overlap with SideInfo/LevelEditor
-	//TODO    improve camera controls
 	//TODO move camera to view enemies/encounters
+	//TODO    improve camera controls
 	//TODO    show pause menu
-	//TODO show TurnResources in SideInfo
 
 	//LK char - move/attack
 	//RK char - inv/trade
@@ -78,7 +77,7 @@ public record MainState(LevelMap levelMap, XStateHolder stateHolder, SideInfoFra
 
 	//Save System
 	//Map Save - saves tiles+, buildings+, enemies+, starting locations+ (inv override), events (story, additional characters), next map
-	//Prepare Save - saves characters+ (locations), storage+, current map_, enemy range view, progress
-	//Mid Save - saves characters (locations, turnresources, linked), storage, buildings, enemy range view, current map, turn, progress
+	//Prepare Save - saves characters+ (locations), storage+, current map+, enemy range view, progress
 	//End Save - saves characters, storage, progress
+	//Mid Save - saves characters (locations, turnresources, linked), storage, buildings, enemy range view, current map, turn, progress
 }

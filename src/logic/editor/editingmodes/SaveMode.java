@@ -1,5 +1,7 @@
 package logic.editor.editingmodes;
 
+import com.fasterxml.jackson.jr.ob.*;
+import com.fasterxml.jackson.jr.ob.comp.*;
 import geom.tile.*;
 import java.io.*;
 import java.nio.file.*;
@@ -36,13 +38,14 @@ public final class SaveMode implements EditingMode
 	{
 		try
 		{
-			/*String[] texts = mainState.levelMap().saveDataJSON(mainState.itemLoader());
-			Files.writeString(new FileChooser().showSaveDialog(null).toPath(), texts[0]);
-			Files.writeString(new FileChooser().showSaveDialog(null).toPath(), texts[1]);*/
-			String text1 = mainState.levelMap().saveMap(mainState.itemLoader());
+			var a1 = getA1();
+			mainState.levelMap().saveMapNC(a1, mainState.itemLoader());
+			String text1 = a1.end().finish();
 			Path path = new FileChooser().showSaveDialog(null).toPath();
 			Files.writeString(path, text1);
-			String text2 = mainState.levelMap().saveTeamStart(path.toString(), mainState.itemLoader());
+			var a2 = getA1();
+			mainState.levelMap().saveTeamStartNC(a2, path.getParent().getFileName().toString(), path.getFileName().toString(), mainState.itemLoader());
+			String text2 = a2.end().finish();
 			Files.writeString(new FileChooser().showSaveDialog(null).toPath(), text2);
 			state = 1;
 		}catch(IOException e)
@@ -53,4 +56,12 @@ public final class SaveMode implements EditingMode
 
 	@Override
 	public void onMapClick(MainState mainState, Tile tile, XKey key){}
+
+	private static ObjectComposer<JSONComposer<String>> getA1() throws IOException
+	{
+		return JSON.std.with(JSON.Feature.PRETTY_PRINT_OUTPUT)
+				.composeString()
+				.startObject()
+				.put("code", 0xA4D2839F);
+	}
 }

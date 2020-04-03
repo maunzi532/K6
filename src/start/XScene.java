@@ -47,7 +47,6 @@ public final class XScene extends Application
 		MainVisual mainVisual = new MainVisual(graphics, scheme, mapCamera(scheme, graphics),
 				menuCamera(scheme, graphics), guiCamera(scheme, graphics), a1 -> editorSlotCamera(scheme, graphics, a1),
 				itemLoader, blueprintFile,
-				scheme.setting("load.map"),
 				scheme.setting("load.team"));
 		XTimer xTimer = new XTimer(mainVisual, scheme.keybindFile());
 		scene.setOnMousePressed(xTimer::onMouseDown);

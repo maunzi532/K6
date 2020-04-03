@@ -74,7 +74,6 @@
     "resource.tech" : "Tech.png"
   },
   "Settings" : {
-    "load.map" : "W10",
     "load.team" : "X10",
     "window.width" : "1000",
     "window.height" : "800",
