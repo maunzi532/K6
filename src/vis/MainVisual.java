@@ -16,6 +16,7 @@ import javafx.stage.*;
 import levelmap.*;
 import logic.*;
 import logic.editor.*;
+import logic.event.*;
 import logic.xstate.*;
 import text.*;
 import vis.gui.*;
@@ -64,15 +65,16 @@ public final class MainVisual implements XInputInterface
 		stateHolder = stateControl;
 		convInputConsumer = stateControl;
 		MainState mainState = new MainState(levelMap, stateHolder, visualSideInfoFrame, itemLoader, blueprintFile);
-		stateControl.setMainState(mainState, new StartTurnState());
-		loadLevel(loadFileTeam, itemLoader, levelMap);
+		stateControl.setMainState(mainState, new NoneState());
+		loadLevel(loadFileTeam, itemLoader, levelMap, scheme);
+		stateControl.setState(new EventListState(levelMap.eventPack("Start").events(), new StartTurnState()));
 		GraphicsContext gd = graphics.gd();
 		gd.setTextAlign(TextAlignment.CENTER);
 		gd.setTextBaseline(VPos.CENTER);
 		draw();
 	}
 
-	private static void loadLevel(String loadFileTeam, ItemLoader itemLoader, LevelMap levelMap)
+	private static void loadLevel(String loadFileTeam, ItemLoader itemLoader, LevelMap levelMap, Scheme scheme)
 	{
 		File fileTeam;
 		if(loadFileTeam != null)
@@ -99,6 +101,7 @@ public final class MainVisual implements XInputInterface
 						levelMap.loadMap((JrsObject) dataMap, itemLoader);
 					}
 					levelMap.loadTeam((JrsObject) dataTeam, itemLoader);
+					levelMap.setEventPacks(EventPack.read(world, currentMap, scheme.setting("file.locale.1"), itemLoader, levelMap.y1));
 				}
 			}catch(IOException e)
 			{

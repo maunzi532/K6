@@ -83,6 +83,24 @@ public final class VisualSideInfoFrame implements SideInfoFrame
 		return (e1.team() != CharacterTeam.HERO && e2.team() == CharacterTeam.HERO) != xhR;
 	}
 
+	@Override
+	public void setTextSideInfo(XCharacter character, CharSequence text, boolean r)
+	{
+		if(r)
+		{
+			r0.setSideInfo(textSideInfo(character, text));
+		}
+		else
+		{
+			l0.setSideInfo(textSideInfo(character, text));
+		}
+	}
+
+	private static SideInfo textSideInfo(XCharacter character, CharSequence text)
+	{
+		return new SideInfo(character, character.sideImageName(), null, text);
+	}
+
 	public void tick()
 	{
 		viewers.forEach(VisualSideInfo::tick);

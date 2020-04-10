@@ -20,6 +20,11 @@ public record MainState(LevelMap levelMap, XStateHolder stateHolder, SideInfoFra
 	//TODO save maps and saves in folders
 	//TODO    advanced loading system
 
+	//events
+	//TODO pre-map-events
+	//TODO save event
+	//TODO talk event
+
 	//engine mechanics
 	//TODO test starting delay
 	//TODO CharacterDefeatedState

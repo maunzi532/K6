@@ -15,6 +15,7 @@ import java.nio.*;
 import java.util.*;
 import java.util.function.*;
 import java.util.stream.*;
+import logic.event.*;
 import statsystem.*;
 import text.*;
 
@@ -26,6 +27,7 @@ public final class LevelMap implements ConnectRestore, Arrows
 	private final Map<CharacterTeam, List<XCharacter>> characters;
 	private final Map<CharSequence, StartingLocation> startingLocations;
 	private final Storage storage;
+	private Map<String, EventPack> eventPacks;
 	private int turnCounter;
 	private final ArrayList<XArrow> arrows;
 	private final ArrayList<Integer> screenshake;
@@ -319,6 +321,14 @@ public final class LevelMap implements ConnectRestore, Arrows
 		requireUpdate();
 	}
 
+	public Optional<XCharacter> findByName(CharSequence name)
+	{
+		if(name == null)
+			return Optional.empty();
+		else
+			return characters.entrySet().stream().flatMap(e -> e.getValue().stream().filter(e1 -> e1.name().equals(name))).findFirst();
+	}
+
 	public List<XCharacter> teamCharacters(CharacterTeam team)
 	{
 		return characters.getOrDefault(team, List.of());
@@ -353,6 +363,16 @@ public final class LevelMap implements ConnectRestore, Arrows
 	public void addStartingLocation(StartingLocation sl)
 	{
 		startingLocations.put(sl.characterName(), sl);
+	}
+
+	public void setEventPacks(Map<String, EventPack> eventPacks)
+	{
+		this.eventPacks = eventPacks;
+	}
+
+	public EventPack eventPack(String key)
+	{
+		return eventPacks.get(key);
 	}
 
 	public boolean levelStarted()
