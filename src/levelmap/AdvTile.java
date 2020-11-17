@@ -1,6 +1,5 @@
 package levelmap;
 
-import building.adv.*;
 import doubleinv.*;
 import entity.*;
 
@@ -9,9 +8,7 @@ public final class AdvTile
 	public static final AdvTile EMPTY = new AdvTile(null);
 
 	private FloorTile floorTile;
-	private XBuilding building;
 	private XCharacter entity;
-	private XBuilding ownedBy;
 
 	public AdvTile(FloorTile floorTile)
 	{
@@ -23,23 +20,9 @@ public final class AdvTile
 		return floorTile;
 	}
 
-	public XBuilding building()
-	{
-		if(building != null && building.active())
-			return building;
-		return null;
-	}
-
 	public XCharacter entity()
 	{
 		return entity;
-	}
-
-	public XBuilding ownedBy()
-	{
-		if(ownedBy != null && ownedBy.active())
-			return ownedBy;
-		return null;
 	}
 
 	public void setFloorTile(FloorTile floorTile)
@@ -47,19 +30,9 @@ public final class AdvTile
 		this.floorTile = floorTile;
 	}
 
-	public void setBuilding(XBuilding building)
-	{
-		this.building = building;
-	}
-
 	public void setEntity(XCharacter entity)
 	{
 		this.entity = entity;
-	}
-
-	public void setOwnedBy(XBuilding ownedBy)
-	{
-		this.ownedBy = ownedBy;
 	}
 
 	public boolean visible()

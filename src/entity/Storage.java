@@ -14,12 +14,6 @@ public final class Storage implements DoubleInv
 	}
 
 	@Override
-	public DoubleInvType type()
-	{
-		return null;
-	}
-
-	@Override
 	public CharSequence name()
 	{
 		return "storage.name";

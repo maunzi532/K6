@@ -5,8 +5,6 @@
     "turn.display.0" : "Vorbereitungsphase",
     "turn.display" : "Zug %d",
     "pause" : "Pausiert",
-    "pause.info" : "P um das Pausemenü zu öffnen",
-    "choosemode.building" : "GAM",
-    "choosemode.character" : "CAM"
+    "pause.info" : "P um das Pausemenü zu öffnen"
   }
 }

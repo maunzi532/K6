@@ -1,0 +1,18 @@
+{
+	"code" : -1529707617,
+	"Start" :
+	[
+		{
+			"EventType" : "Text",
+			"Character" : "Anna",
+			"Text" : "This is a test map",
+			"R" : false
+		},
+		{
+			"EventType" : "Text",
+			"Character" : "Anna",
+			"Text" : "Hi",
+			"R" : false
+		}
+	]
+}

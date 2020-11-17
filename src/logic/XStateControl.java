@@ -1,7 +1,5 @@
 package logic;
 
-import building.adv.*;
-import building.transport.*;
 import entity.*;
 import geom.tile.*;
 import java.util.*;
@@ -23,7 +21,6 @@ public final class XStateControl implements XStateHolder, ConvInputConsumer
 	private VisMark cursorMarker;
 	private List<VisMark> dragMarker;
 	private final List<VisMark> visMarked;
-	private boolean preferBuildings;
 	private boolean showAllEnemyReach;
 	private Map<Tile, Long> allEnemyReach;
 
@@ -75,12 +72,6 @@ public final class XStateControl implements XStateHolder, ConvInputConsumer
 	public List<VisMark> visMarked()
 	{
 		return visMarked;
-	}
-
-	@Override
-	public boolean preferBuildings()
-	{
-		return preferBuildings;
 	}
 
 	@Override
@@ -174,27 +165,9 @@ public final class XStateControl implements XStateHolder, ConvInputConsumer
 		else if(key.canClick())
 		{
 			AdvTile advTile = levelMap.advTile(mapTile);
-			if(preferBuildings)
+			if(advTile.entity() != null)
 			{
-				if(advTile.building() != null)
-				{
-					onClickBuilding(advTile.building(), key);
-				}
-				else if(advTile.entity() != null)
-				{
-					onClickEntity(advTile.entity(), key);
-				}
-			}
-			else
-			{
-				if(advTile.entity() != null)
-				{
-					onClickEntity(advTile.entity(), key);
-				}
-				else if(advTile.building() != null)
-				{
-					onClickBuilding(advTile.building(), key);
-				}
+				onClickEntity(advTile.entity(), key);
 			}
 		}
 	}
@@ -228,32 +201,6 @@ public final class XStateControl implements XStateHolder, ConvInputConsumer
 			else if(key.hasFunction("menu"))
 			{
 				setState(new CharacterCombatGUI(entity, 0));
-			}
-		}
-	}
-
-	private void onClickBuilding(XBuilding building, XKey key)
-	{
-		if(building.function() instanceof ProcessInv processInv)
-		{
-			if(key.hasFunction("choose"))
-			{
-				setState(new ProductionFloorsState(building, processInv));
-			}
-			else if(key.hasFunction("menu"))
-			{
-				setState(new ProductionInvGUI(building, processInv));
-			}
-		}
-		else if(building.function() instanceof Transport transport)
-		{
-			if(key.hasFunction("choose"))
-			{
-				setState(new TransportTargetsState(building, transport));
-			}
-			else if(key.hasFunction("menu"))
-			{
-				setState(new TransportTargetsState(building, transport));
 			}
 		}
 	}
@@ -295,10 +242,6 @@ public final class XStateControl implements XStateHolder, ConvInputConsumer
 			{
 				setState(NoneState.INSTANCE);
 			}
-		}
-		else if(key.hasFunction("choosemode.toggle"))
-		{
-			preferBuildings = !preferBuildings;
 		}
 		else if(key.hasFunction("allenemyreach"))
 		{

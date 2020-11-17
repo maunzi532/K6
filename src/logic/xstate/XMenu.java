@@ -1,7 +1,5 @@
 package logic.xstate;
 
-import building.adv.*;
-import building.transport.*;
 import doubleinv.*;
 import entity.*;
 import java.util.*;
@@ -27,8 +25,7 @@ public final class XMenu
 	public static XMenu characterGUIMenu(XCharacter character)
 	{
 		return new XMenu(new CharacterCombatGUI(character, 0),
-				new GiveOrTakeState(TradeDirection.GIVE, character), new GiveOrTakeState(TradeDirection.TAKE, character),
-				new SelectBuildingGUI(character), new RemoveBuildingGUI(character), new EndTurnState());
+				new GiveOrTakeState(TradeDirection.GIVE, character), new GiveOrTakeState(TradeDirection.TAKE, character), new EndTurnState());
 	}
 
 	public static XMenu enemyMoveMenu(XCharacter character)
@@ -41,27 +38,10 @@ public final class XMenu
 		return new XMenu(new CharacterCombatGUI(enemy, 0), new EndTurnState());
 	}
 
-	public static XMenu productionMenu(XBuilding building, ProcessInv processInv)
-	{
-		return new XMenu(new ProductionFloorsState(building, processInv), new RecipeGUI(building, processInv),
-				new ProductionInvGUI(building, processInv));
-	}
-
-	public static XMenu transportMenu(XBuilding building, Transport transport)
-	{
-		return new XMenu(new TransportTargetsState(building, transport));
-	}
-
 	public static XMenu entityEditMenu(XCharacter entity)
 	{
 		return new XMenu(new EntityEditGUI(entity), new EntityInvEditGUI(entity), new StartingSettingsEditGUI(entity),
 				new EditMoveState(entity), new EditCopyState(entity), new EditDeleteState(entity));
-	}
-
-	public static XMenu buildingEditMenu(XBuilding building)
-	{
-		return new XMenu(new BuildingInvEditGUI(building, TradeDirection.TAKE),
-				new BuildingInvEditGUI(building, TradeDirection.GIVE));
 	}
 
 	private final List<NState> entries;

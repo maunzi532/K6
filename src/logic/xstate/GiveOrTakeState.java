@@ -1,6 +1,5 @@
 package logic.xstate;
 
-import building.adv.*;
 import doubleinv.*;
 import entity.*;
 import geom.tile.*;
@@ -32,12 +31,10 @@ public final class GiveOrTakeState implements NMarkState
 		possibleTargets = new ArrayList<>();
 		if(levelMap.playerTradeableStorage())
 			possibleTargets.add(levelMap.storage());
-		range.stream().map(levelMap::getBuilding).filter(e -> e != null && e.active()
-				&& levelMap.playerTradeable(e, tradeDirection.inverse())).forEachOrdered(possibleTargets::add);
 		range.stream().map(levelMap::getEntity).filter(e -> e != null && e != character && e.active()
 				&& levelMap.playerTradeable(e)).forEachOrdered(possibleTargets::add);
-		visMarked = possibleTargets.stream().map(e -> new VisMark(getLocation(e), "mark.trade.target",
-				e.type() == DoubleInvType.ENTITY ? VisMark.d2 : VisMark.d1)).collect(Collectors.toList());
+		visMarked = possibleTargets.stream().map(e -> new VisMark(getLocation(e),
+				"mark.trade.target", VisMark.d2)).collect(Collectors.toList());
 	}
 
 	@Override
@@ -78,16 +75,8 @@ public final class GiveOrTakeState implements NMarkState
 		}
 		else
 		{
-			if(mainState.stateHolder().preferBuildings())
-			{
-				list.stream().filter(inv1 -> inv1 instanceof XBuilding).findFirst()
-						.ifPresent(inv1 -> startTradeState(mainState.stateHolder(), inv1));
-			}
-			else
-			{
-				list.stream().filter(inv1 -> inv1 instanceof XCharacter).findFirst()
-						.ifPresent(inv1 -> startTradeState(mainState.stateHolder(), inv1));
-			}
+			list.stream().filter(inv1 -> inv1 instanceof XCharacter).findFirst()
+					.ifPresent(inv1 -> startTradeState(mainState.stateHolder(), inv1));
 		}
 	}
 

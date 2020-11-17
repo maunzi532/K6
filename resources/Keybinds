@@ -11,7 +11,6 @@
     "mouse.SECONDARY"
   ],
   "Functions" : [
-    "key.TAB,choosemode.toggle",
     "key.A,allenemyreach",
     "key.ESCAPE,escape",
     "key.LEFT,camera.left",
@@ -26,8 +25,6 @@
     "mouse.SECONDARY,edit.floorset.set",
     "key.ENTER,state.endturn",
     "key.BACK_SPACE,state.revertmove",
-    "key.I,state.edit.inv.building.input",
-    "key.O,state.edit.inv.building.output",
     "key.E,state.edit.character",
     "key.I,state.edit.inv.character",
     "key.S,state.edit.start",
@@ -35,10 +32,6 @@
     "key.D,state.edit.delete",
     "key.M,state.edit.move",
     "key.C,state.stats",
-    "key.I,state.inv.building",
-    "key.R,state.recipe",
-    "key.BACK_SPACE,state.removebuilding",
-    "key.B,state.selectbuilding",
     "key.M,state.advmove",
     "key.G,state.trade.give",
     "key.T,state.trade.take",
@@ -46,7 +39,6 @@
     "key.R,state.reach.ally",
     "key.M,state.reach.enemy",
     "key.R,state.regenerate",
-    "key.M,state.swap",
-    "key.T,state.transporttargets"
+    "key.M,state.swap"
   ]
 }

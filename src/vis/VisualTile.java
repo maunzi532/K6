@@ -1,7 +1,6 @@
 package vis;
 
 import arrow.*;
-import building.adv.*;
 import doubleinv.*;
 import entity.*;
 import geom.*;
@@ -45,9 +44,6 @@ public final class VisualTile
 				if(advTile.visible())
 				{
 					drawFloorTile(y1, layout, loc, advTile.floorTile(), scheme);
-					XBuilding building = advTile.building();
-					if(building != null && building.active())
-						drawBuilding(layout, loc, building, scheme);
 				}
 				else
 				{
@@ -92,13 +88,6 @@ public final class VisualTile
 		gd.setFill(new ImagePattern(image, mid.v()[0] - offset.v()[0],
 				mid.v()[1] - offset.v()[1], offset.v()[0] * 2.0, offset.v()[1] * 2.0, false));
 		gd.fillPolygon(points[0], points[1], y1.directionCount());
-	}
-
-	private void drawBuilding(TileLayout layout, Tile loc, XBuilding building, Scheme scheme)
-	{
-		PointD midPoint = layout.tileToPixel(loc);
-		graphics.gd().drawImage(scheme.image("building.default"), midPoint.v()[0] - layout.size().v()[0], midPoint.v()[1] - layout.size().v()[1],
-				layout.size().v()[0] * 2.0, layout.size().v()[1] * 2.0);
 	}
 
 	private void drawShineArrow(TileLayout layout, ShineArrow shineArrow, Scheme scheme)

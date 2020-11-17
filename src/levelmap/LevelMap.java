@@ -1,8 +1,6 @@
 package levelmap;
 
 import arrow.*;
-import building.adv.*;
-import building.blueprint.*;
 import com.fasterxml.jackson.jr.ob.comp.*;
 import com.fasterxml.jackson.jr.stree.*;
 import doubleinv.*;
@@ -19,11 +17,10 @@ import logic.event.*;
 import statsystem.*;
 import text.*;
 
-public final class LevelMap implements ConnectRestore, Arrows
+public final class LevelMap implements Arrows
 {
 	public final TileType y1;
 	private final HashMap<Tile, AdvTile> advTiles;
-	private final List<XBuilding> buildings;
 	private final Map<CharacterTeam, List<XCharacter>> characters;
 	private final Map<CharSequence, StartingLocation> startingLocations;
 	private final Storage storage;
@@ -37,7 +34,6 @@ public final class LevelMap implements ConnectRestore, Arrows
 	{
 		this.y1 = y1;
 		advTiles = new HashMap<>();
-		buildings = new ArrayList<>();
 		characters = new EnumMap<>(CharacterTeam.class);
 		startingLocations = new HashMap<>();
 		storage = new Storage();
@@ -63,102 +59,7 @@ public final class LevelMap implements ConnectRestore, Arrows
 		requiresUpdate = true;
 	}
 
-	public void productionPhase()
-	{
-		for(AdvTile advTile : advTiles.values())
-		{
-			XBuilding building = advTile.building();
-			if(building != null)
-				building.productionPhase(this, buildingCanWork(building, false));
-		}
-		for(AdvTile advTile : advTiles.values())
-		{
-			XBuilding building = advTile.building();
-			if(building != null)
-				building.afterProduction();
-		}
-	}
-
-	public void transportPhase()
-	{
-		for(AdvTile advTile : advTiles.values())
-		{
-			XBuilding building = advTile.building();
-			if(building != null)
-				building.transportPhase(this, buildingCanWork(building, false));
-		}
-		for(AdvTile advTile : advTiles.values())
-		{
-			XBuilding building = advTile.building();
-			if(building != null)
-				building.afterTransport();
-		}
-	}
-
-	private boolean buildingCanWork(XBuilding building, boolean unclaimed)
-	{
-		return building.costBlueprint().requiredFloorTiles().stream().noneMatch(rft -> y1.range(building.location(), rft.minRange(), rft.maxRange()).stream()
-				.filter(e -> okTile(building, e, rft, unclaimed)).count() < rft.amount());
-	}
-
-	private boolean okTile(XBuilding building, Tile t1, RequiresFloorTiles rft, boolean unclaimed)
-	{
-		return getFloor(t1) != null && getFloor(t1).type == rft.floorTileType()
-				&& ((unclaimed && getOwner(t1) == null) || getOwner(t1) == building);
-	}
-
-	public void toggleTargetClaimed(Tile target, XBuilding building)
-	{
-		XBuilding owner = getOwner(target);
-		if(owner == building)
-		{
-			removeOwner(target);
-			building.removeClaimed(target);
-		}
-		else if(owner == null)
-		{
-			addOwner(target, building);
-			building.addClaimed(target);
-		}
-	}
-
-	public void loadConnectBuilding(XBuilding building)
-	{
-		for(Tile tile : building.claimed())
-		{
-			addOwner(tile, building);
-		}
-		building.function().loadConnect(this);
-	}
-
-	public void autoClaimFloor(XBuilding building)
-	{
-		for(RequiresFloorTiles rft : building.costBlueprint().requiredFloorTiles())
-		{
-			int count = 0;
-			for(Tile t1 : y1.range(building.location(), rft.minRange(), rft.maxRange()))
-			{
-				if(okTile(building, t1, rft, true))
-				{
-					addOwner(t1, building);
-					building.addClaimed(t1);
-					count++;
-					if(count >= rft.amount())
-						break;
-				}
-			}
-		}
-	}
-
-	public void buildBuilding(XBuilder builder, CostBlueprint costs, ItemList refundable, BuildingBlueprint blueprint)
-	{
-		XBuilding building = new XBuilding(builder.location(), costs, refundable, blueprint);
-		addBuilding(building);
-		autoClaimFloor(building);
-		requireUpdate();
-	}
-
-	public boolean playerTradeable(XBuilding building, TradeDirection tradeDirection)
+	public boolean playerTradeable(DoubleInv building, TradeDirection tradeDirection)
 	{
 		return turnCounter > 0 && !(building.inv(tradeDirection) instanceof BlockedInv);
 	}
@@ -213,9 +114,6 @@ public final class LevelMap implements ConnectRestore, Arrows
 			XCharacter entity = advTiles.get(t1).entity();
 			if(entity != null)
 				characters.get(entity.team()).remove(entity);
-			XBuilding building = advTiles.get(t1).building();
-			if(building != null)
-				building.remove();
 			advTiles.remove(t1);
 			requireUpdate();
 		}
@@ -235,33 +133,6 @@ public final class LevelMap implements ConnectRestore, Arrows
 		else
 			advTiles.put(t1, new AdvTile(floorTile));
 		requireUpdate();
-	}
-
-	public XBuilding getBuilding(Tile t1)
-	{
-		return advTile(t1).building();
-	}
-
-	public void addBuilding(XBuilding building)
-	{
-		advTile(building.location()).setBuilding(building);
-		buildings.add(building);
-		requireUpdate();
-	}
-
-	public XBuilding getOwner(Tile t1)
-	{
-		return advTile(t1).ownedBy();
-	}
-
-	public void addOwner(Tile t1, XBuilding building)
-	{
-		advTile(t1).setOwnedBy(building);
-	}
-
-	public void removeOwner(Tile t1)
-	{
-		advTile(t1).setOwnedBy(null);
 	}
 
 	public XCharacter getEntity(Tile t1)
@@ -467,20 +338,6 @@ public final class LevelMap implements ConnectRestore, Arrows
 		advTiles.put(y1.create2(x, y), new AdvTile(new FloorTile(sector, FloorTileType.values()[type])));
 	}
 
-	@Override
-	public DoubleInv restoreConnection(DoubleInv toConnect)
-	{
-		if(toConnect instanceof PreConnectMapObject toConnect1)
-		{
-			return switch(toConnect1.type())
-					{
-						case BUILDING -> getBuilding(toConnect1.location());
-						case ENTITY -> getEntity(toConnect1.location());
-					};
-		}
-		throw new RuntimeException("Connection already restored");
-	}
-
 	public void loadMap(JrsObject data, ItemLoader itemLoader)
 	{
 		ByteBuffer sb = ByteBuffer.wrap(Base64.getDecoder().decode(((JrsString) data.get("FloorTiles")).getValue()));
@@ -489,13 +346,10 @@ public final class LevelMap implements ConnectRestore, Arrows
 		{
 			createTile(sb.get(), sb.get(), sb.get(), sb.get());
 		}
-		((JrsArray) data.get("Buildings")).elements().forEachRemaining(e ->
-				addBuilding(new XBuilding((JrsObject) e, itemLoader, y1)));
 		((JrsArray) data.get("Characters")).elements().forEachRemaining(e ->
 				addEntity(XCharacter.loadFromMap((JrsObject) e, itemLoader, this)));
 		((JrsArray) data.get("StartingLocations")).elements().forEachRemaining(e ->
 				addStartingLocation(StartingLocation.load((JrsObject) e, itemLoader, y1, startingLocations.size())));
-		buildings.forEach(this::loadConnectBuilding);
 	}
 
 	public <T extends ComposerBase> void saveMapNC(ObjectComposer<T> a1, ItemLoader itemLoader) throws IOException
@@ -514,13 +368,6 @@ public final class LevelMap implements ConnectRestore, Arrows
 			}
 		}
 		a1.put("FloorTiles", Base64.getEncoder().encodeToString(sb.array()));
-		var a2 = a1.startArrayField("Buildings");
-		for(XBuilding building : buildings)
-		{
-			if(building.active())
-				building.save(a2.startObject(), itemLoader, y1);
-		}
-		a2.end();
 		var a3 = a1.startArrayField("Characters");
 		for(List<XCharacter> c1 : characters.values())
 		{
@@ -551,7 +398,6 @@ public final class LevelMap implements ConnectRestore, Arrows
 					StartingLocation sl = startingLocations.get(new NameText(((JrsObject) e1.get("Stats")).get("CustomName").asText()));
 					addEntity(XCharacter.loadFromTeam(e1, sl.startingDelay(), sl.location(), sl.invOverride(), storage.inv(), itemLoader, this));
 				});
-		buildings.forEach(this::loadConnectBuilding);
 	}
 
 	public <T extends ComposerBase> void saveTeamStartNC(ObjectComposer<T> a1, String worldFolder, String mapFile, ItemLoader itemLoader) throws IOException

@@ -1,6 +1,5 @@
 package vis;
 
-import building.blueprint.*;
 import com.fasterxml.jackson.jr.ob.*;
 import com.fasterxml.jackson.jr.stree.*;
 import geom.*;
@@ -47,7 +46,7 @@ public final class MainVisual implements XInputInterface
 	public MainVisual(XGraphics graphics, Scheme scheme,
 			TileCamera mapCamera, TileCamera menuCamera, TileCamera guiCamera,
 			Function<Double, TileCamera> editorSlotCamera,
-			ItemLoader itemLoader, BlueprintFile blueprintFile, String loadFileTeam)
+			ItemLoader itemLoader, String loadFileTeam)
 	{
 		this.graphics = graphics;
 		this.scheme = scheme;
@@ -64,7 +63,7 @@ public final class MainVisual implements XInputInterface
 		XStateControl stateControl = new XStateControl(levelMap, levelEditor);
 		stateHolder = stateControl;
 		convInputConsumer = stateControl;
-		MainState mainState = new MainState(levelMap, stateHolder, visualSideInfoFrame, itemLoader, blueprintFile);
+		MainState mainState = new MainState(levelMap, stateHolder, visualSideInfoFrame, itemLoader);
 		stateControl.setMainState(mainState, new NoneState());
 		loadLevel(loadFileTeam, itemLoader, levelMap, scheme);
 		stateControl.setState(new EventListState(levelMap.eventPack("Start").events(), new StartTurnState()));
@@ -101,7 +100,7 @@ public final class MainVisual implements XInputInterface
 						levelMap.loadMap((JrsObject) dataMap, itemLoader);
 					}
 					levelMap.loadTeam((JrsObject) dataTeam, itemLoader);
-					levelMap.setEventPacks(EventPack.read(world, currentMap, scheme.setting("file.locale.1"), itemLoader, levelMap.y1));
+					levelMap.setEventPacks(EventPack.read(world, currentMap, scheme.setting("file.locale.level"), itemLoader, levelMap.y1));
 				}
 			}catch(IOException e)
 			{
@@ -268,7 +267,6 @@ public final class MainVisual implements XInputInterface
 		gd.setFont(new Font(scale));
 		gd.setTextAlign(TextAlignment.LEFT);
 		gd.fillText(turnText(levelMap.turnCounter()), scale, scale);
-		gd.fillText(scheme.localXText(stateHolder.preferBuildings() ? "choosemode.building" : "choosemode.character"), xHW / 2.0, scale);
 		if(paused)
 			gd.fillText(scheme.localXText("pause"), xHW, scale);
 		gd.setTextAlign(TextAlignment.RIGHT);

@@ -7,13 +7,11 @@ import doubleinv.*;
 import geom.tile.*;
 import item.*;
 import item.inv.*;
-import item.view.*;
 import java.io.*;
-import java.util.*;
 import levelmap.*;
 import statsystem.*;
 
-public final class XCharacter implements DoubleInv, XBuilder
+public final class XCharacter implements DoubleInv
 {
 	private CharacterTeam team;
 	private int startingDelay;
@@ -120,12 +118,6 @@ public final class XCharacter implements DoubleInv, XBuilder
 	}
 
 	@Override
-	public DoubleInvType type()
-	{
-		return DoubleInvType.ENTITY;
-	}
-
-	@Override
 	public CharSequence name()
 	{
 		return stats.getName();
@@ -165,20 +157,6 @@ public final class XCharacter implements DoubleInv, XBuilder
 		if(!resources.ready(2))
 			return new EnemyMove(this, -1, null, null, 0);
 		return enemyAI.preferredMove(this, resources.moveAction(), hasToMove, moveAway);
-	}
-
-	@Override
-	public ItemView viewRecipeItem(Item item)
-	{
-		return inv.viewRecipeItem(item);
-	}
-
-	@Override
-	public Optional<ItemList> tryBuildingCosts(ItemList refundable, ItemList costs, CommitType commitType)
-	{
-		if(inv.tryProvide(costs, false, CommitType.LEAVE).isEmpty())
-			return Optional.empty();
-		return inv.tryProvide(refundable, false, commitType);
 	}
 
 	public <T extends ComposerBase, H extends ComposerBase> void save(ObjectComposer<T> a1,

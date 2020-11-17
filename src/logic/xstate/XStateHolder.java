@@ -16,7 +16,5 @@ public interface XStateHolder
 
 	List<VisMark> visMarked();
 
-	boolean preferBuildings();
-
 	boolean showAllEnemyReach();
 }

@@ -5,8 +5,6 @@ import item.inv.*;
 
 public interface DoubleInv
 {
-	DoubleInvType type();
-
 	CharSequence name();
 
 	Tile location();

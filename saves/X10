@@ -1,0 +1,124 @@
+{
+  "code" : -1529707617,
+  "World" : "world",
+  "CurrentMap" : "W10",
+  "Team" : [ {
+    "Team" : "HERO",
+    "sx" : -2,
+    "sy" : 1,
+    "Stats" : {
+      "Class" : 5,
+      "Level" : 0,
+      "Exp" : 100,
+      "LevelSystem" : {
+        "BaseLevel" : 0,
+        "BaseLevelStats" : [ 11, 12, 14, 9, 10, 12, 11, 8 ],
+        "BaseIncrease" : [ 40, 50, 50, 30, 30, 40, 20, 60 ],
+        "LevelCap" : 25
+      },
+      "CustomName" : "Anna",
+      "CustomSideImage" : "character.anna.standard",
+      "LvStats" : [ 11, 12, 14, 9, 10, 12, 11, 8 ],
+      "CurrentHealth" : 40,
+      "Exhaustion" : 0,
+      "Movement" : 6,
+      "DashMovement" : 12,
+      "MaxAccessRange" : 4,
+      "LastUsed" : 1,
+      "LastUsedItem" : {
+        "AttackItemCode" : 400
+      }
+    },
+    "Inventory" : {
+      "WLimit" : 20,
+      "Stacks" : [ {
+        "AttackItemCode" : 400
+      }, {
+        "AttackItemCode" : 100
+      } ]
+    },
+    "EnemyAI" : {
+      "Type" : "NoAI"
+    }
+  }, {
+    "Team" : "HERO",
+    "sx" : -2,
+    "sy" : -1,
+    "Stats" : {
+      "Class" : 6,
+      "Level" : 2,
+      "Exp" : 100,
+      "LevelSystem" : {
+        "BaseLevel" : 2,
+        "BaseLevelStats" : [ 10, 9, 7, 11, 14, 14, 8, 13 ],
+        "BaseIncrease" : [ 30, 40, 60, 50, 60, 30, 30, 40 ],
+        "LevelCap" : 20
+      },
+      "CustomName" : "Kate",
+      "CustomSideImage" : "character.kate.standard",
+      "LvStats" : [ 10, 9, 7, 11, 14, 14, 8, 13 ],
+      "CurrentHealth" : 65,
+      "Exhaustion" : 0,
+      "Movement" : 6,
+      "DashMovement" : 12,
+      "MaxAccessRange" : 4,
+      "LastUsed" : 2,
+      "LastUsedItem" : {
+        "AttackItemCode" : 100
+      }
+    },
+    "Inventory" : {
+      "WLimit" : 20,
+      "Stacks" : [ {
+        "AttackItemCode" : 100
+      }, {
+        "AttackItemCode" : 300
+      } ]
+    },
+    "EnemyAI" : {
+      "Type" : "NoAI"
+    }
+  }, {
+    "Team" : "HERO",
+    "sx" : -4,
+    "sy" : 1,
+    "Stats" : {
+      "Class" : 3,
+      "Level" : 0,
+      "Exp" : 100,
+      "LevelSystem" : {
+        "BaseLevel" : 0,
+        "BaseLevelStats" : [ 7, 15, 9, 13, 11, 11, 11, 10 ],
+        "BaseIncrease" : [ 30, 50, 70, 40, 20, 40, 50, 20 ],
+        "LevelCap" : 25
+      },
+      "CustomName" : "John",
+      "CustomSideImage" : "character.john.standard",
+      "LvStats" : [ 7, 15, 9, 13, 11, 11, 11, 10 ],
+      "CurrentHealth" : 50,
+      "Exhaustion" : 0,
+      "Movement" : 6,
+      "DashMovement" : 12,
+      "MaxAccessRange" : 4,
+      "LastUsed" : 2,
+      "LastUsedItem" : {
+        "AttackItemCode" : 200
+      }
+    },
+    "Inventory" : {
+      "WLimit" : 20,
+      "Stacks" : [ {
+        "AttackItemCode" : 200
+      }, {
+        "AttackItemCode" : 100
+      } ]
+    },
+    "EnemyAI" : {
+      "Type" : "NoAI"
+    }
+  } ],
+  "Storage" : {
+    "WLimit" : -1,
+    "Stacks" : [ ]
+  }
+}

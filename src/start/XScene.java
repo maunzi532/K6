@@ -1,6 +1,5 @@
 package start;
 
-import building.blueprint.*;
 import geom.*;
 import geom.advtile.*;
 import item.*;
@@ -43,11 +42,9 @@ public final class XScene extends Application
 		stage.getIcons().add(scheme.image("window.icon"));
 		XGraphics graphics = new XGraphics(canvas.getGraphicsContext2D(), width, height);
 		ItemLoader itemLoader = new ItemLoader2();
-		BlueprintFile blueprintFile = new BlueprintFile(loadTextResource(scheme.setting("file.buildingblueprint")), itemLoader);
 		MainVisual mainVisual = new MainVisual(graphics, scheme, mapCamera(scheme, graphics),
 				menuCamera(scheme, graphics), guiCamera(scheme, graphics), a1 -> editorSlotCamera(scheme, graphics, a1),
-				itemLoader, blueprintFile,
-				scheme.setting("load.team"));
+				itemLoader, scheme.setting("load.team"));
 		XTimer xTimer = new XTimer(mainVisual, scheme.keybindFile());
 		scene.setOnMousePressed(xTimer::onMouseDown);
 		scene.setOnDragDetected(xTimer::onDragDetected);
@@ -114,7 +111,7 @@ public final class XScene extends Application
 
 	private static String loadTextResource(String location)
 	{
-		URL resource = Thread.currentThread().getContextClassLoader().getResource(location);
+		URL resource = XScene.class.getClassLoader().getResource(location);
 		if(resource == null)
 		{
 			throw new RuntimeException("Resource not found: \"" + location + "\"");

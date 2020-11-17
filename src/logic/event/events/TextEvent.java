@@ -24,6 +24,7 @@ public class TextEvent implements NEvent, NAutoState
 		r = ((JrsBoolean) data.get("R")).booleanValue();
 	}
 
+	@Override
 	public void setEventListState(EventListState eventListState)
 	{
 		this.eventListState = eventListState;

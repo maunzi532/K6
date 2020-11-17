@@ -1,29 +1,30 @@
 package logic;
 
-import building.blueprint.*;
 import entity.sideinfo.*;
 import item.*;
 import levelmap.*;
 import logic.xstate.*;
 
-public record MainState(LevelMap levelMap, XStateHolder stateHolder, SideInfoFrame side, ItemLoader itemLoader, BlueprintFile blueprintFile)
+public record MainState(LevelMap levelMap, XStateHolder stateHolder, SideInfoFrame side, ItemLoader itemLoader)
 {
 	//content
 	//TODO    Build a real level
 
 	//images
 	//TODO replace floor images (1/5)
-	//TODO downscale item images (0/4)
+	//TODO downscale item images (0/3), replace (0/1)
 
 	//save/load
 	//TODO save map in SaveMode, save team in turn 0
 	//TODO save maps and saves in folders
-	//TODO    advanced loading system
+	//TODO start of world save
+	//TODO (save event) end of map save
 
 	//events
-	//TODO pre-map-events
-	//TODO save event
-	//TODO talk event
+	//TODO talk event speech bubble and skip keys
+	//TODO add character event
+	//TODO add item event
+	//TODO rearrange events file/EventPack load
 
 	//engine mechanics
 	//TODO test starting delay
@@ -31,6 +32,7 @@ public record MainState(LevelMap levelMap, XStateHolder stateHolder, SideInfoFra
 	//TODO turn limit
 	//TODO    all enemy reach show amount of enemies
 	//TODO show TurnResources in SideInfo
+	//TODO win condition/lose condition
 
 	//GUI
 	//TODO edit starting delay
@@ -60,6 +62,7 @@ public record MainState(LevelMap levelMap, XStateHolder stateHolder, SideInfoFra
 	//TODO    complicated levelup system
 
 	//code
+	//TODO move map loading into start package
 	//TODO    Initialize somewhere else than in MainVisual
 
 	//visual engine mechanics

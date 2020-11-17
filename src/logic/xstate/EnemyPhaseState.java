@@ -56,12 +56,12 @@ public final class EnemyPhaseState implements NAutoState
 				if(moveTo != null)
 					return new MoveAnimState(this, initiativeMove.entity(), moveTo);
 				else
-					return new ProductionPhaseState();
+					return new StartTurnState();
 			}
 		}
 		else
 		{
-			return new ProductionPhaseState();
+			return new StartTurnState();
 		}
 	}
 }
