@@ -25,28 +25,21 @@ public final class AdvMoveState implements NMarkState
 	{
 		mainState.side().setStandardSideInfo(character);
 		movement = new ArrayList<>();
-		if(character.resources().moveAction())
+		if(character.resources().hasMoveAction())
 		{
-			movement.addAll(new Pathing(mainState.levelMap().y1, character, character.resources().movement(),
-					mainState.levelMap(), null).start().getEndpaths());
-		}
-		else if(character.resources().ready(2) && character.resources().dashMovement() > 0)
-		{
-			movement.addAll(new Pathing(mainState.levelMap().y1, character, character.resources().dashMovement(),
+			movement.addAll(new Pathing(mainState.levelMap().y1, character, character.resources().leftoverMovement(),
 					mainState.levelMap(), null).start().getEndpaths());
 		}
 		attack = new ArrayList<>();
-		if(character.resources().ready(2))
+		if(character.resources().ready())
 		{
 			LevelMap.attackRanges(character, AttackSide.INITIATOR).stream().map(e -> mainState.levelMap().y1.range(character.location(), e, e))
 					.flatMap(Collection::stream).map(mainState.levelMap()::getEntity).filter(e -> e != null && e.targetable() && e.team() != character.team())
 					.forEach(e -> attack.add(e.location()));
 		}
 		allTargets = new ArrayList<>();
-		if(character.resources().moveAction())
+		if(character.resources().hasMoveAction())
 			movement.stream().map(e -> new VisMark(e.tile(), "mark.move.move", VisMark.d1)).forEach(allTargets::add);
-		else
-			movement.stream().map(e -> new VisMark(e.tile(), "mark.move.dash", VisMark.d1)).forEach(allTargets::add);
 		attack.stream().map(e -> new VisMark(e, "mark.move.attack", VisMark.d1)).forEach(allTargets::add);
 	}
 
@@ -80,18 +73,11 @@ public final class AdvMoveState implements NMarkState
 			Optional<PathLocation> pathLocation = movement.stream().filter(e -> e.tile().equals(mapTile)).findFirst();
 			if(pathLocation.isPresent())
 			{
-				if(character.resources().moveAction())
+				if(character.resources().hasMoveAction())
 				{
 					character.resources().move(pathLocation.get().cost());
 					mainState.levelMap().moveEntity(character, mapTile);
 					mainState.stateHolder().setState(new AdvMoveState(character));
-				}
-				else
-				{
-					character.resources().move(pathLocation.get().cost());
-					character.resources().action(true, 2);
-					mainState.levelMap().moveEntity(character, mapTile);
-					mainState.stateHolder().setState(NoneState.INSTANCE);
 				}
 			}
 			else

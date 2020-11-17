@@ -4,70 +4,62 @@ import geom.tile.*;
 
 public final class TurnResources
 {
+	private boolean unlimited;
 	private Tile startLocation;
 	private int startMovement;
-	private int startDashMovement;
-	private int movement;
-	private int dashMovement;
-	private int actionPoints;
-	private boolean unlimited;
-	private boolean moveAction;
-	private boolean revertMoveAction;
-	private boolean mainAction;
+	private int leftoverMovement;
+	private boolean hasMoveAction;
+	private boolean canRevertMoveAction;
+	private boolean hasMainAction;
 
 	private TurnResources()
 	{
-		startMovement = 0;
-		startDashMovement = 0;
-		movement = 0;
-		dashMovement = 0;
-		actionPoints = 0;
 		unlimited = true;
-		moveAction = false;
-		revertMoveAction = false;
-		mainAction = false;
+		startLocation = null;
+		startMovement = 0;
+		leftoverMovement = 0;
+		hasMoveAction = false;
+		canRevertMoveAction = false;
+		hasMainAction = false;
+	}
+
+	public static TurnResources unlimited()
+	{
+		return new TurnResources();
 	}
 
 	public TurnResources(Tile startLocation)
 	{
+		unlimited = false;
 		this.startLocation = startLocation;
 		startMovement = 0;
-		startDashMovement = 0;
-		movement = 0;
-		dashMovement = 0;
-		actionPoints = 0;
-		unlimited = false;
-		moveAction = false;
-		revertMoveAction = false;
-		mainAction = false;
+		leftoverMovement = 0;
+		hasMoveAction = false;
+		canRevertMoveAction = false;
+		hasMainAction = false;
 	}
 
-	public TurnResources(Tile startLocation, int startMovement, int startDashMovement, int startActionPoints)
+	public TurnResources(Tile startLocation, int startMovement)
 	{
+		unlimited = false;
 		this.startLocation = startLocation;
 		this.startMovement = startMovement;
-		this.startDashMovement = startDashMovement;
-		movement = startMovement;
-		dashMovement = startDashMovement;
-		actionPoints = startActionPoints;
-		unlimited = false;
-		moveAction = true;
-		revertMoveAction = true;
-		mainAction = true;
+		leftoverMovement = startMovement;
+		hasMoveAction = true;
+		canRevertMoveAction = true;
+		hasMainAction = true;
 	}
 
-	private TurnResources(Tile startLocation, int startMovement, int startDashMovement, int movement, int dashMovement,
-			int actionPoints, boolean moveAction, boolean revertMoveAction, boolean mainAction)
+	public TurnResources(Tile startLocation, int startMovement, int leftoverMovement, boolean hasMoveAction,
+			boolean canRevertMoveAction, boolean hasMainAction)
 	{
+		unlimited = false;
 		this.startLocation = startLocation;
 		this.startMovement = startMovement;
-		this.startDashMovement = startDashMovement;
-		this.movement = movement;
-		this.dashMovement = dashMovement;
-		this.actionPoints = actionPoints;
-		this.moveAction = moveAction;
-		this.revertMoveAction = revertMoveAction;
-		this.mainAction = mainAction;
+		this.leftoverMovement = leftoverMovement;
+		this.hasMoveAction = hasMoveAction;
+		this.canRevertMoveAction = canRevertMoveAction;
+		this.hasMainAction = hasMainAction;
 	}
 
 	public Tile startLocation()
@@ -75,68 +67,56 @@ public final class TurnResources
 		return startLocation;
 	}
 
-	public int movement()
+	public int startMovement()
 	{
-		return movement;
+		return startMovement;
 	}
 
-	public int dashMovement()
+	public int leftoverMovement()
 	{
-		return dashMovement;
+		return leftoverMovement;
 	}
 
-	public int actionPoints()
+	public boolean hasMoveAction()
 	{
-		return actionPoints;
+		return hasMoveAction;
 	}
 
-	public boolean moveAction()
+	public boolean canRevertMoveAction()
 	{
-		return moveAction;
+		return canRevertMoveAction;
 	}
 
-	public boolean revertMoveAction()
+	public boolean hasMainAction()
 	{
-		return revertMoveAction;
+		return hasMainAction;
 	}
 
-	public boolean mainAction()
+	public boolean ready()
 	{
-		return mainAction;
+		return unlimited || hasMainAction;
 	}
 
-	public boolean ready(int apCost)
+	public void move(int movementCost)
 	{
-		return unlimited || (mainAction && actionPoints >= apCost);
+		hasMoveAction = false;
+		leftoverMovement -= movementCost;
 	}
 
-	public void move(int cost)
-	{
-		moveAction = false;
-		movement -= cost;
-		dashMovement -= cost;
-	}
-
-	public void action(boolean main, int ap)
+	public void action(boolean isMainAction)
 	{
 		if(!unlimited)
 		{
-			if(main)
-				mainAction = false;
-			actionPoints -= ap;
-			revertMoveAction = false;
+			if(isMainAction)
+				hasMainAction = false;
+			if(!hasMoveAction)
+				canRevertMoveAction = false;
 		}
 	}
 
 	public void revertMovement()
 	{
-		movement = startMovement;
-		dashMovement = startDashMovement;
-		moveAction = true;
-	}
-
-	public static TurnResources unlimited()
-	{
-		return new TurnResources();
+		leftoverMovement = startMovement;
+		hasMoveAction = true;
 	}
 }

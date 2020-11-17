@@ -52,7 +52,7 @@ public final class GiveOrTakeState implements NMarkState
 	@Override
 	public boolean keepInMenu(MainState mainState)
 	{
-		return mainState.levelMap().playerTradeable(character) && character.resources().ready(1);
+		return mainState.levelMap().playerTradeable(character) && character.resources().ready();
 	}
 
 	@Override

@@ -34,7 +34,7 @@ public final class RevertMovementState implements NAutoState
 	@Override
 	public boolean keepInMenu(MainState mainState)
 	{
-		return character.resources().revertMoveAction();
+		return character.resources().canRevertMoveAction();
 	}
 
 	@Override

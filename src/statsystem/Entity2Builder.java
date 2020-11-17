@@ -58,12 +58,14 @@ public final class Entity2Builder
 		XCharacter entity;
 		if(team == CharacterTeam.HERO)
 		{
-			entity = new XCharacter(CharacterTeam.HERO, 0, location, stats, inv,
+			entity = new XCharacter(CharacterTeam.HERO, 0, location,
+					null, null, null, stats, inv,
 					new NoAI(), false);
 		}
 		else
 		{
-			entity = new XCharacter(team, 0, location, stats, inv,
+			entity = new XCharacter(team, 0, location,
+					null, null, null, stats, inv,
 					new StandardAI(levelMap), false);
 		}
 		stats.autoEquip(entity);

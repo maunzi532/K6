@@ -7,8 +7,6 @@ import item.*;
 import item.view.*;
 import java.io.*;
 import java.util.*;
-import javafx.scene.control.*;
-import javafx.stage.*;
 import statsystem.animation.*;
 import statsystem.content.*;
 import text.*;
@@ -25,32 +23,23 @@ public final class Stats implements ModifierAspect
 	private int level;
 	private int exp;
 	private PlayerLevelSystem playerLevelSystem;
-	private NameText customName;
-	private String customMapImage;
-	private String customSideImage;
 	private int[] lvStats;
 	private int movement;
-	private int dashMovement;
 	private int maxAccessRange;
 	private int currentHealth;
 	private int exhaustion;
 	private AttackMode lastUsed;
 	private AttackItemFilter filter;
 
-	public Stats(XClass xClass, int level, NameText customName, String customMapImage,
-			String customSideImage, int movement, PlayerLevelSystem playerLevelSystem)
+	public Stats(XClass xClass, int level, int movement, PlayerLevelSystem playerLevelSystem)
 	{
 		this.xClass = xClass;
 		this.level = level;
 		this.playerLevelSystem = playerLevelSystem;
-		this.customName = customName;
-		this.customMapImage = customMapImage;
-		this.customSideImage = customSideImage;
 		lvStats = new int[8];
 		autoStats();
 		currentHealth = maxHealth();
 		this.movement = movement;
-		dashMovement = 12;
 		maxAccessRange = 4;
 		lastUsed = AttackMode.EVADE_MODE;
 		filter = new AttackItemFilter(xClass.usableItems);
@@ -65,27 +54,21 @@ public final class Stats implements ModifierAspect
 		autoStats();
 		currentHealth = maxHealth();
 		movement = xClass.movement;
-		dashMovement = 12;
 		maxAccessRange = 4;
 		lastUsed = AttackMode.EVADE_MODE;
 		filter = new AttackItemFilter(xClass.usableItems);
 	}
 
-	private Stats(XClass xClass, int level, int exp, NameText customName, String customMapImage, String customSideImage,
-			int[] lvStats, int movement, int dashMovement, int maxAccessRange, PlayerLevelSystem playerLevelSystem)
+	private Stats(XClass xClass, int level, int exp, int[] lvStats, int movement, int maxAccessRange, PlayerLevelSystem playerLevelSystem)
 	{
 		this.xClass = xClass;
 		this.level = level;
 		this.exp = exp;
 		this.playerLevelSystem = playerLevelSystem;
-		this.customName = customName;
-		this.customMapImage = customMapImage;
-		this.customSideImage = customSideImage;
 		this.lvStats = Arrays.copyOf(lvStats, 8);
 		currentHealth = maxHealth();
 		exhaustion = 0;
 		this.movement = movement;
-		this.dashMovement = dashMovement;
 		this.maxAccessRange = maxAccessRange;
 		lastUsed = AttackMode.EVADE_MODE;
 		filter = new AttackItemFilter(xClass.usableItems);
@@ -93,8 +76,7 @@ public final class Stats implements ModifierAspect
 
 	public Stats createACopy()
 	{
-		return new Stats(xClass, level, exp, customName, customMapImage, customSideImage, lvStats,
-				movement, dashMovement, maxAccessRange, playerLevelSystem.createACopy());
+		return new Stats(xClass, level, exp, lvStats, movement, maxAccessRange, playerLevelSystem.createACopy());
 	}
 
 	public void autoStats()
@@ -142,7 +124,7 @@ public final class Stats implements ModifierAspect
 	@Override
 	public CharSequence nameForAbility()
 	{
-		return customName != null ? customName : "modifier.name.character";
+		return "Name";//customName != null ? customName : "modifier.name.character";
 	}
 
 	@Override
@@ -221,11 +203,6 @@ public final class Stats implements ModifierAspect
 		return movement;
 	}
 
-	public int dashMovement()
-	{
-		return dashMovement;
-	}
-
 	public int maxAccessRange()
 	{
 		return maxAccessRange;
@@ -279,27 +256,6 @@ public final class Stats implements ModifierAspect
 		exhaustion++;
 	}
 
-	public CharSequence getName()
-	{
-		return customName != null ? customName : new ArgsText("class.withlevel", new LocaleText(xClass.className), level);
-	}
-
-	public String mapImageName()
-	{
-		if(customMapImage != null)
-			return customMapImage;
-		else
-			return "mapsprite.default";
-	}
-
-	public String sideImageName()
-	{
-		if(customSideImage != null)
-			return customSideImage;
-		else
-			return "character.enemy.0";
-	}
-
 	public Stats(JrsObject data, ItemLoader itemLoader)
 	{
 		xClass = XClasses.INSTANCE.xClasses[((JrsNumber) data.get("Class")).getValue().intValue()];
@@ -310,18 +266,6 @@ public final class Stats implements ModifierAspect
 		{
 			playerLevelSystem = new PlayerLevelSystem(((JrsObject) data.get("LevelSystem")));
 		}
-		if(data.get("CustomName") != null)
-		{
-			customName = new NameText(data.get("CustomName").asText());
-		}
-		if(data.get("CustomMapImage") != null)
-		{
-			customMapImage = data.get("CustomMapImage").asText();
-		}
-		if(data.get("CustomSideImage") != null)
-		{
-			customSideImage = data.get("CustomSideImage").asText();
-		}
 		lvStats = new int[8];
 		Iterator<JrsValue> iterator = ((JrsArray) data.get("LvStats")).elements();
 		for(int i = 0; i < 8; i++)
@@ -331,7 +275,6 @@ public final class Stats implements ModifierAspect
 		currentHealth = ((JrsNumber) data.get("CurrentHealth")).getValue().intValue();
 		exhaustion = ((JrsNumber) data.get("Exhaustion")).getValue().intValue();
 		movement = ((JrsNumber) data.get("Movement")).getValue().intValue();
-		dashMovement = ((JrsNumber) data.get("DashMovement")).getValue().intValue();
 		maxAccessRange = ((JrsNumber) data.get("MaxAccessRange")).getValue().intValue();
 		if(data.get("LastUsed") != null)
 		{
@@ -354,18 +297,6 @@ public final class Stats implements ModifierAspect
 		{
 			playerLevelSystem.save(a1.startObjectField("LevelSystem"));
 		}
-		if(customName != null)
-		{
-			a1.put("CustomName", customName);
-		}
-		if(customMapImage != null)
-		{
-			a1.put("CustomMapImage", customMapImage);
-		}
-		if(customSideImage != null)
-		{
-			a1.put("CustomSideImage", customSideImage);
-		}
 		var a2 = a1.startArrayField("LvStats");
 		for(int i = 0; i < 8; i++)
 		{
@@ -375,7 +306,6 @@ public final class Stats implements ModifierAspect
 		a1.put("CurrentHealth", currentHealth);
 		a1.put("Exhaustion", exhaustion);
 		a1.put("Movement", movement);
-		a1.put("DashMovement", dashMovement);
 		a1.put("MaxAccessRange", maxAccessRange);
 		if(lastUsed.active)
 		{
@@ -471,7 +401,7 @@ public final class Stats implements ModifierAspect
 	{
 		return new CharSequence[]
 				{
-						customName != null ? customName : generic,
+						/*customName != null ? customName : */generic,
 						new ArgsText("class.withlevel", new LocaleText(xClass.className), level)
 				};
 	}
@@ -479,10 +409,10 @@ public final class Stats implements ModifierAspect
 	public List<? extends CharSequence> infoEdit()
 	{
 		List<CharSequence> info = new ArrayList<>();
-		if(customName != null)
+		/*if(customName != null)
 			info.add(new ArgsText("stats.edit.customname", customName));
 		else
-			info.add("stats.edit.genericname");
+			info.add("stats.edit.genericname");*/
 		info.add(new ArgsText("stats.edit.class", new LocaleText(xClass.className)));
 		info.add(new ArgsText("stats.edit.level", level));
 		info.add(new ArgsText("stats.edit.exp", exp));
@@ -508,7 +438,7 @@ public final class Stats implements ModifierAspect
 	{
 		switch((num << 4) + option)
 		{
-			case 0x00 ->
+			/*case 0x00 ->
 			{
 				TextInputDialog td = new TextInputDialog(customName != null ? customName.name() : "");
 				td.setTitle("Edit name"); //TODO
@@ -532,7 +462,7 @@ public final class Stats implements ModifierAspect
 					customSideImage = file.getName();
 				else
 					customSideImage = null;
-			}
+			}*/
 			case 0x10 ->
 			{
 				xClass = XClasses.INSTANCE.xClasses[xClass.code - 1];

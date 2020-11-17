@@ -16,8 +16,7 @@ public final class EnemyStartState implements NAutoState
 			xEnemy.startTurn();
 			if(xEnemy.targetable())
 			{
-				xEnemy.newResources(new TurnResources(xEnemy.location(),
-						xEnemy.stats().movement(), xEnemy.stats().dashMovement(), 2));
+				xEnemy.newResources(new TurnResources(xEnemy.location(), xEnemy.stats().movement()));
 			}
 			else
 			{

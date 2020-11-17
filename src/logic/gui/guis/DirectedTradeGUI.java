@@ -117,7 +117,7 @@ public final class DirectedTradeGUI extends XGUIState
 			receive.afterTrading();
 			if(takeAp != null)
 			{
-				takeAp.action(false, 1);
+				takeAp.action(false);
 			}
 		}
 		stateHolder.setState(NoneState.INSTANCE);

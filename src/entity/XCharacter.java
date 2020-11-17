@@ -10,12 +10,16 @@ import item.inv.*;
 import java.io.*;
 import levelmap.*;
 import statsystem.*;
+import text.*;
 
 public final class XCharacter implements DoubleInv
 {
 	private CharacterTeam team;
 	private int startingDelay;
 	private Tile location;
+	private NameText customName;
+	private String customMapImage;
+	private String customSideImage;
 	private final Stats stats;
 	private final Inv inv;
 	private EnemyAI enemyAI;
@@ -23,11 +27,15 @@ public final class XCharacter implements DoubleInv
 	private XArrow visualReplaced;
 	private boolean defeated;
 
-	public XCharacter(CharacterTeam team, int startingDelay, Tile location, Stats stats, Inv inv, EnemyAI enemyAI, boolean unlimitedTR)
+	public XCharacter(CharacterTeam team, int startingDelay, Tile location, NameText customName, String customMapImage,
+			String customSideImage, Stats stats, Inv inv, EnemyAI enemyAI, boolean unlimitedTR)
 	{
 		this.team = team;
 		this.startingDelay = startingDelay;
 		this.location = location;
+		this.customName = customName;
+		this.customMapImage = customMapImage;
+		this.customSideImage = customSideImage;
 		this.stats = stats;
 		this.inv = inv;
 		this.enemyAI = enemyAI;
@@ -45,7 +53,7 @@ public final class XCharacter implements DoubleInv
 
 	public XCharacter createACopy(Tile copyLocation, boolean unlimitedTR)
 	{
-		XCharacter copy = new XCharacter(team, startingDelay, copyLocation,
+		XCharacter copy = new XCharacter(team, startingDelay, copyLocation, customName, customMapImage, customSideImage,
 				stats.createACopy(), inv.copy(), enemyAI.copy(), unlimitedTR);
 		copy.stats().autoEquip(copy);
 		return copy;
@@ -77,6 +85,28 @@ public final class XCharacter implements DoubleInv
 		this.location = location;
 	}
 
+	@Override
+	public CharSequence name()
+	{
+		return customName != null ? customName : "Name"/*new ArgsText("class.withlevel", new LocaleText(xClass.className), level)*/;
+	}
+
+	public String mapImageName()
+	{
+		if(customMapImage != null)
+			return customMapImage;
+		else
+			return "mapsprite.default";
+	}
+
+	public String sideImageName()
+	{
+		if(customSideImage != null)
+			return customSideImage;
+		else
+			return "character.enemy.0";
+	}
+
 	public boolean isVisible()
 	{
 		return visualReplaced == null || visualReplaced.finished();
@@ -92,16 +122,6 @@ public final class XCharacter implements DoubleInv
 		return stats;
 	}
 
-	public String mapImageName()
-	{
-		return stats.mapImageName();
-	}
-
-	public String sideImageName()
-	{
-		return stats.sideImageName();
-	}
-
 	public TurnResources resources()
 	{
 		return resources;
@@ -115,12 +135,6 @@ public final class XCharacter implements DoubleInv
 	public boolean isEnemy(XCharacter other)
 	{
 		return other.team() != team;
-	}
-
-	@Override
-	public CharSequence name()
-	{
-		return stats.getName();
 	}
 
 	@Override
@@ -154,38 +168,17 @@ public final class XCharacter implements DoubleInv
 
 	public EnemyMove preferredMove(boolean hasToMove, int moveAway)
 	{
-		if(!resources.ready(2))
+		if(!resources.ready())
 			return new EnemyMove(this, -1, null, null, 0);
-		return enemyAI.preferredMove(this, resources.moveAction(), hasToMove, moveAway);
+		return enemyAI.preferredMove(this, resources.hasMoveAction(), hasToMove, moveAway);
 	}
 
-	public <T extends ComposerBase, H extends ComposerBase> void save(ObjectComposer<T> a1,
-			ArrayComposer<H> xhList, ItemLoader itemLoader, TileType y1) throws IOException
+	public <T extends ComposerBase> void save(ObjectComposer<T> a1, TileType y1) throws IOException
 	{
 		a1.put("Type", team.name());
 		a1.put("sx", y1.sx(location));
 		a1.put("sy", y1.sy(location));
 		a1.put("StartingDelay", startingDelay);
-		/*if(startingSettings != null)
-		{
-			a1.put("StartName", stats.getName().toString());
-			a1.put("Locked", startingSettings.startLocked);
-			a1.put("InvLocked", startingSettings.startInvLocked);
-			if(startingSettings.startLocked)
-			{
-				inv.save(a1.startObjectField("Inventory"), itemLoader);
-			}
-
-			var h1 = xhList.startObject();
-			stats.save(h1.startObjectField("Stats"), itemLoader);
-			inv.save(h1.startObjectField("Inventory"), itemLoader);
-			h1.end();
-		}
-		else
-		{
-			stats.save(a1.startObjectField("Stats"), itemLoader);
-			inv.save(a1.startObjectField("Inventory"), itemLoader);
-		}*/
 		a1.end();
 	}
 
@@ -194,10 +187,13 @@ public final class XCharacter implements DoubleInv
 		CharacterTeam team = CharacterTeam.valueOf(data.get("Team").asText());
 		int startingDelay = ((JrsNumber) data.get("StartingDelay")).getValue().intValue();
 		Tile location = levelMap.y1.create2(((JrsNumber) data.get("sx")).getValue().intValue(), ((JrsNumber) data.get("sy")).getValue().intValue());
+		NameText customName = data.get("CustomName") != null ? new NameText(data.get("CustomName").asText()) : null;
+		String customMapImage = data.get("CustomMapImage") != null ? data.get("CustomMapImage").asText() : null;
+		String customSideImage = data.get("CustomSideImage") != null ? data.get("CustomSideImage").asText() : null;
 		Stats stats = new Stats(((JrsObject) data.get("Stats")), itemLoader);
 		Inv inv = new WeightInv(((JrsObject) data.get("Inventory")), itemLoader);
 		EnemyAI enemyAI = EnemyAI.load((JrsObject) data.get("EnemyAI"), itemLoader, levelMap);
-		return new XCharacter(team, startingDelay, location, stats, inv, enemyAI, false);
+		return new XCharacter(team, startingDelay, location, customName, customMapImage, customSideImage, stats, inv, enemyAI, false);
 	}
 
 	public <T extends ComposerBase> void saveToMap(ObjectComposer<T> a1, ItemLoader itemLoader, TileType y1) throws IOException
@@ -206,6 +202,18 @@ public final class XCharacter implements DoubleInv
 		a1.put("StartingDelay", startingDelay);
 		a1.put("sx", y1.sx(location));
 		a1.put("sy", y1.sy(location));
+		if(customName != null)
+		{
+			a1.put("CustomName", customName);
+		}
+		if(customMapImage != null)
+		{
+			a1.put("CustomMapImage", customMapImage);
+		}
+		if(customSideImage != null)
+		{
+			a1.put("CustomSideImage", customSideImage);
+		}
 		stats.save(a1.startObjectField("Stats"), itemLoader);
 		inv.save(a1.startObjectField("Inventory"), itemLoader);
 		enemyAI.save(a1.startObjectField("EnemyAI"), itemLoader, y1);
@@ -223,6 +231,9 @@ public final class XCharacter implements DoubleInv
 		{
 			location = defaultStart;
 		}
+		NameText customName = data.get("CustomName") != null ? new NameText(data.get("CustomName").asText()) : null;
+		String customMapImage = data.get("CustomMapImage") != null ? data.get("CustomMapImage").asText() : null;
+		String customSideImage = data.get("CustomSideImage") != null ? data.get("CustomSideImage").asText() : null;
 		Stats stats = new Stats(((JrsObject) data.get("Stats")), itemLoader);
 		Inv inv;
 		if(invOverride != null)
@@ -236,7 +247,7 @@ public final class XCharacter implements DoubleInv
 			inv = new WeightInv(((JrsObject) data.get("Inventory")), itemLoader);
 		}
 		EnemyAI enemyAI = EnemyAI.load((JrsObject) data.get("EnemyAI"), itemLoader, levelMap);
-		return new XCharacter(team, startingDelay, location, stats, inv, enemyAI, true);
+		return new XCharacter(team, startingDelay, location, customName, customMapImage, customSideImage, stats, inv, enemyAI, true);
 	}
 
 	public <T extends ComposerBase> void saveToTeam(ObjectComposer<T> a1, boolean saveLocation, boolean canTrade, ItemLoader itemLoader, TileType y1) throws IOException
@@ -246,6 +257,18 @@ public final class XCharacter implements DoubleInv
 		{
 			a1.put("sx", y1.sx(location));
 			a1.put("sy", y1.sy(location));
+		}
+		if(customName != null)
+		{
+			a1.put("CustomName", customName);
+		}
+		if(customMapImage != null)
+		{
+			a1.put("CustomMapImage", customMapImage);
+		}
+		if(customSideImage != null)
+		{
+			a1.put("CustomSideImage", customSideImage);
 		}
 		stats.save(a1.startObjectField("Stats"), itemLoader);
 		if(canTrade)

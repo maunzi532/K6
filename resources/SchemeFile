@@ -16,7 +16,6 @@
     "mark.cursor" : "ffa500",
     "mark.cursor.drag" : "00ffff",
     "mark.move.move" : "ffff00",
-    "mark.move.dash" : "ffffff",
     "mark.move.attack" : "ff0000",
     "mark.reach.move" : "c71585",
     "mark.reach.attack" : "ff0000",
