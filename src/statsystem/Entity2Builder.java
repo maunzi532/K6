@@ -6,7 +6,6 @@ import geom.tile.*;
 import item.*;
 import item.inv.*;
 import levelmap.*;
-import statsystem.analysis.*;
 
 public final class Entity2Builder
 {
@@ -59,14 +58,12 @@ public final class Entity2Builder
 		if(team == CharacterTeam.HERO)
 		{
 			entity = new XCharacter(CharacterTeam.HERO, 0, location,
-					null, null, null, stats, inv,
-					new NoAI(), false);
+					null, null, null, null, false);
 		}
 		else
 		{
 			entity = new XCharacter(team, 0, location,
-					null, null, null, stats, inv,
-					new StandardAI(levelMap), false);
+					null, null, null, null, false);
 		}
 		stats.autoEquip(entity);
 		if(levelMap.getFloor(location) == null)

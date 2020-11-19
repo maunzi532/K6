@@ -1,6 +1,7 @@
 package item4;
 
 import java.util.*;
+import java.util.stream.*;
 
 public class StackInv4 implements Inv4
 {
@@ -11,6 +12,12 @@ public class StackInv4 implements Inv4
 	{
 		this.maxStacks = maxStacks;
 		stacks = new ArrayList<>();
+	}
+
+	@Override
+	public List<NumberedStack4> viewItems()
+	{
+		return IntStream.range(0, stacks.size()).mapToObj(i -> NumberedStack4.create(stacks.get(i), i)).collect(Collectors.toList());
 	}
 
 	@Override

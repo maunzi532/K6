@@ -4,7 +4,10 @@ import java.util.*;
 
 public interface ModifierProvider4
 {
-	Map<String, List<Modifier4>> allModifiers();
+	Map<Stats4, List<Modifier4>> modifiers();
 
-	List<Modifier4> getModifiers(String name);
+	default List<Modifier4> getModifiers(Stats4 stat)
+	{
+		return modifiers().get(stat);
+	}
 }

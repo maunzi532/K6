@@ -1,7 +1,11 @@
 package item4;
 
+import java.util.*;
+
 public interface Inv4
 {
+	List<NumberedStack4> viewItems();
+
 	default boolean canAddAll(ItemStack4 add)
 	{
 		return canAddAll(add.item(), add.count());

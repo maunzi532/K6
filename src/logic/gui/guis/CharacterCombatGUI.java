@@ -64,7 +64,7 @@ public final class CharacterCombatGUI extends XGUIState
 	protected void updateBeforeDraw()
 	{
 		viewModeElement.fillTile = new GuiTile(viewMode == 1 ? "gui.stats.mode.stats" : "gui.stats.mode.combatdata");
-		invView.elements = character.inv().viewItems(true);
+		invView.elements = null;//character.inv().viewItems(true);
 		if(invView.getTargeted() != null && !invView.getTargeted().item.info().isEmpty())
 		{
 			statsView.elements = invView.getTargeted().item.info();

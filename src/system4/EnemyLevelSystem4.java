@@ -2,18 +2,22 @@ package system4;
 
 import item4.*;
 import java.util.*;
+import java.util.stream.*;
 
 public class EnemyLevelSystem4 implements ClassAndLevelSystem
 {
 	private final XClass4 xClass;
 	private final int level;
-	private final Map<String, List<Modifier4>> allModifiers;
+	private final Map<Stats4, List<Modifier4>> modifiers;
 
 	public EnemyLevelSystem4(XClass4 xClass, int level)
 	{
 		this.xClass = xClass;
 		this.level = level;
-		allModifiers = Map.of(); //TODO
+		modifiers = IntStream.range(0, XClass4.NUM_OF_LEVEL_STATS)
+				.mapToObj(i -> new Modifier4(Stats4.values()[i], ModifierType4.ADD,
+						(xClass.enemyBase()[i] + xClass.enemyIncrease()[i] * level) / xClass.enemyDividers()[i]))
+				.collect(Collectors.groupingBy(Modifier4::stat));
 	}
 
 	@Override
@@ -41,14 +45,8 @@ public class EnemyLevelSystem4 implements ClassAndLevelSystem
 	}
 
 	@Override
-	public Map<String, List<Modifier4>> allModifiers()
+	public Map<Stats4, List<Modifier4>> modifiers()
 	{
-		return allModifiers;
-	}
-
-	@Override
-	public List<Modifier4> getModifiers(String name)
-	{
-		return allModifiers.get(name);
+		return modifiers;
 	}
 }

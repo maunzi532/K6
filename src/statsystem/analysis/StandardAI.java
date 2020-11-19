@@ -36,8 +36,8 @@ public final class StandardAI implements EnemyAI
 			locations.add(new PathLocation(user.location()));
 		for(PathLocation pl : locations)
 		{
-			pathsX.addAll(levelMap.pathAttackInfo(user, pl.tile(),
-					levelMap.enemyTeamTargetCharacters(user.team()), pl));
+			/*pathsX.addAll(levelMap.pathAttackInfo(user, pl.tile(),
+					levelMap.enemyTeamTargetCharacters(user.team()), pl));*/
 			if(user.resources().hasMoveAction())
 				pathsX.add(new PathAttackX(pl, null));
 		}

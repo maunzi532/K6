@@ -4,7 +4,6 @@ import com.fasterxml.jackson.jr.ob.comp.*;
 import com.fasterxml.jackson.jr.stree.*;
 import entity.*;
 import item.*;
-import item.view.*;
 import java.io.*;
 import java.util.*;
 import statsystem.animation.*;
@@ -220,7 +219,7 @@ public final class Stats implements ModifierAspect
 
 	public void autoEquip(XCharacter entity)
 	{
-		ItemView itemView = entity.inv().viewRecipeItem(filter);
+		/*ItemView itemView = entity.inv().viewRecipeItem(filter);
 		if(itemView.base != 0 && itemView.item instanceof AttackItem attackItem)
 		{
 			lastUsed = attackItem.attackModes().stream().findFirst().orElse(AttackMode.EVADE_MODE);
@@ -228,17 +227,17 @@ public final class Stats implements ModifierAspect
 		else
 		{
 			lastUsed = AttackMode.EVADE_MODE;
-		}
+		}*/
 	}
 
 	public void afterTrading(XCharacter entity)
 	{
 		if(!lastUsed.active)
 			return;
-		if(!entity.inv().canGive(new ItemStack(lastUsed.item, 1), false))
+		/*if(!entity.inv().canGive(new ItemStack(lastUsed.item, 1), false))
 		{
 			lastUsed = AttackMode.EVADE_MODE;
-		}
+		}*/
 	}
 
 	public Item getItemFilter()

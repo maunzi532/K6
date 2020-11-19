@@ -56,8 +56,8 @@ public final class VisualSideInfoFrame implements SideInfoFrame
 	{
 		StatBar statBar = new StatBar(character.team().healthBarColor,
 				"arrow.healthbar.background", "arrow.healthbar.text",
-				character.stats().currentHealth(), character.stats().maxHealth());
-		return new SideInfo(character, character.sideImageName(), statBar, character.stats().sideInfoText(character.team().genericName));
+				character.currentHP(), character.maxHP());
+		return new SideInfo(character, character.sideImageName(), statBar, character.sideInfoText(character.name1()));
 	}
 
 	@Override
@@ -74,7 +74,7 @@ public final class VisualSideInfoFrame implements SideInfoFrame
 	{
 		StatBar statBar = new StatBar(character.team().healthBarColor,
 				"arrow.healthbar.background", "arrow.healthbar.text",
-				character.stats().currentHealth(), character.stats().maxHealth(), change);
+				character.currentHP(), character.maxHP(), change);
 		return new SideInfo(character, character.sideImageName(), statBar, text2);
 	}
 

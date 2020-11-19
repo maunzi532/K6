@@ -8,16 +8,14 @@ import java.util.stream.*;
 import levelmap.*;
 import logic.*;
 
-public final class GiveOrTakeState implements NMarkState
+public final class TradeTargetState implements NMarkState
 {
-	private final TradeDirection tradeDirection;
 	private final XCharacter character;
-	private List<DoubleInv> possibleTargets;
+	private List<InvHolder> possibleTargets;
 	private List<VisMark> visMarked;
 
-	public GiveOrTakeState(TradeDirection tradeDirection, XCharacter character)
+	public TradeTargetState(XCharacter character)
 	{
-		this.tradeDirection = tradeDirection;
 		this.character = character;
 	}
 
@@ -26,7 +24,7 @@ public final class GiveOrTakeState implements NMarkState
 	{
 		mainState.side().setStandardSideInfo(character);
 		LevelMap levelMap = mainState.levelMap();
-		List<Tile> range = levelMap.y1.range(character.location(), 0, character.stats().maxAccessRange());
+		List<Tile> range = levelMap.y1.range(character.location(), 0, character.accessRange());
 		possibleTargets = new ArrayList<>();
 		/*if(levelMap.playerTradeableStorage())
 			possibleTargets.add(levelMap.storage());
@@ -39,13 +37,13 @@ public final class GiveOrTakeState implements NMarkState
 	@Override
 	public CharSequence text()
 	{
-		return tradeDirection.text;
+		return "menu.trade";
 	}
 
 	@Override
 	public String keybind()
 	{
-		return tradeDirection.keybind;
+		return "state.trade";
 	}
 
 	@Override
@@ -63,7 +61,7 @@ public final class GiveOrTakeState implements NMarkState
 	@Override
 	public void onClick(MainState mainState, Tile mapTile, XKey key)
 	{
-		List<DoubleInv> list = possibleTargets.stream().filter(e -> mapTile.equals(getLocation(e))).collect(Collectors.toList());
+		/*List<DoubleInv> list = possibleTargets.stream().filter(e -> mapTile.equals(getLocation(e))).collect(Collectors.toList());
 		if(list.isEmpty())
 		{
 			mainState.stateHolder().setState(NoneState.INSTANCE);
@@ -74,26 +72,22 @@ public final class GiveOrTakeState implements NMarkState
 		}
 		else
 		{
-			/*list.stream().filter(inv1 -> inv1 instanceof XCharacter).findFirst()
-					.ifPresent(inv1 -> startTradeState(mainState.stateHolder(), inv1));*/
-		}
+			list.stream().filter(inv1 -> inv1 instanceof XCharacter).findFirst()
+					.ifPresent(inv1 -> startTradeState(mainState.stateHolder(), inv1));
+		}*/
 	}
 
-	private Tile getLocation(DoubleInv possibleTarget)
+	private Tile getLocation(InvHolder possibleTarget)
 	{
-		if(possibleTarget instanceof Storage storage)
+		if(possibleTarget instanceof Storage4 storage)
 			return character.location();
 		else
 			return possibleTarget.location();
 	}
 
-	private void startTradeState(XStateHolder stateHolder, DoubleInv inv1)
+	private void startTradeState(XStateHolder stateHolder, InvHolder inv1)
 	{
-		/*stateHolder.setState(switch(tradeDirection)
-				{
-					case GIVE -> new DirectedTradeGUI(character, inv1, character.resources());
-					case TAKE -> new DirectedTradeGUI(inv1, character, character.resources());
-				});*/
+		//stateHolder.setState(new DoubleTradeGUI(character, inv1));
 	}
 
 	@Override

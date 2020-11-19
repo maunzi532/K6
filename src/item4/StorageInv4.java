@@ -1,6 +1,7 @@
 package item4;
 
 import java.util.*;
+import java.util.stream.*;
 
 public class StorageInv4 implements Inv4
 {
@@ -9,6 +10,14 @@ public class StorageInv4 implements Inv4
 	public StorageInv4()
 	{
 		items = new HashMap<>();
+	}
+
+	@Override
+	public List<NumberedStack4> viewItems()
+	{
+		List<Map.Entry<Item4, Integer>> list = new ArrayList<>(items.entrySet());
+		return IntStream.range(0, list.size()).mapToObj(i ->
+				NumberedStack4.unlimited(list.get(i).getKey(), list.get(i).getValue(), false, i)).collect(Collectors.toList());
 	}
 
 	@Override

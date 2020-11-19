@@ -2,15 +2,10 @@ package logic.editor.xgui;
 
 import entity.*;
 import geom.tile.*;
-import item.inv.*;
-import java.util.stream.*;
 import levelmap.*;
 import logic.*;
 import logic.gui.*;
 import logic.xstate.*;
-import statsystem.*;
-import statsystem.analysis.*;
-import statsystem.content.*;
 
 public final class EntityCreateGUI extends XGUIState
 {
@@ -42,27 +37,25 @@ public final class EntityCreateGUI extends XGUIState
 
 	private void createXCharacter(CharacterTeam team, LevelMap levelMap, XStateHolder stateHolder)
 	{
-		Stats stats = defaultStats(team == CharacterTeam.HERO);
-		Inv inv = new WeightInv(20);
+		/*Stats stats = defaultStats(team == CharacterTeam.HERO);
+		Inv inv = new WeightInv(20);*/
 		XCharacter entity;
 		if(team == CharacterTeam.HERO)
 		{
-			entity = new XCharacter(CharacterTeam.HERO, 0, location, null, null, null, stats, inv,
-					new NoAI(), false);
+			entity = new XCharacter(CharacterTeam.HERO, 0, location, null, null, null, null, false);
 		}
 		else
 		{
-			entity = new XCharacter(team, 0, location, null, null, null, stats, inv,
-					new StandardAI(levelMap), false);
+			entity = new XCharacter(team, 0, location, null, null, null, null, false);
 		}
 		levelMap.addEntity(entity);
 		stateHolder.setState(new EntityEditGUI(entity));
 	}
 
-	private static Stats defaultStats(boolean xh)
+	/*private static Stats defaultStats(boolean xh)
 	{
 		return new Stats(XClasses.mageClass(), 0, xh ? new PlayerLevelSystem(0, IntStream.range(0, 8).toArray(), 40) : null);
-	}
+	}*/
 
 	@Override
 	public int xw()

@@ -2,7 +2,6 @@ package logic.xstate;
 
 import entity.*;
 import geom.tile.*;
-import java.util.*;
 import logic.*;
 import statsystem.*;
 
@@ -14,7 +13,7 @@ public final class EnemyPhaseState implements NAutoState
 	public void onEnter(MainState mainState)
 	{
 		mainState.side().clearSideInfo();
-		initiativeMove = mainState.levelMap().teamTargetCharacters(CharacterTeam.ENEMY).stream().filter(e -> e.resources().ready())
+		/*initiativeMove = mainState.levelMap().teamTargetCharacters(CharacterTeam.ENEMY).stream().filter(e -> e.resources().ready())
 				.map(e -> e.preferredMove(false, 0))
 				.max(Comparator.comparingInt(EnemyMove::initiative)).filter(e -> e.initiative() >= 0).orElse(null);
 		if(initiativeMove != null && initiativeMove.moveTo() != null && initiativeMove.moveTo().movingAlly() != null)
@@ -22,7 +21,7 @@ public final class EnemyPhaseState implements NAutoState
 			EnemyMove initiativeMove2 = (initiativeMove.moveTo().movingAlly()).preferredMove(true, initiativeMove.tileAdvantage());
 			if(initiativeMove2.initiative() >= 0)
 				initiativeMove = initiativeMove2;
-		}
+		}*/
 	}
 
 	@Override

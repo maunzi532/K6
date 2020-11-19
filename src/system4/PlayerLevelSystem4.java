@@ -36,13 +36,7 @@ public class PlayerLevelSystem4 implements ClassAndLevelSystem
 	}
 
 	@Override
-	public Map<String, List<Modifier4>> allModifiers()
-	{
-		return null;
-	}
-
-	@Override
-	public List<Modifier4> getModifiers(String name)
+	public Map<Stats4, List<Modifier4>> modifiers()
 	{
 		return null;
 	}

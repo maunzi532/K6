@@ -4,11 +4,11 @@ import com.fasterxml.jackson.jr.ob.comp.*;
 import com.fasterxml.jackson.jr.stree.*;
 import geom.tile.*;
 import item.*;
-import item.inv.*;
+import item4.*;
 import java.io.*;
 import text.*;
 
-public record StartingLocation(int number, CharSequence characterName, Tile location, boolean canSwap, Inv invOverride, int startingDelay)
+public record StartingLocation(int number, CharSequence characterName, Tile location, boolean canSwap, Inv4 invOverride, int startingDelay)
 {
 	public boolean canTrade()
 	{
@@ -20,9 +20,9 @@ public record StartingLocation(int number, CharSequence characterName, Tile loca
 		CharSequence characterName = new NameText(data.get("Name").asText());
 		Tile location = y1.create2(((JrsNumber) data.get("sx")).getValue().intValue(), ((JrsNumber) data.get("sy")).getValue().intValue());
 		boolean canSwap = ((JrsBoolean) data.get("CanSwap")).booleanValue();
-		Inv invOverride;
+		Inv4 invOverride;
 		if(data.get("InvOverride") != null)
-			invOverride = new WeightInv((JrsObject) data.get("InvOverride"), itemLoader);
+			invOverride = null;//new LockableInv4((JrsObject) data.get("InvOverride"), itemLoader);
 		else
 			invOverride = null;
 		int startingDelay = ((JrsNumber) data.get("StartingDelay")).getValue().intValue();
@@ -35,8 +35,8 @@ public record StartingLocation(int number, CharSequence characterName, Tile loca
 		a1.put("sx", y1.sx(location));
 		a1.put("sy", y1.sy(location));
 		a1.put("CanSwap", canSwap);
-		if(invOverride != null)
-			invOverride.save(a1.startObjectField("InvOverride"), itemLoader);
+		/*if(invOverride != null)
+			invOverride.save(a1.startObjectField("InvOverride"), itemLoader);*/
 		a1.put("StartingDelay", startingDelay);
 	}
 }

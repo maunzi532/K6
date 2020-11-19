@@ -9,7 +9,7 @@ public final class EntityInvEditGUI extends InvEditGUI
 
 	public EntityInvEditGUI(XCharacter invEntity)
 	{
-		super(invEntity.inv(), invEntity.name(), invEntity.stats().infoEdit());
+		super(/*invEntity.inv()*/null, invEntity.name(), invEntity.stats().infoEdit());
 		this.invEntity = invEntity;
 	}
 

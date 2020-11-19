@@ -6,7 +6,6 @@ import java.util.*;
 import levelmap.*;
 import logic.*;
 import logic.gui.guis.*;
-import statsystem.*;
 
 public final class AdvMoveState implements NMarkState
 {
@@ -33,7 +32,7 @@ public final class AdvMoveState implements NMarkState
 		attack = new ArrayList<>();
 		if(character.resources().ready())
 		{
-			LevelMap.attackRanges(character, AttackSide.INITIATOR).stream().map(e -> mainState.levelMap().y1.range(character.location(), e, e))
+			character.attackRanges().stream().map(e -> mainState.levelMap().y1.range(character.location(), e, e))
 					.flatMap(Collection::stream).map(mainState.levelMap()::getEntity).filter(e -> e != null && e.targetable() && e.team() != character.team())
 					.forEach(e -> attack.add(e.location()));
 		}

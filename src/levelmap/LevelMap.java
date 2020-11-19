@@ -7,14 +7,12 @@ import doubleinv.*;
 import entity.*;
 import geom.tile.*;
 import item.*;
-import item.inv.*;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
 import java.util.function.*;
 import java.util.stream.*;
 import logic.event.*;
-import statsystem.*;
 import text.*;
 
 public final class LevelMap implements Arrows
@@ -23,7 +21,7 @@ public final class LevelMap implements Arrows
 	private final HashMap<Tile, AdvTile> advTiles;
 	private final Map<CharacterTeam, List<XCharacter>> characters;
 	private final Map<CharSequence, StartingLocation> startingLocations;
-	private final Storage storage;
+	private final Storage4 storage;
 	private Map<String, EventPack> eventPacks;
 	private int turnCounter;
 	private final ArrayList<XArrow> arrows;
@@ -36,7 +34,7 @@ public final class LevelMap implements Arrows
 		advTiles = new HashMap<>();
 		characters = new EnumMap<>(CharacterTeam.class);
 		startingLocations = new HashMap<>();
-		storage = new Storage();
+		storage = new Storage4();
 		turnCounter = -1;
 		arrows = new ArrayList<>();
 		screenshake = new ArrayList<>();
@@ -57,11 +55,6 @@ public final class LevelMap implements Arrows
 	public void requireUpdate()
 	{
 		requiresUpdate = true;
-	}
-
-	public boolean playerTradeable(DoubleInv building, TradeDirection tradeDirection)
-	{
-		return turnCounter > 0 && !(building.inv(tradeDirection) instanceof BlockedInv);
 	}
 
 	public boolean playerTradeable(XCharacter character)
@@ -93,11 +86,6 @@ public final class LevelMap implements Arrows
 		{
 			return false;
 		}
-	}
-
-	public boolean canBuild()
-	{
-		return turnCounter > 0;
 	}
 
 	public void revertMovement(XCharacter xh)
@@ -219,14 +207,14 @@ public final class LevelMap implements Arrows
 	public Map<Tile, Long> allEnemyReach()
 	{
 		return teamTargetCharacters(CharacterTeam.ENEMY).stream().flatMap(character ->
-				new Pathing(y1, character, character.stats().movement(),
+				new Pathing(y1, character, character.movement(),
 						this, null).start().getEndpoints()
-						.stream().flatMap(loc -> attackRanges(character, AttackSide.INITIATOR).stream()
+						.stream().flatMap(loc -> character.attackRanges().stream()
 						.flatMap(e -> y1.range(loc, e, e).stream())).distinct())
 				.collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
 	}
 
-	public Storage storage()
+	public Storage4 storage()
 	{
 		return storage;
 	}
@@ -292,9 +280,9 @@ public final class LevelMap implements Arrows
 		arrows.removeIf(XArrow::finished);
 	}
 
-	public static List<Integer> attackRanges(XCharacter entity, AttackSide side)
+	/*public static List<Integer> attackRanges(XCharacter entity, AttackSide side)
 	{
-		List<int[]> v = entity.inv().viewItems(false)
+		List<int[]> v = entity.inv().viewItems()
 				.stream().filter(e -> entity.stats().getItemFilter().canContain(e.item))
 				.map(e -> ((AttackItem) e.item).getRanges(side)).collect(Collectors.toList());
 		Set<Integer> ints2 = new HashSet<>();
@@ -306,9 +294,9 @@ public final class LevelMap implements Arrows
 			}
 		}
 		return ints2.stream().sorted().collect(Collectors.toList());
-	}
+	}*/
 
-	public List<PathAttackX> pathAttackInfo(XCharacter entity, Tile loc, List<XCharacter> possibleTargets, PathLocation pl)
+	/*public List<PathAttackX> pathAttackInfo(XCharacter entity, Tile loc, List<XCharacter> possibleTargets, PathLocation pl)
 	{
 		return possibleTargets.stream().flatMap(e -> attackInfo(entity, loc, e, e.location()).stream())
 				.map(e -> new PathAttackX(pl, e)).collect(Collectors.toList());
@@ -317,13 +305,13 @@ public final class LevelMap implements Arrows
 	public List<AttackInfo> attackInfo(XCharacter entity, XCharacter entityT)
 	{
 		return attackInfo(entity, entity.location(), entityT, entityT.location());
-	}
+	}*/
 
-	public List<AttackInfo> attackInfo(XCharacter entity, Tile loc, XCharacter entityT, Tile locT)
+	/*public List<AttackInfo> attackInfo(XCharacter entity, Tile loc, XCharacter entityT, Tile locT)
 	{
 		int distance = y1.distance(loc, locT);
 		return entity.inv()
-				.viewItems(false)
+				.viewItems()
 				.stream()
 				.filter(e -> entity.stats().getItemFilter().canContain(e.item))
 				.flatMap(e -> ((AttackItem) e.item).attackModes().stream())
@@ -331,7 +319,7 @@ public final class LevelMap implements Arrows
 				.filter(e -> e.canInitiate)
 				.map(AttackInfo::addAnalysis)
 				.collect(Collectors.toList());
-	}
+	}*/
 
 	public void createTile(byte x, byte y, byte sector, byte type)
 	{
@@ -390,8 +378,8 @@ public final class LevelMap implements Arrows
 
 	public void loadTeam(JrsObject data, ItemLoader itemLoader)
 	{
-		WeightInv tempInv = new WeightInv((JrsObject) data.get("Storage"), itemLoader);
-		storage.inv().tryAdd(tempInv.allItems());
+		/*WeightInv tempInv = new WeightInv((JrsObject) data.get("Storage"), itemLoader);
+		storage.inv().tryAdd(tempInv.allItems());*/
 		((JrsArray) data.get("Team")).elements().forEachRemaining(e ->
 				{
 					JrsObject e1 = (JrsObject) e;
@@ -415,6 +403,6 @@ public final class LevelMap implements Arrows
 			}
 		}
 		a2.end();
-		storage.inv().save(a1.startObjectField("Storage"), itemLoader);
+		//storage.inv().save(a1.startObjectField("Storage"), itemLoader);
 	}
 }

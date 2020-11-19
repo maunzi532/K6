@@ -17,7 +17,7 @@ public final class StartTurnState implements NAutoState
 			xHero.startTurn();
 			if(xHero.targetable())
 			{
-				xHero.newResources(new TurnResources(xHero.location(), xHero.stats().movement()));
+				xHero.newResources(new TurnResources(xHero.location(), xHero.movement()));
 			}
 			else
 			{

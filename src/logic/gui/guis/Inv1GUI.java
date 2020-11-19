@@ -1,7 +1,6 @@
 package logic.gui.guis;
 
-import item.inv.*;
-import item.view.*;
+import item4.*;
 import java.util.*;
 import logic.*;
 import logic.gui.*;
@@ -9,17 +8,15 @@ import logic.gui.*;
 public class Inv1GUI extends XGUIState
 {
 	private static final CTile textInv = new CTile(2, 0, 2, 1);
-	private static final CTile weight = new CTile(0, 0);
 
-	protected Inv inv;
-	protected InvNumView weightView;
-	protected List<ItemView> itemsView;
-	protected TargetScrollList<ItemView> invView;
+	protected Inv4 inv;
+	protected List<NumberedStack4> itemsView;
+	protected TargetScrollList<NumberedStack4> invView;
 	protected ScrollList<CharSequence> itemView;
 	protected CharSequence name;
 	protected List<? extends CharSequence> baseInfo;
 
-	public Inv1GUI(Inv inv, CharSequence name, List<? extends CharSequence> baseInfo)
+	public Inv1GUI(Inv4 inv, CharSequence name, List<? extends CharSequence> baseInfo)
 	{
 		this.inv = inv;
 		this.name = name;
@@ -29,8 +26,7 @@ public class Inv1GUI extends XGUIState
 	@Override
 	public void onEnter(MainState mainState)
 	{
-		weightView = inv.viewInvWeight();
-		itemsView = inv.viewItems(true);
+		itemsView = inv.viewItems();
 		invView = new TargetScrollList<>(0, 1, 2, 5, 2, 1, null,
 				GuiTile::itemViewView, null);
 		elements.add(invView);
@@ -38,7 +34,6 @@ public class Inv1GUI extends XGUIState
 				GuiTile::textView, null);
 		elements.add(itemView);
 		elements.add(new CElement(textInv, new GuiTile(name)));
-		elements.add(new CElement(weight, new GuiTile(weightView.currentWithLimit())));
 		update();
 	}
 
@@ -64,7 +59,7 @@ public class Inv1GUI extends XGUIState
 	protected List<? extends CharSequence> info()
 	{
 		if(invView.getTargeted() != null)
-			return invView.getTargeted().item.info();
+			return List.of(invView.getTargeted().item().info());
 		else
 			return baseInfo;
 	}
