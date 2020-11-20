@@ -1,7 +1,9 @@
 package system4;
 
+import com.fasterxml.jackson.jr.ob.comp.*;
 import com.fasterxml.jackson.jr.stree.*;
 import item4.*;
+import java.io.*;
 import java.util.*;
 import java.util.stream.*;
 import load.*;
@@ -57,5 +59,15 @@ public class EnemyLevelSystem4 implements ClassAndLevelSystem
 		XClass4 xClass = systemScheme.getXClass(data.get("Class").asText());
 		int level = LoadHelper.asInt(data.get("Level"));
 		return new EnemyLevelSystem4(xClass, level);
+	}
+
+	@Override
+	public void save(ObjectComposer<? extends ComposerBase> a1, SystemScheme systemScheme) throws IOException
+	{
+		a1.put("CLSType", "Enemy");
+		var a2 = a1.startObjectField("CLS");
+		a2.put("Class", systemScheme.saveXClass(xClass));
+		a2.put("Level", level);
+		a2.end();
 	}
 }

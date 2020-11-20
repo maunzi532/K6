@@ -1,6 +1,8 @@
 package system4;
 
+import com.fasterxml.jackson.jr.ob.comp.*;
 import item4.*;
+import java.io.*;
 import java.util.*;
 
 public class PlayerLevelSystem4 implements ClassAndLevelSystem
@@ -39,5 +41,11 @@ public class PlayerLevelSystem4 implements ClassAndLevelSystem
 	public Map<Stats4, List<Modifier4>> modifiers()
 	{
 		return null;
+	}
+
+	@Override
+	public void save(ObjectComposer<? extends ComposerBase> a1, SystemScheme systemScheme) throws IOException
+	{
+
 	}
 }

@@ -1,10 +1,12 @@
 package item4;
 
+import com.fasterxml.jackson.jr.ob.comp.*;
 import com.fasterxml.jackson.jr.stree.*;
+import java.io.*;
 import load.*;
 import system4.*;
 
-public record TagStack4(ItemStack4 items, String tag)
+public record TagStack4(ItemStack4 items, String tag) implements XSaveable
 {
 	public TagStack4(ItemStack4 items)
 	{
@@ -20,12 +22,16 @@ public record TagStack4(ItemStack4 items, String tag)
 	{
 		Item4 item = systemScheme.getItem(data.get("Item").asText());
 		int count = LoadHelper.asInt(data.get("Count"));
-		String tag;
-		JrsValue v1 = data.get("Tag");
-		if(v1 instanceof JrsString v2)
-			tag = v2.asText();
-		else
-			tag = null;
+		String tag = LoadHelper.asOptionalString(data.get("Tag"));
 		return new TagStack4(item, count, tag);
+	}
+
+	@Override
+	public void save(ObjectComposer<? extends ComposerBase> a1, SystemScheme systemScheme) throws IOException
+	{
+		a1.put("Item", systemScheme.saveItem(items.item()));
+		a1.put("Count", items.count());
+		if(tag != null)
+			a1.put("Tag", tag);
 	}
 }

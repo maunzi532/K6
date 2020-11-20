@@ -1,13 +1,15 @@
 package system4;
 
+import com.fasterxml.jackson.jr.ob.comp.*;
 import com.fasterxml.jackson.jr.stree.*;
 import item4.*;
+import java.io.*;
 import java.util.*;
 import java.util.stream.*;
 import load.*;
 import text.*;
 
-public final class SystemChar
+public final class SystemChar implements XSaveable
 {
 	//Equip inv (TagInv4)
 	//Control/AI
@@ -15,16 +17,16 @@ public final class SystemChar
 	//Exp/Levels/Levelup (PlayerLevelSystem4)
 	//HP
 
-	private final ClassAndLevelSystem cle;
+	private final ClassAndLevelSystem cls;
 	private final TagInv4 inv;
 	private final List<ModifierProvider4> modifierProviders;
 	private int currentHP;
 
-	public SystemChar(ClassAndLevelSystem cle, TagInv4 inv, int currentHP)
+	public SystemChar(ClassAndLevelSystem cls, TagInv4 inv, int currentHP)
 	{
-		this.cle = cle;
+		this.cls = cls;
 		this.inv = inv;
-		modifierProviders = List.of(cle);
+		modifierProviders = List.of(cls);
 		if(currentHP >= 0)
 			this.currentHP = currentHP;
 		else
@@ -33,7 +35,7 @@ public final class SystemChar
 
 	public SystemChar()
 	{
-		cle = new EnemyLevelSystem4(new XClass4(new Item4(){
+		cls = new EnemyLevelSystem4(new XClass4(new Item4(){
 			@Override
 			public CharSequence name()
 			{
@@ -60,7 +62,7 @@ public final class SystemChar
 		}, new int[]{0, 0, 0, 0}, new int[]{1, 1, 1, 1},
 				new int[]{1, 1, 1, 1}, new int[]{0, 0, 0, 0}), 0);
 		inv = new TagInv4(0);
-		modifierProviders = List.of(cle);
+		modifierProviders = List.of(cls);
 		currentHP = stat(Stats4.MAX_HP);
 	}
 
@@ -78,7 +80,7 @@ public final class SystemChar
 
 	public ClassAndLevelSystem cle()
 	{
-		return cle;
+		return cls;
 	}
 
 	public Inv4 inv()
@@ -107,7 +109,7 @@ public final class SystemChar
 
 	public CharSequence nameAddedText()
 	{
-		return new ArgsText("class.withlevel", new LocaleText(cle.visItem().name()), cle.level());
+		return new ArgsText("class.withlevel", new LocaleText(cls.visItem().name()), cls.level());
 	}
 
 	public List<Integer> attackRanges()
@@ -131,5 +133,13 @@ public final class SystemChar
 		else
 			currentHP = -1;
 		return new SystemChar(cls, inv, currentHP);
+	}
+
+	@Override
+	public void save(ObjectComposer<? extends ComposerBase> a1, SystemScheme systemScheme) throws IOException
+	{
+		cls.save(a1, systemScheme);
+		LoadHelper.saveObject("Inv", inv, a1, systemScheme);
+		a1.put("CurrentHP", currentHP);
 	}
 }

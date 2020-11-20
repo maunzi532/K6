@@ -1,12 +1,14 @@
 package item4;
 
+import com.fasterxml.jackson.jr.ob.comp.*;
 import com.fasterxml.jackson.jr.stree.*;
+import java.io.*;
 import java.util.*;
 import java.util.stream.*;
 import load.*;
 import system4.*;
 
-public class TagInv4 implements Inv4
+public class TagInv4 implements Inv4, XSaveable
 {
 	private final int maxStacks;
 	private final List<TagStack4> stacks;
@@ -98,5 +100,12 @@ public class TagInv4 implements Inv4
 		List<TagStack4> stacks = LoadHelper.asStream(data.get("Stacks"))
 				.map(e -> TagStack4.load((JrsObject) e, systemScheme)).collect(Collectors.toList());
 		return new TagInv4(maxStacks, stacks);
+	}
+
+	@Override
+	public void save(ObjectComposer<? extends ComposerBase> a1, SystemScheme systemScheme) throws IOException
+	{
+		a1.put("MaxStacks", maxStacks);
+		LoadHelper.saveList("Stacks", stacks, a1, systemScheme);
 	}
 }
