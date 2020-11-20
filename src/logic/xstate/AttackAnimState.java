@@ -16,7 +16,7 @@ public final class AttackAnimState extends AttackState
 	@Override
 	public void onEnter(MainState mainState)
 	{
-		attackAnim = new AttackAnim(aI.analysis.getStart(), mainState.levelMap());
+		attackAnim = null;//new AttackAnim(aI.analysis.getStart(), mainState.levelMap());
 	}
 
 	@Override

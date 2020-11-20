@@ -1,6 +1,10 @@
 package load;
 
+import com.fasterxml.jackson.jr.ob.*;
+import com.fasterxml.jackson.jr.ob.comp.*;
 import com.fasterxml.jackson.jr.stree.*;
+import java.io.*;
+import java.nio.file.*;
 import java.util.*;
 import java.util.function.*;
 import java.util.stream.*;
@@ -42,5 +46,22 @@ public final class LoadHelper
 	public static int[] asIntArray(JrsValue value)
 	{
 		return asStream(value).mapToInt(LoadHelper::asInt).toArray();
+	}
+
+	public static JrsObject startLoad(Path path) throws IOException
+	{
+		return JSON.std.with(new JacksonJrsTreeCodec()).treeFrom(Files.readString(path));
+	}
+
+	public static ObjectComposer<JSONComposer<String>> startSave() throws IOException
+	{
+		return JSON.std.with(JSON.Feature.PRETTY_PRINT_OUTPUT)
+				.composeString()
+				.startObject();
+	}
+
+	public static String endSave(ObjectComposer<? extends JSONComposer<String>> a1) throws IOException
+	{
+		return a1.end().finish();
 	}
 }

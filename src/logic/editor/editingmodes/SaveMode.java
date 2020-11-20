@@ -3,12 +3,13 @@ package logic.editor.editingmodes;
 import com.fasterxml.jackson.jr.ob.*;
 import com.fasterxml.jackson.jr.ob.comp.*;
 import geom.tile.*;
+import gui.*;
 import java.io.*;
 import java.nio.file.*;
 import javafx.stage.*;
+import load.*;
 import logic.*;
 import logic.editor.*;
-import gui.*;
 
 public final class SaveMode implements EditingMode
 {
@@ -38,7 +39,12 @@ public final class SaveMode implements EditingMode
 	{
 		try
 		{
-			var a1 = getA1();
+			var a1 = LoadHelper.startSave();
+			mainState.levelMap().save(a1, null);
+			String text1 = LoadHelper.endSave(a1);
+			Path path = new FileChooser().showSaveDialog(null).toPath();
+			Files.writeString(path, text1);
+			/*var a1 = getA1();
 			mainState.levelMap().saveMapNC(a1, mainState.itemLoader());
 			String text1 = a1.end().finish();
 			Path path = new FileChooser().showSaveDialog(null).toPath();
@@ -47,7 +53,7 @@ public final class SaveMode implements EditingMode
 			mainState.levelMap().saveTeamStartNC(a2, path.getParent().getFileName().toString(), path.getFileName().toString(), mainState.itemLoader());
 			String text2 = a2.end().finish();
 			Files.writeString(new FileChooser().showSaveDialog(null).toPath(), text2);
-			state = 1;
+			state = 1;*/
 		}catch(IOException e)
 		{
 			state = 2;

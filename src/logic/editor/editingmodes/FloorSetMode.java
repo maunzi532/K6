@@ -41,11 +41,11 @@ public final class FloorSetMode implements EditingMode
 	{
 		if(key.hasFunction("edit.floorset.clear"))
 		{
-			mainState.levelMap().y1.betweenArea(tile1, tile2).forEach(mainState.levelMap()::clearTile);
+			mainState.levelMap().y1().betweenArea(tile1, tile2).forEach(mainState.levelMap()::clearTile);
 		}
 		if(key.hasFunction("edit.floorset.set"))
 		{
-			mainState.levelMap().y1.betweenArea(tile1, tile2).forEach(tile -> mainState.levelMap().setFloorTile(tile, new FloorTile(0, tileType)));
+			mainState.levelMap().y1().betweenArea(tile1, tile2).forEach(tile -> mainState.levelMap().setFloorTile(tile, new FloorTile(0, tileType)));
 		}
 	}
 }

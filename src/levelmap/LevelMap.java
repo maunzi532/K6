@@ -208,7 +208,7 @@ public final class LevelMap implements Arrows
 	{
 		return teamTargetCharacters(CharacterTeam.ENEMY).stream().flatMap(character ->
 				new Pathing(y1, character, character.movement(),
-						this, null).start().getEndpoints()
+						/*this*/null, null).start().getEndpoints()
 						.stream().flatMap(loc -> character.attackRanges().stream()
 						.flatMap(e -> y1.range(loc, e, e).stream())).distinct())
 				.collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));

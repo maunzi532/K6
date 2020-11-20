@@ -14,7 +14,7 @@ import logic.xstate.*;
 public final class XStateControl implements XStateHolder, ConvInputConsumer
 {
 	private MainState mainState;
-	private final LevelMap levelMap;
+	private final LevelMap4 levelMap;
 	private final LevelEditor levelEditor;
 	private NState state;
 	private List<NState> menu;
@@ -25,7 +25,7 @@ public final class XStateControl implements XStateHolder, ConvInputConsumer
 	private Map<Tile, Long> allEnemyReach;
 
 
-	public XStateControl(LevelMap levelMap, LevelEditor levelEditor)
+	public XStateControl(LevelMap4 levelMap, LevelEditor levelEditor)
 	{
 		this.levelMap = levelMap;
 		this.levelEditor = levelEditor;
@@ -212,7 +212,7 @@ public final class XStateControl implements XStateHolder, ConvInputConsumer
 	{
 		if(!(state instanceof XGUIState))
 		{
-			dragMarker = levelMap.y1.betweenArea(startTile, endTile).stream()
+			dragMarker = levelMap.y1().betweenArea(startTile, endTile).stream()
 					.map(e -> new VisMark(e, "mark.cursor.drag", VisMark.d3)).collect(Collectors.toList());
 			if(finished && state.editMode() && key.canDrag())
 			{
@@ -294,7 +294,7 @@ public final class XStateControl implements XStateHolder, ConvInputConsumer
 		{
 			if(levelMap.checkUpdate())
 			{
-				allEnemyReach = levelMap.allEnemyReach();
+				allEnemyReach = null; //TODO //levelMap.allEnemyReach();
 			}
 			allEnemyReach.forEach((tile, amount) -> visMarked.add(new VisMark(tile, "mark.reach.all", 0.8)));
 		}
@@ -317,7 +317,7 @@ public final class XStateControl implements XStateHolder, ConvInputConsumer
 		{
 			if(levelMap.checkUpdate())
 			{
-				allEnemyReach = levelMap.allEnemyReach();
+				allEnemyReach = null; //TODO //levelMap.allEnemyReach();
 			}
 			allEnemyReach.forEach((tile, amount) -> visMarked.add(new VisMark(tile, "mark.reach.all", 0.8)));
 		}

@@ -23,7 +23,7 @@ public final class MoveAnimState implements NAutoState
 	@Override
 	public void onEnter(MainState mainState)
 	{
-		finish = (mainState.levelMap().y1.distance(newLocation, entity.location()) + 1) * XArrow.TIME_PER_DISTANCE;
+		finish = (mainState.levelMap().y1().distance(newLocation, entity.location()) + 1) * XArrow.TIME_PER_DISTANCE;
 		mainState.levelMap().moveEntity(entity, newLocation);
 	}
 

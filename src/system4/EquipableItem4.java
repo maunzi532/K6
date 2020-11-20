@@ -21,7 +21,7 @@ public record EquipableItem4(CharSequence name, String image, CharSequence info,
 		int stackLimit = LoadHelper.asInt(data.get("StackLimit"));
 		Set<String> tags = new HashSet<>(LoadHelper.asStringList(data.get("Tags")));
 		//List<Modifier4> modifiers1 = LoadHelper.asList(data.get("Modifiers"))
-		Map<Stats4, List<Modifier4>> modifiers = null; //TODO
+		Map<Stats4, List<Modifier4>> modifiers = Map.of(); //TODO
 		return new EquipableItem4(name, image, info, stackLimit, tags, modifiers);
 	}
 }

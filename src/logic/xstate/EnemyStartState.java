@@ -11,7 +11,7 @@ public final class EnemyStartState implements NAutoState
 	public void onEnter(MainState mainState)
 	{
 		mainState.side().clearSideInfo();
-		for(XCharacter xEnemy : mainState.levelMap().teamCharacters(CharacterTeam.ENEMY))
+		mainState.levelMap().allCharacters().stream().filter(e -> e.team() == CharacterTeam.ENEMY).forEach(xEnemy ->
 		{
 			xEnemy.startTurn();
 			if(xEnemy.targetable())
@@ -22,7 +22,7 @@ public final class EnemyStartState implements NAutoState
 			{
 				xEnemy.newResources(new TurnResources(xEnemy.location()));
 			}
-		}
+		});
 	}
 
 	@Override

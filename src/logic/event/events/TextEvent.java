@@ -33,7 +33,7 @@ public class TextEvent implements NEvent, NAutoState
 	@Override
 	public void onEnter(MainState mainState)
 	{
-		mainState.side().setTextSideInfo(mainState.levelMap().findByName(characterName).orElse(null), text, r);
+		//mainState.side().setTextSideInfo(mainState.levelMap().findByName(characterName).orElse(null), text, r);
 	}
 
 	@Override

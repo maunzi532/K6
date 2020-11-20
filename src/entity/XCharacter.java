@@ -329,7 +329,7 @@ public final class XCharacter implements InvHolder, XSaveableYS
 		String customMapImage = LoadHelper.asOptionalString(data.get("CustomMapImage"));
 		String customSideImage = LoadHelper.asOptionalString(data.get("CustomSideImage"));
 		SystemChar systemChar = SystemChar.load(data, systemScheme);
-		TurnResources resources = TurnResources.load(data, y1);
+		TurnResources resources = TurnResources.load((JrsObject) data.get("Resources"), y1);
 		return new XCharacter(team, savedInTeam, startingDelay, location, customName, customMapImage, customSideImage, systemChar, resources);
 	}
 

@@ -1,8 +1,9 @@
 {
+  "StartLevel" : "W11",
   "Items" :
   [
     {
-      "Name" : "",
+      "Name" : "Mage",
       "Image" : "",
       "Info" : "",
       "StackLimit" : 1,
@@ -13,7 +14,7 @@
   "Classes" :
   [
     {
-      "VisItem" : "",
+      "VisItem" : "Mage",
       "BonusIncrease" : [0, 0, 0, 0],
       "EnemyDividers" : [1, 1, 1, 1],
       "EnemyBase" : [1, 1, 1, 1],

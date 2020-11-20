@@ -5,7 +5,7 @@ import item.*;
 import levelmap.*;
 import logic.xstate.*;
 
-public record MainState(LevelMap levelMap, XStateHolder stateHolder, SideInfoFrame side, ItemLoader itemLoader)
+public record MainState(LevelMap4 levelMap, XStateHolder stateHolder, SideInfoFrame side, ItemLoader itemLoader)
 {
 	//content
 	//TODO    Build a real level

@@ -26,7 +26,7 @@ public final class PostAttackState extends AttackState
 	{
 		if(firstEnter)
 		{
-			getExpAnim = new GetExpAnim(aI, result, mainState.levelMap());
+			getExpAnim = null;//new GetExpAnim(aI, result, mainState.levelMap());
 			firstEnter = false;
 			levelup = getExpAnim.isLevelup();
 			levelupT = getExpAnim.isLevelupT();

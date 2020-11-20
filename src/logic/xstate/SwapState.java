@@ -24,7 +24,7 @@ public final class SwapState implements NMarkState
 		mainState.side().setStandardSideInfo(character);
 		if(mainState.levelMap().canSwap(character))
 		{
-			swapTargets = mainState.levelMap().teamCharacters(character.team()).stream()
+			swapTargets = mainState.levelMap().allCharacters().stream().filter(e -> e.team() == character.team())
 					.filter(e -> e != character && mainState.levelMap().canSwap(e)).collect(Collectors.toList());
 		}
 		else

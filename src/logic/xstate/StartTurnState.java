@@ -12,7 +12,7 @@ public final class StartTurnState implements NAutoState
 	{
 		mainState.side().clearSideInfo();
 		mainState.levelMap().increaseTurnCounter();
-		for(XCharacter xHero : mainState.levelMap().teamCharacters(CharacterTeam.HERO))
+		mainState.levelMap().allCharacters().stream().filter(e -> e.team() == CharacterTeam.HERO).forEach(xHero ->
 		{
 			xHero.startTurn();
 			if(xHero.targetable())
@@ -23,7 +23,7 @@ public final class StartTurnState implements NAutoState
 			{
 				xHero.newResources(new TurnResources(xHero.location()));
 			}
-		}
+		});
 	}
 
 	@Override

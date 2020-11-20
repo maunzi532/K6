@@ -64,7 +64,7 @@
     "resource.tech" : "Tech.png"
   },
   "Settings" : {
-    "load.team" : "saves/X10",
+    "load.team" : "world/WorldFile",
     "window.width" : "1000",
     "window.height" : "800",
     "window.title" : "K6",

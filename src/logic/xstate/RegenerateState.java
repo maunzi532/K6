@@ -2,7 +2,6 @@ package logic.xstate;
 
 import entity.*;
 import logic.*;
-import statsystem.animation.*;
 
 public final class RegenerateState implements NAutoState
 {
@@ -20,7 +19,7 @@ public final class RegenerateState implements NAutoState
 	public void onEnter(MainState mainState)
 	{
 		mainState.side().setStandardSideInfo(character);
-		arrow = new RegenerationAnim(character, mainState.levelMap());
+		arrow = null;//new RegenerationAnim(character, mainState.levelMap());
 	}
 
 	@Override

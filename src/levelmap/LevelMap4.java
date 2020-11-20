@@ -19,11 +19,10 @@ public class LevelMap4 implements XSaveableS
 	private TileType y1;
 	private HashMap<Tile, AdvTile> advTiles;
 	private List<XCharacter> allCharacters;
-	private Map<CharacterTeam, List<XCharacter>> characters;
 	private List<StartingLocation4> startingLocations;
 	private Storage4 storage;
-	private Map<String, EventPack> eventPacks;
 	private int turnCounter;
+	private Map<String, EventPack> eventPacks;
 	private ArrayList<XArrow> arrows;
 	private boolean requiresUpdate;
 
@@ -34,6 +33,7 @@ public class LevelMap4 implements XSaveableS
 		this.y1 = y1;
 		this.advTiles = advTiles;
 		this.allCharacters = allCharacters;
+		allCharacters.forEach(e -> advTiles.get(e.location()).setEntity(e));
 		this.startingLocations = startingLocations;
 		this.storage = storage;
 		this.eventPacks = eventPacks;
@@ -53,6 +53,11 @@ public class LevelMap4 implements XSaveableS
 		requiresUpdate = true;
 	}
 
+	public TileType y1()
+	{
+		return y1;
+	}
+
 	public AdvTile advTile(Tile t1)
 	{
 		return advTiles.getOrDefault(t1, AdvTile.EMPTY);
@@ -63,8 +68,11 @@ public class LevelMap4 implements XSaveableS
 		if(advTiles.containsKey(t1))
 		{
 			XCharacter entity = advTiles.get(t1).entity();
-			if(entity != null)
+			/*if(entity != null)
+			{
 				characters.get(entity.team()).remove(entity);
+			}*/
+			allCharacters.remove(entity);
 			advTiles.remove(t1);
 			requireUpdate();
 		}
@@ -94,18 +102,20 @@ public class LevelMap4 implements XSaveableS
 	public void addEntity(XCharacter entity)
 	{
 		advTile(entity.location()).setEntity(entity);
-		if(!characters.containsKey(entity.team()))
+		/*if(!characters.containsKey(entity.team()))
 		{
 			characters.put(entity.team(), new ArrayList<>());
 		}
-		characters.get(entity.team()).add(entity);
+		characters.get(entity.team()).add(entity);*/
+		allCharacters.add(entity);
 		requireUpdate();
 	}
 
 	public void removeEntity(XCharacter entity)
 	{
 		advTile(entity.location()).setEntity(null);
-		characters.get(entity.team()).remove(entity);
+		//characters.get(entity.team()).remove(entity);
+		allCharacters.remove(entity);
 		requireUpdate();
 	}
 
@@ -144,6 +154,25 @@ public class LevelMap4 implements XSaveableS
 		requireUpdate();
 	}
 
+	public boolean canSwap(XCharacter character)
+	{
+		if(levelStarted())
+		{
+			return false;
+		}
+		else
+		{
+			//StartingLocation startingLocation = startingLocations.get(character.name());
+			return true;//startingLocation != null && startingLocation.canSwap();
+		}
+	}
+
+
+	public List<XCharacter> allCharacters()
+	{
+		return allCharacters;
+	}
+
 	public boolean levelStarted()
 	{
 		return turnCounter > 0;
@@ -157,6 +186,11 @@ public class LevelMap4 implements XSaveableS
 	public void increaseTurnCounter()
 	{
 		turnCounter++;
+	}
+
+	public void setEventPacks(Map<String, EventPack> eventPacks)
+	{
+		this.eventPacks = eventPacks;
 	}
 
 	public List<XArrow> getArrows()
@@ -221,5 +255,67 @@ public class LevelMap4 implements XSaveableS
 		XSaveableYS.saveList("Characters", allCharacters.stream()
 				.filter(e -> !e.isSavedInTeam()).collect(Collectors.toList()), a1, y1, systemScheme);
 		XSaveableY.saveList("StartingLocations", startingLocations, a1, y1);
+	}
+
+	public static LevelMap4 resume(JrsObject data, SystemScheme systemScheme)
+	{
+		TileType y1 = switch(data.get("TileType").asText())
+				{
+					case "Hex" -> new HexTileType();
+					case "Quad" -> new QuadTileType();
+					default -> throw new RuntimeException("Wrong TileType");
+				};
+		HashMap<Tile, AdvTile> advTiles = new HashMap<>();
+		ByteBuffer sb = ByteBuffer.wrap(Base64.getDecoder().decode(data.get("FloorTiles").asText()));
+		while(sb.remaining() > 0)
+		{
+			advTiles.put(y1.create2(sb.get(), sb.get()), new AdvTile(new FloorTile(sb.get(), FloorTileType.values()[sb.get()])));
+		}
+		List<XCharacter> allCharacters = LoadHelper.asList(data.get("Characters"), e -> XCharacter.load(e, y1, systemScheme));
+		List<StartingLocation4> startingLocations = LoadHelper.asList(data.get("StartingLocations"), e -> StartingLocation4.load(e, y1));
+		Storage4 storage = Storage4.load((JrsObject) data.get("Storage"), systemScheme);
+		int turnCounter = LoadHelper.asInt(data.get("TurnCounter"));
+		Map<String, EventPack> eventPacks = Map.of();
+		return new LevelMap4(y1, advTiles, allCharacters, startingLocations, storage, eventPacks, turnCounter);
+	}
+
+	public void suspend(ObjectComposer<? extends ComposerBase> a1, SystemScheme systemScheme) throws IOException
+	{
+		if(y1 instanceof HexTileType)
+			a1.put("TileType", "Hex");
+		else if(y1 instanceof QuadTileType)
+			a1.put("TileType", "Quad");
+		ByteBuffer sb = ByteBuffer.allocate(advTiles.size() * 4);
+		for(Map.Entry<Tile, AdvTile> entry : advTiles.entrySet())
+		{
+			Tile t1 = entry.getKey();
+			AdvTile adv = entry.getValue();
+			if(adv.floorTile() != null)
+			{
+				sb.put((byte) y1.sx(t1));
+				sb.put((byte) y1.sy(t1));
+				sb.put((byte) adv.floorTile().sector);
+				sb.put((byte) adv.floorTile().type.ordinal());
+			}
+		}
+		a1.put("FloorTiles", Base64.getEncoder().encodeToString(sb.array()));
+		XSaveableYS.saveList("Characters", allCharacters, a1, y1, systemScheme);
+		XSaveableY.saveList("StartingLocations", startingLocations, a1, y1);
+		XSaveableS.saveObject("Storage", storage, a1, systemScheme);
+		a1.put("TurnCounter", turnCounter);
+	}
+
+	public void loadTeam(JrsObject data, SystemScheme systemScheme)
+	{
+		List<XCharacter> teamCharacters = LoadHelper.asList(data.get("Characters"), e -> XCharacter.load(e, y1, systemScheme));
+		storage = Storage4.load((JrsObject) data.get("Storage"), systemScheme);
+		//TODO place on StartingLocations
+	}
+
+	public void saveTeam(ObjectComposer<? extends ComposerBase> a1, SystemScheme systemScheme) throws IOException
+	{
+		XSaveableYS.saveList("Characters", allCharacters.stream()
+				.filter(XCharacter::isSavedInTeam).collect(Collectors.toList()), a1, y1, systemScheme);
+		XSaveableS.saveObject("Storage", storage, a1, systemScheme);
 	}
 }

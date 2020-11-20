@@ -22,11 +22,11 @@ public final class ReachViewState implements NMarkState
 	public void onEnter(MainState mainState)
 	{
 		mainState.side().setStandardSideInfo(character);
-		List<Tile> movement = new Pathing(mainState.levelMap().y1, character, character.movement(), mainState.levelMap(), null).start().getEndpoints();
+		List<Tile> movement = new Pathing(mainState.levelMap().y1(), character, character.movement(), mainState.levelMap(), null).start().getEndpoints();
 		allTargets = new ArrayList<>();
 		movement.forEach(e -> allTargets.add(new VisMark(e, "mark.reach.move", VisMark.d1)));
 		movement.stream().flatMap(loc -> character.attackRanges().stream()
-				.flatMap(e -> mainState.levelMap().y1.range(loc, e, e).stream())).distinct()
+				.flatMap(e -> mainState.levelMap().y1().range(loc, e, e).stream())).distinct()
 				.forEach(e -> allTargets.add(new VisMark(e, "mark.reach.attack", VisMark.d1)));
 	}
 

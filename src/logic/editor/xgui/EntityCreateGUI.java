@@ -35,18 +35,18 @@ public final class EntityCreateGUI extends XGUIState
 		update();
 	}
 
-	private void createXCharacter(CharacterTeam team, LevelMap levelMap, XStateHolder stateHolder)
+	private void createXCharacter(CharacterTeam team, LevelMap4 levelMap, XStateHolder stateHolder)
 	{
 		/*Stats stats = defaultStats(team == CharacterTeam.HERO);
 		Inv inv = new WeightInv(20);*/
 		XCharacter entity;
 		if(team == CharacterTeam.HERO)
 		{
-			entity = new XCharacter(CharacterTeam.HERO, 0, location, null, null, null, null, false);
+			entity = new XCharacter(CharacterTeam.HERO, true, 0, location, null, null, null, null, null);
 		}
 		else
 		{
-			entity = new XCharacter(team, 0, location, null, null, null, null, false);
+			entity = new XCharacter(team, false, 0, location, null, null, null, null, null);
 		}
 		levelMap.addEntity(entity);
 		stateHolder.setState(new EntityEditGUI(entity));

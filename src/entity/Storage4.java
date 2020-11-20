@@ -1,16 +1,25 @@
 package entity;
 
+import com.fasterxml.jackson.jr.ob.comp.*;
+import com.fasterxml.jackson.jr.stree.*;
 import doubleinv.*;
 import geom.tile.*;
 import item4.*;
+import java.io.*;
+import system4.*;
 
-public final class Storage4 implements InvHolder
+public final class Storage4 implements InvHolder, XSaveableS
 {
 	private final StorageInv4 inv;
 
 	public Storage4()
 	{
 		inv = new StorageInv4();
+	}
+
+	public Storage4(StorageInv4 inv)
+	{
+		this.inv = inv;
 	}
 
 	@Override
@@ -39,4 +48,15 @@ public final class Storage4 implements InvHolder
 
 	@Override
 	public void afterTrading(){}
+
+	public static Storage4 load(JrsObject data, SystemScheme systemScheme)
+	{
+		return new Storage4(StorageInv4.load(data, systemScheme));
+	}
+
+	@Override
+	public void save(ObjectComposer<? extends ComposerBase> a1, SystemScheme systemScheme) throws IOException
+	{
+		inv.save(a1, systemScheme);
+	}
 }

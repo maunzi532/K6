@@ -13,10 +13,12 @@ import javafx.scene.canvas.*;
 import javafx.scene.text.*;
 import javafx.stage.*;
 import levelmap.*;
+import load.*;
 import logic.*;
 import logic.editor.*;
 import logic.event.*;
 import logic.xstate.*;
+import system4.*;
 import text.*;
 import vis.gui.*;
 import vis.sideinfo.*;
@@ -36,7 +38,7 @@ public final class MainVisual implements XInputInterface
 	private VisualGUI visualGUI;
 	private VisualLevelEditor visualLevelEditor;
 	private VisualSideInfoFrame visualSideInfoFrame;
-	private LevelMap levelMap;
+	private LevelMap4 levelMap;
 	private LevelEditor levelEditor;
 	private XStateHolder stateHolder;
 	private ConvInputConsumer convInputConsumer;
@@ -58,15 +60,16 @@ public final class MainVisual implements XInputInterface
 		visualGUI = VisualGUI.forCamera(graphics, guiCamera);
 		visualLevelEditor = new VisualLevelEditor(graphics, editorSlotCamera);
 		visualSideInfoFrame = new VisualSideInfoFrame(graphics, false);
-		levelMap = new LevelMap(mapCamera.doubleType());
+		levelMap = loadLevel(loadFileTeam);
+		//levelMap = new LevelMap(mapCamera.doubleType());
 		levelEditor = new LevelEditor();
 		XStateControl stateControl = new XStateControl(levelMap, levelEditor);
 		stateHolder = stateControl;
 		convInputConsumer = stateControl;
 		MainState mainState = new MainState(levelMap, stateHolder, visualSideInfoFrame, itemLoader);
 		stateControl.setMainState(mainState, new NoneState());
-		loadLevel(loadFileTeam, itemLoader, levelMap, scheme);
-		stateControl.setState(new EventListState(levelMap.eventPack("Start").events(), new StartTurnState()));
+		//loadLevel(loadFileTeam, itemLoader, levelMap, scheme);
+		//stateControl.setState(new EventListState(levelMap.eventPack("Start").events(), new StartTurnState()));
 		GraphicsContext gd = graphics.gd();
 		gd.setTextAlign(TextAlignment.CENTER);
 		gd.setTextBaseline(VPos.CENTER);
@@ -122,6 +125,64 @@ public final class MainVisual implements XInputInterface
 		/*levelMap.addBuilding2(new ProductionBuilding(y2.create2(-2, -2), buildingBlueprintCache.get("BLUE1")));
 		levelMap.addBuilding2(new ProductionBuilding(y2.create2(-3, -3), buildingBlueprintCache.get("GSL1")));
 		levelMap.addBuilding(new Transporter(y2.create2(-3, -2), buildingBlueprintCache.get("Transporter1")));*/
+	}
+
+	private static LevelMap4 loadLevel(String loadFile)
+	{
+		try
+		{
+			Path path1 = Path.of(loadFile);
+			JrsObject a1 = LoadHelper.startLoad(path1);
+			SystemScheme systemScheme;
+			LevelMap4 levelMap;
+			JrsValue v1 = a1.get("TurnCounter");
+			if(v1 != null)
+			{
+				Path worldFilePath = Path.of(loadFile, a1.get("WorldFile").asText());
+				JrsObject worldFile = LoadHelper.startLoad(worldFilePath);
+				systemScheme = SystemScheme.load(worldFile);
+				levelMap = LevelMap4.resume(a1, systemScheme);
+			}
+			else
+			{
+				Path worldFilePath;
+				JrsObject worldFile;
+				String levelFile;
+				JrsValue v2 = a1.get("WorldFile");
+				if(v2 != null)
+				{
+					//a1 = teamFile
+					worldFilePath = Path.of(loadFile, v2.asText());
+					worldFile = LoadHelper.startLoad(worldFilePath);
+					levelFile = a1.get("CurrentLevel").asText();
+				}
+				else
+				{
+					JrsValue v3 = a1.get("StartLevel");
+					if(v3 != null)
+					{
+						//a1 = worldFile
+						worldFilePath = path1;
+						worldFile = a1;
+						levelFile = v3.asText();
+					}
+					else
+					{
+						throw new RuntimeException("Not a TeamFile or WorldFile");
+					}
+				}
+				systemScheme = SystemScheme.load(worldFile);
+				JrsObject level = LoadHelper.startLoad(worldFilePath.getParent().resolve(levelFile));
+				levelMap = LevelMap4.load(level, systemScheme);
+				if(v2 != null)
+					levelMap.loadTeam(a1, systemScheme);
+			}
+			//levelMap.setEventPacks(EventPack.read(world, currentMap, scheme.setting("file.locale.level"), itemLoader, levelMap.y1));
+			return levelMap;
+		}catch(IOException e)
+		{
+			throw new RuntimeException(e);
+		}
 	}
 
 	@Override
@@ -225,7 +286,7 @@ public final class MainVisual implements XInputInterface
 			convInputConsumer.tickPaused();
 		}
 		visualSideInfoFrame.tick();
-		screenshake = Math.max(screenshake, levelMap.removeFirstScreenshake());
+		//screenshake = Math.max(screenshake, levelMap.removeFirstScreenshake());
 		if(screenshake > 0)
 		{
 			screenshake--;
