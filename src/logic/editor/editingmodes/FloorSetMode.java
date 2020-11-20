@@ -2,7 +2,7 @@ package logic.editor.editingmodes;
 
 import doubleinv.*;
 import geom.tile.*;
-import logic.gui.*;
+import gui.*;
 import logic.editor.*;
 import logic.*;
 

@@ -1,9 +1,9 @@
-package logic.gui.guis;
+package logic.guis;
 
 import doubleinv.*;
 import item4.*;
 import logic.*;
-import logic.gui.*;
+import gui.*;
 
 public final class DoubleTradeGUI extends XGUIState
 {

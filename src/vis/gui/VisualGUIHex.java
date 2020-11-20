@@ -2,7 +2,7 @@ package vis.gui;
 
 import geom.*;
 import geom.advtile.*;
-import logic.gui.*;
+import gui.*;
 import vis.*;
 
 public final class VisualGUIHex extends VisualGUI

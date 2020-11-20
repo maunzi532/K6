@@ -1,30 +1,68 @@
 package system4;
 
+import com.fasterxml.jackson.jr.stree.*;
 import item4.*;
 import java.util.*;
 import java.util.stream.*;
+import load.*;
 import text.*;
 
 public final class SystemChar
 {
-	//Equip inv (LockableInv4)
+	//Equip inv (TagInv4)
 	//Control/AI
 	//Stats/Equip/Status (inv/level/status)
 	//Exp/Levels/Levelup (PlayerLevelSystem4)
 	//HP
 
+	private final ClassAndLevelSystem cle;
+	private final TagInv4 inv;
+	private final List<ModifierProvider4> modifierProviders;
+	private int currentHP;
+
+	public SystemChar(ClassAndLevelSystem cle, TagInv4 inv, int currentHP)
+	{
+		this.cle = cle;
+		this.inv = inv;
+		modifierProviders = List.of(cle);
+		if(currentHP >= 0)
+			this.currentHP = currentHP;
+		else
+			this.currentHP = stat(Stats4.MAX_HP);
+	}
+
 	public SystemChar()
 	{
-		cle = new EnemyLevelSystem4(new XClass4(null, new int[]{0, 0, 0, 0}, new int[]{1, 1, 1, 1}, new int[]{1, 1, 1, 1}, new int[]{0, 0, 0, 0}), 0);
-		inv = new LockableInv4(0);
+		cle = new EnemyLevelSystem4(new XClass4(new Item4(){
+			@Override
+			public CharSequence name()
+			{
+				return "A";
+			}
+
+			@Override
+			public String image()
+			{
+				return "A";
+			}
+
+			@Override
+			public CharSequence info()
+			{
+				return "A";
+			}
+
+			@Override
+			public int stackLimit()
+			{
+				return 0;
+			}
+		}, new int[]{0, 0, 0, 0}, new int[]{1, 1, 1, 1},
+				new int[]{1, 1, 1, 1}, new int[]{0, 0, 0, 0}), 0);
+		inv = new TagInv4(0);
 		modifierProviders = List.of(cle);
 		currentHP = stat(Stats4.MAX_HP);
 	}
-
-	private final ClassAndLevelSystem cle;
-	private final LockableInv4 inv;
-	private final List<ModifierProvider4> modifierProviders;
-	private int currentHP;
 
 	public int stat(Stats4 stat)
 	{
@@ -74,6 +112,24 @@ public final class SystemChar
 
 	public List<Integer> attackRanges()
 	{
-		return null;
+		return List.of();
+	}
+
+	public static SystemChar load(JrsObject data, SystemScheme systemScheme)
+	{
+		ClassAndLevelSystem cls = switch(data.get("CLSType").asText())
+				{
+					case "Player" -> new PlayerLevelSystem4(); //TODO
+					case "Enemy" -> EnemyLevelSystem4.load((JrsObject) data.get("CLS"), systemScheme);
+					default -> throw new RuntimeException("Unknown cls type");
+				};
+		TagInv4 inv = TagInv4.load((JrsObject) data.get("Inv"), systemScheme);
+		int currentHP;
+		JrsValue v1 = data.get("CurrentHP");
+		if(v1 instanceof JrsNumber v2)
+			currentHP = LoadHelper.asInt(v2);
+		else
+			currentHP = -1;
+		return new SystemChar(cls, inv, currentHP);
 	}
 }

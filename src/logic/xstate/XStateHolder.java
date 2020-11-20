@@ -1,7 +1,7 @@
 package logic.xstate;
 
 import levelmap.*;
-import logic.gui.*;
+import gui.*;
 import java.util.*;
 
 public interface XStateHolder

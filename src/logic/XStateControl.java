@@ -7,8 +7,8 @@ import java.util.stream.*;
 import levelmap.*;
 import logic.editor.*;
 import logic.editor.xstate.*;
-import logic.gui.*;
-import logic.gui.guis.*;
+import gui.*;
+import logic.guis.*;
 import logic.xstate.*;
 
 public final class XStateControl implements XStateHolder, ConvInputConsumer
@@ -189,7 +189,8 @@ public final class XStateControl implements XStateHolder, ConvInputConsumer
 			}
 			else if(key.hasFunction("menu"))
 			{
-				setState(new CharacterCombatGUI(entity, 0));
+				//setState(new CharacterCombatGUI(entity, 0));
+				setState(new TagInvGUI(entity));
 			}
 		}
 		else
@@ -200,7 +201,8 @@ public final class XStateControl implements XStateHolder, ConvInputConsumer
 			}
 			else if(key.hasFunction("menu"))
 			{
-				setState(new CharacterCombatGUI(entity, 0));
+				//setState(new CharacterCombatGUI(entity, 0));
+				setState(new TagInvGUI(entity));
 			}
 		}
 	}

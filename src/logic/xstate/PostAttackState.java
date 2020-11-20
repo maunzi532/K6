@@ -1,7 +1,7 @@
 package logic.xstate;
 
 import logic.*;
-import logic.gui.guis.*;
+import logic.guis.*;
 import statsystem.*;
 import statsystem.analysis.*;
 import statsystem.animation.*;

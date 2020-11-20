@@ -1,18 +1,28 @@
 package item4;
 
+import com.fasterxml.jackson.jr.stree.*;
 import java.util.*;
 import java.util.stream.*;
+import load.*;
+import system4.*;
 
-public class LockableInv4 implements Inv4
+public class TagInv4 implements Inv4
 {
 	private final int maxStacks;
-	private final List<LockStack4> stacks;
+	private final List<TagStack4> stacks;
 	public boolean keep;
 
-	public LockableInv4(int maxStacks)
+	public TagInv4(int maxStacks)
 	{
 		this.maxStacks = maxStacks;
 		stacks = new ArrayList<>();
+		keep = false;
+	}
+
+	public TagInv4(int maxStacks, List<TagStack4> stacks)
+	{
+		this.maxStacks = maxStacks;
+		this.stacks = stacks;
 		keep = false;
 	}
 
@@ -20,7 +30,7 @@ public class LockableInv4 implements Inv4
 	public List<NumberedStack4> viewItems()
 	{
 		return IntStream.range(0, stacks.size()).mapToObj(i -> NumberedStack4.tagged(stacks.get(i),
-				stacks.get(i).locked() != null && keep, i)).collect(Collectors.toList());
+				stacks.get(i).tag() != null && keep, i)).collect(Collectors.toList());
 	}
 
 	@Override
@@ -31,13 +41,13 @@ public class LockableInv4 implements Inv4
 			int toAdd = addCount;
 			for(int i = 0; i < stacks.size(); i++)
 			{
-				LockStack4 stack = stacks.get(i);
-				if(stack.locked() == null)
+				TagStack4 stack = stacks.get(i);
+				if(stack.tag() == null)
 				{
 					int maxAdd = stack.items().maxAdd(addItem, toAdd);
 					if(maxAdd > 0)
 					{
-						stacks.set(i, new LockStack4(new ItemStack4(addItem, stack.items().count() + maxAdd)));
+						stacks.set(i, new TagStack4(new ItemStack4(addItem, stack.items().count() + maxAdd)));
 						toAdd -= maxAdd;
 						if(toAdd <= 0)
 							return true;
@@ -47,7 +57,7 @@ public class LockableInv4 implements Inv4
 			for(int i = stacks.size(); i < maxStacks; i++)
 			{
 				int maxAdd = Math.min(toAdd, addItem.stackLimit());
-				stacks.add(new LockStack4(new ItemStack4(addItem, maxAdd)));
+				stacks.add(new TagStack4(new ItemStack4(addItem, maxAdd)));
 				toAdd -= maxAdd;
 				if(toAdd <= 0)
 					return true;
@@ -64,9 +74,9 @@ public class LockableInv4 implements Inv4
 	public boolean canAddAll(Item4 addItem, int addCount)
 	{
 		int toAdd = addCount;
-		for(LockStack4 stack : stacks)
+		for(TagStack4 stack : stacks)
 		{
-			if(stack.locked() == null)
+			if(stack.tag() == null)
 			{
 				int maxAdd = stack.items().maxAdd(addItem, toAdd);
 				toAdd -= maxAdd;
@@ -79,6 +89,14 @@ public class LockableInv4 implements Inv4
 
 	public List<Item4> lockedItems(String tag)
 	{
-		return stacks.stream().filter(e -> Objects.equals(e.locked(), tag)).map(e -> e.items().item()).collect(Collectors.toList());
+		return stacks.stream().filter(e -> Objects.equals(e.tag(), tag)).map(e -> e.items().item()).collect(Collectors.toList());
+	}
+
+	public static TagInv4 load(JrsObject data, SystemScheme systemScheme)
+	{
+		int maxStacks = LoadHelper.asInt(data.get("MaxStacks"));
+		List<TagStack4> stacks = LoadHelper.asStream(data.get("Stacks"))
+				.map(e -> TagStack4.load((JrsObject) e, systemScheme)).collect(Collectors.toList());
+		return new TagInv4(maxStacks, stacks);
 	}
 }

@@ -3,7 +3,7 @@ package logic.editor.xgui;
 import logic.*;
 import logic.editor.*;
 import logic.editor.xstate.*;
-import logic.gui.*;
+import gui.*;
 import logic.xstate.*;
 
 public final class EditorSlotModeGUI extends XGUIState

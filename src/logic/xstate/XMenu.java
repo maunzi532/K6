@@ -1,11 +1,10 @@
 package logic.xstate;
 
-import doubleinv.*;
 import entity.*;
 import java.util.*;
 import logic.editor.xgui.*;
 import logic.editor.xstate.*;
-import logic.gui.guis.*;
+import logic.guis.*;
 
 public final class XMenu
 {
@@ -24,8 +23,8 @@ public final class XMenu
 
 	public static XMenu characterGUIMenu(XCharacter character)
 	{
-		return new XMenu(new CharacterCombatGUI(character, 0),
-				new GiveOrTakeState(TradeDirection.GIVE, character), new GiveOrTakeState(TradeDirection.TAKE, character), new EndTurnState());
+		return new XMenu(new TagInvGUI(character),
+				new TradeTargetState(character), new EndTurnState());
 	}
 
 	public static XMenu enemyMoveMenu(XCharacter character)
@@ -35,7 +34,7 @@ public final class XMenu
 
 	public static XMenu enemyGUIMenu(XCharacter enemy)
 	{
-		return new XMenu(new CharacterCombatGUI(enemy, 0), new EndTurnState());
+		return new XMenu(new TagInvGUI(enemy), new EndTurnState());
 	}
 
 	public static XMenu entityEditMenu(XCharacter entity)

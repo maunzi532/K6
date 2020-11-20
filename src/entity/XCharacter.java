@@ -232,7 +232,7 @@ public final class XCharacter implements InvHolder
 		/*Stats stats = new Stats(((JrsObject) data.get("Stats")), itemLoader);
 		Inv inv = new WeightInv(((JrsObject) data.get("Inventory")), itemLoader);
 		EnemyAI enemyAI = EnemyAI.load((JrsObject) data.get("EnemyAI"), itemLoader, levelMap);*/
-		SystemChar systemChar = null;
+		SystemChar systemChar = new SystemChar();
 		return new XCharacter(team, startingDelay, location, customName, customMapImage, customSideImage, systemChar/*stats, inv, enemyAI*/, false);
 	}
 
@@ -288,7 +288,7 @@ public final class XCharacter implements InvHolder
 			inv = new WeightInv(((JrsObject) data.get("Inventory")), itemLoader);
 		}
 		EnemyAI enemyAI = EnemyAI.load((JrsObject) data.get("EnemyAI"), itemLoader, levelMap);*/
-		SystemChar systemChar = null;
+		SystemChar systemChar = new SystemChar();
 		return new XCharacter(team, startingDelay, location, customName, customMapImage, customSideImage, systemChar/*stats, inv, enemyAI*/, true);
 	}
 

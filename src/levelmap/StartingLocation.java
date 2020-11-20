@@ -22,7 +22,7 @@ public record StartingLocation(int number, CharSequence characterName, Tile loca
 		boolean canSwap = ((JrsBoolean) data.get("CanSwap")).booleanValue();
 		Inv4 invOverride;
 		if(data.get("InvOverride") != null)
-			invOverride = null;//new LockableInv4((JrsObject) data.get("InvOverride"), itemLoader);
+			invOverride = null;//new TagInv4((JrsObject) data.get("InvOverride"), itemLoader);
 		else
 			invOverride = null;
 		int startingDelay = ((JrsNumber) data.get("StartingDelay")).getValue().intValue();

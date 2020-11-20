@@ -5,7 +5,7 @@ import levelmap.*;
 import logic.*;
 import logic.editor.*;
 import logic.editor.xgui.*;
-import logic.gui.*;
+import gui.*;
 
 public final class BCCreateMode implements EditingMode
 {

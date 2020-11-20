@@ -1,9 +1,9 @@
-package logic.gui.guis;
+package logic.guis;
 
 import entity.*;
 import entity.sideinfo.*;
 import logic.*;
-import logic.gui.*;
+import gui.*;
 import logic.xstate.*;
 import statsystem.*;
 

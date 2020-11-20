@@ -5,7 +5,7 @@ import item.inv.*;
 import item.view.*;
 import java.util.*;
 import logic.*;
-import logic.gui.*;
+import gui.*;
 import statsystem.content.*;
 
 public class InvEditGUI extends XGUIState

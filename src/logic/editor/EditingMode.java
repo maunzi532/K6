@@ -2,7 +2,7 @@ package logic.editor;
 
 import geom.tile.*;
 import logic.*;
-import logic.gui.*;
+import gui.*;
 
 public interface EditingMode
 {

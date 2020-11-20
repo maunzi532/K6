@@ -1,9 +1,9 @@
-package logic.gui.guis;
+package logic.guis;
 
 import item4.*;
 import java.util.*;
 import logic.*;
-import logic.gui.*;
+import gui.*;
 
 public class Inv1GUI extends XGUIState
 {

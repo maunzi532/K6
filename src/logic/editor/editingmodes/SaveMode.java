@@ -8,7 +8,7 @@ import java.nio.file.*;
 import javafx.stage.*;
 import logic.*;
 import logic.editor.*;
-import logic.gui.*;
+import gui.*;
 
 public final class SaveMode implements EditingMode
 {

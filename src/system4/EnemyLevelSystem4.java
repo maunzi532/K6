@@ -1,8 +1,10 @@
 package system4;
 
+import com.fasterxml.jackson.jr.stree.*;
 import item4.*;
 import java.util.*;
 import java.util.stream.*;
+import load.*;
 
 public class EnemyLevelSystem4 implements ClassAndLevelSystem
 {
@@ -48,5 +50,12 @@ public class EnemyLevelSystem4 implements ClassAndLevelSystem
 	public Map<Stats4, List<Modifier4>> modifiers()
 	{
 		return modifiers;
+	}
+
+	public static EnemyLevelSystem4 load(JrsObject data, SystemScheme systemScheme)
+	{
+		XClass4 xClass = systemScheme.getXClass(data.get("Class").asText());
+		int level = LoadHelper.asInt(data.get("Level"));
+		return new EnemyLevelSystem4(xClass, level);
 	}
 }

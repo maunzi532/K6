@@ -4,7 +4,7 @@ import entity.*;
 import geom.tile.*;
 import levelmap.*;
 import logic.*;
-import logic.gui.*;
+import gui.*;
 import logic.xstate.*;
 
 public final class EntityCreateGUI extends XGUIState

@@ -14,9 +14,9 @@ public record NumberedStack4(Item4 item, int count, boolean limited, boolean kee
 		return new NumberedStack4(item, count, false, keep, null, num);
 	}
 
-	public static NumberedStack4 tagged(LockStack4 stack, boolean keep, int num)
+	public static NumberedStack4 tagged(TagStack4 stack, boolean keep, int num)
 	{
-		return new NumberedStack4(stack.items().item(), stack.items().count(), true, keep, stack.locked(), num);
+		return new NumberedStack4(stack.items().item(), stack.items().count(), true, keep, stack.tag(), num);
 	}
 
 	public CharSequence viewText()

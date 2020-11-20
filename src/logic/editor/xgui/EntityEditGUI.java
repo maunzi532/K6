@@ -5,7 +5,7 @@ import item.view.*;
 import java.util.*;
 import java.util.stream.*;
 import logic.*;
-import logic.gui.*;
+import gui.*;
 import logic.xstate.*;
 
 public final class EntityEditGUI extends XGUIState

@@ -1,7 +1,7 @@
 package logic.editor;
 
 import logic.*;
-import logic.gui.*;
+import gui.*;
 import logic.xstate.*;
 
 public final class EditorSlotGUI extends XGUIState

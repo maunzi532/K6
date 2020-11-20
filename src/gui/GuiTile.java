@@ -1,4 +1,4 @@
-package logic.gui;
+package gui;
 
 import item.view.*;
 import item4.*;

@@ -7,7 +7,7 @@ import javafx.scene.canvas.*;
 import javafx.scene.image.*;
 import javafx.scene.paint.*;
 import javafx.scene.text.*;
-import logic.gui.*;
+import gui.*;
 import vis.*;
 
 public abstract class VisualGUI

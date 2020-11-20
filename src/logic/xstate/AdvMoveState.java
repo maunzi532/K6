@@ -5,7 +5,7 @@ import geom.tile.*;
 import java.util.*;
 import levelmap.*;
 import logic.*;
-import logic.gui.guis.*;
+import logic.guis.*;
 
 public final class AdvMoveState implements NMarkState
 {

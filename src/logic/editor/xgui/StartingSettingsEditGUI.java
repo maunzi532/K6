@@ -2,7 +2,7 @@ package logic.editor.xgui;
 
 import entity.*;
 import logic.*;
-import logic.gui.*;
+import gui.*;
 import logic.xstate.*;
 
 public final class StartingSettingsEditGUI extends XGUIState
