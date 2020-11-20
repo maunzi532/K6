@@ -14,6 +14,11 @@ public final class LoadHelper
 		return ((JrsNumber) value).getValue().intValue();
 	}
 
+	public static boolean asBoolean(JrsValue value)
+	{
+		return ((JrsBoolean) value).booleanValue();
+	}
+
 	public static String asOptionalString(JrsValue value)
 	{
 		return value != null ? value.asText() : null;

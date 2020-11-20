@@ -6,7 +6,7 @@ import java.io.*;
 import load.*;
 import system4.*;
 
-public record TagStack4(ItemStack4 items, String tag) implements XSaveable
+public record TagStack4(ItemStack4 items, String tag) implements XSaveableS
 {
 	public TagStack4(ItemStack4 items)
 	{

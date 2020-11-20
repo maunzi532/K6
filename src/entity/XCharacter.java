@@ -10,62 +10,56 @@ import item4.*;
 import java.io.*;
 import java.util.*;
 import levelmap.*;
+import load.*;
 import statsystem.*;
 import system4.*;
 import text.*;
 
-public final class XCharacter implements InvHolder
+public final class XCharacter implements InvHolder, XSaveableYS
 {
 	private CharacterTeam team;
+	private boolean savedInTeam;
 	private int startingDelay;
 	private Tile location;
 	private NameText customName;
 	private String customMapImage;
 	private String customSideImage;
-	/*private final Stats stats;
-	private final Inv inv;
-	private EnemyAI enemyAI;*/
 	private final SystemChar systemChar;
 	private TurnResources resources;
 	private XArrow visualReplaced;
 	private boolean defeated;
 
-	public XCharacter(CharacterTeam team, int startingDelay, Tile location, NameText customName, String customMapImage,
-			String customSideImage, SystemChar systemChar/*Stats stats, Inv inv, EnemyAI enemyAI*/, boolean unlimitedTR)
+	public XCharacter(CharacterTeam team, boolean savedInTeam, int startingDelay, Tile location, NameText customName, String customMapImage,
+			String customSideImage, SystemChar systemChar, TurnResources resources)
 	{
 		this.team = team;
+		this.savedInTeam = savedInTeam;
 		this.startingDelay = startingDelay;
 		this.location = location;
 		this.customName = customName;
 		this.customMapImage = customMapImage;
 		this.customSideImage = customSideImage;
 		this.systemChar = systemChar;
-		/*this.stats = stats;
-		this.inv = inv;
-		this.enemyAI = enemyAI;*/
-		if(unlimitedTR)
-		{
-			resources = TurnResources.unlimited();
-		}
-		else
-		{
-			resources = new TurnResources(location);
-		}
+		this.resources = resources;
 		visualReplaced = null;
 		defeated = false;
 	}
 
-	public XCharacter createACopy(Tile copyLocation, boolean unlimitedTR)
+	public XCharacter createACopy(Tile copyLocation)
 	{
-		XCharacter copy = new XCharacter(team, startingDelay, copyLocation, customName, customMapImage, customSideImage,
-				/*stats.createACopy(), inv.copy(), enemyAI.copy()*/systemChar /*TODO copy*/, unlimitedTR);
-		//copy.stats().autoEquip(copy);
+		XCharacter copy = new XCharacter(team, savedInTeam, startingDelay, copyLocation, customName, customMapImage, customSideImage,
+				systemChar /*TODO copy*/, resources);
 		return copy;
 	}
 
 	public CharacterTeam team()
 	{
 		return team;
+	}
+
+	public boolean isSavedInTeam()
+	{
+		return savedInTeam;
 	}
 
 	public void startTurn()
@@ -233,7 +227,7 @@ public final class XCharacter implements InvHolder
 		Inv inv = new WeightInv(((JrsObject) data.get("Inventory")), itemLoader);
 		EnemyAI enemyAI = EnemyAI.load((JrsObject) data.get("EnemyAI"), itemLoader, levelMap);*/
 		SystemChar systemChar = new SystemChar();
-		return new XCharacter(team, startingDelay, location, customName, customMapImage, customSideImage, systemChar/*stats, inv, enemyAI*/, false);
+		return new XCharacter(team, false, startingDelay, location, customName, customMapImage, customSideImage, systemChar/*stats, inv, enemyAI*/, null);
 	}
 
 	public <T extends ComposerBase> void saveToMap(ObjectComposer<T> a1, ItemLoader itemLoader, TileType y1) throws IOException
@@ -289,7 +283,7 @@ public final class XCharacter implements InvHolder
 		}
 		EnemyAI enemyAI = EnemyAI.load((JrsObject) data.get("EnemyAI"), itemLoader, levelMap);*/
 		SystemChar systemChar = new SystemChar();
-		return new XCharacter(team, startingDelay, location, customName, customMapImage, customSideImage, systemChar/*stats, inv, enemyAI*/, true);
+		return new XCharacter(team, false, startingDelay, location, customName, customMapImage, customSideImage, systemChar/*stats, inv, enemyAI*/, null);
 	}
 
 	public <T extends ComposerBase> void saveToTeam(ObjectComposer<T> a1, boolean saveLocation, boolean canTrade, ItemLoader itemLoader, TileType y1) throws IOException
@@ -323,5 +317,36 @@ public final class XCharacter implements InvHolder
 		}
 		enemyAI.save(a1.startObjectField("EnemyAI"), itemLoader, y1);*/
 		//systemChar.save()
+	}
+
+	public static XCharacter load(JrsObject data, TileType y1, SystemScheme systemScheme)
+	{
+		CharacterTeam team = CharacterTeam.valueOf(data.get("Team").asText());
+		boolean savedInTeam = LoadHelper.asBoolean(data.get("SavedInTeam"));
+		int startingDelay = LoadHelper.asInt(data.get("StartingDelay"));
+		Tile location = XSaveableY.loadLocation(data, y1);
+		NameText customName = new NameText(LoadHelper.asOptionalString(data.get("CustomName")));
+		String customMapImage = LoadHelper.asOptionalString(data.get("CustomMapImage"));
+		String customSideImage = LoadHelper.asOptionalString(data.get("CustomSideImage"));
+		SystemChar systemChar = SystemChar.load(data, systemScheme);
+		TurnResources resources = TurnResources.load(data, y1);
+		return new XCharacter(team, savedInTeam, startingDelay, location, customName, customMapImage, customSideImage, systemChar, resources);
+	}
+
+	@Override
+	public void save(ObjectComposer<? extends ComposerBase> a1, TileType y1, SystemScheme systemScheme) throws IOException
+	{
+		a1.put("Team", team.name());
+		a1.put("SavedInTeam", savedInTeam);
+		a1.put("StartingDelay", startingDelay);
+		XSaveableY.saveLocation(location, a1, y1);
+		if(customName != null)
+			a1.put("CustomName", customName);
+		if(customMapImage != null)
+			a1.put("CustomMapImage", customMapImage);
+		if(customSideImage != null)
+			a1.put("CustomSideImage", customSideImage);
+		systemChar.save(a1, systemScheme);
+		XSaveableY.saveObject("Resources", resources, a1, y1);
 	}
 }

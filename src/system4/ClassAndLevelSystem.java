@@ -2,7 +2,7 @@ package system4;
 
 import item4.*;
 
-public interface ClassAndLevelSystem extends ModifierProvider4, XSaveable
+public interface ClassAndLevelSystem extends ModifierProvider4, XSaveableS
 {
 	Item4 visItem();
 

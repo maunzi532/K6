@@ -48,7 +48,7 @@ public final class EditCopyState implements NMarkState
 	{
 		if(mainState.levelMap().getEntity(mapTile) == null)
 		{
-			mainState.levelMap().addEntity(entity.createACopy(mapTile, !mainState.levelMap().levelStarted()));
+			mainState.levelMap().addEntity(entity.createACopy(mapTile));
 		}
 		else
 		{

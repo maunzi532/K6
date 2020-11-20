@@ -1,0 +1,23 @@
+{
+  "Items" :
+  [
+    {
+      "Name" : "",
+      "Image" : "",
+      "Info" : "",
+      "StackLimit" : 1,
+      "Tags" : [],
+      "Modifiers" : []
+    }
+  ],
+  "Classes" :
+  [
+    {
+      "VisItem" : "",
+      "BonusIncrease" : [0, 0, 0, 0],
+      "EnemyDividers" : [1, 1, 1, 1],
+      "EnemyBase" : [1, 1, 1, 1],
+      "EnemyIncrease" : [0, 0, 0, 0]
+    }
+  ]
+}

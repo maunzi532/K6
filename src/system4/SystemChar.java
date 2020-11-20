@@ -9,7 +9,7 @@ import java.util.stream.*;
 import load.*;
 import text.*;
 
-public final class SystemChar implements XSaveable
+public final class SystemChar implements XSaveableS
 {
 	//Equip inv (TagInv4)
 	//Control/AI
@@ -139,7 +139,7 @@ public final class SystemChar implements XSaveable
 	public void save(ObjectComposer<? extends ComposerBase> a1, SystemScheme systemScheme) throws IOException
 	{
 		cls.save(a1, systemScheme);
-		SystemScheme.saveObject("Inv", inv, a1, systemScheme);
+		XSaveableS.saveObject("Inv", inv, a1, systemScheme);
 		a1.put("CurrentHP", currentHP);
 	}
 }

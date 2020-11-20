@@ -1,8 +1,13 @@
 package entity;
 
+import com.fasterxml.jackson.jr.ob.comp.*;
+import com.fasterxml.jackson.jr.stree.*;
 import geom.tile.*;
+import java.io.*;
+import levelmap.*;
+import load.*;
 
-public final class TurnResources
+public final class TurnResources implements XSaveableY
 {
 	private boolean unlimited;
 	private Tile startLocation;
@@ -50,10 +55,10 @@ public final class TurnResources
 		hasMainAction = true;
 	}
 
-	public TurnResources(Tile startLocation, int startMovement, int leftoverMovement, boolean hasMoveAction,
+	public TurnResources(boolean unlimited, Tile startLocation, int startMovement, int leftoverMovement, boolean hasMoveAction,
 			boolean canRevertMoveAction, boolean hasMainAction)
 	{
-		unlimited = false;
+		this.unlimited = unlimited;
 		this.startLocation = startLocation;
 		this.startMovement = startMovement;
 		this.leftoverMovement = leftoverMovement;
@@ -118,5 +123,29 @@ public final class TurnResources
 	{
 		leftoverMovement = startMovement;
 		hasMoveAction = true;
+	}
+
+	public static TurnResources load(JrsObject data, TileType y1)
+	{
+		boolean unlimited = LoadHelper.asBoolean(data.get("Unlimited"));
+		Tile startLocation = XSaveableY.loadLocation(data, y1);
+		int startMovement = LoadHelper.asInt(data.get("StartMovement"));
+		int leftoverMovement = LoadHelper.asInt(data.get("LeftoverMovement"));
+		boolean hasMoveAction = LoadHelper.asBoolean(data.get("HasMoveAction"));
+		boolean canRevertMoveAction = LoadHelper.asBoolean(data.get("CanRevertMoveAction"));
+		boolean hasMainAction = LoadHelper.asBoolean(data.get("HasMainAction"));
+		return new TurnResources(unlimited, startLocation, startMovement, leftoverMovement, hasMoveAction, canRevertMoveAction, hasMainAction);
+	}
+
+	@Override
+	public void save(ObjectComposer<? extends ComposerBase> a1, TileType y1) throws IOException
+	{
+		a1.put("Unlimited", unlimited);
+		XSaveableY.saveLocation(startLocation, a1, y1);
+		a1.put("StartMovement", startMovement);
+		a1.put("LeftoverMovement", leftoverMovement);
+		a1.put("HasMoveAction", hasMoveAction);
+		a1.put("CanRevertMoveAction", canRevertMoveAction);
+		a1.put("HasMainAction", hasMainAction);
 	}
 }

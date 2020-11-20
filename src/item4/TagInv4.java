@@ -8,7 +8,7 @@ import java.util.stream.*;
 import load.*;
 import system4.*;
 
-public class TagInv4 implements Inv4, XSaveable
+public class TagInv4 implements Inv4, XSaveableS
 {
 	private final int maxStacks;
 	private final List<TagStack4> stacks;
@@ -105,6 +105,6 @@ public class TagInv4 implements Inv4, XSaveable
 	public void save(ObjectComposer<? extends ComposerBase> a1, SystemScheme systemScheme) throws IOException
 	{
 		a1.put("MaxStacks", maxStacks);
-		SystemScheme.saveList("Stacks", stacks, a1, systemScheme);
+		XSaveableS.saveList("Stacks", stacks, a1, systemScheme);
 	}
 }
