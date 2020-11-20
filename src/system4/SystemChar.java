@@ -139,7 +139,7 @@ public final class SystemChar implements XSaveable
 	public void save(ObjectComposer<? extends ComposerBase> a1, SystemScheme systemScheme) throws IOException
 	{
 		cls.save(a1, systemScheme);
-		LoadHelper.saveObject("Inv", inv, a1, systemScheme);
+		SystemScheme.saveObject("Inv", inv, a1, systemScheme);
 		a1.put("CurrentHP", currentHP);
 	}
 }

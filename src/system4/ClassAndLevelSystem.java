@@ -1,7 +1,6 @@
 package system4;
 
 import item4.*;
-import load.*;
 
 public interface ClassAndLevelSystem extends ModifierProvider4, XSaveable
 {

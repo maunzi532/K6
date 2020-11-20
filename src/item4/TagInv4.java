@@ -97,8 +97,7 @@ public class TagInv4 implements Inv4, XSaveable
 	public static TagInv4 load(JrsObject data, SystemScheme systemScheme)
 	{
 		int maxStacks = LoadHelper.asInt(data.get("MaxStacks"));
-		List<TagStack4> stacks = LoadHelper.asStream(data.get("Stacks"))
-				.map(e -> TagStack4.load((JrsObject) e, systemScheme)).collect(Collectors.toList());
+		List<TagStack4> stacks = LoadHelper.asList(data.get("Stacks"), e -> TagStack4.load(e, systemScheme));
 		return new TagInv4(maxStacks, stacks);
 	}
 
@@ -106,6 +105,6 @@ public class TagInv4 implements Inv4, XSaveable
 	public void save(ObjectComposer<? extends ComposerBase> a1, SystemScheme systemScheme) throws IOException
 	{
 		a1.put("MaxStacks", maxStacks);
-		LoadHelper.saveList("Stacks", stacks, a1, systemScheme);
+		SystemScheme.saveList("Stacks", stacks, a1, systemScheme);
 	}
 }

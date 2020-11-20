@@ -1,13 +1,11 @@
 package load;
 
-import com.fasterxml.jackson.jr.ob.comp.*;
 import com.fasterxml.jackson.jr.stree.*;
-import java.io.*;
 import java.util.*;
+import java.util.function.*;
 import java.util.stream.*;
-import system4.*;
 
-public class LoadHelper
+public final class LoadHelper
 {
 	private LoadHelper(){}
 
@@ -26,29 +24,18 @@ public class LoadHelper
 		return StreamSupport.stream(Spliterators.spliteratorUnknownSize(((JrsArray) value).elements(), Spliterator.ORDERED), false);
 	}
 
+	public static <T> List<T> asList(JrsValue value, Function<? super JrsObject, ? extends T> load)
+	{
+		return asStream(value).map(e -> load.apply((JrsObject) e)).collect(Collectors.toList());
+	}
+
+	public static List<String> asStringList(JrsValue value)
+	{
+		return asStream(value).map(JrsValue::asText).collect(Collectors.toList());
+	}
+
 	public static int[] asIntArray(JrsValue value)
 	{
 		return asStream(value).mapToInt(LoadHelper::asInt).toArray();
-	}
-
-	public static void saveObject(String key, XSaveable save,
-			ObjectComposer<? extends ComposerBase> a1, SystemScheme systemScheme) throws IOException
-	{
-		var a2 = a1.startObjectField(key);
-		save.save(a2, systemScheme);
-		a2.end();
-	}
-
-	public static void saveList(String key, List<? extends XSaveable> save,
-			ObjectComposer<? extends ComposerBase> a1, SystemScheme systemScheme) throws IOException
-	{
-		var a2 = a1.startArrayField(key);
-		for(XSaveable saveable : save)
-		{
-			var a3 = a2.startObject();
-			saveable.save(a3, systemScheme);
-			a3.end();
-		}
-		a2.end();
 	}
 }
