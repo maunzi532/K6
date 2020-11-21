@@ -9,6 +9,7 @@ import geom.tile.*;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
+import java.util.function.*;
 import java.util.stream.*;
 import load.*;
 import logic.event.*;
@@ -68,10 +69,6 @@ public class LevelMap4 implements XSaveableS
 		if(advTiles.containsKey(t1))
 		{
 			XCharacter entity = advTiles.get(t1).entity();
-			/*if(entity != null)
-			{
-				characters.get(entity.team()).remove(entity);
-			}*/
 			allCharacters.remove(entity);
 			advTiles.remove(t1);
 			requireUpdate();
@@ -102,11 +99,6 @@ public class LevelMap4 implements XSaveableS
 	public void addEntity(XCharacter entity)
 	{
 		advTile(entity.location()).setEntity(entity);
-		/*if(!characters.containsKey(entity.team()))
-		{
-			characters.put(entity.team(), new ArrayList<>());
-		}
-		characters.get(entity.team()).add(entity);*/
 		allCharacters.add(entity);
 		requireUpdate();
 	}
@@ -114,7 +106,6 @@ public class LevelMap4 implements XSaveableS
 	public void removeEntity(XCharacter entity)
 	{
 		advTile(entity.location()).setEntity(null);
-		//characters.get(entity.team()).remove(entity);
 		allCharacters.remove(entity);
 		requireUpdate();
 	}
@@ -167,10 +158,18 @@ public class LevelMap4 implements XSaveableS
 		}
 	}
 
-
 	public List<XCharacter> allCharacters()
 	{
 		return allCharacters;
+	}
+
+	public Map<Tile, Long> allEnemyReach()
+	{
+		return allCharacters.stream().filter(e -> e.team() == CharacterTeam.ENEMY && e.targetable()).flatMap(character ->
+				new Pathing(character, character.movement(), this, true).getEndpoints()
+						.stream().flatMap(loc -> character.attackRanges().stream()
+						.flatMap(e -> y1.range(loc, e, e).stream()))/*.distinct()*/)
+				.collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
 	}
 
 	public boolean levelStarted()

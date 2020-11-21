@@ -97,11 +97,6 @@ public final class TurnResources implements XSaveableY
 		return hasMainAction;
 	}
 
-	public boolean ready()
-	{
-		return unlimited || hasMainAction;
-	}
-
 	public void move(int movementCost)
 	{
 		hasMoveAction = false;

@@ -1,6 +1,5 @@
 package vis;
 
-import com.fasterxml.jackson.jr.ob.*;
 import com.fasterxml.jackson.jr.stree.*;
 import geom.*;
 import geom.tile.*;
@@ -11,12 +10,10 @@ import java.util.function.*;
 import javafx.geometry.*;
 import javafx.scene.canvas.*;
 import javafx.scene.text.*;
-import javafx.stage.*;
 import levelmap.*;
 import load.*;
 import logic.*;
 import logic.editor.*;
-import logic.event.*;
 import logic.xstate.*;
 import system4.*;
 import text.*;
@@ -78,7 +75,7 @@ public final class MainVisual implements XInputInterface
 
 	private static void loadLevel(String loadFileTeam, ItemLoader itemLoader, LevelMap levelMap, Scheme scheme)
 	{
-		File fileTeam;
+		/*File fileTeam;
 		if(loadFileTeam != null)
 		{
 			fileTeam = new File(loadFileTeam);
@@ -109,7 +106,7 @@ public final class MainVisual implements XInputInterface
 			{
 				throw new RuntimeException(e);
 			}
-		}
+		}*/
 		/*else
 		{
 			TileType y1 = mainState.y1;

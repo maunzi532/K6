@@ -30,7 +30,7 @@ public final class StandardAI implements EnemyAI
 		{
 			List<XCharacter> allies = hasToMove ? null :
 					levelMap.teamTargetCharacters(user.team()).stream().filter(e -> e != user && e.resources().hasMoveAction()).collect(Collectors.toList());
-			locations.addAll(new Pathing(levelMap.y1, user, user.resources().leftoverMovement(), null/*levelMap*/, allies).start().getEndpaths());
+			locations.addAll(new Pathing(user, user.resources().leftoverMovement(), null/*levelMap*/, false).getEndpaths());
 		}
 		else
 			locations.add(new PathLocation(user.location()));
@@ -58,8 +58,8 @@ public final class StandardAI implements EnemyAI
 		}
 		if(analysis.isEmpty())
 		{
-			PathLocation doubledPath = new Pathing(levelMap.y1, user, user.resources().leftoverMovement() * 2,
-					/*levelMap*/null, null).start().getEndpaths().stream().min(Comparator.comparingInt((PathLocation location) ->
+			PathLocation doubledPath = new Pathing(user, user.resources().leftoverMovement() * 2,
+					/*levelMap*/null, false).getEndpaths().stream().min(Comparator.comparingInt((PathLocation location) ->
 					levelMap.enemyTeamTargetCharacters(user.team()).stream().mapToInt(e -> levelMap.y1.distance(e.location(), location.tile())).min().orElse(0))
 					.thenComparingInt(PathLocation::cost)).orElseThrow();
 			int len = 0;

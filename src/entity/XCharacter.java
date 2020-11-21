@@ -5,7 +5,6 @@ import com.fasterxml.jackson.jr.ob.comp.*;
 import com.fasterxml.jackson.jr.stree.*;
 import doubleinv.*;
 import geom.tile.*;
-import item.*;
 import item4.*;
 import java.io.*;
 import java.util.*;
@@ -160,6 +159,16 @@ public final class XCharacter implements InvHolder, XSaveableYS
 		return systemChar.attackRanges();
 	}
 
+	public List<Integer> allyRanges()
+	{
+		return systemChar.allyRanges();
+	}
+
+	public List<Integer> defendRanges()
+	{
+		return systemChar.defendRanges();
+	}
+
 	public TurnResources resources()
 	{
 		return resources;
@@ -206,7 +215,7 @@ public final class XCharacter implements InvHolder, XSaveableYS
 		//return enemyAI.preferredMove(this, resources.hasMoveAction(), hasToMove, moveAway);
 	}*/
 
-	public <T extends ComposerBase> void save(ObjectComposer<T> a1, TileType y1) throws IOException
+	/*public <T extends ComposerBase> void save(ObjectComposer<T> a1, TileType y1) throws IOException
 	{
 		a1.put("Type", team.name());
 		a1.put("sx", y1.sx(location));
@@ -223,11 +232,11 @@ public final class XCharacter implements InvHolder, XSaveableYS
 		NameText customName = data.get("CustomName") != null ? new NameText(data.get("CustomName").asText()) : null;
 		String customMapImage = data.get("CustomMapImage") != null ? data.get("CustomMapImage").asText() : null;
 		String customSideImage = data.get("CustomSideImage") != null ? data.get("CustomSideImage").asText() : null;
-		/*Stats stats = new Stats(((JrsObject) data.get("Stats")), itemLoader);
-		Inv inv = new WeightInv(((JrsObject) data.get("Inventory")), itemLoader);
-		EnemyAI enemyAI = EnemyAI.load((JrsObject) data.get("EnemyAI"), itemLoader, levelMap);*/
+		//Stats stats = new Stats(((JrsObject) data.get("Stats")), itemLoader);
+		//Inv inv = new WeightInv(((JrsObject) data.get("Inventory")), itemLoader);
+		//EnemyAI enemyAI = EnemyAI.load((JrsObject) data.get("EnemyAI"), itemLoader, levelMap);
 		SystemChar systemChar = new SystemChar();
-		return new XCharacter(team, false, startingDelay, location, customName, customMapImage, customSideImage, systemChar/*stats, inv, enemyAI*/, null);
+		return new XCharacter(team, false, startingDelay, location, customName, customMapImage, customSideImage, systemChar*//*stats, inv, enemyAI*//*, null);
 	}
 
 	public <T extends ComposerBase> void saveToMap(ObjectComposer<T> a1, ItemLoader itemLoader, TileType y1) throws IOException
@@ -248,9 +257,9 @@ public final class XCharacter implements InvHolder, XSaveableYS
 		{
 			a1.put("CustomSideImage", customSideImage);
 		}
-		/*stats.save(a1.startObjectField("Stats"), itemLoader);
-		inv.save(a1.startObjectField("Inventory"), itemLoader);
-		enemyAI.save(a1.startObjectField("EnemyAI"), itemLoader, y1);*/
+		//stats.save(a1.startObjectField("Stats"), itemLoader);
+		//inv.save(a1.startObjectField("Inventory"), itemLoader);
+		//enemyAI.save(a1.startObjectField("EnemyAI"), itemLoader, y1);
 		//systemChar.save()
 	}
 
@@ -269,21 +278,21 @@ public final class XCharacter implements InvHolder, XSaveableYS
 		NameText customName = data.get("CustomName") != null ? new NameText(data.get("CustomName").asText()) : null;
 		String customMapImage = data.get("CustomMapImage") != null ? data.get("CustomMapImage").asText() : null;
 		String customSideImage = data.get("CustomSideImage") != null ? data.get("CustomSideImage").asText() : null;
-		/*Stats stats = new Stats(((JrsObject) data.get("Stats")), itemLoader);
-		Inv inv;
-		if(invOverride != null)
-		{
-			Inv toStorage = new WeightInv(((JrsObject) data.get("Inventory")), itemLoader);
-			storageInv.tryAdd(toStorage.allItems());
-			inv = invOverride;
-		}
-		else
-		{
-			inv = new WeightInv(((JrsObject) data.get("Inventory")), itemLoader);
-		}
-		EnemyAI enemyAI = EnemyAI.load((JrsObject) data.get("EnemyAI"), itemLoader, levelMap);*/
+		//Stats stats = new Stats(((JrsObject) data.get("Stats")), itemLoader);
+		//Inv inv;
+		//if(invOverride != null)
+		//{
+		//	Inv toStorage = new WeightInv(((JrsObject) data.get("Inventory")), itemLoader);
+		//	storageInv.tryAdd(toStorage.allItems());
+		//	inv = invOverride;
+		//}
+		//else
+		//{
+		//	inv = new WeightInv(((JrsObject) data.get("Inventory")), itemLoader);
+		//}
+		//EnemyAI enemyAI = EnemyAI.load((JrsObject) data.get("EnemyAI"), itemLoader, levelMap);
 		SystemChar systemChar = new SystemChar();
-		return new XCharacter(team, false, startingDelay, location, customName, customMapImage, customSideImage, systemChar/*stats, inv, enemyAI*/, null);
+		return new XCharacter(team, false, startingDelay, location, customName, customMapImage, customSideImage, systemChar*//*stats, inv, enemyAI*//*, null);
 	}
 
 	public <T extends ComposerBase> void saveToTeam(ObjectComposer<T> a1, boolean saveLocation, boolean canTrade, ItemLoader itemLoader, TileType y1) throws IOException
@@ -306,18 +315,18 @@ public final class XCharacter implements InvHolder, XSaveableYS
 		{
 			a1.put("CustomSideImage", customSideImage);
 		}
-		/*stats.save(a1.startObjectField("Stats"), itemLoader);
-		if(canTrade)
-		{
-			inv.save(a1.startObjectField("Inventory"), itemLoader);
-		}
-		else
-		{
-			new WeightInv(inv.viewInvWeight().limit).save(a1.startObjectField("Inventory"), itemLoader);
-		}
-		enemyAI.save(a1.startObjectField("EnemyAI"), itemLoader, y1);*/
+		//stats.save(a1.startObjectField("Stats"), itemLoader);
+		//if(canTrade)
+		//{
+		//	inv.save(a1.startObjectField("Inventory"), itemLoader);
+		//}
+		//else
+		//{
+		//	new WeightInv(inv.viewInvWeight().limit).save(a1.startObjectField("Inventory"), itemLoader);
+		//}
+		//enemyAI.save(a1.startObjectField("EnemyAI"), itemLoader, y1);
 		//systemChar.save()
-	}
+	}*/
 
 	public static XCharacter load(JrsObject data, TileType y1, SystemScheme systemScheme)
 	{

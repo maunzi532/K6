@@ -1,19 +1,13 @@
 package levelmap;
 
 import arrow.*;
-import com.fasterxml.jackson.jr.ob.comp.*;
-import com.fasterxml.jackson.jr.stree.*;
 import doubleinv.*;
 import entity.*;
 import geom.tile.*;
-import item.*;
-import java.io.*;
-import java.nio.*;
 import java.util.*;
 import java.util.function.*;
 import java.util.stream.*;
 import logic.event.*;
-import text.*;
 
 public final class LevelMap implements Arrows
 {
@@ -207,8 +201,8 @@ public final class LevelMap implements Arrows
 	public Map<Tile, Long> allEnemyReach()
 	{
 		return teamTargetCharacters(CharacterTeam.ENEMY).stream().flatMap(character ->
-				new Pathing(y1, character, character.movement(),
-						/*this*/null, null).start().getEndpoints()
+				new Pathing(character, character.movement(),
+						/*this*/null, true).getEndpoints()
 						.stream().flatMap(loc -> character.attackRanges().stream()
 						.flatMap(e -> y1.range(loc, e, e).stream())).distinct())
 				.collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
@@ -321,12 +315,12 @@ public final class LevelMap implements Arrows
 				.collect(Collectors.toList());
 	}*/
 
-	public void createTile(byte x, byte y, byte sector, byte type)
+	/*public void createTile(byte x, byte y, byte sector, byte type)
 	{
 		advTiles.put(y1.create2(x, y), new AdvTile(new FloorTile(sector, FloorTileType.values()[type])));
-	}
+	}*/
 
-	public void loadMap(JrsObject data, ItemLoader itemLoader)
+	/*public void loadMap(JrsObject data, ItemLoader itemLoader)
 	{
 		ByteBuffer sb = ByteBuffer.wrap(Base64.getDecoder().decode(((JrsString) data.get("FloorTiles")).getValue()));
 		int lenTiles = sb.remaining() / 4;
@@ -378,8 +372,8 @@ public final class LevelMap implements Arrows
 
 	public void loadTeam(JrsObject data, ItemLoader itemLoader)
 	{
-		/*WeightInv tempInv = new WeightInv((JrsObject) data.get("Storage"), itemLoader);
-		storage.inv().tryAdd(tempInv.allItems());*/
+		*//*WeightInv tempInv = new WeightInv((JrsObject) data.get("Storage"), itemLoader);
+		storage.inv().tryAdd(tempInv.allItems());*//*
 		((JrsArray) data.get("Team")).elements().forEachRemaining(e ->
 				{
 					JrsObject e1 = (JrsObject) e;
@@ -404,5 +398,5 @@ public final class LevelMap implements Arrows
 		}
 		a2.end();
 		//storage.inv().save(a1.startObjectField("Storage"), itemLoader);
-	}
+	}*/
 }

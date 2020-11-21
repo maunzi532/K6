@@ -12,7 +12,7 @@ public final class XMenu
 
 	public static XMenu characterMoveMenu(XCharacter character)
 	{
-		return new XMenu(new AdvMoveState(character), new RegenerateState(character, new AdvMoveState(character)),
+		return new XMenu(new AdvMoveState(character), /*new RegenerateState(character, new AdvMoveState(character)),*/
 				new RevertMovementState(character), new EndTurnState());
 	}
 

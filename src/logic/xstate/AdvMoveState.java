@@ -12,6 +12,7 @@ public final class AdvMoveState implements NMarkState
 	private final XCharacter character;
 	private List<PathLocation> movement;
 	private List<Tile> attack;
+	private List<Tile> ally;
 	private List<VisMark> allTargets;
 
 	public AdvMoveState(XCharacter character)
@@ -22,24 +23,30 @@ public final class AdvMoveState implements NMarkState
 	@Override
 	public void onEnter(MainState mainState)
 	{
+		System.out.println(character.movement());
+		System.out.println(character.resources().leftoverMovement());
 		mainState.side().setStandardSideInfo(character);
+		allTargets = new ArrayList<>();
 		movement = new ArrayList<>();
 		if(character.resources().hasMoveAction())
 		{
-			movement.addAll(new Pathing(mainState.levelMap().y1(), character, character.resources().leftoverMovement(),
-					mainState.levelMap(), null).start().getEndpaths());
+			movement.addAll(new Pathing(character, character.resources().leftoverMovement(),
+					mainState.levelMap(), false).getEndpaths());
+			movement.stream().map(e -> new VisMark(e.tile(), "mark.move.move", VisMark.d1)).forEach(allTargets::add);
 		}
 		attack = new ArrayList<>();
-		if(character.resources().ready())
+		ally = new ArrayList<>();
+		if(character.resources().hasMainAction())
 		{
 			character.attackRanges().stream().map(e -> mainState.levelMap().y1().range(character.location(), e, e))
 					.flatMap(Collection::stream).map(mainState.levelMap()::getEntity).filter(e -> e != null && e.targetable() && e.team() != character.team())
 					.forEach(e -> attack.add(e.location()));
+			attack.stream().map(e -> new VisMark(e, "mark.move.attack", VisMark.d1)).forEach(allTargets::add);
+			character.allyRanges().stream().map(e -> mainState.levelMap().y1().range(character.location(), e, e))
+					.flatMap(Collection::stream).map(mainState.levelMap()::getEntity).filter(e -> e != null && e.targetable() && e.team() == character.team())
+					.forEach(e -> attack.add(e.location()));
+			ally.stream().map(e -> new VisMark(e, "mark.move.ally", VisMark.d1)).forEach(allTargets::add);
 		}
-		allTargets = new ArrayList<>();
-		if(character.resources().hasMoveAction())
-			movement.stream().map(e -> new VisMark(e.tile(), "mark.move.move", VisMark.d1)).forEach(allTargets::add);
-		attack.stream().map(e -> new VisMark(e, "mark.move.attack", VisMark.d1)).forEach(allTargets::add);
 	}
 
 	@Override
@@ -66,6 +73,11 @@ public final class AdvMoveState implements NMarkState
 		if(attack.contains(mapTile))
 		{
 			mainState.stateHolder().setState(new AttackInfoGUI(character, mainState.levelMap().getEntity(mapTile)));
+		}
+		else if(ally.contains(mapTile))
+		{
+			//TODO
+			//mainState.stateHolder().setState(new AttackInfoGUI(character, mainState.levelMap().getEntity(mapTile)));
 		}
 		else
 		{

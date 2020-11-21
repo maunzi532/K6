@@ -3,6 +3,7 @@ package system4;
 import com.fasterxml.jackson.jr.stree.*;
 import item4.*;
 import java.util.*;
+import java.util.stream.*;
 import load.*;
 
 public record EquipableItem4(CharSequence name, String image, CharSequence info, int stackLimit, Set<String> tags, Map<Stats4, List<Modifier4>> modifiers) implements Item4, ModifierProvider4
@@ -20,8 +21,8 @@ public record EquipableItem4(CharSequence name, String image, CharSequence info,
 		CharSequence info = LoadHelper.asOptionalString(data.get("Info"));
 		int stackLimit = LoadHelper.asInt(data.get("StackLimit"));
 		Set<String> tags = new HashSet<>(LoadHelper.asStringList(data.get("Tags")));
-		//List<Modifier4> modifiers1 = LoadHelper.asList(data.get("Modifiers"))
-		Map<Stats4, List<Modifier4>> modifiers = Map.of(); //TODO
+		Map<Stats4, List<Modifier4>> modifiers = LoadHelper.asList(data.get("Modifiers"), Modifier4::load)
+				.stream().collect(Collectors.groupingBy(Modifier4::stat));
 		return new EquipableItem4(name, image, info, stackLimit, tags, modifiers);
 	}
 }

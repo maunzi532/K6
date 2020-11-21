@@ -33,39 +33,6 @@ public final class SystemChar implements XSaveableS
 			this.currentHP = stat(Stats4.MAX_HP);
 	}
 
-	public SystemChar()
-	{
-		cls = new EnemyLevelSystem4(new XClass4(new Item4(){
-			@Override
-			public CharSequence name()
-			{
-				return "A";
-			}
-
-			@Override
-			public String image()
-			{
-				return "A";
-			}
-
-			@Override
-			public CharSequence info()
-			{
-				return "A";
-			}
-
-			@Override
-			public int stackLimit()
-			{
-				return 0;
-			}
-		}, new int[]{0, 0, 0, 0}, new int[]{1, 1, 1, 1},
-				new int[]{1, 1, 1, 1}, new int[]{0, 0, 0, 0}), 0);
-		inv = new TagInv4(0);
-		modifierProviders = List.of(cls);
-		currentHP = stat(Stats4.MAX_HP);
-	}
-
 	public int stat(Stats4 stat)
 	{
 		List<Modifier4> list = modifierProviders.stream().flatMap(e -> e.getModifiers(stat).stream())
@@ -113,6 +80,16 @@ public final class SystemChar implements XSaveableS
 	}
 
 	public List<Integer> attackRanges()
+	{
+		return List.of();
+	}
+
+	public List<Integer> allyRanges()
+	{
+		return List.of();
+	}
+
+	public List<Integer> defendRanges()
 	{
 		return List.of();
 	}

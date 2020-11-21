@@ -2,11 +2,11 @@ package entity;
 
 import geom.tile.*;
 
-public record PathLocation(Tile tile, int cost, boolean canEnd, PathLocation from, XCharacter movingAlly)
+public record PathLocation(Tile tile, int cost, boolean canEnd, PathLocation from)
 {
 	public PathLocation(Tile tile)
 	{
-		this(tile, 0, true, null, null);
+		this(tile, 0, true, null);
 	}
 
 	@Override

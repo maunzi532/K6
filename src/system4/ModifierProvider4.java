@@ -8,6 +8,6 @@ public interface ModifierProvider4
 
 	default List<Modifier4> getModifiers(Stats4 stat)
 	{
-		return modifiers().get(stat);
+		return Optional.ofNullable(modifiers().get(stat)).orElse(List.of());
 	}
 }
