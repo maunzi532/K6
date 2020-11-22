@@ -15,7 +15,7 @@ import load.*;
 import logic.event.*;
 import system4.*;
 
-public class LevelMap4 implements XSaveableS
+public class LevelMap4 implements Arrows, XSaveableS
 {
 	private TileType y1;
 	private HashMap<Tile, AdvTile> advTiles;
@@ -192,11 +192,18 @@ public class LevelMap4 implements XSaveableS
 		this.eventPacks = eventPacks;
 	}
 
+	@Override
+	public void addScreenshake(int power)
+	{
+
+	}
+
 	public List<XArrow> getArrows()
 	{
 		return arrows;
 	}
 
+	@Override
 	public void addArrow(XArrow arrow)
 	{
 		arrows.add(arrow);

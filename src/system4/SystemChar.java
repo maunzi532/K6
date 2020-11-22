@@ -50,7 +50,7 @@ public final class SystemChar implements XSaveableS
 		return cls;
 	}
 
-	public Inv4 inv()
+	public TagInv4 inv()
 	{
 		return inv;
 	}
@@ -62,7 +62,7 @@ public final class SystemChar implements XSaveableS
 
 	private ModifierProvider4 findEquip(String tag)
 	{
-		List<Item4> list = inv.lockedItems(tag).stream().filter(e -> e instanceof ModifierProvider4).collect(Collectors.toList());
+		List<Item4> list = inv.taggedItems(tag).stream().filter(e -> e instanceof ModifierProvider4).collect(Collectors.toList());
 		if(list.isEmpty())
 			return NoEquip.INSTANCE;
 		else
@@ -79,9 +79,55 @@ public final class SystemChar implements XSaveableS
 		return new ArgsText("class.withlevel", new LocaleText(cls.visItem().name()), cls.level());
 	}
 
+	private Stream<EquipableItem4> allEquipableItems()
+	{
+		return inv().viewItems().stream()
+				.map(NumberedStack4::item)
+				.filter(e -> e instanceof EquipableItem4)
+				.map(e -> (EquipableItem4) e);
+	}
+
+	public List<EquipableItem4> possibleAttackItems()
+	{
+		return allEquipableItems().filter(e -> e.attackRanges() != null).collect(Collectors.toList());
+	}
+
+	public List<EquipableItem4> possibleAllyItems()
+	{
+		return allEquipableItems().filter(e -> e.allyRanges() != null).collect(Collectors.toList());
+	}
+
+	public List<EquipableItem4> possibleDefendItems()
+	{
+		return allEquipableItems().filter(e -> e.defendRanges() != null).collect(Collectors.toList());
+	}
+
+	public List<EquipableItem4> possibleAttackItems(int distance)
+	{
+		return possibleAttackItems().stream()
+				.filter(e -> e.attackRanges().hasRange(distance, stat(Stats4.ABILITY_RANGE)))
+				.collect(Collectors.toList());
+	}
+
+	public EquipableItem4 currentDefendItem(int distance)
+	{
+		List<EquipableItem4> defendItems1 = inv().taggedItems("Combat").stream()
+				.filter(e -> e instanceof EquipableItem4)
+				.map(e -> (EquipableItem4) e)
+				.filter(e -> e.defendRanges() != null).collect(Collectors.toList());
+		List<EquipableItem4> defendItems2 = defendItems1.stream()
+				.filter(e -> e.defendRanges().hasRange(distance, 0)).collect(Collectors.toList());
+		if(!defendItems2.isEmpty())
+			return defendItems2.get(0);
+		else if(!defendItems1.isEmpty())
+			return defendItems1.get(0);
+		else
+			return EquipableItem4.NO_EQUIP_ITEM;
+	}
+
 	public List<Integer> attackRanges()
 	{
-		return List.of();
+		return List.of(1);
 	}
 
 	public List<Integer> allyRanges()

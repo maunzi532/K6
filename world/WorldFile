@@ -8,7 +8,22 @@
       "Info" : "",
       "StackLimit" : 1,
       "Tags" : [],
-      "Modifiers" : []
+      "Modifiers" : [],
+      "Additional" : {}
+    },
+    {
+      "Name" : "A1",
+      "Image" : "",
+      "Info" : "",
+      "StackLimit" : 1,
+      "Tags" : ["Combat"],
+      "Modifiers" : [],
+      "Additional" :
+      {
+        "Attack" : 1
+      },
+      "AttackRanges" : "1,2",
+      "DefendRanges" : "1,2"
     }
   ],
   "Classes" :

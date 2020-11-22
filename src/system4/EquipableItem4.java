@@ -6,13 +6,14 @@ import java.util.*;
 import java.util.stream.*;
 import load.*;
 
-public record EquipableItem4(CharSequence name, String image, CharSequence info, int stackLimit, Set<String> tags, Map<Stats4, List<Modifier4>> modifiers) implements Item4, ModifierProvider4
+public record EquipableItem4(CharSequence name, String image, CharSequence info, int stackLimit,
+                             Set<String> tags, Map<Stats4, List<Modifier4>> modifiers,
+                             Map<String, Integer> additional, Ranges4 attackRanges, Ranges4 allyRanges,
+                             Ranges4 defendRanges) implements Item4, ModifierProvider4
 {
-	@Override
-	public Map<Stats4, List<Modifier4>> modifiers()
-	{
-		return null;
-	}
+	public static EquipableItem4 NO_EQUIP_ITEM = new EquipableItem4("", "", "",
+			0, Set.of("Defend"), Map.of(), Map.of(),
+			null, null, new Ranges4(""));
 
 	public static EquipableItem4 load(JrsObject data)
 	{
@@ -23,6 +24,11 @@ public record EquipableItem4(CharSequence name, String image, CharSequence info,
 		Set<String> tags = new HashSet<>(LoadHelper.asStringList(data.get("Tags")));
 		Map<Stats4, List<Modifier4>> modifiers = LoadHelper.asList(data.get("Modifiers"), Modifier4::load)
 				.stream().collect(Collectors.groupingBy(Modifier4::stat));
-		return new EquipableItem4(name, image, info, stackLimit, tags, modifiers);
+		Map<String, Integer> additional = LoadHelper.asIntMap(data.get("Additional"));
+		Ranges4 attackRanges = Ranges4.load(LoadHelper.asOptionalString(data.get("AttackRanges")));
+		Ranges4 allyRanges = Ranges4.load(LoadHelper.asOptionalString(data.get("AllyRanges")));
+		Ranges4 defendRanges = Ranges4.load(LoadHelper.asOptionalString(data.get("DefendRanges")));
+		return new EquipableItem4(name, image, info, stackLimit, tags, modifiers,
+				additional, attackRanges, allyRanges, defendRanges);
 	}
 }

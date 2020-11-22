@@ -2,6 +2,7 @@ package entity.sideinfo;
 
 import entity.*;
 import statsystem.*;
+import system4.*;
 
 public interface SideInfoFrame
 {
@@ -12,6 +13,8 @@ public interface SideInfoFrame
 	void sidedInfo(XCharacter e1, XCharacter e2);
 
 	void setAttackSideInfo(AttackInfo aI);
+
+	void setAttackSideInfo(AttackInfo4 aI);
 
 	void setTextSideInfo(XCharacter character, CharSequence text, boolean r);
 }

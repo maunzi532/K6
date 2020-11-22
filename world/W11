@@ -20,7 +20,50 @@
       "Inv" :
       {
         "MaxStacks" : 1,
-        "Stacks" : []
+        "Stacks" :
+        [
+          {
+            "Item" : "A1",
+            "Count" : 1,
+            "Tag" : "Defend"
+          }
+        ]
+      },
+      "Resources" :
+      {
+        "Unlimited" : true,
+        "sx" : 0,
+        "sy" : 0,
+        "StartMovement" : 1,
+        "LeftoverMovement" : 1,
+        "HasMoveAction" : true,
+        "CanRevertMoveAction" : true,
+        "HasMainAction" : true
+      }
+    },
+    {
+      "Team" : "ENEMY",
+      "SavedInTeam" : false,
+      "StartingDelay" : 0,
+      "sx" : 3,
+      "sy" : 0,
+      "CLSType" : "Enemy",
+      "CLS" :
+      {
+        "Class" : "Mage",
+        "Level" : 0
+      },
+      "Inv" :
+      {
+        "MaxStacks" : 1,
+        "Stacks" :
+        [
+          {
+            "Item" : "A1",
+            "Count" : 1,
+            "Tag" : "Defend"
+          }
+        ]
       },
       "Resources" :
       {

@@ -89,7 +89,7 @@ public class TagInv4 implements Inv4, XSaveableS
 		return toAdd <= (maxStacks - stacks.size()) * addItem.stackLimit();
 	}
 
-	public List<Item4> lockedItems(String tag)
+	public List<Item4> taggedItems(String tag)
 	{
 		return stacks.stream().filter(e -> Objects.equals(e.tag(), tag)).map(e -> e.items().item()).collect(Collectors.toList());
 	}

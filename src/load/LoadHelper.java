@@ -33,6 +33,11 @@ public final class LoadHelper
 		return StreamSupport.stream(Spliterators.spliteratorUnknownSize(((JrsArray) value).elements(), Spliterator.ORDERED), false);
 	}
 
+	public static Stream<Map.Entry<String, JrsValue>> asStreamObject(JrsValue value)
+	{
+		return StreamSupport.stream(Spliterators.spliteratorUnknownSize(((JrsObject) value).fields(), Spliterator.ORDERED), false);
+	}
+
 	public static <T> List<T> asList(JrsValue value, Function<? super JrsObject, ? extends T> load)
 	{
 		return asStream(value).map(e -> load.apply((JrsObject) e)).collect(Collectors.toList());
@@ -46,6 +51,18 @@ public final class LoadHelper
 	public static int[] asIntArray(JrsValue value)
 	{
 		return asStream(value).mapToInt(LoadHelper::asInt).toArray();
+	}
+
+	public static Map<String, Integer> asIntMap(JrsValue value)
+	{
+		return asStreamObject(value).filter(e -> e.getValue() instanceof JrsNumber)
+				.collect(Collectors.toMap(Map.Entry::getKey, e -> asInt(e.getValue())));
+	}
+
+	public static Map<String, String> asStringMap(JrsValue value)
+	{
+		return asStreamObject(value).filter(e -> e.getValue() instanceof JrsString)
+				.collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue().asText()));
 	}
 
 	public static JrsObject startLoad(Path path) throws IOException
