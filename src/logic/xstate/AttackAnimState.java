@@ -40,6 +40,6 @@ public final class AttackAnimState implements NAutoState
 	@Override
 	public NState nextState()
 	{
-		return nextState;//new PostAttackState(nextState, aI, attackAnim.outcome());
+		return new PostAttackState(nextState, null/*aI, attackAnim.outcome()*/);
 	}
 }

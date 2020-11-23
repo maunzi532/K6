@@ -1,11 +1,11 @@
 package logic.xstate;
 
 import logic.*;
-import statsystem.*;
+import system4.*;
 
 public final class PreAttackState extends AttackState
 {
-	public PreAttackState(NState nextState, AttackInfo aI)
+	public PreAttackState(NState nextState, AttackCalc4 aI)
 	{
 		super(nextState, aI);
 	}
@@ -14,7 +14,7 @@ public final class PreAttackState extends AttackState
 	public void onEnter(MainState mainState)
 	{
 		mainState.side().setAttackSideInfo(aI);
-		aI.stats.equipMode(aI.mode);
+		//aI.stats.equipMode(aI.mode);
 	}
 
 	@Override
@@ -29,6 +29,6 @@ public final class PreAttackState extends AttackState
 	@Override
 	public NState nextState()
 	{
-		return nextState;//new AttackAnimState(nextState, aI);
+		return new AttackAnimState(nextState, aI.aI.initiator(), aI.aI.target());
 	}
 }

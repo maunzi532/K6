@@ -105,7 +105,7 @@ public final class SystemChar implements XSaveableS
 	public List<EquipableItem4> possibleAttackItems(int distance)
 	{
 		return possibleAttackItems().stream()
-				.filter(e -> e.attackRanges().hasRange(distance, stat(Stats4.ABILITY_RANGE)))
+				.filter(e -> e.attackRanges().hasRange(distance, 0))
 				.collect(Collectors.toList());
 	}
 

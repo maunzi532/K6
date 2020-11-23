@@ -14,7 +14,7 @@ public interface SideInfoFrame
 
 	void setAttackSideInfo(AttackInfo aI);
 
-	void setAttackSideInfo(AttackInfo4 aI);
+	void setAttackSideInfo(AttackCalc4 aI);
 
 	void setTextSideInfo(XCharacter character, CharSequence text, boolean r);
 }

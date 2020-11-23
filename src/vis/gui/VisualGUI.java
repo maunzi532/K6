@@ -140,17 +140,23 @@ public abstract class VisualGUI
 		if(guiTile.text != null)
 		{
 			String text1 = scheme.localXText(guiTile.text);
-			PointD midPoint = layout.tileToPixel(y2.add(y2.fromTile(t1), y2.fromOffsetD(guiTile.left * -0.5, guiTile.up * -0.5)));
-			PointD rEnd = layout.tileToPixel(t1);
-			double ld = Math.max(1.5, text1.lines().count()) - 0.5;
-			gd.setFont(new Font(layout.size().v()[1] * fontSize / ld));
-			if(guiTile.imageName != null)
+			if(text1 != null)
 			{
-				gd.setStroke(outline);
-				gd.strokeText(text1, midPoint.v()[0], midPoint.v()[1], rEnd.v()[0] - midPoint.v()[0] + layout.size().v()[0] * textWidth);
+				PointD midPoint = layout.tileToPixel(
+						y2.add(y2.fromTile(t1), y2.fromOffsetD(guiTile.left * -0.5, guiTile.up * -0.5)));
+				PointD rEnd = layout.tileToPixel(t1);
+				double ld = Math.max(1.5, text1.lines().count()) - 0.5;
+				gd.setFont(new Font(layout.size().v()[1] * fontSize / ld));
+				if(guiTile.imageName != null)
+				{
+					gd.setStroke(outline);
+					gd.strokeText(text1, midPoint.v()[0], midPoint.v()[1],
+							rEnd.v()[0] - midPoint.v()[0] + layout.size().v()[0] * textWidth);
+				}
+				gd.setFill(text);
+				gd.fillText(text1, midPoint.v()[0], midPoint.v()[1],
+						rEnd.v()[0] - midPoint.v()[0] + layout.size().v()[0] * textWidth);
 			}
-			gd.setFill(text);
-			gd.fillText(text1, midPoint.v()[0], midPoint.v()[1], rEnd.v()[0] - midPoint.v()[0] + layout.size().v()[0] * textWidth);
 		}
 	}
 

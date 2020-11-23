@@ -45,10 +45,11 @@ public final class EnemyPhaseState implements NAutoState
 			if(attackInfo != null)
 			{
 				initiativeMove.entity().resources().action(true);
-				if(moveTo != null)
+				/*if(moveTo != null)
 					return new MoveAnimState(new PreAttackState(this, attackInfo), initiativeMove.entity(), moveTo);
 				else
-					return new PreAttackState(this, attackInfo);
+					return new PreAttackState(this, attackInfo);*/
+				return null;
 			}
 			else
 			{

@@ -5,6 +5,7 @@ import geom.tile.*;
 import java.util.*;
 import levelmap.*;
 import logic.*;
+import logic.guis.*;
 
 public final class AdvMoveState implements NMarkState
 {
@@ -70,7 +71,8 @@ public final class AdvMoveState implements NMarkState
 		if(attack.contains(mapTile))
 		{
 			//mainState.stateHolder().setState(new AttackInfoGUI(character, mainState.levelMap().getEntity(mapTile)));
-			mainState.stateHolder().setState(new AttackAnimState(NoneState.INSTANCE, character, mainState.levelMap().getEntity(mapTile)));
+			//mainState.stateHolder().setState(new AttackAnimState(NoneState.INSTANCE, character, mainState.levelMap().getEntity(mapTile)));
+			mainState.stateHolder().setState(new AttackInfoGUI4(character, mainState.levelMap().getEntity(mapTile)));
 		}
 		else if(ally.contains(mapTile))
 		{

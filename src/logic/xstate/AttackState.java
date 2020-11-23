@@ -1,13 +1,13 @@
 package logic.xstate;
 
-import statsystem.*;
+import system4.*;
 
 public abstract class AttackState implements NAutoState
 {
 	protected final NState nextState;
-	protected final AttackInfo aI;
+	protected final AttackCalc4 aI;
 
-	protected AttackState(NState nextState, AttackInfo aI)
+	protected AttackState(NState nextState, AttackCalc4 aI)
 	{
 		this.nextState = nextState;
 		this.aI = aI;

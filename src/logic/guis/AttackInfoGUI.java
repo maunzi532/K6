@@ -36,7 +36,7 @@ public final class AttackInfoGUI extends XGUIState
 	private void clickAttack(AttackInfo target1, XStateHolder stateHolder)
 	{
 		attacker.resources().action(true);
-		stateHolder.setState(new PreAttackState(NoneState.INSTANCE, target1));
+		stateHolder.setState(new PreAttackState(NoneState.INSTANCE, null/*target1*/));
 	}
 
 	@Override

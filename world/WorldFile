@@ -4,7 +4,7 @@
   [
     {
       "Name" : "Mage",
-      "Image" : "",
+      "Image" : null,
       "Info" : "",
       "StackLimit" : 1,
       "Tags" : [],
@@ -13,7 +13,7 @@
     },
     {
       "Name" : "A1",
-      "Image" : "",
+      "Image" : null,
       "Info" : "",
       "StackLimit" : 1,
       "Tags" : ["Combat"],

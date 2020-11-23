@@ -1,24 +1,22 @@
 package logic.xstate;
 
 import logic.*;
-import logic.guis.*;
-import statsystem.*;
-import statsystem.analysis.*;
 import statsystem.animation.*;
+import system4.*;
 
 public final class PostAttackState extends AttackState
 {
-	private final RNGOutcome2 result;
+	//private final RNGOutcome2 result;
 	private GetExpAnim getExpAnim;
 	private boolean firstEnter;
 	private boolean levelup;
 	private boolean levelupT;
 
-	public PostAttackState(NState nextState, AttackInfo aI, RNGOutcome2 result)
+	public PostAttackState(NState nextState, AttackCalc4 aI/*, RNGOutcome2 result*/)
 	{
 		super(nextState, aI);
-		this.result = result;
-		firstEnter = true;
+		//this.result = result;
+		//firstEnter = true;
 	}
 
 	@Override
@@ -28,35 +26,35 @@ public final class PostAttackState extends AttackState
 		{
 			getExpAnim = null;//new GetExpAnim(aI, result, mainState.levelMap());
 			firstEnter = false;
-			levelup = getExpAnim.isLevelup();
-			levelupT = getExpAnim.isLevelupT();
+			levelup = false;//getExpAnim.isLevelup();
+			levelupT = false;//getExpAnim.isLevelupT();
 		}
 		if(levelup)
 		{
 			levelup = false;
-			mainState.stateHolder().setState(new CharacterLevelupGUI(aI.entity, this));
+			//mainState.stateHolder().setState(new CharacterLevelupGUI(aI.entity, this));
 		}
 		else if(levelupT)
 		{
 			levelupT = false;
-			mainState.stateHolder().setState(new CharacterLevelupGUI(aI.entityT, this));
+			//mainState.stateHolder().setState(new CharacterLevelupGUI(aI.entityT, this));
 		}
 		else
 		{
-			getExpAnim.start();
+			//getExpAnim.start();
 		}
 	}
 
 	@Override
 	public void tick(MainState mainState)
 	{
-		getExpAnim.tick();
+		//getExpAnim.tick();
 	}
 
 	@Override
 	public boolean finished()
 	{
-		return getExpAnim.finished();
+		return true;//getExpAnim.finished();
 	}
 
 	@Override
