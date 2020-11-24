@@ -6,22 +6,26 @@ import system4.*;
 
 public final class PostAttackState extends AttackState
 {
-	//private final RNGOutcome2 result;
+	private final ACResult4 result;
 	private GetExpAnim getExpAnim;
 	private boolean firstEnter;
 	private boolean levelup;
 	private boolean levelupT;
 
-	public PostAttackState(NState nextState, AttackCalc4 aI/*, RNGOutcome2 result*/)
+	public PostAttackState(NState nextState, AttackCalc4 aI, ACResult4 result)
 	{
 		super(nextState, aI);
-		//this.result = result;
+		this.result = result;
 		//firstEnter = true;
 	}
 
 	@Override
 	public void onEnter(MainState mainState)
 	{
+		if(result.hp1() <= 0)
+			aI.aI.initiator().setDefeated();
+		if(result.hp2() <= 0)
+			aI.aI.target().setDefeated();
 		if(firstEnter)
 		{
 			getExpAnim = null;//new GetExpAnim(aI, result, mainState.levelMap());

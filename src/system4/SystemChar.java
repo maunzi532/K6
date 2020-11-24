@@ -111,7 +111,7 @@ public final class SystemChar implements XSaveableS
 
 	public EquipableItem4 currentDefendItem(int distance)
 	{
-		List<EquipableItem4> defendItems1 = inv().taggedItems("Combat").stream()
+		List<EquipableItem4> defendItems1 = inv().taggedItems("Defend").stream()
 				.filter(e -> e instanceof EquipableItem4)
 				.map(e -> (EquipableItem4) e)
 				.filter(e -> e.defendRanges() != null).collect(Collectors.toList());

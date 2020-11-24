@@ -79,4 +79,19 @@ public class AttackCalc4
 	{
 		return canAttack ? String.valueOf(num) : "";
 	}
+
+	@Override
+	public String toString()
+	{
+		return "AttackCalc4{" +
+				"canAttack1=" + canAttack1 +
+				", canAttack2=" + canAttack2 +
+				", attackCount1=" + attackCount1 +
+				", attackCount2=" + attackCount2 +
+				", damage1=" + damage1 +
+				", damage2=" + damage2 +
+				", accuracy1=" + accuracy1 +
+				", accuracy2=" + accuracy2 +
+				'}';
+	}
 }
