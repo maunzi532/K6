@@ -29,6 +29,6 @@ public final class PreAttackState extends AttackState
 	@Override
 	public NState nextState()
 	{
-		return new AttackAnimState(nextState, aI.aI.initiator(), aI.aI.target());
+		return new AttackAnimState(nextState, aI);
 	}
 }

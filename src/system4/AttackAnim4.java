@@ -9,7 +9,7 @@ import statsystem.animation.*;
 
 public final class AttackAnim4 implements AnimTimer
 {
-	private final List<SidedAttackAnalysisEvent> events;
+	private final ACResult4 result;
 	private final Arrows arrows;
 	private final XCharacter initiator;
 	private final XCharacter target;
@@ -18,21 +18,23 @@ public final class AttackAnim4 implements AnimTimer
 	private final InfoArrow healthBar1;
 	private final InfoArrow healthBar2;
 
-	public AttackAnim4(List<SidedAttackAnalysisEvent> events, Arrows arrows, XCharacter initiator, XCharacter target)
+	public AttackAnim4(ACResult4 result, Arrows arrows, XCharacter initiator, XCharacter target)
 	{
-		this.events = events;
+		this.result = result;
 		this.arrows = arrows;
 		this.initiator = initiator;
 		this.target = target;
 		eventCounter = -1;
 		linked = new ArrayList<>();
-		healthBar1 = new InfoArrow(initiator.location(), target.location(),
+		/*healthBar1 = new InfoArrow(initiator.location(), target.location(),
 				initiator.team().healthBarColor, "arrow.healthbar.background", "arrow.healthbar.text",
-				initiator.currentHP(), initiator.maxHP());
+				initiator.currentHP(), initiator.maxHP());*/
+		healthBar1 = new InfoArrow(initiator.location(), target.location(), result.hpBar1());
 		arrows.addArrow(healthBar1);
-		healthBar2 = new InfoArrow(target.location(), initiator.location(),
+		/*healthBar2 = new InfoArrow(target.location(), initiator.location(),
 				target.team().healthBarColor, "arrow.healthbar.background", "arrow.healthbar.text",
-				target.currentHP(), target.maxHP());
+				target.currentHP(), target.maxHP());*/
+		healthBar2 = new InfoArrow(target.location(), initiator.location(), result.hpBar2());
 		arrows.addArrow(healthBar2);
 	}
 
@@ -50,7 +52,7 @@ public final class AttackAnim4 implements AnimTimer
 	{
 		/*if(divider != null)
 			return false;*/
-		if(eventCounter >= events.size())
+		if(eventCounter >= result.animParts().size())
 		{
 			healthBar1.remove();
 			healthBar2.remove();
@@ -63,7 +65,7 @@ public final class AttackAnim4 implements AnimTimer
 	@Override
 	public void tick()
 	{
-		if(eventCounter >= events.size())
+		if(eventCounter >= result.animParts().size())
 			return;
 		/*if(divider == null)
 			return;*/
@@ -71,8 +73,10 @@ public final class AttackAnim4 implements AnimTimer
 		if(linked.stream().allMatch(AnimPart::finished1))
 		{
 			eventCounter++;
-			if(eventCounter >= events.size())
+			if(eventCounter >= result.animParts().size())
 				return;
+			linked.add(result.animParts().get(eventCounter));
+
 			/*if(eventCounter >= events.size())
 			{
 				if(linked.stream().allMatch(AnimPart::finished2))
@@ -86,7 +90,7 @@ public final class AttackAnim4 implements AnimTimer
 				}
 			}
 			else*/
-			{
+			/*{
 				SidedAttackAnalysisEvent event = events.get(eventCounter);
 				if(event.event() == AttackAnalysisEvent.DEFEATED)
 				{
@@ -97,7 +101,7 @@ public final class AttackAnim4 implements AnimTimer
 					}
 				}
 				startEvent(event.event(), event.side());
-			}
+			}*/
 		}
 	}
 

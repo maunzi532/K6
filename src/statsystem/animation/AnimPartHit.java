@@ -2,7 +2,6 @@ package statsystem.animation;
 
 import arrow.*;
 import entity.*;
-import statsystem.*;
 
 public final class AnimPartHit implements AnimPart
 {
@@ -15,20 +14,20 @@ public final class AnimPartHit implements AnimPart
 	private final Arrows arrows;
 	private final int reduction;
 	private final boolean crit;
-	private final boolean melt;
+	private final boolean dodge;
 	private final BlinkArrow arrow;
 	private int counter;
 
-	public AnimPartHit(XCharacter target, Stats statsT, int damage, StatBar statBar, boolean crit, boolean melt, Arrows arrows)
+	public AnimPartHit(XCharacter target, /*Stats statsT, */int damage, StatBar statBar, boolean crit, boolean dodge, Arrows arrows)
 	{
 		this.target = target;
 		this.statBar = statBar;
 		this.crit = crit;
-		this.melt = melt;
+		this.dodge = dodge;
 		this.arrows = arrows;
 		arrow = new BlinkArrow(target.location(), DURATION, false, target.mapImageName(), BLINKTIME);
-		reduction = Math.min(statsT.currentHealth(), damage);
-		statsT.setCurrentHealth(Math.max(0, statsT.currentHealth() - damage));
+		reduction = Math.min(target.currentHP(), damage);
+		//statsT.setCurrentHealth(Math.max(0, statsT.currentHealth() - damage));
 	}
 
 	@Override

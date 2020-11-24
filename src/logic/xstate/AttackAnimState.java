@@ -1,28 +1,23 @@
 package logic.xstate;
 
-import entity.*;
 import java.util.*;
 import logic.*;
 import system4.*;
 
-public final class AttackAnimState implements NAutoState
+public final class AttackAnimState extends AttackState
 {
-	private NState nextState;
-	private XCharacter initiator;
-	private XCharacter target;
 	private AttackAnim4 attackAnim;
 
-	public AttackAnimState(NState nextState, XCharacter initiator, XCharacter target)
+	public AttackAnimState(NState nextState, AttackCalc4 aI)
 	{
-		this.nextState = nextState;
-		this.initiator = initiator;
-		this.target = target;
+		super(nextState, aI);
 	}
 
 	@Override
 	public void onEnter(MainState mainState)
 	{
-		attackAnim = new AttackAnim4(List.of(), mainState.levelMap(), initiator, target);
+		attackAnim = new AttackAnim4(ACResult4.calc1(aI, mainState.levelMap(), new Random()),
+				mainState.levelMap(), aI.aI.initiator(), aI.aI.target());
 	}
 
 	@Override
@@ -40,6 +35,6 @@ public final class AttackAnimState implements NAutoState
 	@Override
 	public NState nextState()
 	{
-		return new PostAttackState(nextState, null/*aI, attackAnim.outcome()*/);
+		return new PostAttackState(nextState, aI/*, attackAnim.outcome()*/);
 	}
 }

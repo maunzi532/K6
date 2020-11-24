@@ -233,7 +233,7 @@ public class LevelMap4 implements Arrows, XSaveableS
 		List<StartingLocation4> startingLocations = LoadHelper.asList(data.get("StartingLocations"), e -> StartingLocation4.load(e, y1));
 		Storage4 storage = new Storage4();
 		Map<String, EventPack> eventPacks = Map.of();
-		int turnCounter = -1;
+		int turnCounter = 0;
 		return new LevelMap4(y1, advTiles, allCharacters, startingLocations, storage, eventPacks, turnCounter);
 	}
 

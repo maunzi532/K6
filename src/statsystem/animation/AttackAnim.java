@@ -96,7 +96,7 @@ public final class AttackAnim implements AnimTimer
 		Stats statsT = aI.getStats(AttackSide.inverted(side));
 		StatBar healthBar = healthBar(side).statBar();
 		StatBar healthBarT = healthBar(AttackSide.inverted(side)).statBar();
-		linked.add(switch(eventType)
+		/*linked.add(switch(eventType)
 		{
 			case HEALTHCOST -> new AnimPartHealthCost(calc.healthCost, stats, healthBar);
 			case ATTACK -> new AnimPartAttack(entity, entityT, arrows);
@@ -108,7 +108,7 @@ public final class AttackAnim implements AnimTimer
 			case CRIT -> new AnimPartHit(entityT, statsT, calc.critDamage, healthBarT, true, false, arrows);
 			case MELTCRIT -> new AnimPartHit(entityT, statsT, calc.meltCritDamage, healthBarT, true, true, arrows);
 			case NODAMAGECRIT -> new AnimPartNoDamage(entityT, true, arrows);
-		});
+		});*/
 	}
 
 	public RNGOutcome2 outcome()
