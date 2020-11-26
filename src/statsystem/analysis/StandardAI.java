@@ -6,7 +6,6 @@ import geom.tile.*;
 import item.*;
 import java.io.*;
 import java.util.*;
-import java.util.stream.*;
 import levelmap.*;
 import statsystem.*;
 
@@ -26,21 +25,21 @@ public final class StandardAI implements EnemyAI
 	{
 		List<PathLocation> locations = new ArrayList<>();
 		List<PathAttackX> pathsX = new ArrayList<>();
-		if(canMove)
+		/*if(canMove)
 		{
 			List<XCharacter> allies = hasToMove ? null :
 					levelMap.teamTargetCharacters(user.team()).stream().filter(e -> e != user && e.resources().hasMoveAction()).collect(Collectors.toList());
-			locations.addAll(new Pathing(user, user.resources().leftoverMovement(), null/*levelMap*/, false).getEndpaths());
+			locations.addAll(new Pathing(user, user.movement(), null*//*levelMap*//*, false).getEndpaths());
 		}
 		else
 			locations.add(new PathLocation(user.location()));
 		for(PathLocation pl : locations)
 		{
-			/*pathsX.addAll(levelMap.pathAttackInfo(user, pl.tile(),
-					levelMap.enemyTeamTargetCharacters(user.team()), pl));*/
+			*//*pathsX.addAll(levelMap.pathAttackInfo(user, pl.tile(),
+					levelMap.enemyTeamTargetCharacters(user.team()), pl));*//*
 			if(user.resources().hasMoveAction())
 				pathsX.add(new PathAttackX(pl, null));
-		}
+		}*/
 		if(pathsX.isEmpty())
 			return new EnemyMove(user, -1, null, null, 0);
 		Collections.shuffle(pathsX, RANDOM);
@@ -58,7 +57,7 @@ public final class StandardAI implements EnemyAI
 		}
 		if(analysis.isEmpty())
 		{
-			PathLocation doubledPath = new Pathing(user, user.resources().leftoverMovement() * 2,
+			PathLocation doubledPath = new Pathing(user, user.movement() * 2,
 					/*levelMap*/null, false).getEndpaths().stream().min(Comparator.comparingInt((PathLocation location) ->
 					levelMap.enemyTeamTargetCharacters(user.team()).stream().mapToInt(e -> levelMap.y1.distance(e.location(), location.tile())).min().orElse(0))
 					.thenComparingInt(PathLocation::cost)).orElseThrow();

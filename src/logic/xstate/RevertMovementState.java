@@ -16,7 +16,7 @@ public final class RevertMovementState implements NAutoState
 	public void onEnter(MainState mainState)
 	{
 		mainState.side().setStandardSideInfo(character);
-		mainState.levelMap().revertMovement(character);
+		//mainState.levelMap().revertMovement(character);
 	}
 
 	@Override
@@ -34,7 +34,7 @@ public final class RevertMovementState implements NAutoState
 	@Override
 	public boolean keepInMenu(MainState mainState)
 	{
-		return character.resources().canRevertMoveAction();
+		return true;//character.resources().canRevertMoveAction();
 	}
 
 	@Override

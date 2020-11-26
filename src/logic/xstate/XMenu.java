@@ -16,6 +16,11 @@ public final class XMenu
 				new RevertMovementState(character), new EndTurnState());
 	}
 
+	public static XMenu characterMoveMenu4(XCharacter character)
+	{
+		return new XMenu(new AdvMoveState4(character), new EndMoveState(character));
+	}
+
 	public static XMenu characterStartMoveMenu(XCharacter character)
 	{
 		return new XMenu(new SwapState(character), new ReachViewState(character, false), new EndTurnState());

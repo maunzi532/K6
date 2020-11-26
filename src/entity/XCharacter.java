@@ -24,12 +24,13 @@ public final class XCharacter implements InvHolder, XSaveableYS
 	private String customMapImage;
 	private String customSideImage;
 	private final SystemChar systemChar;
-	private TurnResources resources;
+	//private TurnResources resources;
+	private boolean hasMainAction;
 	private XArrow visualReplaced;
 	private boolean defeated;
 
 	public XCharacter(CharacterTeam team, boolean savedInTeam, int startingDelay, Tile location, NameText customName, String customMapImage,
-			String customSideImage, SystemChar systemChar, TurnResources resources)
+			String customSideImage, SystemChar systemChar, boolean hasMainAction)
 	{
 		this.team = team;
 		this.savedInTeam = savedInTeam;
@@ -39,7 +40,7 @@ public final class XCharacter implements InvHolder, XSaveableYS
 		this.customMapImage = customMapImage;
 		this.customSideImage = customSideImage;
 		this.systemChar = systemChar;
-		this.resources = resources;
+		this.hasMainAction = hasMainAction;
 		visualReplaced = null;
 		defeated = false;
 	}
@@ -47,7 +48,7 @@ public final class XCharacter implements InvHolder, XSaveableYS
 	public XCharacter createACopy(Tile copyLocation)
 	{
 		XCharacter copy = new XCharacter(team, savedInTeam, startingDelay, copyLocation, customName, customMapImage, customSideImage,
-				systemChar /*TODO copy*/, resources);
+				systemChar /*TODO copy*/, hasMainAction);
 		return copy;
 	}
 
@@ -169,7 +170,7 @@ public final class XCharacter implements InvHolder, XSaveableYS
 		return systemChar.defendRanges();
 	}
 
-	public TurnResources resources()
+	/*public TurnResources resources()
 	{
 		return resources;
 	}
@@ -177,7 +178,7 @@ public final class XCharacter implements InvHolder, XSaveableYS
 	public void newResources(TurnResources newResources)
 	{
 		resources = newResources;
-	}
+	}*/
 
 	public boolean isEnemy(XCharacter other)
 	{
@@ -206,6 +207,29 @@ public final class XCharacter implements InvHolder, XSaveableYS
 	public void afterTrading()
 	{
 
+	}
+
+	public EnemyMove4 preferredMove()
+	{
+		if(!hasMainAction)
+			return null;
+		//return enemyAI.preferredMove(this);
+		return null;
+	}
+
+	public void setHP(int hp)
+	{
+		systemChar.setCurrentHP(hp);
+	}
+
+	public boolean hasMainAction()
+	{
+		return hasMainAction;
+	}
+
+	public void setHasMainAction(boolean hasMainAction)
+	{
+		this.hasMainAction = hasMainAction;
 	}
 
 	/*public EnemyMove preferredMove(boolean hasToMove, int moveAway)
@@ -338,8 +362,9 @@ public final class XCharacter implements InvHolder, XSaveableYS
 		String customMapImage = LoadHelper.asOptionalString(data.get("CustomMapImage"));
 		String customSideImage = LoadHelper.asOptionalString(data.get("CustomSideImage"));
 		SystemChar systemChar = SystemChar.load(data, systemScheme);
-		TurnResources resources = TurnResources.load((JrsObject) data.get("Resources"), y1);
-		return new XCharacter(team, savedInTeam, startingDelay, location, customName, customMapImage, customSideImage, systemChar, resources);
+		//TurnResources resources = TurnResources.load((JrsObject) data.get("Resources"), y1);
+		boolean hasMainAction = LoadHelper.asBoolean(data.get("HasMainAction"));
+		return new XCharacter(team, savedInTeam, startingDelay, location, customName, customMapImage, customSideImage, systemChar, hasMainAction);
 	}
 
 	@Override
@@ -356,6 +381,7 @@ public final class XCharacter implements InvHolder, XSaveableYS
 		if(customSideImage != null)
 			a1.put("CustomSideImage", customSideImage);
 		systemChar.save(a1, systemScheme);
-		XSaveableY.saveObject("Resources", resources, a1, y1);
+		//XSaveableY.saveObject("Resources", resources, a1, y1);
+		a1.put("HasMainAction", hasMainAction);
 	}
 }

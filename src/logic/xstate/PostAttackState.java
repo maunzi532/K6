@@ -22,6 +22,8 @@ public final class PostAttackState extends AttackState
 	@Override
 	public void onEnter(MainState mainState)
 	{
+		aI.aI.initiator().setHP(result.hp1());
+		aI.aI.target().setHP(result.hp2());
 		if(result.hp1() <= 0)
 			aI.aI.initiator().setDefeated();
 		if(result.hp2() <= 0)

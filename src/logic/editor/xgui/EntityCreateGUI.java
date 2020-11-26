@@ -42,11 +42,11 @@ public final class EntityCreateGUI extends XGUIState
 		XCharacter entity;
 		if(team == CharacterTeam.HERO)
 		{
-			entity = new XCharacter(CharacterTeam.HERO, true, 0, location, null, null, null, null, null);
+			entity = new XCharacter(CharacterTeam.HERO, true, 0, location, null, null, null, null, false);
 		}
 		else
 		{
-			entity = new XCharacter(team, false, 0, location, null, null, null, null, null);
+			entity = new XCharacter(team, false, 0, location, null, null, null, null, false);
 		}
 		levelMap.addEntity(entity);
 		stateHolder.setState(new EntityEditGUI(entity));

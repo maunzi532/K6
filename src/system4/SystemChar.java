@@ -127,7 +127,9 @@ public final class SystemChar implements XSaveableS
 
 	public List<Integer> attackRanges()
 	{
-		return List.of(1);
+		return possibleAttackItems().stream()
+				.flatMapToInt(e -> e.attackRanges().ranges().stream().mapToInt(i -> i))
+				.distinct().sorted().boxed().collect(Collectors.toList());
 	}
 
 	public List<Integer> allyRanges()
@@ -138,6 +140,11 @@ public final class SystemChar implements XSaveableS
 	public List<Integer> defendRanges()
 	{
 		return List.of();
+	}
+
+	public void setCurrentHP(int hp)
+	{
+		currentHP = hp;
 	}
 
 	public static SystemChar load(JrsObject data, SystemScheme systemScheme)

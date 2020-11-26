@@ -21,6 +21,11 @@ public class Ranges4
 			return null;
 	}
 
+	public List<Integer> ranges()
+	{
+		return ranges;
+	}
+
 	public boolean hasRange(int range, int rangeBonus)
 	{
 		for(int i = 0; i <= rangeBonus; i++)

@@ -37,7 +37,7 @@ public final class RegenerateState implements NAutoState
 	@Override
 	public boolean keepInMenu(MainState mainState)
 	{
-		return character.resources().hasMainAction() && character.stats().getRegenerateChange() > 0;
+		return true;//character.resources().hasMainAction() && character.stats().getRegenerateChange() > 0;
 	}
 
 	@Override

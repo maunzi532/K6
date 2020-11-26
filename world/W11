@@ -29,17 +29,7 @@
           }
         ]
       },
-      "Resources" :
-      {
-        "Unlimited" : true,
-        "sx" : 0,
-        "sy" : 0,
-        "StartMovement" : 1,
-        "LeftoverMovement" : 1,
-        "HasMoveAction" : true,
-        "CanRevertMoveAction" : true,
-        "HasMainAction" : true
-      }
+      "HasMainAction" : false
     },
     {
       "Team" : "ENEMY",
@@ -65,17 +55,7 @@
           }
         ]
       },
-      "Resources" :
-      {
-        "Unlimited" : true,
-        "sx" : 0,
-        "sy" : 0,
-        "StartMovement" : 1,
-        "LeftoverMovement" : 1,
-        "HasMoveAction" : true,
-        "CanRevertMoveAction" : true,
-        "HasMainAction" : true
-      }
+      "HasMainAction" : false
     }
   ],
   "StartingLocations" : []

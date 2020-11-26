@@ -180,7 +180,8 @@ public final class XStateControl implements XStateHolder, ConvInputConsumer
 			{
 				if(levelMap.levelStarted())
 				{
-					setState(new AdvMoveState(entity));
+					if(entity.hasMainAction())
+						setState(new AdvMoveState4(entity));
 				}
 				else
 				{

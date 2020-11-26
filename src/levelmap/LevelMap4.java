@@ -138,12 +138,12 @@ public class LevelMap4 implements Arrows, XSaveableS
 		requireUpdate();
 	}
 
-	public void revertMovement(XCharacter xh)
+	/*public void revertMovement(XCharacter xh)
 	{
 		xh.resources().revertMovement();
 		moveEntity(xh, xh.resources().startLocation());
 		requireUpdate();
-	}
+	}*/
 
 	public boolean canSwap(XCharacter character)
 	{

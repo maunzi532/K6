@@ -82,12 +82,12 @@ public final class LevelMap implements Arrows
 		}
 	}
 
-	public void revertMovement(XCharacter xh)
+	/*public void revertMovement(XCharacter xh)
 	{
 		xh.resources().revertMovement();
 		moveEntity(xh, xh.resources().startLocation());
 		requireUpdate();
-	}
+	}*/
 
 	public void clearTile(Tile t1)
 	{

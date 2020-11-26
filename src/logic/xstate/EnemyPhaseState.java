@@ -1,13 +1,10 @@
 package logic.xstate;
 
-import entity.*;
-import geom.tile.*;
 import logic.*;
-import statsystem.*;
 
 public final class EnemyPhaseState implements NAutoState
 {
-	private EnemyMove initiativeMove;
+	//private EnemyMove initiativeMove;
 
 	@Override
 	public void onEnter(MainState mainState)
@@ -22,6 +19,10 @@ public final class EnemyPhaseState implements NAutoState
 			if(initiativeMove2.initiative() >= 0)
 				initiativeMove = initiativeMove2;
 		}*/
+		/*mainState.levelMap().allCharacters().stream()
+				.filter(e -> e.team() == CharacterTeam.ENEMY)
+				.map(XCharacter::preferredMove)
+				.sorted(Comparator.comparingInt(e -> e.aI() == null ? 1 : 0))*/
 	}
 
 	@Override
@@ -36,7 +37,7 @@ public final class EnemyPhaseState implements NAutoState
 	@Override
 	public NState nextState()
 	{
-		if(initiativeMove != null)
+		/*if(initiativeMove != null)
 		{
 			Tile moveTo = initiativeMove.moveTo().tile();
 			AttackInfo attackInfo = initiativeMove.attackInfo();
@@ -45,10 +46,10 @@ public final class EnemyPhaseState implements NAutoState
 			if(attackInfo != null)
 			{
 				initiativeMove.entity().resources().action(true);
-				/*if(moveTo != null)
+				*//*if(moveTo != null)
 					return new MoveAnimState(new PreAttackState(this, attackInfo), initiativeMove.entity(), moveTo);
 				else
-					return new PreAttackState(this, attackInfo);*/
+					return new PreAttackState(this, attackInfo);*//*
 				return null;
 			}
 			else
@@ -62,6 +63,7 @@ public final class EnemyPhaseState implements NAutoState
 		else
 		{
 			return new StartTurnState();
-		}
+		}*/
+		return new StartTurnState();
 	}
 }

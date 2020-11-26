@@ -13,13 +13,15 @@ public final class AttackInfoGUI4 extends XGUIState
 {
 	private final XCharacter attacker;
 	private final XCharacter target;
+	private final StateReverter nextState;
 	private SideInfoFrame side;
 	private TargetScrollList<AttackCalc4> attacksView;
 
-	public AttackInfoGUI4(XCharacter attacker, XCharacter target)
+	public AttackInfoGUI4(XCharacter attacker, XCharacter target, StateReverter nextState)
 	{
 		this.attacker = attacker;
 		this.target = target;
+		this.nextState = nextState;
 	}
 
 	@Override
@@ -40,8 +42,15 @@ public final class AttackInfoGUI4 extends XGUIState
 
 	private void clickAttack(AttackCalc4 target1, XStateHolder stateHolder)
 	{
-		attacker.resources().action(true);
-		stateHolder.setState(new PreAttackState(NoneState.INSTANCE, target1));
+		//attacker.resources().action(true);
+		nextState.setMainAction();
+		stateHolder.setState(new PreAttackState(nextState, target1));
+	}
+
+	@Override
+	public void close(XStateHolder stateHolder)
+	{
+		stateHolder.setState(nextState);
 	}
 
 	@Override
@@ -56,7 +65,7 @@ public final class AttackInfoGUI4 extends XGUIState
 	@Override
 	public XMenu menu()
 	{
-		return XMenu.characterMoveMenu(attacker);
+		return XMenu.characterMoveMenu4(attacker);
 	}
 
 	@Override
