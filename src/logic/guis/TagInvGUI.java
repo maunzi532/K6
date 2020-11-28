@@ -24,8 +24,9 @@ public class TagInvGUI extends XGUIState
 	{
 		mainState1 = mainState;
 		mainState.side().setStandardSideInfo(character);
-		invView = new TargetScrollList<>(0, 0, 2, 5, 2, 1,
-				inv.viewItems(), this::itemStackView, this::invClick);
+		invView = new TargetScrollList<>(0, 0, 2, 5,
+				2, 1, inv.viewItems(), this::itemStackView, this::invClick);
+		elements.add(invView);
 		update();
 	}
 

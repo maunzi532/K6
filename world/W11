@@ -26,9 +26,14 @@
             "Item" : "A1",
             "Count" : 1,
             "Tag" : "Defend"
+          },
+          {
+            "Item" : "B1",
+            "Count" : 1
           }
         ]
       },
+      "EnemyAI" : {},
       "HasMainAction" : false
     },
     {
@@ -55,6 +60,7 @@
           }
         ]
       },
+      "EnemyAI" : {},
       "HasMainAction" : false
     }
   ],

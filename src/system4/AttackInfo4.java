@@ -12,6 +12,12 @@ public record AttackInfo4(XCharacter initiator, EquipableItem4 initiatorItem,
 			TileType y1, boolean abilityAttack)
 	{
 		int distance = y1.distance(initiator.location(), target.location());
+		return attackOptions(initiator, target, distance, abilityAttack);
+	}
+
+	public static List<AttackInfo4> attackOptions(XCharacter initiator, XCharacter target,
+			int distance, boolean abilityAttack)
+	{
 		EquipableItem4 defendItem = target.systemChar().currentDefendItem(distance);
 		return initiator.systemChar().possibleAttackItems(distance).stream()
 				.map(e -> new AttackInfo4(initiator, e, target, defendItem, distance, abilityAttack))

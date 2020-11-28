@@ -23,7 +23,7 @@ public final class TradeTargetState implements NMarkState
 	public void onEnter(MainState mainState)
 	{
 		mainState.side().setStandardSideInfo(character);
-		LevelMap4 levelMap = null; //TODO //mainState.levelMap();
+		LevelMap4 levelMap = mainState.levelMap();
 		List<Tile> range = levelMap.y1().range(character.location(), 0, character.accessRange());
 		possibleTargets = new ArrayList<>();
 		/*if(levelMap.playerTradeableStorage())

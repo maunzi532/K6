@@ -30,7 +30,7 @@
       "Image" : null,
       "Info" : "",
       "StackLimit" : 1,
-      "Tags" : ["Combat", "Swd"],
+      "Tags" : ["Combat", "AdvA"],
       "Modifiers" : [],
       "Additional" :
       {
@@ -46,7 +46,7 @@
       "Image" : null,
       "Info" : "",
       "StackLimit" : 1,
-      "Tags" : ["Combat", "Spe"],
+      "Tags" : ["Combat", "AdvB"],
       "Modifiers" : [],
       "Additional" :
       {
@@ -62,7 +62,7 @@
       "Image" : null,
       "Info" : "",
       "StackLimit" : 1,
-      "Tags" : ["Combat", "Axe"],
+      "Tags" : ["Combat", "AdvC"],
       "Modifiers" : [],
       "Additional" :
       {
@@ -78,7 +78,7 @@
       "Image" : null,
       "Info" : "",
       "StackLimit" : 1,
-      "Tags" : ["Combat", "Swd"],
+      "Tags" : ["Combat", "AdvA"],
       "Modifiers" : [],
       "Additional" :
       {
@@ -94,7 +94,7 @@
       "Image" : null,
       "Info" : "",
       "StackLimit" : 1,
-      "Tags" : ["Combat", "Spe"],
+      "Tags" : ["Combat", "AdvB"],
       "Modifiers" : [],
       "Additional" :
       {
@@ -110,7 +110,7 @@
       "Image" : null,
       "Info" : "",
       "StackLimit" : 1,
-      "Tags" : ["Combat", "Axe"],
+      "Tags" : ["Combat", "AdvC"],
       "Modifiers" : [],
       "Additional" :
       {
@@ -126,7 +126,7 @@
       "Image" : null,
       "Info" : "",
       "StackLimit" : 1,
-      "Tags" : ["Combat", "Swd"],
+      "Tags" : ["Combat", "AdvA"],
       "Modifiers" : [],
       "Additional" :
       {
@@ -142,7 +142,7 @@
       "Image" : null,
       "Info" : "",
       "StackLimit" : 1,
-      "Tags" : ["Combat", "Spe"],
+      "Tags" : ["Combat", "AdvB"],
       "Modifiers" : [],
       "Additional" :
       {
@@ -158,7 +158,7 @@
       "Image" : null,
       "Info" : "",
       "StackLimit" : 1,
-      "Tags" : ["Combat", "Axe"],
+      "Tags" : ["Combat", "AdvC"],
       "Modifiers" : [],
       "Additional" :
       {
@@ -168,6 +168,21 @@
       },
       "AttackRanges" : "2",
       "DefendRanges" : "2"
+    },
+    {
+      "Name" : "B1",
+      "Image" : null,
+      "Info" : "",
+      "StackLimit" : 1,
+      "Tags" : [],
+      "Modifiers" : [],
+      "Additional" :
+      {
+        "Attack" : 4,
+        "Accuracy" : 70,
+        "AttackCount" : 1
+      },
+      "AttackRanges" : "3,4,5"
     }
   ],
   "Classes" :

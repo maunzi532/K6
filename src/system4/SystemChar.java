@@ -2,14 +2,17 @@ package system4;
 
 import com.fasterxml.jackson.jr.ob.comp.*;
 import com.fasterxml.jackson.jr.stree.*;
+import entity.*;
+import geom.tile.*;
 import item4.*;
 import java.io.*;
 import java.util.*;
 import java.util.stream.*;
+import levelmap.*;
 import load.*;
 import text.*;
 
-public final class SystemChar implements XSaveableS
+public final class SystemChar implements XSaveableYS
 {
 	//Equip inv (TagInv4)
 	//Control/AI
@@ -19,13 +22,15 @@ public final class SystemChar implements XSaveableS
 
 	private final ClassAndLevelSystem cls;
 	private final TagInv4 inv;
+	private final EnemyAI4 enemyAI;
 	private final List<ModifierProvider4> modifierProviders;
 	private int currentHP;
 
-	public SystemChar(ClassAndLevelSystem cls, TagInv4 inv, int currentHP)
+	public SystemChar(ClassAndLevelSystem cls, TagInv4 inv, EnemyAI4 enemyAI, int currentHP)
 	{
 		this.cls = cls;
 		this.inv = inv;
+		this.enemyAI = enemyAI;
 		modifierProviders = List.of(cls);
 		if(currentHP >= 0)
 			this.currentHP = currentHP;
@@ -53,6 +58,11 @@ public final class SystemChar implements XSaveableS
 	public TagInv4 inv()
 	{
 		return inv;
+	}
+
+	public EnemyAI4 enemyAI()
+	{
+		return enemyAI;
 	}
 
 	public int currentHP()
@@ -102,6 +112,11 @@ public final class SystemChar implements XSaveableS
 		return allEquipableItems().filter(e -> e.defendRanges() != null).collect(Collectors.toList());
 	}
 
+	public List<EquipableItem4> possibleAttackItemsE()
+	{
+		return allEquipableItems().filter(e -> e.attackRanges() != null && e.tags().contains("Defend")).collect(Collectors.toList());
+	}
+
 	public List<EquipableItem4> possibleAttackItems(int distance)
 	{
 		return possibleAttackItems().stream()
@@ -147,7 +162,14 @@ public final class SystemChar implements XSaveableS
 		currentHP = hp;
 	}
 
-	public static SystemChar load(JrsObject data, SystemScheme systemScheme)
+	public List<EquipableItem4> attackOptions(int distance)
+	{
+		return possibleAttackItemsE().stream()
+				.filter(e -> e.attackRanges().hasRange(distance, 0))
+				.collect(Collectors.toList());
+	}
+
+	public static SystemChar load(JrsObject data, TileType y1, SystemScheme systemScheme)
 	{
 		ClassAndLevelSystem cls = switch(data.get("CLSType").asText())
 				{
@@ -156,20 +178,22 @@ public final class SystemChar implements XSaveableS
 					default -> throw new RuntimeException("Unknown cls type");
 				};
 		TagInv4 inv = TagInv4.load((JrsObject) data.get("Inv"), systemScheme);
+		EnemyAI4 enemyAI = EnemyAI4.load((JrsObject) data.get("EnemyAI"), y1);
 		int currentHP;
 		JrsValue v1 = data.get("CurrentHP");
 		if(v1 instanceof JrsNumber v2)
 			currentHP = LoadHelper.asInt(v2);
 		else
 			currentHP = -1;
-		return new SystemChar(cls, inv, currentHP);
+		return new SystemChar(cls, inv, enemyAI, currentHP);
 	}
 
 	@Override
-	public void save(ObjectComposer<? extends ComposerBase> a1, SystemScheme systemScheme) throws IOException
+	public void save(ObjectComposer<? extends ComposerBase> a1, TileType y1, SystemScheme systemScheme) throws IOException
 	{
 		cls.save(a1, systemScheme);
 		XSaveableS.saveObject("Inv", inv, a1, systemScheme);
+		XSaveableY.saveObject("EnemyAI", enemyAI, a1, y1);
 		a1.put("CurrentHP", currentHP);
 	}
 }

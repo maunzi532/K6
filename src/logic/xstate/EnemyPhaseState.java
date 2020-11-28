@@ -1,15 +1,21 @@
 package logic.xstate;
 
+import entity.*;
 import logic.*;
 
 public final class EnemyPhaseState implements NAutoState
 {
-	//private EnemyMove initiativeMove;
+	private EnemyMove4 initiativeMove;
 
 	@Override
 	public void onEnter(MainState mainState)
 	{
 		mainState.side().clearSideInfo();
+		initiativeMove = mainState.levelMap().allCharacters().stream()
+				.filter(e -> e.team() == CharacterTeam.ENEMY && e.hasMainAction())
+				.map(e -> e.systemChar().enemyAI().preferredMove(e, mainState.levelMap()))
+				.sorted().findFirst().orElse(null);
+		System.out.println(initiativeMove);
 		/*initiativeMove = mainState.levelMap().teamTargetCharacters(CharacterTeam.ENEMY).stream().filter(e -> e.resources().ready())
 				.map(e -> e.preferredMove(false, 0))
 				.max(Comparator.comparingInt(EnemyMove::initiative)).filter(e -> e.initiative() >= 0).orElse(null);
@@ -37,33 +43,43 @@ public final class EnemyPhaseState implements NAutoState
 	@Override
 	public NState nextState()
 	{
-		/*if(initiativeMove != null)
+		if(initiativeMove == null)
 		{
-			Tile moveTo = initiativeMove.moveTo().tile();
-			AttackInfo attackInfo = initiativeMove.attackInfo();
-			if(moveTo != null)
-				initiativeMove.entity().resources().move(initiativeMove.moveTo().cost());
-			if(attackInfo != null)
-			{
-				initiativeMove.entity().resources().action(true);
-				*//*if(moveTo != null)
-					return new MoveAnimState(new PreAttackState(this, attackInfo), initiativeMove.entity(), moveTo);
-				else
-					return new PreAttackState(this, attackInfo);*//*
-				return null;
-			}
-			else
-			{
-				if(moveTo != null)
-					return new MoveAnimState(this, initiativeMove.entity(), moveTo);
-				else
-					return new StartTurnState();
-			}
+			return new StartTurnState();
 		}
 		else
 		{
-			return new StartTurnState();
+			initiativeMove.character().setHasMainAction(false);
+			if(initiativeMove.aI() == null)
+			{
+				return new MoveAnimState(this, initiativeMove.character(), initiativeMove.moveTo().tile());
+			}
+			else if(initiativeMove.attackFirst())
+			{
+				return new PreAttackState(new MoveAnimState(this, initiativeMove.character(), initiativeMove.moveTo().tile()), initiativeMove.aI());
+			}
+			else
+			{
+				return new MoveAnimState(new PreAttackState(this, initiativeMove.aI()), initiativeMove.character(), initiativeMove.moveTo().tile());
+			}
+		}
+		/*if(!initiativeMove.attackFirst())
+			initiativeMove.character().resources().move(initiativeMove.moveTo().cost());
+		if(attackInfo != null)
+		{
+			initiativeMove.entity().resources().action(true);
+			if(moveTo != null)
+				return new MoveAnimState(new PreAttackState(this, attackInfo), initiativeMove.entity(), moveTo);
+			else
+				return new PreAttackState(this, attackInfo);
+			return null;
+		}
+		else
+		{
+			if(moveTo != null)
+				return new MoveAnimState(this, initiativeMove.entity(), moveTo);
+			else
+				return new StartTurnState();
 		}*/
-		return new StartTurnState();
 	}
 }
