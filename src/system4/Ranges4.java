@@ -35,4 +35,10 @@ public class Ranges4
 		}
 		return false;
 	}
+
+	public IntStream ranges(int rangeBonus)
+	{
+		return IntStream.range(0, rangeBonus + 1)
+				.flatMap(i -> ranges.stream().mapToInt(i1 -> i1 + i)).distinct().sorted();
+	}
 }

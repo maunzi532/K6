@@ -29,7 +29,7 @@ public final class AttackInfoGUI4 extends XGUIState
 	{
 		side = mainState.side();
 		side.sidedInfo(attacker, target);
-		List<AttackCalc4> attackCalc = AttackInfo4.attackOptions(attacker, target, mainState.levelMap().y1(), true)
+		List<AttackCalc4> attackCalc = AttackInfo4.attackOptions(attacker, target, mainState.levelMap().y1(), false, true)
 						.stream().map(AttackCalc4::new).collect(Collectors.toList());
 		attacksView = new TargetScrollList<>(0, 1,
 				6, 6, 6, 2, attackCalc,

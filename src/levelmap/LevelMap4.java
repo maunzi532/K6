@@ -167,7 +167,7 @@ public class LevelMap4 implements Arrows, XSaveableS
 	{
 		return allCharacters.stream().filter(e -> e.team() == CharacterTeam.ENEMY && e.targetable()).flatMap(character ->
 				new Pathing(character, character.movement(), this, true).getEndpoints()
-						.stream().flatMap(loc -> character.attackRanges().stream()
+						.stream().flatMap(loc -> character.enemyTargetRanges().stream()
 						.flatMap(e -> y1.range(loc, e, e).stream()))/*.distinct()*/)
 				.collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
 	}

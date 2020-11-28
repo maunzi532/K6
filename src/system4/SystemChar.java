@@ -38,18 +38,6 @@ public final class SystemChar implements XSaveableYS
 			this.currentHP = stat(Stats4.MAX_HP);
 	}
 
-	public int stat(Stats4 stat)
-	{
-		List<Modifier4> list = modifierProviders.stream().flatMap(e -> e.getModifiers(stat).stream())
-				.sorted(Comparator.comparingInt(e -> e.type().ordinal())).collect(Collectors.toList());
-		int value = 0;
-		for(Modifier4 modifier : list)
-		{
-			value = modifier.apply(value);
-		}
-		return value;
-	}
-
 	public ClassAndLevelSystem cle()
 	{
 		return cls;
@@ -70,7 +58,68 @@ public final class SystemChar implements XSaveableYS
 		return currentHP;
 	}
 
-	private ModifierProvider4 findEquip(String tag)
+	public void setCurrentHP(int hp)
+	{
+		currentHP = hp;
+	}
+
+	public CharSequence nameAddedText()
+	{
+		return new ArgsText("class.withlevel", new LocaleText(cls.visItem().name()), cls.level());
+	}
+
+	public int stat(Stats4 stat)
+	{
+		List<Modifier4> list = modifierProviders.stream().flatMap(e -> e.getModifiers(stat).stream())
+				.sorted(Comparator.comparingInt(e -> e.type().ordinal())).collect(Collectors.toList());
+		int value = 0;
+		for(Modifier4 modifier : list)
+		{
+			value = modifier.apply(value);
+		}
+		return value;
+	}
+
+	private Stream<EquipableItem4> allEquipableItems()
+	{
+		return inv().viewItems().stream()
+				.map(NumberedStack4::item)
+				.filter(e -> e instanceof EquipableItem4)
+				.map(e -> (EquipableItem4) e);
+	}
+
+	public List<Integer> enemyTargetRanges(boolean attack, boolean ability)
+	{
+		return allEquipableItems().filter(e -> (attack && e.attackRanges() != null) || (ability && e.abilityRanges() != null))
+				.flatMapToInt(e -> e.abilityRanges() != null ? e.abilityRanges().ranges(stat(Stats4.ABILITY_RANGE)) : e.attackRanges().ranges(0))
+				.distinct().sorted().boxed().collect(Collectors.toList());
+	}
+
+	public List<Integer> allyTargetRanges()
+	{
+		return allEquipableItems().filter(e -> e.allyRanges() != null)
+				.flatMapToInt(e -> e.allyRanges().ranges(stat(Stats4.ABILITY_RANGE)))
+				.distinct().sorted().boxed().collect(Collectors.toList());
+	}
+
+	public EquipableItem4 defendItem()
+	{
+		List<Item4> defendItems = inv.taggedItems("Defend");
+		if(defendItems.isEmpty())
+			return EquipableItem4.NO_EQUIP_ITEM;
+		else
+			return (EquipableItem4) defendItems.get(0);
+	}
+
+	public List<EquipableItem4> possibleAttackItems(int distance, boolean attack, boolean ability)
+	{
+		return allEquipableItems().filter(e ->
+				(attack && e.attackRanges() != null && e.attackRanges().hasRange(distance, 0)) ||
+				(ability && e.abilityRanges() != null && e.abilityRanges().hasRange(distance, stat(Stats4.ABILITY_RANGE))))
+				.collect(Collectors.toList());
+	}
+
+	/*private ModifierProvider4 findEquip(String tag)
 	{
 		List<Item4> list = inv.taggedItems(tag).stream().filter(e -> e instanceof ModifierProvider4).collect(Collectors.toList());
 		if(list.isEmpty())
@@ -82,22 +131,9 @@ public final class SystemChar implements XSaveableYS
 	public ModifierProvider4 equippedCombatItem()
 	{
 		return findEquip("Defend");
-	}
+	}*/
 
-	public CharSequence nameAddedText()
-	{
-		return new ArgsText("class.withlevel", new LocaleText(cls.visItem().name()), cls.level());
-	}
-
-	private Stream<EquipableItem4> allEquipableItems()
-	{
-		return inv().viewItems().stream()
-				.map(NumberedStack4::item)
-				.filter(e -> e instanceof EquipableItem4)
-				.map(e -> (EquipableItem4) e);
-	}
-
-	public List<EquipableItem4> possibleAttackItems()
+	/*public List<EquipableItem4> possibleAttackItems()
 	{
 		return allEquipableItems().filter(e -> e.attackRanges() != null).collect(Collectors.toList());
 	}
@@ -155,19 +191,14 @@ public final class SystemChar implements XSaveableYS
 	public List<Integer> defendRanges()
 	{
 		return List.of();
-	}
+	}*/
 
-	public void setCurrentHP(int hp)
-	{
-		currentHP = hp;
-	}
-
-	public List<EquipableItem4> attackOptions(int distance)
+	/*public List<EquipableItem4> attackOptions(int distance)
 	{
 		return possibleAttackItemsE().stream()
 				.filter(e -> e.attackRanges().hasRange(distance, 0))
 				.collect(Collectors.toList());
-	}
+	}*/
 
 	public static SystemChar load(JrsObject data, TileType y1, SystemScheme systemScheme)
 	{

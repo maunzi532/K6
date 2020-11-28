@@ -24,7 +24,7 @@ public class EnemyAI4 implements XSaveableY
 		for(PathLocation pl : locations)
 		{
 			moves.addAll(levelMap.allCharacters().stream().filter(e -> e.team() != character.team()
-					&& character.attackRanges().contains(levelMap.y1().distance(e.location(), pl.tile())))
+					&& character.enemyTargetRanges().contains(levelMap.y1().distance(e.location(), pl.tile())))
 					.flatMap(e -> character.attackOptions(levelMap.y1().distance(e.location(), pl.tile()), e).stream())
 					.map(e -> new EnemyMove4(character, pl, e, false)).collect(Collectors.toList()));
 		}

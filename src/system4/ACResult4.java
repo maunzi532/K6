@@ -11,8 +11,8 @@ public record ACResult4(List<AnimPart> animParts, int hp1, int hp2, StatBar hpBa
 	{
 		ArrayList<AnimPart> animParts = new ArrayList<>();
 		boolean init1 = true;
-		int attacks1 = aI.attackCount1;
-		int attacks2 = aI.attackCount2;
+		int attacks1 = aI.canAttack1 ? aI.attackCount1 : 0;
+		int attacks2 = aI.canAttack2 ? aI.attackCount2 : 0;
 		int hp1 = aI.aI.initiator().currentHP();
 		int hp2 = aI.aI.target().currentHP();
 		StatBar hpBar1 = new StatBar(aI.aI.initiator().team().healthBarColor,

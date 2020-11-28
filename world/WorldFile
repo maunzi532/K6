@@ -23,6 +23,7 @@
         "Attack" : 1
       },
       "AttackRanges" : "1,2",
+      "AbilityRanges" : "1,2",
       "DefendRanges" : "1,2"
     },
     {
@@ -182,7 +183,7 @@
         "Accuracy" : 70,
         "AttackCount" : 1
       },
-      "AttackRanges" : "3,4,5"
+      "AbilityRanges" : "3,4,5"
     }
   ],
   "Classes" :

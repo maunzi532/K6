@@ -155,19 +155,14 @@ public final class XCharacter implements InvHolder, XSaveableYS
 		return systemChar.stat(Stats4.ACCESS_RANGE);
 	}
 
-	public List<Integer> attackRanges()
+	public List<Integer> enemyTargetRanges()
 	{
-		return systemChar.attackRanges();
+		return systemChar.enemyTargetRanges(false, true);
 	}
 
-	public List<Integer> allyRanges()
+	public List<Integer> allyTargetRanges()
 	{
-		return systemChar.allyRanges();
-	}
-
-	public List<Integer> defendRanges()
-	{
-		return systemChar.defendRanges();
+		return systemChar.allyTargetRanges();
 	}
 
 	public boolean isEnemy(XCharacter other)
@@ -224,8 +219,8 @@ public final class XCharacter implements InvHolder, XSaveableYS
 
 	public List<AttackCalc4> attackOptions(int distance, XCharacter target)
 	{
-		return systemChar.attackOptions(distance).stream()
-				.flatMap(e -> AttackInfo4.attackOptions(this, target, distance, false)
+		return systemChar.possibleAttackItems(distance, true, false).stream()
+				.flatMap(e -> AttackInfo4.attackOptions(this, target, distance, true, false)
 						.stream().map(AttackCalc4::new)).collect(Collectors.toList());
 	}
 
