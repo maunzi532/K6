@@ -26,7 +26,7 @@ public class EnemyAI4 implements XSaveableY
 			moves.addAll(levelMap.allCharacters().stream().filter(e -> e.team() != character.team()
 					&& character.enemyTargetRanges().contains(levelMap.y1().distance(e.location(), pl.tile())))
 					.flatMap(e -> character.attackOptions(levelMap.y1().distance(e.location(), pl.tile()), e).stream())
-					.map(e -> new EnemyMove4(character, pl, e, false)).collect(Collectors.toList()));
+					.map(e -> new EnemyMove4(character, pl, e, false, distanceToTarget(levelMap.y1(), pl.tile()))).collect(Collectors.toList()));
 		}
 		int n = moves.size();
 		for(int i = 0; i < n; i++)
@@ -34,17 +34,24 @@ public class EnemyAI4 implements XSaveableY
 			EnemyMove4 m1 = moves.get(i);
 			if(m1.moveTo().cost() <= 0)
 			{
-				moves.addAll(locations.stream().map(e -> new EnemyMove4(character, e, m1.aI(), true)).collect(Collectors.toList()));
+				moves.addAll(locations.stream().map(e -> new EnemyMove4(character, e, m1.aI(), true, distanceToTarget(levelMap.y1(), e.tile()))).collect(Collectors.toList()));
 			}
 		}
-		moves.addAll(locations.stream().map(e -> new EnemyMove4(character, e, null, false)).collect(Collectors.toList()));
-		System.out.println(moves.size());
+		moves.addAll(locations.stream().map(e -> new EnemyMove4(character, e, null, false, distanceToTarget(levelMap.y1(), e.tile()))).collect(Collectors.toList()));
 		return moves;
 	}
 
 	public EnemyMove4 preferredMove(XCharacter character, LevelMap4 levelMap)
 	{
 		return possibleMoves(character, levelMap).stream().sorted().findFirst().orElseThrow();
+	}
+
+	private int distanceToTarget(TileType y1, Tile tile)
+	{
+		if(targetTile != null)
+			return y1.distance(tile, targetTile);
+		else
+			return -1;
 	}
 
 	public static EnemyAI4 load(JrsObject data, TileType y1)

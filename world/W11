@@ -60,7 +60,11 @@
           }
         ]
       },
-      "EnemyAI" : {},
+      "EnemyAI" :
+      {
+        "sx" : 0,
+        "sy" : 0
+      },
       "HasMainAction" : false
     }
   ],

@@ -39,10 +39,8 @@ public final class AdvMoveState4 implements NMarkState
 		mainState.side().setStandardSideInfo(character);
 		switch(moveState)
 		{
-			case INIT -> {}
-			case ACTION_USED -> character.setHasMainAction(false);
-			case MOVED -> {}
-			case MOVED_LOCKED -> character.setHasMainAction(false);
+			case INIT, MOVED -> {}
+			case ACTION_USED, MOVED_LOCKED -> character.setHasMainAction(false);
 		}
 		LevelMap4 levelMap = mainState.levelMap();
 		allTargets = new ArrayList<>();

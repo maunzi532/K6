@@ -1,8 +1,9 @@
 package entity;
 
+import java.util.*;
 import system4.*;
 
-public record EnemyMove4(XCharacter character, PathLocation moveTo, AttackCalc4 aI, boolean attackFirst)
+public record EnemyMove4(XCharacter character, PathLocation moveTo, AttackCalc4 aI, boolean attackFirst, int targetDistance)
 		implements Comparable<EnemyMove4>
 {
 	//TODO sort
@@ -28,6 +29,10 @@ public record EnemyMove4(XCharacter character, PathLocation moveTo, AttackCalc4 
 			return -1;
 		if(o.aI() != null)
 			return 1;
+		if(targetDistance < o.targetDistance())
+			return -1;
+		if(targetDistance > o.targetDistance())
+			return 1;
 		return 0;
 	}
 
@@ -44,7 +49,7 @@ public record EnemyMove4(XCharacter character, PathLocation moveTo, AttackCalc4 
 			return false;
 		if(!moveTo.equals(other.moveTo))
 			return false;
-		return aI != null ? aI.equals(other.aI) : other.aI == null;
+		return Objects.equals(aI, other.aI);
 	}
 
 	@Override

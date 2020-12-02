@@ -194,14 +194,6 @@ public final class XCharacter implements InvHolder, XSaveableYS
 
 	}
 
-	public EnemyMove4 preferredMove()
-	{
-		if(!hasMainAction)
-			return null;
-		//return enemyAI.preferredMove(this);
-		return null;
-	}
-
 	public void setHP(int hp)
 	{
 		systemChar.setCurrentHP(hp);

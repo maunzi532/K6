@@ -9,7 +9,7 @@ public record XClass4(Item4 visItem, int[] bonusIncrease, int[] enemyDividers, i
 {
 	public static final int NUM_OF_LEVEL_STATS = 4;
 
-	public static XClass4 load(JrsObject data, Map<String, Item4> items)
+	public static XClass4 load(JrsObject data, Map<String, ? extends Item4> items)
 	{
 		//TODO load items before
 		Item4 visItem = items.get(data.get("VisItem").asText());

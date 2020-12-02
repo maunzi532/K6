@@ -10,6 +10,11 @@ import load.*;
 
 public class EnemyLevelSystem4 implements ClassAndLevelSystem
 {
+	private static final List<Modifier4> ADDITIONAL_MODIFIERS =
+			List.of(new Modifier4(Stats4.MOVEMENT, ModifierType4.ADD, 5),
+					new Modifier4(Stats4.ACCESS_RANGE, ModifierType4.ADD, 4)/*,
+					new Modifier4(Stats4.ABILITY_RANGE, ModifierType4.ADD, 4)*/);
+
 	private final XClass4 xClass;
 	private final int level;
 	private final Map<Stats4, List<Modifier4>> modifiers;
@@ -21,8 +26,7 @@ public class EnemyLevelSystem4 implements ClassAndLevelSystem
 		modifiers = Stream.concat(IntStream.range(0, XClass4.NUM_OF_LEVEL_STATS)
 				.mapToObj(i -> new Modifier4(Stats4.values()[i], ModifierType4.ADD,
 						(xClass.enemyBase()[i] + xClass.enemyIncrease()[i] * level) / xClass.enemyDividers()[i])),
-				Stream.of(new Modifier4(Stats4.MOVEMENT, ModifierType4.ADD, 5),
-						new Modifier4(Stats4.ACCESS_RANGE, ModifierType4.ADD, 4)))
+				ADDITIONAL_MODIFIERS.stream())
 				.collect(Collectors.groupingBy(Modifier4::stat));
 	}
 

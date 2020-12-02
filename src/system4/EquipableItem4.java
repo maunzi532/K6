@@ -11,7 +11,7 @@ public record EquipableItem4(CharSequence name, String image, CharSequence info,
                              Map<String, Integer> additional, Ranges4 attackRanges, Ranges4 abilityRanges, Ranges4 allyRanges,
                              Ranges4 defendRanges) implements Item4, ModifierProvider4
 {
-	public static EquipableItem4 NO_EQUIP_ITEM = new EquipableItem4("", null, "",
+	public static final EquipableItem4 NO_EQUIP_ITEM = new EquipableItem4("", null, "",
 			0, Set.of("Defend"), Map.of(), Map.of("AttackCount", 0),
 			null, null, null, new Ranges4(""));
 
