@@ -80,8 +80,8 @@ public final class AttackAnim implements AnimTimer
 			else
 			{
 				SidedAttackAnalysisEvent event = events.get(eventCounter);
-				if(event.event() == AttackAnalysisEvent.DEFEATED)
-					aI.getEntity(AttackSide.inverted(event.side())).setDefeated();
+				/*if(event.event() == AttackAnalysisEvent.DEFEATED)
+					aI.getEntity(AttackSide.inverted(event.side())).setDefeated();*/
 				startEvent(event.event(), event.side());
 			}
 		}

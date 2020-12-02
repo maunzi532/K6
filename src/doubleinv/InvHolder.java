@@ -11,7 +11,5 @@ public interface InvHolder
 
 	Inv4 inv();
 
-	boolean active();
-
 	void afterTrading();
 }

@@ -23,6 +23,7 @@ public class LevelMap4 implements Arrows, XSaveableS
 	private List<StartingLocation4> startingLocations;
 	private Storage4 storage;
 	private int turnCounter;
+	private boolean lose;
 	private Map<String, EventPack> eventPacks;
 	private ArrayList<XArrow> arrows;
 	private boolean requiresUpdate;
@@ -158,6 +159,19 @@ public class LevelMap4 implements Arrows, XSaveableS
 		}
 	}
 
+	public boolean playerTradeable(XCharacter character)
+	{
+		if(turnCounter == 0)
+		{
+			//StartingLocation startingLocation = startingLocations.get(character.name());
+			return true;//startingLocation != null && startingLocation.canTrade();
+		}
+		else
+		{
+			return false;
+		}
+	}
+
 	public List<XCharacter> allCharacters()
 	{
 		return allCharacters;
@@ -170,6 +184,23 @@ public class LevelMap4 implements Arrows, XSaveableS
 						.stream().flatMap(loc -> character.enemyTargetRanges().stream()
 						.flatMap(e -> y1.range(loc, e, e).stream()))/*.distinct()*/)
 				.collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
+	}
+
+	public void setDefeated(XCharacter character)
+	{
+		if(character.isSavedInTeam())
+		{
+			lose = true;
+		}
+		else
+		{
+			removeEntity(character);
+		}
+	}
+
+	public Storage4 storage()
+	{
+		return storage;
 	}
 
 	public boolean levelStarted()

@@ -27,7 +27,6 @@ public final class XCharacter implements InvHolder, XSaveableYS
 	private final SystemChar systemChar;
 	private boolean hasMainAction;
 	private XArrow visualReplaced;
-	private boolean defeated;
 
 	public XCharacter(CharacterTeam team, boolean savedInTeam, int startingDelay, Tile location, NameText customName, String customMapImage,
 			String customSideImage, SystemChar systemChar, boolean hasMainAction)
@@ -42,7 +41,6 @@ public final class XCharacter implements InvHolder, XSaveableYS
 		this.systemChar = systemChar;
 		this.hasMainAction = hasMainAction;
 		visualReplaced = null;
-		defeated = false;
 	}
 
 	public XCharacter createACopy(Tile copyLocation)
@@ -70,12 +68,7 @@ public final class XCharacter implements InvHolder, XSaveableYS
 
 	public boolean targetable()
 	{
-		return !defeated && startingDelay <= 0;
-	}
-
-	public void setDefeated()
-	{
-		defeated = true;
+		return startingDelay <= 0;
 	}
 
 	public void setLocation(Tile location)
@@ -165,6 +158,13 @@ public final class XCharacter implements InvHolder, XSaveableYS
 		return systemChar.allyTargetRanges();
 	}
 
+	public List<AttackCalc4> attackOptions(int distance, XCharacter target)
+	{
+		return systemChar.possibleAttackItems(distance, true, false).stream()
+				.flatMap(e -> AttackInfo4.attackOptions(this, target, distance, true, false)
+						.stream().map(AttackCalc4::new)).collect(Collectors.toList());
+	}
+
 	public boolean isEnemy(XCharacter other)
 	{
 		return other.team() != team;
@@ -180,12 +180,6 @@ public final class XCharacter implements InvHolder, XSaveableYS
 	public Inv4 inv()
 	{
 		return systemChar.inv();
-	}
-
-	@Override
-	public boolean active()
-	{
-		return !defeated;
 	}
 
 	@Override
@@ -207,13 +201,6 @@ public final class XCharacter implements InvHolder, XSaveableYS
 	public void setHasMainAction(boolean hasMainAction)
 	{
 		this.hasMainAction = hasMainAction;
-	}
-
-	public List<AttackCalc4> attackOptions(int distance, XCharacter target)
-	{
-		return systemChar.possibleAttackItems(distance, true, false).stream()
-				.flatMap(e -> AttackInfo4.attackOptions(this, target, distance, true, false)
-						.stream().map(AttackCalc4::new)).collect(Collectors.toList());
 	}
 
 	public static XCharacter load(JrsObject data, TileType y1, SystemScheme systemScheme)

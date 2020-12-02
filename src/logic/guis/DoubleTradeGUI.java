@@ -9,6 +9,9 @@ public final class DoubleTradeGUI extends XGUIState
 {
 	private static final CTile name1 = new CTile(0, 0, 4, 1);
 	private static final CTile name2 = new CTile(5, 0, 4, 1);
+	private static final CTile sendAll12 = new CTile(4, 2, new GuiTile("All", "gui.trade.arrow", false, null));
+	private static final CTile sendAll21 = new CTile(4, 2, new GuiTile("All", "gui.trade.arrow", true, null));
+	private static final CTile swap = new CTile(4, 2, new GuiTile("Swap", null, false, null));
 
 	//Send all
 	//Send one
@@ -33,14 +36,24 @@ public final class DoubleTradeGUI extends XGUIState
 	{
 		mainState.side().clearSideInfo();
 		view1 = new ScrollList<>(0, 1, 4, 5, 2, 1, null,
-				view -> itemView(view, view.num() == marked1.num()), target -> marked1 = (marked1 == target ? null : target));
+				view -> itemView(view, sameItem(view, marked1)), target -> marked1 = (sameItem(target, marked1) ? null : target));
 		elements.add(view1);
 		view2 = new ScrollList<>(5, 1, 4, 5, 2, 1, null,
-				view -> itemView(view, view.num() == marked2.num()), target -> marked2 = (marked2 == target ? null : target));
+				view -> itemView(view, sameItem(view, marked2)), target -> marked2 = (sameItem(target, marked2) ? null : target));
 		elements.add(view2);
 		elements.add(new CElement(name1, new GuiTile(inv1.name(), null, false, "gui.trade.name.background")));
 		elements.add(new CElement(name2, new GuiTile(inv2.name(), null, false, "gui.trade.name.background")));
+		elements.add(new CElement(sendAll12, true, () -> marked1 != null && marked2 == null, () -> System.out.println("W12")));
+		elements.add(new CElement(sendAll21, true, () -> marked2 != null && marked1 == null, () -> System.out.println("W21")));
+		elements.add(new CElement(swap, true, () -> marked1 != null && marked2 != null, () -> System.out.println("WS")));
 		update();
+	}
+
+	private boolean sameItem(NumberedStack4 a1, NumberedStack4 a2)
+	{
+		if(a1 == null || a2 == null)
+			return false;
+		return a1.num() == a2.num();
 	}
 
 	@Override

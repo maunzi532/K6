@@ -25,9 +25,9 @@ public final class PostAttackState extends AttackState
 		aI.aI.initiator().setHP(result.hp1());
 		aI.aI.target().setHP(result.hp2());
 		if(result.hp1() <= 0)
-			aI.aI.initiator().setDefeated();
+			mainState.levelMap().setDefeated(aI.aI.initiator());
 		if(result.hp2() <= 0)
-			aI.aI.target().setDefeated();
+			mainState.levelMap().setDefeated(aI.aI.target());
 		if(firstEnter)
 		{
 			getExpAnim = null;//new GetExpAnim(aI, result, mainState.levelMap());

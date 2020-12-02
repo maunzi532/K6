@@ -41,12 +41,6 @@ public final class Storage4 implements InvHolder, XSaveableS
 	}
 
 	@Override
-	public boolean active()
-	{
-		return true;
-	}
-
-	@Override
 	public void afterTrading(){}
 
 	public static Storage4 load(JrsObject data, SystemScheme systemScheme)

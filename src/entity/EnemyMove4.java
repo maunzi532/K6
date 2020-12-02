@@ -11,8 +11,8 @@ public record EnemyMove4(XCharacter character, PathLocation moveTo, AttackCalc4 
 	//2y can outrange
 	//3 rarest attacked
 	//4 def/dodge
-	//5 can move after attack
-	//6 distance to target
+	//5y can move after attack
+	//6y distance to target
 
 	@Override
 	public int compareTo(EnemyMove4 o)
@@ -23,6 +23,13 @@ public record EnemyMove4(XCharacter character, PathLocation moveTo, AttackCalc4 
 				return 1;
 			if(!aI.canAttack2 && o.aI().canAttack2)
 				return -1;
+			if(attackFirst)
+			{
+				if(targetDistance < o.targetDistance())
+					return -1;
+				if(targetDistance > o.targetDistance())
+					return 1;
+			}
 			return 0;
 		}
 		if(aI != null)
