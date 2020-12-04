@@ -15,10 +15,8 @@ public record ACResult4(List<AnimPart> animParts, int hp1, int hp2, StatBar hpBa
 		int attacks2 = aI.canAttack2 ? aI.attackCount2 : 0;
 		int hp1 = aI.aI.initiator().currentHP();
 		int hp2 = aI.aI.target().currentHP();
-		StatBar hpBar1 = new StatBar(aI.aI.initiator().team().healthBarColor,
-				"arrow.healthbar.background", "arrow.healthbar.text", hp1, aI.aI.initiator().maxHP());
-		StatBar hpBar2 = new StatBar(aI.aI.initiator().team().healthBarColor,
-				"arrow.healthbar.background", "arrow.healthbar.text", hp2, aI.aI.target().maxHP());
+		StatBar hpBar1 = aI.aI.initiator().hpBar(hp1);
+		StatBar hpBar2 = aI.aI.target().hpBar(hp2);
 		while(true)
 		{
 			if(hp1 <= 0 || hp2 <= 0 || (attacks1 <= 0 && attacks2 <= 0))

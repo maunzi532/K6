@@ -12,6 +12,24 @@
       "Additional" : {}
     },
     {
+      "Name" : "Archer",
+      "Image" : null,
+      "Info" : "",
+      "StackLimit" : 1,
+      "Tags" : [],
+      "Modifiers" : [],
+      "Additional" : {}
+    },
+    {
+      "Name" : "Bandit",
+      "Image" : null,
+      "Info" : "",
+      "StackLimit" : 1,
+      "Tags" : [],
+      "Modifiers" : [],
+      "Additional" : {}
+    },
+    {
       "Name" : "A1",
       "Image" : null,
       "Info" : "",
@@ -20,7 +38,8 @@
       "Modifiers" : [],
       "Additional" :
       {
-        "Attack" : 1
+        "AttackPower" : 1,
+        "AbilityPower" : 1
       },
       "AttackRanges" : "1,2",
       "AbilityRanges" : "1,2",
@@ -31,44 +50,12 @@
       "Image" : null,
       "Info" : "",
       "StackLimit" : 1,
-      "Tags" : ["Combat", "AdvA"],
+      "Tags" : ["Combat"],
       "Modifiers" : [],
       "Additional" :
       {
-        "Attack" : 6,
+        "AttackPower" : 6,
         "Accuracy" : 70,
-        "AttackCount" : 2
-      },
-      "AttackRanges" : "1",
-      "DefendRanges" : "1"
-    },
-    {
-      "Name" : "BS1",
-      "Image" : null,
-      "Info" : "",
-      "StackLimit" : 1,
-      "Tags" : ["Combat", "AdvB"],
-      "Modifiers" : [],
-      "Additional" :
-      {
-        "Attack" : 8,
-        "Accuracy" : 50,
-        "AttackCount" : 2
-      },
-      "AttackRanges" : "1",
-      "DefendRanges" : "1"
-    },
-    {
-      "Name" : "CS1",
-      "Image" : null,
-      "Info" : "",
-      "StackLimit" : 1,
-      "Tags" : ["Combat", "AdvC"],
-      "Modifiers" : [],
-      "Additional" :
-      {
-        "Attack" : 9,
-        "Accuracy" : 40,
         "AttackCount" : 2
       },
       "AttackRanges" : "1",
@@ -79,44 +66,12 @@
       "Image" : null,
       "Info" : "",
       "StackLimit" : 1,
-      "Tags" : ["Combat", "AdvA"],
+      "Tags" : ["Combat"],
       "Modifiers" : [],
       "Additional" :
       {
-        "Attack" : 8,
+        "AttackPower" : 8,
         "Accuracy" : 40,
-        "AttackCount" : 1
-      },
-      "AttackRanges" : "1,2",
-      "DefendRanges" : "1,2"
-    },
-    {
-      "Name" : "BL1",
-      "Image" : null,
-      "Info" : "",
-      "StackLimit" : 1,
-      "Tags" : ["Combat", "AdvB"],
-      "Modifiers" : [],
-      "Additional" :
-      {
-        "Attack" : 9,
-        "Accuracy" : 30,
-        "AttackCount" : 1
-      },
-      "AttackRanges" : "1,2",
-      "DefendRanges" : "1,2"
-    },
-    {
-      "Name" : "CL1",
-      "Image" : null,
-      "Info" : "",
-      "StackLimit" : 1,
-      "Tags" : ["Combat", "AdvC"],
-      "Modifiers" : [],
-      "Additional" :
-      {
-        "Attack" : 11,
-        "Accuracy" : 10,
         "AttackCount" : 1
       },
       "AttackRanges" : "1,2",
@@ -127,44 +82,12 @@
       "Image" : null,
       "Info" : "",
       "StackLimit" : 1,
-      "Tags" : ["Combat", "AdvA"],
+      "Tags" : ["Combat"],
       "Modifiers" : [],
       "Additional" :
       {
-        "Attack" : 8,
+        "AttackPower" : 8,
         "Accuracy" : 30,
-        "AttackCount" : 2
-      },
-      "AttackRanges" : "2",
-      "DefendRanges" : "2"
-    },
-    {
-      "Name" : "BR1",
-      "Image" : null,
-      "Info" : "",
-      "StackLimit" : 1,
-      "Tags" : ["Combat", "AdvB"],
-      "Modifiers" : [],
-      "Additional" :
-      {
-        "Attack" : 10,
-        "Accuracy" : 10,
-        "AttackCount" : 2
-      },
-      "AttackRanges" : "2",
-      "DefendRanges" : "2"
-    },
-    {
-      "Name" : "CR1",
-      "Image" : null,
-      "Info" : "",
-      "StackLimit" : 1,
-      "Tags" : ["Combat", "AdvC"],
-      "Modifiers" : [],
-      "Additional" :
-      {
-        "Attack" : 12,
-        "Accuracy" : -10,
         "AttackCount" : 2
       },
       "AttackRanges" : "2",
@@ -179,7 +102,7 @@
       "Modifiers" : [],
       "Additional" :
       {
-        "Attack" : 4,
+        "AbilityPower" : 4,
         "Accuracy" : 70,
         "AttackCount" : 1
       },
@@ -190,10 +113,24 @@
   [
     {
       "VisItem" : "Mage",
-      "BonusIncrease" : [0, 0, 0, 0],
-      "EnemyDividers" : [1, 1, 1, 1],
-      "EnemyBase" : [2, 2, 1, 10],
-      "EnemyIncrease" : [0, 0, 0, 0]
+      "BonusIncrease" : [0, 2, 0, 0, 1, 1],
+      "EnemyDividers" : [6, 6, 6, 2, 6, 6],
+      "EnemyBase" : [36, 60, 36, 500, 42, 42],
+      "EnemyIncrease" : [6, 10, 6, 6, 7, 7]
+    },
+    {
+      "VisItem" : "Archer",
+      "BonusIncrease" : [1, 0, 1, 0, 2, 0],
+      "EnemyDividers" : [6, 6, 6, 2, 6, 6],
+      "EnemyBase" : [54, 48, 48, 50, 60, 30],
+      "EnemyIncrease" : [9, 8, 8, 6, 10, 5]
+    },
+    {
+      "VisItem" : "Bandit",
+      "BonusIncrease" : [1, 0, 0, 1, 0, 2],
+      "EnemyDividers" : [6, 6, 6, 2, 6, 6],
+      "EnemyBase" : [42, 36, 36, 60, 36, 54],
+      "EnemyIncrease" : [7, 6, 6, 8, 6, 9]
     }
   ]
 }

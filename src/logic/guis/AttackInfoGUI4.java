@@ -57,7 +57,7 @@ public final class AttackInfoGUI4 extends XGUIState
 	protected void updateBeforeDraw()
 	{
 		if(attacksView.getTargeted() != null)
-			side.setAttackSideInfo(attacksView.getTargeted());
+			side.setAttackInfoSideInfo(attacksView.getTargeted());
 		else
 			side.sidedInfo(attacker, target);
 	}

@@ -1,7 +1,5 @@
 package item4;
 
-import text.*;
-
 public record NumberedStack4(Item4 item, int count, boolean limited, boolean keep, String tag, int num)
 {
 	public static NumberedStack4 create(ItemStack4 stack, int num)
@@ -21,7 +19,11 @@ public record NumberedStack4(Item4 item, int count, boolean limited, boolean kee
 
 	public CharSequence viewText()
 	{
-		if(limited)
+		if(tag != null)
+			return item.name() + " x" + count + "\n" + tag;
+		else
+			return item.name() + " x" + count;
+		/*if(limited)
 		{
 			int limit = item.stackLimit();
 			if(count == limit)
@@ -39,6 +41,6 @@ public record NumberedStack4(Item4 item, int count, boolean limited, boolean kee
 		else
 		{
 			return new ArgsText("itemview.base", count);
-		}
+		}*/
 	}
 }

@@ -66,4 +66,29 @@ public class StackInv4 implements Inv4
 		}
 		return toAdd <= (maxStacks - stacks.size()) * addItem.stackLimit();
 	}
+
+	@Override
+	public ItemStack4 takeableNum(int num, int count)
+	{
+		ItemStack4 stack = stacks.get(num);
+		return new ItemStack4(stack.item(), Math.min(count, stack.count()));
+	}
+
+	@Override
+	public ItemStack4 takeNum(int num, int count)
+	{
+		ItemStack4 stack = stacks.get(num);
+		Item4 item = stack.item();
+		int current = stack.count();
+		if(count >= current)
+		{
+			stacks.remove(num);
+			return new ItemStack4(item, current);
+		}
+		else
+		{
+			stacks.set(num, new ItemStack4(item, current - count));
+			return new ItemStack4(item, count);
+		}
+	}
 }

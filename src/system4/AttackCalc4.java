@@ -5,6 +5,8 @@ import text.*;
 
 public class AttackCalc4
 {
+	private static final CharSequence[] EMPTY_TEXTS = new CharSequence[0];
+
 	public final AttackInfo4 aI;
 	public final boolean canAttack1;
 	public final boolean canAttack2;
@@ -78,6 +80,26 @@ public class AttackCalc4
 	private CharSequence numToText(boolean canAttack, int num)
 	{
 		return canAttack ? String.valueOf(num) : "";
+	}
+
+	public CharSequence[] sideInfo1()
+	{
+		return canAttack1 ? new CharSequence[]
+				{
+						String.valueOf(damage1),
+						String.valueOf(attackCount1),
+						String.valueOf(accuracy1)
+				} : EMPTY_TEXTS;
+	}
+
+	public CharSequence[] sideInfo2()
+	{
+		return canAttack2 ? new CharSequence[]
+				{
+						String.valueOf(damage2),
+						String.valueOf(attackCount2),
+						String.valueOf(accuracy2)
+				} : EMPTY_TEXTS;
 	}
 
 	@Override

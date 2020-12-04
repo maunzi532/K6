@@ -54,7 +54,7 @@ public final class AdvMoveState4 implements NMarkState
 		ally = new ArrayList<>();
 		if(moveState.canUseMainAction)
 		{
-			character.enemyTargetRanges().stream()
+			character.enemyTargetRanges(false).stream()
 					.flatMap(e -> levelMap.y1().range(character.location(), e, e).stream())
 					.map(levelMap::getEntity).filter(e -> e != null && e.targetable() && e.team() != character.team())
 					.forEach(e -> attack.add(e));

@@ -19,4 +19,8 @@ public interface Inv4
 	}
 
 	boolean tryAdd(Item4 addItem, int addCount);
+
+	ItemStack4 takeableNum(int num, int count);
+
+	ItemStack4 takeNum(int num, int count);
 }

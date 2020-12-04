@@ -138,6 +138,16 @@ public final class XCharacter implements InvHolder, XSaveableYS
 		return systemChar.stat(Stats4.MAX_HP);
 	}
 
+	public StatBar hpBar()
+	{
+		return new StatBar(team.healthBarColor, "arrow.healthbar.background", "arrow.healthbar.text", currentHP(), maxHP());
+	}
+
+	public StatBar hpBar(int overrideHP)
+	{
+		return new StatBar(team.healthBarColor, "arrow.healthbar.background", "arrow.healthbar.text", overrideHP, maxHP());
+	}
+
 	public int movement()
 	{
 		return systemChar.stat(Stats4.MOVEMENT);
@@ -148,9 +158,9 @@ public final class XCharacter implements InvHolder, XSaveableYS
 		return systemChar.stat(Stats4.ACCESS_RANGE);
 	}
 
-	public List<Integer> enemyTargetRanges()
+	public List<Integer> enemyTargetRanges(boolean enemy)
 	{
-		return systemChar.enemyTargetRanges(false, true);
+		return systemChar.enemyTargetRanges(enemy, !enemy);
 	}
 
 	public List<Integer> allyTargetRanges()

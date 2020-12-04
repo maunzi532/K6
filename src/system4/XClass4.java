@@ -7,7 +7,7 @@ import load.*;
 
 public record XClass4(Item4 visItem, int[] bonusIncrease, int[] enemyDividers, int[] enemyBase, int[] enemyIncrease)
 {
-	public static final int NUM_OF_LEVEL_STATS = 4;
+	public static final int NUM_OF_LEVEL_STATS = 6;
 
 	public static XClass4 load(JrsObject data, Map<String, ? extends Item4> items)
 	{

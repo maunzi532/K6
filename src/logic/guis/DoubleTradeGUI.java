@@ -11,6 +11,10 @@ public final class DoubleTradeGUI extends XGUIState
 	private static final CTile name2 = new CTile(5, 0, 4, 1);
 	private static final CTile sendAll12 = new CTile(4, 2, new GuiTile("All", "gui.trade.arrow", false, null));
 	private static final CTile sendAll21 = new CTile(4, 2, new GuiTile("All", "gui.trade.arrow", true, null));
+	private static final CTile sendHalf12 = new CTile(4, 3, new GuiTile("Half", "gui.trade.arrow", false, null));
+	private static final CTile sendHalf21 = new CTile(4, 3, new GuiTile("Half", "gui.trade.arrow", true, null));
+	private static final CTile sendOne12 = new CTile(4, 4, new GuiTile("1", "gui.trade.arrow", false, null));
+	private static final CTile sendOne21 = new CTile(4, 4, new GuiTile("1", "gui.trade.arrow", true, null));
 	private static final CTile swap = new CTile(4, 2, new GuiTile("Swap", null, false, null));
 
 	//Send all
@@ -43,9 +47,15 @@ public final class DoubleTradeGUI extends XGUIState
 		elements.add(view2);
 		elements.add(new CElement(name1, new GuiTile(inv1.name(), null, false, "gui.trade.name.background")));
 		elements.add(new CElement(name2, new GuiTile(inv2.name(), null, false, "gui.trade.name.background")));
-		elements.add(new CElement(sendAll12, true, () -> marked1 != null && marked2 == null, () -> System.out.println("W12")));
-		elements.add(new CElement(sendAll21, true, () -> marked2 != null && marked1 == null, () -> System.out.println("W21")));
-		elements.add(new CElement(swap, true, () -> marked1 != null && marked2 != null, () -> System.out.println("WS")));
+		elements.add(new CElement(sendAll12, true, () -> marked1 != null && marked2 == null, () -> trySend12(marked1.count())));
+		elements.add(new CElement(sendAll21, true, () -> marked2 != null && marked1 == null, () -> trySend21(marked2.count())));
+		elements.add(new CElement(sendHalf12, true, () -> marked1 != null && marked2 == null && marked1.count() >= 3,
+				() -> trySend12(marked1.count() - marked1.count() / 2)));
+		elements.add(new CElement(sendHalf21, true, () -> marked2 != null && marked1 == null && marked2.count() >= 3,
+				() -> trySend21(marked2.count() - marked2.count() / 2)));
+		elements.add(new CElement(sendOne12, true, () -> marked1 != null && marked2 == null && marked1.count() >= 2, () -> trySend12(1)));
+		elements.add(new CElement(sendOne21, true, () -> marked2 != null && marked1 == null && marked2.count() >= 2, () -> trySend21(1)));
+		elements.add(new CElement(swap, true, () -> marked1 != null && marked2 != null, this::swap));
 		update();
 	}
 
@@ -54,6 +64,38 @@ public final class DoubleTradeGUI extends XGUIState
 		if(a1 == null || a2 == null)
 			return false;
 		return a1.num() == a2.num();
+	}
+
+	private void trySend12(int amount)
+	{
+		int num = marked1.num();
+		if(inv2.inv().canAddAll(inv1.inv().takeableNum(num, amount)))
+		{
+			inv2.inv().tryAdd(inv1.inv().takeNum(num, amount));
+		}
+		marked1 = null;
+		marked2 = null;
+		update();
+	}
+
+	private void trySend21(int amount)
+	{
+		int num = marked2.num();
+		if(inv1.inv().canAddAll(inv2.inv().takeableNum(num, amount)))
+		{
+			inv1.inv().tryAdd(inv2.inv().takeNum(num, amount));
+		}
+		marked1 = null;
+		marked2 = null;
+		update();
+	}
+
+	private void swap()
+	{
+		ItemStack4 stack1 = inv1.inv().takeNum(marked1.num(), marked1.count());
+		ItemStack4 stack2 = inv2.inv().takeNum(marked2.num(), marked2.count());
+		inv1.inv().tryAdd(stack2);
+		inv2.inv().tryAdd(stack1);
 	}
 
 	@Override

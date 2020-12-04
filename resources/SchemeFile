@@ -1,5 +1,18 @@
 {
   "code" : -1529707617,
+  "Settings" : {
+    "load.team" : "world/WorldFile",
+    "window.width" : "1000",
+    "window.height" : "800",
+    "window.title" : "K6",
+    "file.locale" : "Locale_EN",
+    "file.locale.level" : "_EN",
+    "file.keybind" : "Keybinds",
+    "camera.map" : "hex",
+    "camera.menu" : "hex",
+    "camera.gui" : "quad",
+    "camera.editorslot" : "hex"
+  },
   "Colors" : {
     "gui.background" : "666680",
     "gui.background.hover" : "9292b6",
@@ -62,18 +75,5 @@
     "resource.gsl" : "GSL.png",
     "resource.material" : "X.png",
     "resource.tech" : "Tech.png"
-  },
-  "Settings" : {
-    "load.team" : "world/WorldFile",
-    "window.width" : "1000",
-    "window.height" : "800",
-    "window.title" : "K6",
-    "file.locale" : "Locale_EN",
-    "file.locale.level" : "_EN",
-    "file.keybind" : "Keybinds",
-    "camera.map" : "hex",
-    "camera.menu" : "hex",
-    "camera.gui" : "quad",
-    "camera.editorslot" : "hex"
   }
 }

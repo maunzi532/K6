@@ -18,6 +18,7 @@ public final class AttackAnimState extends AttackState
 	public void onEnter(MainState mainState)
 	{
 		result = ACResult4.calc1(aI, mainState.levelMap(), new Random());
+		mainState.side().setAttackSideInfo(aI, result.hpBar1(), result.hpBar2());
 		attackAnim = new AttackAnim4(result, mainState.levelMap(), aI.aI.initiator(), aI.aI.target());
 	}
 

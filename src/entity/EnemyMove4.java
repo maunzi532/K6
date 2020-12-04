@@ -23,7 +23,7 @@ public record EnemyMove4(XCharacter character, PathLocation moveTo, AttackCalc4 
 				return 1;
 			if(!aI.canAttack2 && o.aI().canAttack2)
 				return -1;
-			if(attackFirst)
+			if(attackFirst || o.attackFirst())
 			{
 				if(targetDistance < o.targetDistance())
 					return -1;

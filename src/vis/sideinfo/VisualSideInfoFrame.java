@@ -72,13 +72,21 @@ public final class VisualSideInfoFrame implements SideInfoFrame
 	}
 
 	@Override
-	public void setAttackSideInfo(AttackCalc4 aI)
+	public void setAttackInfoSideInfo(AttackCalc4 aI)
 	{
 		boolean inverted = isInverted(aI.aI.initiator(), aI.aI.target());
-		/*AttackSide side1 = inverted ? AttackSide.TARGET : AttackSide.INITIATOR;
-		AttackSide side2 = inverted ? AttackSide.INITIATOR : AttackSide.TARGET;
-		l0.setSideInfo(attackSideInfo(aI.getEntity(side1), aI.getSideInfoChange(side1), aI.getSideInfos(side1)));
-		r0.setSideInfo(attackSideInfo(aI.getEntity(side2), aI.getSideInfoChange(side2), aI.getSideInfos(side2)));*/
+		SideInfo sideInfo1 = new SideInfo(aI.aI.initiator(), aI.aI.initiator().sideImageName(), aI.aI.initiator().hpBar(), aI.sideInfo1());
+		SideInfo sideInfo2 = new SideInfo(aI.aI.target(), aI.aI.target().sideImageName(), aI.aI.target().hpBar(), aI.sideInfo2());
+		setWithInverted(inverted, sideInfo1, sideInfo2);
+	}
+
+	@Override
+	public void setAttackSideInfo(AttackCalc4 aI, StatBar s1, StatBar s2)
+	{
+		boolean inverted = isInverted(aI.aI.initiator(), aI.aI.target());
+		SideInfo sideInfo1 = new SideInfo(aI.aI.initiator(), aI.aI.initiator().sideImageName(), s1, aI.sideInfo1());
+		SideInfo sideInfo2 = new SideInfo(aI.aI.target(), aI.aI.target().sideImageName(), s2, aI.sideInfo2());
+		setWithInverted(inverted, sideInfo1, sideInfo2);
 	}
 
 	private static SideInfo attackSideInfo(XCharacter character, int change, CharSequence[] text2)
@@ -92,6 +100,20 @@ public final class VisualSideInfoFrame implements SideInfoFrame
 	private boolean isInverted(XCharacter e1, XCharacter e2)
 	{
 		return (e1.team() != CharacterTeam.HERO && e2.team() == CharacterTeam.HERO) != xhR;
+	}
+
+	private void setWithInverted(boolean inverted, SideInfo sideInfo1, SideInfo sideInfo2)
+	{
+		if(inverted)
+		{
+			l0.setSideInfo(sideInfo2);
+			r0.setSideInfo(sideInfo1);
+		}
+		else
+		{
+			l0.setSideInfo(sideInfo1);
+			r0.setSideInfo(sideInfo2);
+		}
 	}
 
 	@Override

@@ -94,6 +94,31 @@ public class TagInv4 implements Inv4, XSaveableS
 		return stacks.stream().filter(e -> Objects.equals(e.tag(), tag)).map(e -> e.items().item()).collect(Collectors.toList());
 	}
 
+	@Override
+	public ItemStack4 takeableNum(int num, int count)
+	{
+		TagStack4 stack = stacks.get(num);
+		return new ItemStack4(stack.items().item(), Math.min(count, stack.items().count()));
+	}
+
+	@Override
+	public ItemStack4 takeNum(int num, int count)
+	{
+		TagStack4 stack = stacks.get(num);
+		Item4 item = stack.items().item();
+		int current = stack.items().count();
+		if(count >= current)
+		{
+			stacks.remove(num);
+			return new ItemStack4(item, current);
+		}
+		else
+		{
+			stacks.set(num, new TagStack4(item, current - count, stack.tag()));
+			return new ItemStack4(item, count);
+		}
+	}
+
 	public static TagInv4 load(JrsObject data, SystemScheme systemScheme)
 	{
 		int maxStacks = LoadHelper.asInt(data.get("MaxStacks"));

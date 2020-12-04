@@ -19,13 +19,21 @@
       },
       "Inv" :
       {
-        "MaxStacks" : 1,
+        "MaxStacks" : 4,
         "Stacks" :
         [
           {
-            "Item" : "A1",
+            "Item" : "AS1",
             "Count" : 1,
             "Tag" : "Defend"
+          },
+          {
+            "Item" : "AL1",
+            "Count" : 1
+          },
+          {
+            "Item" : "AR1",
+            "Count" : 1
           },
           {
             "Item" : "B1",
@@ -50,11 +58,73 @@
       },
       "Inv" :
       {
-        "MaxStacks" : 1,
+        "MaxStacks" : 4,
         "Stacks" :
         [
           {
-            "Item" : "A1",
+            "Item" : "AS1",
+            "Count" : 1,
+            "Tag" : "Defend"
+          }
+        ]
+      },
+      "EnemyAI" :
+      {
+        "sx" : 0,
+        "sy" : 0
+      },
+      "HasMainAction" : false
+    },
+    {
+      "Team" : "ENEMY",
+      "SavedInTeam" : false,
+      "StartingDelay" : 0,
+      "sx" : 2,
+      "sy" : 1,
+      "CLSType" : "Enemy",
+      "CLS" :
+      {
+        "Class" : "Archer",
+        "Level" : 0
+      },
+      "Inv" :
+      {
+        "MaxStacks" : 4,
+        "Stacks" :
+        [
+          {
+            "Item" : "AL1",
+            "Count" : 1,
+            "Tag" : "Defend"
+          }
+        ]
+      },
+      "EnemyAI" :
+      {
+        "sx" : 0,
+        "sy" : 0
+      },
+      "HasMainAction" : false
+    },
+    {
+      "Team" : "ENEMY",
+      "SavedInTeam" : false,
+      "StartingDelay" : 0,
+      "sx" : 3,
+      "sy" : -1,
+      "CLSType" : "Enemy",
+      "CLS" :
+      {
+        "Class" : "Bandit",
+        "Level" : 0
+      },
+      "Inv" :
+      {
+        "MaxStacks" : 4,
+        "Stacks" :
+        [
+          {
+            "Item" : "AR1",
             "Count" : 1,
             "Tag" : "Defend"
           }

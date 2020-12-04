@@ -50,7 +50,32 @@ public class StorageInv4 implements Inv4, XSaveableS
 		return true;
 	}
 
-	public ItemList4 viewAsItemList()
+	@Override
+	public ItemStack4 takeableNum(int num, int count)
+	{
+		Map.Entry<Item4, Integer> entry = new ArrayList<>(items.entrySet()).get(num);
+		return new ItemStack4(entry.getKey(), Math.min(count, entry.getValue()));
+	}
+
+	@Override
+	public ItemStack4 takeNum(int num, int count)
+	{
+		Map.Entry<Item4, Integer> entry = new ArrayList<>(items.entrySet()).get(num);
+		Item4 item = entry.getKey();
+		int current = entry.getValue();
+		if(count >= current)
+		{
+			items.remove(item);
+			return new ItemStack4(item, current);
+		}
+		else
+		{
+			items.put(item, current - count);
+			return new ItemStack4(item, count);
+		}
+	}
+
+	private ItemList4 viewAsItemList()
 	{
 		return new ItemList4(items.entrySet().stream()
 				.map(e -> new ItemStack4(e.getKey(), e.getValue())).collect(Collectors.toList()));
