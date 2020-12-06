@@ -1,7 +1,7 @@
 package logic.xstate;
 
 import logic.*;
-import system4.*;
+import system.*;
 
 public final class PreAttackState extends AttackState
 {

@@ -2,7 +2,7 @@ package logic.editor.xgui;
 
 import entity.*;
 import gui.*;
-import item4.*;
+import item.*;
 import java.util.*;
 import java.util.stream.*;
 import logic.*;

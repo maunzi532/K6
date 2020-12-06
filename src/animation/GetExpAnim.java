@@ -2,7 +2,7 @@ package animation;
 
 import arrow.*;
 import entity.*;
-import system4.*;
+import system.*;
 
 public final class GetExpAnim implements AnimTimer
 {

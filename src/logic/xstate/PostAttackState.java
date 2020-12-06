@@ -2,7 +2,7 @@ package logic.xstate;
 
 import logic.*;
 import animation.*;
-import system4.*;
+import system.*;
 
 public final class PostAttackState extends AttackState
 {

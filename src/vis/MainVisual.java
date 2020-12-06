@@ -14,7 +14,7 @@ import load.*;
 import logic.*;
 import logic.editor.*;
 import logic.xstate.*;
-import system4.*;
+import system.*;
 import text.*;
 import vis.gui.*;
 import vis.sideinfo.*;

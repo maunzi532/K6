@@ -1,6 +1,6 @@
 package gui;
 
-import item4.*;
+import item.*;
 
 public final class GuiTile
 {

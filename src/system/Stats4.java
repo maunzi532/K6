@@ -1,0 +1,14 @@
+package system;
+
+public enum Stats4
+{
+	ATTACK,
+	ABILITY_POWER,
+	DEFENSE,
+	MAX_HP,
+	ACCURACY,
+	DODGE,
+	ABILITY_RANGE,
+	MOVEMENT,
+	ACCESS_RANGE
+}

@@ -4,9 +4,9 @@ import com.fasterxml.jackson.jr.ob.comp.*;
 import com.fasterxml.jackson.jr.stree.*;
 import doubleinv.*;
 import geom.tile.*;
-import item4.*;
+import item.*;
 import java.io.*;
-import system4.*;
+import system.*;
 
 public final class Storage4 implements InvHolder, XSaveableS
 {

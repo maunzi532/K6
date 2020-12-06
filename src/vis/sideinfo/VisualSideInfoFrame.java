@@ -4,7 +4,7 @@ import arrow.*;
 import entity.*;
 import entity.sideinfo.*;
 import java.util.*;
-import system4.*;
+import system.*;
 import vis.*;
 
 public final class VisualSideInfoFrame implements SideInfoFrame

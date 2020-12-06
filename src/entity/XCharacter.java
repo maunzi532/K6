@@ -5,13 +5,13 @@ import com.fasterxml.jackson.jr.ob.comp.*;
 import com.fasterxml.jackson.jr.stree.*;
 import doubleinv.*;
 import geom.tile.*;
-import item4.*;
+import item.*;
 import java.io.*;
 import java.util.*;
 import java.util.stream.*;
 import levelmap.*;
 import load.*;
-import system4.*;
+import system.*;
 import text.*;
 
 public final class XCharacter implements InvHolder, XSaveableYS

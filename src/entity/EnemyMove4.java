@@ -1,7 +1,7 @@
 package entity;
 
 import java.util.*;
-import system4.*;
+import system.*;
 
 public record EnemyMove4(XCharacter character, PathLocation moveTo, AttackCalc4 aI, boolean attackFirst, int targetDistance)
 		implements Comparable<EnemyMove4>

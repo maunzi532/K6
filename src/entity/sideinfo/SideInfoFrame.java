@@ -2,7 +2,7 @@ package entity.sideinfo;
 
 import arrow.*;
 import entity.*;
-import system4.*;
+import system.*;
 
 public interface SideInfoFrame
 {

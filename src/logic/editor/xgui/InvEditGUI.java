@@ -1,7 +1,7 @@
 package logic.editor.xgui;
 
 import gui.*;
-import item4.*;
+import item.*;
 import java.util.*;
 import logic.*;
 

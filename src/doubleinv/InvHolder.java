@@ -1,7 +1,7 @@
 package doubleinv;
 
 import geom.tile.*;
-import item4.*;
+import item.*;
 
 public interface InvHolder
 {

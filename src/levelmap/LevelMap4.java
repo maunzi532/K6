@@ -13,7 +13,7 @@ import java.util.function.*;
 import java.util.stream.*;
 import load.*;
 import logic.event.*;
-import system4.*;
+import system.*;
 
 public class LevelMap4 implements Arrows, XSaveableS
 {
@@ -182,7 +182,7 @@ public class LevelMap4 implements Arrows, XSaveableS
 		return allCharacters.stream().filter(e -> e.team() == CharacterTeam.ENEMY && e.targetable()).flatMap(character ->
 				new Pathing(character, character.movement(), this, true).getEndpoints()
 						.stream().flatMap(loc -> character.enemyTargetRanges(true).stream()
-						.flatMap(e -> y1.range(loc, e, e).stream()))/*.distinct()*/)
+						.flatMap(e -> y1.range(loc, e, e).stream())))
 				.collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
 	}
 

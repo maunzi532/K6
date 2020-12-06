@@ -3,9 +3,9 @@ package logic.editor.xgui;
 import entity.*;
 import geom.tile.*;
 import gui.*;
-import item4.*;
+import item.*;
 import logic.*;
-import system4.*;
+import system.*;
 
 public final class EntityCreateGUI extends XGUIState
 {

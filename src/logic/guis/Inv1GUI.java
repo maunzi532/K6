@@ -1,6 +1,6 @@
 package logic.guis;
 
-import item4.*;
+import item.*;
 import java.util.*;
 import logic.*;
 import gui.*;

@@ -3,7 +3,7 @@ package levelmap;
 import com.fasterxml.jackson.jr.ob.comp.*;
 import com.fasterxml.jackson.jr.stree.*;
 import geom.tile.*;
-import item4.*;
+import item.*;
 import java.io.*;
 import text.*;
 

@@ -2,7 +2,7 @@ package logic.xstate;
 
 import java.util.*;
 import logic.*;
-import system4.*;
+import system.*;
 
 public final class AttackAnimState extends AttackState
 {

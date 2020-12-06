@@ -7,7 +7,7 @@ import java.util.*;
 import java.util.stream.*;
 import logic.*;
 import logic.xstate.*;
-import system4.*;
+import system.*;
 
 public final class AttackInfoGUI4 extends XGUIState
 {

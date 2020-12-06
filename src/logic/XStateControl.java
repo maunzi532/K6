@@ -295,7 +295,7 @@ public final class XStateControl implements XStateHolder, ConvInputConsumer
 		{
 			if(levelMap.checkUpdate())
 			{
-				allEnemyReach = null; //TODO //levelMap.allEnemyReach();
+				allEnemyReach = levelMap.allEnemyReach();
 			}
 			allEnemyReach.forEach((tile, amount) -> visMarked.add(new VisMark(tile, "mark.reach.all", 0.8)));
 		}
@@ -318,7 +318,7 @@ public final class XStateControl implements XStateHolder, ConvInputConsumer
 		{
 			if(levelMap.checkUpdate())
 			{
-				allEnemyReach = null; //TODO //levelMap.allEnemyReach();
+				allEnemyReach = levelMap.allEnemyReach();
 			}
 			allEnemyReach.forEach((tile, amount) -> visMarked.add(new VisMark(tile, "mark.reach.all", 0.8)));
 		}
