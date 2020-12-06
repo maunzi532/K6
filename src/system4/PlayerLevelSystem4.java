@@ -14,6 +14,12 @@ public class PlayerLevelSystem4 implements ClassAndLevelSystem
 	//TODO
 
 	@Override
+	public XClass4 xClass()
+	{
+		return null;
+	}
+
+	@Override
 	public Item4 visItem()
 	{
 		return null;
@@ -33,6 +39,12 @@ public class PlayerLevelSystem4 implements ClassAndLevelSystem
 
 	@Override
 	public int maxExp()
+	{
+		return 0;
+	}
+
+	@Override
+	public int addExp(int expAmount)
 	{
 		return 0;
 	}

@@ -1,7 +1,5 @@
 package logic.editor.editingmodes;
 
-import com.fasterxml.jackson.jr.ob.*;
-import com.fasterxml.jackson.jr.ob.comp.*;
 import geom.tile.*;
 import gui.*;
 import java.io.*;
@@ -23,15 +21,15 @@ public final class SaveMode implements EditingMode
 	private int state;
 
 	@Override
-	public GuiTile guiTile()
-	{
-		return GUI_TILES[state];
-	}
-
-	@Override
 	public void onEnter(MainState mainState)
 	{
 		state = 0;
+	}
+
+	@Override
+	public GuiTile guiTile()
+	{
+		return GUI_TILES[state];
 	}
 
 	@Override
@@ -40,10 +38,11 @@ public final class SaveMode implements EditingMode
 		try
 		{
 			var a1 = LoadHelper.startSave();
-			mainState.levelMap().save(a1, null);
+			mainState.levelMap().save(a1, mainState.systemScheme());
 			String text1 = LoadHelper.endSave(a1);
 			Path path = new FileChooser().showSaveDialog(null).toPath();
 			Files.writeString(path, text1);
+			state = 1;
 			/*var a1 = getA1();
 			mainState.levelMap().saveMapNC(a1, mainState.itemLoader());
 			String text1 = a1.end().finish();
@@ -62,12 +61,4 @@ public final class SaveMode implements EditingMode
 
 	@Override
 	public void onMapClick(MainState mainState, Tile tile, XKey key){}
-
-	private static ObjectComposer<JSONComposer<String>> getA1() throws IOException
-	{
-		return JSON.std.with(JSON.Feature.PRETTY_PRINT_OUTPUT)
-				.composeString()
-				.startObject()
-				.put("code", 0xA4D2839F);
-	}
 }

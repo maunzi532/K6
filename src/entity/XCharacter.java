@@ -11,7 +11,6 @@ import java.util.*;
 import java.util.stream.*;
 import levelmap.*;
 import load.*;
-import statsystem.*;
 import system4.*;
 import text.*;
 
@@ -41,13 +40,6 @@ public final class XCharacter implements InvHolder, XSaveableYS
 		this.systemChar = systemChar;
 		this.hasMainAction = hasMainAction;
 		visualReplaced = null;
-	}
-
-	public XCharacter createACopy(Tile copyLocation)
-	{
-		XCharacter copy = new XCharacter(team, savedInTeam, startingDelay, copyLocation, customName, customMapImage, customSideImage,
-				systemChar /*TODO copy*/, hasMainAction);
-		return copy;
 	}
 
 	public CharacterTeam team()
@@ -116,11 +108,6 @@ public final class XCharacter implements InvHolder, XSaveableYS
 	public void replaceVisual(XArrow arrow)
 	{
 		visualReplaced = arrow;
-	}
-
-	public Stats stats()
-	{
-		return null;
 	}
 
 	public SystemChar systemChar()
@@ -213,6 +200,11 @@ public final class XCharacter implements InvHolder, XSaveableYS
 		this.hasMainAction = hasMainAction;
 	}
 
+	public XCharacter createACopy(Tile copyLocation)
+	{
+		return new XCharacter(team, savedInTeam, startingDelay, copyLocation, customName, customMapImage, customSideImage, systemChar.createACopy(), hasMainAction);
+	}
+
 	public static XCharacter load(JrsObject data, TileType y1, SystemScheme systemScheme)
 	{
 		CharacterTeam team = CharacterTeam.valueOf(data.get("Team").asText());
@@ -223,7 +215,6 @@ public final class XCharacter implements InvHolder, XSaveableYS
 		String customMapImage = LoadHelper.asOptionalString(data.get("CustomMapImage"));
 		String customSideImage = LoadHelper.asOptionalString(data.get("CustomSideImage"));
 		SystemChar systemChar = SystemChar.load(data, y1, systemScheme);
-		//TurnResources resources = TurnResources.load((JrsObject) data.get("Resources"), y1);
 		boolean hasMainAction = LoadHelper.asBoolean(data.get("HasMainAction"));
 		return new XCharacter(team, savedInTeam, startingDelay, location, customName, customMapImage, customSideImage, systemChar, hasMainAction);
 	}
@@ -235,14 +226,13 @@ public final class XCharacter implements InvHolder, XSaveableYS
 		a1.put("SavedInTeam", savedInTeam);
 		a1.put("StartingDelay", startingDelay);
 		XSaveableY.saveLocation(location, a1, y1);
-		if(customName != null)
-			a1.put("CustomName", customName);
+		if(customName.name() != null)
+			a1.put("CustomName", customName.name());
 		if(customMapImage != null)
 			a1.put("CustomMapImage", customMapImage);
 		if(customSideImage != null)
 			a1.put("CustomSideImage", customSideImage);
 		systemChar.save(a1, y1, systemScheme);
-		//XSaveableY.saveObject("Resources", resources, a1, y1);
 		a1.put("HasMainAction", hasMainAction);
 	}
 }

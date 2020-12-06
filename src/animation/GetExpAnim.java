@@ -1,9 +1,8 @@
-package statsystem.animation;
+package animation;
 
 import arrow.*;
 import entity.*;
-import statsystem.*;
-import statsystem.analysis.*;
+import system4.*;
 
 public final class GetExpAnim implements AnimTimer
 {
@@ -14,8 +13,8 @@ public final class GetExpAnim implements AnimTimer
 
 	private final XCharacter entity;
 	private final XCharacter entityT;
-	private final Stats stats;
-	private final Stats statsT;
+	private final ClassAndLevelSystem cls;
+	private final ClassAndLevelSystem clsT;
 	private InfoArrow expBar;
 	private InfoArrow expBarT;
 	private boolean levelup;
@@ -29,26 +28,26 @@ public final class GetExpAnim implements AnimTimer
 	private boolean finished;
 	private int counter;
 
-	public GetExpAnim(AttackInfo aI, RNGOutcome2 result, Arrows arrows)
+	public GetExpAnim(AttackCalc4 aI, ACResult4 result, Arrows arrows)
 	{
-		entity = aI.entity;
-		entityT = aI.entityT;
-		stats = entity.stats();
-		statsT = entityT.stats();
-		if(entity.team() == CharacterTeam.HERO)
+		entity = aI.aI.initiator();
+		entityT = aI.aI.target();
+		cls = entity.systemChar().cls();
+		clsT = entityT.systemChar().cls();
+		if(cls.maxExp() > 0)
 		{
-			levelup = stats.exp() >= LEVELUP_EXP;
+			levelup = cls.exp() >= LEVELUP_EXP;
 			expAmount = 20;
 			expBar = new InfoArrow(entity.location(), "arrow.healthbar.exp",
-					"arrow.healthbar.background", "arrow.healthbar.text", stats.exp(), LEVELUP_EXP);
+					"arrow.healthbar.background", "arrow.healthbar.text", cls.exp(), LEVELUP_EXP);
 			arrows.addArrow(expBar);
 		}
-		if(entityT.team() == CharacterTeam.HERO)
+		if(clsT.maxExp() > 0)
 		{
-			levelupT = statsT.exp() >= LEVELUP_EXP;
+			levelupT = clsT.exp() >= LEVELUP_EXP;
 			expAmountT = 20;
 			expBarT = new InfoArrow(entityT.location(), "arrow.healthbar.exp",
-					"arrow.healthbar.background", "arrow.healthbar.text", statsT.exp(), LEVELUP_EXP);
+					"arrow.healthbar.background", "arrow.healthbar.text", clsT.exp(), LEVELUP_EXP);
 			arrows.addArrow(expBarT);
 		}
 		if(expAmount <= 0 && expAmountT <= 0)
@@ -57,19 +56,19 @@ public final class GetExpAnim implements AnimTimer
 
 	public void start()
 	{
-		if(entity.team() == CharacterTeam.HERO)
+		if(cls.maxExp() > 0)
 		{
-			startExp = stats.exp();
+			startExp = cls.exp();
 			expBar.statBar().setCurrent(startExp);
-			stats.addExp(expAmount);
-			endExp = stats.exp();
+			cls.addExp(expAmount);
+			endExp = cls.exp();
 		}
-		if(entityT.team() == CharacterTeam.HERO)
+		if(clsT.maxExp() > 0)
 		{
-			startExpT = statsT.exp();
+			startExpT = clsT.exp();
 			expBarT.statBar().setCurrent(startExpT);
-			statsT.addExp(expAmountT);
-			endExpT = statsT.exp();
+			clsT.addExp(expAmountT);
+			endExpT = clsT.exp();
 		}
 	}
 

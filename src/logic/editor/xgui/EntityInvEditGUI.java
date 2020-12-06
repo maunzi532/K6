@@ -1,16 +1,17 @@
 package logic.editor.xgui;
 
 import entity.*;
+import java.util.*;
 import logic.xstate.*;
 
 public final class EntityInvEditGUI extends InvEditGUI
 {
-	private final XCharacter invEntity;
+	private final XCharacter character;
 
-	public EntityInvEditGUI(XCharacter invEntity)
+	public EntityInvEditGUI(XCharacter character)
 	{
-		super(/*invEntity.inv()*/null, invEntity.name(), invEntity.stats().infoEdit());
-		this.invEntity = invEntity;
+		super(character.inv(), character.name(), List.of()/*invEntity.stats().infoEdit()*/);
+		this.character = character;
 	}
 
 	@Override
@@ -28,6 +29,6 @@ public final class EntityInvEditGUI extends InvEditGUI
 	@Override
 	public XMenu menu()
 	{
-		return XMenu.entityEditMenu(invEntity);
+		return XMenu.entityEditMenu(character);
 	}
 }

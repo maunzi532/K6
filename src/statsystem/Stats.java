@@ -6,7 +6,7 @@ import entity.*;
 import item.*;
 import java.io.*;
 import java.util.*;
-import statsystem.animation.*;
+import animation.*;
 import statsystem.content.*;
 import text.*;
 

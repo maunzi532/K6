@@ -3,7 +3,6 @@ package levelmap;
 import com.fasterxml.jackson.jr.ob.comp.*;
 import com.fasterxml.jackson.jr.stree.*;
 import geom.tile.*;
-import item.*;
 import item4.*;
 import java.io.*;
 import text.*;
@@ -15,7 +14,7 @@ public record StartingLocation(int number, CharSequence characterName, Tile loca
 		return invOverride == null;
 	}
 
-	public static StartingLocation load(JrsObject data, ItemLoader itemLoader, TileType y1, int number)
+	public static StartingLocation load(JrsObject data, TileType y1, int number)
 	{
 		CharSequence characterName = new NameText(data.get("Name").asText());
 		Tile location = y1.create2(((JrsNumber) data.get("sx")).getValue().intValue(), ((JrsNumber) data.get("sy")).getValue().intValue());
@@ -29,7 +28,7 @@ public record StartingLocation(int number, CharSequence characterName, Tile loca
 		return new StartingLocation(number, characterName, location, canSwap, invOverride, startingDelay);
 	}
 
-	public <T extends ComposerBase> void save(ObjectComposer<T> a1, ItemLoader itemLoader, TileType y1) throws IOException
+	public <T extends ComposerBase> void save(ObjectComposer<T> a1, TileType y1) throws IOException
 	{
 		a1.put("Name", characterName.toString());
 		a1.put("sx", y1.sx(location));

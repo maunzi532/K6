@@ -24,10 +24,10 @@ public final class AttackInfo
 	public AttackInfo(XCharacter entity, AttackMode mode, XCharacter entityT, AttackMode modeT, int distance)
 	{
 		this.entity = entity;
-		stats = entity.stats();
+		stats = null;//entity.stats();
 		this.mode = mode;
 		this.entityT = entityT;
-		statsT = entityT.stats();
+		statsT = null;//entityT.stats();
 		this.modeT = modeT;
 		this.distance = distance;
 		AttackMode3 attackMode = AttackMode3.convert(stats, mode);

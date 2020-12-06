@@ -1,11 +1,11 @@
 package logic.editor.xgui;
 
 import entity.*;
-import item.view.*;
+import gui.*;
+import item4.*;
 import java.util.*;
 import java.util.stream.*;
 import logic.*;
-import gui.*;
 import logic.xstate.*;
 
 public final class EntityEditGUI extends XGUIState
@@ -15,7 +15,7 @@ public final class EntityEditGUI extends XGUIState
 
 	private final XCharacter entity;
 	private List<? extends CharSequence> info;
-	private TargetScrollList<ItemView> invView;
+	private TargetScrollList<NumberedStack4> invView;
 	private ScrollList<Integer> infoView;
 	private ScrollList<Integer> changeView;
 	private int changeStatNum;
@@ -38,15 +38,15 @@ public final class EntityEditGUI extends XGUIState
 	{
 		changeStatNum = -1;
 		changeOptions = List.of();
-		invView = null;/*new TargetScrollList<>(0, 1, 2, 5, 2, 1,
-				entity.inv().viewItems(true), GuiTile::itemViewView, null);*/
+		invView = new TargetScrollList<>(0, 1, 2, 5, 2, 1,
+				entity.inv().viewItems(), GuiTile::itemStackView, null);
 		elements.add(invView);
 		infoView = new ScrollList<>(3, 1, 3, 5, 1, 1, null,
 				e -> GuiTile.textView(info.get(e)), this::clickInfo);
 		elements.add(infoView);
 		changeView = new ScrollList<>(7, 1, 1, 5, 1, 1, null,
-				e -> GuiTile.textView(changeOptions.get(e)),
-				target -> entity.stats().applyEditOption(changeStatNum, target, entity));
+				e -> GuiTile.textView(changeOptions.get(e)), null
+				/*target -> entity.stats().applyEditOption(changeStatNum, target, entity)*/);
 		elements.add(changeView);
 		textInvE = new CElement(textInv);
 		elements.add(textInvE);
@@ -87,10 +87,10 @@ public final class EntityEditGUI extends XGUIState
 	@Override
 	protected void updateBeforeDraw()
 	{
-		if(invView.getTargeted() != null && !invView.getTargeted().item.info().isEmpty())
-			info = invView.getTargeted().item.info();
+		if(invView.getTargeted() != null && !invView.getTargeted().item().info().toString().isBlank())
+			info = List.of(invView.getTargeted().item().info());
 		else
-			info = entity.stats().infoEdit();
+			info = List.of("menu.edit.character"); //entity.stats().infoEdit();
 		infoView.elements = IntStream.range(0, info.size()).boxed().collect(Collectors.toList());
 		changeView.elements = IntStream.range(0, changeOptions.size()).boxed().collect(Collectors.toList());
 		textInvE.fillTile = new GuiTile(entity.name());

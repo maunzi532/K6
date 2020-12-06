@@ -1,6 +1,5 @@
 package gui;
 
-import item.view.*;
 import item4.*;
 
 public final class GuiTile
@@ -64,14 +63,14 @@ public final class GuiTile
 		return new GuiTile[]{new GuiTile(text)};
 	}
 
-	public static GuiTile[] itemViewView(ItemView itemView)
+	/*public static GuiTile[] itemViewView(ItemView itemView)
 	{
 		return new GuiTile[]
 				{
 						new GuiTile(itemView.currentWithLimit()),
 						new GuiTile(null, itemView.item.image(), false, null)
 				};
-	}
+	}*/
 
 	public static GuiTile[] itemStackView(NumberedStack4 stack)
 	{

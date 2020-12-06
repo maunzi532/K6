@@ -2,7 +2,6 @@ package start;
 
 import geom.*;
 import geom.advtile.*;
-import item.*;
 import java.io.*;
 import java.net.*;
 import java.nio.charset.*;
@@ -11,7 +10,6 @@ import javafx.scene.*;
 import javafx.scene.canvas.*;
 import javafx.scene.paint.*;
 import javafx.stage.*;
-import statsystem.*;
 import vis.*;
 
 public final class XScene extends Application
@@ -41,10 +39,8 @@ public final class XScene extends Application
 		stage.setTitle(scheme.setting("window.title"));
 		stage.getIcons().add(scheme.image("window.icon"));
 		XGraphics graphics = new XGraphics(canvas.getGraphicsContext2D(), width, height);
-		ItemLoader itemLoader = new ItemLoader2();
 		MainVisual mainVisual = new MainVisual(graphics, scheme, mapCamera(scheme, graphics),
-				menuCamera(scheme, graphics), guiCamera(scheme, graphics), a1 -> editorSlotCamera(scheme, graphics, a1),
-				itemLoader, scheme.setting("load.team"));
+				menuCamera(scheme, graphics), guiCamera(scheme, graphics), a1 -> editorSlotCamera(scheme, graphics, a1), scheme.setting("load.team"));
 		XTimer xTimer = new XTimer(mainVisual, scheme.keybindFile());
 		scene.setOnMousePressed(xTimer::onMouseDown);
 		scene.setOnDragDetected(xTimer::onDragDetected);

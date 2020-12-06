@@ -31,6 +31,12 @@ public class EnemyLevelSystem4 implements ClassAndLevelSystem
 	}
 
 	@Override
+	public XClass4 xClass()
+	{
+		return xClass;
+	}
+
+	@Override
 	public Item4 visItem()
 	{
 		return xClass.visItem();
@@ -50,6 +56,12 @@ public class EnemyLevelSystem4 implements ClassAndLevelSystem
 
 	@Override
 	public int maxExp()
+	{
+		return 0;
+	}
+
+	@Override
+	public int addExp(int expAmount)
 	{
 		return 0;
 	}

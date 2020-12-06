@@ -1,4 +1,4 @@
-package statsystem.animation;
+package animation;
 
 import arrow.*;
 import entity.*;

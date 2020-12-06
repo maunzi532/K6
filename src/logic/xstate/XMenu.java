@@ -11,7 +11,7 @@ public final class XMenu
 
 	public static XMenu entityEditMenu(XCharacter entity)
 	{
-		return new XMenu(new EntityEditGUI(entity), new EntityInvEditGUI(entity), new StartingSettingsEditGUI(entity),
+		return new XMenu(new EntityEditGUI(entity), new EntityInvEditGUI(entity),
 				new EditMoveState(entity), new EditCopyState(entity), new EditDeleteState(entity));
 	}
 

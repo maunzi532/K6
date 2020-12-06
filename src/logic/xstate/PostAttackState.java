@@ -1,7 +1,7 @@
 package logic.xstate;
 
 import logic.*;
-import statsystem.animation.*;
+import animation.*;
 import system4.*;
 
 public final class PostAttackState extends AttackState
@@ -16,24 +16,24 @@ public final class PostAttackState extends AttackState
 	{
 		super(nextState, aI);
 		this.result = result;
-		//firstEnter = true;
+		firstEnter = true;
 	}
 
 	@Override
 	public void onEnter(MainState mainState)
 	{
-		aI.aI.initiator().setHP(result.hp1());
-		aI.aI.target().setHP(result.hp2());
-		if(result.hp1() <= 0)
-			mainState.levelMap().setDefeated(aI.aI.initiator());
-		if(result.hp2() <= 0)
-			mainState.levelMap().setDefeated(aI.aI.target());
 		if(firstEnter)
 		{
-			getExpAnim = null;//new GetExpAnim(aI, result, mainState.levelMap());
+			aI.aI.initiator().setHP(result.hp1());
+			aI.aI.target().setHP(result.hp2());
+			if(result.hp1() <= 0)
+				mainState.levelMap().setDefeated(aI.aI.initiator());
+			if(result.hp2() <= 0)
+				mainState.levelMap().setDefeated(aI.aI.target());
+			getExpAnim = new GetExpAnim(aI, result, mainState.levelMap());
 			firstEnter = false;
-			levelup = false;//getExpAnim.isLevelup();
-			levelupT = false;//getExpAnim.isLevelupT();
+			levelup = getExpAnim.isLevelup();
+			levelupT = getExpAnim.isLevelupT();
 		}
 		if(levelup)
 		{
@@ -47,20 +47,20 @@ public final class PostAttackState extends AttackState
 		}
 		else
 		{
-			//getExpAnim.start();
+			getExpAnim.start();
 		}
 	}
 
 	@Override
 	public void tick(MainState mainState)
 	{
-		//getExpAnim.tick();
+		getExpAnim.tick();
 	}
 
 	@Override
 	public boolean finished()
 	{
-		return true;//getExpAnim.finished();
+		return getExpAnim.finished();
 	}
 
 	@Override

@@ -1,29 +1,26 @@
 package logic.editor.xgui;
 
-import item.*;
-import item.inv.*;
-import item.view.*;
+import gui.*;
+import item4.*;
 import java.util.*;
 import logic.*;
-import gui.*;
-import statsystem.content.*;
 
 public class InvEditGUI extends XGUIState
 {
 	private static final CTile textInv = new CTile(2, 0, 2, 1);
-	private static final CTile weight = new CTile(0, 0);
+	//private static final CTile weight = new CTile(0, 0);
 
-	private final Inv inv;
+	private final Inv4 inv;
 	private final CharSequence name;
 	private final List<? extends CharSequence> defaultInfo;
-	private TargetScrollList<ItemView> invView;
+	private TargetScrollList<NumberedStack4> invView;
 	private ScrollList<CharSequence> infoView;
-	private TargetScrollList<Item> allItemsView;
-	private CElement weightElement;
+	private TargetScrollList<Item4> allItemsView;
+	//private CElement weightElement;
 	private boolean otherItem;
-	private Item editItem;
+	private NumberedStack4 editItem;
 
-	public InvEditGUI(Inv inv, CharSequence name, List<? extends CharSequence> defaultInfo)
+	public InvEditGUI(Inv4 inv, CharSequence name, List<? extends CharSequence> defaultInfo)
 	{
 		this.inv = inv;
 		this.name = name;
@@ -40,18 +37,18 @@ public class InvEditGUI extends XGUIState
 	public void onEnter(MainState mainState)
 	{
 		invView = new TargetScrollList<>(0, 1, 2, 5, 2, 1, null,
-				GuiTile::itemViewView, this::itemClick1);
+				GuiTile::itemStackView, this::itemClick1);
 		elements.add(invView);
 		infoView = new ScrollList<>(2, 1, 3, 5, 1, 1, null,
 				GuiTile::textView, this::onClickInfoView);
 		elements.add(infoView);
 		allItemsView = new TargetScrollList<>(5, 1, 3, 5, 1, 1,
-				AttackItems.INSTANCE.allItemsList, e -> GuiTile.cast(new GuiTile(null, e.image(), false, null)),
+				mainState.systemScheme().allItems, e -> GuiTile.cast(new GuiTile(e.name(), e.image(), false, null)),
 				this::itemClick2);
 		elements.add(allItemsView);
 		elements.add(new CElement(textInv, new GuiTile(name)));
-		weightElement = new CElement(weight);
-		elements.add(weightElement);
+		//weightElement = new CElement(weight);
+		//elements.add(weightElement);
 		update();
 	}
 
@@ -70,7 +67,7 @@ public class InvEditGUI extends XGUIState
 	@Override
 	protected void updateBeforeDraw()
 	{
-		invView.elements = inv.viewItems(true);
+		invView.elements = inv.viewItems();
 		if(editItem != null)
 		{
 			if(otherItem)
@@ -78,31 +75,31 @@ public class InvEditGUI extends XGUIState
 			else
 				infoView.elements = List.of("gui.edit.inv.increase", "gui.edit.inv.decrease", "gui.edit.inv.stop");
 		}
-		else if(invView.getTargeted() != null && !invView.getTargeted().item.info().isEmpty())
+		else if(invView.getTargeted() != null && !invView.getTargeted().item().info().toString().isBlank())
 		{
-			infoView.elements = invView.getTargeted().item.info();
+			infoView.elements = List.of();//invView.getTargeted().item().info();
 		}
-		else if(allItemsView.getTargeted() != null && !allItemsView.getTargeted().info().isEmpty())
+		else if(allItemsView.getTargeted() != null && !allItemsView.getTargeted().info().toString().isBlank())
 		{
-			infoView.elements = allItemsView.getTargeted().info();
+			infoView.elements = List.of();//allItemsView.getTargeted().info();
 		}
 		else
 		{
 			infoView.elements = defaultInfo;
 		}
-		weightElement.fillTile = new GuiTile(inv.viewInvWeight().currentWithLimit());
+		//weightElement.fillTile = new GuiTile(inv.viewInvWeight().currentWithLimit());
 	}
 
-	private void itemClick1(ItemView target)
+	private void itemClick1(NumberedStack4 target)
 	{
 		otherItem = false;
-		editItem = target.item;
+		editItem = target;
 	}
 
-	private void itemClick2(Item target)
+	private void itemClick2(Item4 target)
 	{
 		otherItem = true;
-		editItem = target;
+		editItem = new NumberedStack4(target, 1, false, false, null, -1);
 	}
 
 	private void onClickInfoView(CharSequence target)
@@ -113,16 +110,14 @@ public class InvEditGUI extends XGUIState
 			{
 				case "gui.edit.inv.add", "gui.edit.inv.increase" ->
 				{
-					inv.tryAdd(ItemList.create(editItem));
+					inv.tryAdd(new ItemStack4(editItem.item(), 1));
 					update();
 				}
 				case "gui.edit.inv.decrease" ->
 				{
-					inv.tryGive(ItemList.create(editItem), false, CommitType.COMMIT);
-					if(!inv.tryGive(ItemList.create(editItem), false, CommitType.ROLLBACK))
-					{
+					inv.takeNum(editItem.num(), 1);
+					if(editItem.count() <= 1)
 						editItem = null;
-					}
 					update();
 				}
 				case "gui.edit.inv.stop" ->

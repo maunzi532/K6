@@ -83,6 +83,7 @@ public final class TradeTargetState implements NMarkState
 	private void startTradeState(XStateHolder stateHolder, InvHolder inv1)
 	{
 		stateHolder.setState(new DoubleTradeGUI(character, inv1));
+		//stateHolder.setState(new HealState(NoneState.INSTANCE, character, (XCharacter) inv1, 10));
 	}
 
 	@Override

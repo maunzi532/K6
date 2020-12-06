@@ -2,7 +2,6 @@ package entity.sideinfo;
 
 import arrow.*;
 import entity.*;
-import statsystem.*;
 import system4.*;
 
 public interface SideInfoFrame
@@ -12,8 +11,6 @@ public interface SideInfoFrame
 	void setStandardSideInfo(XCharacter character);
 
 	void sidedInfo(XCharacter e1, XCharacter e2);
-
-	void setAttackSideInfo(AttackInfo aI);
 
 	void setAttackInfoSideInfo(AttackCalc4 aI);
 

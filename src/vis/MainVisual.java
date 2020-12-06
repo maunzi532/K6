@@ -3,7 +3,6 @@ package vis;
 import com.fasterxml.jackson.jr.stree.*;
 import geom.*;
 import geom.tile.*;
-import item.*;
 import java.io.*;
 import java.nio.file.*;
 import java.util.function.*;
@@ -35,6 +34,7 @@ public final class MainVisual implements XInputInterface
 	private VisualGUI visualGUI;
 	private VisualLevelEditor visualLevelEditor;
 	private VisualSideInfoFrame visualSideInfoFrame;
+	private SystemScheme systemScheme;
 	private LevelMap4 levelMap;
 	private LevelEditor levelEditor;
 	private XStateHolder stateHolder;
@@ -44,8 +44,7 @@ public final class MainVisual implements XInputInterface
 
 	public MainVisual(XGraphics graphics, Scheme scheme,
 			TileCamera mapCamera, TileCamera menuCamera, TileCamera guiCamera,
-			Function<Double, TileCamera> editorSlotCamera,
-			ItemLoader itemLoader, String loadFileTeam)
+			Function<Double, TileCamera> editorSlotCamera, String loadFileTeam)
 	{
 		this.graphics = graphics;
 		this.scheme = scheme;
@@ -57,13 +56,13 @@ public final class MainVisual implements XInputInterface
 		visualGUI = VisualGUI.forCamera(graphics, guiCamera);
 		visualLevelEditor = new VisualLevelEditor(graphics, editorSlotCamera);
 		visualSideInfoFrame = new VisualSideInfoFrame(graphics, false);
-		levelMap = loadLevel(loadFileTeam);
+		loadLevel(loadFileTeam);
 		//levelMap = new LevelMap(mapCamera.doubleType());
 		levelEditor = new LevelEditor();
 		XStateControl stateControl = new XStateControl(levelMap, levelEditor);
 		stateHolder = stateControl;
 		convInputConsumer = stateControl;
-		MainState mainState = new MainState(levelMap, stateHolder, visualSideInfoFrame, itemLoader);
+		MainState mainState = new MainState(levelMap, stateHolder, visualSideInfoFrame, systemScheme);
 		stateControl.setMainState(mainState, new NoneState());
 		//loadLevel(loadFileTeam, itemLoader, levelMap, scheme);
 		//stateControl.setState(new EventListState(levelMap.eventPack("Start").events(), new StartTurnState()));
@@ -73,8 +72,8 @@ public final class MainVisual implements XInputInterface
 		draw();
 	}
 
-	private static void loadLevel(String loadFileTeam, ItemLoader itemLoader, LevelMap levelMap, Scheme scheme)
-	{
+	/*private static void loadLevel(String loadFileTeam, ItemLoader itemLoader, LevelMap levelMap, Scheme scheme)
+	{*/
 		/*File fileTeam;
 		if(loadFileTeam != null)
 		{
@@ -122,16 +121,14 @@ public final class MainVisual implements XInputInterface
 		/*levelMap.addBuilding2(new ProductionBuilding(y2.create2(-2, -2), buildingBlueprintCache.get("BLUE1")));
 		levelMap.addBuilding2(new ProductionBuilding(y2.create2(-3, -3), buildingBlueprintCache.get("GSL1")));
 		levelMap.addBuilding(new Transporter(y2.create2(-3, -2), buildingBlueprintCache.get("Transporter1")));*/
-	}
+	/*}*/
 
-	private static LevelMap4 loadLevel(String loadFile)
+	private void loadLevel(String loadFile)
 	{
 		try
 		{
 			Path path1 = Path.of(loadFile);
 			JrsObject a1 = LoadHelper.startLoad(path1);
-			SystemScheme systemScheme;
-			LevelMap4 levelMap;
 			JrsValue v1 = a1.get("TurnCounter");
 			if(v1 != null)
 			{
@@ -175,7 +172,6 @@ public final class MainVisual implements XInputInterface
 					levelMap.loadTeam(a1, systemScheme);
 			}
 			//levelMap.setEventPacks(EventPack.read(world, currentMap, scheme.setting("file.locale.level"), itemLoader, levelMap.y1));
-			return levelMap;
 		}catch(IOException e)
 		{
 			throw new RuntimeException(e);

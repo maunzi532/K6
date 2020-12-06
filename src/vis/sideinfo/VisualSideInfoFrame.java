@@ -4,7 +4,6 @@ import arrow.*;
 import entity.*;
 import entity.sideinfo.*;
 import java.util.*;
-import statsystem.*;
 import system4.*;
 import vis.*;
 
@@ -61,7 +60,7 @@ public final class VisualSideInfoFrame implements SideInfoFrame
 		return new SideInfo(character, character.sideImageName(), statBar, character.sideInfoText(character.name1()));
 	}
 
-	@Override
+	/*@Override
 	public void setAttackSideInfo(AttackInfo aI)
 	{
 		boolean inverted = isInverted(aI.entity, aI.entityT);
@@ -69,7 +68,7 @@ public final class VisualSideInfoFrame implements SideInfoFrame
 		AttackSide side2 = inverted ? AttackSide.INITIATOR : AttackSide.TARGET;
 		l0.setSideInfo(attackSideInfo(aI.getEntity(side1), aI.getSideInfoChange(side1), aI.getSideInfos(side1)));
 		r0.setSideInfo(attackSideInfo(aI.getEntity(side2), aI.getSideInfoChange(side2), aI.getSideInfos(side2)));
-	}
+	}*/
 
 	@Override
 	public void setAttackInfoSideInfo(AttackCalc4 aI)

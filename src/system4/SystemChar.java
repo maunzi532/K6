@@ -38,7 +38,7 @@ public final class SystemChar implements XSaveableYS
 			this.currentHP = stat(Stats4.MAX_HP);
 	}
 
-	public ClassAndLevelSystem cle()
+	public ClassAndLevelSystem cls()
 	{
 		return cls;
 	}
@@ -117,6 +117,11 @@ public final class SystemChar implements XSaveableYS
 				(attack && e.attackRanges() != null && e.attackRanges().hasRange(distance, 0)) ||
 				(ability && e.abilityRanges() != null && e.abilityRanges().hasRange(distance, stat(Stats4.ABILITY_RANGE))))
 				.collect(Collectors.toList());
+	}
+
+	public SystemChar createACopy()
+	{
+		return new SystemChar(cls, inv, enemyAI, currentHP); //TODO
 	}
 
 	public static SystemChar load(JrsObject data, TileType y1, SystemScheme systemScheme)

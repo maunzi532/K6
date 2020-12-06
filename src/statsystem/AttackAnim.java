@@ -1,5 +1,6 @@
-package statsystem.animation;
+package statsystem;
 
+import animation.*;
 import arrow.*;
 import entity.*;
 import java.util.*;

@@ -3,7 +3,6 @@ package logic.event;
 import com.fasterxml.jackson.jr.ob.*;
 import com.fasterxml.jackson.jr.stree.*;
 import geom.tile.*;
-import item.*;
 import java.io.*;
 import java.nio.file.*;
 import java.util.*;
@@ -14,13 +13,13 @@ public final class EventPack
 {
 	private final List<NEvent> events;
 
-	public EventPack(JrsArray data, ItemLoader itemLoader, TileType y1)
+	public EventPack(JrsArray data, TileType y1)
 	{
 		events = new ArrayList<>();
-		data.elements().forEachRemaining(e -> addEvent((JrsObject) e, itemLoader, y1));
+		data.elements().forEachRemaining(e -> addEvent((JrsObject) e, y1));
 	}
 
-	private void addEvent(JrsObject element, ItemLoader itemLoader, TileType y1)
+	private void addEvent(JrsObject element, TileType y1)
 	{
 		events.add(switch(element.get("EventType").asText())
 				{
@@ -34,7 +33,7 @@ public final class EventPack
 		return events;
 	}
 
-	public static Map<String, EventPack> read(CharSequence world, CharSequence level, String language, ItemLoader itemLoader, TileType y1)
+	public static Map<String, EventPack> read(CharSequence world, CharSequence level, String language, TileType y1)
 	{
 		try
 		{
@@ -48,7 +47,7 @@ public final class EventPack
 					if(data.get(e) instanceof JrsArray arr)
 						all.put(e, arr);
 				});
-				return all.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, e -> new EventPack(e.getValue(), itemLoader, y1)));
+				return all.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, e -> new EventPack(e.getValue(), y1)));
 			}
 			else
 				throw new RuntimeException("No code");

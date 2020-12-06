@@ -1,11 +1,11 @@
 package logic;
 
 import entity.sideinfo.*;
-import item.*;
 import levelmap.*;
 import logic.xstate.*;
+import system4.*;
 
-public record MainState(LevelMap4 levelMap, XStateHolder stateHolder, SideInfoFrame side, ItemLoader itemLoader)
+public record MainState(LevelMap4 levelMap, XStateHolder stateHolder, SideInfoFrame side, SystemScheme systemScheme)
 {
 	//content
 	//TODO    Build a real level

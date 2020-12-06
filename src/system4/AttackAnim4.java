@@ -3,7 +3,7 @@ package system4;
 import arrow.*;
 import entity.*;
 import java.util.*;
-import statsystem.animation.*;
+import animation.*;
 
 public final class AttackAnim4 implements AnimTimer
 {

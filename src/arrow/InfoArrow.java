@@ -25,6 +25,12 @@ public final class InfoArrow extends XArrow
 		this.statBar = statBar;
 	}
 
+	public InfoArrow(Tile location1, StatBar statBar)
+	{
+		super(List.of(location1), 0, true, null);
+		this.statBar = statBar;
+	}
+
 	public StatBar statBar()
 	{
 		return statBar;

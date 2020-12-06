@@ -3,7 +3,7 @@ package system4;
 import arrow.*;
 import entity.*;
 import java.util.*;
-import statsystem.animation.*;
+import animation.*;
 
 public record ACResult4(List<AnimPart> animParts, int hp1, int hp2, StatBar hpBar1, StatBar hpBar2)
 {
