@@ -5,6 +5,7 @@ import item.*;
 import java.util.*;
 import java.util.stream.*;
 import load.*;
+import text.*;
 
 public record EquipableItem4(CharSequence name, String image, CharSequence info, int stackLimit,
                              Set<String> tags, Map<Stats4, List<Modifier4>> modifiers,
@@ -31,5 +32,36 @@ public record EquipableItem4(CharSequence name, String image, CharSequence info,
 		Ranges4 defendRanges = Ranges4.load(LoadHelper.asOptionalString(data.get("DefendRanges")));
 		return new EquipableItem4(name, image, info, stackLimit, tags, modifiers,
 				additional, attackRanges, abilityRanges, allyRanges, defendRanges);
+	}
+
+	public List<CharSequence> statsInfo()
+	{
+		return List.of
+				(
+						viewRanges("item.ranges.attack", attackRanges),
+						viewRanges("item.ranges.ability", abilityRanges),
+						viewRanges("item.ranges.ally", allyRanges),
+						viewRanges("item.ranges.defend", defendRanges),
+						viewAdditional("item.attackcount", "AttackCount"),
+						viewAdditional("item.attackpower", "AttackPower"),
+						viewAdditional("item.abilitypower", "AbilityPower"),
+						viewAdditional("item.magic", "Magic")
+				);
+	}
+
+	private CharSequence viewRanges(String formatKey, Ranges4 ranges)
+	{
+		if(ranges == null)
+			return "_";
+		else
+			return new ArgsText(formatKey, ranges.view());
+	}
+
+	private CharSequence viewAdditional(String formatKey, String key)
+	{
+		if(additional.containsKey(key))
+			return new ArgsText(formatKey, additional.get(key));
+		else
+			return "_";
 	}
 }

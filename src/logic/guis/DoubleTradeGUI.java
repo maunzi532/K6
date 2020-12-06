@@ -125,7 +125,7 @@ public final class DoubleTradeGUI extends XGUIState
 	@Override
 	public XMenu menu()
 	{
-		return new XMenu(new TagInvGUI((XCharacter) inv1), this, new EndTurnState());
+		return new XMenu(new CharacterInfoGUI((XCharacter) inv1), this, new EndTurnState());
 	}
 
 
@@ -148,14 +148,4 @@ public final class DoubleTradeGUI extends XGUIState
 		view1.elements = inv1.inv().viewItems();
 		view2.elements = inv2.inv().viewItems();
 	}
-
-	/*private GuiTile[] itemView(NumberedStack4 view, boolean active)
-	{
-		String color = active ? "gui.background.active" : null;
-		return new GuiTile[]
-				{
-						new GuiTile(view.viewText(), null, false, color),
-						new GuiTile(null, view.item().image(), false, color)
-				};
-	}*/
 }

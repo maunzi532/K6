@@ -55,7 +55,7 @@ public final class TradeTargetState implements NMarkState
 	@Override
 	public XMenu menu()
 	{
-		return new XMenu(new TagInvGUI(character), this, new EndTurnState());
+		return new XMenu(new CharacterInfoGUI(character), this, new EndTurnState());
 	}
 
 	@Override

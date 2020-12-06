@@ -2,6 +2,7 @@ package system;
 
 import java.util.*;
 import java.util.stream.*;
+import text.*;
 
 public class Ranges4
 {
@@ -40,5 +41,34 @@ public class Ranges4
 	{
 		return IntStream.range(0, rangeBonus + 1)
 				.flatMap(i -> ranges.stream().mapToInt(i1 -> i1 + i)).distinct().sorted();
+	}
+
+	public CharSequence view()
+	{
+		if(ranges.isEmpty())
+			return "range.none";
+		List<CharSequence> collected = new ArrayList<>();
+		int start = ranges.get(0);
+		int current = start;
+		for(int i = 1; i < ranges.size(); i++)
+		{
+			if(ranges.get(i) == current + 1)
+			{
+				current++;
+			}
+			else
+			{
+				if(start == current)
+					collected.add(new ArgsText("range.one", start));
+				else
+					collected.add(new ArgsText("range.range", start, current));
+				start = ranges.get(i);
+			}
+		}
+		if(start == current)
+			collected.add(new ArgsText("range.one", start));
+		else
+			collected.add(new ArgsText("range.range", start, current));
+		return new MultiText(collected, MultiTextConnect.LISTED);
 	}
 }

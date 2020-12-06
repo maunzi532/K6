@@ -25,17 +25,14 @@
     "mouse.SECONDARY,edit.floorset.set",
     "key.ENTER,state.endturn",
     "key.ENTER,state.endmove",
-    "key.BACK_SPACE,state.revertmove",
     "key.E,state.edit.character",
     "key.I,state.edit.inv.character",
-    "key.S,state.edit.start",
+    "key.M,state.edit.move",
     "key.C,state.edit.copy",
     "key.D,state.edit.delete",
-    "key.M,state.edit.move",
     "key.C,state.stats",
     "key.M,state.advmove",
     "key.T,state.trade",
-    "key.F,state.floor",
     "key.R,state.reach",
     "key.M,state.swap"
   ]

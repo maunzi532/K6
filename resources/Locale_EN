@@ -9,30 +9,35 @@
     "multitext.listed" : ", ",
     "multitext.lines" : "%n",
     "multitext.or" : " or ",
+
     "mouse.0" : "None",
     "mouse.1" : "Left Click",
     "mouse.2" : "Middle Click",
     "mouse.3" : "Right Click",
     "mouse.4" : "Mouse Back",
     "mouse.5" : "Mouse Forward",
+
     "turn.display.0" : "Preparation Phase",
     "turn.display" : "Turn %d",
+
     "pause" : "Paused",
     "pause.info" : "%s to open pause menu",
+
     "gui.scroll.up" : "Scroll",
     "gui.scroll.down" : "Scroll",
+
     "itemview.base" : "%d",
     "itemview.base.tag" : "%d%n%s",
     "itemview.one" : "",
     "itemview.one.tag" : "%n%s",
     "itemview.limit" : "%d / %d",
     "itemview.limit.tag" : "%d / %d%n%s",
-    "gui.double.header.input" : "Input",
-    "gui.double.header.output" : "Output",
+
     "gui.trade.all" : "All",
     "gui.trade.half" : "Half",
     "gui.trade.one" : "1",
     "gui.trade.swap" : "Swap",
+
     "gui.stats.unequip" : "Unequip",
     "gui.stats.mode.stats" : "View Mode%nStats View",
     "gui.stats.mode.combatdata" : "View Mode%nCombat Data",
@@ -118,6 +123,7 @@
     "attackinfo.advantage" : "+",
     "sideinfo.generic.hero" : "Ally",
     "sideinfo.generic.enemy" : "Enemy",
+
     "menu.swap" : "Swap",
     "menu.reach" : "Reach",
     "menu.endturn.start" : "Start Level",
@@ -126,32 +132,34 @@
     "menu.endmove" : "End",
     "menu.attackinfo" : "Attack",
     "menu.stats" : "Stats",
-    "menu.edit.copy" : "Copy",
-    "menu.edit.delete" : "Delete",
-    "menu.edit.move" : "Move",
     "menu.edit.character" : "Edit",
     "menu.edit.inv.character" : "Edit Inv.",
+    "menu.edit.move" : "Move",
+    "menu.edit.copy" : "Copy",
+    "menu.edit.delete" : "Delete",
     "menu.trade" : "Trade",
-    "menu.floor" : "Floor",
-    "menu.regenerate" : "Regenerate",
-    "menu.revertmove" : "Back",
-    "menu.edit.start" : "Starting settings",
+
     "gui.editmode.header" : "Editing modes",
     "editmode.save" : "Save",
     "editmode.save.saved" : "Saved",
     "editmode.save.error" : "Error",
-    "editmode.create" : "Create Object",
-    "editmode.edit" : "Edit Object",
+    "editmode.create" : "Create Char.",
+    "editmode.edit" : "Edit Char.",
+
     "floortile.blue" : "Blue",
     "floortile.gsl" : "GSL",
     "floortile.tech" : "Tech",
     "floortile.wall" : "Wall",
     "floortile.wood" : "Bricks",
+
     "gui.edit.create.ally" : "Add ally",
     "gui.edit.create.enemy" : "Add enemy",
+
     "statbar.change" : "%d (%+d) / %d",
     "statbar" : "%d / %d",
+
     "class.withlevel" : "%s lv%d",
+
     "class.bandit" : "Bandit",
     "class.soldier" : "Soldier",
     "class.squire" : "Squire",
@@ -174,9 +182,11 @@
     "ability.liferefund" : "Life Refund",
     "ability.criticaltarget" : "Focused",
     "ability.fastfire" : "Fast Fire",
+
     "range.none" : "-",
     "range.one" : "%d",
     "range.range" : "%d-%d",
+
     "stats.info.class" : "Class%n%s",
     "stats.info.level" : "Level%n%d",
     "stats.info.exp" : "Exp%n%d",
@@ -222,16 +232,20 @@
     "stats.equip.evasion.magical" : "Evade (mag.)%n%s",
     "stats.equip.critprotection" : "Prevent Crit%n%s",
     "ability.withmode" : "(%s)",
+
     "gui.edit.inv.add" : "Add",
     "gui.edit.inv.increase" : "+",
     "gui.edit.inv.decrease" : "-",
     "gui.edit.inv.stop" : "X",
+
     "gui.edit.start.locklocation" : "Lock%nLocation",
     "gui.edit.start.lockinventory" : "Lock%nInventory",
     "calculation.never" : "Never",
     "calculation.always" : "Always",
     "calculation.percent" : "%.0f%%",
+
     "storage.name" : "Storage",
+
     "stats.levelup.class" : "Class%n%s",
     "stats.levelup.level" : "Level%n%d -> %d",
     "stats.levelup.exp" : "Exp%n%d -> %d",
@@ -245,11 +259,22 @@
     "stats.levelup.evasion" : "Evasion%n%d -> %d",
     "stats.levelup.toughness" : "Toughness%n%d -> %d",
     "stats.levelup.power" : "Power%n%d -> %d",
+
     "attackinfo.damage" : "Damage%n%d",
     "attackinfo.attackcount" : "x%d",
     "attackinfo.accuracy" : "Accuracy%n%d",
+
     "class.mage" : "Mage",
     "class.archer" : "Archer",
-    "class.bandit" : "Bandit"
+    "class.bandit" : "Bandit",
+
+    "item.ranges.attack" : "Attack R.%n%s",
+    "item.ranges.ability" : "Ability R.%n%s",
+    "item.ranges.ally" : "Ally R.%n%s",
+    "item.ranges.defend" : "Defend R.%n%s",
+    "item.attackcount" : "%d attacks",
+    "item.attackpower" : "Attack%n%d",
+    "item.abilitypower" : "Power%n%d",
+    "item.magic" : "Magic"
   }
 }

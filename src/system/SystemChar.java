@@ -119,6 +119,11 @@ public final class SystemChar implements XSaveableYS
 				.collect(Collectors.toList());
 	}
 
+	public List<CharSequence> statsInfo()
+	{
+		return Arrays.stream(Stats4.values()).map(stat -> "_" + stat.name().toLowerCase() + "\n" + stat(stat)).collect(Collectors.toList());
+	}
+
 	public SystemChar createACopy()
 	{
 		return new SystemChar(cls, inv, enemyAI, currentHP); //TODO

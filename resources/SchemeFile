@@ -19,42 +19,54 @@
     "gui.background.active" : "00ffff",
     "gui.text" : "000000",
     "gui.text.outline" : "ffffff",
+
     "gui.trade.name.background" : "a0a0bb",
+
     "gui.editor.slot.active" : "d3d3d3",
+
     "arrow.healthbar.hero" : "007700",
     "arrow.healthbar.enemy" : "777777",
     "arrow.healthbar.exp" : "770077",
     "arrow.healthbar.background" : "000000",
     "arrow.healthbar.text" : "ffffff",
+
     "mark.cursor" : "ffa500",
     "mark.cursor.drag" : "00ffff",
+
     "mark.move.move" : "ffff00",
     "mark.move.attack" : "ff0000",
     "mark.move.ally" : "00ff00",
+    "mark.swap" : "ffff00",
+    "mark.trade.target" : "ffff00",
+
     "mark.reach.move" : "c71585",
     "mark.reach.attack" : "ff0000",
     "mark.reach.all" : "000000",
-    "mark.swap" : "ffff00",
-    "mark.trade.target" : "ffff00",
+
     "menu.background.1" : "9acd32",
     "menu.background.2" : "ff4500",
     "menu.background.active.1" : "006400",
     "menu.background.active.2" : "8b0000",
     "menu.text" : "000000",
     "menu.text.keybind" : "2f4f4f",
+
     "sideinfo.background" : "666680",
     "sideinfo.text" : "000000",
+
     "topbar.background" : "222222",
     "topbar.text" : "dddddd"
   },
   "Images" : {
     "window.icon" : "Tech.png",
+
     "floortile.blue" : "BLUE_Tile.png",
     "floortile.gsl" : "GSL_Tile.png",
     "floortile.tech" : "RED_Tile.png",
     "floortile.wall" : "WALL_Tile.png",
     "floortile.wood" : "WOOD_Tile.png",
+
     "gui.trade.arrow" : "Arrow.png",
+
     "character.enemy.0" : "Enemy_0.png",
     "character.anna.standard" : "AN_3.png",
     "character.kate.standard" : "KT_4.png",
@@ -62,7 +74,9 @@
     "character.selen.standard" : "LN_1.png",
     "character.dave.standard" : "DE_3.png",
     "character.edna.standard" : "EN_3.png",
+
     "mapsprite.default" : "Enemy_3.png",
+
     "equipment.dagger" : "DaggerItem.png",
     "equipment.spear" : "SpearItem.png",
     "equipment.axe" : "AxeItem.png",
@@ -72,6 +86,7 @@
     "equipment.magicsword" : "MagicSwordItem.png",
     "equipment.lance" : "LanceItem.png",
     "equipment.gun" : "GunItem.png",
+
     "resource.blue" : "BLUE.png",
     "resource.gsl" : "GSL.png",
     "resource.material" : "X.png",
