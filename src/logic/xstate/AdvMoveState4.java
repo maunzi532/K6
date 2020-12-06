@@ -12,8 +12,8 @@ public final class AdvMoveState4 implements NMarkState
 	private final XCharacter character;
 	private final MoveState moveState;
 	private final Tile startLocation;
-	private MainState mainState1;
 	private List<PathLocation> movement;
+	private MainState mainState1;
 	private List<XCharacter> attack;
 	private List<XCharacter> ally;
 	private List<VisMark> allTargets;
@@ -25,7 +25,7 @@ public final class AdvMoveState4 implements NMarkState
 		startLocation = character.location();
 	}
 
-	public AdvMoveState4(XCharacter character, MoveState moveState, Tile startLocation)
+	private AdvMoveState4(XCharacter character, MoveState moveState, Tile startLocation)
 	{
 		this.character = character;
 		this.moveState = moveState;
@@ -82,7 +82,7 @@ public final class AdvMoveState4 implements NMarkState
 	@Override
 	public XMenu menu()
 	{
-		return XMenu.characterMoveMenu4(character);
+		return new XMenu(this, new EndMoveState(character));
 	}
 
 	@Override
@@ -113,7 +113,7 @@ public final class AdvMoveState4 implements NMarkState
 	{
 		return switch(moveState)
 				{
-					case INIT -> new StateReverter(NoneState.INSTANCE, NoneState.INSTANCE, new AdvMoveState4(character, MoveState.ACTION_USED, startLocation));
+					case INIT -> new StateReverter(new AdvMoveState4(character, MoveState.INIT, startLocation), new AdvMoveState4(character, MoveState.INIT, startLocation), new AdvMoveState4(character, MoveState.ACTION_USED, startLocation));
 					case ACTION_USED -> new StateReverter(new AdvMoveState4(character, MoveState.ACTION_USED, startLocation), new AdvMoveState4(character, MoveState.ACTION_USED, startLocation), new AdvMoveState4(character, MoveState.ACTION_USED, startLocation));
 					case MOVED -> new StateReverter(new AdvMoveState4(character, MoveState.MOVED, startLocation), new AdvMoveState4(character, MoveState.MOVED_LOCKED, startLocation), new EndMoveState(character));
 					case MOVED_LOCKED -> new StateReverter(new AdvMoveState4(character, MoveState.MOVED_LOCKED, startLocation), new AdvMoveState4(character, MoveState.MOVED_LOCKED, startLocation), new EndMoveState(character));

@@ -30,13 +30,13 @@ public class EndMoveState implements NAutoState
 	@Override
 	public CharSequence text()
 	{
-		return "End";
+		return "menu.endmove";
 	}
 
 	@Override
 	public String keybind()
 	{
-		return "state.endturn";
+		return "state.endmove";
 	}
 
 	@Override

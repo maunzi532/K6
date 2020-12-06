@@ -133,6 +133,10 @@ public final class SchemeFile implements Scheme
 
 	private String localize(String key)
 	{
+		if(!key.isEmpty() && key.charAt(0) == '_')
+			return key.substring(1);
+		if(!locale.containsKey(key))
+			throw new RuntimeException("Localization key \"" + key + "\" missing");
 		return locale.getOrDefault(key, "X_" + key);
 	}
 

@@ -9,18 +9,18 @@ import logic.*;
 public final class ReachViewState implements NMarkState
 {
 	private final XCharacter character;
-	private final boolean enemy;
+	private MainState mainState1;
 	private List<VisMark> allTargets;
 
-	public ReachViewState(XCharacter character, boolean enemy)
+	public ReachViewState(XCharacter character)
 	{
 		this.character = character;
-		this.enemy = enemy;
 	}
 
 	@Override
 	public void onEnter(MainState mainState)
 	{
+		mainState1 = mainState;
 		mainState.side().setStandardSideInfo(character);
 		List<Tile> movement = new Pathing(character, character.movement(), mainState.levelMap(), true).getEndpoints();
 		allTargets = new ArrayList<>();
@@ -33,19 +33,29 @@ public final class ReachViewState implements NMarkState
 	@Override
 	public CharSequence text()
 	{
-		return enemy ? "menu.reach.enemy" : "menu.reach.ally";
+		return "menu.reach";
 	}
 
 	@Override
 	public String keybind()
 	{
-		return enemy ? "state.reach.enemy" : "state.reach.ally";
+		return "state.reach";
 	}
 
 	@Override
 	public XMenu menu()
 	{
-		return enemy ? XMenu.enemyMoveMenu(character) : XMenu.characterStartMoveMenu(character);
+		if(character.team() == CharacterTeam.HERO)
+		{
+			if(mainState1.levelMap().levelStarted())
+				return new XMenu(this, new EndTurnState());
+			else
+				return new XMenu(new SwapState(character), this, new EndTurnState());
+		}
+		else
+		{
+			return new XMenu(this, new EndTurnState());
+		}
 	}
 
 	@Override

@@ -79,16 +79,16 @@ public class AttackCalc4
 
 	private CharSequence numToText(boolean canAttack, int num)
 	{
-		return canAttack ? String.valueOf(num) : "";
+		return canAttack ? new ArgsText("i", num) : null;
 	}
 
 	public CharSequence[] sideInfo1()
 	{
 		return canAttack1 ? new CharSequence[]
 				{
-						String.valueOf(damage1),
-						String.valueOf(attackCount1),
-						String.valueOf(accuracy1)
+						new ArgsText("attackinfo.damage", damage1),
+						new ArgsText("attackinfo.attackcount", attackCount1),
+						new ArgsText("attackinfo.accuracy", accuracy1)
 				} : EMPTY_TEXTS;
 	}
 
@@ -96,24 +96,9 @@ public class AttackCalc4
 	{
 		return canAttack2 ? new CharSequence[]
 				{
-						String.valueOf(damage2),
-						String.valueOf(attackCount2),
-						String.valueOf(accuracy2)
+						new ArgsText("attackinfo.damage", damage2),
+						new ArgsText("attackinfo.attackcount", attackCount2),
+						new ArgsText("attackinfo.accuracy", accuracy2)
 				} : EMPTY_TEXTS;
-	}
-
-	@Override
-	public String toString()
-	{
-		return "AttackCalc4{" +
-				"canAttack1=" + canAttack1 +
-				", canAttack2=" + canAttack2 +
-				", attackCount1=" + attackCount1 +
-				", attackCount2=" + attackCount2 +
-				", damage1=" + damage1 +
-				", damage2=" + damage2 +
-				", accuracy1=" + accuracy1 +
-				", accuracy2=" + accuracy2 +
-				'}';
 	}
 }

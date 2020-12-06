@@ -23,6 +23,8 @@ public class SystemScheme
 
 	public Item4 getItem(String name)
 	{
+		if(!items.containsKey(name))
+			throw new RuntimeException("Item \"" + name + "\" does not exist");
 		return items.get(name);
 	}
 

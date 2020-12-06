@@ -182,6 +182,8 @@ public final class XStateControl implements XStateHolder, ConvInputConsumer
 				{
 					if(entity.hasMainAction())
 						setState(new AdvMoveState4(entity));
+					else
+						setState(new ReachViewState(entity));
 				}
 				else
 				{
@@ -198,7 +200,7 @@ public final class XStateControl implements XStateHolder, ConvInputConsumer
 		{
 			if(key.hasFunction("choose"))
 			{
-				setState(new ReachViewState(entity, true));
+				setState(new ReachViewState(entity));
 			}
 			else if(key.hasFunction("menu"))
 			{

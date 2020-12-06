@@ -24,6 +24,7 @@
     "mouse.PRIMARY,edit.floorset.clear",
     "mouse.SECONDARY,edit.floorset.set",
     "key.ENTER,state.endturn",
+    "key.ENTER,state.endmove",
     "key.BACK_SPACE,state.revertmove",
     "key.E,state.edit.character",
     "key.I,state.edit.inv.character",
@@ -35,9 +36,7 @@
     "key.M,state.advmove",
     "key.T,state.trade",
     "key.F,state.floor",
-    "key.R,state.reach.ally",
-    "key.M,state.reach.enemy",
-    "key.R,state.regenerate",
+    "key.R,state.reach",
     "key.M,state.swap"
   ]
 }

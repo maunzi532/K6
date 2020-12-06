@@ -28,7 +28,7 @@ public class Inv1GUI extends XGUIState
 	{
 		itemsView = inv.viewItems();
 		invView = new TargetScrollList<>(0, 1, 2, 5, 2, 1, null,
-				GuiTile::itemViewView, null);
+				GuiTile::itemStackView, null);
 		elements.add(invView);
 		itemView = new ScrollList<>(3, 1, 3, 5, 1, 1, null,
 				GuiTile::textView, null);

@@ -49,7 +49,7 @@ public final class SwapState implements NMarkState
 	@Override
 	public XMenu menu()
 	{
-		return XMenu.characterStartMoveMenu(character);
+		return new XMenu(this, new ReachViewState(character), new EndTurnState());
 	}
 
 	@Override

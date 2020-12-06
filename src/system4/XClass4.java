@@ -13,6 +13,8 @@ public record XClass4(Item4 visItem, int[] bonusIncrease, int[] enemyDividers, i
 	{
 		//TODO load items before
 		Item4 visItem = items.get(data.get("VisItem").asText());
+		if(visItem == null)
+			throw new RuntimeException("Item named \"" + data.get("VisItem").asText() + "\" missing");
 		int[] bonusIncrease = LoadHelper.asIntArray(data.get("BonusIncrease"));
 		int[] enemyDividers = LoadHelper.asIntArray(data.get("EnemyDividers"));
 		int[] enemyBase = LoadHelper.asIntArray(data.get("EnemyBase"));

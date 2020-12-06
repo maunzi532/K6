@@ -104,58 +104,65 @@ public final class XTimer extends AnimationTimer
 	@Override
 	public void handle(long currentNanoTime)
 	{
-		inputInterface.frameTime(currentNanoTime - lastNanoTime);
-		lastNanoTime = currentNanoTime;
-		if(clicked && inside)
+		try
 		{
-			inputInterface.mousePosition(xClicked, yClicked, true, moved, isDrag, keybindFile.mouseKey(mouseKeyD));
-			moved = false;
-			clicked = false;
-		}
-		else if(clickedK && inside)
-		{
-			inputInterface.mousePosition(xClicked, yClicked, true, moved, isDrag, keybindFile.keyboardKey(keyCode));
-			moved = false;
-			clickedK = false;
-			keyCode = null;
-		}
-		else if(inside)
-		{
-			inputInterface.mousePosition(xMoved, yMoved, true, moved, isDrag, KeybindFile.NONE);
-			moved = false;
-		}
-		else
-		{
-			inputInterface.mousePosition(0.0, 0.0, false, moved, isDrag, KeybindFile.NONE);
-			clicked = false;
-			clickedK = false;
-		}
-		if(dragged)
-		{
-			inputInterface.dragPosition(true, xStart, yStart, xClicked, yClicked, keybindFile.mouseKey(mouseKeyD), true);
-			dragged = false;
-		}
-		else if(isDrag)
-		{
-			inputInterface.dragPosition(true, xStart, yStart, xMoved, yMoved, keybindFile.mouseKey(mouseKeyD), false);
-		}
-		else
-		{
-			inputInterface.dragPosition(false, 0.0, 0.0, 0.0, 0.0, KeybindFile.NONE, false);
-		}
-		if(!clicked && !clickedK && !dragged)
-		{
-			if(keyCode != null)
+			inputInterface.frameTime(currentNanoTime - lastNanoTime);
+			lastNanoTime = currentNanoTime;
+			if(clicked && inside)
 			{
-				inputInterface.handleKey(keybindFile.keyboardKey(keyCode));
+				inputInterface.mousePosition(xClicked, yClicked, true, moved, isDrag, keybindFile.mouseKey(mouseKeyD));
+				moved = false;
+				clicked = false;
+			}
+			else if(clickedK && inside)
+			{
+				inputInterface.mousePosition(xClicked, yClicked, true, moved, isDrag, keybindFile.keyboardKey(keyCode));
+				moved = false;
+				clickedK = false;
 				keyCode = null;
 			}
-			else if(mouseKey != null)
+			else if(inside)
 			{
-				inputInterface.handleKey(keybindFile.mouseKey(mouseKeyD));
-				mouseKey = null;
+				inputInterface.mousePosition(xMoved, yMoved, true, moved, isDrag, KeybindFile.NONE);
+				moved = false;
 			}
+			else
+			{
+				inputInterface.mousePosition(0.0, 0.0, false, moved, isDrag, KeybindFile.NONE);
+				clicked = false;
+				clickedK = false;
+			}
+			if(dragged)
+			{
+				inputInterface.dragPosition(true, xStart, yStart, xClicked, yClicked, keybindFile.mouseKey(mouseKeyD), true);
+				dragged = false;
+			}
+			else if(isDrag)
+			{
+				inputInterface.dragPosition(true, xStart, yStart, xMoved, yMoved, keybindFile.mouseKey(mouseKeyD), false);
+			}
+			else
+			{
+				inputInterface.dragPosition(false, 0.0, 0.0, 0.0, 0.0, KeybindFile.NONE, false);
+			}
+			if(!clicked && !clickedK && !dragged)
+			{
+				if(keyCode != null)
+				{
+					inputInterface.handleKey(keybindFile.keyboardKey(keyCode));
+					keyCode = null;
+				}
+				else if(mouseKey != null)
+				{
+					inputInterface.handleKey(keybindFile.mouseKey(mouseKeyD));
+					mouseKey = null;
+				}
+			}
+			inputInterface.tick();
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+			System.exit(0);
 		}
-		inputInterface.tick();
 	}
 }

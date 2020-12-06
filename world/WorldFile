@@ -3,7 +3,7 @@
   "Items" :
   [
     {
-      "Name" : "Mage",
+      "Name" : "class.mage",
       "Image" : null,
       "Info" : "",
       "StackLimit" : 1,
@@ -12,7 +12,7 @@
       "Additional" : {}
     },
     {
-      "Name" : "Archer",
+      "Name" : "class.archer",
       "Image" : null,
       "Info" : "",
       "StackLimit" : 1,
@@ -21,7 +21,7 @@
       "Additional" : {}
     },
     {
-      "Name" : "Bandit",
+      "Name" : "class.bandit",
       "Image" : null,
       "Info" : "",
       "StackLimit" : 1,
@@ -30,7 +30,16 @@
       "Additional" : {}
     },
     {
-      "Name" : "A1",
+      "Name" : "_Money",
+      "Image" : null,
+      "Info" : "",
+      "StackLimit" : 100,
+      "Tags" : [],
+      "Modifiers" : [],
+      "Additional" : {}
+    },
+    {
+      "Name" : "_A1",
       "Image" : null,
       "Info" : "",
       "StackLimit" : 1,
@@ -46,7 +55,23 @@
       "DefendRanges" : "1,2"
     },
     {
-      "Name" : "AS1",
+      "Name" : "_AS1",
+      "Image" : null,
+      "Info" : "",
+      "StackLimit" : 1,
+      "Tags" : ["Combat"],
+      "Modifiers" : [],
+      "Additional" :
+      {
+        "AttackPower" : 4,
+        "Accuracy" : 70,
+        "AttackCount" : 2
+      },
+      "AttackRanges" : "1",
+      "DefendRanges" : "1"
+    },
+    {
+      "Name" : "_AL1",
       "Image" : null,
       "Info" : "",
       "StackLimit" : 1,
@@ -55,22 +80,6 @@
       "Additional" :
       {
         "AttackPower" : 6,
-        "Accuracy" : 70,
-        "AttackCount" : 2
-      },
-      "AttackRanges" : "1",
-      "DefendRanges" : "1"
-    },
-    {
-      "Name" : "AL1",
-      "Image" : null,
-      "Info" : "",
-      "StackLimit" : 1,
-      "Tags" : ["Combat"],
-      "Modifiers" : [],
-      "Additional" :
-      {
-        "AttackPower" : 8,
         "Accuracy" : 40,
         "AttackCount" : 1
       },
@@ -78,7 +87,7 @@
       "DefendRanges" : "1,2"
     },
     {
-      "Name" : "AR1",
+      "Name" : "_AR1",
       "Image" : null,
       "Info" : "",
       "StackLimit" : 1,
@@ -86,7 +95,7 @@
       "Modifiers" : [],
       "Additional" :
       {
-        "AttackPower" : 8,
+        "AttackPower" : 6,
         "Accuracy" : 30,
         "AttackCount" : 2
       },
@@ -94,7 +103,7 @@
       "DefendRanges" : "2"
     },
     {
-      "Name" : "B1",
+      "Name" : "_B1",
       "Image" : null,
       "Info" : "",
       "StackLimit" : 1,
@@ -107,26 +116,55 @@
         "AttackCount" : 1
       },
       "AbilityRanges" : "3,4,5"
+    },
+    {
+      "Name" : "_M1",
+      "Image" : null,
+      "Info" : "",
+      "StackLimit" : 1,
+      "Tags" : [],
+      "Modifiers" : [],
+      "Additional" :
+      {
+        "AbilityPower" : 0,
+        "Accuracy" : 20,
+        "AttackCount" : 1,
+        "Magic" : 1
+      },
+      "AbilityRanges" : "1,2,3"
+    },
+    {
+      "Name" : "_H1",
+      "Image" : null,
+      "Info" : "",
+      "StackLimit" : 1,
+      "Tags" : [],
+      "Modifiers" : [],
+      "Additional" :
+      {
+        "AbilityPower" : 0
+      },
+      "AllyRanges" : "0,1,2"
     }
   ],
   "Classes" :
   [
     {
-      "VisItem" : "Mage",
+      "VisItem" : "class.mage",
       "BonusIncrease" : [0, 2, 0, 0, 1, 1],
       "EnemyDividers" : [6, 6, 6, 2, 6, 6],
       "EnemyBase" : [36, 60, 36, 500, 42, 42],
       "EnemyIncrease" : [6, 10, 6, 6, 7, 7]
     },
     {
-      "VisItem" : "Archer",
+      "VisItem" : "class.archer",
       "BonusIncrease" : [1, 0, 1, 0, 2, 0],
       "EnemyDividers" : [6, 6, 6, 2, 6, 6],
       "EnemyBase" : [54, 48, 48, 50, 60, 30],
       "EnemyIncrease" : [9, 8, 8, 6, 10, 5]
     },
     {
-      "VisItem" : "Bandit",
+      "VisItem" : "class.bandit",
       "BonusIncrease" : [1, 0, 0, 1, 0, 2],
       "EnemyDividers" : [6, 6, 6, 2, 6, 6],
       "EnemyBase" : [42, 36, 36, 60, 36, 54],

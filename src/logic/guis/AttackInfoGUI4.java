@@ -63,9 +63,22 @@ public final class AttackInfoGUI4 extends XGUIState
 	}
 
 	@Override
+	public CharSequence text()
+	{
+		return "menu.attackinfo";
+	}
+
+	@Override
+	public String keybind()
+	{
+		return null;
+	}
+
+	@Override
 	public XMenu menu()
 	{
-		return XMenu.characterMoveMenu4(attacker);
+		//return XMenu.characterMoveMenu4(attacker);
+		return new XMenu(this, nextState.nextState(), new EndMoveState(attacker));
 	}
 
 	@Override

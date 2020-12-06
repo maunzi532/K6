@@ -73,12 +73,19 @@ public final class GuiTile
 				};
 	}
 
-	public static GuiTile[] itemViewView(NumberedStack4 stack)
+	public static GuiTile[] itemStackView(NumberedStack4 stack)
 	{
+		return itemStackView(stack, false);
+	}
+
+	public static GuiTile[] itemStackView(NumberedStack4 stack, boolean active)
+	{
+		String color = active ? "gui.background.active" : null;
 		return new GuiTile[]
 				{
-						new GuiTile(stack.viewText()),
-						new GuiTile(null, stack.item().image(), false, null)
+						new GuiTile(stack.item().name(), null, false, color),
+						new GuiTile(stack.viewText(), null, false, color)
+						//new GuiTile(stack.item().name(), stack.item().image(), false, color)
 				};
 	}
 }

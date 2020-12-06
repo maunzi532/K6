@@ -25,19 +25,9 @@ public class TagInvGUI extends XGUIState
 		mainState1 = mainState;
 		mainState.side().setStandardSideInfo(character);
 		invView = new TargetScrollList<>(0, 0, 2, 5,
-				2, 1, inv.viewItems(), this::itemStackView, this::invClick);
+				2, 1, inv.viewItems(), GuiTile::itemStackView, this::invClick);
 		elements.add(invView);
 		update();
-	}
-
-	private GuiTile[] itemStackView(NumberedStack4 stack)
-	{
-		boolean mark = false;//itemView.item == equippedItem;
-		return new GuiTile[]
-				{
-						new GuiTile(stack.viewText(), null, false, mark ? "gui.background.active" : null),
-						new GuiTile(null, stack.item().image(), false, mark ? "gui.background.active" : null)
-				};
 	}
 
 	private void invClick(NumberedStack4 stack)
@@ -68,9 +58,9 @@ public class TagInvGUI extends XGUIState
 	public XMenu menu()
 	{
 		if(character.team() == CharacterTeam.HERO)
-			return XMenu.characterGUIMenu(character);
+			return new XMenu(this, new TradeTargetState(character), new EndTurnState());
 		else
-			return XMenu.enemyGUIMenu(character);
+			return new XMenu(this, new EndTurnState());
 	}
 
 	@Override

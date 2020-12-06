@@ -146,9 +146,9 @@ public final class CharacterCombatGUI extends XGUIState
 	public XMenu menu()
 	{
 		if(character.team() == CharacterTeam.HERO)
-			return XMenu.characterGUIMenu(character);
+			return new XMenu(new TagInvGUI(character), new TradeTargetState(character), new EndTurnState());
 		else
-			return XMenu.enemyGUIMenu(character);
+			return new XMenu(new TagInvGUI(character), new EndTurnState());
 	}
 
 	@Override
