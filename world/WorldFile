@@ -153,7 +153,7 @@
       "VisItem" : "class.mage",
       "BonusIncrease" : [0, 2, 0, 0, 1, 1],
       "EnemyDividers" : [6, 6, 6, 2, 6, 6],
-      "EnemyBase" : [36, 60, 36, 500, 42, 42],
+      "EnemyBase" : [36, 60, 36, 50, 42, 42],
       "EnemyIncrease" : [6, 10, 6, 6, 7, 7]
     },
     {

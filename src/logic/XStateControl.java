@@ -13,9 +13,9 @@ import logic.xstate.*;
 
 public final class XStateControl implements XStateHolder, ConvInputConsumer
 {
-	private MainState mainState;
-	private final LevelMap4 levelMap;
 	private final LevelEditor levelEditor;
+	private MainState mainState;
+	private LevelMap4 levelMap;
 	private NState state;
 	private List<NState> menu;
 	private VisMark cursorMarker;
@@ -25,9 +25,8 @@ public final class XStateControl implements XStateHolder, ConvInputConsumer
 	private Map<Tile, Long> allEnemyReach;
 
 
-	public XStateControl(LevelMap4 levelMap, LevelEditor levelEditor)
+	public XStateControl(LevelEditor levelEditor)
 	{
-		this.levelMap = levelMap;
 		this.levelEditor = levelEditor;
 		dragMarker = List.of();
 		visMarked = new ArrayList<>();
@@ -36,6 +35,7 @@ public final class XStateControl implements XStateHolder, ConvInputConsumer
 	public void setMainState(MainState mainState, NState state)
 	{
 		this.mainState = mainState;
+		levelMap = mainState.levelMap();
 		setState(state);
 	}
 
@@ -78,6 +78,19 @@ public final class XStateControl implements XStateHolder, ConvInputConsumer
 	public boolean showAllEnemyReach()
 	{
 		return showAllEnemyReach;
+	}
+
+	@Override
+	public void updateLevel(LevelMap4 newLevel)
+	{
+		mainState = new MainState(newLevel, this, mainState.side(), mainState.world());
+		levelMap = newLevel;
+	}
+
+	@Override
+	public LevelMap4 levelMap()
+	{
+		return mainState.levelMap();
 	}
 
 	@Override

@@ -9,6 +9,7 @@ public final class PostAttackState extends AttackState
 	private final ACResult4 result;
 	private GetExpAnim getExpAnim;
 	private boolean firstEnter;
+	private MainState mainState1;
 	private boolean levelup;
 	private boolean levelupT;
 
@@ -22,6 +23,7 @@ public final class PostAttackState extends AttackState
 	@Override
 	public void onEnter(MainState mainState)
 	{
+		mainState1 = mainState;
 		if(firstEnter)
 		{
 			aI.aI.initiator().setHP(result.hp1());
@@ -66,6 +68,10 @@ public final class PostAttackState extends AttackState
 	@Override
 	public NState nextState()
 	{
+		if(mainState1.levelMap().isLose())
+			return new LoseState();
+		if(mainState1.levelMap().isWin())
+			return new WinState();
 		return nextState;
 	}
 }

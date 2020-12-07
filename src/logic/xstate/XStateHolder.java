@@ -17,4 +17,8 @@ public interface XStateHolder
 	List<VisMark> visMarked();
 
 	boolean showAllEnemyReach();
+
+	void updateLevel(LevelMap4 newLevel);
+
+	LevelMap4 levelMap();
 }

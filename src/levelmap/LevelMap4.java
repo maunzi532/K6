@@ -23,6 +23,7 @@ public class LevelMap4 implements Arrows, XSaveableS
 	private List<StartingLocation4> startingLocations;
 	private Storage4 storage;
 	private int turnCounter;
+	private boolean win;
 	private boolean lose;
 	private Map<String, EventPack> eventPacks;
 	private ArrayList<XArrow> arrows;
@@ -195,7 +196,21 @@ public class LevelMap4 implements Arrows, XSaveableS
 		else
 		{
 			removeEntity(character);
+			if(allCharacters.stream().noneMatch(e -> e.team() == CharacterTeam.HERO))
+				lose = true;
+			if(allCharacters.stream().noneMatch(e -> e.team() == CharacterTeam.ENEMY))
+				win = true;
 		}
+	}
+
+	public boolean isWin()
+	{
+		return win;
+	}
+
+	public boolean isLose()
+	{
+		return lose;
 	}
 
 	public Storage4 storage()
@@ -346,7 +361,31 @@ public class LevelMap4 implements Arrows, XSaveableS
 	{
 		List<XCharacter> teamCharacters = LoadHelper.asList(data.get("Characters"), e -> XCharacter.load(e, y1, systemScheme));
 		storage = Storage4.load((JrsObject) data.get("Storage"), systemScheme);
-		//TODO place on StartingLocations
+		List<StartingLocation4> namedSL = startingLocations.stream().filter(e -> e.startName() != null).collect(Collectors.toList());
+		ArrayList<XCharacter> namedC = new ArrayList<>();
+		namedSL.forEach(e -> namedC.add(setToStartingLocation(characterByName(teamCharacters, e.startName()), e)));
+		List<StartingLocation4> unnamedSL = startingLocations.stream().filter(e -> e.startName() == null).collect(Collectors.toList());
+		List<XCharacter> unnamedC = teamCharacters.stream().filter(e -> !namedC.contains(e)).collect(Collectors.toList());
+		for(int i = 0; i < unnamedC.size(); i++)
+		{
+			setToStartingLocation(unnamedC.get(i), unnamedSL.get(i));
+		}
+	}
+
+	private static XCharacter characterByName(List<XCharacter> characters, String name)
+	{
+		return characters.stream().filter(e1 -> e1.isNamed(name)).findFirst().orElseThrow();
+	}
+
+	private XCharacter setToStartingLocation(XCharacter character, StartingLocation4 startingLocation)
+	{
+		advTiles.get(startingLocation.location()).setEntity(character);
+		//TODO lock characters with locked movement/inv
+		if(startingLocation.emptyInv())
+		{
+			//TODO add inv contents into storage
+		}
+		return character;
 	}
 
 	public void saveTeam(ObjectComposer<? extends ComposerBase> a1, SystemScheme systemScheme) throws IOException

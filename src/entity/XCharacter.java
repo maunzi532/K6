@@ -68,6 +68,11 @@ public final class XCharacter implements InvHolder, XSaveableYS
 		this.location = location;
 	}
 
+	public boolean isNamed(String name)
+	{
+		return customName != null && Objects.equals(customName.name(), name);
+	}
+
 	@Override
 	public CharSequence name()
 	{

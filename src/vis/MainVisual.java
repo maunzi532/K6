@@ -56,15 +56,16 @@ public final class MainVisual implements XInputInterface
 		visualGUI = VisualGUI.forCamera(graphics, guiCamera);
 		visualLevelEditor = new VisualLevelEditor(graphics, editorSlotCamera);
 		visualSideInfoFrame = new VisualSideInfoFrame(graphics, false);
-		loadLevel(loadFileTeam);
-		//levelMap = new LevelMap(mapCamera.doubleType());
+		//loadWorld(loadFileTeam);
+		WorldLoader worldLoader = new WorldLoader();
+		worldLoader.loadFile(loadFileTeam);
+		//levelMap = worldLoader.createLevel();
 		levelEditor = new LevelEditor();
-		XStateControl stateControl = new XStateControl(levelMap, levelEditor);
+		XStateControl stateControl = new XStateControl(levelEditor);
 		stateHolder = stateControl;
 		convInputConsumer = stateControl;
-		MainState mainState = new MainState(levelMap, stateHolder, visualSideInfoFrame, systemScheme);
-		stateControl.setMainState(mainState, new NoneState());
-		//loadLevel(loadFileTeam, itemLoader, levelMap, scheme);
+		MainState mainState = new MainState(worldLoader.createLevel(), stateHolder, visualSideInfoFrame, worldLoader);
+		stateControl.setMainState(mainState, NoneState.INSTANCE);
 		//stateControl.setState(new EventListState(levelMap.eventPack("Start").events(), new StartTurnState()));
 		GraphicsContext gd = graphics.gd();
 		gd.setTextAlign(TextAlignment.CENTER);
@@ -72,58 +73,7 @@ public final class MainVisual implements XInputInterface
 		draw();
 	}
 
-	/*private static void loadLevel(String loadFileTeam, ItemLoader itemLoader, LevelMap levelMap, Scheme scheme)
-	{*/
-		/*File fileTeam;
-		if(loadFileTeam != null)
-		{
-			fileTeam = new File(loadFileTeam);
-		}
-		else
-		{
-			fileTeam = new FileChooser().showOpenDialog(null);
-		}
-		if(fileTeam != null && fileTeam.exists())
-		{
-			try
-			{
-				var dataTeam = JSON.std.with(new JacksonJrsTreeCodec()).treeFrom(Files.readString(fileTeam.toPath()));
-				if(((JrsNumber) dataTeam.get("code")).getValue().intValue() == 0xA4D2839F)
-				{
-					String world = ((JrsString) dataTeam.get("World")).getValue();
-					String currentMap = ((JrsString) dataTeam.get("CurrentMap")).getValue();
-					File levelFile = new File(world, currentMap);
-					var dataMap = JSON.std.with(new JacksonJrsTreeCodec()).treeFrom(Files.readString(levelFile.toPath()));
-					if(((JrsNumber) dataMap.get("code")).getValue().intValue() == 0xA4D2839F)
-					{
-						levelMap.loadMap((JrsObject) dataMap, itemLoader);
-					}
-					levelMap.loadTeam((JrsObject) dataTeam, itemLoader);
-					levelMap.setEventPacks(EventPack.read(world, currentMap, scheme.setting("file.locale.level"), itemLoader, levelMap.y1));
-				}
-			}catch(IOException e)
-			{
-				throw new RuntimeException(e);
-			}
-		}*/
-		/*else
-		{
-			TileType y1 = mainState.y1;
-			new Entity2Builder(mainState.levelMap, mainState.combatSystem).setLocation(y1.create2(2, -1))
-					.setStats(new Stats(XClasses.hexerClass(), 0, null))
-					.addItem(AttackItems2.standardSpell()).create(false);
-			Chapter1.createCharacters(mainState.levelMap, mainState.combatSystem, y1.create2(-2, 1), y1.create2(-2, -1), y1.create2(-4, 1),
-					y1.create2(-3, 1), y1.create2(-3, -1), y1.create2(-5, 1));
-		}*/
-		/*levelMap.addArrow(new ShineArrow(List.of(y2.create2(2, 0), y2.create2(4, 1)), 120, true, null, true));
-		levelMap.addArrow(new ShineArrow(List.of(y2.create2(-2, 0), y2.create2(4, -4)), 120, true, null, true));
-		levelMap.addArrow(new ShineArrow(List.of(y2.create2(-3, 0)), 120, true, null, true));*/
-		/*levelMap.addBuilding2(new ProductionBuilding(y2.create2(-2, -2), buildingBlueprintCache.get("BLUE1")));
-		levelMap.addBuilding2(new ProductionBuilding(y2.create2(-3, -3), buildingBlueprintCache.get("GSL1")));
-		levelMap.addBuilding(new Transporter(y2.create2(-3, -2), buildingBlueprintCache.get("Transporter1")));*/
-	/*}*/
-
-	private void loadLevel(String loadFile)
+	private void loadWorld(String loadFile)
 	{
 		try
 		{
@@ -271,7 +221,7 @@ public final class MainVisual implements XInputInterface
 	{
 		if(!paused)
 		{
-			levelMap.tickArrows();
+			stateHolder.levelMap().tickArrows();
 			convInputConsumer.tick();
 		}
 		else
@@ -290,7 +240,7 @@ public final class MainVisual implements XInputInterface
 	private void draw()
 	{
 		//graphics.gd().clearRect(0, 0, graphics.xHW() * 2, graphics.yHW() * 2);
-		visualTile.draw(mapCamera, levelMap, stateHolder.visMarked(), screenshake, scheme);
+		visualTile.draw(mapCamera, stateHolder.levelMap(), stateHolder.visMarked(), screenshake, scheme);
 		visualSideInfoFrame.draw(scheme);
 		if(stateHolder.getState().editMode())
 		{
@@ -320,7 +270,7 @@ public final class MainVisual implements XInputInterface
 		gd.setFill(scheme.color("topbar.text"));
 		gd.setFont(new Font(scale));
 		gd.setTextAlign(TextAlignment.LEFT);
-		gd.fillText(turnText(levelMap.turnCounter()), scale, scale);
+		gd.fillText(turnText(stateHolder.levelMap().turnCounter()), scale, scale);
 		if(paused)
 			gd.fillText(scheme.localXText("pause"), xHW, scale);
 		gd.setTextAlign(TextAlignment.RIGHT);
