@@ -80,6 +80,33 @@ public final class VisualSideInfoFrame implements SideInfoFrame
 	}
 
 	@Override
+	public void setAllyInfoSideInfo(AllyCalc4 aI)
+	{
+		XCharacter character = aI.aI.character();
+		XCharacter target = aI.aI.target();
+		if(character == target)
+		{
+			if(xhR)
+			{
+				l0.setSideInfo(null);
+				r0.setSideInfo(new SideInfo(character, character.sideImageName(), character.hpBar(), aI.sideInfoC()));
+			}
+			else
+			{
+				l0.setSideInfo(new SideInfo(character, character.sideImageName(), character.hpBar(), aI.sideInfoC()));
+				r0.setSideInfo(null);
+			}
+		}
+		else
+		{
+			boolean inverted = isInverted(character, target);
+			SideInfo sideInfo1 = new SideInfo(character, character.sideImageName(), character.hpBar(), aI.sideInfo1());
+			SideInfo sideInfo2 = new SideInfo(target, target.sideImageName(), target.hpBar(), aI.sideInfo2());
+			setWithInverted(inverted, sideInfo1, sideInfo2);
+		}
+	}
+
+	@Override
 	public void setAttackSideInfo(AttackCalc4 aI, StatBar s1, StatBar s2)
 	{
 		boolean inverted = isInverted(aI.aI.initiator(), aI.aI.target());

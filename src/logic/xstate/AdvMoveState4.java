@@ -127,7 +127,7 @@ public final class AdvMoveState4 implements NMarkState
 
 	private void onClickAlly(XCharacter target)
 	{
-		//mainState1.stateHolder().setState(new AttackInfoGUI4(character, target, actionStateReverter()));
+		mainState1.stateHolder().setState(new AllyInfoGUI4(character, target, actionStateReverter()));
 	}
 
 	private void onClickMovement(PathLocation target)

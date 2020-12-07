@@ -1,20 +1,14 @@
 package vis;
 
-import com.fasterxml.jackson.jr.stree.*;
 import geom.*;
 import geom.tile.*;
-import java.io.*;
-import java.nio.file.*;
 import java.util.function.*;
 import javafx.geometry.*;
 import javafx.scene.canvas.*;
 import javafx.scene.text.*;
-import levelmap.*;
-import load.*;
 import logic.*;
 import logic.editor.*;
 import logic.xstate.*;
-import system.*;
 import text.*;
 import vis.gui.*;
 import vis.sideinfo.*;
@@ -34,8 +28,6 @@ public final class MainVisual implements XInputInterface
 	private VisualGUI visualGUI;
 	private VisualLevelEditor visualLevelEditor;
 	private VisualSideInfoFrame visualSideInfoFrame;
-	private SystemScheme systemScheme;
-	private LevelMap4 levelMap;
 	private LevelEditor levelEditor;
 	private XStateHolder stateHolder;
 	private ConvInputConsumer convInputConsumer;
@@ -56,76 +48,19 @@ public final class MainVisual implements XInputInterface
 		visualGUI = VisualGUI.forCamera(graphics, guiCamera);
 		visualLevelEditor = new VisualLevelEditor(graphics, editorSlotCamera);
 		visualSideInfoFrame = new VisualSideInfoFrame(graphics, false);
-		//loadWorld(loadFileTeam);
 		WorldLoader worldLoader = new WorldLoader();
 		worldLoader.loadFile(loadFileTeam);
-		//levelMap = worldLoader.createLevel();
 		levelEditor = new LevelEditor();
-		XStateControl stateControl = new XStateControl(levelEditor);
+		XStateControl stateControl = new XStateControl(visualSideInfoFrame, levelEditor, worldLoader);
+		stateControl.updateLevel(worldLoader.createLevel());
 		stateHolder = stateControl;
 		convInputConsumer = stateControl;
-		MainState mainState = new MainState(worldLoader.createLevel(), stateHolder, visualSideInfoFrame, worldLoader);
-		stateControl.setMainState(mainState, NoneState.INSTANCE);
+		stateControl.setState(NoneState.INSTANCE);
 		//stateControl.setState(new EventListState(levelMap.eventPack("Start").events(), new StartTurnState()));
 		GraphicsContext gd = graphics.gd();
 		gd.setTextAlign(TextAlignment.CENTER);
 		gd.setTextBaseline(VPos.CENTER);
 		draw();
-	}
-
-	private void loadWorld(String loadFile)
-	{
-		try
-		{
-			Path path1 = Path.of(loadFile);
-			JrsObject a1 = LoadHelper.startLoad(path1);
-			JrsValue v1 = a1.get("TurnCounter");
-			if(v1 != null)
-			{
-				Path worldFilePath = Path.of(loadFile, a1.get("WorldFile").asText());
-				JrsObject worldFile = LoadHelper.startLoad(worldFilePath);
-				systemScheme = SystemScheme.load(worldFile);
-				levelMap = LevelMap4.resume(a1, systemScheme);
-			}
-			else
-			{
-				Path worldFilePath;
-				JrsObject worldFile;
-				String levelFile;
-				JrsValue v2 = a1.get("WorldFile");
-				if(v2 != null)
-				{
-					//a1 = teamFile
-					worldFilePath = Path.of(loadFile, v2.asText());
-					worldFile = LoadHelper.startLoad(worldFilePath);
-					levelFile = a1.get("CurrentLevel").asText();
-				}
-				else
-				{
-					JrsValue v3 = a1.get("StartLevel");
-					if(v3 != null)
-					{
-						//a1 = worldFile
-						worldFilePath = path1;
-						worldFile = a1;
-						levelFile = v3.asText();
-					}
-					else
-					{
-						throw new RuntimeException("Not a TeamFile or WorldFile");
-					}
-				}
-				systemScheme = SystemScheme.load(worldFile);
-				JrsObject level = LoadHelper.startLoad(worldFilePath.getParent().resolve(levelFile));
-				levelMap = LevelMap4.load(level, systemScheme);
-				if(v2 != null)
-					levelMap.loadTeam(a1, systemScheme);
-			}
-			//levelMap.setEventPacks(EventPack.read(world, currentMap, scheme.setting("file.locale.level"), itemLoader, levelMap.y1));
-		}catch(IOException e)
-		{
-			throw new RuntimeException(e);
-		}
 	}
 
 	@Override

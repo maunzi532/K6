@@ -119,8 +119,20 @@ public final class SystemChar implements XSaveableYS
 				.collect(Collectors.toList());
 	}
 
+	public List<EquipableItem4> possibleAllyItems(int distance, SystemChar ally)
+	{
+		return allEquipableItems().filter(e -> e.allyRanges() != null && e.allyRanges().hasRange(distance, stat(Stats4.ABILITY_RANGE))
+				&& ally.canAllyUseItem(e)).collect(Collectors.toList());
+	}
+
+	public boolean canAllyUseItem(EquipableItem4 item)
+	{
+		return true; //TODO
+	}
+
 	public List<CharSequence> statsInfo()
 	{
+		//TODO
 		return Arrays.stream(Stats4.values()).map(stat -> "_" + stat.name().toLowerCase() + "\n" + stat(stat)).collect(Collectors.toList());
 	}
 

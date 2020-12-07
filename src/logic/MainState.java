@@ -5,12 +5,17 @@ import levelmap.*;
 import logic.xstate.*;
 import system.*;
 
-public record MainState(LevelMap4 levelMap, XStateHolder stateHolder, SideInfoFrame side, World world)
+public interface MainState
 {
-	public SystemScheme systemScheme()
-	{
-		return world.systemScheme();
-	}
+	LevelMap4 levelMap();
+
+	XStateHolder stateHolder();
+
+	SideInfoFrame side();
+
+	WorldControl worldControl();
+
+	SystemScheme systemScheme();
 
 	//content
 	//TODO    Build a real level

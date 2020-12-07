@@ -31,12 +31,6 @@ public class EnemyLevelSystem4 implements ClassAndLevelSystem
 	}
 
 	@Override
-	public XClass4 xClass()
-	{
-		return xClass;
-	}
-
-	@Override
 	public Item4 visItem()
 	{
 		return xClass.visItem();

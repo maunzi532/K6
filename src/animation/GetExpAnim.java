@@ -38,16 +38,16 @@ public final class GetExpAnim implements AnimTimer
 		{
 			levelup = cls.exp() >= LEVELUP_EXP;
 			expAmount = 20;
-			expBar = new InfoArrow(entity.location(), "arrow.healthbar.exp",
-					"arrow.healthbar.background", "arrow.healthbar.text", cls.exp(), LEVELUP_EXP);
+			expBar = new InfoArrow(entity.location(), new StatBar("arrow.healthbar.exp",
+					"arrow.healthbar.background", "arrow.healthbar.text", cls.exp(), LEVELUP_EXP));
 			arrows.addArrow(expBar);
 		}
 		if(clsT.maxExp() > 0)
 		{
 			levelupT = clsT.exp() >= LEVELUP_EXP;
 			expAmountT = 20;
-			expBarT = new InfoArrow(entityT.location(), "arrow.healthbar.exp",
-					"arrow.healthbar.background", "arrow.healthbar.text", clsT.exp(), LEVELUP_EXP);
+			expBarT = new InfoArrow(entityT.location(), new StatBar("arrow.healthbar.exp",
+					"arrow.healthbar.background", "arrow.healthbar.text", clsT.exp(), LEVELUP_EXP));
 			arrows.addArrow(expBarT);
 		}
 		if(expAmount <= 0 && expAmountT <= 0)

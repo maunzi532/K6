@@ -3,7 +3,7 @@ package logic;
 import levelmap.*;
 import system.*;
 
-public interface World
+public interface WorldControl
 {
 	SystemScheme systemScheme();
 

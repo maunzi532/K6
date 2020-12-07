@@ -29,15 +29,6 @@ public final class AttackAnim4 implements AnimTimer
 		arrows.addArrow(healthBar2);
 	}
 
-	/*private InfoArrow healthBar(AttackSide side)
-	{
-		return switch(side)
-				{
-					case INITIATOR -> healthBar1;
-					case TARGET -> healthBar2;
-				};
-	}*/
-
 	@Override
 	public boolean finished()
 	{

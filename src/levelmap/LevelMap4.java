@@ -162,14 +162,14 @@ public class LevelMap4 implements Arrows, XSaveableS
 
 	public boolean playerTradeable(XCharacter character)
 	{
-		if(turnCounter == 0)
+		if(levelStarted())
 		{
-			//StartingLocation startingLocation = startingLocations.get(character.name());
-			return true;//startingLocation != null && startingLocation.canTrade();
+			return false;
 		}
 		else
 		{
-			return false;
+			//StartingLocation startingLocation = startingLocations.get(character.name());
+			return true;//startingLocation != null && startingLocation.canTrade();
 		}
 	}
 
@@ -241,7 +241,7 @@ public class LevelMap4 implements Arrows, XSaveableS
 	@Override
 	public void addScreenshake(int power)
 	{
-
+		//TODO
 	}
 
 	public List<XArrow> getArrows()

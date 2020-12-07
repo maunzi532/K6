@@ -8,7 +8,7 @@ import load.*;
 import logic.*;
 import system.*;
 
-public class WorldLoader implements World
+public class WorldLoader implements WorldControl
 {
 	private Path worldPath;
 	private JrsObject teamData;

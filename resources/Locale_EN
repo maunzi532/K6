@@ -124,6 +124,8 @@
     "sideinfo.generic.hero" : "Ally",
     "sideinfo.generic.enemy" : "Enemy",
 
+    "allyinfo.heal" : "+%d",
+
     "menu.swap" : "Swap",
     "menu.reach" : "Reach",
     "menu.endturn.start" : "Start Level",
@@ -131,6 +133,7 @@
     "menu.advmove" : "Move",
     "menu.endmove" : "End",
     "menu.attackinfo" : "Attack",
+    "menu.allyinfo" : "Ally",
     "menu.stats" : "Stats",
     "menu.edit.character" : "Edit",
     "menu.edit.inv.character" : "Edit Inv.",

@@ -14,12 +14,6 @@ public class PlayerLevelSystem4 implements ClassAndLevelSystem
 	//TODO
 
 	@Override
-	public XClass4 xClass()
-	{
-		return null;
-	}
-
-	@Override
 	public Item4 visItem()
 	{
 		return null;

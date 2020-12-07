@@ -13,7 +13,7 @@ public class LoseState implements NAutoState
 	@Override
 	public void tick(MainState mainState)
 	{
-		mainState.stateHolder().updateLevel(mainState.world().createLevel());
+		mainState.stateHolder().updateLevel(mainState.worldControl().createLevel());
 	}
 
 	@Override

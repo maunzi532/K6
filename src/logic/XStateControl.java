@@ -1,6 +1,7 @@
 package logic;
 
 import entity.*;
+import entity.sideinfo.*;
 import geom.tile.*;
 import java.util.*;
 import java.util.stream.*;
@@ -10,11 +11,13 @@ import logic.editor.xstate.*;
 import gui.*;
 import logic.guis.*;
 import logic.xstate.*;
+import system.*;
 
-public final class XStateControl implements XStateHolder, ConvInputConsumer
+public final class XStateControl implements MainState, XStateHolder, ConvInputConsumer
 {
+	private final SideInfoFrame sideInfoFrame;
 	private final LevelEditor levelEditor;
-	private MainState mainState;
+	private final WorldControl worldControl;
 	private LevelMap4 levelMap;
 	private NState state;
 	private List<NState> menu;
@@ -24,27 +27,51 @@ public final class XStateControl implements XStateHolder, ConvInputConsumer
 	private boolean showAllEnemyReach;
 	private Map<Tile, Long> allEnemyReach;
 
-
-	public XStateControl(LevelEditor levelEditor)
+	public XStateControl(SideInfoFrame sideInfoFrame, LevelEditor levelEditor, WorldControl worldControl)
 	{
+		this.sideInfoFrame = sideInfoFrame;
 		this.levelEditor = levelEditor;
+		this.worldControl = worldControl;
 		dragMarker = List.of();
 		visMarked = new ArrayList<>();
 	}
 
-	public void setMainState(MainState mainState, NState state)
+	@Override
+	public LevelMap4 levelMap()
 	{
-		this.mainState = mainState;
-		levelMap = mainState.levelMap();
-		setState(state);
+		return levelMap;
+	}
+
+	@Override
+	public XStateHolder stateHolder()
+	{
+		return this;
+	}
+
+	@Override
+	public SideInfoFrame side()
+	{
+		return sideInfoFrame;
+	}
+
+	@Override
+	public WorldControl worldControl()
+	{
+		return worldControl;
+	}
+
+	@Override
+	public SystemScheme systemScheme()
+	{
+		return worldControl.systemScheme();
 	}
 
 	@Override
 	public void setState(NState state)
 	{
 		this.state = state;
-		state.onEnter(mainState);
-		menu = state.menu().getEntries().stream().filter(e -> e.keepInMenu(mainState)).collect(Collectors.toList());
+		state.onEnter(this);
+		menu = state.menu().getEntries().stream().filter(e -> e.keepInMenu(this)).collect(Collectors.toList());
 	}
 
 	@Override
@@ -83,14 +110,7 @@ public final class XStateControl implements XStateHolder, ConvInputConsumer
 	@Override
 	public void updateLevel(LevelMap4 newLevel)
 	{
-		mainState = new MainState(newLevel, this, mainState.side(), mainState.world());
 		levelMap = newLevel;
-	}
-
-	@Override
-	public LevelMap4 levelMap()
-	{
-		return mainState.levelMap();
 	}
 
 	@Override
@@ -132,7 +152,7 @@ public final class XStateControl implements XStateHolder, ConvInputConsumer
 		else if(state.editMode() && editorOption >= 0)
 		{
 			//editor
-			levelEditor.onEditorTarget(editorOption, key, this, mainState);
+			levelEditor.onEditorTarget(editorOption, key, this, this);
 			cursorMarker = null;
 		}
 		else
@@ -169,11 +189,11 @@ public final class XStateControl implements XStateHolder, ConvInputConsumer
 			return;
 		if(state instanceof NMarkState markState && key.canClick())
 		{
-			markState.onClick(mainState, mapTile, key);
+			markState.onClick(this, mapTile, key);
 		}
 		else if(state.editMode() && key.canClick())
 		{
-			levelEditor.onMapClick(mapTile, key, mainState);
+			levelEditor.onMapClick(mapTile, key, this);
 		}
 		else if(key.canClick())
 		{
@@ -230,7 +250,7 @@ public final class XStateControl implements XStateHolder, ConvInputConsumer
 					.map(e -> new VisMark(e, "mark.cursor.drag", VisMark.d3)).collect(Collectors.toList());
 			if(finished && state.editMode() && key.canDrag())
 			{
-				levelEditor.onMapDrag(startTile, endTile, key, mainState);
+				levelEditor.onMapDrag(startTile, endTile, key, this);
 			}
 		}
 		else
@@ -297,7 +317,7 @@ public final class XStateControl implements XStateHolder, ConvInputConsumer
 	{
 		if(state instanceof NAutoState autoState)
 		{
-			autoState.tick(mainState);
+			autoState.tick(this);
 			if(autoState.finished())
 			{
 				setState(autoState.nextState());
@@ -314,7 +334,7 @@ public final class XStateControl implements XStateHolder, ConvInputConsumer
 		}
 		if(state instanceof NMarkState markState)
 		{
-			visMarked.addAll(markState.visMarked(mainState));
+			visMarked.addAll(markState.visMarked(this));
 		}
 		if(cursorMarker != null)
 		{
@@ -337,7 +357,7 @@ public final class XStateControl implements XStateHolder, ConvInputConsumer
 		}
 		if(state instanceof NMarkState markState)
 		{
-			visMarked.addAll(markState.visMarked(mainState));
+			visMarked.addAll(markState.visMarked(this));
 		}
 	}
 }
