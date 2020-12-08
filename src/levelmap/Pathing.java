@@ -10,12 +10,12 @@ public final class Pathing
 	private final XCharacter entity;
 	private final Tile startLocation;
 	private final int maxMovementCost;
-	private final LevelMap4 map;
+	private final LevelMap map;
 	private final boolean allyEndpoints;
 	private List<Tile> endpoints;
 	private List<PathLocation> endpaths;
 
-	public Pathing(XCharacter entity, int maxMovementCost, LevelMap4 map, boolean allyEndpoints)
+	public Pathing(XCharacter entity, int maxMovementCost, LevelMap map, boolean allyEndpoints)
 	{
 		this.entity = entity;
 		startLocation = entity.location();

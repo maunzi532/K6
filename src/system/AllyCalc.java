@@ -3,19 +3,19 @@ package system;
 import entity.*;
 import text.*;
 
-public class AllyCalc4
+public class AllyCalc
 {
 	private static final CharSequence[] EMPTY_TEXTS = new CharSequence[0];
 
-	public final AllyInfo4 aI;
+	public final AllyInfo aI;
 	public final int heal;
 	public final CharSequence[] infos;
 
-	public AllyCalc4(AllyInfo4 aI)
+	public AllyCalc(AllyInfo aI)
 	{
 		this.aI = aI;
 		heal = aI.item().additional().getOrDefault("AbilityPower", 0)
-				+ aI.character().systemChar().stat(Stats4.ABILITY_POWER);
+				+ aI.character().systemChar().stat(XStats.ABILITY_POWER);
 		infos = new CharSequence[]
 				{
 						viewHealth(aI.character()),

@@ -5,7 +5,7 @@ import com.fasterxml.jackson.jr.stree.*;
 import java.io.*;
 import load.*;
 
-public record Modifier4(Stats4 stat, ModifierType4 type, int amount) implements XSaveableS
+public record XModifier(XStats stat, XModifierType type, int amount) implements XSaveableS
 {
 	public int apply(int value)
 	{
@@ -18,16 +18,16 @@ public record Modifier4(Stats4 stat, ModifierType4 type, int amount) implements 
 		};
 	}
 
-	public static Modifier4 load(JrsObject data)
+	public static XModifier load(JrsObject data)
 	{
-		Stats4 stat = Stats4.valueOf(data.get("Stat").asText());
-		ModifierType4 type = ModifierType4.valueOf(data.get("Type").asText());
+		XStats stat = XStats.valueOf(data.get("Stat").asText());
+		XModifierType type = XModifierType.valueOf(data.get("Type").asText());
 		int amount = LoadHelper.asInt(data.get("Amount"));
-		return new Modifier4(stat, type, amount);
+		return new XModifier(stat, type, amount);
 	}
 
 	@Override
-	public void save(ObjectComposer<? extends ComposerBase> a1, SystemScheme systemScheme) throws IOException
+	public void save(ObjectComposer<? extends ComposerBase> a1, WorldSettings worldSettings) throws IOException
 	{
 		a1.put("Stat", stat.name());
 		a1.put("Type", type.name());

@@ -6,16 +6,16 @@ import geom.tile.*;
 import java.io.*;
 import load.*;
 
-public record StartingLocation4(Tile location, boolean active, String startName, boolean locationLocked, boolean emptyInv) implements XSaveableY
+public record StartingLocation(Tile location, boolean active, String startName, boolean locationLocked, boolean emptyInv) implements XSaveableY
 {
-	public static StartingLocation4 load(JrsObject data, TileType y1)
+	public static StartingLocation load(JrsObject data, TileType y1)
 	{
 		Tile location = XSaveableY.loadLocation(data, y1);
 		boolean active = LoadHelper.asBoolean(data.get("Active"));
 		String startName = LoadHelper.asOptionalString(data.get("StartName"));
 		boolean locationLocked = LoadHelper.asBoolean(data.get("LocationLocked"));
 		boolean emptyInv = LoadHelper.asBoolean(data.get("EmptyInv"));
-		return new StartingLocation4(location, active, startName, locationLocked, emptyInv);
+		return new StartingLocation(location, active, startName, locationLocked, emptyInv);
 	}
 
 	@Override

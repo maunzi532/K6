@@ -3,8 +3,8 @@ package entity;
 import java.util.*;
 import system.*;
 
-public record EnemyMove4(XCharacter character, PathLocation moveTo, AttackCalc4 aI, boolean attackFirst, int targetDistance)
-		implements Comparable<EnemyMove4>
+public record EnemyMove(XCharacter character, PathLocation moveTo, AttackCalc aI, boolean attackFirst, int targetDistance)
+		implements Comparable<EnemyMove>
 {
 	//TODO sort
 	//1y can attack
@@ -15,7 +15,7 @@ public record EnemyMove4(XCharacter character, PathLocation moveTo, AttackCalc4 
 	//6y distance to target
 
 	@Override
-	public int compareTo(EnemyMove4 o)
+	public int compareTo(EnemyMove o)
 	{
 		if(aI != null && o.aI() != null)
 		{
@@ -52,7 +52,7 @@ public record EnemyMove4(XCharacter character, PathLocation moveTo, AttackCalc4 
 	{
 		if(this == obj)
 			return true;
-		if(!(obj instanceof EnemyMove4 other))
+		if(!(obj instanceof EnemyMove other))
 			return false;
 		if(attackFirst != other.attackFirst)
 			return false;

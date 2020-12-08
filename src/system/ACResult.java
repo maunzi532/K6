@@ -5,9 +5,9 @@ import entity.*;
 import java.util.*;
 import animation.*;
 
-public record ACResult4(List<AnimPart> animParts, int hp1, int hp2, StatBar hpBar1, StatBar hpBar2)
+public record ACResult(List<AnimPart> animParts, int hp1, int hp2, StatBar hpBar1, StatBar hpBar2)
 {
-	public static ACResult4 calc1(AttackCalc4 aI, Arrows arrows, Random random)
+	public static ACResult calc1(AttackCalc aI, Arrows arrows, Random random)
 	{
 		ArrayList<AnimPart> animParts = new ArrayList<>();
 		boolean init1 = true;
@@ -21,7 +21,7 @@ public record ACResult4(List<AnimPart> animParts, int hp1, int hp2, StatBar hpBa
 		{
 			if(hp1 <= 0 || hp2 <= 0 || (attacks1 <= 0 && attacks2 <= 0))
 			{
-				return new ACResult4(animParts, hp1, hp2, hpBar1, hpBar2);
+				return new ACResult(animParts, hp1, hp2, hpBar1, hpBar2);
 			}
 			if(init1)
 			{

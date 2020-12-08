@@ -18,7 +18,7 @@ public final class XStateControl implements MainState, XStateHolder, ConvInputCo
 	private final SideInfoFrame sideInfoFrame;
 	private final LevelEditor levelEditor;
 	private final WorldControl worldControl;
-	private LevelMap4 levelMap;
+	private LevelMap levelMap;
 	private NState state;
 	private List<NState> menu;
 	private VisMark cursorMarker;
@@ -37,7 +37,7 @@ public final class XStateControl implements MainState, XStateHolder, ConvInputCo
 	}
 
 	@Override
-	public LevelMap4 levelMap()
+	public LevelMap levelMap()
 	{
 		return levelMap;
 	}
@@ -61,7 +61,7 @@ public final class XStateControl implements MainState, XStateHolder, ConvInputCo
 	}
 
 	@Override
-	public SystemScheme systemScheme()
+	public WorldSettings systemScheme()
 	{
 		return worldControl.systemScheme();
 	}
@@ -108,7 +108,7 @@ public final class XStateControl implements MainState, XStateHolder, ConvInputCo
 	}
 
 	@Override
-	public void updateLevel(LevelMap4 newLevel)
+	public void updateLevel(LevelMap newLevel)
 	{
 		levelMap = newLevel;
 	}
@@ -214,7 +214,7 @@ public final class XStateControl implements MainState, XStateHolder, ConvInputCo
 				if(levelMap.levelStarted())
 				{
 					if(entity.hasMainAction())
-						setState(new AdvMoveState4(entity));
+						setState(new AdvMoveState(entity));
 					else
 						setState(new ReachViewState(entity));
 				}

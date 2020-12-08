@@ -5,7 +5,7 @@ import logic.*;
 
 public final class EnemyPhaseState implements NAutoState
 {
-	private EnemyMove4 initiativeMove;
+	private EnemyMove initiativeMove;
 
 	@Override
 	public void onEnter(MainState mainState)

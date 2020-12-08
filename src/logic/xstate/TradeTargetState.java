@@ -24,7 +24,7 @@ public final class TradeTargetState implements NMarkState
 	public void onEnter(MainState mainState)
 	{
 		mainState.side().setStandardSideInfo(character);
-		LevelMap4 levelMap = mainState.levelMap();
+		LevelMap levelMap = mainState.levelMap();
 		List<Tile> range = levelMap.y1().range(character.location(), 0, character.accessRange());
 		possibleTargets = new ArrayList<>();
 		possibleTargets.add(levelMap.storage());
@@ -74,7 +74,7 @@ public final class TradeTargetState implements NMarkState
 
 	private Tile getLocation(InvHolder possibleTarget)
 	{
-		if(possibleTarget instanceof Storage4)
+		if(possibleTarget instanceof Storage)
 			return character.location();
 		else
 			return possibleTarget.location();

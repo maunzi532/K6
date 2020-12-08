@@ -14,7 +14,7 @@ public class WorldLoader implements WorldControl
 	private JrsObject teamData;
 	private JrsObject levelData;
 	private JrsObject suspendData;
-	private SystemScheme systemScheme;
+	private WorldSettings worldSettings;
 
 	public void loadFile(String file)
 	{
@@ -40,7 +40,7 @@ public class WorldLoader implements WorldControl
 				if(worldPathNew != worldPath)
 				{
 					worldPath = worldPathNew;
-					systemScheme = SystemScheme.load(LoadHelper.startLoad(worldPath.resolve("World")));
+					worldSettings = WorldSettings.load(LoadHelper.startLoad(worldPath.resolve("World")));
 				}
 			}
 			else if(data.get("StartLevel") != null)
@@ -49,7 +49,7 @@ public class WorldLoader implements WorldControl
 				if(worldPathNew != worldPath)
 				{
 					worldPath = worldPathNew;
-					systemScheme = SystemScheme.load(data);
+					worldSettings = WorldSettings.load(data);
 				}
 			}
 			else
@@ -112,24 +112,24 @@ public class WorldLoader implements WorldControl
 	}
 
 	@Override
-	public SystemScheme systemScheme()
+	public WorldSettings systemScheme()
 	{
-		return systemScheme;
+		return worldSettings;
 	}
 
 	@Override
-	public LevelMap4 createLevel()
+	public LevelMap createLevel()
 	{
 		if(suspendData != null)
 		{
-			return LevelMap4.resume(suspendData, systemScheme);
+			return LevelMap.resume(suspendData, worldSettings);
 		}
 		else
 		{
-			LevelMap4 levelMap = LevelMap4.load(levelData, systemScheme);
+			LevelMap levelMap = LevelMap.load(levelData, worldSettings);
 			if(teamData != null)
 			{
-				levelMap.loadTeam(teamData, systemScheme);
+				levelMap.loadTeam(teamData, worldSettings);
 				//levelMap.setEventPacks(EventPack.read(world, currentMap, scheme.setting("file.locale.level"), itemLoader, levelMap.y1));
 			}
 			return levelMap;

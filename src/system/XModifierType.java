@@ -1,6 +1,6 @@
 package system;
 
-public enum ModifierType4
+public enum XModifierType
 {
 	ADD,
 	MULT,

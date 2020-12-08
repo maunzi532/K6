@@ -8,40 +8,40 @@ import java.util.*;
 import java.util.stream.*;
 import levelmap.*;
 
-public class EnemyAI4 implements XSaveableY
+public class EnemyAI implements XSaveableY
 {
 	private final Tile targetTile;
 
-	public EnemyAI4(Tile targetTile)
+	public EnemyAI(Tile targetTile)
 	{
 		this.targetTile = targetTile;
 	}
 
-	private List<EnemyMove4> possibleMoves(XCharacter character, LevelMap4 levelMap)
+	private List<EnemyMove> possibleMoves(XCharacter character, LevelMap levelMap)
 	{
-		List<EnemyMove4> moves = new ArrayList<>();
+		List<EnemyMove> moves = new ArrayList<>();
 		List<PathLocation> locations = new Pathing(character, character.movement(), levelMap, false).getEndpaths();
 		for(PathLocation pl : locations)
 		{
 			moves.addAll(levelMap.allCharacters().stream().filter(e -> e.team() != character.team()
 					&& character.enemyTargetRanges(true).contains(levelMap.y1().distance(e.location(), pl.tile())))
 					.flatMap(e -> character.attackOptions(levelMap.y1().distance(e.location(), pl.tile()), e).stream())
-					.map(e -> new EnemyMove4(character, pl, e, false, distanceToTarget(levelMap.y1(), pl.tile()))).collect(Collectors.toList()));
+					.map(e -> new EnemyMove(character, pl, e, false, distanceToTarget(levelMap.y1(), pl.tile()))).collect(Collectors.toList()));
 		}
 		int n = moves.size();
 		for(int i = 0; i < n; i++)
 		{
-			EnemyMove4 m1 = moves.get(i);
+			EnemyMove m1 = moves.get(i);
 			if(m1.moveTo().cost() <= 0)
 			{
-				moves.addAll(locations.stream().map(e -> new EnemyMove4(character, e, m1.aI(), true, distanceToTarget(levelMap.y1(), e.tile()))).collect(Collectors.toList()));
+				moves.addAll(locations.stream().map(e -> new EnemyMove(character, e, m1.aI(), true, distanceToTarget(levelMap.y1(), e.tile()))).collect(Collectors.toList()));
 			}
 		}
-		moves.addAll(locations.stream().map(e -> new EnemyMove4(character, e, null, false, distanceToTarget(levelMap.y1(), e.tile()))).collect(Collectors.toList()));
+		moves.addAll(locations.stream().map(e -> new EnemyMove(character, e, null, false, distanceToTarget(levelMap.y1(), e.tile()))).collect(Collectors.toList()));
 		return moves;
 	}
 
-	public EnemyMove4 preferredMove(XCharacter character, LevelMap4 levelMap)
+	public EnemyMove preferredMove(XCharacter character, LevelMap levelMap)
 	{
 		return possibleMoves(character, levelMap).stream().sorted().findFirst().orElseThrow();
 	}
@@ -54,10 +54,10 @@ public class EnemyAI4 implements XSaveableY
 			return -1;
 	}
 
-	public static EnemyAI4 load(JrsObject data, TileType y1)
+	public static EnemyAI load(JrsObject data, TileType y1)
 	{
 		Tile targetTile = data.get("sx") != null ? XSaveableY.loadLocation(data, y1) : null;
-		return new EnemyAI4(targetTile);
+		return new EnemyAI(targetTile);
 	}
 
 	@Override

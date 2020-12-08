@@ -28,7 +28,7 @@ public final class GetExpAnim implements AnimTimer
 	private boolean finished;
 	private int counter;
 
-	public GetExpAnim(AttackCalc4 aI, ACResult4 result, Arrows arrows)
+	public GetExpAnim(AttackCalc aI, ACResult result, Arrows arrows)
 	{
 		entity = aI.aI.initiator();
 		entityT = aI.aI.target();

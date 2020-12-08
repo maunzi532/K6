@@ -119,17 +119,17 @@ public class TagInv implements Inv, XSaveableS
 		}
 	}
 
-	public static TagInv load(JrsObject data, SystemScheme systemScheme)
+	public static TagInv load(JrsObject data, WorldSettings worldSettings)
 	{
 		int maxStacks = LoadHelper.asInt(data.get("MaxStacks"));
-		List<TagStack> stacks = LoadHelper.asList(data.get("Stacks"), e -> TagStack.load(e, systemScheme));
+		List<TagStack> stacks = LoadHelper.asList(data.get("Stacks"), e -> TagStack.load(e, worldSettings));
 		return new TagInv(maxStacks, stacks);
 	}
 
 	@Override
-	public void save(ObjectComposer<? extends ComposerBase> a1, SystemScheme systemScheme) throws IOException
+	public void save(ObjectComposer<? extends ComposerBase> a1, WorldSettings worldSettings) throws IOException
 	{
 		a1.put("MaxStacks", maxStacks);
-		XSaveableS.saveList("Stacks", stacks, a1, systemScheme);
+		XSaveableS.saveList("Stacks", stacks, a1, worldSettings);
 	}
 }

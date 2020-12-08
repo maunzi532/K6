@@ -5,7 +5,7 @@ import java.util.*;
 import logic.*;
 import gui.*;
 
-public class Inv1GUI extends XGUIState
+public class InvGUI extends XGUIState
 {
 	private static final CTile textInv = new CTile(2, 0, 2, 1);
 
@@ -16,7 +16,7 @@ public class Inv1GUI extends XGUIState
 	protected CharSequence name;
 	protected List<? extends CharSequence> baseInfo;
 
-	public Inv1GUI(Inv inv, CharSequence name, List<? extends CharSequence> baseInfo)
+	public InvGUI(Inv inv, CharSequence name, List<? extends CharSequence> baseInfo)
 	{
 		this.inv = inv;
 		this.name = name;

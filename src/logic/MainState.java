@@ -7,7 +7,7 @@ import system.*;
 
 public interface MainState
 {
-	LevelMap4 levelMap();
+	LevelMap levelMap();
 
 	XStateHolder stateHolder();
 
@@ -15,7 +15,7 @@ public interface MainState
 
 	WorldControl worldControl();
 
-	SystemScheme systemScheme();
+	WorldSettings systemScheme();
 
 	//content
 	//TODO    Build a real level

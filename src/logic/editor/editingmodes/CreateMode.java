@@ -7,23 +7,23 @@ import logic.editor.*;
 import logic.editor.xgui.*;
 import gui.*;
 
-public final class BCEditMode implements EditingMode
+public final class CreateMode implements EditingMode
 {
-	public static final BCEditMode INSTANCE = new BCEditMode();
+	public static final CreateMode INSTANCE = new CreateMode();
 
 	@Override
 	public GuiTile guiTile()
 	{
-		return new GuiTile("editmode.edit");
+		return new GuiTile("editmode.create");
 	}
 
 	@Override
 	public void onMapClick(MainState mainState, Tile tile, XKey key)
 	{
 		AdvTile advTile = mainState.levelMap().advTile(tile);
-		if(advTile.entity() != null)
+		if(advTile.entity() == null)
 		{
-			mainState.stateHolder().setState(new EntityEditGUI(advTile.entity()));
+			mainState.stateHolder().setState(new EntityCreateGUI(tile));
 		}
 	}
 }

@@ -5,11 +5,11 @@ import item.*;
 import java.util.*;
 import load.*;
 
-public record XClass4(Item visItem, int[] bonusIncrease, int[] enemyDividers, int[] enemyBase, int[] enemyIncrease)
+public record XClass(Item visItem, int[] bonusIncrease, int[] enemyDividers, int[] enemyBase, int[] enemyIncrease)
 {
 	public static final int NUM_OF_LEVEL_STATS = 6;
 
-	public static XClass4 load(JrsObject data, Map<String, ? extends Item> items)
+	public static XClass load(JrsObject data, Map<String, ? extends Item> items)
 	{
 		//TODO load items before
 		Item visItem = items.get(data.get("VisItem").asText());
@@ -19,6 +19,6 @@ public record XClass4(Item visItem, int[] bonusIncrease, int[] enemyDividers, in
 		int[] enemyDividers = LoadHelper.asIntArray(data.get("EnemyDividers"));
 		int[] enemyBase = LoadHelper.asIntArray(data.get("EnemyBase"));
 		int[] enemyIncrease = LoadHelper.asIntArray(data.get("EnemyIncrease"));
-		return new XClass4(visItem, bonusIncrease, enemyDividers, enemyBase, enemyIncrease);
+		return new XClass(visItem, bonusIncrease, enemyDividers, enemyBase, enemyIncrease);
 	}
 }

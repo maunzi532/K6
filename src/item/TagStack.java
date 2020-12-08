@@ -18,18 +18,18 @@ public record TagStack(ItemStack items, String tag) implements XSaveableS
 		this(new ItemStack(item, count), tag);
 	}
 
-	public static TagStack load(JrsObject data, SystemScheme systemScheme)
+	public static TagStack load(JrsObject data, WorldSettings worldSettings)
 	{
-		Item item = systemScheme.getItem(data.get("Item").asText());
+		Item item = worldSettings.getItem(data.get("Item").asText());
 		int count = LoadHelper.asInt(data.get("Count"));
 		String tag = LoadHelper.asOptionalString(data.get("Tag"));
 		return new TagStack(item, count, tag);
 	}
 
 	@Override
-	public void save(ObjectComposer<? extends ComposerBase> a1, SystemScheme systemScheme) throws IOException
+	public void save(ObjectComposer<? extends ComposerBase> a1, WorldSettings worldSettings) throws IOException
 	{
-		a1.put("Item", systemScheme.saveItem(items.item()));
+		a1.put("Item", worldSettings.saveItem(items.item()));
 		a1.put("Count", items.count());
 		if(tag != null)
 			a1.put("Tag", tag);

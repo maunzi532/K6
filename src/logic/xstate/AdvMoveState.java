@@ -7,7 +7,7 @@ import levelmap.*;
 import logic.*;
 import logic.guis.*;
 
-public final class AdvMoveState4 implements NMarkState
+public final class AdvMoveState implements NMarkState
 {
 	private final XCharacter character;
 	private final MoveState moveState;
@@ -18,14 +18,14 @@ public final class AdvMoveState4 implements NMarkState
 	private List<XCharacter> ally;
 	private List<VisMark> allTargets;
 
-	public AdvMoveState4(XCharacter character)
+	public AdvMoveState(XCharacter character)
 	{
 		this.character = character;
 		moveState = MoveState.INIT;
 		startLocation = character.location();
 	}
 
-	private AdvMoveState4(XCharacter character, MoveState moveState, Tile startLocation)
+	private AdvMoveState(XCharacter character, MoveState moveState, Tile startLocation)
 	{
 		this.character = character;
 		this.moveState = moveState;
@@ -42,7 +42,7 @@ public final class AdvMoveState4 implements NMarkState
 			case INIT, MOVED -> {}
 			case ACTION_USED, MOVED_LOCKED -> character.setHasMainAction(false);
 		}
-		LevelMap4 levelMap = mainState.levelMap();
+		LevelMap levelMap = mainState.levelMap();
 		allTargets = new ArrayList<>();
 		movement = new ArrayList<>();
 		if(moveState.canMove)
@@ -113,21 +113,21 @@ public final class AdvMoveState4 implements NMarkState
 	{
 		return switch(moveState)
 				{
-					case INIT -> new StateReverter(new AdvMoveState4(character, MoveState.INIT, startLocation), new AdvMoveState4(character, MoveState.INIT, startLocation), new AdvMoveState4(character, MoveState.ACTION_USED, startLocation));
-					case ACTION_USED -> new StateReverter(new AdvMoveState4(character, MoveState.ACTION_USED, startLocation), new AdvMoveState4(character, MoveState.ACTION_USED, startLocation), new AdvMoveState4(character, MoveState.ACTION_USED, startLocation));
-					case MOVED -> new StateReverter(new AdvMoveState4(character, MoveState.MOVED, startLocation), new AdvMoveState4(character, MoveState.MOVED_LOCKED, startLocation), new EndMoveState(character));
-					case MOVED_LOCKED -> new StateReverter(new AdvMoveState4(character, MoveState.MOVED_LOCKED, startLocation), new AdvMoveState4(character, MoveState.MOVED_LOCKED, startLocation), new EndMoveState(character));
+					case INIT -> new StateReverter(new AdvMoveState(character, MoveState.INIT, startLocation), new AdvMoveState(character, MoveState.INIT, startLocation), new AdvMoveState(character, MoveState.ACTION_USED, startLocation));
+					case ACTION_USED -> new StateReverter(new AdvMoveState(character, MoveState.ACTION_USED, startLocation), new AdvMoveState(character, MoveState.ACTION_USED, startLocation), new AdvMoveState(character, MoveState.ACTION_USED, startLocation));
+					case MOVED -> new StateReverter(new AdvMoveState(character, MoveState.MOVED, startLocation), new AdvMoveState(character, MoveState.MOVED_LOCKED, startLocation), new EndMoveState(character));
+					case MOVED_LOCKED -> new StateReverter(new AdvMoveState(character, MoveState.MOVED_LOCKED, startLocation), new AdvMoveState(character, MoveState.MOVED_LOCKED, startLocation), new EndMoveState(character));
 				};
 	}
 
 	private void onClickAttack(XCharacter target)
 	{
-		mainState1.stateHolder().setState(new AttackInfoGUI4(character, target, actionStateReverter()));
+		mainState1.stateHolder().setState(new AttackInfoGUI(character, target, actionStateReverter()));
 	}
 
 	private void onClickAlly(XCharacter target)
 	{
-		mainState1.stateHolder().setState(new AllyInfoGUI4(character, target, actionStateReverter()));
+		mainState1.stateHolder().setState(new AllyInfoGUI(character, target, actionStateReverter()));
 	}
 
 	private void onClickMovement(PathLocation target)
@@ -137,7 +137,7 @@ public final class AdvMoveState4 implements NMarkState
 			case INIT ->
 					{
 						mainState1.levelMap().moveEntity(character, target.tile());
-						mainState1.stateHolder().setState(new AdvMoveState4(character, MoveState.MOVED, startLocation));
+						mainState1.stateHolder().setState(new AdvMoveState(character, MoveState.MOVED, startLocation));
 					}
 			case ACTION_USED ->
 					{

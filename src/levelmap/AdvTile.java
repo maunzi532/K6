@@ -9,7 +9,7 @@ public final class AdvTile
 
 	private FloorTile floorTile;
 	private XCharacter entity;
-	private StartingLocation4 startingLocation;
+	private StartingLocation startingLocation;
 
 	public AdvTile(FloorTile floorTile)
 	{
@@ -26,7 +26,7 @@ public final class AdvTile
 		return entity;
 	}
 
-	public StartingLocation4 startingLocation()
+	public StartingLocation startingLocation()
 	{
 		return startingLocation;
 	}
@@ -41,7 +41,7 @@ public final class AdvTile
 		this.entity = entity;
 	}
 
-	public void setStartingLocation(StartingLocation4 startingLocation)
+	public void setStartingLocation(StartingLocation startingLocation)
 	{
 		this.startingLocation = startingLocation;
 	}

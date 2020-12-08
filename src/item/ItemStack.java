@@ -26,17 +26,17 @@ public record ItemStack(Item item, int count) implements XSaveableS
 			return 0;
 	}
 
-	public static ItemStack load(JrsObject data, SystemScheme systemScheme)
+	public static ItemStack load(JrsObject data, WorldSettings worldSettings)
 	{
-		Item item = systemScheme.getItem(data.get("Item").asText());
+		Item item = worldSettings.getItem(data.get("Item").asText());
 		int count = LoadHelper.asInt(data.get("Count"));
 		return new ItemStack(item, count);
 	}
 
 	@Override
-	public void save(ObjectComposer<? extends ComposerBase> a1, SystemScheme systemScheme) throws IOException
+	public void save(ObjectComposer<? extends ComposerBase> a1, WorldSettings worldSettings) throws IOException
 	{
-		a1.put("Item", systemScheme.saveItem(item));
+		a1.put("Item", worldSettings.saveItem(item));
 		a1.put("Count", count);
 	}
 }

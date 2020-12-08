@@ -14,15 +14,15 @@ public record ItemList(List<ItemStack> items) implements XSaveableS
 		this(List.of());
 	}
 
-	public static ItemList load(JrsObject data, SystemScheme systemScheme)
+	public static ItemList load(JrsObject data, WorldSettings worldSettings)
 	{
-		List<ItemStack> stacks = LoadHelper.asList(data.get("Items"), e -> ItemStack.load(e, systemScheme));
+		List<ItemStack> stacks = LoadHelper.asList(data.get("Items"), e -> ItemStack.load(e, worldSettings));
 		return new ItemList(stacks);
 	}
 
 	@Override
-	public void save(ObjectComposer<? extends ComposerBase> a1, SystemScheme systemScheme) throws IOException
+	public void save(ObjectComposer<? extends ComposerBase> a1, WorldSettings worldSettings) throws IOException
 	{
-		XSaveableS.saveList("Items", items, a1, systemScheme);
+		XSaveableS.saveList("Items", items, a1, worldSettings);
 	}
 }

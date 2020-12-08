@@ -27,7 +27,7 @@ public final class VisualTile
 		this.graphics = graphics;
 	}
 
-	public void draw(TileCamera camera, LevelMap4 levelMap, List<VisMark> visMarked, int screenshake, Scheme scheme)
+	public void draw(TileCamera camera, LevelMap levelMap, List<VisMark> visMarked, int screenshake, Scheme scheme)
 	{
 		graphics.gd().setImageSmoothing(true);
 		TileType y1 = camera.doubleType();

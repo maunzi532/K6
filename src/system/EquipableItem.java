@@ -8,13 +8,13 @@ import load.*;
 import text.*;
 
 public record EquipableItem(int num, CharSequence name, String image, CharSequence info, int stackLimit, boolean ghost,
-                            Set<String> tags, Map<Stats4, List<Modifier4>> modifiers,
-                            Map<String, Integer> additional, Ranges4 attackRanges, Ranges4 abilityRanges, Ranges4 allyRanges,
-                            Ranges4 defendRanges) implements Item, ModifierProvider4
+                            Set<String> tags, Map<XStats, List<XModifier>> modifiers,
+                            Map<String, Integer> additional, Ranges attackRanges, Ranges abilityRanges, Ranges allyRanges,
+                            Ranges defendRanges) implements Item, ModifierProvider
 {
 	public static final EquipableItem NO_EQUIP_ITEM = new EquipableItem(-1, "", null, "",
 			0, true, Set.of("Defend"), Map.of(), Map.of("AttackCount", 0),
-			null, null, null, new Ranges4(""));
+			null, null, null, new Ranges(""));
 
 	public static EquipableItem load(JrsObject data, int num)
 	{
@@ -24,13 +24,13 @@ public record EquipableItem(int num, CharSequence name, String image, CharSequen
 		int stackLimit = LoadHelper.asInt(data.get("StackLimit"));
 		boolean ghost = LoadHelper.asBoolean(data.get("Ghost"));
 		Set<String> tags = new HashSet<>(LoadHelper.asStringList(data.get("Tags")));
-		Map<Stats4, List<Modifier4>> modifiers = LoadHelper.asList(data.get("Modifiers"), Modifier4::load)
-				.stream().collect(Collectors.groupingBy(Modifier4::stat));
+		Map<XStats, List<XModifier>> modifiers = LoadHelper.asList(data.get("Modifiers"), XModifier::load)
+				.stream().collect(Collectors.groupingBy(XModifier::stat));
 		Map<String, Integer> additional = LoadHelper.asIntMap(data.get("Additional"));
-		Ranges4 attackRanges = Ranges4.load(LoadHelper.asOptionalString(data.get("AttackRanges")));
-		Ranges4 abilityRanges = Ranges4.load(LoadHelper.asOptionalString(data.get("AbilityRanges")));
-		Ranges4 allyRanges = Ranges4.load(LoadHelper.asOptionalString(data.get("AllyRanges")));
-		Ranges4 defendRanges = Ranges4.load(LoadHelper.asOptionalString(data.get("DefendRanges")));
+		Ranges attackRanges = Ranges.load(LoadHelper.asOptionalString(data.get("AttackRanges")));
+		Ranges abilityRanges = Ranges.load(LoadHelper.asOptionalString(data.get("AbilityRanges")));
+		Ranges allyRanges = Ranges.load(LoadHelper.asOptionalString(data.get("AllyRanges")));
+		Ranges defendRanges = Ranges.load(LoadHelper.asOptionalString(data.get("DefendRanges")));
 		return new EquipableItem(num, name, image, info, stackLimit, ghost, tags, modifiers,
 				additional, attackRanges, abilityRanges, allyRanges, defendRanges);
 	}
@@ -50,7 +50,7 @@ public record EquipableItem(int num, CharSequence name, String image, CharSequen
 				);
 	}
 
-	private CharSequence viewRanges(String formatKey, Ranges4 ranges)
+	private CharSequence viewRanges(String formatKey, Ranges ranges)
 	{
 		if(ranges == null)
 			return "_";

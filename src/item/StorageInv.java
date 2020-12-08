@@ -81,14 +81,14 @@ public class StorageInv implements Inv, XSaveableS
 				.map(e -> new ItemStack(e.getKey(), e.getValue())).collect(Collectors.toList()));
 	}
 
-	public static StorageInv load(JrsObject data, SystemScheme systemScheme)
+	public static StorageInv load(JrsObject data, WorldSettings worldSettings)
 	{
-		return new StorageInv(ItemList.load(data, systemScheme));
+		return new StorageInv(ItemList.load(data, worldSettings));
 	}
 
 	@Override
-	public void save(ObjectComposer<? extends ComposerBase> a1, SystemScheme systemScheme) throws IOException
+	public void save(ObjectComposer<? extends ComposerBase> a1, WorldSettings worldSettings) throws IOException
 	{
-		viewAsItemList().save(a1, systemScheme);
+		viewAsItemList().save(a1, worldSettings);
 	}
 }

@@ -18,7 +18,7 @@ public interface XStateHolder
 
 	boolean showAllEnemyReach();
 
-	void updateLevel(LevelMap4 newLevel);
+	void updateLevel(LevelMap newLevel);
 
-	LevelMap4 levelMap();
+	LevelMap levelMap();
 }

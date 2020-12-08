@@ -15,13 +15,13 @@ import load.*;
 import logic.event.*;
 import system.*;
 
-public class LevelMap4 implements Arrows, XSaveableS
+public class LevelMap implements Arrows, XSaveableS
 {
 	private TileType y1;
 	private HashMap<Tile, AdvTile> advTiles;
 	private List<XCharacter> allCharacters;
-	private List<StartingLocation4> allStartingLocations;
-	private Storage4 storage;
+	private List<StartingLocation> allStartingLocations;
+	private Storage storage;
 	private int turnCounter;
 	private boolean win;
 	private boolean lose;
@@ -29,9 +29,9 @@ public class LevelMap4 implements Arrows, XSaveableS
 	private ArrayList<XArrow> arrows;
 	private boolean requiresUpdate;
 
-	public LevelMap4(TileType y1, HashMap<Tile, AdvTile> advTiles,
-			List<XCharacter> allCharacters, List<StartingLocation4> allStartingLocations,
-			Storage4 storage, Map<String, EventPack> eventPacks, int turnCounter)
+	public LevelMap(TileType y1, HashMap<Tile, AdvTile> advTiles,
+			List<XCharacter> allCharacters, List<StartingLocation> allStartingLocations,
+			Storage storage, Map<String, EventPack> eventPacks, int turnCounter)
 	{
 		this.y1 = y1;
 		this.advTiles = advTiles;
@@ -149,7 +149,7 @@ public class LevelMap4 implements Arrows, XSaveableS
 		}
 		else
 		{
-			StartingLocation4 startingLocation = advTile(character.location()).startingLocation();
+			StartingLocation startingLocation = advTile(character.location()).startingLocation();
 			return startingLocation != null && !startingLocation.locationLocked();
 		}
 	}
@@ -162,7 +162,7 @@ public class LevelMap4 implements Arrows, XSaveableS
 		}
 		else
 		{
-			StartingLocation4 startingLocation = advTile(character.location()).startingLocation();
+			StartingLocation startingLocation = advTile(character.location()).startingLocation();
 			return startingLocation != null && !startingLocation.emptyInv();
 		}
 	}
@@ -207,7 +207,7 @@ public class LevelMap4 implements Arrows, XSaveableS
 		return lose;
 	}
 
-	public Storage4 storage()
+	public Storage storage()
 	{
 		return storage;
 	}
@@ -255,7 +255,7 @@ public class LevelMap4 implements Arrows, XSaveableS
 		arrows.removeIf(XArrow::finished);
 	}
 
-	public static LevelMap4 load(JrsObject data, SystemScheme systemScheme)
+	public static LevelMap load(JrsObject data, WorldSettings worldSettings)
 	{
 		TileType y1 = switch(data.get("TileType").asText())
 				{
@@ -269,16 +269,18 @@ public class LevelMap4 implements Arrows, XSaveableS
 		{
 			advTiles.put(y1.create2(sb.get(), sb.get()), new AdvTile(new FloorTile(sb.get(), FloorTileType.values()[sb.get()])));
 		}
-		List<XCharacter> allCharacters = LoadHelper.asList(data.get("Characters"), e -> XCharacter.load(e, y1, systemScheme));
-		List<StartingLocation4> startingLocations = LoadHelper.asList(data.get("StartingLocations"), e -> StartingLocation4.load(e, y1));
-		Storage4 storage = new Storage4();
+		List<XCharacter> allCharacters = LoadHelper.asList(data.get("Characters"), e -> XCharacter.load(e, y1,
+				worldSettings));
+		List<StartingLocation> startingLocations = LoadHelper.asList(data.get("StartingLocations"), e -> StartingLocation
+				.load(e, y1));
+		Storage storage = new Storage();
 		Map<String, EventPack> eventPacks = Map.of();
 		int turnCounter = 0;
-		return new LevelMap4(y1, advTiles, allCharacters, startingLocations, storage, eventPacks, turnCounter);
+		return new LevelMap(y1, advTiles, allCharacters, startingLocations, storage, eventPacks, turnCounter);
 	}
 
 	@Override
-	public void save(ObjectComposer<? extends ComposerBase> a1, SystemScheme systemScheme) throws IOException
+	public void save(ObjectComposer<? extends ComposerBase> a1, WorldSettings worldSettings) throws IOException
 	{
 		if(y1 instanceof HexTileType)
 			a1.put("TileType", "Hex");
@@ -299,11 +301,11 @@ public class LevelMap4 implements Arrows, XSaveableS
 		}
 		a1.put("FloorTiles", Base64.getEncoder().encodeToString(sb.array()));
 		XSaveableYS.saveList("Characters", allCharacters.stream()
-				.filter(e -> !e.isSavedInTeam()).collect(Collectors.toList()), a1, y1, systemScheme);
+				.filter(e -> !e.isSavedInTeam()).collect(Collectors.toList()), a1, y1, worldSettings);
 		XSaveableY.saveList("StartingLocations", allStartingLocations, a1, y1);
 	}
 
-	public static LevelMap4 resume(JrsObject data, SystemScheme systemScheme)
+	public static LevelMap resume(JrsObject data, WorldSettings worldSettings)
 	{
 		TileType y1 = switch(data.get("TileType").asText())
 				{
@@ -317,15 +319,17 @@ public class LevelMap4 implements Arrows, XSaveableS
 		{
 			advTiles.put(y1.create2(sb.get(), sb.get()), new AdvTile(new FloorTile(sb.get(), FloorTileType.values()[sb.get()])));
 		}
-		List<XCharacter> allCharacters = LoadHelper.asList(data.get("Characters"), e -> XCharacter.load(e, y1, systemScheme));
-		List<StartingLocation4> startingLocations = LoadHelper.asList(data.get("StartingLocations"), e -> StartingLocation4.load(e, y1));
-		Storage4 storage = Storage4.load((JrsObject) data.get("Storage"), systemScheme);
+		List<XCharacter> allCharacters = LoadHelper.asList(data.get("Characters"), e -> XCharacter.load(e, y1,
+				worldSettings));
+		List<StartingLocation> startingLocations = LoadHelper.asList(data.get("StartingLocations"), e -> StartingLocation
+				.load(e, y1));
+		Storage storage = Storage.load((JrsObject) data.get("Storage"), worldSettings);
 		int turnCounter = LoadHelper.asInt(data.get("TurnCounter"));
 		Map<String, EventPack> eventPacks = Map.of();
-		return new LevelMap4(y1, advTiles, allCharacters, startingLocations, storage, eventPacks, turnCounter);
+		return new LevelMap(y1, advTiles, allCharacters, startingLocations, storage, eventPacks, turnCounter);
 	}
 
-	public void suspend(ObjectComposer<? extends ComposerBase> a1, SystemScheme systemScheme) throws IOException
+	public void suspend(ObjectComposer<? extends ComposerBase> a1, WorldSettings worldSettings) throws IOException
 	{
 		if(y1 instanceof HexTileType)
 			a1.put("TileType", "Hex");
@@ -345,20 +349,21 @@ public class LevelMap4 implements Arrows, XSaveableS
 			}
 		}
 		a1.put("FloorTiles", Base64.getEncoder().encodeToString(sb.array()));
-		XSaveableYS.saveList("Characters", allCharacters, a1, y1, systemScheme);
+		XSaveableYS.saveList("Characters", allCharacters, a1, y1, worldSettings);
 		XSaveableY.saveList("StartingLocations", allStartingLocations, a1, y1);
-		XSaveableS.saveObject("Storage", storage, a1, systemScheme);
+		XSaveableS.saveObject("Storage", storage, a1, worldSettings);
 		a1.put("TurnCounter", turnCounter);
 	}
 
-	public void loadTeam(JrsObject data, SystemScheme systemScheme)
+	public void loadTeam(JrsObject data, WorldSettings worldSettings)
 	{
-		List<XCharacter> teamCharacters = LoadHelper.asList(data.get("Characters"), e -> XCharacter.load(e, y1, systemScheme));
-		storage = Storage4.load((JrsObject) data.get("Storage"), systemScheme);
-		List<StartingLocation4> namedSL = allStartingLocations.stream().filter(e -> e.startName() != null).collect(Collectors.toList());
+		List<XCharacter> teamCharacters = LoadHelper.asList(data.get("Characters"), e -> XCharacter.load(e, y1,
+				worldSettings));
+		storage = Storage.load((JrsObject) data.get("Storage"), worldSettings);
+		List<StartingLocation> namedSL = allStartingLocations.stream().filter(e -> e.startName() != null).collect(Collectors.toList());
 		ArrayList<XCharacter> namedC = new ArrayList<>();
 		namedSL.forEach(e -> namedC.add(setToStartingLocation(characterByName(teamCharacters, e.startName()), e)));
-		List<StartingLocation4> unnamedSL = allStartingLocations.stream().filter(e -> e.startName() == null).collect(Collectors.toList());
+		List<StartingLocation> unnamedSL = allStartingLocations.stream().filter(e -> e.startName() == null).collect(Collectors.toList());
 		List<XCharacter> unnamedC = teamCharacters.stream().filter(e -> !namedC.contains(e)).collect(Collectors.toList());
 		for(int i = 0; i < unnamedC.size(); i++)
 		{
@@ -371,7 +376,7 @@ public class LevelMap4 implements Arrows, XSaveableS
 		return characters.stream().filter(e1 -> e1.isNamed(name)).findFirst().orElseThrow();
 	}
 
-	private XCharacter setToStartingLocation(XCharacter character, StartingLocation4 startingLocation)
+	private XCharacter setToStartingLocation(XCharacter character, StartingLocation startingLocation)
 	{
 		advTiles.get(startingLocation.location()).setEntity(character);
 		//TODO lock characters with locked movement/inv
@@ -382,10 +387,10 @@ public class LevelMap4 implements Arrows, XSaveableS
 		return character;
 	}
 
-	public void saveTeam(ObjectComposer<? extends ComposerBase> a1, SystemScheme systemScheme) throws IOException
+	public void saveTeam(ObjectComposer<? extends ComposerBase> a1, WorldSettings worldSettings) throws IOException
 	{
 		XSaveableYS.saveList("Characters", allCharacters.stream()
-				.filter(XCharacter::isSavedInTeam).collect(Collectors.toList()), a1, y1, systemScheme);
-		XSaveableS.saveObject("Storage", storage, a1, systemScheme);
+				.filter(XCharacter::isSavedInTeam).collect(Collectors.toList()), a1, y1, worldSettings);
+		XSaveableS.saveObject("Storage", storage, a1, worldSettings);
 	}
 }

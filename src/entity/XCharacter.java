@@ -127,7 +127,7 @@ public final class XCharacter implements InvHolder, XSaveableYS
 
 	public int maxHP()
 	{
-		return systemChar.stat(Stats4.MAX_HP);
+		return systemChar.stat(XStats.MAX_HP);
 	}
 
 	public StatBar hpBar()
@@ -142,12 +142,12 @@ public final class XCharacter implements InvHolder, XSaveableYS
 
 	public int movement()
 	{
-		return systemChar.stat(Stats4.MOVEMENT);
+		return systemChar.stat(XStats.MOVEMENT);
 	}
 
 	public int accessRange()
 	{
-		return systemChar.stat(Stats4.ACCESS_RANGE);
+		return systemChar.stat(XStats.ACCESS_RANGE);
 	}
 
 	public List<Integer> enemyTargetRanges(boolean enemy)
@@ -160,11 +160,11 @@ public final class XCharacter implements InvHolder, XSaveableYS
 		return systemChar.allyTargetRanges();
 	}
 
-	public List<AttackCalc4> attackOptions(int distance, XCharacter target)
+	public List<AttackCalc> attackOptions(int distance, XCharacter target)
 	{
 		return systemChar.possibleAttackItems(distance, true, false).stream()
-				.flatMap(e -> AttackInfo4.attackOptions(this, target, distance, true, false)
-						.stream().map(AttackCalc4::new)).collect(Collectors.toList());
+				.flatMap(e -> AttackInfo.attackOptions(this, target, distance, true, false)
+						.stream().map(AttackCalc::new)).collect(Collectors.toList());
 	}
 
 	public boolean isEnemy(XCharacter other)
@@ -210,7 +210,7 @@ public final class XCharacter implements InvHolder, XSaveableYS
 		return new XCharacter(team, savedInTeam, startingDelay, copyLocation, customName, customMapImage, customSideImage, systemChar.createACopy(), hasMainAction);
 	}
 
-	public static XCharacter load(JrsObject data, TileType y1, SystemScheme systemScheme)
+	public static XCharacter load(JrsObject data, TileType y1, WorldSettings worldSettings)
 	{
 		CharacterTeam team = CharacterTeam.valueOf(data.get("Team").asText());
 		boolean savedInTeam = LoadHelper.asBoolean(data.get("SavedInTeam"));
@@ -219,13 +219,13 @@ public final class XCharacter implements InvHolder, XSaveableYS
 		NameText customName = new NameText(LoadHelper.asOptionalString(data.get("CustomName")));
 		String customMapImage = LoadHelper.asOptionalString(data.get("CustomMapImage"));
 		String customSideImage = LoadHelper.asOptionalString(data.get("CustomSideImage"));
-		SystemChar systemChar = SystemChar.load(data, y1, systemScheme);
+		SystemChar systemChar = SystemChar.load(data, y1, worldSettings);
 		boolean hasMainAction = LoadHelper.asBoolean(data.get("HasMainAction"));
 		return new XCharacter(team, savedInTeam, startingDelay, location, customName, customMapImage, customSideImage, systemChar, hasMainAction);
 	}
 
 	@Override
-	public void save(ObjectComposer<? extends ComposerBase> a1, TileType y1, SystemScheme systemScheme) throws IOException
+	public void save(ObjectComposer<? extends ComposerBase> a1, TileType y1, WorldSettings worldSettings) throws IOException
 	{
 		a1.put("Team", team.name());
 		a1.put("SavedInTeam", savedInTeam);
@@ -237,7 +237,7 @@ public final class XCharacter implements InvHolder, XSaveableYS
 			a1.put("CustomMapImage", customMapImage);
 		if(customSideImage != null)
 			a1.put("CustomSideImage", customSideImage);
-		systemChar.save(a1, y1, systemScheme);
+		systemChar.save(a1, y1, worldSettings);
 		a1.put("HasMainAction", hasMainAction);
 	}
 }

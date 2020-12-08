@@ -1,6 +1,6 @@
 package system;
 
-public enum Stats4
+public enum XStats
 {
 	ATTACK,
 	ABILITY_POWER,

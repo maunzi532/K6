@@ -23,8 +23,8 @@ public final class LevelEditor
 		currentSlot = -1;
 		modes = new ArrayList<>();
 		modes.add(new SaveMode());
-		modes.add(BCEditMode.INSTANCE);
-		modes.add(BCCreateMode.INSTANCE);
+		modes.add(EditMode.INSTANCE);
+		modes.add(CreateMode.INSTANCE);
 		for(int i = 0; i < FloorTileType.values().length; i++)
 		{
 			modes.add(new FloorSetMode(FloorTileType.values()[i]));

@@ -9,17 +9,17 @@ import logic.*;
 import logic.xstate.*;
 import system.*;
 
-public final class AttackInfoGUI4 extends XGUIState
+public final class AllyInfoGUI extends XGUIState
 {
-	private final XCharacter attacker;
+	private final XCharacter character;
 	private final XCharacter target;
 	private final StateReverter nextState;
 	private SideInfoFrame side;
-	private TargetScrollList<AttackCalc4> attacksView;
+	private TargetScrollList<AllyCalc> allyView;
 
-	public AttackInfoGUI4(XCharacter attacker, XCharacter target, StateReverter nextState)
+	public AllyInfoGUI(XCharacter character, XCharacter target, StateReverter nextState)
 	{
-		this.attacker = attacker;
+		this.character = character;
 		this.target = target;
 		this.nextState = nextState;
 	}
@@ -28,23 +28,23 @@ public final class AttackInfoGUI4 extends XGUIState
 	public void onEnter(MainState mainState)
 	{
 		side = mainState.side();
-		side.sidedInfo(attacker, target);
-		List<AttackCalc4> attackCalc = AttackInfo4.attackOptions(attacker, target, mainState.levelMap().y1(), false, true)
-						.stream().map(AttackCalc4::new).collect(Collectors.toList());
-		attacksView = new TargetScrollList<>(0, 1,
-				6, 6, 6, 2, attackCalc,
-				AttackInfoGUI4::calcView, target1 -> clickAttack(target1, mainState.stateHolder()));
-		elements.add(attacksView);
-		elements.add(new CElement(new CTile(0, 0, new GuiTile(attacker.name()), 2, 1)));
+		side.sidedInfo(character, target);
+		List<AllyCalc> allyCalc = AllyInfo.allyOptions(character, target, mainState.levelMap().y1())
+				.stream().map(AllyCalc::new).collect(Collectors.toList());
+		allyView = new TargetScrollList<>(0, 1,
+				6, 6, 6, 2, allyCalc,
+				AllyInfoGUI::allyView, target1 -> clickAlly(target1, mainState.stateHolder()));
+		elements.add(allyView);
+		elements.add(new CElement(new CTile(0, 0, new GuiTile(character.name()), 2, 1)));
 		elements.add(new CElement(new CTile(4, 0, new GuiTile(target.name()), 2, 1)));
 		update();
 	}
 
-	private void clickAttack(AttackCalc4 target1, XStateHolder stateHolder)
+	private void clickAlly(AllyCalc target1, XStateHolder stateHolder)
 	{
-		//attacker.resources().action(true);
 		nextState.setMainAction();
-		stateHolder.setState(new PreAttackState(nextState, target1));
+		stateHolder.setState(new HealState(nextState, character, target,
+				target1.aI.item().additional().get("AbilityPower") + character.systemChar().stat(XStats.ABILITY_POWER)));
 	}
 
 	@Override
@@ -56,16 +56,16 @@ public final class AttackInfoGUI4 extends XGUIState
 	@Override
 	protected void updateBeforeDraw()
 	{
-		if(attacksView.getTargeted() != null)
-			side.setAttackInfoSideInfo(attacksView.getTargeted());
+		if(allyView.getTargeted() != null)
+			side.setAllyInfoSideInfo(allyView.getTargeted());
 		else
-			side.sidedInfo(attacker, target);
+			side.sidedInfo(character, target);
 	}
 
 	@Override
 	public CharSequence text()
 	{
-		return "menu.attackinfo";
+		return "menu.allyinfo";
 	}
 
 	@Override
@@ -77,8 +77,7 @@ public final class AttackInfoGUI4 extends XGUIState
 	@Override
 	public XMenu menu()
 	{
-		//return XMenu.characterMoveMenu4(attacker);
-		return new XMenu(this, nextState.nextState(), new EndMoveState(attacker));
+		return new XMenu(this, nextState.nextState(), new EndMoveState(character));
 	}
 
 	@Override
@@ -93,15 +92,15 @@ public final class AttackInfoGUI4 extends XGUIState
 		return 7;
 	}
 
-	private static GuiTile[] calcView(AttackCalc4 aI)
+	private static GuiTile[] allyView(AllyCalc aI)
 	{
 		CharSequence[] infos = aI.infos;
 		return new GuiTile[]
 				{
 						new GuiTile(read(infos, 0)),
 						new GuiTile(read(infos, 2)),
-						new GuiTile(read(infos, 8), aI.aI.initiatorItem().image(), false, null),
-						new GuiTile(read(infos, 9), aI.aI.targetItem().image(), false, null),
+						new GuiTile(read(infos, 8), aI.aI.item().image(), false, null),
+						new GuiTile(read(infos, 9)),
 						new GuiTile(read(infos, 1)),
 						new GuiTile(read(infos, 3)),
 						new GuiTile(read(infos, 4)),

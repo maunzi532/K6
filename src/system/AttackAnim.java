@@ -5,9 +5,9 @@ import entity.*;
 import java.util.*;
 import animation.*;
 
-public final class AttackAnim4 implements AnimTimer
+public final class AttackAnim implements AnimTimer
 {
-	private final ACResult4 result;
+	private final ACResult result;
 	private final Arrows arrows;
 	private final XCharacter initiator;
 	private final XCharacter target;
@@ -16,7 +16,7 @@ public final class AttackAnim4 implements AnimTimer
 	private final InfoArrow healthBar1;
 	private final InfoArrow healthBar2;
 
-	public AttackAnim4(ACResult4 result, Arrows arrows, XCharacter initiator, XCharacter target)
+	public AttackAnim(ACResult result, Arrows arrows, XCharacter initiator, XCharacter target)
 	{
 		this.result = result;
 		this.arrows = arrows;

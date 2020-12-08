@@ -4,20 +4,20 @@ import java.util.*;
 import java.util.stream.*;
 import text.*;
 
-public class Ranges4
+public class Ranges
 {
 	private final List<Integer> ranges;
 
-	public Ranges4(String data)
+	public Ranges(String data)
 	{
 		ranges = Arrays.stream(data.split(","))
 				.filter(e -> !e.isBlank()).map(Integer::parseInt).collect(Collectors.toList());
 	}
 
-	public static Ranges4 load(String data)
+	public static Ranges load(String data)
 	{
 		if(data != null)
-			return new Ranges4(data);
+			return new Ranges(data);
 		else
 			return null;
 	}

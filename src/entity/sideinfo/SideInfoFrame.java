@@ -12,11 +12,11 @@ public interface SideInfoFrame
 
 	void sidedInfo(XCharacter e1, XCharacter e2);
 
-	void setAttackInfoSideInfo(AttackCalc4 aI);
+	void setAttackInfoSideInfo(AttackCalc aI);
 
-	void setAllyInfoSideInfo(AllyCalc4 aI);
+	void setAllyInfoSideInfo(AllyCalc aI);
 
-	void setAttackSideInfo(AttackCalc4 aI, StatBar s1, StatBar s2);
+	void setAttackSideInfo(AttackCalc aI, StatBar s1, StatBar s2);
 
 	void setTextSideInfo(XCharacter character, CharSequence text, boolean r);
 }

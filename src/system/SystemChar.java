@@ -17,16 +17,16 @@ public final class SystemChar implements XSaveableYS
 	//Equip inv (TagInv)
 	//Control/AI
 	//Stats/Equip/Status (inv/level/status)
-	//Exp/Levels/Levelup (PlayerLevelSystem4)
+	//Exp/Levels/Levelup (PlayerLevelSystem)
 	//HP
 
 	private final ClassAndLevelSystem cls;
 	private final TagInv inv;
-	private final EnemyAI4 enemyAI;
-	private final List<ModifierProvider4> modifierProviders;
+	private final EnemyAI enemyAI;
+	private final List<ModifierProvider> modifierProviders;
 	private int currentHP;
 
-	public SystemChar(ClassAndLevelSystem cls, TagInv inv, EnemyAI4 enemyAI, int currentHP)
+	public SystemChar(ClassAndLevelSystem cls, TagInv inv, EnemyAI enemyAI, int currentHP)
 	{
 		this.cls = cls;
 		this.inv = inv;
@@ -35,7 +35,7 @@ public final class SystemChar implements XSaveableYS
 		if(currentHP >= 0)
 			this.currentHP = currentHP;
 		else
-			this.currentHP = stat(Stats4.MAX_HP);
+			this.currentHP = stat(XStats.MAX_HP);
 	}
 
 	public ClassAndLevelSystem cls()
@@ -48,7 +48,7 @@ public final class SystemChar implements XSaveableYS
 		return inv;
 	}
 
-	public EnemyAI4 enemyAI()
+	public EnemyAI enemyAI()
 	{
 		return enemyAI;
 	}
@@ -68,12 +68,12 @@ public final class SystemChar implements XSaveableYS
 		return new ArgsText("class.withlevel", new LocaleText(cls.visItem().name()), cls.level());
 	}
 
-	public int stat(Stats4 stat)
+	public int stat(XStats stat)
 	{
-		List<Modifier4> list = modifierProviders.stream().flatMap(e -> e.getModifiers(stat).stream())
+		List<XModifier> list = modifierProviders.stream().flatMap(e -> e.getModifiers(stat).stream())
 				.sorted(Comparator.comparingInt(e -> e.type().ordinal())).collect(Collectors.toList());
 		int value = 0;
-		for(Modifier4 modifier : list)
+		for(XModifier modifier : list)
 		{
 			value = modifier.apply(value);
 		}
@@ -91,14 +91,14 @@ public final class SystemChar implements XSaveableYS
 	public List<Integer> enemyTargetRanges(boolean attack, boolean ability)
 	{
 		return allEquipableItems().filter(e -> (attack && e.attackRanges() != null) || (ability && e.abilityRanges() != null))
-				.flatMapToInt(e -> e.abilityRanges() != null ? e.abilityRanges().ranges(stat(Stats4.ABILITY_RANGE)) : e.attackRanges().ranges(0))
+				.flatMapToInt(e -> e.abilityRanges() != null ? e.abilityRanges().ranges(stat(XStats.ABILITY_RANGE)) : e.attackRanges().ranges(0))
 				.distinct().sorted().boxed().collect(Collectors.toList());
 	}
 
 	public List<Integer> allyTargetRanges()
 	{
 		return allEquipableItems().filter(e -> e.allyRanges() != null)
-				.flatMapToInt(e -> e.allyRanges().ranges(stat(Stats4.ABILITY_RANGE)))
+				.flatMapToInt(e -> e.allyRanges().ranges(stat(XStats.ABILITY_RANGE)))
 				.distinct().sorted().boxed().collect(Collectors.toList());
 	}
 
@@ -115,13 +115,13 @@ public final class SystemChar implements XSaveableYS
 	{
 		return allEquipableItems().filter(e ->
 				(attack && e.attackRanges() != null && e.attackRanges().hasRange(distance, 0)) ||
-				(ability && e.abilityRanges() != null && e.abilityRanges().hasRange(distance, stat(Stats4.ABILITY_RANGE))))
+				(ability && e.abilityRanges() != null && e.abilityRanges().hasRange(distance, stat(XStats.ABILITY_RANGE))))
 				.collect(Collectors.toList());
 	}
 
 	public List<EquipableItem> possibleAllyItems(int distance, SystemChar ally)
 	{
-		return allEquipableItems().filter(e -> e.allyRanges() != null && e.allyRanges().hasRange(distance, stat(Stats4.ABILITY_RANGE))
+		return allEquipableItems().filter(e -> e.allyRanges() != null && e.allyRanges().hasRange(distance, stat(XStats.ABILITY_RANGE))
 				&& ally.canAllyUseItem(e)).collect(Collectors.toList());
 	}
 
@@ -133,7 +133,7 @@ public final class SystemChar implements XSaveableYS
 	public List<CharSequence> statsInfo()
 	{
 		//TODO
-		return Arrays.stream(Stats4.values()).map(stat -> "_" + stat.name().toLowerCase() + "\n" + stat(stat)).collect(Collectors.toList());
+		return Arrays.stream(XStats.values()).map(stat -> "_" + stat.name().toLowerCase() + "\n" + stat(stat)).collect(Collectors.toList());
 	}
 
 	public SystemChar createACopy()
@@ -141,16 +141,16 @@ public final class SystemChar implements XSaveableYS
 		return new SystemChar(cls, inv, enemyAI, currentHP); //TODO
 	}
 
-	public static SystemChar load(JrsObject data, TileType y1, SystemScheme systemScheme)
+	public static SystemChar load(JrsObject data, TileType y1, WorldSettings worldSettings)
 	{
 		ClassAndLevelSystem cls = switch(data.get("CLSType").asText())
 				{
-					case "Player" -> new PlayerLevelSystem4(); //TODO
-					case "Enemy" -> EnemyLevelSystem4.load((JrsObject) data.get("CLS"), systemScheme);
+					case "Player" -> new PlayerLevelSystem(); //TODO
+					case "Enemy" -> EnemyLevelSystem.load((JrsObject) data.get("CLS"), worldSettings);
 					default -> throw new RuntimeException("Unknown cls type");
 				};
-		TagInv inv = TagInv.load((JrsObject) data.get("Inv"), systemScheme);
-		EnemyAI4 enemyAI = EnemyAI4.load((JrsObject) data.get("EnemyAI"), y1);
+		TagInv inv = TagInv.load((JrsObject) data.get("Inv"), worldSettings);
+		EnemyAI enemyAI = EnemyAI.load((JrsObject) data.get("EnemyAI"), y1);
 		int currentHP;
 		JrsValue v1 = data.get("CurrentHP");
 		if(v1 instanceof JrsNumber v2)
@@ -161,10 +161,10 @@ public final class SystemChar implements XSaveableYS
 	}
 
 	@Override
-	public void save(ObjectComposer<? extends ComposerBase> a1, TileType y1, SystemScheme systemScheme) throws IOException
+	public void save(ObjectComposer<? extends ComposerBase> a1, TileType y1, WorldSettings worldSettings) throws IOException
 	{
-		cls.save(a1, systemScheme);
-		XSaveableS.saveObject("Inv", inv, a1, systemScheme);
+		cls.save(a1, worldSettings);
+		XSaveableS.saveObject("Inv", inv, a1, worldSettings);
 		XSaveableY.saveObject("EnemyAI", enemyAI, a1, y1);
 		a1.put("CurrentHP", currentHP);
 	}

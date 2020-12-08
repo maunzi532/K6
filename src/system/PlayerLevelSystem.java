@@ -5,9 +5,9 @@ import item.*;
 import java.io.*;
 import java.util.*;
 
-public class PlayerLevelSystem4 implements ClassAndLevelSystem
+public class PlayerLevelSystem implements ClassAndLevelSystem
 {
-	private XClass4 xClass;
+	private XClass xClass;
 	private int level;
 	private int exp;
 	private int[] stats;
@@ -44,13 +44,13 @@ public class PlayerLevelSystem4 implements ClassAndLevelSystem
 	}
 
 	@Override
-	public Map<Stats4, List<Modifier4>> modifiers()
+	public Map<XStats, List<XModifier>> modifiers()
 	{
 		return null;
 	}
 
 	@Override
-	public void save(ObjectComposer<? extends ComposerBase> a1, SystemScheme systemScheme) throws IOException
+	public void save(ObjectComposer<? extends ComposerBase> a1, WorldSettings worldSettings) throws IOException
 	{
 
 	}

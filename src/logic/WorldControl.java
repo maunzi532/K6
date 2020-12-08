@@ -5,9 +5,9 @@ import system.*;
 
 public interface WorldControl
 {
-	SystemScheme systemScheme();
+	WorldSettings systemScheme();
 
-	LevelMap4 createLevel();
+	LevelMap createLevel();
 
 	void updateTeam(String text, String nextLevel);
 }

@@ -71,7 +71,7 @@ public final class VisualSideInfoFrame implements SideInfoFrame
 	}*/
 
 	@Override
-	public void setAttackInfoSideInfo(AttackCalc4 aI)
+	public void setAttackInfoSideInfo(AttackCalc aI)
 	{
 		boolean inverted = isInverted(aI.aI.initiator(), aI.aI.target());
 		SideInfo sideInfo1 = new SideInfo(aI.aI.initiator(), aI.aI.initiator().sideImageName(), aI.aI.initiator().hpBar(), aI.sideInfo1());
@@ -80,7 +80,7 @@ public final class VisualSideInfoFrame implements SideInfoFrame
 	}
 
 	@Override
-	public void setAllyInfoSideInfo(AllyCalc4 aI)
+	public void setAllyInfoSideInfo(AllyCalc aI)
 	{
 		XCharacter character = aI.aI.character();
 		XCharacter target = aI.aI.target();
@@ -107,7 +107,7 @@ public final class VisualSideInfoFrame implements SideInfoFrame
 	}
 
 	@Override
-	public void setAttackSideInfo(AttackCalc4 aI, StatBar s1, StatBar s2)
+	public void setAttackSideInfo(AttackCalc aI, StatBar s1, StatBar s2)
 	{
 		boolean inverted = isInverted(aI.aI.initiator(), aI.aI.target());
 		SideInfo sideInfo1 = new SideInfo(aI.aI.initiator(), aI.aI.initiator().sideImageName(), s1, aI.sideInfo1());

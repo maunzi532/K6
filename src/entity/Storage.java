@@ -8,16 +8,16 @@ import item.*;
 import java.io.*;
 import system.*;
 
-public final class Storage4 implements InvHolder, XSaveableS
+public final class Storage implements InvHolder, XSaveableS
 {
 	private final StorageInv inv;
 
-	public Storage4()
+	public Storage()
 	{
 		inv = new StorageInv();
 	}
 
-	public Storage4(StorageInv inv)
+	public Storage(StorageInv inv)
 	{
 		this.inv = inv;
 	}
@@ -43,14 +43,14 @@ public final class Storage4 implements InvHolder, XSaveableS
 	@Override
 	public void afterTrading(){}
 
-	public static Storage4 load(JrsObject data, SystemScheme systemScheme)
+	public static Storage load(JrsObject data, WorldSettings worldSettings)
 	{
-		return new Storage4(StorageInv.load(data, systemScheme));
+		return new Storage(StorageInv.load(data, worldSettings));
 	}
 
 	@Override
-	public void save(ObjectComposer<? extends ComposerBase> a1, SystemScheme systemScheme) throws IOException
+	public void save(ObjectComposer<? extends ComposerBase> a1, WorldSettings worldSettings) throws IOException
 	{
-		inv.save(a1, systemScheme);
+		inv.save(a1, worldSettings);
 	}
 }

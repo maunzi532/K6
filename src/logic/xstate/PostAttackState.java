@@ -6,14 +6,14 @@ import system.*;
 
 public final class PostAttackState extends AttackState
 {
-	private final ACResult4 result;
+	private final ACResult result;
 	private GetExpAnim getExpAnim;
 	private boolean firstEnter;
 	private MainState mainState1;
 	private boolean levelup;
 	private boolean levelupT;
 
-	public PostAttackState(NState nextState, AttackCalc4 aI, ACResult4 result)
+	public PostAttackState(NState nextState, AttackCalc aI, ACResult result)
 	{
 		super(nextState, aI);
 		this.result = result;

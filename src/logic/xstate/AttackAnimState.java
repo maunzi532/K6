@@ -6,10 +6,10 @@ import system.*;
 
 public final class AttackAnimState extends AttackState
 {
-	private ACResult4 result;
-	private AttackAnim4 attackAnim;
+	private ACResult result;
+	private AttackAnim attackAnim;
 
-	public AttackAnimState(NState nextState, AttackCalc4 aI)
+	public AttackAnimState(NState nextState, AttackCalc aI)
 	{
 		super(nextState, aI);
 	}
@@ -17,9 +17,9 @@ public final class AttackAnimState extends AttackState
 	@Override
 	public void onEnter(MainState mainState)
 	{
-		result = ACResult4.calc1(aI, mainState.levelMap(), new Random());
+		result = ACResult.calc1(aI, mainState.levelMap(), new Random());
 		mainState.side().setAttackSideInfo(aI, result.hpBar1(), result.hpBar2());
-		attackAnim = new AttackAnim4(result, mainState.levelMap(), aI.aI.initiator(), aI.aI.target());
+		attackAnim = new AttackAnim(result, mainState.levelMap(), aI.aI.initiator(), aI.aI.target());
 	}
 
 	@Override

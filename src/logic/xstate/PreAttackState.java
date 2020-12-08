@@ -5,7 +5,7 @@ import system.*;
 
 public final class PreAttackState extends AttackState
 {
-	public PreAttackState(NState nextState, AttackCalc4 aI)
+	public PreAttackState(NState nextState, AttackCalc aI)
 	{
 		super(nextState, aI);
 	}
