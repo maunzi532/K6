@@ -9,14 +9,14 @@ public class Inv1GUI extends XGUIState
 {
 	private static final CTile textInv = new CTile(2, 0, 2, 1);
 
-	protected Inv4 inv;
-	protected List<NumberedStack4> itemsView;
-	protected TargetScrollList<NumberedStack4> invView;
+	protected Inv inv;
+	protected List<NumberedStack> itemsView;
+	protected TargetScrollList<NumberedStack> invView;
 	protected ScrollList<CharSequence> itemView;
 	protected CharSequence name;
 	protected List<? extends CharSequence> baseInfo;
 
-	public Inv1GUI(Inv4 inv, CharSequence name, List<? extends CharSequence> baseInfo)
+	public Inv1GUI(Inv inv, CharSequence name, List<? extends CharSequence> baseInfo)
 	{
 		this.inv = inv;
 		this.name = name;

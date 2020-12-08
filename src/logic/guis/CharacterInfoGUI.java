@@ -15,7 +15,7 @@ public class CharacterInfoGUI extends XGUIState
 	private final XCharacter character;
 	private final SystemChar systemChar;
 	private MainState mainState1;
-	private TargetScrollList<NumberedStack4> invView;
+	private TargetScrollList<NumberedStack> invView;
 	private ScrollList<CharSequence> itemView;
 
 	public CharacterInfoGUI(XCharacter character)
@@ -51,7 +51,7 @@ public class CharacterInfoGUI extends XGUIState
 	{
 		if(invView.getTargeted() != null)
 		{
-			if(invView.getTargeted().item() instanceof EquipableItem4 item)
+			if(invView.getTargeted().item() instanceof EquipableItem item)
 			{
 				return item.statsInfo();
 			}

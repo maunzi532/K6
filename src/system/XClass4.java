@@ -5,14 +5,14 @@ import item.*;
 import java.util.*;
 import load.*;
 
-public record XClass4(Item4 visItem, int[] bonusIncrease, int[] enemyDividers, int[] enemyBase, int[] enemyIncrease)
+public record XClass4(Item visItem, int[] bonusIncrease, int[] enemyDividers, int[] enemyBase, int[] enemyIncrease)
 {
 	public static final int NUM_OF_LEVEL_STATS = 6;
 
-	public static XClass4 load(JrsObject data, Map<String, ? extends Item4> items)
+	public static XClass4 load(JrsObject data, Map<String, ? extends Item> items)
 	{
 		//TODO load items before
-		Item4 visItem = items.get(data.get("VisItem").asText());
+		Item visItem = items.get(data.get("VisItem").asText());
 		if(visItem == null)
 			throw new RuntimeException("Item named \"" + data.get("VisItem").asText() + "\" missing");
 		int[] bonusIncrease = LoadHelper.asIntArray(data.get("BonusIncrease"));

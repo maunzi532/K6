@@ -10,14 +10,14 @@ import system.*;
 
 public final class Storage4 implements InvHolder, XSaveableS
 {
-	private final StorageInv4 inv;
+	private final StorageInv inv;
 
 	public Storage4()
 	{
-		inv = new StorageInv4();
+		inv = new StorageInv();
 	}
 
-	public Storage4(StorageInv4 inv)
+	public Storage4(StorageInv inv)
 	{
 		this.inv = inv;
 	}
@@ -35,7 +35,7 @@ public final class Storage4 implements InvHolder, XSaveableS
 	}
 
 	@Override
-	public Inv4 inv()
+	public Inv inv()
 	{
 		return inv;
 	}
@@ -45,7 +45,7 @@ public final class Storage4 implements InvHolder, XSaveableS
 
 	public static Storage4 load(JrsObject data, SystemScheme systemScheme)
 	{
-		return new Storage4(StorageInv4.load(data, systemScheme));
+		return new Storage4(StorageInv.load(data, systemScheme));
 	}
 
 	@Override

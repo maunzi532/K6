@@ -63,21 +63,12 @@ public final class GuiTile
 		return new GuiTile[]{new GuiTile(text)};
 	}
 
-	/*public static GuiTile[] itemViewView(ItemView itemView)
-	{
-		return new GuiTile[]
-				{
-						new GuiTile(itemView.currentWithLimit()),
-						new GuiTile(null, itemView.item.image(), false, null)
-				};
-	}*/
-
-	public static GuiTile[] itemStackView(NumberedStack4 stack)
+	public static GuiTile[] itemStackView(NumberedStack stack)
 	{
 		return itemStackView(stack, false);
 	}
 
-	public static GuiTile[] itemStackView(NumberedStack4 stack, boolean active)
+	public static GuiTile[] itemStackView(NumberedStack stack, boolean active)
 	{
 		String color = active ? "gui.background.active" : null;
 		return new GuiTile[]

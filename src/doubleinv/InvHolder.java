@@ -9,7 +9,7 @@ public interface InvHolder
 
 	Tile location();
 
-	Inv4 inv();
+	Inv inv();
 
 	void afterTrading();
 }

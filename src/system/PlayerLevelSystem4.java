@@ -14,7 +14,7 @@ public class PlayerLevelSystem4 implements ClassAndLevelSystem
 	//TODO
 
 	@Override
-	public Item4 visItem()
+	public Item visItem()
 	{
 		return null;
 	}

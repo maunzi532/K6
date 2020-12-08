@@ -20,7 +20,7 @@ public class LevelMap4 implements Arrows, XSaveableS
 	private TileType y1;
 	private HashMap<Tile, AdvTile> advTiles;
 	private List<XCharacter> allCharacters;
-	private List<StartingLocation4> startingLocations;
+	private List<StartingLocation4> allStartingLocations;
 	private Storage4 storage;
 	private int turnCounter;
 	private boolean win;
@@ -30,14 +30,15 @@ public class LevelMap4 implements Arrows, XSaveableS
 	private boolean requiresUpdate;
 
 	public LevelMap4(TileType y1, HashMap<Tile, AdvTile> advTiles,
-			List<XCharacter> allCharacters, List<StartingLocation4> startingLocations,
+			List<XCharacter> allCharacters, List<StartingLocation4> allStartingLocations,
 			Storage4 storage, Map<String, EventPack> eventPacks, int turnCounter)
 	{
 		this.y1 = y1;
 		this.advTiles = advTiles;
 		this.allCharacters = allCharacters;
 		allCharacters.forEach(e -> advTiles.get(e.location()).setEntity(e));
-		this.startingLocations = startingLocations;
+		this.allStartingLocations = allStartingLocations;
+		allStartingLocations.forEach(e -> advTiles.get(e.location()).setStartingLocation(e));
 		this.storage = storage;
 		this.eventPacks = eventPacks;
 		this.turnCounter = turnCounter;
@@ -70,8 +71,8 @@ public class LevelMap4 implements Arrows, XSaveableS
 	{
 		if(advTiles.containsKey(t1))
 		{
-			XCharacter entity = advTiles.get(t1).entity();
-			allCharacters.remove(entity);
+			allCharacters.remove(advTiles.get(t1).entity());
+			allStartingLocations.remove(advTiles.get(t1).startingLocation());
 			advTiles.remove(t1);
 			requireUpdate();
 		}
@@ -140,13 +141,6 @@ public class LevelMap4 implements Arrows, XSaveableS
 		requireUpdate();
 	}
 
-	/*public void revertMovement(XCharacter xh)
-	{
-		xh.resources().revertMovement();
-		moveEntity(xh, xh.resources().startLocation());
-		requireUpdate();
-	}*/
-
 	public boolean canSwap(XCharacter character)
 	{
 		if(levelStarted())
@@ -155,8 +149,8 @@ public class LevelMap4 implements Arrows, XSaveableS
 		}
 		else
 		{
-			//StartingLocation startingLocation = startingLocations.get(character.name());
-			return true;//startingLocation != null && startingLocation.canSwap();
+			StartingLocation4 startingLocation = advTile(character.location()).startingLocation();
+			return startingLocation != null && !startingLocation.locationLocked();
 		}
 	}
 
@@ -164,12 +158,12 @@ public class LevelMap4 implements Arrows, XSaveableS
 	{
 		if(levelStarted())
 		{
-			return false;
+			return true;
 		}
 		else
 		{
-			//StartingLocation startingLocation = startingLocations.get(character.name());
-			return true;//startingLocation != null && startingLocation.canTrade();
+			StartingLocation4 startingLocation = advTile(character.location()).startingLocation();
+			return startingLocation != null && !startingLocation.emptyInv();
 		}
 	}
 
@@ -306,7 +300,7 @@ public class LevelMap4 implements Arrows, XSaveableS
 		a1.put("FloorTiles", Base64.getEncoder().encodeToString(sb.array()));
 		XSaveableYS.saveList("Characters", allCharacters.stream()
 				.filter(e -> !e.isSavedInTeam()).collect(Collectors.toList()), a1, y1, systemScheme);
-		XSaveableY.saveList("StartingLocations", startingLocations, a1, y1);
+		XSaveableY.saveList("StartingLocations", allStartingLocations, a1, y1);
 	}
 
 	public static LevelMap4 resume(JrsObject data, SystemScheme systemScheme)
@@ -352,7 +346,7 @@ public class LevelMap4 implements Arrows, XSaveableS
 		}
 		a1.put("FloorTiles", Base64.getEncoder().encodeToString(sb.array()));
 		XSaveableYS.saveList("Characters", allCharacters, a1, y1, systemScheme);
-		XSaveableY.saveList("StartingLocations", startingLocations, a1, y1);
+		XSaveableY.saveList("StartingLocations", allStartingLocations, a1, y1);
 		XSaveableS.saveObject("Storage", storage, a1, systemScheme);
 		a1.put("TurnCounter", turnCounter);
 	}
@@ -361,10 +355,10 @@ public class LevelMap4 implements Arrows, XSaveableS
 	{
 		List<XCharacter> teamCharacters = LoadHelper.asList(data.get("Characters"), e -> XCharacter.load(e, y1, systemScheme));
 		storage = Storage4.load((JrsObject) data.get("Storage"), systemScheme);
-		List<StartingLocation4> namedSL = startingLocations.stream().filter(e -> e.startName() != null).collect(Collectors.toList());
+		List<StartingLocation4> namedSL = allStartingLocations.stream().filter(e -> e.startName() != null).collect(Collectors.toList());
 		ArrayList<XCharacter> namedC = new ArrayList<>();
 		namedSL.forEach(e -> namedC.add(setToStartingLocation(characterByName(teamCharacters, e.startName()), e)));
-		List<StartingLocation4> unnamedSL = startingLocations.stream().filter(e -> e.startName() == null).collect(Collectors.toList());
+		List<StartingLocation4> unnamedSL = allStartingLocations.stream().filter(e -> e.startName() == null).collect(Collectors.toList());
 		List<XCharacter> unnamedC = teamCharacters.stream().filter(e -> !namedC.contains(e)).collect(Collectors.toList());
 		for(int i = 0; i < unnamedC.size(); i++)
 		{

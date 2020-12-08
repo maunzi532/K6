@@ -9,14 +9,14 @@ import logic.xstate.*;
 public class TagInvGUI extends XGUIState
 {
 	private final XCharacter character;
-	private final TagInv4 inv;
+	private final TagInv inv;
 	private MainState mainState1;
-	private TargetScrollList<NumberedStack4> invView;
+	private TargetScrollList<NumberedStack> invView;
 
 	public TagInvGUI(XCharacter character)
 	{
 		this.character = character;
-		inv = (TagInv4) character.inv();
+		inv = (TagInv) character.inv();
 	}
 
 	@Override
@@ -30,7 +30,7 @@ public class TagInvGUI extends XGUIState
 		update();
 	}
 
-	private void invClick(NumberedStack4 stack)
+	private void invClick(NumberedStack stack)
 	{
 
 	}

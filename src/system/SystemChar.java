@@ -14,19 +14,19 @@ import text.*;
 
 public final class SystemChar implements XSaveableYS
 {
-	//Equip inv (TagInv4)
+	//Equip inv (TagInv)
 	//Control/AI
 	//Stats/Equip/Status (inv/level/status)
 	//Exp/Levels/Levelup (PlayerLevelSystem4)
 	//HP
 
 	private final ClassAndLevelSystem cls;
-	private final TagInv4 inv;
+	private final TagInv inv;
 	private final EnemyAI4 enemyAI;
 	private final List<ModifierProvider4> modifierProviders;
 	private int currentHP;
 
-	public SystemChar(ClassAndLevelSystem cls, TagInv4 inv, EnemyAI4 enemyAI, int currentHP)
+	public SystemChar(ClassAndLevelSystem cls, TagInv inv, EnemyAI4 enemyAI, int currentHP)
 	{
 		this.cls = cls;
 		this.inv = inv;
@@ -43,7 +43,7 @@ public final class SystemChar implements XSaveableYS
 		return cls;
 	}
 
-	public TagInv4 inv()
+	public TagInv inv()
 	{
 		return inv;
 	}
@@ -80,12 +80,12 @@ public final class SystemChar implements XSaveableYS
 		return value;
 	}
 
-	private Stream<EquipableItem4> allEquipableItems()
+	private Stream<EquipableItem> allEquipableItems()
 	{
 		return inv().viewItems().stream()
-				.map(NumberedStack4::item)
-				.filter(e -> e instanceof EquipableItem4)
-				.map(e -> (EquipableItem4) e);
+				.map(NumberedStack::item)
+				.filter(e -> e instanceof EquipableItem)
+				.map(e -> (EquipableItem) e);
 	}
 
 	public List<Integer> enemyTargetRanges(boolean attack, boolean ability)
@@ -102,16 +102,16 @@ public final class SystemChar implements XSaveableYS
 				.distinct().sorted().boxed().collect(Collectors.toList());
 	}
 
-	public EquipableItem4 defendItem()
+	public EquipableItem defendItem()
 	{
-		List<Item4> defendItems = inv.taggedItems("Defend");
+		List<Item> defendItems = inv.taggedItems("Defend");
 		if(defendItems.isEmpty())
-			return EquipableItem4.NO_EQUIP_ITEM;
+			return EquipableItem.NO_EQUIP_ITEM;
 		else
-			return (EquipableItem4) defendItems.get(0);
+			return (EquipableItem) defendItems.get(0);
 	}
 
-	public List<EquipableItem4> possibleAttackItems(int distance, boolean attack, boolean ability)
+	public List<EquipableItem> possibleAttackItems(int distance, boolean attack, boolean ability)
 	{
 		return allEquipableItems().filter(e ->
 				(attack && e.attackRanges() != null && e.attackRanges().hasRange(distance, 0)) ||
@@ -119,13 +119,13 @@ public final class SystemChar implements XSaveableYS
 				.collect(Collectors.toList());
 	}
 
-	public List<EquipableItem4> possibleAllyItems(int distance, SystemChar ally)
+	public List<EquipableItem> possibleAllyItems(int distance, SystemChar ally)
 	{
 		return allEquipableItems().filter(e -> e.allyRanges() != null && e.allyRanges().hasRange(distance, stat(Stats4.ABILITY_RANGE))
 				&& ally.canAllyUseItem(e)).collect(Collectors.toList());
 	}
 
-	public boolean canAllyUseItem(EquipableItem4 item)
+	public boolean canAllyUseItem(EquipableItem item)
 	{
 		return true; //TODO
 	}
@@ -149,7 +149,7 @@ public final class SystemChar implements XSaveableYS
 					case "Enemy" -> EnemyLevelSystem4.load((JrsObject) data.get("CLS"), systemScheme);
 					default -> throw new RuntimeException("Unknown cls type");
 				};
-		TagInv4 inv = TagInv4.load((JrsObject) data.get("Inv"), systemScheme);
+		TagInv inv = TagInv.load((JrsObject) data.get("Inv"), systemScheme);
 		EnemyAI4 enemyAI = EnemyAI4.load((JrsObject) data.get("EnemyAI"), y1);
 		int currentHP;
 		JrsValue v1 = data.get("CurrentHP");

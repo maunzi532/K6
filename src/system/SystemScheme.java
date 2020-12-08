@@ -8,12 +8,12 @@ import load.*;
 
 public class SystemScheme
 {
-	public final List<Item4> allItems;
-	private final Map<String, Item4> items;
+	public final List<Item> allItems;
+	private final Map<String, Item> items;
 	public final List<XClass4> allXClasses;
 	private final Map<String, XClass4> xClasses;
 
-	public SystemScheme(List<Item4> allItems, List<XClass4> allXClasses)
+	public SystemScheme(List<Item> allItems, List<XClass4> allXClasses)
 	{
 		this.allItems = allItems;
 		items = allItems.stream().collect(Collectors.toMap(e -> e.name().toString(), e -> e));
@@ -21,14 +21,14 @@ public class SystemScheme
 		xClasses = allXClasses.stream().collect(Collectors.toMap(e -> e.visItem().name().toString(), e -> e));
 	}
 
-	public Item4 getItem(String name)
+	public Item getItem(String name)
 	{
 		if(!items.containsKey(name))
 			throw new RuntimeException("Item \"" + name + "\" does not exist");
 		return items.get(name);
 	}
 
-	public String saveItem(Item4 item)
+	public String saveItem(Item item)
 	{
 		return item.name().toString();
 	}
@@ -45,8 +45,8 @@ public class SystemScheme
 
 	public static SystemScheme load(JrsObject data)
 	{
-		List<Item4> allItems = LoadHelper.asList(data.get("Items"), EquipableItem4::load);
-		Map<String, Item4> items1 = allItems.stream().collect(Collectors.toMap(e -> e.name().toString(), e -> e)); //TODO
+		List<Item> allItems = LoadHelper.asListNum(data.get("Items"), EquipableItem::load);
+		Map<String, Item> items1 = allItems.stream().collect(Collectors.toMap(e -> e.name().toString(), e -> e)); //TODO
 		List<XClass4> allXClasses = LoadHelper.asList(data.get("Classes"), e -> XClass4.load(e, items1));
 		return new SystemScheme(allItems, allXClasses);
 	}

@@ -15,7 +15,7 @@ public final class EntityEditGUI extends XGUIState
 
 	private final XCharacter entity;
 	private List<? extends CharSequence> info;
-	private TargetScrollList<NumberedStack4> invView;
+	private TargetScrollList<NumberedStack> invView;
 	private ScrollList<Integer> infoView;
 	private ScrollList<Integer> changeView;
 	private int changeStatNum;

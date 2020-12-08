@@ -43,6 +43,12 @@ public final class LoadHelper
 		return asStream(value).map(e -> load.apply((JrsObject) e)).collect(Collectors.toList());
 	}
 
+	public static <T> List<T> asListNum(JrsValue value, BiFunction<? super JrsObject, ? super Integer, ? extends T> load)
+	{
+		List<JrsValue> list = asStream(value).collect(Collectors.toList());
+		return IntStream.range(0, list.size()).mapToObj(i -> load.apply((JrsObject) list.get(i), i)).collect(Collectors.toList());
+	}
+
 	public static List<String> asStringList(JrsValue value)
 	{
 		return asStream(value).map(JrsValue::asText).collect(Collectors.toList());
@@ -68,6 +74,11 @@ public final class LoadHelper
 	public static JrsObject startLoad(Path path) throws IOException
 	{
 		return JSON.std.with(new JacksonJrsTreeCodec()).treeFrom(Files.readString(path));
+	}
+
+	public static JrsObject startLoadText(String text) throws IOException
+	{
+		return JSON.std.with(new JacksonJrsTreeCodec()).treeFrom(text);
 	}
 
 	public static ObjectComposer<JSONComposer<String>> startSave() throws IOException

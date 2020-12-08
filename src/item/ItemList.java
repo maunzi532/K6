@@ -7,17 +7,17 @@ import java.util.*;
 import load.*;
 import system.*;
 
-public record ItemList4(List<ItemStack4> items) implements XSaveableS
+public record ItemList(List<ItemStack> items) implements XSaveableS
 {
-	public ItemList4()
+	public ItemList()
 	{
 		this(List.of());
 	}
 
-	public static ItemList4 load(JrsObject data, SystemScheme systemScheme)
+	public static ItemList load(JrsObject data, SystemScheme systemScheme)
 	{
-		List<ItemStack4> stacks = LoadHelper.asList(data.get("Items"), e -> ItemStack4.load(e, systemScheme));
-		return new ItemList4(stacks);
+		List<ItemStack> stacks = LoadHelper.asList(data.get("Items"), e -> ItemStack.load(e, systemScheme));
+		return new ItemList(stacks);
 	}
 
 	@Override

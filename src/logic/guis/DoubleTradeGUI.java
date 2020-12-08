@@ -26,10 +26,10 @@ public final class DoubleTradeGUI extends XGUIState
 
 	private final InvHolder inv1;
 	private final InvHolder inv2;
-	private ScrollList<NumberedStack4> view1;
-	private ScrollList<NumberedStack4> view2;
-	private NumberedStack4 marked1;
-	private NumberedStack4 marked2;
+	private ScrollList<NumberedStack> view1;
+	private ScrollList<NumberedStack> view2;
+	private NumberedStack marked1;
+	private NumberedStack marked2;
 
 	public DoubleTradeGUI(InvHolder inv1, InvHolder inv2)
 	{
@@ -61,7 +61,7 @@ public final class DoubleTradeGUI extends XGUIState
 		update();
 	}
 
-	private boolean sameItem(NumberedStack4 a1, NumberedStack4 a2)
+	private boolean sameItem(NumberedStack a1, NumberedStack a2)
 	{
 		if(a1 == null || a2 == null)
 			return false;
@@ -102,8 +102,8 @@ public final class DoubleTradeGUI extends XGUIState
 
 	private void swap()
 	{
-		ItemStack4 stack1 = inv1.inv().takeNum(marked1.num(), marked1.count());
-		ItemStack4 stack2 = inv2.inv().takeNum(marked2.num(), marked2.count());
+		ItemStack stack1 = inv1.inv().takeNum(marked1.num(), marked1.count());
+		ItemStack stack2 = inv2.inv().takeNum(marked2.num(), marked2.count());
 		inv1.inv().tryAdd(stack2);
 		inv2.inv().tryAdd(stack1);
 		marked1 = null;

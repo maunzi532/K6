@@ -10,17 +10,17 @@ public class InvEditGUI extends XGUIState
 	private static final CTile textInv = new CTile(2, 0, 2, 1);
 	//private static final CTile weight = new CTile(0, 0);
 
-	private final Inv4 inv;
+	private final Inv inv;
 	private final CharSequence name;
 	private final List<? extends CharSequence> defaultInfo;
-	private TargetScrollList<NumberedStack4> invView;
+	private TargetScrollList<NumberedStack> invView;
 	private ScrollList<CharSequence> infoView;
-	private TargetScrollList<Item4> allItemsView;
+	private TargetScrollList<Item> allItemsView;
 	//private CElement weightElement;
 	private boolean otherItem;
-	private NumberedStack4 editItem;
+	private NumberedStack editItem;
 
-	public InvEditGUI(Inv4 inv, CharSequence name, List<? extends CharSequence> defaultInfo)
+	public InvEditGUI(Inv inv, CharSequence name, List<? extends CharSequence> defaultInfo)
 	{
 		this.inv = inv;
 		this.name = name;
@@ -90,16 +90,16 @@ public class InvEditGUI extends XGUIState
 		//weightElement.fillTile = new GuiTile(inv.viewInvWeight().currentWithLimit());
 	}
 
-	private void itemClick1(NumberedStack4 target)
+	private void itemClick1(NumberedStack target)
 	{
 		otherItem = false;
 		editItem = target;
 	}
 
-	private void itemClick2(Item4 target)
+	private void itemClick2(Item target)
 	{
 		otherItem = true;
-		editItem = new NumberedStack4(target, 1, false, false, null, -1);
+		editItem = new NumberedStack(target, 1, false, false, null, -1);
 	}
 
 	private void onClickInfoView(CharSequence target)
@@ -110,7 +110,7 @@ public class InvEditGUI extends XGUIState
 			{
 				case "gui.edit.inv.add", "gui.edit.inv.increase" ->
 				{
-					inv.tryAdd(new ItemStack4(editItem.item(), 1));
+					inv.tryAdd(new ItemStack(editItem.item(), 1));
 					update();
 				}
 				case "gui.edit.inv.decrease" ->

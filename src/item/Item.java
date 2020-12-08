@@ -1,7 +1,9 @@
 package item;
 
-public interface Item4
+public interface Item
 {
+	int num();
+
 	CharSequence name();
 
 	String image();
@@ -9,4 +11,6 @@ public interface Item4
 	CharSequence info();
 
 	int stackLimit();
+
+	boolean ghost();
 }

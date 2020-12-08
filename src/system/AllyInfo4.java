@@ -5,7 +5,7 @@ import geom.tile.*;
 import java.util.*;
 import java.util.stream.*;
 
-public record AllyInfo4(XCharacter character, EquipableItem4 item, XCharacter target, int distance)
+public record AllyInfo4(XCharacter character, EquipableItem item, XCharacter target, int distance)
 {
 	public static List<AllyInfo4> allyOptions(XCharacter initiator, XCharacter target, TileType y1)
 	{

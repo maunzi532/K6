@@ -220,7 +220,10 @@ public final class XStateControl implements MainState, XStateHolder, ConvInputCo
 				}
 				else
 				{
-					setState(new SwapState(entity));
+					if(levelMap.canSwap(entity))
+						setState(new SwapState(entity));
+					else
+						setState(new ReachViewState(entity));
 				}
 			}
 			else if(key.hasFunction("menu"))

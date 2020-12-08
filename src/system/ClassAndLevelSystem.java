@@ -4,7 +4,7 @@ import item.*;
 
 public interface ClassAndLevelSystem extends ModifierProvider4, XSaveableS
 {
-	Item4 visItem();
+	Item visItem();
 
 	int level();
 

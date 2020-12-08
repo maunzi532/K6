@@ -179,7 +179,7 @@ public final class XCharacter implements InvHolder, XSaveableYS
 	}
 
 	@Override
-	public Inv4 inv()
+	public Inv inv()
 	{
 		return systemChar.inv();
 	}

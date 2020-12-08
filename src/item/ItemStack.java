@@ -6,19 +6,19 @@ import java.io.*;
 import load.*;
 import system.*;
 
-public record ItemStack4(Item4 item, int count) implements XSaveableS
+public record ItemStack(Item item, int count) implements XSaveableS
 {
-	public boolean canAddAll(Item4 addItem, int addCount)
+	public boolean canAddAll(Item addItem, int addCount)
 	{
 		return item.equals(addItem) && addCount <= item.stackLimit() - count;
 	}
 
-	public int maxAdd(ItemStack4 add)
+	public int maxAdd(ItemStack add)
 	{
 		return maxAdd(add.item(), add.count());
 	}
 
-	public int maxAdd(Item4 addItem, int addCount)
+	public int maxAdd(Item addItem, int addCount)
 	{
 		if(item.equals(addItem))
 			return Math.min(addCount, item.stackLimit() - count);
@@ -26,11 +26,11 @@ public record ItemStack4(Item4 item, int count) implements XSaveableS
 			return 0;
 	}
 
-	public static ItemStack4 load(JrsObject data, SystemScheme systemScheme)
+	public static ItemStack load(JrsObject data, SystemScheme systemScheme)
 	{
-		Item4 item = systemScheme.getItem(data.get("Item").asText());
+		Item item = systemScheme.getItem(data.get("Item").asText());
 		int count = LoadHelper.asInt(data.get("Count"));
-		return new ItemStack4(item, count);
+		return new ItemStack(item, count);
 	}
 
 	@Override

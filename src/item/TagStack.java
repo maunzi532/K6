@@ -6,24 +6,24 @@ import java.io.*;
 import load.*;
 import system.*;
 
-public record TagStack4(ItemStack4 items, String tag) implements XSaveableS
+public record TagStack(ItemStack items, String tag) implements XSaveableS
 {
-	public TagStack4(ItemStack4 items)
+	public TagStack(ItemStack items)
 	{
 		this(items, null);
 	}
 
-	public TagStack4(Item4 item, int count, String tag)
+	public TagStack(Item item, int count, String tag)
 	{
-		this(new ItemStack4(item, count), tag);
+		this(new ItemStack(item, count), tag);
 	}
 
-	public static TagStack4 load(JrsObject data, SystemScheme systemScheme)
+	public static TagStack load(JrsObject data, SystemScheme systemScheme)
 	{
-		Item4 item = systemScheme.getItem(data.get("Item").asText());
+		Item item = systemScheme.getItem(data.get("Item").asText());
 		int count = LoadHelper.asInt(data.get("Count"));
 		String tag = LoadHelper.asOptionalString(data.get("Tag"));
-		return new TagStack4(item, count, tag);
+		return new TagStack(item, count, tag);
 	}
 
 	@Override

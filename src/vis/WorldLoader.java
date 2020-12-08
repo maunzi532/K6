@@ -97,12 +97,14 @@ public class WorldLoader implements WorldControl
 		}
 	}
 
-	public void nextLevel(String teamSave, String nextLevel)
+	@Override
+	public void updateTeam(String text, String nextLevel)
 	{
 		try
 		{
-			teamData = LoadHelper.startLoad(Path.of(teamSave));
-			levelData = LoadHelper.startLoad(worldPath.resolve(nextLevel));
+			teamData = LoadHelper.startLoadText(text);
+			//TODO
+			//levelData = LoadHelper.startLoad(worldPath.resolve(nextLevel));
 		}catch(IOException e)
 		{
 			throw new RuntimeException(e);

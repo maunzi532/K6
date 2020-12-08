@@ -47,6 +47,12 @@ public final class SwapState implements NMarkState
 	}
 
 	@Override
+	public boolean keepInMenu(MainState mainState)
+	{
+		return mainState.levelMap().canSwap(character);
+	}
+
+	@Override
 	public XMenu menu()
 	{
 		return new XMenu(this, new ReachViewState(character), new EndTurnState());
