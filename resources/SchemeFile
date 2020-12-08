@@ -1,7 +1,7 @@
 {
   "code" : -1529707617,
   "Settings" : {
-    "load.team" : "world/WorldFile",
+    "load.team" : "worlds/world/World",
     "window.width" : "1000",
     "window.height" : "800",
     "window.title" : "K6",

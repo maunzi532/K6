@@ -10,4 +10,6 @@ public interface WorldControl
 	LevelMap createLevel();
 
 	void updateTeam(String text, String nextLevel);
+
+	void loadFile(String file);
 }

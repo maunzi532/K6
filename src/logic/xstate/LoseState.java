@@ -1,6 +1,7 @@
 package logic.xstate;
 
 import logic.*;
+import logic.guis.*;
 
 public class LoseState implements NAutoState
 {
@@ -13,7 +14,7 @@ public class LoseState implements NAutoState
 	@Override
 	public void tick(MainState mainState)
 	{
-		mainState.stateHolder().updateLevel(mainState.worldControl().createLevel());
+		//mainState.stateHolder().updateLevel(mainState.worldControl().createLevel());
 	}
 
 	@Override
@@ -25,6 +26,6 @@ public class LoseState implements NAutoState
 	@Override
 	public NState nextState()
 	{
-		return NoneState.INSTANCE;
+		return new LoadLevelGUI();
 	}
 }

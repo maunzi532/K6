@@ -8,6 +8,7 @@ import javafx.scene.canvas.*;
 import javafx.scene.text.*;
 import logic.*;
 import logic.editor.*;
+import logic.guis.*;
 import logic.xstate.*;
 import text.*;
 import vis.gui.*;
@@ -55,7 +56,7 @@ public final class MainVisual implements XInputInterface
 		stateControl.updateLevel(worldLoader.createLevel());
 		stateHolder = stateControl;
 		convInputConsumer = stateControl;
-		stateControl.setState(NoneState.INSTANCE);
+		stateControl.setState(new LoadLevelGUI());
 		//stateControl.setState(new EventListState(levelMap.eventPack("Start").events(), new StartTurnState()));
 		GraphicsContext gd = graphics.gd();
 		gd.setTextAlign(TextAlignment.CENTER);

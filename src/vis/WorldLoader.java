@@ -16,6 +16,7 @@ public class WorldLoader implements WorldControl
 	private JrsObject suspendData;
 	private WorldSettings worldSettings;
 
+	@Override
 	public void loadFile(String file)
 	{
 		try
