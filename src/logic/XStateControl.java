@@ -303,7 +303,7 @@ public final class XStateControl implements MainState, XStateHolder, ConvInputCo
 		{
 			for(NState menuEntry : menu)
 			{
-				if(key.hasFunction(menuEntry.keybind()))
+				if(menuEntry.keybind() != null && key.hasFunction(menuEntry.keybind()))
 				{
 					if(menuEntry != state)
 					{

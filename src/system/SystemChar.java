@@ -164,7 +164,7 @@ public final class SystemChar implements XSaveableYS
 	public void save(ObjectComposer<? extends ComposerBase> a1, TileType y1, WorldSettings worldSettings) throws IOException
 	{
 		cls.save(a1, worldSettings);
-		XSaveableS.saveObject("Inv", inv, a1, worldSettings);
+		XSaveableI.saveObject("Inv", inv, a1, worldSettings);
 		XSaveableY.saveObject("EnemyAI", enemyAI, a1, y1);
 		a1.put("CurrentHP", currentHP);
 	}

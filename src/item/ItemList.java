@@ -5,24 +5,23 @@ import com.fasterxml.jackson.jr.stree.*;
 import java.io.*;
 import java.util.*;
 import load.*;
-import system.*;
 
-public record ItemList(List<ItemStack> items) implements XSaveableS
+public record ItemList(List<ItemStack> items) implements XSaveableI
 {
 	public ItemList()
 	{
 		this(List.of());
 	}
 
-	public static ItemList load(JrsObject data, WorldSettings worldSettings)
+	public static ItemList load(JrsObject data, AllItemsList allItemsList)
 	{
-		List<ItemStack> stacks = LoadHelper.asList(data.get("Items"), e -> ItemStack.load(e, worldSettings));
+		List<ItemStack> stacks = LoadHelper.asList(data.get("Items"), e -> ItemStack.load(e, allItemsList));
 		return new ItemList(stacks);
 	}
 
 	@Override
-	public void save(ObjectComposer<? extends ComposerBase> a1, WorldSettings worldSettings) throws IOException
+	public void save(ObjectComposer<? extends ComposerBase> a1, AllItemsList allItemsList) throws IOException
 	{
-		XSaveableS.saveList("Items", items, a1, worldSettings);
+		XSaveableI.saveList("Items", items, a1, allItemsList);
 	}
 }

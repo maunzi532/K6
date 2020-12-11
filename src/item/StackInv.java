@@ -21,74 +21,80 @@ public class StackInv implements Inv
 	}
 
 	@Override
-	public boolean tryAdd(Item addItem, int addCount)
+	public ItemList asItemList()
 	{
-		if(canAddAll(addItem, addCount))
-		{
-			int toAdd = addCount;
-			for(int i = 0; i < stacks.size(); i++)
-			{
-				int maxAdd = stacks.get(i).maxAdd(addItem, toAdd);
-				if(maxAdd > 0)
-				{
-					stacks.set(i, new ItemStack(addItem, stacks.get(i).count() + maxAdd));
-					toAdd -= maxAdd;
-					if(toAdd <= 0)
-						return true;
-				}
-			}
-			for(int i = stacks.size(); i < maxStacks; i++)
-			{
-				int maxAdd = Math.min(toAdd, addItem.stackLimit());
-				stacks.add(new ItemStack(addItem, maxAdd));
-				toAdd -= maxAdd;
-				if(toAdd <= 0)
-					return true;
-			}
-			throw new RuntimeException("TryAdd Error");
-		}
-		else
-		{
-			return false;
-		}
+		return new ItemList(stacks);
 	}
 
 	@Override
-	public boolean canAddAll(Item addItem, int addCount)
+	public void clear()
 	{
-		int toAdd = addCount;
+		stacks.clear();
+	}
+
+	@Override
+	public boolean canAdd(Item item, int count)
+	{
+		int toAdd = count;
 		for(ItemStack stack : stacks)
 		{
-			int maxAdd = stack.maxAdd(addItem, toAdd);
+			int maxAdd = stack.maxAdd(item, toAdd);
 			toAdd -= maxAdd;
 			if(toAdd <= 0)
 				return true;
 		}
-		return toAdd <= (maxStacks - stacks.size()) * addItem.stackLimit();
+		return toAdd <= (maxStacks - stacks.size()) * item.stackLimit();
 	}
 
 	@Override
-	public ItemStack takeableNum(int num, int count)
+	public void add(Item item, int count)
 	{
-		ItemStack stack = stacks.get(num);
-		return new ItemStack(stack.item(), Math.min(count, stack.count()));
+		int toAdd = count;
+		for(int i = 0; i < stacks.size(); i++)
+		{
+			ItemStack stack = stacks.get(i);
+			int maxAdd = stack.maxAdd(item, toAdd);
+			if(maxAdd > 0)
+			{
+				stacks.set(i, new ItemStack(item, stack.count() + maxAdd));
+				toAdd -= maxAdd;
+				if(toAdd <= 0)
+					return;
+			}
+		}
+		for(int i = stacks.size(); i < maxStacks; i++)
+		{
+			int maxAdd = Math.min(toAdd, item.stackLimit());
+			stacks.add(new ItemStack(item, maxAdd));
+			toAdd -= maxAdd;
+			if(toAdd <= 0)
+				return;
+		}
+		throw new RuntimeException("TryAdd Error");
 	}
 
 	@Override
-	public ItemStack takeNum(int num, int count)
+	public Optional<ItemStack> canTake(int num, int count)
+	{
+		if(num >= 0 && num < stacks.size() && stacks.get(num).count() >= count)
+			return Optional.of(new ItemStack(stacks.get(num).item(), count));
+		else
+			return Optional.empty();
+	}
+
+	@Override
+	public ItemStack take(int num, int count)
 	{
 		ItemStack stack = stacks.get(num);
-		Item item = stack.item();
 		int current = stack.count();
 		if(count >= current)
 		{
 			stacks.remove(num);
-			return new ItemStack(item, current);
 		}
 		else
 		{
-			stacks.set(num, new ItemStack(item, current - count));
-			return new ItemStack(item, count);
+			stacks.set(num, new ItemStack(stack.item(), current - count));
 		}
+		return new ItemStack(stack.item(), count);
 	}
 }

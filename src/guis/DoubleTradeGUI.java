@@ -3,6 +3,7 @@ package guis;
 import entity.*;
 import gui.*;
 import item.*;
+import java.util.*;
 import logic.*;
 import xstate.*;
 
@@ -77,9 +78,11 @@ public final class DoubleTradeGUI extends GUIState
 	{
 		boolean keep = amount < marked1.count();
 		int num = marked1.num();
-		if(inv2.inv().canAddAll(inv1.inv().takeableNum(num, amount)))
+		Optional<ItemStack> canTake1 = inv1.inv().canTake(num, amount);
+		if(canTake1.isPresent() && inv2.inv().canAdd(canTake1.orElseThrow().item(), canTake1.orElseThrow().count()))
 		{
-			inv2.inv().tryAdd(inv1.inv().takeNum(num, amount));
+			ItemStack take1 = inv1.inv().take(num, amount);
+			inv2.inv().add(take1.item(), take1.count());
 		}
 		marked1 = null;
 		update();
@@ -93,9 +96,11 @@ public final class DoubleTradeGUI extends GUIState
 	{
 		boolean keep = amount < marked2.count();
 		int num = marked2.num();
-		if(inv1.inv().canAddAll(inv2.inv().takeableNum(num, amount)))
+		Optional<ItemStack> canTake2 = inv2.inv().canTake(num, amount);
+		if(canTake2.isPresent() && inv1.inv().canAdd(canTake2.orElseThrow().item(), canTake2.orElseThrow().count()))
 		{
-			inv1.inv().tryAdd(inv2.inv().takeNum(num, amount));
+			ItemStack take2 = inv2.inv().take(num, amount);
+			inv1.inv().add(take2.item(), take2.count());
 		}
 		marked2 = null;
 		update();
@@ -107,10 +112,10 @@ public final class DoubleTradeGUI extends GUIState
 
 	private void swap()
 	{
-		ItemStack stack1 = inv1.inv().takeNum(marked1.num(), marked1.count());
-		ItemStack stack2 = inv2.inv().takeNum(marked2.num(), marked2.count());
-		inv1.inv().tryAdd(stack2);
-		inv2.inv().tryAdd(stack1);
+		ItemStack stack1 = inv1.inv().take(marked1.num(), Math.min(marked1.count(), marked1.item().stackLimit()));
+		ItemStack stack2 = inv2.inv().take(marked2.num(), Math.min(marked2.count(), marked2.item().stackLimit()));
+		inv1.inv().add(stack2.item(), stack2.count());
+		inv2.inv().add(stack1.item(), stack1.count());
 		marked1 = null;
 		marked2 = null;
 	}
@@ -132,7 +137,6 @@ public final class DoubleTradeGUI extends GUIState
 	{
 		return new XMenu(new CharacterInfoGUI((XCharacter) inv1), this, new EndTurnState());
 	}
-
 
 	@Override
 	public int xw()

@@ -5,90 +5,93 @@ import com.fasterxml.jackson.jr.stree.*;
 import java.io.*;
 import java.util.*;
 import java.util.stream.*;
-import system.*;
 
-public class StorageInv implements Inv, XSaveableS
+public final class StorageInv implements Inv, XSaveableI
 {
-	private Map<Item, Integer> items;
-
-	public StorageInv()
-	{
-		items = new HashMap<>();
-	}
+	private final Map<Item, Integer> items;
 
 	public StorageInv(ItemList itemList)
 	{
 		items = new HashMap<>();
-		itemList.items().forEach(e -> items.put(e.item(), e.count()));
+		for(ItemStack itemStack : itemList.items())
+		{
+			add(itemStack.item(), itemStack.count());
+		}
+	}
+
+	private List<Map.Entry<Item, Integer>> sorted()
+	{
+		return items.entrySet().stream().sorted(Comparator.comparingInt(e -> e.getKey().num())).collect(Collectors.toList());
 	}
 
 	@Override
 	public List<NumberedStack> viewItems()
 	{
-		List<Map.Entry<Item, Integer>> list = new ArrayList<>(items.entrySet());
-		return IntStream.range(0, list.size()).mapToObj(i ->
-				NumberedStack.unlimited(list.get(i).getKey(), list.get(i).getValue(), false, i)).collect(Collectors.toList());
+		List<Map.Entry<Item, Integer>> sorted = sorted();
+		return IntStream.range(0, sorted.size())
+				.mapToObj(i -> new NumberedStack(sorted.get(i).getKey(), sorted.get(i).getValue(), false, null, i))
+				.collect(Collectors.toList());
 	}
 
 	@Override
-	public boolean canAddAll(Item addItem, int addCount)
+	public ItemList asItemList()
+	{
+		return new ItemList(sorted().stream().map(e -> new ItemStack(e.getKey(), e.getValue())).collect(Collectors.toList()));
+	}
+
+	@Override
+	public void clear()
+	{
+		items.clear();
+	}
+
+	@Override
+	public boolean canAdd(Item item, int count)
 	{
 		return true;
 	}
 
 	@Override
-	public boolean tryAdd(Item addItem, int addCount)
+	public void add(Item item, int count)
 	{
-		if(items.containsKey(addItem))
-		{
-			items.put(addItem, items.get(addItem) + addCount);
-		}
+		if(!item.ghost())
+			items.put(item, items.getOrDefault(item, 0) + count);
+	}
+
+	@Override
+	public Optional<ItemStack> canTake(int num, int count)
+	{
+		List<Map.Entry<Item, Integer>> sorted = sorted();
+		if(num >= 0 && num < items.size() && items.get(sorted.get(num).getKey()) >= count)
+			return Optional.of(new ItemStack(sorted.get(num).getKey(), count));
 		else
-		{
-			items.put(addItem, addCount);
-		}
-		return true;
+			return Optional.empty();
 	}
 
 	@Override
-	public ItemStack takeableNum(int num, int count)
+	public ItemStack take(int num, int count)
 	{
-		Map.Entry<Item, Integer> entry = new ArrayList<>(items.entrySet()).get(num);
-		return new ItemStack(entry.getKey(), Math.min(count, entry.getValue()));
-	}
-
-	@Override
-	public ItemStack takeNum(int num, int count)
-	{
-		Map.Entry<Item, Integer> entry = new ArrayList<>(items.entrySet()).get(num);
-		Item item = entry.getKey();
-		int current = entry.getValue();
+		Item key = sorted().get(num).getKey();
+		int current = items.get(key);
 		if(count >= current)
 		{
-			items.remove(item);
-			return new ItemStack(item, current);
+			items.remove(key);
 		}
 		else
 		{
-			items.put(item, current - count);
-			return new ItemStack(item, count);
+			items.put(key, current - count);
 		}
+		return new ItemStack(key, count);
 	}
 
-	private ItemList viewAsItemList()
+	public static StorageInv load(JrsObject data, AllItemsList allItemsList)
 	{
-		return new ItemList(items.entrySet().stream()
-				.map(e -> new ItemStack(e.getKey(), e.getValue())).collect(Collectors.toList()));
-	}
-
-	public static StorageInv load(JrsObject data, WorldSettings worldSettings)
-	{
-		return new StorageInv(ItemList.load(data, worldSettings));
+		return new StorageInv(ItemList.load(data, allItemsList));
 	}
 
 	@Override
-	public void save(ObjectComposer<? extends ComposerBase> a1, WorldSettings worldSettings) throws IOException
+	public void save(ObjectComposer<? extends ComposerBase> a1, AllItemsList allItemsList) throws IOException
 	{
-		viewAsItemList().save(a1, worldSettings);
+		asItemList().save(a1, allItemsList);
 	}
 }

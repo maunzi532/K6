@@ -6,87 +6,22 @@ import java.io.*;
 import java.util.*;
 import java.util.stream.*;
 import load.*;
-import system.*;
 
-public class TagInv implements Inv, XSaveableS
+public class TagInv implements Inv, XSaveableI
 {
 	private final int maxStacks;
 	private final List<TagStack> stacks;
-	public boolean keep;
 
 	public TagInv(int maxStacks)
 	{
 		this.maxStacks = maxStacks;
 		stacks = new ArrayList<>();
-		keep = false;
 	}
 
 	public TagInv(int maxStacks, List<TagStack> stacks)
 	{
 		this.maxStacks = maxStacks;
 		this.stacks = stacks;
-		keep = false;
-	}
-
-	@Override
-	public List<NumberedStack> viewItems()
-	{
-		return IntStream.range(0, stacks.size()).mapToObj(i -> NumberedStack.tagged(stacks.get(i),
-				stacks.get(i).tag() != null && keep, i)).collect(Collectors.toList());
-	}
-
-	@Override
-	public boolean tryAdd(Item addItem, int addCount)
-	{
-		if(canAddAll(addItem, addCount))
-		{
-			int toAdd = addCount;
-			for(int i = 0; i < stacks.size(); i++)
-			{
-				TagStack stack = stacks.get(i);
-				if(stack.tag() == null)
-				{
-					int maxAdd = stack.items().maxAdd(addItem, toAdd);
-					if(maxAdd > 0)
-					{
-						stacks.set(i, new TagStack(new ItemStack(addItem, stack.items().count() + maxAdd)));
-						toAdd -= maxAdd;
-						if(toAdd <= 0)
-							return true;
-					}
-				}
-			}
-			for(int i = stacks.size(); i < maxStacks; i++)
-			{
-				int maxAdd = Math.min(toAdd, addItem.stackLimit());
-				stacks.add(new TagStack(new ItemStack(addItem, maxAdd)));
-				toAdd -= maxAdd;
-				if(toAdd <= 0)
-					return true;
-			}
-			throw new RuntimeException("TryAdd Error");
-		}
-		else
-		{
-			return false;
-		}
-	}
-
-	@Override
-	public boolean canAddAll(Item addItem, int addCount)
-	{
-		int toAdd = addCount;
-		for(TagStack stack : stacks)
-		{
-			if(stack.tag() == null)
-			{
-				int maxAdd = stack.items().maxAdd(addItem, toAdd);
-				toAdd -= maxAdd;
-				if(toAdd <= 0)
-					return true;
-			}
-		}
-		return toAdd <= (maxStacks - stacks.size()) * addItem.stackLimit();
 	}
 
 	public List<Item> taggedItems(String tag)
@@ -95,41 +30,100 @@ public class TagInv implements Inv, XSaveableS
 	}
 
 	@Override
-	public ItemStack takeableNum(int num, int count)
+	public List<NumberedStack> viewItems()
 	{
-		TagStack stack = stacks.get(num);
-		return new ItemStack(stack.items().item(), Math.min(count, stack.items().count()));
+		return IntStream.range(0, stacks.size()).mapToObj(i -> NumberedStack.tagged(stacks.get(i), i)).collect(Collectors.toList());
 	}
 
 	@Override
-	public ItemStack takeNum(int num, int count)
+	public ItemList asItemList()
+	{
+		return new ItemList(stacks.stream().map(TagStack::items).collect(Collectors.toList()));
+	}
+
+	@Override
+	public void clear()
+	{
+		stacks.clear();
+	}
+
+	@Override
+	public boolean canAdd(Item item, int count)
+	{
+		int toAdd = count;
+		for(TagStack stack : stacks)
+		{
+			int maxAdd = stack.items().maxAdd(item, toAdd);
+			toAdd -= maxAdd;
+			if(toAdd <= 0)
+				return true;
+		}
+		return toAdd <= (maxStacks - stacks.size()) * item.stackLimit();
+	}
+
+	@Override
+	public void add(Item item, int count)
+	{
+		int toAdd = count;
+		for(int i = 0; i < stacks.size(); i++)
+		{
+			TagStack stack = stacks.get(i);
+			int maxAdd = stack.items().maxAdd(item, toAdd);
+			if(maxAdd > 0)
+			{
+				stacks.set(i, new TagStack(new ItemStack(item, stack.items().count() + maxAdd), stack.tag()));
+				toAdd -= maxAdd;
+				if(toAdd <= 0)
+					return;
+			}
+		}
+		for(int i = stacks.size(); i < maxStacks; i++)
+		{
+			int maxAdd = Math.min(toAdd, item.stackLimit());
+			stacks.add(new TagStack(new ItemStack(item, maxAdd)));
+			toAdd -= maxAdd;
+			if(toAdd <= 0)
+				return;
+		}
+		throw new RuntimeException("TryAdd Error");
+	}
+
+	@Override
+	public Optional<ItemStack> canTake(int num, int count)
+	{
+		if(num >= 0 && num < stacks.size() && stacks.get(num).items().count() >= count)
+			return Optional.of(new ItemStack(stacks.get(num).items().item(), count));
+		else
+			return Optional.empty();
+	}
+
+	@Override
+	public ItemStack take(int num, int count)
 	{
 		TagStack stack = stacks.get(num);
-		Item item = stack.items().item();
 		int current = stack.items().count();
 		if(count >= current)
 		{
 			stacks.remove(num);
-			return new ItemStack(item, current);
 		}
 		else
 		{
-			stacks.set(num, new TagStack(item, current - count, stack.tag()));
-			return new ItemStack(item, count);
+			stacks.set(num, new TagStack(stack.items().item(), current - count, stack.tag()));
 		}
+		return new ItemStack(stack.items().item(), count);
 	}
 
-	public static TagInv load(JrsObject data, WorldSettings worldSettings)
+	public static TagInv load(JrsObject data, AllItemsList allItemsList)
 	{
 		int maxStacks = LoadHelper.asInt(data.get("MaxStacks"));
-		List<TagStack> stacks = LoadHelper.asList(data.get("Stacks"), e -> TagStack.load(e, worldSettings));
+		List<TagStack> stacks = LoadHelper.asList(data.get("Stacks"), e -> TagStack.load(e, allItemsList));
 		return new TagInv(maxStacks, stacks);
 	}
 
 	@Override
-	public void save(ObjectComposer<? extends ComposerBase> a1, WorldSettings worldSettings) throws IOException
+	public void save(ObjectComposer<? extends ComposerBase> a1, AllItemsList allItemsList) throws IOException
 	{
 		a1.put("MaxStacks", maxStacks);
-		XSaveableS.saveList("Stacks", stacks, a1, worldSettings);
+		XSaveableI.saveList("Stacks", stacks, a1, allItemsList);
 	}
 }

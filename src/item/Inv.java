@@ -6,21 +6,15 @@ public interface Inv
 {
 	List<NumberedStack> viewItems();
 
-	default boolean canAddAll(ItemStack add)
-	{
-		return canAddAll(add.item(), add.count());
-	}
+	ItemList asItemList();
 
-	boolean canAddAll(Item addItem, int addCount);
+	void clear();
 
-	default boolean tryAdd(ItemStack add)
-	{
-		return tryAdd(add.item(), add.count());
-	}
+	boolean canAdd(Item item, int count);
 
-	boolean tryAdd(Item addItem, int addCount);
+	void add(Item item, int count);
 
-	ItemStack takeableNum(int num, int count);
+	Optional<ItemStack> canTake(int num, int count);
 
-	ItemStack takeNum(int num, int count);
+	ItemStack take(int num, int count);
 }

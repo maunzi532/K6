@@ -4,9 +4,8 @@ import com.fasterxml.jackson.jr.ob.comp.*;
 import com.fasterxml.jackson.jr.stree.*;
 import java.io.*;
 import load.*;
-import system.*;
 
-public record ItemStack(Item item, int count) implements XSaveableS
+public record ItemStack(Item item, int count) implements XSaveableI
 {
 	public boolean canAddAll(Item addItem, int addCount)
 	{
@@ -26,17 +25,17 @@ public record ItemStack(Item item, int count) implements XSaveableS
 			return 0;
 	}
 
-	public static ItemStack load(JrsObject data, WorldSettings worldSettings)
+	public static ItemStack load(JrsObject data, AllItemsList allItemsList)
 	{
-		Item item = worldSettings.getItem(data.get("Item").asText());
+		Item item = allItemsList.getItem(data.get("Item").asText());
 		int count = LoadHelper.asInt(data.get("Count"));
 		return new ItemStack(item, count);
 	}
 
 	@Override
-	public void save(ObjectComposer<? extends ComposerBase> a1, WorldSettings worldSettings) throws IOException
+	public void save(ObjectComposer<? extends ComposerBase> a1, AllItemsList allItemsList) throws IOException
 	{
-		a1.put("Item", worldSettings.saveItem(item));
+		a1.put("Item", allItemsList.saveItem(item));
 		a1.put("Count", count);
 	}
 }

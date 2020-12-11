@@ -2,21 +2,21 @@ package item;
 
 import text.*;
 
-public record NumberedStack(Item item, int count, boolean limited, boolean keep, String tag, int num)
+public record NumberedStack(Item item, int count, boolean limited, String tag, int num)
 {
 	public static NumberedStack create(ItemStack stack, int num)
 	{
-		return new NumberedStack(stack.item(), stack.count(), true, false, null, num);
+		return new NumberedStack(stack.item(), stack.count(), true, null, num);
 	}
 
-	public static NumberedStack unlimited(Item item, int count, boolean keep, int num)
+	public static NumberedStack unlimited(Item item, int count, int num)
 	{
-		return new NumberedStack(item, count, false, keep, null, num);
+		return new NumberedStack(item, count, false, null, num);
 	}
 
-	public static NumberedStack tagged(TagStack stack, boolean keep, int num)
+	public static NumberedStack tagged(TagStack stack, int num)
 	{
-		return new NumberedStack(stack.items().item(), stack.items().count(), true, keep, stack.tag(), num);
+		return new NumberedStack(stack.items().item(), stack.items().count(), true, stack.tag(), num);
 	}
 
 	public CharSequence viewText()

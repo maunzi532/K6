@@ -6,7 +6,7 @@ import java.util.*;
 import java.util.stream.*;
 import load.*;
 
-public class WorldSettings
+public class WorldSettings implements AllItemsList
 {
 	public final List<Item> allItems;
 	private final Map<String, Item> items;
@@ -21,6 +21,7 @@ public class WorldSettings
 		xClasses = allXClasses.stream().collect(Collectors.toMap(e -> e.visItem().name().toString(), e -> e));
 	}
 
+	@Override
 	public Item getItem(String name)
 	{
 		if(!items.containsKey(name))
@@ -28,6 +29,7 @@ public class WorldSettings
 		return items.get(name);
 	}
 
+	@Override
 	public String saveItem(Item item)
 	{
 		return item.name().toString();

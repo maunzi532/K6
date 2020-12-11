@@ -13,7 +13,7 @@ public final class Storage implements InvHolder, XSaveableS
 
 	public Storage()
 	{
-		inv = new StorageInv();
+		inv = new StorageInv(new ItemList());
 	}
 
 	public Storage(StorageInv inv)

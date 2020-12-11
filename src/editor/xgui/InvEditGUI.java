@@ -99,7 +99,7 @@ public class InvEditGUI extends GUIState
 	private void itemClick2(Item target)
 	{
 		otherItem = true;
-		editItem = new NumberedStack(target, 1, false, false, null, -1);
+		editItem = new NumberedStack(target, 1, false, null, -1);
 	}
 
 	private void onClickInfoView(CharSequence target)
@@ -110,12 +110,18 @@ public class InvEditGUI extends GUIState
 			{
 				case "gui.edit.inv.add", "gui.edit.inv.increase" ->
 				{
-					inv.tryAdd(new ItemStack(editItem.item(), 1));
+					if(inv.canAdd(editItem.item(), 1))
+					{
+						inv.add(editItem.item(), 1);
+					}
 					update();
 				}
 				case "gui.edit.inv.decrease" ->
 				{
-					inv.takeNum(editItem.num(), 1);
+					if(inv.canTake(editItem.num(), 1).isPresent())
+					{
+						inv.take(editItem.num(), 1);
+					}
 					if(editItem.count() <= 1)
 						editItem = null;
 					update();
