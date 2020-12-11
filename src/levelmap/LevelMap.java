@@ -3,8 +3,8 @@ package levelmap;
 import arrow.*;
 import com.fasterxml.jackson.jr.ob.comp.*;
 import com.fasterxml.jackson.jr.stree.*;
-import doubleinv.*;
 import entity.*;
+import event.event.*;
 import geom.tile.*;
 import java.io.*;
 import java.nio.*;
@@ -12,7 +12,6 @@ import java.util.*;
 import java.util.function.*;
 import java.util.stream.*;
 import load.*;
-import logic.event.*;
 import system.*;
 
 public class LevelMap implements Arrows, XSaveableS

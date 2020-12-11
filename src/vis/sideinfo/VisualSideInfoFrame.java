@@ -5,7 +5,7 @@ import entity.*;
 import entity.sideinfo.*;
 import java.util.*;
 import system.*;
-import vis.*;
+import vis.vis.*;
 
 public final class VisualSideInfoFrame implements SideInfoFrame
 {

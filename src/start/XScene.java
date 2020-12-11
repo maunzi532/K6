@@ -1,7 +1,7 @@
 package start;
 
-import geom.*;
-import geom.advtile.*;
+import geom.layout.*;
+import geom.camera.*;
 import java.io.*;
 import java.net.*;
 import java.nio.charset.*;
@@ -10,7 +10,7 @@ import javafx.scene.*;
 import javafx.scene.canvas.*;
 import javafx.scene.paint.*;
 import javafx.stage.*;
-import vis.*;
+import vis.vis.*;
 
 public final class XScene extends Application
 {

@@ -5,7 +5,7 @@ import entity.sideinfo.*;
 import java.util.*;
 import javafx.scene.canvas.*;
 import javafx.scene.text.*;
-import vis.*;
+import vis.vis.*;
 
 public final class VisualSideInfo
 {

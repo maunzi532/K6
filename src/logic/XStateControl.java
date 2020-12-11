@@ -6,11 +6,11 @@ import geom.tile.*;
 import java.util.*;
 import java.util.stream.*;
 import levelmap.*;
-import logic.editor.*;
-import logic.editor.xstate.*;
+import editor.edit.*;
+import editor.xstate.*;
 import gui.*;
-import logic.guis.*;
-import logic.xstate.*;
+import guis.*;
+import xstate.*;
 import system.*;
 
 public final class XStateControl implements MainState, XStateHolder, ConvInputConsumer
@@ -87,9 +87,9 @@ public final class XStateControl implements MainState, XStateHolder, ConvInputCo
 	}
 
 	@Override
-	public XGUIState getGUI()
+	public GUIState getGUI()
 	{
-		if(state instanceof XGUIState guiState)
+		if(state instanceof GUIState guiState)
 			return guiState;
 		else
 			return null;
@@ -117,20 +117,20 @@ public final class XStateControl implements MainState, XStateHolder, ConvInputCo
 	public void mousePosition(boolean insideGUI, Tile offsetGUITile, int menuOption,
 			int editorOption, Tile mapTile, boolean moved, boolean drag, XKey key)
 	{
-		if(state instanceof XGUIState xguiState)
+		if(state instanceof GUIState GUIState)
 		{
 			if(moved)
 			{
 				if(insideGUI)
 				{
-					xguiState.target(offsetGUITile.v()[0], offsetGUITile.v()[1]);
+					GUIState.target(offsetGUITile.v()[0], offsetGUITile.v()[1]);
 				}
 			}
 			if(key.canClick())
 			{
 				if(insideGUI)
 				{
-					xguiState.click(offsetGUITile.v()[0], offsetGUITile.v()[1], key, this);
+					GUIState.click(offsetGUITile.v()[0], offsetGUITile.v()[1], key, this);
 				}
 				else if(menuOption >= 0)
 				{
@@ -138,7 +138,7 @@ public final class XStateControl implements MainState, XStateHolder, ConvInputCo
 				}
 				else
 				{
-					xguiState.clickOutside(key, this);
+					GUIState.clickOutside(key, this);
 				}
 			}
 			cursorMarker = null;
@@ -247,7 +247,7 @@ public final class XStateControl implements MainState, XStateHolder, ConvInputCo
 	@Override
 	public void dragPosition(Tile startTile, Tile endTile, XKey key, boolean finished)
 	{
-		if(!(state instanceof XGUIState))
+		if(!(state instanceof GUIState))
 		{
 			dragMarker = levelMap.y1().betweenArea(startTile, endTile).stream()
 					.map(e -> new VisMark(e, "mark.cursor.drag", VisMark.d3)).collect(Collectors.toList());
@@ -290,7 +290,7 @@ public final class XStateControl implements MainState, XStateHolder, ConvInputCo
 		}
 		else if(key.hasFunction("escape"))
 		{
-			if(state instanceof XGUIState guiState)
+			if(state instanceof GUIState guiState)
 			{
 				guiState.clickOutside(key, this);
 			}

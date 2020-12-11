@@ -1,14 +1,15 @@
 package vis.gui;
 
-import geom.*;
-import geom.advtile.*;
+import geom.layout.*;
+import geom.camera.*;
+import geom.dtile.*;
 import geom.tile.*;
 import javafx.scene.canvas.*;
 import javafx.scene.image.*;
 import javafx.scene.paint.*;
 import javafx.scene.text.*;
 import gui.*;
-import vis.*;
+import vis.vis.*;
 
 public abstract class VisualGUI
 {
@@ -16,8 +17,8 @@ public abstract class VisualGUI
 	private static final int FADEOUT = 3;
 
 	protected final XGraphics graphics;
-	private XGUIState last;
-	private XGUIState last2;
+	private GUIState last;
+	private GUIState last2;
 	private int counter;
 
 	protected VisualGUI(XGraphics graphics)
@@ -31,14 +32,14 @@ public abstract class VisualGUI
 		return y2.toOffset(y2.cast(camera.clickLocation(x, y)));
 	}
 
-	public boolean inside(TileCamera camera, double x, double y, XGUIState xgui)
+	public boolean inside(TileCamera camera, double x, double y, GUIState xgui)
 	{
 		return xgui != null && inside(camera, camera.clickLocation(x, y), xgui);
 	}
 
-	protected abstract boolean inside(TileCamera camera, DoubleTile h1, XGUIState xgui);
+	protected abstract boolean inside(TileCamera camera, DoubleTile h1, GUIState xgui);
 
-	public void zoomAndDraw(TileCamera camera, XGUIState xgui, Scheme scheme)
+	public void zoomAndDraw(TileCamera camera, GUIState xgui, Scheme scheme)
 	{
 		if(xgui != last)
 		{
@@ -61,9 +62,9 @@ public abstract class VisualGUI
 		camera.setZoom(1.0);
 	}
 
-	public abstract void locateAndDraw(TileCamera camera, XGUIState xgui, Scheme scheme);
+	public abstract void locateAndDraw(TileCamera camera, GUIState xgui, Scheme scheme);
 
-	protected void drawGUI(TileCamera camera, XGUIState xgui, Scheme scheme, double cxs, double cys,
+	protected void drawGUI(TileCamera camera, GUIState xgui, Scheme scheme, double cxs, double cys,
 			DoubleTile lu, DoubleTile rl, double imgSize, double fontSize, double textWidth)
 	{
 		if(xgui.xw() <= 0 || xgui.yw() <= 0)

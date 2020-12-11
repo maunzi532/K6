@@ -15,8 +15,8 @@ public class ScrollList<T> implements GuiElement
 	private final int elementCountYm0;
 	private final int elementCountYm1;
 	private final int elementCountYm2;
-	private final CTile scrollUp;
-	private final CTile scrollDown;
+	private final AreaTile scrollUp;
+	private final AreaTile scrollDown;
 	public List<? extends T> elements;
 	private int currentScroll;
 	private boolean skipScroll1;
@@ -40,9 +40,9 @@ public class ScrollList<T> implements GuiElement
 		elementCountYm0 = sizeY / elementSizeY;
 		elementCountYm1 = (sizeY - 1) / elementSizeY;
 		elementCountYm2 = (sizeY - 2) / elementSizeY;
-		scrollUp = new CTile(locationX, locationY,
+		scrollUp = new AreaTile(locationX, locationY,
 				new GuiTile("gui.scroll.up", null, false, null, sizeX, 1), sizeX, 1);
-		scrollDown = new CTile(locationX, locationY + sizeY - 1,
+		scrollDown = new AreaTile(locationX, locationY + sizeY - 1,
 				new GuiTile("gui.scroll.down", null, false, null, sizeX, 1), sizeX, 1);
 	}
 
@@ -122,7 +122,7 @@ public class ScrollList<T> implements GuiElement
 			setFilledTile(tiles, scrollDown);
 	}
 
-	private void setFilledTile(GuiTile[][] tiles, CTile tile)
+	private void setFilledTile(GuiTile[][] tiles, AreaTile tile)
 	{
 		for(int ix = 0; ix < tile.right; ix++)
 		{
@@ -143,7 +143,7 @@ public class ScrollList<T> implements GuiElement
 		int yr = y - locationY;
 		if(xr < 0 || yr < 0 || xr >= sizeX || yr >= sizeY)
 		{
-			return new ElementTargetResult(false, false, CTile.NONE);
+			return new ElementTargetResult(false, false, AreaTile.NONE);
 		}
 		if(canScrollUp && yr == 0)
 		{
@@ -168,14 +168,14 @@ public class ScrollList<T> implements GuiElement
 		int yr1 = y - startY();
 		if(xr >= elementSizeX * elementCountX || yr1 >= elementSizeY * shownLinesY)
 		{
-			return new ElementTargetResult(true, false, CTile.NONE);
+			return new ElementTargetResult(true, false, AreaTile.NONE);
 		}
 		int xel = xr / elementSizeX;
 		int yel = yr1 / elementSizeY;
 		int elementNum = (yel + currentScroll) * elementCountX + xel;
 		if(elementNum >= elements.size())
 		{
-			return new ElementTargetResult(true, false, CTile.NONE);
+			return new ElementTargetResult(true, false, AreaTile.NONE);
 		}
 		boolean requireUpdate = false;
 		T targetElement = elements.get(elementNum);
@@ -192,6 +192,6 @@ public class ScrollList<T> implements GuiElement
 			targetedElement = targetElement;
 		}
 		return new ElementTargetResult(true, requireUpdate,
-				new CTile(locationX + xel * elementSizeX, startY() + yel * elementSizeY, elementSizeX, elementSizeY));
+				new AreaTile(locationX + xel * elementSizeX, startY() + yel * elementSizeY, elementSizeX, elementSizeY));
 	}
 }

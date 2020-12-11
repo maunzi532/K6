@@ -1,9 +1,10 @@
 package vis.gui;
 
-import geom.*;
-import geom.advtile.*;
+import geom.layout.*;
+import geom.camera.*;
+import geom.dtile.*;
 import gui.*;
-import vis.*;
+import vis.vis.*;
 
 public final class VisualGUIHex extends VisualGUI
 {
@@ -23,13 +24,13 @@ public final class VisualGUIHex extends VisualGUI
 		rls = y2.createD(4.0 / 6.0, -8.0 / 6.0, 4.0 / 6.0);
 	}
 
-	private DoubleTile rlLoc(DoubleType y2, XGUIState xgui)
+	private DoubleTile rlLoc(DoubleType y2, GUIState xgui)
 	{
 		return y2.add(y2.fromTile(y2.fromOffset(xgui.xw() - 1, xgui.yw() - 1)), (xgui.yw() - 2) % 2 != 0 ? rls : rle);
 	}
 
 	@Override
-	public boolean inside(TileCamera camera, DoubleTile h1, XGUIState xgui)
+	public boolean inside(TileCamera camera, DoubleTile h1, GUIState xgui)
 	{
 		if(xgui.xw() <= 0 || xgui.yw() <= 0)
 			return false;
@@ -40,7 +41,7 @@ public final class VisualGUIHex extends VisualGUI
 	}
 
 	@Override
-	public void locateAndDraw(TileCamera camera, XGUIState xgui, Scheme scheme)
+	public void locateAndDraw(TileCamera camera, GUIState xgui, Scheme scheme)
 	{
 		double cxs = xgui.xw() - (xgui.yw() > 1 ? 0.5 : 1.0) * HexMatrix.Q3 / 2.0;
 		double cys = (xgui.yw() - 1) * 1.5 / 2.0;

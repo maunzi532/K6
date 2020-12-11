@@ -1,3 +1,3 @@
 package gui;
 
-public record ElementTargetResult(boolean inside, boolean requiresUpdate, CTile targetTile){}
+public record ElementTargetResult(boolean inside, boolean requiresUpdate, AreaTile targetTile){}

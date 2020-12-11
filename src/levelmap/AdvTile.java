@@ -1,6 +1,5 @@
 package levelmap;
 
-import doubleinv.*;
 import entity.*;
 
 public final class AdvTile

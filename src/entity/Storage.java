@@ -2,7 +2,6 @@ package entity;
 
 import com.fasterxml.jackson.jr.ob.comp.*;
 import com.fasterxml.jackson.jr.stree.*;
-import doubleinv.*;
 import geom.tile.*;
 import item.*;
 import java.io.*;

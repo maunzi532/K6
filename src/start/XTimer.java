@@ -3,8 +3,8 @@ package start;
 import javafx.animation.*;
 import javafx.scene.input.*;
 import logic.*;
-import vis.*;
 import vis.keybind.*;
+import vis.vis.*;
 
 public final class XTimer extends AnimationTimer
 {

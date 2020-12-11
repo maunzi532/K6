@@ -2,7 +2,7 @@ package logic;
 
 import entity.sideinfo.*;
 import levelmap.*;
-import logic.xstate.*;
+import xstate.*;
 import system.*;
 
 public interface MainState
