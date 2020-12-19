@@ -5,7 +5,7 @@ import system.*;
 
 public interface WorldControl
 {
-	WorldSettings systemScheme();
+	WorldSettings worldSettings();
 
 	LevelMap createLevel();
 

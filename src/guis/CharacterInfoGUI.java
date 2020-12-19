@@ -28,7 +28,7 @@ public class CharacterInfoGUI extends GUIState
 	public void onEnter(MainState mainState)
 	{
 		mainState1 = mainState;
-		mainState.side().setStandardSideInfo(character);
+		mainState.side().sidedInfo(character, XCharacter::standardSideInfo);
 		invView = new TargetScrollList<>(0, 1, 2, 5, 2, 1, null,
 				GuiTile::itemStackView, null);
 		elements.add(invView);
@@ -42,7 +42,7 @@ public class CharacterInfoGUI extends GUIState
 	@Override
 	protected void updateBeforeDraw()
 	{
-		mainState1.side().setStandardSideInfo(character);
+		mainState1.side().sidedInfo(character, XCharacter::standardSideInfo);
 		invView.elements = systemChar.inv().viewItems();
 		itemView.elements = info();
 	}

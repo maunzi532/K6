@@ -1,5 +1,6 @@
 package entity;
 
+import animation.*;
 import arrow.*;
 import com.fasterxml.jackson.jr.ob.comp.*;
 import com.fasterxml.jackson.jr.stree.*;
@@ -13,7 +14,7 @@ import load.*;
 import system.*;
 import text.*;
 
-public final class XCharacter implements InvHolder, XSaveableYS
+public final class XCharacter implements InvHolder, AnimCharacter, XSaveableYS
 {
 	private CharacterTeam team;
 	private boolean savedInTeam;
@@ -83,6 +84,7 @@ public final class XCharacter implements InvHolder, XSaveableYS
 		return customName != null ? customName : team().genericName;
 	}
 
+	@Override
 	public String mapImageName()
 	{
 		if(customMapImage != null)
@@ -99,6 +101,21 @@ public final class XCharacter implements InvHolder, XSaveableYS
 			return "character.enemy.0";
 	}
 
+	public SideInfo sideInfo(CharSequence... texts)
+	{
+		return new SideInfo(location, sideImageName(), hpBar(), texts);
+	}
+
+	public SideInfo sideInfoHP(StatBar hpBarOverride, CharSequence... texts)
+	{
+		return new SideInfo(location, sideImageName(), hpBarOverride, texts);
+	}
+
+	public SideInfo standardSideInfo()
+	{
+		return sideInfo(name1(), systemChar.nameAddedText());
+	}
+
 	public CharSequence[] sideInfoText(CharSequence name)
 	{
 		return new CharSequence[]{name, systemChar.nameAddedText()};
@@ -109,6 +126,7 @@ public final class XCharacter implements InvHolder, XSaveableYS
 		return visualReplaced == null || visualReplaced.finished();
 	}
 
+	@Override
 	public void replaceVisual(XArrow arrow)
 	{
 		visualReplaced = arrow;

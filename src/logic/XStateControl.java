@@ -1,7 +1,6 @@
 package logic;
 
 import entity.*;
-import entity.sideinfo.*;
 import geom.tile.*;
 import java.util.*;
 import java.util.stream.*;
@@ -61,9 +60,9 @@ public final class XStateControl implements MainState, XStateHolder, ConvInputCo
 	}
 
 	@Override
-	public WorldSettings systemScheme()
+	public WorldSettings worldSettings()
 	{
-		return worldControl.systemScheme();
+		return worldControl.worldSettings();
 	}
 
 	@Override

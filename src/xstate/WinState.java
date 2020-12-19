@@ -22,9 +22,9 @@ public class WinState implements NAutoState
 		try
 		{
 			ObjectComposer<JSONComposer<String>> a1 = LoadHelper.startSave();
-			mainState.levelMap().saveTeam(a1, mainState.systemScheme());
+			mainState.levelMap().saveTeam(a1, mainState.worldSettings());
 			String teamText = LoadHelper.endSave(a1);
-			mainState.worldControl().updateTeam(teamText, null);
+			mainState.worldControl().updateTeam(teamText, mainState.levelMap().nextLevel());
 		}catch(IOException e)
 		{
 			throw new RuntimeException(e);

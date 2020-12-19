@@ -37,7 +37,7 @@ public final class EntityCreateGUI extends GUIState
 
 	private void createXCharacter(boolean xHero, MainState mainState)
 	{
-		SystemChar systemChar = new SystemChar(new EnemyLevelSystem(mainState.systemScheme().allXClasses.get(0), 0),
+		SystemChar systemChar = new SystemChar(new EnemyLevelSystem(mainState.worldSettings().allXClasses.get(0), 0),
 				new TagInv(10), new EnemyAI(mainState.levelMap().y1().create2(0, 0)), -1);
 		XCharacter entity;
 		if(xHero)

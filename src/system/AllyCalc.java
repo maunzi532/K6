@@ -54,4 +54,16 @@ public class AllyCalc
 						new ArgsText("allyinfo.heal", heal)
 				};
 	}
+
+	public void setSideInfo(SideInfoFrame side)
+	{
+		if(aI.character() == aI.target())
+		{
+			side.sidedInfo(aI.character(), e -> e.sideInfo(sideInfoC()));
+		}
+		else
+		{
+			side.sidedInfo(aI.character(), aI.character().sideInfo(sideInfo1()), aI.target(), aI.target().sideInfo(sideInfo2()));
+		}
+	}
 }

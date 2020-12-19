@@ -21,7 +21,7 @@ public final class SwapState implements NMarkState
 	@Override
 	public void onEnter(MainState mainState)
 	{
-		mainState.side().setStandardSideInfo(character);
+		mainState.side().sidedInfo(character, XCharacter::standardSideInfo);
 		if(mainState.levelMap().canSwap(character))
 		{
 			swapTargets = mainState.levelMap().allCharacters().stream().filter(e -> e.team() == character.team())

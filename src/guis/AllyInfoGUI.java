@@ -1,7 +1,6 @@
 package guis;
 
 import entity.*;
-import entity.sideinfo.*;
 import gui.*;
 import java.util.*;
 import java.util.stream.*;
@@ -28,7 +27,7 @@ public final class AllyInfoGUI extends GUIState
 	public void onEnter(MainState mainState)
 	{
 		side = mainState.side();
-		side.sidedInfo(character, target);
+		side.sidedInfo(character, target, XCharacter::standardSideInfo);
 		List<AllyCalc> allyCalc = AllyInfo.allyOptions(character, target, mainState.levelMap().y1())
 				.stream().map(AllyCalc::new).collect(Collectors.toList());
 		allyView = new TargetScrollList<>(0, 1,
@@ -57,9 +56,9 @@ public final class AllyInfoGUI extends GUIState
 	protected void updateBeforeDraw()
 	{
 		if(allyView.getTargeted() != null)
-			side.setAllyInfoSideInfo(allyView.getTargeted());
+			allyView.getTargeted().setSideInfo(side);
 		else
-			side.sidedInfo(character, target);
+			side.sidedInfo(character, target, XCharacter::standardSideInfo);
 	}
 
 	@Override

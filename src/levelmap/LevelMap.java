@@ -4,7 +4,6 @@ import arrow.*;
 import com.fasterxml.jackson.jr.ob.comp.*;
 import com.fasterxml.jackson.jr.stree.*;
 import entity.*;
-import event.event.*;
 import geom.tile.*;
 import java.io.*;
 import java.nio.*;
@@ -24,13 +23,14 @@ public class LevelMap implements Arrows, XSaveableS
 	private int turnCounter;
 	private boolean win;
 	private boolean lose;
-	private Map<String, EventPack> eventPacks;
+	private Map<String, ? extends XEventPack> eventPacks;
+	private String nextLevel;
 	private ArrayList<XArrow> arrows;
 	private boolean requiresUpdate;
 
 	public LevelMap(TileType y1, HashMap<Tile, AdvTile> advTiles,
 			List<XCharacter> allCharacters, List<StartingLocation> allStartingLocations,
-			Storage storage, Map<String, EventPack> eventPacks, int turnCounter)
+			Storage storage, Map<String, ? extends XEventPack> eventPacks, String nextLevel, int turnCounter)
 	{
 		this.y1 = y1;
 		this.advTiles = advTiles;
@@ -40,6 +40,7 @@ public class LevelMap implements Arrows, XSaveableS
 		allStartingLocations.forEach(e -> advTiles.get(e.location()).setStartingLocation(e));
 		this.storage = storage;
 		this.eventPacks = eventPacks;
+		this.nextLevel = nextLevel;
 		this.turnCounter = turnCounter;
 		arrows = new ArrayList<>();
 	}
@@ -226,9 +227,14 @@ public class LevelMap implements Arrows, XSaveableS
 		turnCounter++;
 	}
 
-	public void setEventPacks(Map<String, EventPack> eventPacks)
+	public void setEventPacks(Map<String, ? extends XEventPack> eventPacks)
 	{
 		this.eventPacks = eventPacks;
+	}
+
+	public String nextLevel()
+	{
+		return nextLevel;
 	}
 
 	@Override
@@ -273,9 +279,10 @@ public class LevelMap implements Arrows, XSaveableS
 		List<StartingLocation> startingLocations = LoadHelper.asList(data.get("StartingLocations"), e -> StartingLocation
 				.load(e, y1));
 		Storage storage = new Storage();
-		Map<String, EventPack> eventPacks = Map.of();
+		Map<String, XEventPack> eventPacks = Map.of();
+		String nextLevel = LoadHelper.asOptionalString(data.get("NextLevel"));
 		int turnCounter = 0;
-		return new LevelMap(y1, advTiles, allCharacters, startingLocations, storage, eventPacks, turnCounter);
+		return new LevelMap(y1, advTiles, allCharacters, startingLocations, storage, eventPacks, nextLevel, turnCounter);
 	}
 
 	@Override
@@ -302,6 +309,8 @@ public class LevelMap implements Arrows, XSaveableS
 		XSaveableYS.saveList("Characters", allCharacters.stream()
 				.filter(e -> !e.isSavedInTeam()).collect(Collectors.toList()), a1, y1, worldSettings);
 		XSaveableY.saveList("StartingLocations", allStartingLocations, a1, y1);
+		if(nextLevel != null)
+			a1.put("NextLevel", nextLevel);
 	}
 
 	public static LevelMap resume(JrsObject data, WorldSettings worldSettings)
@@ -324,8 +333,9 @@ public class LevelMap implements Arrows, XSaveableS
 				.load(e, y1));
 		Storage storage = Storage.load((JrsObject) data.get("Storage"), worldSettings);
 		int turnCounter = LoadHelper.asInt(data.get("TurnCounter"));
-		Map<String, EventPack> eventPacks = Map.of();
-		return new LevelMap(y1, advTiles, allCharacters, startingLocations, storage, eventPacks, turnCounter);
+		Map<String, XEventPack> eventPacks = Map.of();
+		String nextLevel = LoadHelper.asOptionalString(data.get("NextLevel"));
+		return new LevelMap(y1, advTiles, allCharacters, startingLocations, storage, eventPacks, nextLevel, turnCounter);
 	}
 
 	public void suspend(ObjectComposer<? extends ComposerBase> a1, WorldSettings worldSettings) throws IOException
@@ -352,6 +362,8 @@ public class LevelMap implements Arrows, XSaveableS
 		XSaveableY.saveList("StartingLocations", allStartingLocations, a1, y1);
 		XSaveableS.saveObject("Storage", storage, a1, worldSettings);
 		a1.put("TurnCounter", turnCounter);
+		if(nextLevel != null)
+			a1.put("NextLevel", nextLevel);
 	}
 
 	public void loadTeam(JrsObject data, WorldSettings worldSettings)
@@ -364,7 +376,7 @@ public class LevelMap implements Arrows, XSaveableS
 		namedSL.forEach(e -> namedC.add(setToStartingLocation(characterByName(teamCharacters, e.startName()), e)));
 		List<StartingLocation> unnamedSL = allStartingLocations.stream().filter(e -> e.startName() == null).collect(Collectors.toList());
 		List<XCharacter> unnamedC = teamCharacters.stream().filter(e -> !namedC.contains(e)).collect(Collectors.toList());
-		for(int i = 0; i < unnamedC.size(); i++)
+		for(int i = 0; i < unnamedC.size() && i < unnamedSL.size(); i++)
 		{
 			setToStartingLocation(unnamedC.get(i), unnamedSL.get(i));
 		}
@@ -378,6 +390,7 @@ public class LevelMap implements Arrows, XSaveableS
 	private XCharacter setToStartingLocation(XCharacter character, StartingLocation startingLocation)
 	{
 		advTiles.get(startingLocation.location()).setEntity(character);
+		allCharacters.add(character);
 		//TODO lock characters with locked movement/inv
 		if(startingLocation.emptyInv())
 		{

@@ -8,8 +8,9 @@ import java.nio.file.*;
 import java.util.*;
 import java.util.stream.*;
 import event.events.*;
+import levelmap.*;
 
-public final class EventPack
+public final class EventPack implements XEventPack
 {
 	private final List<NEvent> events;
 

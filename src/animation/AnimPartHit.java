@@ -1,7 +1,6 @@
 package animation;
 
 import arrow.*;
-import entity.*;
 
 public final class AnimPartHit implements AnimPart
 {
@@ -9,25 +8,24 @@ public final class AnimPartHit implements AnimPart
 	private static final int BLINKTIME = 5;
 	private static final int SPEED = 2;
 
-	private final XCharacter target;
+	private final AnimCharacter target;
+	private final int damage;
 	private final StatBar statBar;
-	private final Arrows arrows;
-	private final int reduction;
 	private final boolean crit;
 	private final boolean dodge;
+	private final Arrows arrows;
 	private final BlinkArrow arrow;
 	private int counter;
 
-	public AnimPartHit(XCharacter target, /*Stats statsT, */int damage, StatBar statBar, boolean crit, boolean dodge, Arrows arrows)
+	public AnimPartHit(AnimCharacter target, int damage, StatBar statBar, boolean crit, boolean dodge, Arrows arrows)
 	{
 		this.target = target;
+		this.damage = damage;
 		this.statBar = statBar;
 		this.crit = crit;
 		this.dodge = dodge;
 		this.arrows = arrows;
 		arrow = new BlinkArrow(target.location(), DURATION, false, target.mapImageName(), BLINKTIME);
-		reduction = Math.min(target.currentHP(), damage);
-		//statsT.setCurrentHealth(Math.max(0, statsT.currentHealth() - damage));
 	}
 
 	@Override
@@ -58,8 +56,8 @@ public final class AnimPartHit implements AnimPart
 		if(counter <= AnimPartAttack.DODGETIME)
 			return false;
 		int counter2 = counter - AnimPartAttack.DODGETIME;
-		if(counter2 % SPEED == 0 && counter2 / SPEED <= reduction)
+		if(counter2 % SPEED == 0 && counter2 / SPEED <= damage)
 			statBar.alterCurrent(-1);
-		return counter2 / SPEED >= reduction && arrow.finished();
+		return counter2 / SPEED >= damage && arrow.finished();
 	}
 }

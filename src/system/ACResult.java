@@ -32,19 +32,19 @@ public record ACResult(List<AnimPart> animParts, int hp1, int hp2, StatBar hpBar
 					int acN = aI.accuracy1 + rn;
 					if(acN >= 150)
 					{
-						int damage = aI.damage1 * 2;
+						int damage = Math.min(hp2, aI.damage1 * 2);
 						animParts.add(a1(aI.aI.target(), arrows, hpBar2, damage, true, false));
 						hp2 -= damage;
 					}
 					else if(acN >= 50)
 					{
-						int damage = aI.damage1;
+						int damage = Math.min(hp2, aI.damage1);
 						animParts.add(a1(aI.aI.target(), arrows, hpBar2, damage, false, false));
 						hp2 -= damage;
 					}
 					else if(acN >= -50)
 					{
-						int damage = aI.damage1 - aI.damage1 / 2;
+						int damage = Math.min(hp2, aI.damage1 - aI.damage1 / 2);
 						animParts.add(a1(aI.aI.target(), arrows, hpBar2, damage, false, true));
 						hp2 -= damage;
 					}
@@ -66,19 +66,19 @@ public record ACResult(List<AnimPart> animParts, int hp1, int hp2, StatBar hpBar
 					int acN = aI.accuracy2 + rn;
 					if(acN >= 150)
 					{
-						int damage = aI.damage2 * 2;
+						int damage = Math.min(hp1, aI.damage2 * 2);
 						animParts.add(a1(aI.aI.initiator(), arrows, hpBar1, damage, true, false));
 						hp1 -= damage;
 					}
 					else if(acN >= 50)
 					{
-						int damage = aI.damage2;
+						int damage = Math.min(hp1, aI.damage2);
 						animParts.add(a1(aI.aI.initiator(), arrows, hpBar1, damage, false, false));
 						hp1 -= damage;
 					}
 					else if(acN >= -50)
 					{
-						int damage = aI.damage2 - aI.damage2 / 2;
+						int damage = Math.min(hp1, aI.damage2 - aI.damage2 / 2);
 						animParts.add(a1(aI.aI.initiator(), arrows, hpBar1, damage, false, true));
 						hp1 -= damage;
 					}

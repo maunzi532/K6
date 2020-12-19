@@ -21,7 +21,7 @@ public final class ReachViewState implements NMarkState
 	public void onEnter(MainState mainState)
 	{
 		mainState1 = mainState;
-		mainState.side().setStandardSideInfo(character);
+		mainState.side().sidedInfo(character, XCharacter::standardSideInfo);
 		List<Tile> movement = new Pathing(character, character.movement(), mainState.levelMap(), true).getEndpoints();
 		allTargets = new ArrayList<>();
 		movement.forEach(e -> allTargets.add(new VisMark(e, "mark.reach.move", VisMark.d1)));

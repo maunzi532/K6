@@ -1,7 +1,7 @@
 package vis.sideinfo;
 
 import arrow.*;
-import entity.sideinfo.*;
+import entity.*;
 import java.util.*;
 import javafx.scene.canvas.*;
 import javafx.scene.text.*;
@@ -25,8 +25,7 @@ public final class VisualSideInfo
 
 	public void setSideInfo(SideInfo sideInfo)
 	{
-		if(!Objects.equals(current == null ? null : current.identifier().location(),
-				sideInfo == null ? null : sideInfo.identifier().location()))
+		if(!Objects.equals(current == null ? null : current.location(), sideInfo == null ? null : sideInfo.location()))
 		{
 			counter = SHIFT_TIME;
 			last = current;

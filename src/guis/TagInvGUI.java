@@ -23,7 +23,7 @@ public class TagInvGUI extends GUIState
 	public void onEnter(MainState mainState)
 	{
 		mainState1 = mainState;
-		mainState.side().setStandardSideInfo(character);
+		mainState.side().sidedInfo(character, XCharacter::standardSideInfo);
 		invView = new TargetScrollList<>(0, 0, 2, 5,
 				2, 1, inv.viewItems(), GuiTile::itemStackView, this::invClick);
 		elements.add(invView);
@@ -38,7 +38,7 @@ public class TagInvGUI extends GUIState
 	@Override
 	protected void updateBeforeDraw()
 	{
-		mainState1.side().setStandardSideInfo(character);
+		mainState1.side().sidedInfo(character, XCharacter::standardSideInfo);
 		invView.elements = inv.viewItems();
 	}
 

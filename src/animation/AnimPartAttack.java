@@ -1,7 +1,6 @@
 package animation;
 
 import arrow.*;
-import entity.*;
 
 public final class AnimPartAttack implements AnimPart
 {
@@ -13,7 +12,7 @@ public final class AnimPartAttack implements AnimPart
 	private final ManualXArrow arrow;
 	private int counter;
 
-	public AnimPartAttack(XCharacter attacker, XCharacter target, Arrows arrows)
+	public AnimPartAttack(AnimCharacter attacker, AnimCharacter target, Arrows arrows)
 	{
 		arrow = new ManualXArrow(XArrow.convert(attacker.location(), target.location()), LEN, attacker.mapImageName());
 		arrows.addArrow(arrow);

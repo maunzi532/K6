@@ -1,4 +1,4 @@
-package animation;
+package system;
 
 import arrow.*;
 import entity.*;

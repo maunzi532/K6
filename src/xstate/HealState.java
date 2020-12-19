@@ -2,7 +2,7 @@ package xstate;
 
 import entity.*;
 import logic.*;
-import animation.*;
+import system.*;
 
 public class HealState implements NAutoState
 {

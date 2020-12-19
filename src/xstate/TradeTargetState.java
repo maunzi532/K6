@@ -22,7 +22,7 @@ public final class TradeTargetState implements NMarkState
 	@Override
 	public void onEnter(MainState mainState)
 	{
-		mainState.side().setStandardSideInfo(character);
+		mainState.side().sidedInfo(character, XCharacter::standardSideInfo);
 		LevelMap levelMap = mainState.levelMap();
 		List<Tile> range = levelMap.y1().range(character.location(), 0, character.accessRange());
 		possibleTargets = new ArrayList<>();

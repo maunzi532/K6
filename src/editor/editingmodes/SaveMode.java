@@ -38,7 +38,7 @@ public final class SaveMode implements EditingMode
 		try
 		{
 			var a1 = LoadHelper.startSave();
-			mainState.levelMap().save(a1, mainState.systemScheme());
+			mainState.levelMap().save(a1, mainState.worldSettings());
 			String text1 = LoadHelper.endSave(a1);
 			Path path = new FileChooser().showSaveDialog(null).toPath();
 			Files.writeString(path, text1);

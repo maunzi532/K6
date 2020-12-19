@@ -1,7 +1,6 @@
 package guis;
 
 import entity.*;
-import entity.sideinfo.*;
 import gui.*;
 import java.util.*;
 import java.util.stream.*;
@@ -28,7 +27,7 @@ public final class AttackInfoGUI extends GUIState
 	public void onEnter(MainState mainState)
 	{
 		side = mainState.side();
-		side.sidedInfo(attacker, target);
+		side.sidedInfo(attacker, target, XCharacter::standardSideInfo);
 		List<AttackCalc> attackCalc = AttackInfo.attackOptions(attacker, target, mainState.levelMap().y1(), false, true)
 						.stream().map(AttackCalc::new).collect(Collectors.toList());
 		attacksView = new TargetScrollList<>(0, 1,
@@ -57,9 +56,9 @@ public final class AttackInfoGUI extends GUIState
 	protected void updateBeforeDraw()
 	{
 		if(attacksView.getTargeted() != null)
-			side.setAttackInfoSideInfo(attacksView.getTargeted());
+			attacksView.getTargeted().setSideInfo(side);
 		else
-			side.sidedInfo(attacker, target);
+			side.sidedInfo(attacker, target, XCharacter::standardSideInfo);
 	}
 
 	@Override

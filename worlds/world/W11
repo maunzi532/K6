@@ -15,7 +15,7 @@
       "CLS" :
       {
         "Class" : "class.mage",
-        "Level" : 0
+        "Level" : 100
       },
       "Inv" :
       {
@@ -24,12 +24,12 @@
         [
           {
             "Item" : "_AS1",
-            "Count" : 1,
-            "Tag" : "Defend"
+            "Count" : 1
           },
           {
             "Item" : "_AL1",
-            "Count" : 1
+            "Count" : 1,
+            "Tag" : "Defend"
           },
           {
             "Item" : "_AR1",
@@ -150,5 +150,6 @@
       "HasMainAction" : false
     }
   ],
-  "StartingLocations" : []
+  "StartingLocations" : [],
+  "NextLevel" : "W12"
 }

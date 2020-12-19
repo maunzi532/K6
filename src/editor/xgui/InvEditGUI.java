@@ -43,7 +43,7 @@ public class InvEditGUI extends GUIState
 				GuiTile::textView, this::onClickInfoView);
 		elements.add(infoView);
 		allItemsView = new TargetScrollList<>(5, 1, 3, 5, 1, 1,
-				mainState.systemScheme().allItems, e -> GuiTile.cast(new GuiTile(e.name(), e.image(), false, null)),
+				mainState.worldSettings().allItems, e -> GuiTile.cast(new GuiTile(e.name(), e.image(), false, null)),
 				this::itemClick2);
 		elements.add(allItemsView);
 		elements.add(new TileElement(textInv, new GuiTile(name)));

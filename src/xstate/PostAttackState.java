@@ -1,7 +1,6 @@
 package xstate;
 
 import logic.*;
-import animation.*;
 import system.*;
 
 public final class PostAttackState extends AttackState

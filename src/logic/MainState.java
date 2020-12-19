@@ -1,6 +1,6 @@
 package logic;
 
-import entity.sideinfo.*;
+import entity.*;
 import levelmap.*;
 import xstate.*;
 import system.*;
@@ -15,7 +15,7 @@ public interface MainState
 
 	WorldControl worldControl();
 
-	WorldSettings systemScheme();
+	WorldSettings worldSettings();
 
 	//content
 	//TODO    Build a real level

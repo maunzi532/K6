@@ -1,5 +1,6 @@
 package system;
 
+import arrow.*;
 import entity.*;
 import text.*;
 
@@ -100,5 +101,15 @@ public class AttackCalc
 						new ArgsText("attackinfo.attackcount", attackCount2),
 						new ArgsText("attackinfo.accuracy", accuracy2)
 				} : EMPTY_TEXTS;
+	}
+
+	public void setSideInfo(SideInfoFrame side)
+	{
+		side.sidedInfo(aI.initiator(), aI.initiator().sideInfo(sideInfo1()), aI.target(), aI.target().sideInfo(sideInfo2()));
+	}
+
+	public void setSideInfoHP(SideInfoFrame side, StatBar hp1, StatBar hp2)
+	{
+		side.sidedInfo(aI.initiator(), aI.initiator().sideInfoHP(hp1, sideInfo1()), aI.target(), aI.target().sideInfoHP(hp2, sideInfo2()));
 	}
 }

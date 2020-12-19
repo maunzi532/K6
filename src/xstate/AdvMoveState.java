@@ -36,7 +36,7 @@ public final class AdvMoveState implements NMarkState
 	public void onEnter(MainState mainState)
 	{
 		mainState1 = mainState;
-		mainState.side().setStandardSideInfo(character);
+		mainState.side().sidedInfo(character, XCharacter::standardSideInfo);
 		switch(moveState)
 		{
 			case INIT, MOVED -> {}

@@ -104,8 +104,8 @@ public class WorldLoader implements WorldControl
 		try
 		{
 			teamData = LoadHelper.startLoadText(text);
-			//TODO
-			//levelData = LoadHelper.startLoad(worldPath.resolve(nextLevel));
+			//TODO if nextLevel is null
+			levelData = LoadHelper.startLoad(worldPath.resolve(nextLevel));
 		}catch(IOException e)
 		{
 			throw new RuntimeException(e);
@@ -113,7 +113,7 @@ public class WorldLoader implements WorldControl
 	}
 
 	@Override
-	public WorldSettings systemScheme()
+	public WorldSettings worldSettings()
 	{
 		return worldSettings;
 	}

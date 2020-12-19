@@ -1,7 +1,6 @@
 package animation;
 
 import arrow.*;
-import entity.*;
 
 public final class AnimPartVanish implements AnimPart
 {
@@ -10,7 +9,7 @@ public final class AnimPartVanish implements AnimPart
 
 	private final BlinkArrow arrow;
 
-	public AnimPartVanish(XCharacter target, Arrows arrows)
+	public AnimPartVanish(AnimCharacter target, Arrows arrows)
 	{
 		arrow = new BlinkArrow(target.location(), DURATION, false, target.mapImageName(), BLINKTIME);
 		arrows.addArrow(arrow);
